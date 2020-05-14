@@ -1,0 +1,11 @@
+
+ganga URL
+
+customer - http://qagangaexpress.iassureit.com
+
+AnasHandicraft qa url
+
+customer - http://anashandicrafts.iassureit.com/
+admin    - http://admin-anashandicrafts.iassureit.com/
+api      - http://anashandicraftapi.iassureit.com/
+

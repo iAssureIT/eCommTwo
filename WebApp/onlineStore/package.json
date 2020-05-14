@@ -1,0 +1,65 @@
+{
+  "name": "eCommOneWebsite",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bootstrap": "^3.4.1",
+    "bootstrap3": "^3.3.5",
+    "fg-loadcss": "^3.1.0",
+    "font-awesome": "^4.7.0",
+    "html2canvas": "^1.0.0-rc.3",
+    "imask": "^5.2.1",
+    "jQuery": "^1.7.4",
+    "jquery": "^3.5.1",
+    "jquery-validation": "^1.19.1",
+    "jspdf": "^1.5.3",
+    "moment": "^2.24.0",
+    "owl.carousel": "^2.3.4",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-html-table-to-excel": "^2.0.0",
+    "react-image-zoom": "^0.7.0",
+    "react-input-mask": "^2.0.4",
+    "react-input-range": "^1.3.0",
+    "react-loadable": "^5.5.0",
+    "react-multiselect-checkboxes": "^0.1.1",
+    "react-owl-carousel": "^2.3.1",
+    "react-phone-input-2": "^2.12.1",
+    "react-player": "^1.12.0",
+    "react-redux": "^7.1.1",
+    "react-render-html": "^0.6.0",
+    "react-router-dom": "^5.0.1",
+    "react-s3": "^1.3.1",
+    "react-scripts": "3.1.1",
+    "react-select-nested": "^1.0.5",
+    "react-toasts": "^3.0.4",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "sitemap": "^4.1.1",
+    "sweetalert": "^2.1.2",
+    "underscore": "^1.9.1",
+    "validator": "^11.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+UniMandai Tasks
+
+1) Create Preferences Page for all settings 
+	i.   Website model: Single Owner website / Multi vendor Marketplace / Franchise Model
+	ii.  Ask User Pincode = Yes/No
+	iii. 
