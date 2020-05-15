@@ -5,7 +5,7 @@ var ObjectID 			= require('mongodb').ObjectID;
 var request 			= require('request-promise');
 const User 				= require('../userManagement/ModelUsers.js');
 const Role 				= require('../rolesManagement/ModelRoles.js');
-const globalVariable 	= require("../../nodemon.js");
+const globalVariable 	= require("../../../nodemon.js");
 const plivo 			= require('plivo');
 
 exports.user_signup_user = (req, res, next) => {

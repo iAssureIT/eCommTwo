@@ -5,7 +5,7 @@ const User 				    = require('../userManagement/ModelUsers.js');
 const PersonMaster          = require('../personMaster/ModelPersonMaster.js');
 const EventMapping          = require('../EventMappingMaster/ModelEventMapping.js');
 const nodeMailer            = require('nodemailer');
-const globalVariable        = require('../../nodemon.js');
+const globalVariable        = require('../../../nodemon.js');
 
 
 

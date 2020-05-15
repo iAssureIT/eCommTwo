@@ -5,7 +5,7 @@ var ObjectID = require('mongodb').ObjectID;
 var request = require('request-promise');
 const User = require('../userManagement/ModelUsers.js');
 const Role = require('../rolesManagement/ModelRoles.js');
-const globalVariable = require("../../nodemon.js");
+const globalVariable = require("../../../nodemon.js");
 
 function getRandomInt(min, max) {
 	min = Math.ceil(min);
