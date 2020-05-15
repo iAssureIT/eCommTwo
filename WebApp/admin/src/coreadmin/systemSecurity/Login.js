@@ -63,7 +63,10 @@ class Login extends Component {
       role: "admin"
     }
     if ($("#login").valid()) {
-      document.getElementById("logInBtn").value = 'Please Wait...';
+      console.log("auth = ",auth);
+
+      document.getElementById("logInBtn").value = 'xxxx Please Wait...';
+
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
         console.log("response",response)
@@ -136,8 +139,6 @@ class Login extends Component {
               text : "Please enter valid Email ID and Password"
             })
         document.getElementById("logInBtn").value = 'Sign In';
-        if (localStorage !== null) {
-        }
       });
     }
   }
