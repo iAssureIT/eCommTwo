@@ -29,19 +29,24 @@ class OneFieldForm extends React.Component {
         this.setState({
             user_ID : user_ID,
         })
-        this.getData(this.state.startRange, this.state.limitRange);
+
+     $.validator.addMethod("regxonefield", function (value, element, regexpr) {
+      return regexpr.test(value);
+    }, "Please enter valid field value");
+        
          jQuery.validator.setDefaults({
           debug: true,
           success: "valid"
         });
         $("#vendorLocationType").validate({
           rules: {
-            OneFieldInput: {
-              required: true
+            fieldName: {
+              required      : true,
+              regxonefield  :/^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$/,
             },
           },
           errorPlacement: function (error, element) {
-            if (element.attr("name") === "OneFieldInput") {
+            if (element.attr("name") === "fieldName") {
               error.insertAfter("#OneFieldInput");
             }
           }
@@ -55,7 +60,8 @@ class OneFieldForm extends React.Component {
             this.setState({
                 fieldName: "",
                 iconUrl  : "",
-                editId: ""
+                editId: "",
+                "profilePhoto":"",
             })
         }
     }
@@ -90,7 +96,7 @@ class OneFieldForm extends React.Component {
                         this.props.history.push(this.props.tableObjects.editUrl);
                     })
                     this.getData(this.state.startRange, this.state.limitRange);
-                    swal(this.props.fields.title+" updated sucessfully");
+                    swal(this.props.fields.title+" updated Successfully");
                 })
                 .catch((error) => {
                 })
@@ -109,7 +115,7 @@ class OneFieldForm extends React.Component {
                 .then((response) => {
                     console.log(response.data)
                     if (response.data.created) {
-                        swal(this.state.fieldName+" "+this.props.fields.title+" submitted sucessfully");
+                        swal(this.state.fieldName+" "+this.props.fields.title+" submitted Successfully");
                     }else{
                         swal(this.state.fieldName+" "+this.props.fields.title+" already exists");
                     }
@@ -147,7 +153,7 @@ class OneFieldForm extends React.Component {
                         this.props.history.push(this.props.tableObjects.editUrl);
                     })
                     this.getData(this.state.startRange, this.state.limitRange);
-                    swal(this.props.fields.title+" updated sucessfully");
+                    swal(this.props.fields.title+" updated Successfully");
                 })
                 .catch((error) => {
                 })
@@ -172,10 +178,11 @@ class OneFieldForm extends React.Component {
             startRange: startRange,
             limitRange: limitRange
         }
-        axios.post(apiLink+'/get/list', data)
+        axios.post(apiLink+'get/list', data)
             .then((response) => {
-                console.log(" response.data", response.data);
+                console.log(" response.data ==>", response.data);
                 var tableData = response.data.map((a, i)=>{
+                    console.log(" response A ==>", a[this.props.fields.attributeName]);
                     return({
                         _id                                 : a._id,
                         [this.props.fields.attributeName]   : a[this.props.fields.attributeName],
@@ -186,7 +193,6 @@ class OneFieldForm extends React.Component {
                     tableData: tableData
                 })
                 console.log("tableData",this.state.tableData);
-
             })
             .catch((error) => {
                 
@@ -223,7 +229,7 @@ class OneFieldForm extends React.Component {
                 if (file) {
                     var fileName = file.name;
                     var ext = fileName.split('.').pop();
-                    if (ext === "jpg" || ext === "png" || ext === "jpeg" || ext === "pdf" || ext === "JPG" || ext === "PNG" || ext === "JPEG" || ext === "PDF") {
+                    if (ext === "jpg" || ext === "png" || ext === "jpeg" || ext === "JPG" || ext === "PNG" || ext === "JPEG") {
                         if (file) {
                             var objTitle = { fileInfo: file }
                             docBrowse.push(objTitle);
@@ -233,7 +239,7 @@ class OneFieldForm extends React.Component {
                             swal("Files not uploaded");
                         }//file
                     } else {
-                        swal("Allowed images formats are (jpg,png,jpeg, pdf)");
+                        swal("Allowed images formats are (jpg,png,jpeg)");
                     }//file types
                 }//file
             }//for 
@@ -241,12 +247,11 @@ class OneFieldForm extends React.Component {
             if (event.currentTarget.files) {
                 main().then(formValues => {
                     console.log("formValues",formValues);
-                    var docBrowse = this.state[name];
-                    this.setState({
-                        [name]: formValues[0].docBrowse
-                    },()=>{
-                        console.log("profilePhoto0",this.state.profilePhoto)
-                    })
+                        this.setState({
+                            [name]: formValues[0].docBrowse
+                        },()=>{
+                            console.log("profilePhoto0",this.state.profilePhoto)
+                        })
                 });
 
                 async function main() {
@@ -307,6 +312,7 @@ class OneFieldForm extends React.Component {
     }
 
     render() {
+        console.log("this.state.tableData=>",this.state.tableData)
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="row">
@@ -314,7 +320,7 @@ class OneFieldForm extends React.Component {
                         <section className="content">
                             <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                                    <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">{this.props.fields.title === "Fuel Type" || this.props.fields.title === "Vehicle Category" ||this.props.fields.title === "Package Type"? this.props.fields.title : this.props.fields.title } </h4>
+                                    <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">{this.props.fields.title === "Location Type"? this.props.fields.title+"s" : this.props.fields.title } </h4>
                                 </div>
                                 <section className="Content">
                                     <div className="row">
@@ -329,7 +335,7 @@ class OneFieldForm extends React.Component {
                                                         </div>
                                                     </div>
                                                     <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 OFFImageDiv" id="LogoImageUpOne">
+                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 OFFImageDiv " id="LogoImageUpOne" >
                                                             <div><i className="fa fa-camera"></i> <br /><p>UPLOAD IMAGE</p></div>
                                                             <input onChange={this.docBrowse.bind(this)}  id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="profilePhoto" />
                                                         </div>
@@ -339,7 +345,13 @@ class OneFieldForm extends React.Component {
                                                                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
                                                                       <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={this.state.profilePhoto} name="profilePhoto" onClick={this.deleteDoc.bind(this)}>x</label>
                                                                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogosOF" id="profilePhoto">
-                                                                          <img src={this.state.profilePhoto} className="img-responsive profileImageDivlogoStyleOF" />
+                                                                          {
+                                                                            this.state.profilePhoto.split('.').pop() === "pdf" || this.state.profilePhoto.split('.').pop() === "PDF" ?
+                                                                            <img src="/images/pdfImg.png" className="img-responsive profileImageDivlogoStyleOF"/>
+                                                                            
+                                                                            :
+                                                                           <img src={this.state.profilePhoto} className="img-responsive profileImageDivlogoStyleOF" />
+                                                                      }
                                                                       </div>
                                                                   </div>
                                                             </div>

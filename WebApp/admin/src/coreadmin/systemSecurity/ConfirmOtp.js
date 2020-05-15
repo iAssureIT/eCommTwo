@@ -15,7 +15,7 @@ class ConfirmOtp extends Component {
   componentDidMount() {
     $.validator.addMethod("regxemailotp", function (value, element, regexpr) {
       return regexpr.test(value);
-    }, "Please enter valid OTP.");
+    }, "Please enter a valid OTP.");
 
     jQuery.validator.setDefaults({
       debug: true,
@@ -77,25 +77,23 @@ class ConfirmOtp extends Component {
     }
   }
   resendOtp(event) {
-    document.getElementById("resendOtpBtn").innerHTML = 'Please wait...';
     const userid = this.props.match.params.userID;
-    var formValues = {
-      "emailSubject": "Email Verification",
-      "emailContent": "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
-    }
-    axios.patch('/api/auth/patch/setsendemailotpusingID/' + userid, formValues)
-      .then((response) => {
-        document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
-        swal("OTP send to your registered email ID.");
-      })
+    if ($("#OTPMobMail").valid()) {
+    document.getElementById("resendOtpBtn").innerHTML = 'Please wait...';
+      var formValues = {
+        "emailSubject": "Email Verification",
+        "emailContent": "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+      }
+      axios.patch('/api/auth/patch/setsendemailotpusingID/' + userid, formValues)
+        .then((response) => {
+          document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
+          swal("OTP re-sent to your registered Email ID.");
+        })
       .catch((error) => {
-        swal(" Failed to resent OTP");
-        document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
-      })
-
-
-
-
+          swal(" Failed to resent OTP");
+          document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
+     })
+    }
   }
   Closepagealert(event) {
     event.preventDefault();
@@ -130,21 +128,21 @@ class ConfirmOtp extends Component {
               {
                 this.state.showMessage === false ?
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <p>We send you a Verification Code to your registered email </p>
+                    <p>We've sent you an OTP to your registered Email ID.</p>
                     <div className="">
-                      <span>Enter verification code received on email.<br /></span>
+                      <span> Please enter your OTP below.<br /></span>
                     </div>
                     <form id="OTPMobMail" className="textAlignLeft">
                       <div className="">
 
                         <br />
                         <div className="input-group " id="emailotp">
-                          <input type="text" className="form-control" ref="emailotp" name="emailotp" placeholder="Enter OTP" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" maxLength="4" pattern="(0|[0-9]*)" required />
+                          <input type="number" className="form-control" ref="emailotp" name="emailotp" placeholder="Enter OTP" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" maxLength="4" pattern="(0|[0-9]*)" required />
                           <span className="input-group-addon glyphi-custommm"><i className="fa fa-key" aria-hidden="true"></i></span>
                         </div>
                       </div>
                       <div className="loginforgotpass mt25">
-                        <lable>Already have an account?</lable>&nbsp;<a href='/login' className="">Sign In <b>&#8702;</b></a>
+                        <lable>Found your Password?</lable>&nbsp;<a href='/login' className="">Sign In <b>&#8702;</b></a>
                       </div>
                       <div className="mt30 col-lg-12 mb25">
                         <div className="col-lg-6">

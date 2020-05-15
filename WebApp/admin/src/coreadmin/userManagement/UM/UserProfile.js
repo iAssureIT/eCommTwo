@@ -31,9 +31,10 @@ class EditUserProfile extends Component {
 			var formvalues = {
 				"firstname": this.refs.firstName.value,
 				"lastname": this.refs.lastName.value,
-                "mobNumber": this.state.mobNumber,
-                "image" : this.state.profileImage,
+				"mobNumber": this.state.mobNumber,
+				"image" : this.state.profileImage,
 			}
+			console.log("image formvalues==>",formvalues)
 			axios.patch('/api/users/patch/' + userid, formvalues)
 				.then((response) => {
 					swal({
@@ -59,58 +60,59 @@ class EditUserProfile extends Component {
 	}
 
 	componentDidMount() {
-		const firstnameRegex = RegExp(/^[A-za-z']+( [A-Za-z']+)*$/);
-		const lastnameRegex = RegExp(/^[A-za-z']+( [A-Za-z']+)*$/);
-		const mobileRegex = RegExp(/^[0-9][0-9]{9}$|^$/);
-		const emailRegex = RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$|^$/);
-		$.validator.addMethod("regxCenter", function (value, element, regexpr) {
-			return value !== regexpr;
-		}, "This field is required.");
-		$.validator.addMethod("regxEmail", function (value, element, regexpr) {
-			return regexpr.test(value);
-		}, "Please enter a valid email address.");
-		$.validator.addMethod("regxMobile", function (value, element, regexpr) {
-			return regexpr.test(value);
-		}, "Please enter a valid mobile number.");
-		$.validator.addMethod("regxName", function (value, element, regexpr) {
-			return regexpr.test(value);
-		}, "It should only contain alphabets.");
-		$("#editUser").validate({
-			rules: {
-				firstName: {
-					required: true,
-					regxName: firstnameRegex
-				},
-				lastName: {
-					required: true,
-					regxName: lastnameRegex
-				},
-				username: {
-					required: true,
-					regxEmail: emailRegex
-				}
-			},
-			errorPlacement: function (error, element) {
-				if (element.attr("name") === "firstName") {
-					error.insertAfter("#firstNameErr");
-				}
-				if (element.attr("name") === "lastName") {
-					error.insertAfter("#lastNameErr");
-				}
-				if (element.attr("name") === "username") {
-					error.insertAfter("#usernameErr");
-				}
-			}
-		});
+		// const firstnameRegex = RegExp(/^[A-za-z']+( [A-Za-z']+)*$/);
+		// const lastnameRegex = RegExp(/^[A-za-z']+( [A-Za-z']+)*$/);
+		// const mobileRegex = RegExp(/^[0-9][0-9]{9}$|^$/);
+		// const emailRegex = RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$|^$/);
+		// $.validator.addMethod("regxCenter", function (value, element, regexpr) {
+		// 	return value !== regexpr;
+		// }, "This field is required.");
+		// $.validator.addMethod("regxEmail", function (value, element, regexpr) {
+		// 	return regexpr.test(value);
+		// }, "Please enter a valid email address.");
+		// $.validator.addMethod("regxMobile", function (value, element, regexpr) {
+		// 	return regexpr.test(value);
+		// }, "Please enter a valid mobile number.");
+		// $.validator.addMethod("regxName", function (value, element, regexpr) {
+		// 	return regexpr.test(value);
+		// }, "It should only contain alphabets.");
+		// $("#editUser").validate({
+		// 	rules: {
+		// 		firstName: {
+		// 			required: true,
+		// 			regxName: firstnameRegex
+		// 		},
+		// 		lastName: {
+		// 			required: true,
+		// 			regxName: lastnameRegex
+		// 		},
+		// 		username: {
+		// 			required: true,
+		// 			regxEmail: emailRegex
+		// 		}
+		// 	},
+		// 	errorPlacement: function (error, element) {
+		// 		if (element.attr("name") === "firstName") {
+		// 			error.insertAfter("#firstNameErr");
+		// 		}
+		// 		if (element.attr("name") === "lastName") {
+		// 			error.insertAfter("#lastNameErr");
+		// 		}
+		// 		if (element.attr("name") === "username") {
+		// 			error.insertAfter("#usernameErr");
+		// 		}
+		// 	}
+		// });
 		var userid = this.state.UserId;
 		axios.get('/api/users/get/' + userid)
 			.then((res) => {
+				console.log("res.data.image==>",res.data.image);
 				this.setState({
 					firstName: res.data.firstname,
 					lastName: res.data.lastname,
 					username: res.data.email,
-                    mobNumber: res.data.mobile,
-                    profileImage : res.data.image
+					mobNumber: res.data.mobile,
+					profileImage : res.data.image
 				})
 			})
 			.catch((error) => {
@@ -122,19 +124,23 @@ class EditUserProfile extends Component {
         if (event.currentTarget.files && event.currentTarget.files[0]) {
         //   for(var i=0; i<event.currentTarget.files.length; i++){
           var file = event.currentTarget.files[0];
-    
+    console.log("file==>",file);
           if (file) {
-            var fileName = file.name;
+						
+						var fileName = file.name;
+						console.log("fileName==>",fileName);
             var ext = fileName.split('.').pop();
             if (ext === "jpg" || ext === "png" || ext === "jpeg" || ext === "JPG" || ext === "PNG" || ext === "JPEG") {
               if (file) {
                 var objTitle = { fileInfo: file }
                 profileImage = objTitle;
-    
+								
               } else {
+								console.log("not==>");
                 swal("Images not uploaded");
               }//file
             } else {
+							console.log("format==>",);
               swal("Allowed images formats are (jpg,png,jpeg)");
             }//file types
           }//file
@@ -220,7 +226,8 @@ class EditUserProfile extends Component {
                                                 <label className="col-lg-12 col-sm-12 col-xs-12 col-md-12 NOpadding">Profile Photo <label className="requiredsign">&nbsp;</label></label>
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 profilelogos" id="ProfileImageUpOne">
-                                                            <div className="" style={{"backgroundImage":`url(`+ (this.state.profileImage ? this.state.profileImage : "/images/person.png")+`)`, "height": "100%", "backgroundSize":"100% 100%"}}></div>
+																														{/* <div className="" style={{"backgroundImage":`url(`+ (this.state.profileImage ? this.state.profileImage : "/images/person.png")+`)`, "height": "100%", "backgroundSize":"100% 100%"}}></div> */}
+																														<img className="profileimg" src ={this.state.profileImage ? this.state.profileImage : "/images/person.png"} ></img>
                                                             <input multiple onChange={this.imgBrowse.bind(this)} id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="profileImage" />
                                                         </div>
                                                     </div>
@@ -250,7 +257,12 @@ class EditUserProfile extends Component {
 															<input type="text" disabled value={this.state.username} onChange={this.handleChange} className="form-control" ref="username" name="username" required />
 														</div>
 													</div>
-													<div className="form-margin col-lg-6 col-sm-6 col-xs-6 col-md-6">
+													{/* <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box">
+                            <label >Mobile Number <span className="requiredsign">*</span></label>
+                            <input  type="tel" minlength="10" maxlength="11" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" className="formFloatingLabels form-control  newinputbox" ref="mobile" name="mobile" id="mobile" data-text="mobile" onChange={this.handleChange} value={this.state.mobile}
+                              placeholder="Mobile Number" />
+                          </div> */}
+													{/* <div className="form-margin col-lg-6 col-sm-6 col-xs-6 col-md-6">
 														<label className="col-lg-12 col-sm-12 col-xs-12 col-md-12 NOpadding">Mobile Number <label className="requiredsign">*</label></label>
 														<div className="col-lg-12 col-sm-12 col-xs-12 col-md-12 NOpadding" id="mobNumberErr">
 															
@@ -266,7 +278,7 @@ class EditUserProfile extends Component {
 															/>
 														</div>
 														
-													</div>
+													</div> */}
 												</div>
 												</div>
                                                 <div className="form-margin col-lg-12 col-sm-12 col-xs-12 col-md-12 pull-right">

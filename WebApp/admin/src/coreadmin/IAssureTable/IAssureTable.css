@@ -100,3 +100,6 @@
 .totalrow{
   background-color: #ddd;
 }
+#tableComponent{
+  margin-top:20px;
+}

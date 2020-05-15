@@ -11,6 +11,7 @@ import 'bootstrap/js/tab.js';
 import CompanyBankDetails           from  '../../companysetting/Components/CompanyBankDetails.js';
 import CompanyTaxDetails            from  '../../companysetting/Components/CompanyTaxDetails.js';
 import CompanyPaymentGateway        from  '../../companysetting/Components/CompanyPaymentGateway.js';
+import CompanySMSGateway            from  '../../companysetting/Components/CompanySMSGateway.js';
 
 class Designation extends Component {
     constructor(props) {
@@ -128,7 +129,7 @@ class Designation extends Component {
                         <div className="tab-pane" id="CompanyBankDetails"> <CompanyBankDetails companyInfo={this.state.companyInfo}/> </div>                               
                         <div className="tab-pane" id="CompanyTaxDetails"> <CompanyTaxDetails companyInfo={this.state.companyInfo}/> </div>
                         <div className="tab-pane" id="CompanyPaymentGateway"> <CompanyPaymentGateway/> </div>                              
-                        <div className="tab-pane" id="SMSGateway"></div>   
+                        <div className="tab-pane" id="SMSGateway"> <CompanySMSGateway /> </div>  
                         <div className="tab-pane active" id="">  
                            <OneFieldForm fields={this.state.fields}
                               tableHeading={this.state.tableHeading}

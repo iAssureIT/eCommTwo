@@ -3,6 +3,8 @@ import $ 					from 'jquery';
 import axios 				from 'axios';
 import _ 					from 'underscore';
 import PersonDetails 		from './PersonDetails.js';
+import Deletedemployees from './Deletedemployees.js';
+import moment               from 'moment';
 import swal                 from 'sweetalert';
 import 'bootstrap/js/tab.js';
 import { CheckBoxSelection, Inject, MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
@@ -50,6 +52,8 @@ class PersonList extends Component {
 	}
 
 	componentDidMount() {
+		$("#filterallalphab").css("color", "#fff");
+		$("#filterallalphab").css("background", "#0275ce");
 		this.getpersons();
 		this.getStates('IN');
 		this.getDesignation();
@@ -122,28 +126,33 @@ class PersonList extends Component {
 			.join(' ');
 	}
 	getpersons() {
-		axios.get("/api/personmaster/get/count/"+this.state.type)
-			.then((response) => {
-				this.setState({
-					personCount   : response.data.count
-				})
-
-			})
-			.catch((error) => {
-			})
-		
 		var formvalues = { type : this.state.type}
 		axios.post("/api/personmaster/get/list",formvalues)
 		.then((response) => {
+	        var tableData=response.data.filter((data,i)=>{
+                return data.status!=='deleted-Active' && data.status!=='deleted-Inactive'
+			});
 			this.setState({
-				personList   : response.data,
-				showDetails	 : true
+				personList   : tableData,
+				personCount  : tableData.length
 			})
-			document.getElementById(response.data[0]._id).classList.add("selectedSupplier")
-				this.setState({ id: response.data[0]._id, showDetails : true });
-			
-			
-
+			console.log("Hi",tableData[0]._id)
+			document.getElementById(tableData[0]._id).classList.add("selectedSupplier")
+			this.setState({ id: tableData[0]._id, showDetails : true });
+		})
+		.catch((error) => {
+		})
+	}
+	deletedDriver() {
+		var formvalues = { type : this.state.type}
+		axios.post("/api/personmaster/get/list",formvalues)
+		.then((response) => {
+	        var deletedDriversData=response.data.filter((data,i)=>{
+                return data.status==='deleted-Active'|| data.status==='deleted-Inactive'
+			});
+			this.setState({
+				deletedDriversData :deletedDriversData,
+			})
 		})
 		.catch((error) => {
 		})
@@ -196,10 +205,11 @@ class PersonList extends Component {
 
 		var selector=this.state.selector;
 		if ($(event.target).attr('value') === 'All') {
-			delete selector.initial;
+			/*delete selector.initial;
 			this.setState({	selector: selector,showDetails:true},()=>{
 				this.getFilteredProducts(this.state.selector);
-			})
+			})*/
+			this.getpersons();
 		} else {
 			selector.initial = event.currentTarget.value; 
 			this.setState({	selector: selector },()=>{
@@ -216,26 +226,39 @@ class PersonList extends Component {
 			$($('.alphab')[key]).css('color', '#000');
 		}
  
-		document.getElementById("filterallalphab").style.background = '#000';
-		document.getElementById("filterallalphab").style.color = '#fff';
-		
+		$("#filterallalphab").css("color", "#fff");
+		$("#filterallalphab").css("background", "#0275ce");
+		if(this.state.pathname !== "guest"){
 		this.dropDownListObject.value = null;
 		this.dropDownDepartmentListObject.value = null;
-
+		}
 		this.setState({
 			'selector' : {},
 			'initial': 'All',
 		})
-
+		if(event.target.value){
 		axios.get("/api/personmaster/search/"+this.state.type+"/"+event.target.value+"/All")
 			.then((response) => {
-				console.log("filtered data",response);
+				var tableData=response.data.filter((data,i)=>{
+	                return data.status!=='deleted-Active' && data.status!=='deleted-Inactive'
+				});
 				this.setState({
-					personList   : response.data
+					personList   : tableData
+				},()=>{
+					if(this.state.personList.length > 0 ){
+					document.getElementById(this.state.personList[0]._id).classList.add("selectedSupplier")
+					this.setState({ id: this.state.personList[0]._id, showDetails : true });
+
+					}
+
 				})
 			})
 			.catch((error) => {
 			})
+		}else{
+			console.log("empty")
+			this.getpersons();
+		}
 	}
 	resetFilter(event) {
 		event.preventDefault();
@@ -282,9 +305,19 @@ class PersonList extends Component {
 
 		axios.post("/api/personmaster/get/filterPersons", selector)
 			.then((response) => {
-				console.log("filtered data",response);
+				var tableData=response.data.filter((data,i)=>{
+	                return data.status!=='deleted-Active' && data.status!=='deleted-Inactive'
+				});
 				this.setState({
-					personList   : response.data
+					personList   : tableData
+				},()=>{
+					if(this.state.personList.length >0){
+
+					 document.getElementById(this.state.personList[0]._id).classList.add("selectedSupplier")
+					 this.setState({ id: this.state.personList[0]._id, showDetails : true });
+
+					}
+
 				})
 			})
 			.catch((error) => {
@@ -312,6 +345,108 @@ class PersonList extends Component {
     {
     	this.props.history.push("/"+this.state.pathname+"/master")
     }
+    deleteDriver(event){
+		event.preventDefault();
+		this.setState({deleteID: event.currentTarget.getAttribute('data-id')})
+		$('#deleteModal').show();
+    }
+    restoreDriver(event){
+    	event.preventDefault();
+		var driverID = event.currentTarget.getAttribute('data-id')
+    	// axios.get("/api/personmaster/get/one/"+driverID)
+     //    .then((response)=>{
+     //    	// console.log("response",response);
+     //      this.setState({
+     //          "personID" : response.data.userId,
+     //      },()=>{
+     //      	// console.log("this.state.personI",this.state.personID)
+     //      });
+     //    })
+     //    .catch((error)=>{
+     //    })
+      	var details={
+			driverID    : driverID,
+            updatedBy   : localStorage.getItem("user_ID")
+		}
+      	axios.patch("/api/personmaster/patch/restore_driver", details)
+            .then((response)=>{
+              	this.getpersons();
+              	this.deletedDriver(); 
+            	
+           		if (response.data) {
+           			swal({
+           				title : " ",
+	                    text : "Record is restored successfully.",
+	                 });
+           		}	else{
+           			swal({
+           				title : " ",
+	                    text : "Failed to restore.",
+	                  });
+           		}
+           		/* axios.delete("/api/users/delete/"+this.state.personID)
+			        .then((response)=>{
+			          console.log("response",response);
+			        })
+			        .catch((error)=>{
+			        	console.log("error",error);
+			        })*/
+            })
+            .catch((error)=>{
+            })
+    }
+    confirmDelete(event){
+    	event.preventDefault();
+    	// var deleteID = event.target.id
+    	axios.get("/api/personmaster/get/one/"+this.state.deleteID)
+        .then((response)=>{
+          this.setState({
+              "personID" : response.data.userId,
+          },()=>{
+          });
+
+        })
+        .catch((error)=>{
+        })
+       
+      	axios.delete("/api/personmaster/delete/"+this.state.deleteID)
+            .then((response)=>{
+              	$('#deleteModal').hide();  
+              	this.deletedDriver(); 
+           //  	axios.delete("/api/users/delete/"+this.state.personID)
+			        // .then((response)=>{
+			        //   console.log("response",response);
+			        // })
+			        // .catch((error)=>{
+			        // 	console.log("error",error);
+			        // })
+           		if (response.data) {
+           			swal({
+	                    title : " ",
+	                    text :  "Record is deleted successfully."
+	                  });
+           		}	else{
+           			swal({
+	                    title : " ",
+	                    text  : "Failed to delete.",
+	                  });
+           		}
+
+              	this.getpersons();
+              	this.hideForm();
+
+            })
+            .catch((error)=>{
+            })
+    }
+    closeModal(event){
+    	event.preventDefault();
+    	$('#deleteModal').hide(); 
+    }
+    componentWillUnmount ()
+    {
+
+    }
 	render() {
 		const designationfields: object = { text: 'designation', value: 'designation' };
 		const departmentfields: object = { text: 'department', value: 'department' };
@@ -324,14 +459,126 @@ class PersonList extends Component {
 							
 								<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
 									<h4 className="weighttitle col-lg-5 col-md-11 col-xs-11 col-sm-11">{this.state.pathname ? this.state.pathname : "Person"} List</h4>
-									<div className="col-lg-5 col-md-12 col-sm-12 col-xs-12 pull-right">
-										<span className="col-lg-6 col-lg-offset-5 sentanceCase addButtonList" onClick={this.redirectTo.bind(this)}><i  className="fa fa-plus-circle"></i>&nbsp;&nbsp;{"Add "+this.state.pathname} 
-										</span>
-									</div>
+										{
+											this.state.pathname === "driver"
+											?
+											<div className="col-lg-5 col-md-12 col-sm-12 col-xs-12 pull-right">
+												<span className="col-lg-5 col-lg-offset-1 sentanceCase addButtonList" onClick={this.redirectTo.bind(this)}>
+													<i  className="fa fa-plus-circle"></i>&nbsp;&nbsp;{"Add "+this.state.pathname} 
+												</span>
+												<span className="col-lg-5  col-lg-offset-1 sentanceCase addButtonList" data-toggle="modal" data-target="#DeletedDriversModal"  onClick={this.deletedDriver.bind(this)}>
+													<i  className="fa fa-minus-circle"></i>&nbsp;&nbsp;{"Deleted "+this.state.pathname} 
+												</span>
+												<div className="modal" id="deleteModal" role="dialog">
+											        <div className="adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											            <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
+												            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+												                <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
+												                	<button type="button" className="adminCloseButton" data-dismiss="modal" onClick={this.closeModal.bind(this)}>&times;</button>
+												                </div>
+											              	</div>
+											              	<div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+												              	<h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure, do you want to delete?</h4>
+												            </div>
+											              	<div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											                	<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+							                                		<button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal" onClick={this.closeModal.bind(this)}>CANCEL</button>
+							                                	</div>
+												                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+												                  	<button type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal" onClick={this.confirmDelete.bind(this)} >DELETE</button>
+												                </div>
+												            </div>
+											            </div>
+											        </div>
+											    </div>  
+				                                <div className="modal modalIndex" id="DeletedDriversModal" tabIndex="-1" role="dialog" aria-hidden="true">
+				                                    <div className="modal-dialog modal-lg " role="document">
+				                                        <div className="modal-content UMmodalContent ummodallftmg ummodalmfdrt  ">
+				                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                <h4 className="CreateTempModal col-lg-11 col-md-11 col-sm-11 col-xs-11 textAlignLeft" id="exampleModalLabel"><b>Deleted Drivers</b></h4>
+				                                                <div className="adminCloseCircleDiv pull-right  col-lg-1 col-md-1 col-sm-1 col-xs-1 NOpadding-left NOpadding-right">
+				                                                    <button type="button" className="adminCloseButton" data-dismiss="modal" aria-label="Close">
+				                                                        <span aria-hidden="true">&times;</span>
+				                                                    </button>
+				                                                </div>     
+				                                            </div>
+				                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                              	
+																{this.state.deletedDriversData != "-" ?
+																	<div className="table-responsive topmr40 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																		<table className="table iAssureITtable-bordered table-striped table-hover">
+																			<thead className="tempTableHeader">
+																				<tr className="">
+																					<th className="umDynamicHeader srpadd textAlignCenter"> Sr No. </th>
+																					<th className="umDynamicHeader srpadd textAlignCenter"> Driver Name </th>
+																					<th className="umDynamicHeader srpadd textAlignCenter"> Status </th>
+																					<th className="umDynamicHeader srpadd textAlignCenter"> License Validity</th>
+																					<th className="umDynamicHeader srpadd textAlignCenter"> Deleted On </th>
+																					<th className="umDynamicHeader srpadd textAlignCenter"> Action </th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				{this.state.deletedDriversData
+																					?
+																					this.state.deletedDriversData.map((data, index) => {
+																						var statusLength = data.statusLog.length
+																						return (
+																							<tr key={index}>
+																								<td className="textAlignCenter">{index+1}</td>
+																								<td className="textAlignLeft">
+																									<div>
+																										{data.firstName+ " "+data.middleName+ " "+data.lastName}
+																										<p>{data.contactNo+" | "+data.email}</p>
+																									</div>
+																								</td>
+																								<td className="textAlignCenter">{data.status}</td>
+																								<td className="textAlignCenter">{moment(data.drivingLicense.effectiveTo).format("DD/MM/YYYY")}</td>
+																								<td className="textAlignCenter">{ statusLength > 0  ? moment(data.statusLog[statusLength-1].updatedAt).format("DD/MM/YYYY") : "-"}</td>
+																								<td className="textAlignCenter">
+																									<span>
+																										<button className="btn deleteBtn" title="Delete"  data-id={data._id}  onClick={this.deleteDriver.bind(this)}>Delete Permanently</button> 
+																										<br/>
+																										<button className="btn deleteBtn" title="Restore" data-id={data._id}  onClick={this.restoreDriver.bind(this)}>Restore Driver</button> 
+																									</span>
+																								</td>
+																							</tr>
+																						);
+																					})
+																					:
+																					null
+																				}
+																			</tbody>
+																		</table>
+																	</div>
+																	:
+																	<div className="centernote col-lg-12"> No data available </div>
+																}
+											
+				                                            </div>
+				                                        </div>
+				                                    </div>
+				                                </div>
+											</div>
+											:
+											<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 pull-right">
+												<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+													<span className="col-lg-12  sentanceCase addButtonList" onClick={this.redirectTo.bind(this)}><i  className="fa fa-plus-circle"></i>&nbsp;&nbsp;{"Add "+this.state.pathname} 
+													</span>
+												</div>
+												<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+
+													<button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 sentanceCase addButtonList deleteemplist" data-toggle="modal" data-target="#DeletedUsersModal"><i  className="fa fa-minus-circle"></i>&nbsp;&nbsp;<b>{"Deleted " +this.state.pathname}</b> </button>
+														<Deletedemployees
+															tableData={this.state.tableData}
+														/>
+												</div>
+											</div>
+											
+										}
 								</div>
 								
 								<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-									<h5 className="box-title2 col-lg-2 col-md-11 col-sm-11 col-xs-12"><i class="fa fa-filter"></i>&nbsp;&nbsp;<b> Select Filter</b></h5>
+									<h5 className="box-title2 col-lg-2 col-md-11 col-sm-11 col-xs-12"><i className="fa fa-filter"></i>&nbsp;&nbsp;<b> Select Filter</b></h5>
 									<h5 className="box-title2 col-lg-2 col-md-11 col-sm-11 col-xs-12 nopadding">Total Records :&nbsp;&nbsp;<b>{this.state.personCount}</b></h5>
 									<h5 className="box-title2 col-lg-2 col-md-11 col-sm-11 col-xs-12 nopadding">Filtered :&nbsp;&nbsp;<b>{this.state.personList.length}</b></h5>
 										<div className="col-lg-3 col-md-12 col-sm-12 col-xs-12 pull-right inLOE" >
@@ -346,44 +593,45 @@ class PersonList extends Component {
 
 								<div className="contenta col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls nopadding">
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-										<div className="col-lg-2 col-md-12 col-sm-12 col-xs-12 nopadding">
-											<button type="button" className="reset" onClick={this.resetFilter.bind(this)}>RESET FILTER</button>
-										</div>
-										{
-										/*<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
-											<select className="form-control resetinp selheight Statesdata" ref="states" name="stateCode" value={this.state.stateCode} 
-											onChange={this.onSelectedItemsChange.bind(this,'state')}>
-												<option selected={true} disabled>Select State</option>
-												{this.state.statesArray.length>0 &&
-													this.state.statesArray.map((Statedata, index) => {
-														return (
-															<option key={index} value={Statedata.stateCode}>{this.camelCase(Statedata.stateName)}</option>
-														);
+										
+											{
+											/*<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
+												<select className="form-control resetinp selheight Statesdata" ref="states" name="stateCode" value={this.state.stateCode} 
+												onChange={this.onSelectedItemsChange.bind(this,'state')}>
+													<option selected={true} disabled>Select State</option>
+													{this.state.statesArray.length>0 &&
+														this.state.statesArray.map((Statedata, index) => {
+															return (
+																<option key={index} value={Statedata.stateCode}>{this.camelCase(Statedata.stateName)}</option>
+															);
+														}
+														)
 													}
-													)
-												}
-											</select>
-										</div>
-										<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
-											<select className="form-control resetinp districtsdata" ref="district" name="district" value={this.state.district}
-											onChange={this.onSelectedItemsChange.bind(this,'district')}>
-												<option selected={true} disabled>Select District</option>
-												{this.state.districtArray && this.state.districtArray.length > 0 &&
-													this.state.districtArray.map((districtdata, index) => {
-														return (
-															<option key={index} value={districtdata.districtName}>{this.camelCase(districtdata.districtName)}</option>
-														);
+												</select>
+											</div>
+											<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
+												<select className="form-control resetinp districtsdata" ref="district" name="district" value={this.state.district}
+												onChange={this.onSelectedItemsChange.bind(this,'district')}>
+													<option selected={true} disabled>Select District</option>
+													{this.state.districtArray && this.state.districtArray.length > 0 &&
+														this.state.districtArray.map((districtdata, index) => {
+															return (
+																<option key={index} value={districtdata.districtName}>{this.camelCase(districtdata.districtName)}</option>
+															);
+														}
+														)
 													}
-													)
-												}
-											</select>
-										</div> */}
+												</select>
+											</div> */}
 									
 									</div>
 									{
 										this.state.type === "employee" ?  
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 										<br/>
+										<div className="col-lg-2 col-md-12 col-sm-12 col-xs-12 nopadding">
+											<button type="button" className="reset" onClick={this.resetFilter.bind(this)}>RESET FILTER</button>
+										</div>
 											
 											<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Department</label>
@@ -430,10 +678,10 @@ class PersonList extends Component {
 										</div>
 										: null
 									}
-									{
+									{/*
 										this.state.type=="guest" ?
 										<div>
-									     <div className="col-lg-3 col-md-12 col-xs-12 col-sm-12 guestdiv">
+									    	<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12 guestdiv">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left"></label>
 												<MultiSelectComponent id="departmentChange" ref={(scope) => { this.dropDownDepartmentListObject = scope; }}
 	                                                change={this.handleChangeFilter.bind(this)}
@@ -453,9 +701,9 @@ class PersonList extends Component {
 											</div>
 										</div>
 										: null
-									}
+									*/}
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-									<br/>
+										<br/>
 											<button type="button" className="btn alphab"  id="filterallalphab" onClick={this.shortByAlpha.bind(this)} name="initial" value={this.state.initial} onChange={this.handleChange}>All</button>
 											<button type="button" className="btn alphab" value="A" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>A</button>
 											<button type="button" className="btn alphab" value="B" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>B</button>
@@ -494,15 +742,15 @@ class PersonList extends Component {
 													return (
 														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 borderlist selected" key={index} onClick={this.ShowForm.bind(this)} name={index} data-child={data._id + '-' + index} id={data._id}>
 															<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 supplierLogoDiv">
-																<img src={data.profilePhoto? data.profilePhoto:"/images/noImagePreview.png"} className="supplierLogoImage"></img>
+																<img src={data.profilePhoto? data.profilePhoto:"/images/noImagePreview.png"} className="employeeLogoImage"></img>
 															</div>
 															<div className="col-lg-8 col-md-10 col-sm-10 col-xs-10 listprofile">
-																<h5 className="titleprofile">{data.firstName +" "+ data.lastName}</h5>
+																<h5 className="titleprofile">{data.firstName +" "+ data.lastName + (data.employeeId ? " ("+data.employeeId+")":"")}</h5>
 															
 																<ul className="col-lg-9 col-md-9 col-sm-9 col-xs-9 listfont">
-																	<li><i className="fa fa-user-o " aria-hidden="true"></i>&nbsp;{data.type ? this.camelCase(data.type): ""}</li>
-																	<li><i className="fa fa-phone " aria-hidden="true"></i>&nbsp;{data.contactNo}</li>
-																	<li><i className="fa fa-envelope " aria-hidden="true"></i>&nbsp;{data.email}</li>
+																	<li><i className="fa fa-id-badge" aria-hidden="true"></i>&nbsp;{data.companyID ? data.companyID: " - "}</li>
+																	<li><i className="fa fa-phone " aria-hidden="true"></i>&nbsp;{data.contactNo ? data.contactNo : " - "}</li>
+																	<li><i className="fa fa-envelope " aria-hidden="true"></i>&nbsp;{data.email ?data.email : " - "}</li>
 																</ul>
 															</div>
 															<div className="col-lg-2 noRightPadding">
@@ -528,18 +776,21 @@ class PersonList extends Component {
 									 this.state.id && this.state.personList && this.state.personList.length > 0 ?
 										<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdcls suppliersOneProfile commonSup" id={this.state.id}>
 											<div id={this.state.id} className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-												<PersonDetails name={this.state.index} id={this.state.id} getPersons={this.getpersons.bind(this)} hideForm={this.hideForm.bind(this)} type={this.state.type}/>
+												<PersonDetails name={this.state.index} id={this.state.id} 
+												getPersons={this.getpersons.bind(this)}
+												 hideForm={this.hideForm.bind(this)} type={this.state.type}/>
 											
 											</div>
 										</div>
 										:
 										null
 									}
-									</div>
+									</div>	
 									:
 									null
 
 								}
+								
 							</div>
 						</section>
 					</div>

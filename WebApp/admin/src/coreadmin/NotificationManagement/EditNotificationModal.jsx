@@ -13,8 +13,11 @@ class EditNotificationModal extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
+	    'event' 		    : props.data ? props.data.event : '',
 	    'templateType' 		: props.data ? props.data.templateType : '',
-		'templateName'		: props.data ? props.data.templateName : '',
+		'role'		: props.data ? props.data.role : '',
+		'company'		: props.data && props.data.company != null ? props.data.company : 'All',
+		'status'		: props.data ? props.data.status : '',
 		'subject'			: props.data ? props.data.subject : '',
 		'content'			: props.data ? props.data.content : '',
 	   	'optionA'			: '',
@@ -23,15 +26,27 @@ class EditNotificationModal extends Component{
 	   	emailTemplatesList 			: "",
 		notificationTemplatesList 	: "",
 		smsTemplatesList 			: "",
+		roleArray:[],
+		companyArray:[]
 	  };
 
 	    this.handleChange = this.handleChange.bind(this);
 	    this.onChange 		= this.onChange.bind(this);
 	}
+	componentDidMount() {
+        this.getRoles();
+        this.getCompany();
+    }
+
 	componentWillReceiveProps(nextProps){
+		this.getRoles();
+        this.getCompany();
 		this.setState({
+			'event' 		    : nextProps.data.event,
 			'templateType' 		: nextProps.data.templateType,
-			'templateName'		: nextProps.data.templateName,
+			'role'		: nextProps.data.role,
+			'status'		: nextProps.data.status,
+			'company'		: nextProps.data.company,
 			'subject'			: nextProps.data.subject,
 			'content'			: nextProps.data.content,
 		});
@@ -50,16 +65,42 @@ class EditNotificationModal extends Component{
 	
 	}
 
+	getRoles() {
+        var data = {
+	      "startRange": 0,
+	      "limitRange": 100000,
+	    }
+	    axios.post('/api/roles/get/list', data)
+	      .then((response) => {
+	        this.setState({
+	          roleArray: response.data
+	        }, () => {
+	        })
+	      }).catch(function (error) {
+	      });
+    }
+    getCompany() {
+	    axios.get('/api/entitymaster/get/corporate')
+	      .then((response) => {
+	        this.setState({
+	          companyArray: response.data
+	        }, () => {
+	        })
+	      }).catch(function (error) {
+	      });
+    }
+
 	updateNotificationEmail(event){
 		event.preventDefault();
 
 	    if(this.state.content){
 	    	var editId 		 = this.props.emailNot;
+			var event        = this.state.event;
 			var templateType     = this.state.templateType;
-			var templateName     = this.state.templateName;
+			var status     = this.state.status;
 			var subject          = this.state.subject;
 			var cketext          = this.state.content;
-			if(templateType === '-- Select --' || templateName === '--Select Template Name--'){
+			if(cketext === null || cketext === ""){
 				swal({
 					title: 'This field is required.',
 					// text:"This field is required.",
@@ -70,9 +111,7 @@ class EditNotificationModal extends Component{
 				});
 			}else{	
 				var formValues = {
-					"notificationmasterID":this.props.emailNot,
-					"templateType": this.state.templateType,
-					"templateName": this.state.templateName,
+					"status": status,
 					"content": this.state.content,
 					"subject":this.state.subject
 				}
@@ -164,7 +203,7 @@ class EditNotificationModal extends Component{
 					  	<div className="modal-dialog modal-lg" role="document">
 					    	<div className="modal-content modalContent col-lg-12 NOpadding">
 					      		<div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					        		<h4 className="CreateTempModal col-lg-11 col-md-11 col-sm-11 col-xs-11" id="exampleModalLabel">Edit Template</h4>
+					        		<h4 className="CreateTempModal col-lg-11 col-md-11 col-sm-11 col-xs-11" id="exampleModalLabel">Edit {this.state.templateType} Template</h4>
 					        		<div className="adminCloseCircleDiv pull-right  col-lg-1 col-md-1 col-sm-1 col-xs-1 NOpadding-left NOpadding-right">
 								        <button type="button" className="adminCloseButton" data-dismiss="modal" aria-label="Close">
 								          <span aria-hidden="true">&times;</span>
@@ -174,8 +213,8 @@ class EditNotificationModal extends Component{
 
 					     		<div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							        <form className="newTemplateForm" id="editModal" >
-							         	<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 forgtTextInp">
-											<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 NOpadding-left">
+							         	<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 row rowPadding">
+											{/*<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 NOpadding-left">
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">
 													<div className="form-group">
 													 	<label className="labelform">Template Type <span className="astrick">*</span></label>     						
@@ -187,29 +226,77 @@ class EditNotificationModal extends Component{
 												      	</select> 
 													</div>	
 												</div>
+											</div>*/}
+											<div className="col-lg-3 col-md-3 col-sm-12 col-xs-12" >
+                                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Event <sup className="astrick">*</sup></label>
+                                                <select id="event" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" disabled="disabled" value={this.state.event} ref="event" name="event" >
+                                                    <option disabled value="">--Select Event--</option>
+                                                    <option value="Sign Up">Sign Up</option>
+													<option value="Forgot Password">Forgot Password</option>
+													<option value="User Activated">User Activated</option>
+													<option value="User Blocked">User Blocked</option>
+													<option value="TripBooking">Trip Booking</option>
+													<option value="ManagerApproval">Manager Approval</option>
+													<option value="ManagerRejection">Manager Rejection</option>
+													<option value="TripAllocatedToVendor">Trip Allocated to Vendor</option>
+													<option value="Vendor allocates (Car + Driver)">Vendor allocates (Car + Driver)</option>
+													<option value="Informs Corporate Employee">Informs Corporate Employee</option>
+													<option value="Trip Started">Trip Started</option>
+													<option value="Reached Pick up point">Reached Pick up point</option>
+													<option value="OTP Verified & Trip begins">OTP Verified & Trip begins</option>
+													<option value="Reached Destination">Reached Destination</option>
+													<option value="Returned back & Trip-End-OTP">Returned back & Trip-End-OTP</option>
+													<option value="EndTrip">End Trip</option>
+													<option value="GenerateInvoice">Generate Bill / Invoice</option>
+													<option value="EmployeeCancelsTrip">Employee Cancels Trip</option>
+													<option value="AdminCancelsTrip">Admin Cancels Trip</option>
+													<option value="VendorCancelsTrip">Vendor Cancels Trip</option>
+													<option value="VendorAcceptsTrip">Vendor Accepts Booking</option>
+													<option value="VendorRejectsTrip">Vendor Rejects Booking</option>
+													<option value="DriverApproved">Driver Approved Booking</option>
+													<option value="DriverRejected">Driver Rejected Booking</option>
+													<option value="Vendor Changes Driver">Vendor Changes Driver</option>
+                                                </select>   
+                                            </div>
+											<div className="col-md-3">
+												<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Role<sup className="astrick">*</sup></label>
+                                                <select id="role" disabled="disabled" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.role} ref="role" name="role" >
+                                                    <option disabled value="">--Select Role--</option>
+                                                    {
+                                                        this.state.roleArray && this.state.roleArray.length > 0 ?
+                                                            this.state.roleArray.map((data, i)=>{
+                                                                return(
+                                                                    <option key={i} value={data.role}>{data.role} </option>
+                                                                );
+                                                            })
+                                                        :
+                                                        null
+                                                    }
+                                                </select>
 											</div>
-											<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 rowPadding">
-												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-													<div className="form-group">
-													 	<label className="labelform">Template Name <span className="astrick">*</span></label>     						
-												       	<select name="templateName" disabled="disabled" value={this.state.templateName} onChange={this.handleChange} className="templateName form-control inputValid " required>
-														  <option>--Select Template Name--</option>
-														  <option value="User - Signup Notification">User - Signup Notification</option>
-														  <option value="Admin - Signup Notification">Admin - Signup Notification</option>
-														  <option value="User - Forgot Password OTP">User - Forgot Password OTP</option>
-														  <option value="User - Annual Plan Submitted">User - Annual Plan Submitted</option>
-														  <option value="Admin - Annual Plan Submitted">Admin - Annual Plan Submitted</option>
-														  <option value="User - Monthly Plan Submitted">User - Monthly Plan Submitted</option>
-														  <option value="Admin - Monthly Plan Submitted">Admin - Monthly Plan Submitted</option>
-														  <option value="User - Activity Details Submitted">User - Activity Details Submitted</option>
-														  <option value="Admin - Activity Details Submitted">Admin - Activity Details Submitted</option>
-														  <option value="User - Login Account Activation">User - Login Account Activation</option>
-														  <option value="Admin - Login Account Activation">Admin - Login Account Activation</option>
-														  <option value="User - Login Account Blocked">User - Login Account Blocked</option>
-														  <option value="Admin - Login Account Blocked">Admin - Login Account Blocked</option>
-														</select>
-													</div>	
-												</div>
+											<div className="col-md-3">
+												<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Status<sup className="astrick">*</sup></label>
+                                                <select id="status" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.status} ref="status" name="status" onChange={this.handleChange.bind(this)}>
+                                                    <option disabled value="">--Select Status--</option>
+                                                    <option> active </option>
+													<option> inactive </option>
+                                                </select>
+											</div>
+											<div className="col-md-3">
+												<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Company</label>
+                                                <select id="company" disabled="disabled" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.company} ref="company" name="company">
+                                                    <option disabled value="All">--Select Company--</option>
+                                                    {
+                                                        this.state.companyArray && this.state.companyArray.length > 0 ?
+                                                            this.state.companyArray.map((data, i)=>{
+                                                                return(
+                                                                    <option key={i} value={data._id}>{data.companyName} </option>
+                                                                );
+                                                            })
+                                                        :
+                                                        null
+                                                    }
+                                                </select>
 											</div>
 										</div>
 										{this.state.templateType!='Notification' && this.state.templateType!='SMS' ?

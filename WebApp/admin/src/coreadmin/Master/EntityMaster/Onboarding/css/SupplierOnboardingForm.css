@@ -22,7 +22,9 @@
     cursor: pointer;
     display: block
 }
-
+.uppercase{
+    text-transform: uppercase;
+}
 .crossSpan {
     display: none;
     border: 1px solid gray;
@@ -143,7 +145,7 @@
     width: 100%
 }
 .logoStyle {
-    /*height: 4.8em;*/
+    height: 100%;
     padding: 0;
     width: 100%
 }
@@ -170,7 +172,7 @@
     background: #ebebeb;
     border: 1px dashed #999;
     cursor: pointer;
-    height: 5em;
+    /*height: 8.2em;*/
     padding: 0
 }
 .locationDocsImg{
@@ -348,7 +350,7 @@
     font-size: 13px;
     background-color: var(--white-color);
     border: 1px solid #ddd;
-    min-height: 195px;
+    min-height: 285px;
 }
 
 .boxul {
@@ -1094,11 +1096,11 @@ select#gender option[value="others"] {
     height: 9.2em;
     padding: 0;
 }
-.CustomImageUploadBIImg img {
+{/*.CustomImageUploadBIImg img {
    height: 9.1em;
     padding: 0;
     width: 100%;
-}
+}*/}
 .firstElement{
     margin-left: 8px !important;
 }

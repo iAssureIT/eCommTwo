@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import ContactDetails from '../EntityMaster/Onboarding/contactDetails/ContactDetails.jsx';
+import $ from 'jquery';
+import jQuery from 'jquery';
+import axios from 'axios';
+import swal from 'sweetalert';
+import BasicInfo from '../../coreAdmin/Master/EntityMaster/Onboarding/basicInfo/BasicInfo.jsx';
 import _ from 'underscore';
 import 'bootstrap/js/tab.js';
 
-class CorporateContactDetails extends Component {
+class FranchiseBasicInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,10 +23,10 @@ class CorporateContactDetails extends Component {
     render() {
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <ContactDetails entity="supplier" />
+                <BasicInfo entity="franchise" />
             </div>
         );
     }
 }
-export default CorporateContactDetails;
+export default FranchiseBasicInfo;
 

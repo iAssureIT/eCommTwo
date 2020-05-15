@@ -21,7 +21,6 @@ class ForgotPassword extends Component {
     }
     sendLink(event) {
         event.preventDefault();
-        
         var email = this.refs.emailLink.value;
         var formValues = {
             username : email,
@@ -36,7 +35,7 @@ class ForgotPassword extends Component {
                 document.getElementById("sendlink").innerHTML = 'Reset Password';
                 localStorage.setItem('previousUrl' ,'forgotpassword');
                 $('.fullpageloader').hide();
-                swal("OTP send to your registered email ID.");
+                swal("OTP sent to your registered Email ID.");
                 this.props.history.push('/confirm-otp/'+response.data.userID);
             })
             .catch((error)=>{
@@ -97,7 +96,7 @@ class ForgotPassword extends Component {
                     {
                         this.state.showMessage === false ? 
                         <div>
-                            <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">Please enter your registered email address below to receive a OTP.</p>
+                            <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">Please enter your registered email address below to receive an OTP.</p>
                             <form id="resetPass">
                                 <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25" >
                                     <label className="">Email ID</label><label className="astricsign">*</label>

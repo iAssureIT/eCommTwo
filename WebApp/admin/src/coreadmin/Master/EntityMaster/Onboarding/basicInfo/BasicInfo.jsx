@@ -19,6 +19,8 @@ class BasicInfo extends Component {
       "pathname"      : this.props.entity,
       "companyLogo"   : [],
       "imageUploaded" : true,
+      "companyPhoneAvailable" : true,
+      "companyPhone"  : '',
       "COI"           : []
     };
 
@@ -28,6 +30,7 @@ class BasicInfo extends Component {
     this.supplier = this.supplier.bind(this);
   }
   componentDidMount() {
+    console.log("this.state.companyPhone",this.state.companyPhone)
     this.setState({
       entityID: this.props.match.params.entityID
     }, () => {
@@ -83,13 +86,19 @@ class BasicInfo extends Component {
           required: true,
           regxEmail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
         },
+        companyPhone: {
+          required: true,
+        },
         CIN: {
-          regxA8: /^([L|U]{1})([0-9]{5})([A-Za-z]{2})([0-9]{4})([A-Za-z]{3})([0-9]{6})$|^$/,
+          regxA8: /^([L|U|l|u]{1})([0-9]{5})([A-Za-z]{2})([0-9]{4})([A-Za-z]{3})([0-9]{6})$|^$/,
         },
       },
       errorPlacement: function (error, element) {
         if (element.attr("name") === "companyName") {
           error.insertAfter("#companyName");
+        }
+        if (element.attr("name") === "companyPhone") {
+          error.insertAfter("#companyPhone");
         }
         if (element.attr("name") === "groupName") {
           error.insertAfter("#groupName");
@@ -270,8 +279,19 @@ class BasicInfo extends Component {
   }
   supplier(event) {
     event.preventDefault();
-    console.log('vendorID', this.props.vendorID, $('#BasicInfo').valid());
-    if ($('#BasicInfo').valid()) {
+
+    if(this.state.companyPhone == "" || this.state.companyPhone == undefined)
+    {
+      this.setState({
+        companyPhoneAvailable : false
+      })
+    }
+    else{
+       this.setState({
+        companyPhoneAvailable : true
+      })
+    }
+    if ($('#BasicInfo').valid() && this.state.companyPhoneAvailable) {
       var userDetails = {
         firstname: this.state.companyName,
         lastname: this.state.companyName,
@@ -317,6 +337,7 @@ class BasicInfo extends Component {
       } else {
         axios.post('/api/entitymaster/post', formValues)
         .then((response) => {
+          console.log("response",response);
           swal((this.state.pathname === "appCompany" ? "Organzational Settings" : this.state.pathname ) + " created successfully.");
           $(".swal-text").css("text-transform", "capitalize");
           this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname )+ '/location-details/' + response.data.entityID)
@@ -607,7 +628,9 @@ class BasicInfo extends Component {
     }, () => {
       if (this.state.companyPhone) {
         this.setState({
-          companyPhoneError: this.state.companyPhone === "+" ? 'Please enter valid mobile number.' : ""
+          companyPhoneAvailable: this.state.companyPhone == "+" || this.state.companyPhone.length<15 ? false : true
+        },()=>{
+          console.log("companyPhone",this.state.companyPhoneAvailable,this.state.companyPhone)
         })
       }
     })
@@ -729,19 +752,8 @@ class BasicInfo extends Component {
                                           );
                                         })
                                         :
+                                        null
                                                                              
-                                            <div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBI" id="imageLoader">
-                                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Logo" onClick={this.deleteLogo.bind(this)}>x</label>
-                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBIImg" id="LogoImageUpOne">
-                                                  
-                                                      <img src="/images/loader.gif" className="img-responsive logoStyle" />
-                                                  
-                                                </div>
-                                              </div>
-                                            </div>                                       
-                                        
-                                        
                                     }
                                   </div>  
                                 </div>
@@ -766,6 +778,10 @@ class BasicInfo extends Component {
                                       }}
                                       onChange={this.changeMobile.bind(this)}
                                     />
+                                   { console.log(this.state.companyPhoneAvailable )}
+
+                                    {this.state.companyPhoneAvailable == true ? null : <label className="error">Please enter valid number</label>}
+                                    
                                   </div>                                 
                                 
                                   <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
@@ -812,7 +828,7 @@ class BasicInfo extends Component {
                                           <div key={i} className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
                                               <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Document" id={doc} onClick={this.deleteDoc.bind(this)}>x</label>
-                                              <div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+                                              <div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1 " id="LogoImageUpOne">
                                                 <img src={'/images/pdf.png'} className="img-responsive logoStyle" />
                                               </div>
                                             </div>
@@ -857,21 +873,20 @@ class BasicInfo extends Component {
     );
   }
 }
-// const mapStateToProps = (state) => {
-//   return {
-//     vendorID: state.vendorID,
-//     vendorLocationID: state.vendorLocationID
-//   }
-// }
+const mapStateToProps = (state) => {
+  return {
+    vendorID: state.vendorID,
+    vendorLocationID: state.vendorLocationID
+  }
+}
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     vendor: (vendorID, vendorLocationID) => dispatch({
-//       type: 'VENDOR',
-//       vendorID: vendorID,
-//       vendorLocationID: vendorLocationID
-//     }),
-//   }
-// }
-// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BasicInfo));
-export default BasicInfo;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    vendor: (vendorID, vendorLocationID) => dispatch({
+      type: 'VENDOR',
+      vendorID: vendorID,
+      vendorLocationID: vendorLocationID
+    }),
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BasicInfo));

@@ -25,10 +25,8 @@ class Dashboard extends React.Component{
     componentDidMount(){
         var userDetails = (localStorage.getItem('userDetails'));
         var userData = JSON.parse(userDetails);
-        console.log("1 Dashboard userDetails = ",userData);
     }
     componentWillReceiveProps(nextprops){
-        console.log("Dashboard nextprops userDetails = ",nextprops.userDetails);
     }
 
     render() {

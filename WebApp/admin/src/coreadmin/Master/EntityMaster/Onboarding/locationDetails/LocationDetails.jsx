@@ -112,6 +112,10 @@ class LocationDetails extends Component {
 			return regexpr.test(value);
 		}, "Please enter valid PAN.");
 		
+		$.validator.addMethod("regxarea", function (value, element, regexpr) {
+			return regexpr.test(value);
+		}, "Please enter valid area.");
+		
 
 		jQuery.validator.setDefaults({
 			debug: true,
@@ -144,10 +148,13 @@ class LocationDetails extends Component {
 					pincodeRegx: /^[0-9][0-9\-\s]/,
 				},
 				GSTIN: {
-					regxGSTIN: /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$|^$/,
+					regxGSTIN: /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[A-Za-z1-9]{1}[z|Z]{1}[A-Za-z0-9]{1}$|^$/,
 				},
 				PAN: {
 					regxPAN: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$|^$/,
+				},
+				area: {
+					regxarea: /^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$|^$/,
 				},
 			},
 			errorPlacement: function (error, element) {
@@ -175,6 +182,9 @@ class LocationDetails extends Component {
 				if (element.attr("name") === "PAN") {
 					error.insertAfter("#PAN");
 				}
+				if (element.attr("name") === "area") {
+					error.insertAfter("#area");
+				}
 			}
 		})
 	}
@@ -184,6 +194,7 @@ class LocationDetails extends Component {
 		this.setState({
 			[name]: event.target.value
 		});
+		console.log("toUpperCase",this.state.PAN.toUpperCase());
 
 		if (name === 'area') {
 			var currentVal = event.currentTarget.value;
@@ -359,7 +370,7 @@ class LocationDetails extends Component {
 	locationdetailsAdd(event) {
 		event.preventDefault();
 		var entityID = this.props.match.params.entityID;
-		if ($('#locationsDetail').valid() && this.state.pincodeExists) {
+		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists == "NotAvailable")) {
 			var formValues = {
 				'entityID': entityID,
 				'locationDetails': {
@@ -374,9 +385,9 @@ class LocationDetails extends Component {
 					'city': this.state.city,
 					'area': this.state.area,
 					'pincode': this.state.pincode,
-					'GSTIN': this.state.GSTIN,
 					'GSTDocument': this.state.GSTDocument,
-					'PAN': this.state.PAN,
+					'GSTIN': this.state.GSTIN ? this.state.GSTIN.toUpperCase(): this.state.GSTIN,
+					'PAN': this.state.PAN ? this.state.PAN.toUpperCase():this.state.PAN,
 					'PANDocument': this.state.PANDocument,
 				}
 			}
@@ -386,6 +397,7 @@ class LocationDetails extends Component {
 					$('.inputText').val('');
 					this.setState({
 						'openForm': false,
+						'pincodeExists': true,
 						'locationType': '',
 						'addressLine1': "",
 						'addressLine2': "",
@@ -467,6 +479,7 @@ class LocationDetails extends Component {
 		if (locationID) {
 			axios.get('/api/entitymaster/get/one/' + entityID)
 				.then((response) => {
+					console.log("response",response);
 					var editData = response.data.locations.filter((a) => a._id === locationID);
 					this.getStates(editData[0].countryCode);
 					this.getDistrict(editData[0].stateCode, editData[0].countryCode);
@@ -479,6 +492,7 @@ class LocationDetails extends Component {
 						'country': editData[0].countryCode + '|' + editData[0].country,
 						'states': editData[0].stateCode + '|' + editData[0].state,
 						'district': editData[0].district,
+						'branchCode': editData[0].branchCode,
 						'city': editData[0].city,
 						'area': editData[0].area,
 						'pincode': editData[0].pincode,
@@ -611,7 +625,7 @@ class LocationDetails extends Component {
 		event.preventDefault();
 		var entityID = this.props.match.params.entityID;
 		var locationID = this.props.match.params.locationID;
-		if ($('#locationsDetail').valid() && this.state.pincodeExists) {
+		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists == "NotAvailable")) {
 			var formValues = {
 				'entityID': entityID,
 				'locationID': locationID,
@@ -619,6 +633,7 @@ class LocationDetails extends Component {
 					'locationType': this.state.locationType,
 					'addressLine1': this.state.addressLine1,
 					'addressLine2': this.state.addressLine2,
+					'branchCode'	: this.state.branchCode,
 					'countryCode': this.state.country.split("|")[0],
 					'country': this.state.country.split("|")[1],
 					'stateCode': this.state.states.split("|")[0],
@@ -627,16 +642,18 @@ class LocationDetails extends Component {
 					'city': this.state.city,
 					'area': this.state.area,
 					'pincode': this.state.pincode,
-					'GSTIN': this.state.GSTIN,
 					'GSTDocument': this.state.GSTDocument,
-					'PAN': this.state.PAN,
 					'PANDocument': this.state.PANDocument,
+					'GSTIN': this.state.GSTIN ? this.state.GSTIN.toUpperCase(): this.state.GSTIN,
+					'PAN': this.state.PAN ? this.state.PAN.toUpperCase():this.state.PAN,
+					
 				}
 			}
 			axios.patch('/api/entitymaster/patch/updateSingleLocation', formValues)
 				.then((response) => {
 					this.setState({
 						'openForm': false,
+						'pincodeExists': true,
 						'locationID': "",
 						'locationType': '',
 						'addressLine1': "",
@@ -688,9 +705,11 @@ class LocationDetails extends Component {
 		this.setState({
 			[event.target.name]: event.target.value
 		})
+		console.log("event.target.name",event.target.value)
 		if (event.target.value !== '') {
 			axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
 				.then((response) => {
+					console.log("response",response)
 					if ($("[name='pincode']").valid()) {
 
 						if (response.data[0].Status === 'Success') {
@@ -704,6 +723,7 @@ class LocationDetails extends Component {
 
 				})
 				.catch((error) => {
+					this.setState({ pincodeExists: "NotAvailable" })
 				})
 		} else {
 			this.setState({ pincodeExists: true })
@@ -1011,7 +1031,7 @@ class LocationDetails extends Component {
 														<div className="col-lg-6 col-md-6 col-sm-6 col-sm-6 locationTabs">
 															<div className="button4  pull-right" onClick={this.openForm.bind(this)}>
 															{
-																this.state.openFormIcon === true ?
+																this.state.openForm === true ?
 																<i className="fa fa-minus-circle" aria-hidden="true"></i>
 																:
 																<i className="fa fa-plus-circle" aria-hidden="true"></i>
@@ -1115,6 +1135,7 @@ class LocationDetails extends Component {
 																		</label>
 																		<input maxLength="6" onChange={this.handlePincode.bind(this)} type="text" id="pincode" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincode} ref="pincode" name="pincode" onKeyDown={this.keyPressNumber.bind(this)} />
 																		{this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
+																		{this.state.pincodeExists !== "NotAvailable" ? null : <label style={{ color: "red", fontWeight: "100" }}>Pincode can not be validated at this time. Please enter this value carefully</label>}
 																	</div>
 																</div>
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -1122,7 +1143,7 @@ class LocationDetails extends Component {
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">GSTIN
 																			<a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="Eg. 29ABCDE1234F1Z5" className="fa fa-question-circle"></i> </a>
 																		</label>
-																		<input type="text" id="GSTIN" placeholder="29ABCDE1234F1Z5" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.GSTIN} ref="GSTIN" name="GSTIN" onChange={this.handleChange} />
+																		<input type="text" id="GSTIN" placeholder="29ABCDE1234F1Z5" className="form-control uppercase col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.GSTIN} ref="GSTIN" name="GSTIN" onChange={this.handleChange} />
 																	</div>
 																	<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 NOpadding">
 																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1174,7 +1195,7 @@ class LocationDetails extends Component {
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">PAN
 																			<a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="Eg. ABCDE1234E" className="fa fa-question-circle"></i> </a>
 																		</label>
-																		<input type="text" id="PAN" placeholder="ABCDE1234E" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.PAN} ref="PAN" name="PAN" onChange={this.handleChange} />
+																		<input type="text" id="PAN" placeholder="ABCDE1234E" className="form-control uppercase col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.PAN} ref="PAN" name="PAN" onChange={this.handleChange} />
 																	</div>
 
 

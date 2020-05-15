@@ -29,6 +29,7 @@ class ListOfEntities extends Component {
 			masterVendor: [],
 			selector:{},
 			stateCode : "Select State",
+			showDetails : false,
 			district  : "Select District",
 			"pathname": window.location.pathname.split('/')[1],
 			entityType : this.props.match.params.entity === "org-settings" ? "appCompany" : this.props.match.params.entity 
@@ -107,14 +108,20 @@ class ListOfEntities extends Component {
 
 			.then((response) => {
 				this.setState({
-					entityList   : response.data.reverse()
+					entityList   : response.data,
+					showDetails : true,
+					 id: response.data[0]._id
 				},()=>{
-					console.log("Reverse entityList :",this.state.entityList);
+					document.getElementById(response.data[0]._id).classList.add("selectedSupplier")
+					for (var key in document.querySelectorAll('.alphab')) {
+					$($('.alphab')[key]).css('background', '#ddd');
+					$($('.alphab')[key]).css('color', '#000');
+					document.getElementById("filterallalphab").style.background = '#367ea8';
+					document.getElementById("filterallalphab").style.color = '#fff';
+		}
 				})
 
-				$('.selected').removeClass('selectedSupplier');
-				document.getElementById(response.data[0]._id).classList.add("selectedSupplier")
-				this.setState({ id: response.data[0]._id, showDetails : true });
+				// $('.selected').removeClass('selectedSupplier');
 			})
 			.catch((error) => {
 			})
@@ -143,11 +150,12 @@ class ListOfEntities extends Component {
 
 		var selector=this.state.selector;
 		if ($(event.target).attr('value') === 'All') {
-			delete selector.initial;
+			/*delete selector.initial;
 			this.setState({	selector: selector },()=>{
 				this.getFilteredProducts(this.state.selector);
 			})
-			
+			*/
+			this.getEntities();
 		} else {
 			
 			
@@ -157,7 +165,6 @@ class ListOfEntities extends Component {
 				this.getFilteredProducts(this.state.selector);
 			})
 		}
-		this.setState({ showDetails : false });
 	}
 
 	searchEntity(event) {
@@ -203,14 +210,14 @@ class ListOfEntities extends Component {
 			$($('.alphab')[key]).css('color', '#000');
 		}
 
-		document.getElementById("filterallalphab").style.background = '#000';
+		document.getElementById("filterallalphab").style.background = '#367ea8';
 		document.getElementById("filterallalphab").style.color = '#fff';
-
-		var selector = this.state.selector;
+		this.getEntities();
+		/*var selector = this.state.selector;
 		selector = {}
 		this.setState({	selector: selector },()=>{
 			this.getFilteredProducts(this.state.selector);
-		})
+		})*/
 	}
 
 	selectFilter(event){
@@ -241,10 +248,12 @@ class ListOfEntities extends Component {
 		axios.post("/api/entitymaster/get/filterEntities", selector)
 			.then((response) => {
 				this.setState({
-					entityList   : response.data
+					entityList   : response.data,
+					showDetails : true 
 				})
-
-				this.setState({ showDetails : false });
+				document.getElementById(response.data[0]._id).classList.add("selectedSupplier")
+				this.setState({ id: response.data[0]._id, });
+				console.log("id",this.state.id,response.data[0]._id)
 			})
 			.catch((error) => {
 			})
@@ -405,7 +414,7 @@ class ListOfEntities extends Component {
 										<h5>No Data Found</h5>
 									</div>
 								}
-								{ this.state.showDetails ?
+								{ this.state.showDetails && this.state.entityList && this.state.entityList.length > 0?
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdcls suppliersOneProfile commonSup" id={this.state.id}>
 										<div id={this.state.id} className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
 											<EntityDetails name={this.state.index} id={this.state.id} 

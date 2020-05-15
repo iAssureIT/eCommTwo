@@ -230,6 +230,27 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li>
+
+                <li className="sidebarMenuText">
+                  <a href="#franchise" data-toggle="collapse" aria-expanded="false">
+                    <i className="fa fa-industry" />
+                    Franchise Management
+                     <i className="fa fa-sort-down pull-right"></i>
+                  </a>
+                  <ul className="collapse list-unstyled" id="vendors">
+                    <li>
+                      <a href="/franchise/list">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Franchise Master</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+
+
+
+
 {/*                <li className="sidebarMenuText">
                   <a href="/">
                     <i className="fa fa-percent"></i>

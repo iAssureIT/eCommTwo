@@ -750,7 +750,7 @@ class DepartmentMaster extends Component {
          axios.post('/api/personmaster/post', userDetails)
           .then((response) => {
 
-            swal(this.Capitalize(this.state.pathname) + " Added Sucessfully");
+            swal(this.Capitalize(this.state.pathname) + " Added Successfully");
 
               this.setState({
                 firstName       : "",
@@ -987,7 +987,7 @@ class DepartmentMaster extends Component {
           },()=>{
             this.props.history.push("/"+this.state.pathname+"/lists")
           })
-           swal(this.Capitalize(this.state.pathname) +" Details Updated Sucessfully");
+           swal(this.Capitalize(this.state.pathname) +" Details Updated Successfully");
         })
         .catch((error) => {
           console.log("error",error)

@@ -11,14 +11,11 @@ class ContactDetails extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			'branchCode'        		: '',
 			'firstName'         		: '',
 			'lastName'          		: '',
 			'phone'             		: '',
 			'altPhone'         	 		: '',
 			'email'             		: '',
-			'department'        		: '',
-			'designation'       		: '',
 			'employeeID'        		: '',
 			'preApprovedParameter'      : '-- Select --',
 			'preApprovedParameterValue' : '',
@@ -51,12 +48,63 @@ class ContactDetails extends Component {
 	}
 	componentDidMount() {
 		window.scrollTo(0, 0);
+		var role = localStorage.getItem("roles");
+		this.setState({
+			getCurrentRole : role
+		},()=>{
+			console.log("getCurrentRole",this.state.getCurrentRole);
+		})
+		this.getAllEntites();
 		this.getDesignation();
 		this.getDepartment();
 		this.getBranchCode();
 		this.contactDetails();
 		this.edit();
 		this.getRoles();
+	}
+	getAllEntites() {
+		if(this.state.pathname == "corporate")
+		{
+		var formvalues = { type : "employee"}
+		}
+		else{
+		var formvalues = { type : "driver"}
+		}
+		var listOfEmpID = [];
+			axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
+			.then((response) => {
+
+				this.setState({
+					contactarray: response.data.contactPersons
+
+				},()=>{
+					for(let j=0;j<this.state.contactarray.length;j++)
+					{
+						listOfEmpID.push(this.state.contactarray[j].employeeID)
+					}
+				})
+			})
+			.catch((error) => {
+				
+			})
+		axios.post("/api/personmaster/get/list",formvalues)
+		.then((response) => {
+	        
+			this.setState({
+				personList   : response.data,
+			})
+			console.log("Hi",this.state.personList);
+			for(let i=0;i<this.state.personList.length;i++)
+			{
+				listOfEmpID.push(this.state.personList[i].employeeId)
+			}
+			this.setState({
+				listOfEmpID:listOfEmpID
+			})
+			console.log("listOfEmpID",this.state.listOfEmpID);
+		})
+		.catch((error) => {
+		})
 	}
 	getDesignation() {
 		axios.get("/api/designationmaster/get/list")
@@ -112,10 +160,11 @@ class ContactDetails extends Component {
 		}, "Please enter valid approving authority ID");
 		$.validator.addMethod("regxEmail", function (value, element, regexpr) {
 			return regexpr.test(value);
-	  }   , "Please enter a valid email address.");
+	    }   , "Please enter a valid email address.");
 		$.validator.addMethod("regxBranchCode", function (value, element, arg) {
 			return arg !== value;
 		}, "Please select the company branch ");
+		
 		jQuery.validator.setDefaults({
 			debug: true,
 			success: "valid"
@@ -163,13 +212,14 @@ class ContactDetails extends Component {
 				},
 				employeeID: {
 					required: true,
+					//regexpremployeeID :/^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$/,
+
 				},
 			},
 			errorPlacement: function (error, element) {
 				if (element.attr("name") === "branchCode") {
 					error.insertAfter("#branchCode");
 				}
-
 				if (element.attr("name") == "role") {
 					error.insertAfter("#role");
 				}
@@ -251,29 +301,19 @@ class ContactDetails extends Component {
 		var valuewithComa = this.numberWithCommas(value);
 		console.log("With comma:",valuewithComa);
 	}
-	// handleChange(event) {
-	// 	const target = event.target;
-	// 	const name = target.name;
-	// 	var value = event.target.value;	
-	// 	console.log("With comma value:",value);
-	// 	if(name === "preApprovedParameter"){
-	// 		var valuewithComma = this.numberWithCommas(value);
-	// 		console.log("With comma:",valuewithComma);
-	// 		this.setState({
-	// 			[name]: valuewithComma
-	// 		});
-	// 	}else{
-	// 		this.setState({
-	// 			[name]: event.target.value
-	// 		});
-	// 	}	
-		
-	// }
-
+	
 	handleChange(event) {
 		const target = event.target;
 		const name = target.name;
 		var value = event.target.value;	
+		 var vendorLocation = document.getElementById("branchCode");
+		 var department = document.getElementById("deptName");
+		 var designation = document.getElementById("desgName");
+   		 var departmentName = department.options[department.selectedIndex].getAttribute("deptName");
+   		 var designationName = designation.options[designation.selectedIndex].getAttribute("desgName");
+   		 var locationname = vendorLocation.options[vendorLocation.selectedIndex].getAttribute("branch_location");
+   		 var locationId = vendorLocation.options[vendorLocation.selectedIndex].getAttribute("branch_location_id");
+   
 		console.log("value")
 		if(name === "roless"){
 			if(value === "manager" || value === "corporateadmin" ){
@@ -290,7 +330,12 @@ class ContactDetails extends Component {
 			});
 		}else{
 			this.setState({
-				[name]: event.target.value
+				[name]: event.target.value,
+				"workLocation" : locationname,
+				"workLocationId" :locationId,
+				"departmentName" :departmentName,
+				"designationName" :designationName
+			},()=>{
 			});
 		}		
 					
@@ -373,37 +418,77 @@ class ContactDetails extends Component {
 		event.preventDefault();
 		
 		var entityID = this.props.match.params.entityID;
+		//var entityID = this.props.match.params.companyID;
 			var formValues = {
 				'entityID' 						: entityID,
+<<<<<<< Updated upstream
 				'contactDetails' 				: {
 					'branchCode'        		: this.state.branchCode,
+					'branchName'        		: this.state.workLocation,
 					'firstName'               	: this.state.firstName,
 					'lastName'                	: this.state.lastName,
 					'phone'             		: this.state.phone,
 					'altPhone'          		: this.state.altPhone,
 					'email'             		: this.state.email,
 					'department'        		: this.state.department,
+					'departmentName'        	: this.state.departmentName,
+					'designationName'       	: this.state.designationName,
 					'designation'       		: this.state.designation,
 					'employeeID'        		: this.state.employeeID,
+
+=======
+				'contactDetails' 			: {
+					'branchCode'        				: this.state.branchCode,
+					'firstName'             		: this.state.firstName,
+					'lastName'              		: this.state.lastName,
+					'phone'             				: this.state.phone,
+					'altPhone'          				: this.state.altPhone,
+					'email'             				: this.state.email,
+					'department'        				: this.state.department,
+					'designation'       				: this.state.designation,
+					'employeeID'        				: this.state.employeeID,
+>>>>>>> Stashed changes
 					'bookingApprovalRequired' 	: this.state.bookingApprovalRequired,
-					'approvingAuthorityId1' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId1 : "",
-					'approvingAuthorityId2' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId2 : "",
-					'approvingAuthorityId3' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId3 : "",
-					'preApprovedParameter' 		: this.state.bookingApprovalRequired ? this.state.preApprovedParameter : "",
+					'approvingAuthorityId1' 		: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId1 : "",
+					'approvingAuthorityId2' 		: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId2 : "",
+					'approvingAuthorityId3' 		: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId3 : "",
+					'preApprovedParameter' 			: this.state.bookingApprovalRequired ? this.state.preApprovedParameter : "",
 					'preApprovedParameterValue' : this.state.bookingApprovalRequired ? this.state.preApprovedParameterValue : "",
+<<<<<<< Updated upstream
 					'createUser'        		: this.state.createUser,
-					'role' 						: this.state.role,
+					'role' 						: this.state.createUser ? this.state.role : "-- Select Role --",
                     'addEmployee'       		: this.state.addEmployee,
+=======
+					'createUser'        				: this.state.createUser,
+					'role' 											: this.state.role,
+          'addEmployee'       				: this.state.addEmployee,
+>>>>>>> Stashed changes
 				}
 			}
-			// console.log("formValues",formValues);
-			// console.log("inside ContactAddBtn");
-				
+			console.log("formValues",formValues);
 			const main = async()=>{
 				if ($('#ContactDetail').valid()) {
-					if(this.state.createUser === true){
+					console.log("this.state.listOfEmpID.indexOf(this.state.employeeID)",this.state.listOfEmpID.indexOf(this.state.employeeID))
+					if(this.state.createUser === true && this.state.listOfEmpID.indexOf(this.state.employeeID) == -1){
 						formValues.contactDetails.userID = await this.createUser();
 						formValues.contactDetails.personID = await this.savePerson(formValues.contactDetails.userID);
+						var formValues1 = {
+						userID: formValues.contactDetails.userID,
+						role: "employee",
+						}
+						console.log("formValues",formValues.contactDetails.userID,formValues1,formValues1.role);
+						if(this.state.pathname == "corporate" && (this.state.role == "manager" || this.state.role == "corporateadmin" ))
+						{
+							axios
+							.patch('/api/users/patch/role/assign/' + formValues1.userID, formValues1)
+							.then(
+								(res) => {
+								console.log(res);
+								}).catch((error) => {
+								console.log("error",error);
+
+							});
+						}
 					}
 					this.saveContact(formValues);
 				} else {
@@ -414,29 +499,44 @@ class ContactDetails extends Component {
 			main();
 	}
 	createUser = ()=>{
+		console.log("In here")
 		var userDetails = {
+<<<<<<< Updated upstream
 			firstname			: this.state.firstName,
 			lastname			: this.state.lastName,
 			mobNumber			: this.state.phone,
 			email				: this.state.email,
+			companyID			: this.state.companyID,
+			companyName			: this.state.companyName,
 			pwd					: "fivebees123",
+
 			//role				: this.state.pathname =="appCompany"  ? "admin" :(this.state.pathname != "vendor" ? ['employee',this.state.role] : this.state.pathname) ,
 			 role				: this.state.pathname =="appCompany"  ? "admin" : this.state.role,
 			status				: 'active',
 			"emailSubject"		: "Email Verification",
 			"emailContent"		: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+=======
+			firstname				: this.state.firstName,
+			lastname				: this.state.lastName,
+			mobNumber				: this.state.phone,
+			email						: this.state.email,
+			pwd							: "fivebees123",
+			role						: this.state.pathname =="appCompany"  ? ["admin"] : this.state.role,
+			status					: 'active',
+			"emailSubject"	: "Email Verification",
+			"emailContent"	: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+>>>>>>> Stashed changes
 		}
 		console.log("userDetails",userDetails);
 		return new Promise(function(resolve, reject){
 			axios.post('/api/auth/post/signup/user', userDetails)
 			.then((response)=>{
+				console.log("response.data.ID",response.data.ID)
+				resolve(response.data.ID);
 				if(response.data.message =='USER_CREATED'){
-					resolve(response.data.ID);
-					// formValues.contactDetails.userID = ID;
-					// this.saveContact(formValues);
+					
 				}else{
 					swal(response.data.message);
-					console.log("response.data.message:",response.data.message);
 				}
 				
 			})
@@ -445,8 +545,15 @@ class ContactDetails extends Component {
 	}
 
 	savePerson = (userID)=>{
+		console.log("userID",userID);
+		if(userID){
 		var userDetails = {
-			type                    : 'employee',
+			type                    : this.state.pathname == "vendor"?"driver":"employee",
+			companyID				: this.state.companyID,
+			company_Id				: this.state.entityID,
+			companyName 		    : this.state.companyName,
+			workLocation            : this.state.workLocation,
+			workLocationId            : this.state.workLocationId,
 			firstName               : this.state.firstName,
 			middleName              : "",
 			lastName                : this.state.lastName,
@@ -461,13 +568,15 @@ class ContactDetails extends Component {
 			profilePhoto            : this.state.profilePhoto,
 			employeeId              : this.state.employeeID,
 			userId 					: userID,
+			status					: "Active",
 			bookingApprovalRequired : this.state.bookingApprovalRequired,
-			approvingAuthorityId1    : this.state.bookingApprovalRequired ? this.state.approvingAuthorityId1 : "",
-			approvingAuthorityId2    : this.state.bookingApprovalRequired ? this.state.approvingAuthorityId2 : "",
-			approvingAuthorityId3     : this.state.bookingApprovalRequired ? this.state.approvingAuthorityId3 : "",
-			preApprovedParameterValue : this.state.bookingApprovalRequired ? this.state.preApprovedParameterValue : "",
-			preApprovedParameter      : this.state.bookingApprovalRequired ? this.state.preApprovedParameter : "",
+			approvingAuthorityId1    : this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId1 : "",
+			approvingAuthorityId2    : this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId2 : "",
+			approvingAuthorityId3     : this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId3 : "",
+			preApprovedParameterValue : this.state.bookingApprovalRequired == "Yes" ? this.state.preApprovedParameterValue : "",
+			preApprovedParameter      : this.state.bookingApprovalRequired == "Yes" ? this.state.preApprovedParameter : "",
 		  }
+		  console.log("userDetails",userDetails);
 		  return new Promise(function(resolve, reject){
 			axios.post('/api/personmaster/post' ,userDetails)
 			.then((response) => {
@@ -475,56 +584,71 @@ class ContactDetails extends Component {
 			})
 			.catch((error) => {})
 		  })
+		}
 	}
 
 	saveContact = (formValues)=>{
+		if(this.state.listOfEmpID.indexOf(this.state.employeeID)>-1)
+		{
+			swal("Employee ID already exists..!")
+		}else{
 		axios.patch('/api/entitymaster/patch/addContact' ,formValues)
 		.then((response) => {
-				this.contactDetails();
-				// console.log("inside saveContact");
-				// this.setState({			
-				// 	openFormIcon : this.state.openFormIcon === false ? true : false
-				// });
-				swal({
-					title : "Contact added successfully.",
-					text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password : fivebees123 \n Contact also added in employee list." : ""
-				});
+				console.log("response",response)
+				if(response.data.duplicated)
+				{
+					swal({
+						title : "Contact already exists.",
+					});
 
-				this.setState({
-					'branchCode'        		: '',
-					'firstName'               	: '',
-					'lastName'                	: '',
-					'phone'            		 	: '',
-					'altPhone'          		: '',
-					'email'             		: '',
-					'department'        		: '',
-					'designation'       		: '',
-					'employeeID'        		: '',
-					'bookingApprovalRequired' 	: "No",
-					'createUser' 				: false,
-					'addEmployee'				: false,
-					'approvingAuthorityId1' 		: '',
-					'approvingAuthorityId2' 		: '',
-					'approvingAuthorityId3' 		: '',
-					'preApprovedParameter' 		: '',
-					'preApprovedParameterValue' : '',
-					'openForm'					: false,
-				})
+				}else{
+					this.contactDetails();
+					this.getAllEntites()
+
+					swal({
+						title : "Contact added successfully.",
+						text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password : fivebees123 \n Contact also added in employee list." : ""
+					});
+
+					this.setState({
+						'firstName'               	: '',
+						'lastName'                	: '',
+						'phone'            		 	: '',
+						'altPhone'          		: '',
+						'email'             		: '',
+						'branchCode'        		: '--Select Company Branch--',
+						'department'        		: '--Select Department--',
+						'designation'       		: '--Select Designation--',
+						'employeeID'        		: '',
+						'bookingApprovalRequired' 	: "No",
+						'createUser' 				: false,
+						'addEmployee'				: false,
+						'approvingAuthorityId1' 		: '',
+						'approvingAuthorityId2' 		: '',
+						'approvingAuthorityId3' 		: '',
+						'preApprovedParameter' 		: '',
+						'role' 		 				: '-- Select Role --',
+						'preApprovedParameterValue' : '',
+						'openForm'					: false,
+					})
+				}
 				
 			})
 			.catch((error) => {
 			
 			})
+		}
 	}
-	
-	
 	getBranchCode() {
 		var entityID = this.state.entityID;
 		axios.get('/api/entitymaster/get/one/' + entityID)
 			.then((response) => {
+				console.log("response",response);
 				this.setState({
+					companyID: response.data.companyID,
+					companyName: response.data.companyName,
 					branchCodeArry: response.data.locations
-				},()=>{console.log()})
+				})
 			})
 			.catch((error) => {
 				
@@ -535,23 +659,13 @@ class ContactDetails extends Component {
 		var entityID = this.state.entityID;
 		var contactID = this.state.contactID;
 
-
-		console.log("openformIconValue before:" ,this.state.openFormIcon);	
-		
-		// this.openForm();
-
-		// this.setState({
-		// 	// openForm     : this.state.openForm     === false ? true : false,
-		// 	openFormIcon : this.state.openFormIcon === false ? true : false
-		// });
-		// console.log("openformIconValue:" ,this.state.openFormIcon);
-
 		
 			var formValues = {
 				'entityID' 			: entityID,
 				'contactID' 		: contactID,
 				'contactDetails' 				: {
 					'branchCode'        		: this.state.branchCode,
+					'branchName'        		: this.state.workLocation,
 					'firstName'               	: this.state.firstName,
 					'lastName'                	: this.state.lastName,
 					'phone'             		: this.state.phone,
@@ -559,18 +673,22 @@ class ContactDetails extends Component {
 					'email'             		: this.state.email,
 					'department'        		: this.state.department,
 					'designation'       		: this.state.designation,
+					'departmentName'        	: this.state.departmentName,
+					'designationName'       	: this.state.designationName,
+				
 					'employeeID'        		: this.state.employeeID,
 					'bookingApprovalRequired' 	: this.state.bookingApprovalRequired,
-					'approvingAuthorityId1' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId1 : "",
-					'approvingAuthorityId2' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId2 : "",
-					'approvingAuthorityId3' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId3 : "",
-					'preApprovedParameter' 		: this.state.bookingApprovalRequired ? this.state.preApprovedParameter : "",
-					'preApprovedParameterValue' : this.state.bookingApprovalRequired ? this.state.preApprovedParameterValue : "",
+					'approvingAuthorityId1' 	: this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId1 : "",
+					'approvingAuthorityId2' 	: this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId2 : "",
+					'approvingAuthorityId3' 	: this.state.bookingApprovalRequired == "Yes"  ? this.state.approvingAuthorityId3 : "",
+					'preApprovedParameter' 		: this.state.bookingApprovalRequired == "Yes"  ? this.state.preApprovedParameter : "",
+					'preApprovedParameterValue' : this.state.bookingApprovalRequired == "Yes"  ? this.state.preApprovedParameterValue : "",
 					'createUser'        		: this.state.createUser,
-				    'role' 						: this.state.role,
+				    'role' 						: this.state.createUser ? this.state.role : "-- Select Role --", 
                     'addEmployee'       		: this.state.addEmployee,
 				}
 			}
+			console.log("formValues",formValues)
 			const main = async()=>{
 				if ($('#ContactDetail').valid()) {
 					if(this.state.alreadyHasUser === true){
@@ -578,8 +696,9 @@ class ContactDetails extends Component {
 						this.updatePerson();
 					}else if(this.state.createUser === true){
 						formValues.contactDetails.userID = await this.createUser();
-						formValues.contactDetails.personID = await this.savePerson();
+						formValues.contactDetails.personID = await this.savePerson(formValues.contactDetails.userID);
 					}
+					
 					this. updateContact(formValues);
 				}
 			}
@@ -587,13 +706,44 @@ class ContactDetails extends Component {
 		
 	}
 	updateUser = ()=>{
+		if(this.state.alreadyHasUser && this.state.createUser == false)
+		{
+			
+			var id = this.state.userID;
+			const token = '';
+			console.log('id', id);
+			const url = '/api/users/delete/' + id;
+			const headers = {
+				"Authorization": token,
+				"Content-Type": "application/json",
+			};
+			axios({
+				method: "DELETE",
+				url: url,
+				headers: headers,
+				timeout: 3000,
+				data: null,
+			})
+				.then((response) => {
+					console.log("Deleted permented")
+				}).catch((error) => {
+				});
+			
+		}else{
 		var userDetails = {
 			firstname			: this.state.firstName,
-			lastname			: this.state.lasFtName,
+			lastname			: this.state.lastName,
 			mobNumber			: this.state.phone,
+			companyID			: this.state.companyID,
 			email				: this.state.email,
+			companyID			: this.state.companyID,
+			companyName			: this.state.companyName,
 			pwd					: "fivebees123",
+<<<<<<< Updated upstream
 			role				: this.state.pathname =="appCompany"  ? "admin" : this.state.role,
+=======
+			role				: this.state.pathname =="appCompany"  ? ["admin"] : this.state.role,
+>>>>>>> Stashed changes
 			status				: 'active',
 			"emailSubject"		: "Email Verification",
 			"emailContent"		: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
@@ -603,15 +753,31 @@ class ContactDetails extends Component {
 		.then((response)=>{
 			if(response.data.message =='USER_CREATED'){
 			}else{
-				swal("Hi" +response.data.message);
+				swal("hi" +response.data.message);
 			}
 			
 		})
 		.catch((error)=>{})
+    	}
 	}
 	updatePerson = ()=>{
+		if(this.state.alreadyHasUser && this.state.createUser == false)
+		{
+		   axios.delete("/api/personmaster/delete/"+this.state.personID)
+			.then((response) => {
+				console.log("response",response)
+				
+			})
+			.catch((error) => {})
+		}
+		else{
 		var userDetails = {
 			personID        		: this.state.personID,
+			companyID				: this.state.companyID,
+			company_Id				: this.state.entityID,
+			companyName 		    : this.state.companyName,
+			workLocation            : this.state.workLocation,
+			workLocationId          : this.state.workLocationId,
 			type                    : 'employee',
 			firstName               : this.state.firstName,
 			middleName              : "",
@@ -639,25 +805,26 @@ class ContactDetails extends Component {
 				
 			})
 			.catch((error) => {})
+		}
 		  
 	}
 	updateContact = (formValues)=>{
-		this.openForm();
 		axios.patch('/api/entitymaster/patch/updateSingleContact', formValues)
 		.then((response) => {
-			
 			this.contactDetails();
 			this.setState({
 				'contactID' 				: '',
-				'branchCode'        		: '',
 				'firstName'               	: '',
 				'lastName'                	: '',
 				'phone'            		 	: '',
 				'altPhone'          		: '',
 				'email'             		: '',
-				'department'        		: '',
-				'designation'       		: '',
+				'branchCode'        		: '--Select Company Branch--',
+				'department'        		: '--Select Department--',
+				'designation'       		: '--Select Designation--',
+				
 				'employeeID'        		: '',
+				'role'        				: '-- Select Role --',
 				'bookingApprovalRequired' 	: "No",
 				'createUser' 				: false,
 				'addEmployee'				: false,
@@ -669,9 +836,6 @@ class ContactDetails extends Component {
 				'openForm'					: false,
 			})
 			this.props.history.push("/"+(this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname)+'/contact-details/'+this.props.match.params.entityID);
-			// this.setState({			
-			// 	openFormIcon : this.state.openFormIcon === false ? true : false
-			// });
 			swal("Contact updated successfully.");
 		})
 		.catch((error) => {
@@ -679,11 +843,6 @@ class ContactDetails extends Component {
 		})
 	}
 	edit() {
-
-		// this.setState({			
-		// 		openFormIcon : this.state.openFormIcon === false ? true : false
-		// });
-
 		var entityID = this.state.entityID;
 		var contactID = this.state.contactID;
 		var formValues = {
@@ -694,19 +853,24 @@ class ContactDetails extends Component {
 			
 			axios.post('/api/entitymaster/post/singleContact', formValues)
 				.then((response) => {
+					console.log("response=>",response);
 					var x = response.data.contactPersons;
 					var contactDetails = x.filter(a => a._id === contactID);
 					this.setState({
 						'openForm'					: true,
 						'branchCode'        		: contactDetails[0].branchCode,
+						'branchName'        		: contactDetails[0].branchName,
 						'firstName'               	: contactDetails[0].firstName,
 						'lastName'                	: contactDetails[0].lastName,
 						'phone'             		: contactDetails[0].phone,
 						'altPhone'          		: contactDetails[0].altPhone,
 						'email'             		: contactDetails[0].email,
 						'department'        		: contactDetails[0].department,
+						'departmentName'        	: contactDetails[0].departmentName,
+						'designationName'       	: contactDetails[0].designationName,
 						'designation'       		: contactDetails[0].designation,
 						'employeeID'        		: contactDetails[0].employeeID,
+
 						'role'        				: contactDetails[0].role,
 						'bookingApprovalRequired' 	: contactDetails[0].bookingApprovalRequired,
 						'approvingAuthorityId1'    	: contactDetails[0].approvingAuthorityId1,
@@ -724,9 +888,7 @@ class ContactDetails extends Component {
 						if(this.state.openForm === true){
 							this.validation();
 							$('#email').attr('disabled','true');
-							// this.setState({			
-							// 	openFormIcon : this.state.openFormIcon === false ? true : false
-							// });
+							$('#employeeID').attr('disabled','true');
 						}
 						if(this.state.createUser === true){
 							$('#createUser').attr('disabled','true');
@@ -745,26 +907,81 @@ class ContactDetails extends Component {
 		event.preventDefault();
 		var entityID = this.state.entityID;
 		var locationID = event.target.id;
-
+		var email = event.currentTarget.getAttribute("email_ID");
+		console.log("email",email);
 		var formValues = {
 			entityID: entityID,
 			location_ID: locationID
 		}
 		axios.delete('/api/entitymaster/deleteContact/' + entityID + "/" + locationID, formValues)
 			.then((response) => {
+
 				this.setState({
 					'openForm'			: false,
 					'contactID' 		: '',
-					'branchCode'        : '',
 					'firstName'         : '',
 					'lastName'          : '',
 					'phone'             : '',
 					'altPhone'          : '',
 					'email'             : '',
-					'department'        : '',
-					'designation'       : '',
+					'createUser' 		: false,
 					'employeeID'        : '',
+					'role'				: '-- Select Role --',
+					'branchCode'        		: '--Select Company Branch--',
+					'department'        		: '--Select Department--',
+					'designation'       		: '--Select Designation--',
+					'approvingAuthorityId1' 		: '',
+					'approvingAuthorityId2' 		: '',
+					'approvingAuthorityId3' 		: '',
+					'preApprovedParameter' 			: '',
+					'preApprovedParameterValue' 	: ''
 				})
+				axios.get('/api/personmaster/get/emailID/' + email)
+					.then((response) => {
+						console.log("response=>>",response.data.data[0]);
+						this.setState({
+							personID: response.data.data[0]._id,
+							userId: response.data.data[0].userId,
+							username: response.data.data[0].firstName + " " + response.data.data[0].lastName
+
+						},()=>{
+							axios.delete("/api/personmaster/delete/"+this.state.personID)
+					            .then((response)=>{
+					            	/*var formValues = {
+										selectedUser: this.state.userId,
+										status: 'deleted',
+										username: this.state.username,
+									}*/
+									var id = this.state.userId;
+									const token = '';
+									console.log('id', id);
+									const url = '/api/users/delete/' + id;
+									const headers = {
+										"Authorization": token,
+										"Content-Type": "application/json",
+									};
+									axios({
+										method: "DELETE",
+										url: url,
+										headers: headers,
+										timeout: 3000,
+										data: null,
+									})
+										.then((response) => {
+											console.log("Deleted permented")
+											
+										}).catch((error) => {
+										});
+											           		
+				            })
+
+						})
+					})
+					.catch((error) => {
+						
+					})
+	            .catch((error)=>{
+	            })
 				this.contactDetails();
 				this.props.history.push('/'+(this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname)+'/contact-details/' + entityID);
 				swal("Contact deleted successfully.");
@@ -778,7 +995,10 @@ class ContactDetails extends Component {
 			.then((response) => {
 
 				this.setState({
-					contactarray: response.data.contactPersons.reverse()
+					contactarray: response.data.contactPersons
+
+				},()=>{
+					console.log("contactarray",this.state.contactarray)
 				})
 			})
 			.catch((error) => {
@@ -801,20 +1021,6 @@ class ContactDetails extends Component {
 			createUser : val
 		})
 	}
-	
-	// $('input.number').keyup(function(event) {
-
-	// 	  // skip for arrow keys
-	// 	  if(event.which >= 37 && event.which <= 40) return;
-
-	// 	  // format number
-	// 	  $(this).val(function(index, value) {
-	// 	    return value
-	// 	    .replace(/\D/g, "")
-	// 	    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-	// 	    ;
-	// 	  });
-	// });
 
 	render() {
 			// console.log("all props : ",this.props)
@@ -877,7 +1083,7 @@ class ContactDetails extends Component {
 													<div className="col-lg-3 col-md-6 col-sm-6 col-sm-6 contactDetailTitle">
 														<div className="button4  pull-right" onClick={this.openForm.bind(this)}>
 														{
-															this.state.openFormIcon === true ?
+															this.state.openForm === true ?
 															<i className="fa fa-minus-circle" aria-hidden="true"></i>
 															:
 															<i className="fa fa-plus-circle" aria-hidden="true"></i>
@@ -902,13 +1108,13 @@ class ContactDetails extends Component {
 																		}
 																		
 																		<select id="branchCode" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.branchCode} ref="branchCode" name="branchCode" onChange={this.handleChange} required>
-																			<option defaultValue>--Select Company Branch--</option>
+																			<option selected={true} disabled={true}>--Select Company Branch--</option>
 																			{
 																				this.state.branchCodeArry && this.state.branchCodeArry.length > 0 ?
 																					this.state.branchCodeArry.map((data, index) => {
 																						if(data.branchCode){
 																							return (
-																								<option key={index} value={data.branchCode}>{data.area ? data.area : ""} {data.city === data.district ? "" : data.city} {data.district} {data.stateCode} - {data.countryCode}</option>
+																								<option key={index} branch_location_id={data._id} branch_location={(data.area ? data.area : "") +" "+(data.city === data.district ? "" : data.city)+(data.district)+" "+(data.stateCode)+ "-" +(data.countryCode)} value={data.branchCode}>{((data.locationType).match(/\b(\w)/g)).join('')} - {data.area} {data.city}, {data.stateCode} - {data.countryCode}</option>
 																							);
 																						}
 																					}
@@ -922,13 +1128,13 @@ class ContactDetails extends Component {
 																		<div id="department">
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Department </label>
 																		<select className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-																			ref="department" value={this.state.department} name="department" onChange={this.handleChange} >
-																			<option >--Select Department--</option>
+																			ref="department" value={this.state.department} name="department" onChange={this.handleChange} id="deptName">
+																			<option selected={true} disabled={true}>--Select Department--</option>
 																			{
 																			this.state.departmentArray && this.state.departmentArray.length > 0 ?
 																				this.state.departmentArray.map((deptData, index) => {
 																				return (
-																					<option key={index} value={deptData._id}>{(deptData.department)}</option>
+																					<option key={index} value={deptData._id} deptName={deptData.department}>{(deptData.department)}</option>
 																				);
 																				}
 																				) : ''
@@ -939,13 +1145,13 @@ class ContactDetails extends Component {
 																	<div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
 																		<div id="designation">
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Designation</label>
-																		<select  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" ref="designation" value={this.state.designation} name="designation" onChange={this.handleChange}>
-																			<option >--Select Designation--</option>
+																		<select  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" ref="designation" value={this.state.designation} name="designation" onChange={this.handleChange} id="desgName">
+																			<option selected={true} disabled={true}>--Select Designation--</option>
 																			{
 																			this.state.designationArray && this.state.designationArray.length > 0 ?
 																				this.state.designationArray.map((desData, index) => {
 																				return (
-																					<option key={index} value={desData._id}>{(desData.designation)}</option>
+																					<option key={index} value={desData._id} desgName={desData.designation}>{(desData.designation)}</option>
 																				);
 																				}) : ''
 																			}
@@ -956,7 +1162,7 @@ class ContactDetails extends Component {
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 "  >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Employee ID <i className="astrick">*</i></label>
-																		<input type="text" id="employeeID" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.employeeID} ref="employeeID" name="employeeID" onChange={this.handleChange} />
+																		<input type="number" id="employeeID" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.employeeID} ref="employeeID" name="employeeID" onChange={this.handleChange} />
 																	</div>
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 " >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">First Name <sup className="astrick">*</sup></label>
@@ -1024,7 +1230,7 @@ class ContactDetails extends Component {
 																			</div>
 																	</div>
 																	{
-																	this.state.createUser ? 
+																	this.state.createUser  && this.state.pathname !=="appCompany"? 
 
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" > 
 																		<div id="role">
@@ -1124,17 +1330,7 @@ class ContactDetails extends Component {
 										                                        </div>
 										                                        <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 employee  person">
 										                                           <div id="preApprovedParameterValue"> 
-										                                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Pre Approved&nbsp; 
-											                                              {this.state.preApprovedParameter !== "-- Select --" ? 
-											                                              	this.state.preApprovedParameter ==="Amount" ?
-											                                              		 <span>{this.state.preApprovedParameter} (&#8377;)<i className="astrick">*</i></span>
-											                                              	:
-											                                              		 <span>{this.state.preApprovedParameter}<i className="astrick">*</i></span>
-
-
-											                                              	: ""
-											                                              }
-											                                            </label>										                                              
+										                                              <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Pre Approved {this.state.preApprovedParameter !== "-- Select --" ? this.state.preApprovedParameter : ""}<i className="astrick">*</i></label>
 										                                              <input type="number" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.preApprovedParameterValue} ref="preApprovedParameterValue" name="preApprovedParameterValue"  onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange} />
 										                                            </div>
 										                                          </div>
@@ -1187,18 +1383,29 @@ class ContactDetails extends Component {
 																			<li>{data.firstName} {data.lastName}</li>
 																			<li>{data.email}, {data.phone}, {data.altPhone}</li>
 																			<li>Branch Code: {data.branchCode}</li>
+																			<li>Company Branch: {data.branchName?data.branchName:" - "}</li>
 																			<li>Employee ID: {data.employeeID}</li>
-																			{/* <li>Department: {data.department}</li>
-																			<li>Designation: {data.designation}</li> */}
+																			 <li>Department: {data.departmentName ? data.departmentName : " - "}</li>
+																			<li>Designation: {data.designationName ? data.designationName : " - "}</li>
 
 																			{data.bookingApprovalRequired === 'Yes'?
 																				<li>Booking Approval Required: Yes</li>	
 																			:
-																			null
+																				<li>Booking Approval Required: No</li>	
 																			}		
 
 																			{data.approvingAuthorityId1 ?
-																				<li>Approving Authority Employee ID: {data.approvingAuthorityId1}</li>	
+																				<li>Approving Authority Employee ID 1: {data.approvingAuthorityId1}</li>	
+																			:
+																			null
+																			}
+																			{data.approvingAuthorityId2 ?
+																				<li>Approving Authority Employee ID 2: {data.approvingAuthorityId2}</li>	
+																			:
+																			null
+																			}																	
+																			{data.approvingAuthorityId3 ?
+																				<li>Approving Authority Employee ID 3: {data.approvingAuthorityId3}</li>	
 																			:
 																			null
 																			}																	
@@ -1236,7 +1443,7 @@ class ContactDetails extends Component {
 																						<a href={"/"+(this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname)+"/contact-details/" + this.props.match.params.entityID + "/" + data._id}><i className="fa fa-pencil penmrleft" aria-hidden="true"></i>&nbsp;&nbsp;Edit</a>
 																					</li>
 																					<li name={index}>
-																						<span onClick={this.contactDelete.bind(this)} id={data._id}><i className="fa fa-trash-o" aria-hidden="true"></i> &nbsp; Delete</span>
+																						<span onClick={this.contactDelete.bind(this)} email_ID={data.email} id={data._id}><i className="fa fa-trash-o" aria-hidden="true"></i> &nbsp; Delete</span>
 																					</li>
 																				</ul>
 																			</div>

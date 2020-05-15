@@ -277,7 +277,7 @@ class DepartmentBulkUpload extends Component {
          axios.post('/api/departmentmaster/post', userDetails)
           .then((response) => {
 
-            swal(this.Capitalize(this.state.pathname) + " Added Sucessfully");
+            swal(this.Capitalize(this.state.pathname) + " Added Successfully");
 
               this.setState({
                 

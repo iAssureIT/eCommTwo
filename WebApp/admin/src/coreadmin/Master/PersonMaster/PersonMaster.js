@@ -10,7 +10,7 @@ import PhoneInput               from 'react-phone-input-2';
 import _                        from 'underscore';
 import { withRouter }           from 'react-router-dom';
 import BulkUpload from "../BulkUpload/BulkUpload.js";
-import SelectCorporate from "../SelectCorporate/SelectCorporate.js";
+// import SelectCorporate from "../SelectCorporate/SelectCorporate.js";
 import "bootstrap-toggle/css/bootstrap2-toggle.min.css";
 import "bootstrap-toggle/js/bootstrap2-toggle.min.js";
 import "./PersonMaster.css";
@@ -21,17 +21,19 @@ class PersonMaster extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      "pathname"         : this.props.entity,
+      "pathname"         : this.props.entity ? this.props.entity : "",
       "personID"         : this.props.match.params ? this.props.match.params.fieldID : '',
       "companyLogo"      : [],
       "districtArray"    : [],
       "designationArray" : [],
       "departmentArray"  : [],
+      "corporateLocationArray"  :"",
       'toggleButtonValue': "Male",
       'getSelectedTrip'  : "Yes",
       'loginCredential'  : "Yes",
       'country'          : "",
       'workLocation'     : "",
+      'workLocationId'    : "",
       'userId'           : "",
       'pincodeExists'    : true,
       "stateArray"       : [],
@@ -94,337 +96,353 @@ class PersonMaster extends Component {
     this.handleChangeDesignation  = this.handleChangeDesignation.bind(this);
     this.handleChangeDepartment   = this.handleChangeDepartment.bind(this);
     this.handleworklocationChange = this.handleworklocationChange.bind(this);
-
   }
 
- Preloader(props) {
-  return <img src="spinner.gif" />;
-}
-
+  Preloader(props) {
+    return <img src="spinner.gif" />;
+  }
 
   componentDidMount() {
-    this.getCorporate();
+    this.getEntity();
     this.getDesignation();
     this.getDepartment();
     this.getCompany();
-    var corporateID = localStorage.getItem("corporateID");
-    var workLocationId=this.props.vendorLocationID;
-    console.log("workLocationId",workLocationId)
     this.setState({
       personID       :  this.props.match.params.fieldID,
-      corporateID    : corporateID,
-      workLocationId : workLocationId,
-      // loading     : false,
     }, () => {
-      console.log("this.state.companyID",this.state.companyID);
       this.edit();
     })
     if(this.state.pathname === "driver")
     {
       $(".person").hide();
       $(".driver").show();
-    $.validator.addMethod("regxEmail", function (value, element, regexpr) {
-      return regexpr.test(value);
-    }, "Please enter valid Email Id");
-    $.validator.addMethod("regxLicenseNumber", function (value, element, regexpr) {
-      return regexpr.test(value);
-    }, "Please enter valid License Number");
-    $.validator.addMethod("regxAadharNumber", function (value, element, regexpr) {
-      return regexpr.test(value);
-    }, "Please enter valid Aadhar Number");
+      $.validator.addMethod("regxEmail", function (value, element, regexpr) {
+        return regexpr.test(value);
+      }, "Please enter valid Email Id");
+      $.validator.addMethod("regxLicenseNumber", function (value, element, regexpr) {
+        return regexpr.test(value);
+      }, "Please enter valid License Number");
+      $.validator.addMethod("regxAadharNumber", function (value, element, regexpr) {
+        return regexpr.test(value);
+      }, "Please enter valid Aadhar Number");
+      $.validator.addMethod("regxbadgeNumber", function (value, element, regexpr) {
+        return regexpr.test(value);
+      }, "Please enter valid badge Number");
 
-    jQuery.validator.setDefaults({
-      debug: true,
-      success: "valid"
-    });
-    $("#BasicInfo").validate({
-      rules: {
-     
-        firstName: {
-          required: true
-        },
-        middleName: {
-          required: true
-        },
-        lastName: {
-          required: true
-        },
-        DOB: {
-          required: true
-        },
-        contactNumber: {
-          required: true,
-        },
-        email: {
-          required: true,
-          regxEmail :/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
-        },
-        addressLine1: {
-          required: true,
-        },
-        country: {
-          required: true,
-        },
-        states: {
-          required: true,
-        },
-        district: {
-          required: true,
-        },
-        area: {
-          required: true,
-        },
-        city: {
-          required: true,
-        },
-        pincode: {
-          required: true,
-        },
-        licenseNumber: {
-          required: true,
-          regxLicenseNumber :/^[a-zA-Z]{2}[0-9]{13}$/,
-        },
-      
-        effectiveUpto: {
-          required: true,
-        },
-      
-      /*  badgeNumber: {
-          required: true,
-        },*/
-        verificationNumber: {
-          required: true,
-        },
-        aadharNumber: {
-          required: true,
-          regxAadharNumber :/^[0-9]{12}$/,
-        },
+      jQuery.validator.setDefaults({
+        debug: true,
+        success: "valid"
+      });
+      $("#BasicInfo").validate({
+        rules: {
        
-      },
-      errorPlacement: function (error, element) {
-        if (element.attr("name") === "firstName") {
-          error.insertAfter("#firstName");
-        }
-        if (element.attr("name") === "lastName") {
-          error.insertAfter("#lastName");
-        }
-        if (element.attr("name") === "middleName") {
-          error.insertAfter("#middleName");
-        }
-        if (element.attr("name") === "DOB") {
-          error.insertAfter("#DOB");
-        }
-        if (element.attr("name") === "contactNumber") {
-          error.insertAfter("#contactNumber");
-        }
-        if (element.attr("name") === "alternateNumber") {
-          error.insertAfter("#alternateNumber");
-        }
-        if (element.attr("name") === "email") {
-          error.insertAfter("#email");
-        }
-        if (element.attr("name") === "addressLine1") {
-          error.insertAfter("#addressLine1");
-        }
-        if (element.attr("name") === "country") {
-          error.insertAfter("#country");
-        }
-        if (element.attr("name") === "states") {
-          error.insertAfter("#states");
-        }
-        if (element.attr("name") === "district") {
-          error.insertAfter("#district");
-        }
-        if (element.attr("name") === "area") {
-          error.insertAfter("#area");
-        }
-        if (element.attr("name") === "city") {
-          error.insertAfter("#city");
-        }
-        if (element.attr("name") === "pincode") {
-          error.insertAfter("#pincode");
-        }
-        if (element.attr("name") === "effectiveUpto") {
-          error.insertAfter("#effectiveUpto");
-        }
-        if (element.attr("name") === "licenseNumber") {
-          error.insertAfter("#licenseNumber");
-        }
-        if (element.attr("name") === "aadharNumber") {
-          error.insertAfter("#aadharNumber");
-        }
-       {/* if (element.attr("name") === "badgeNumber") {
-          error.insertAfter("#badgeNumber");
-        }*/}
-        if (element.attr("name") === "verificationNumber") {
-          error.insertAfter("#verificationNumber");
-        }
+          corporate: {
+            required: true
+          },
+          workLocation: {
+            required: true
+          },
+          firstName: {
+            required: true
+          },
+          middleName: {
+            required: true
+          },
+          lastName: {
+            required: true
+          },
+          DOB: {
+            required: true
+          },
+          contactNumber: {
+            required: true,
+          },
+          email: {
+            regxEmail :/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
+          },
+          addressLine1: {
+            required: true,
+          },
+          country: {
+            required: true,
+          },
+          states: {
+            required: true,
+          },
+          district: {
+            required: true,
+          },
+          area: {
+            required: true,
+          },
+          city: {
+            required: true,
+          },
+          pincode: {
+            required: true,
+          },
+          licenseNumber: {
+            required: true,
+            regxLicenseNumber :/^[a-zA-Z]{2}[0-9]{13}$/,
+          },
+        
+          effectiveUpto: {
+            required: true,
+          },
+        
+          badgeNumber: {
+            regxbadgeNumber :/^[0-9]{6}$|^$/,
+          },
+          verificationNumber: {
+            required: true,
+          },
+          aadharNumber: {
+            required: true,
+            regxAadharNumber :/^[0-9]{12}$/,
+          },
+         
+        },
+        errorPlacement: function (error, element) {
+          if (element.attr("name") === "corporate") {
+            error.insertAfter("#corporate");
+          }
+          if (element.attr("name") === "workLocation") {
+            error.insertAfter("#workLocation");
+          }
+          if (element.attr("name") === "firstName") {
+            error.insertAfter("#firstName");
+          }
+          if (element.attr("name") === "lastName") {
+            error.insertAfter("#lastName");
+          }
+          if (element.attr("name") === "middleName") {
+            error.insertAfter("#middleName");
+          }
+          if (element.attr("name") === "DOB") {
+            error.insertAfter("#DOB");
+          }
+          if (element.attr("name") === "contactNumber") {
+            error.insertAfter("#contactNumber");
+          }
+          if (element.attr("name") === "alternateNumber") {
+            error.insertAfter("#alternateNumber");
+          }
+          if (element.attr("name") === "email") {
+            error.insertAfter("#email");
+          }
+          if (element.attr("name") === "addressLine1") {
+            error.insertAfter("#addressLine1");
+          }
+          if (element.attr("name") === "country") {
+            error.insertAfter("#country");
+          }
+          if (element.attr("name") === "states") {
+            error.insertAfter("#states");
+          }
+          if (element.attr("name") === "district") {
+            error.insertAfter("#district");
+          }
+          if (element.attr("name") === "area") {
+            error.insertAfter("#area");
+          }
+          if (element.attr("name") === "city") {
+            error.insertAfter("#city");
+          }
+          if (element.attr("name") === "pincode") {
+            error.insertAfter("#pincode");
+          }
+          if (element.attr("name") === "effectiveUpto") {
+            error.insertAfter("#effectiveUpto");
+          }
+          if (element.attr("name") === "licenseNumber") {
+            error.insertAfter("#licenseNumber");
+          }
+          if (element.attr("name") === "aadharNumber") {
+            error.insertAfter("#aadharNumber");
+          }
+          if (element.attr("name") === "badgeNumber") {
+            error.insertAfter("#badgeNumber");
+          }
+          if (element.attr("name") === "verificationNumber") {
+            error.insertAfter("#verificationNumber");
+          }
 
-      }
-    });
-    }else if(this.state.pathname === "employee"){
+        }
+      });
+    }
+    if(this.state.pathname === "employee"){
       $(".person").hide();
       $(".employee").show();
-    $.validator.addMethod("regxEmail", function (value, element, regexpr) {
-      return regexpr.test(value);
-    }, "Please enter valid Email Id");
-   
-    jQuery.validator.setDefaults({
-      debug: true,
-      success: "valid"
-    });
-    $("#BasicInfo").validate({
-      rules: {
+      $.validator.addMethod("regxEmail", function (value, element, regexpr) {
+        return regexpr.test(value);
+      }, "Please enter valid Email Id");
      
-        firstName: {
-          required: true
-        },
-        middleName: {
-          required: true
-        },
-        lastName: {
-          required: true
-        },
-        DOB: {
-          required: true
-        },
-        workLocation: {
-          required: true,
-        },
-        contactNumber: {
-          required: true,
-        },
-        alternateNumber: {
-          required: true,
-        },
+      jQuery.validator.setDefaults({
+        debug: true,
+        success: "valid"
+      });
+      $("#BasicInfo").validate({
+        rules: {
+       
+          firstName: {
+            required: true
+          },
+          middleName: {
+            required: true
+          },
+          lastName: {
+            required: true
+          },
+          DOB: {
+            required: true
+          },
+          workLocation: {
+            required: true,
+          },
+           corporate: {
+            required: true,
+          },
+          contactNumber: {
+            required: true,
+          },
+          alternateNumber: {
+            required: true,
+          },
 
-        email: {
-          required: true,
-          regxEmail :/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
+          email: {
+            required: true,
+            regxEmail :/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
+          },
+          department: {
+            required: true,
+          },
+          designation: {
+            required: true,
+          }, 
+          addressLine1: {
+            required: true,
+          },
+          country: {
+            required: true,
+          },
+          states: {
+            required: true,
+          },
+          district: {
+            required: true,
+          },
+          area: {
+            required: true,
+          },
+          city: {
+            required: true,
+          },
+          pincode: {
+            required: true,
+          },
+          employeeID: {
+            required: true,
+          },
+          preApprovedParameter: {
+            required: true,
+          },
+          preApprovedParameterValue: {
+            required: true,
+          },
+          approvingAuthorityId1: {
+            required: true,
+          },
+          approvingAuthorityId2: {
+            required: true,
+          },
+          approvingAuthorityId3: {
+            required: true,
+          },
+          
         },
-        department: {
-          required: true,
-        },
-        designation: {
-          required: true,
-        }, 
-        addressLine1: {
-          required: true,
-        },
-        country: {
-          required: true,
-        },
-        states: {
-          required: true,
-        },
-        district: {
-          required: true,
-        },
-        area: {
-          required: true,
-        },
-        city: {
-          required: true,
-        },
-        pincode: {
-          required: true,
-        },
-        employeeID: {
-          required: true,
-        },
-        preApprovedParameter: {
-          required: true,
-        },
-        preApprovedParameterValue: {
-          required: true,
-        },
-        approvingAuthorityId1: {
-          required: true,
-        },
-        approvingAuthorityId2: {
-          required: true,
-        },
-        approvingAuthorityId3: {
-          required: true,
-        },
-        
-      },
-      errorPlacement: function (error, element) {
-        if (element.attr("name") === "firstName") {
-          error.insertAfter("#firstName");
+        errorPlacement: function (error, element) {
+          if (element.attr("name") === "firstName") {
+            error.insertAfter("#firstName");
+          }
+          if (element.attr("name") === "lastName") {
+            error.insertAfter("#lastName");
+          }
+          if (element.attr("name") === "middleName") {
+            error.insertAfter("#middleName");
+          }
+          if (element.attr("name") === "DOB") {
+            error.insertAfter("#DOB");
+          }
+          if (element.attr("name") === "contactNumber") {
+            error.insertAfter("#contactNumber");
+          }
+          if (element.attr("name") === "email") {
+            error.insertAfter("#email");
+          }
+          if (element.attr("name") === "department") {
+            error.insertAfter("#department");
+          }
+          if (element.attr("name") === "designation") {
+            error.insertAfter("#designation");
+          }
+          if (element.attr("name") === "workLocation") {
+            error.insertAfter("#workLocation");
+          }
+          if (element.attr("name") === "corporate") {
+            error.insertAfter("#corporate");
+          }
+             if (element.attr("name") === "addressLine1") {
+            error.insertAfter("#addressLine1");
+          }
+          if (element.attr("name") === "country") {
+            error.insertAfter("#country");
+          }
+          if (element.attr("name") === "states") {
+            error.insertAfter("#states");
+          }
+          if (element.attr("name") === "district") {
+            error.insertAfter("#district");
+          }
+          if (element.attr("name") === "area") {
+            error.insertAfter("#area");
+          }
+          if (element.attr("name") === "city") {
+            error.insertAfter("#city");
+          }
+          if (element.attr("name") === "pincode") {
+            error.insertAfter("#pincode");
+          }
+          if (element.attr("name") === "employeeID") {
+            error.insertAfter("#employeeID");
+          }
+          if (element.attr("name") === "preApprovedParameter") {
+            error.insertAfter("#preApprovedParameter");
+          }
+          if (element.attr("name") === "preApprovedParameterValue") {
+            error.insertAfter("#preApprovedParameterValue");
+          }
+          if (element.attr("name") === "approvingAuthorityId1") {
+            error.insertAfter("#approvingAuthorityId1");
+          }
+          if (element.attr("name") === "approvingAuthorityId2") {
+            error.insertAfter("#approvingAuthorityId2");
+          }
+          if (element.attr("name") === "approvingAuthorityId3") {
+            error.insertAfter("#approvingAuthorityId3");
+          }
+     
         }
-        if (element.attr("name") === "lastName") {
-          error.insertAfter("#lastName");
-        }
-        if (element.attr("name") === "middleName") {
-          error.insertAfter("#middleName");
-        }
-        if (element.attr("name") === "DOB") {
-          error.insertAfter("#DOB");
-        }
-        if (element.attr("name") === "contactNumber") {
-          error.insertAfter("#contactNumber");
-        }
-        if (element.attr("name") === "email") {
-          error.insertAfter("#email");
-        }
-        if (element.attr("name") === "department") {
-          error.insertAfter("#department");
-        }
-        if (element.attr("name") === "designation") {
-          error.insertAfter("#designation");
-        }
-        if (element.attr("name") === "workLocation") {
-          error.insertAfter("#workLocation");
-        }
-           if (element.attr("name") === "addressLine1") {
-          error.insertAfter("#addressLine1");
-        }
-        if (element.attr("name") === "country") {
-          error.insertAfter("#country");
-        }
-        if (element.attr("name") === "states") {
-          error.insertAfter("#states");
-        }
-        if (element.attr("name") === "district") {
-          error.insertAfter("#district");
-        }
-        if (element.attr("name") === "area") {
-          error.insertAfter("#area");
-        }
-        if (element.attr("name") === "city") {
-          error.insertAfter("#city");
-        }
-        if (element.attr("name") === "pincode") {
-          error.insertAfter("#pincode");
-        }
-        if (element.attr("name") === "employeeID") {
-          error.insertAfter("#employeeID");
-        }
-        if (element.attr("name") === "preApprovedParameter") {
-          error.insertAfter("#preApprovedParameter");
-        }
-        if (element.attr("name") === "preApprovedParameterValue") {
-          error.insertAfter("#preApprovedParameterValue");
-        }
-        if (element.attr("name") === "approvingAuthorityId1") {
-          error.insertAfter("#approvingAuthorityId1");
-        }
-        if (element.attr("name") === "approvingAuthorityId2") {
-          error.insertAfter("#approvingAuthorityId2");
-        }
-        if (element.attr("name") === "approvingAuthorityId3") {
-          error.insertAfter("#approvingAuthorityId3");
-        }
-   
-      }
-    });
-    }else if(this.state.pathname === "guest"){
+      });
+    }
+    if(this.state.pathname === "guest"){
       $(".person").hide();
       $(".guest").show();
     $.validator.addMethod("regxEmail", function (value, element, regexpr) {
       return regexpr.test(value);
     }, "Please enter valid Email Id");
+    $.validator.addMethod("regxdistrict", function (value, element, arg) {
+      return arg !== value;
+    }, "Please select the workLocation");
     jQuery.validator.setDefaults({
       debug: true,
       success: "valid"
@@ -438,13 +456,21 @@ class PersonMaster extends Component {
         middleName: {
           required: true
         },
+        workLocation: {
+          required: true,
+          regxdistrict:"--Select Work Location--"
+        },
         lastName: {
           required: true
         },
        
+        corporate: {
+          required: true,
+        },
         contactNumber: {
           required: true,
         },
+
         email: {
           required: true,
           regxEmail :/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$|^$)/,
@@ -465,6 +491,12 @@ class PersonMaster extends Component {
         }
         if (element.attr("name") === "email") {
           error.insertAfter("#email");
+        }
+          if (element.attr("name") === "workLocation") {
+          error.insertAfter("#workLocation");
+        } 
+         if (element.attr("name") === "corporate") {
+          error.insertAfter("#corporate");
         }
       }
     });
@@ -482,21 +514,19 @@ class PersonMaster extends Component {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
-   getCompany() {
-        axios.get('/api/companysettings')
-            .then((response) => {
-                console.log('company', response.data)
-                this.setState({
-                    companyId : response.data._id,
-                    companyDetails: response.data,
-                    company: response.data.companyName,
-                    companyLocationArray: response.data.companyLocationsInfo
-                })
-            })
-            .catch((error) => {
-
-            })
-    }
+  getCompany() {
+    axios.get('/api/companysettings')
+    .then((response) => {
+      this.setState({
+          companyId : response.data._id,
+          companyDetails: response.data,
+          company: response.data.companyName,
+          companyLocationArray: response.data.companyLocationsInfo
+      })
+    })
+    .catch((error) => {
+    })
+  }
   getUploadFileAttachPercentage() {
     var uploadProgressPercent = localStorage.getItem("uploadUserImageProgressPercent");
     if (uploadProgressPercent) {
@@ -637,7 +667,9 @@ class PersonMaster extends Component {
     if ($('#BasicInfo').valid()  && this.state.pincodeExists) {
       if (this.state.pathname === 'employee' ) {
         var userDetails = {
-          // vendorId                 : this.state.corporateID,
+          company_Id               : this.state.corporate_Id,
+          companyID                : this.state.companyID,
+          companyName              : this.state.corporate,
           type                     : this.state.pathname,
           firstName                : this.state.firstName,
           middleName               : this.state.middleName,
@@ -659,8 +691,9 @@ class PersonMaster extends Component {
           preApprovedParameter     : this.state.preApprovedParameter,
           preApprovedParameterValue: this.state.preApprovedParameterValue,
           loginCredential          : this.state.loginCredential,
-          company_Id               : this.state.corporate,
           workLocation             : this.state.workLocation,
+          workLocationId           : this.state.workLocationId,
+          status                   : "Active",
 
           address                 : {
                                       addressLine1    : this.state.addressLine1,
@@ -681,25 +714,23 @@ class PersonMaster extends Component {
 
 
         }
-        console.log("userDetails",userDetails);
-
         if(this.state.loginCredential === "Yes")
-
-
-            {
-              this.createLogin(this.state.loginCredential);
-              userDetails.userId = this.state.userId; 
-         }
+        {
+          this.createLogin(this.state.loginCredential);
+          userDetails.userId = this.state.userId; 
+        }
       }else if(this.state.pathname === 'driver' ){
 
         var userDetails = {
           type            : this.state.pathname,
           firstName       : this.state.firstName,
-
+          company_Id      : this.state.corporate_Id,
+          companyID       : this.state.companyID,
+          companyName     : this.state.corporate,
           middleName      : this.state.middleName,
           lastName        : this.state.lastName,
           DOB             : this.state.DOB,
-          email           : this.state.email,
+          email           : this.state.email ? this.state.email : "" ,
           gender          : this.state.toggleButtonValue,
           contactNo       : this.state.contactNumber,
           altContactNo    : this.state.alternateNumber,
@@ -734,30 +765,40 @@ class PersonMaster extends Component {
                               verificationNumber    : this.state.verificationNumber,
                               verificationProof     : this.state.verificationProof
                             },
+          workLocation             : this.state.workLocation,
+          workLocationId           : this.state.workLocationId,
+          status                   : "Active",
+          username                 : "MOBILE"
+
          }
           this.createLogin("Yes");
           userDetails.userId = this.state.userId;
       }else{
         var userDetails = {
-            vendorId        : this.state.vendorId,
+            company_Id      : this.state.corporate_Id,
+            companyID       : this.state.companyID,
+            companyName     : this.state.corporate,
             firstName       : this.state.firstName,
             middleName      : this.state.middleName,
             lastName        : this.state.lastName,
             gender          : this.state.toggleButtonValue,
             contactNo       : this.state.contactNumber,
             altContactNo    : this.state.alternateNumber,
+            workLocation            : this.state.workLocation,
+            workLocationId            : this.state.workLocationId,
             // whatsappNo      : this.state.contactNumber,
             type            : this.state.pathname,
             email           : this.state.email,
             profilePhoto    : this.state.profilePhoto,
+            status                   : "Active",
 
           }
         }  
         
          axios.post('/api/personmaster/post', userDetails)
           .then((response) => {
-
-            swal(this.Capitalize(this.state.pathname) + " Added Sucessfully");
+            console.log('response',response,"userDetails",userDetails);
+            swal(this.Capitalize(this.state.pathname) + " Added Successfully");
 
               this.setState({
                 firstName       : "",
@@ -814,6 +855,7 @@ class PersonMaster extends Component {
         lastname      : this.state.lastName,
         mobNumber     : this.state.contactNumber,
         email         : this.state.email,
+        companyID     : this.state.companyID,
         pwd           : "fivebees123",
         role          : this.state.pathname,
         status        : 'active',
@@ -824,7 +866,6 @@ class PersonMaster extends Component {
     .then((response)=>{
        this.setState({
           userId : response.data.ID
-        },()=>{
         })
         if(response.data.message =='USER_CREATED'){
        
@@ -836,13 +877,15 @@ class PersonMaster extends Component {
     
   }
   updatePerson(event){
-  event.preventDefault();
-  if($('#BasicInfo').valid()  && this.state.pincodeExists){
+    event.preventDefault();
+    if($('#BasicInfo').valid()  && this.state.pincodeExists){
     if(this.state.personID)
     {
        if (this.state.pathname === 'employee' ) {
           var userDetails = {
-            // vendorId        : this.state.companyId,
+            company_Id      : this.state.corporate_Id,
+            companyID       : this.state.companyID,
+            companyName     : this.state.corporate,
             personID        : this.state.personID,
             firstName       : this.state.firstName,
             middleName      : this.state.middleName,
@@ -865,7 +908,8 @@ class PersonMaster extends Component {
             approvingAuthorityId3    : this.state.approvingAuthorityId3,
             loginCredential         : this.state.loginCredential,
             workLocation            : this.state.workLocation,
-            company_Id            : this.state.corporate,
+            workLocationId          : this.state.workLocationId,
+            status                  : "Active",
             address         : [{
                                 addressLine1    : this.state.addressLine1,
                                 addressLine2    : this.state.addressLine2,
@@ -888,6 +932,11 @@ class PersonMaster extends Component {
        }else if(this.state.pathname === 'driver' ){
           var userDetails = {
             personID        : this.state.personID,
+            company_Id      : this.state.corporate_Id,
+            companyID       : this.state.companyID,
+            companyName     : this.state.corporate,
+            workLocation             : this.state.workLocation,
+            workLocationId           : this.state.workLocationId,
             firstName       : this.state.firstName,
             middleName      : this.state.middleName,
             lastName        : this.state.lastName,
@@ -899,6 +948,7 @@ class PersonMaster extends Component {
             profilePhoto    : this.state.profilePhoto,
             identityProof   : this.state.identityProof,
             badgeNumber     : this.state.badgeNumber,
+            email           : this.state.email ? this.state.email : "" ,
 
             address         : {
                                 addressLine1    : this.state.addressLine1,
@@ -928,12 +978,16 @@ class PersonMaster extends Component {
                               verificationProof     : this.state.verificationProof
                             },
 
-            updatedBy       : localStorage.getItem("user_ID")
+            updatedBy       : localStorage.getItem("user_ID"),
+            status          : "Active",
+            username        : "MOBILE"
           }
-          console.log("userDetails",userDetails);
+          
        }else{
           var userDetails = {
-            vendorId        : this.state.companyId,
+            company_Id       : this.state.corporate_Id,
+            companyID       : this.state.companyID,
+            companyName     : this.state.corporate,
             personID        : this.state.personID,
             firstName       : this.state.firstName,
             middleName      : this.state.middleName,
@@ -943,7 +997,10 @@ class PersonMaster extends Component {
             altContactNo    : this.state.alternateNumber ? this.state.alternateNumber:"",
             whatsappNo      : this.state.whatsappNumber ? this.state.whatsappNumber :"",
             email           : this.state.email,
+            status          : "Active",
             profilePhoto    : this.state.profilePhoto,
+            workLocation            : this.state.workLocation,
+            workLocationId            : this.state.workLocationId,
             updatedBy       : localStorage.getItem("user_ID")
           }
         console.log("userDetails==>",userDetails);
@@ -997,7 +1054,7 @@ class PersonMaster extends Component {
           },()=>{
             this.props.history.push("/"+this.state.pathname+"/lists")
           })
-           swal(this.Capitalize(this.state.pathname) +" Details Updated Sucessfully");
+           swal(this.Capitalize(this.state.pathname) +" Details Updated Successfully");
         })
         .catch((error) => {
           console.log("error",error)
@@ -1098,7 +1155,6 @@ class PersonMaster extends Component {
          // $('.fullpageloader').show();
         var name = event.target.name
         var docBrowse = [];
-        console.log("event.currentTarget.files", event.target.name,event.currentTarget.files);
         if (event.currentTarget.files && event.currentTarget.files[0]) {
             for (var i = 0; i < event.currentTarget.files.length; i++) {
                 var file = event.currentTarget.files[i];
@@ -1121,13 +1177,9 @@ class PersonMaster extends Component {
 
             if (event.currentTarget.files) {
                 main().then(formValues => {
-                  console.log("name->",name)
                     var docBrowse = this.state[name];
-                    console.log("docBrowse",docBrowse);
                    for (var k = 0; k < formValues.length; k++) {
                         docBrowse.push(formValues[k].docBrowse)
-                        console.log("formValues[k]",formValues[k])
-                        console.log("formValues[k].docBrowse",formValues[k].docBrowse)
                     }
 
                     this.setState({
@@ -1251,19 +1303,19 @@ class PersonMaster extends Component {
     }
   }
   componentWillReceiveProps(nextProps,prevProps) {
-    console.log("this.this.props.",this.props);
-   
-    if(this.props.entity === "driver")
+    console.log("nextProps",nextProps)
+    if(this.state.pathname === "driver")
     {
       $(".person").hide();
       $(".driver").show();
-    }else if(this.props.entity === "employee"){
+    }
+     if(this.state.pathname === "employee"){
       $(".person").hide();
       $(".employee").show();
-    }else if(this.props.entity === "guest"){
+    }
+     if(this.state.pathname === "guest"){
       $(".person").hide();
       $(".guest").show();
-       
     }
     this.edit();
     this.handleChange = this.handleChange.bind(this);
@@ -1282,7 +1334,9 @@ class PersonMaster extends Component {
         if(this.state.pathname === 'driver' || this.state.pathname === 'employee' )
         {
             this.setState({
-            companyId     : response.data.vendorId ? response.data.vendorId : this.state.companyId,
+            companyID     : response.data.companyID,
+            corporate_Id   : response.data.company_Id, 
+            corporate       : response.data.companyName, 
             firstName       : response.data.firstName,
             middleName      : response.data.middleName,
             lastName        : response.data.lastName,
@@ -1301,7 +1355,7 @@ class PersonMaster extends Component {
             designation     : response.data.designationId,
             employeeID      : response.data.employeeId,
             workLocation    : response.data.workLocation,
-            corporateId    : response.data.corporateId,
+            workLocationId    : response.data.workLocationId,
             badgeNumber     : response.data.badgeNumber,
             verificationNumber     :response.data.verification? response.data.verification.verificationNumber: "",
             type            : response.data.pathname,
@@ -1334,6 +1388,8 @@ class PersonMaster extends Component {
             profilePhoto    : response.data.profilePhoto,
             createdBy       : localStorage.getItem("user_ID")
           },()=>{
+            this.getEntityLocation(this.state.corporate_Id);
+
             if(response.data.address.length > 0)
             {
              this.getStates(response.data.address[0].countryCode);
@@ -1343,51 +1399,27 @@ class PersonMaster extends Component {
             
           })
         }else{
-          console.log("response.data",response.data);
+          console.log("response.data=>",response.data);
 
           this.setState({
+            companyID    : response.data.companyID,
+            corporate_Id   : response.data.company_Id,
+            workLocation    : response.data.workLocation,
+            workLocationId    : response.data.workLocationId, 
+            corporate       : response.data.companyName, 
             firstName       : response.data.firstName,
             middleName      : response.data.middleName,
             lastName        : response.data.lastName,
             DOB             : moment(response.data.DOB).format("YYYY-MM-DD"),
             toggleButtonValue: response.data.gender,
             contactNumber   : response.data.contactNo?response.data.contactNo:"",
-            alternateNumber : response.data.altContactNo?response.data.altContactNo:"",
-            bookingApprovalRequired : response.data.bookingApprovalRequired,
-            getSelectedTrip :   response.data.bookingApprovalRequired,
-            approvingAuthorityId  : response.data.approvingAuthorityId,
-            whatsappNumber  : response.data.whatsappNo?response.data.whatsappNo:"",
-            department      : response.data.departmentId,
-            designation     : response.data.designationId,
-            employeeID      : response.data.employeeId,
-            type            : response.data.pathname,
-            addressLine1    : response.data.address[0] ? response.data.address[0].addressLine1 : "",
-            addressLine2    : response.data.address[0] ? response.data.address[0].addressLine2 : "",
-            landmark        : response.data.address[0] ? response.data.address[0].landmark : "",
-            area            : response.data.address[0] ? response.data.address[0].area : "",
-            city            : response.data.address[0] ? response.data.address[0].city : "",
-            district        : response.data.address[0] ? response.data.address[0].district : "",
-            states          : response.data.address[0] ? response.data.address[0].stateCode+"|"+response.data.address[0].state : "",
-            country         : response.data.address[0] ? response.data.address[0].countryCode+"|"+ response.data.address[0].country : "",
-            pincode         : response.data.address[0] ? response.data.address[0].pincode : "",
+            type            : response.data.pathname, 
             email           : response.data.email,
-            preApprovedAmount: response.data.preApprovedAmount,
-
-            licenseNumber   : response.data.drivingLicense.length>0 ? response.data.drivingLicense[0].licenseNo : "",
-            effectiveUpto   : moment(response.data.effectiveTo).format("YYYY-MM-DD"),
-            //panNumber       : response.data.pan[0] ? response.data.pan[0].PAN : "",
-            aadharNumber    : response.data.aadhar[0] ? response.data.aadhar[0].aadharNo : "",
-            //voterId         : response.data.voterID[0] ? response.data.voterID[0].voterID : "",
-            //passportNumber  : response.data.passport[0] ? response.data.passport[0].passportNo : [],
-            licenseProof    : response.data.drivingLicense[0] ? response.data.drivingLicense[0].licenseProof : [],
-            //panProof        : response.data.pan[0] ? response.data.pan[0].PANProof : [],
-            aadharProof     : response.data.aadhar[0] ? response.data.aadhar[0].aadharProof : [],
-            //voterIDProof    : response.data.voterID[0] ? response.data.voterID[0].voterIDProof : [],
-            //passportProof   : response.data.passport[0] ? response.data.passport[0].passportProof : [],
             profilePhoto    : response.data.profilePhoto,
             createdBy       : localStorage.getItem("user_ID")
           },()=>{
-            
+                  this.getEntityLocation(this.state.corporate_Id);
+
           })
 
         }
@@ -1427,7 +1459,6 @@ class PersonMaster extends Component {
     event.preventDefault();
         var name = event.target.getAttribute("name");
         var deleteDoc = this.state[name];
-        console.log(deleteDoc)
         const index = deleteDoc.indexOf(event.target.getAttribute("id"));
         if (index > -1) {
             deleteDoc.splice(index, 1);
@@ -1440,7 +1471,6 @@ class PersonMaster extends Component {
     event.preventDefault();
         var name = event.target.getAttribute("name");
         var deleteDoc = this.state[name];
-        console.log(deleteDoc)
         const index = deleteDoc.indexOf(event.target.getAttribute("id"));
         if (index > -1) {
             deleteDoc.splice(index, 1);
@@ -1492,7 +1522,6 @@ class PersonMaster extends Component {
     const stateCode = $(target).val();
     const countryCode = $("#countryVal").val();
     this.getDistrict(stateCode, countryCode);
-
   }
   getStates(StateCode) {
     axios.get("http://locations2.iassureit.com/api/states/get/list/" + StateCode)
@@ -1539,7 +1568,6 @@ class PersonMaster extends Component {
       })
   }
   Capitalize(str){
-    console.log("str",str)
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   getSelectedGender(val,event) {
@@ -1552,7 +1580,6 @@ class PersonMaster extends Component {
       this.setState({
         getSelectedTrip : val
       })
-      
   }
   getSelectedLoginValue(val,event) {
 
@@ -1638,7 +1665,6 @@ class PersonMaster extends Component {
                         if (file) {
                             var objTitle = { fileInfo: file }
                             docBrowse.push(objTitle);
-                          console.log("docBrowse",docBrowse)
 
                         } else {
                             swal("Files not uploaded");
@@ -1651,12 +1677,10 @@ class PersonMaster extends Component {
 
             if (event.currentTarget.files) {
                 main().then(formValues => {
-                    console.log("formValues",formValues);
                     var docBrowse = this.state[name];
                     this.setState({
                         [name]: formValues[0].docBrowse
                     },()=>{
-                        console.log("profilePhoto0",this.state.profilePhoto)
                     })
                 });
 
@@ -1707,8 +1731,8 @@ class PersonMaster extends Component {
                 }
             }
         }
-    }
-    deleteDocSingle(event){
+   }
+  deleteDocSingle(event){
     event.preventDefault();
         var name = event.target.getAttribute("name");
       
@@ -1746,52 +1770,42 @@ class PersonMaster extends Component {
         event.preventDefault();
         const target = event.target;
         const name = target.name;
+
+        var e = document.getElementById("entity");
+        var comp_Id = e.options[e.selectedIndex].getAttribute("comp_Id");
+        var compID = e.options[e.selectedIndex].getAttribute("compID");
+        // console.log("companyID..",compID);
+        var vendorLocation = document.getElementById("vendorLocation");
+        var locationID = vendorLocation.options[vendorLocation.selectedIndex].getAttribute("locationID");
         var value = event.target.value;
         this.setState({
             [name]: event.target.value,
-             // [name]: $(event.target.getattribute(id)
-        },()=>{
-            if(this.state[name] == this.state.corporate){
-                this.getCorporateLocation(value, '');
-                this.setState({
-                    corporateLocation : ''
-                })
-                // console.log("this.state.corporateLocation",this.state.corporateLocation);
-            }else if(this.state[name] == this.state.corporateLocation && this.state.corporate){
-                this.getCorporateLocation(this.state.corporate, this.state.corporateLocation);
-            }
-        });
-    }
- /*   handlecorporateChange(event) {
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
-        var id = event.target.value;
+            workLocationId:locationID,
+            corporateID:compID,
+            companyID:compID,
+            corporate_Id:comp_Id
 
-        this.setState({
-            [name]:event.target.id,
         },()=>{
-            if(this.state[name] == this.state.corporateID){
-                this.getCorporateLocation(id, '');
-                this.setState({
-                    corporateLocation : ''
-                })
-                // console.log("this.state.corporateLocation",this.state.corporateLocation);
-            }else if(this.state[name] == this.state.corporateLocation && this.state.corporateID){
-                this.getCorporateLocation(this.state.corporateID, this.state.corporateLocation);
-            }
-        });
-    }*/
-    getCorporate(entityCode){
-        axios.get('/api/entitymaster/get/corporate')
+                this.getEntityLocation(this.state.corporate_Id);
+            })
+  }
+  getEntity(entityCode){
+    if(this.state.pathname=="employee"){
+      var entity = "corporate"
+    }else if(this.state.pathname=="driver"){
+      var entity = "vendor"
+    }else{
+      var entity = "corporate"
+    }
+     
+    axios.get('/api/entitymaster/get/'+entity)
     .then((response) => {
       this.setState({
-        corporateArray: response.data
+        entityArray: response.data,
+        entity     : entity
       },()=>{
-        console.log("corporateArray.....",this.state.corporateArray);
-        if(this.state.corporateArray && this.state.corporateArray.lenght>0){
-          var EntityCode=this.state.corporateArray.filter((a)=>a.entityCode== entityCode);
-           console.log('EntityCode', EntityCode);
+        if(this.state.entityArray && this.state.entityArray.lenght>0){
+          var EntityCode=this.state.entityArray.filter((a)=>a.entityCode== entityCode);
         }
       })
 
@@ -1799,100 +1813,75 @@ class PersonMaster extends Component {
     .catch((error) => {
       
     })
-    }
-    getCorporateLocation(vendorId, vendorLocationId){
+  }
+  getEntityLocation(companyId){
+    // console.log("vendorId",companyId)
+      axios.get('/api/entitymaster/get/one/'+companyId)
+      .then((response)=>{
+          this.setState({
+              corporateLocationArray: response.data
+          })
+      })
+      .catch((error)=>{
 
-        axios.get('/api/entitymaster/get/one/'+vendorId)
-        .then((response)=>{
-            this.setState({
-                selectedCorporate : response.data,
-                corporateLocationArray: response.data.locations
-            },()=>{
-                console.log("corporateLocationArray",this.state.corporateLocationArray);
-                if(this.state.corporateLocationArray && this.state.corporateLocationArray.length>0){
-                    var selectedCorporateLocation = this.state.corporateLocationArray.filter((a)=> a._id == vendorLocationId);
-                    console.log('selectedCorporateLocation', selectedCorporateLocation);
-                    this.setState({
-                        selectedCorporateLocation : selectedCorporateLocation[0]
-                    })
-                }else{
-                    this.setState({
-                        selectedCorporateLocation : []
-                    })
-                }
-            })
-        })
-        .catch((error)=>{
-
-        })
-    }
-
+      })
+  }
   render() {
-    console.log("this.props",this.props)
+    console.log("this.state.pathname",this.state.pathname);
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      {
+        this.state.pathname ?
         <div className="row">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
             <section className="content">
               <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                  <h4 className="weighttitle col-lg-9 col-md-6 col-xs-6 col-sm-6 NOpadding-right">{"Add  "+this.Capitalize(this.state.pathname)}</h4>
+                  <h4 className="weighttitle col-lg-9 col-md-6 col-xs-6 col-sm-6 NOpadding-right">{"Add  "+(this.state.pathname ? this.Capitalize(this.state.pathname): "")}</h4>
                   <ul className="nav tabNav nav-pills col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>
                     <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk Upload</a></li>
                   </ul>
                 </div>
-               {/* { this.state.pathname=="employee" ?
-                <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                  <SelectCorporate />
-                </div>
-                : 
-                null
-              }*/}
-              {this.state.pathname=="employee" ?
-
                 <form className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12" id="SelectVendor">
-                    <div className="form-margin col-lg-4 col-md-6 col-sm-12 col-xs-12" >
-                        <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Corporate <sup className="astrick">*</sup></label>
-                        <select id="vendor" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.corporate} ref="corporate" name="corporate" onChange={this.handleworklocationChange.bind(this)}>
-                            <option>--Select Corporate--</option>
+                    <div className="form-margin col-lg-4 col-md-6 col-sm-12 col-xs-12 driver employee" >
+                      <div id="corporate">
+                        <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">{this.state.pathname=="driver" ? "Vendor" : "Corporate"} <sup className="astrick">*</sup></label>
+                        <select id="entity" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.corporate} ref="corporate" name="corporate" onChange={this.handleworklocationChange.bind(this)}>
+                            <option>{"--Select "+(this.state.pathname=="driver" ? "Vendor" : "Corporate")+" --"}</option>
                             {
-                                this.state.corporateArray && this.state.corporateArray.length > 0 ?
-                                    this.state.corporateArray.map((data, i)=>{
+                                this.state.entityArray && this.state.entityArray.length > 0 ?
+                                    this.state.entityArray.map((data, i)=>{
                                         return(
-                                            <option key={i} value={data._id}>{data.companyName}</option>
-                                            // <option key={i} id={data.entityCode}>{data.entityCode}</option>
+                                            <option key={i} compID={data.companyID} comp_Id={data._id} value={data.companyName}>{data.companyName}</option>
                                         );
                                     })
                                 :
                                 null
                             }
                         </select>
+                      </div>
                     </div>
-                    <div className="form-margin col-lg-4 col-md-6 col-sm-12 col-xs-12 marbtm30" >
-                       <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Work Location <sup className="astrick">*</sup></label>
+                    <div className="form-margin col-lg-4 col-md-6 col-sm-12 col-xs-12 marbtm30 driver employee" >
+                      <div id="workLocation">
+                        <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Work Location <sup className="astrick">*</sup></label>
                         <select id="vendorLocation" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.workLocation} ref="workLocation" name="workLocation" onChange={this.handleworklocationChange.bind(this)}>
                             <option>--Select Work Location--</option>
                             {
-                                this.state.corporateLocationArray && this.state.corporateLocationArray.length > 0 ?
-                                    this.state.corporateLocationArray.map((data, i)=>{
+                                this.state.corporateLocationArray && this.state.corporateLocationArray.locations.length > 0 ?
+                                    this.state.corporateLocationArray.locations.map((data, i)=>{
+                                      // console.log("data",data)
                                         return(
-                                            <option key={i} value={data._id}>{((data.locationType).match(/\b(\w)/g)).join('')} - {data.area} {data.city}, {data.stateCode} - {data.countryCode}  </option>
+                                            <option key={i} locationID={data._id} value={((data.locationType).match(/\b(\w)/g)).join('')+"-"+data.area+" "+data.city+" "+data.stateCode+"-"+data.countryCode}>{((data.locationType).match(/\b(\w)/g)).join('')} - {data.area} {data.city}, {data.stateCode} - {data.countryCode}  </option>
                                         );
                                     })
                                 :
                                 null
                             }
                         </select>
+                      </div>
                     </div>
-                    
-                   {/* <div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <button onClick={this.submit.bind(this)} className="btn button3 pull-right">Save & Next</button>
-                    </div>*/}
                 </form>
-                :
-                null
-               } 
                 <section className="Content" >
                   <div className="row tab-content">
                     <div id="manual" className="tab-pane fade in active col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
@@ -1957,7 +1946,7 @@ class PersonMaster extends Component {
                                   </div>
                                   <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 driver guest employee person" >
                                     <div id="email"> 
-                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Email <i className="astrick">*</i>
+                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Email {this.state.pathname=="driver" ? "" : <i className="astrick">*</i>}
                                         <a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="testemail@gmail.com" className="fa fa-question-circle"></i> </a>
 
                                       </label>
@@ -1970,7 +1959,7 @@ class PersonMaster extends Component {
                                   <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 uploadImage nopadding ">
                                     <div className="col-lg-12 col-md-2 col-sm-12 col-xs-12 driver employee guest person nopadding ">
                                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 profileImageDiv" id="LogoImageUpOne">
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 profileImageDiv" id="LogoImageUpEmployee">
                                             <div><i className="fa fa-camera"></i> <br /><p>UPLOAD PHOTO</p></div>
                                             <input onChange={this.docBrowseSingle.bind(this)}  id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="profilePhoto" />
                                         </div>
@@ -2106,25 +2095,7 @@ class PersonMaster extends Component {
                                         </label>
                                       </div>
                                     </div>
-                                   {/* <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 employee  person">
-                                       <div id="workLocation">
-                                        <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Work Location <i className="astrick">*</i></label>
-                                        
-                                        <select  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.workLocation} ref="workLocation" name="workLocation" onChange={this.handleChange.bind(this)}>
-                                            <option hidden="hidden">--Select Location--</option>
-                                            {
-                                                this.state.companyLocationArray && this.state.companyLocationArray.length > 0 ?
-                                                    this.state.companyLocationArray.map((data, i) => {
-                                                        return (
-                                                            <option key={i} value={((data.locationType).match(/\b(\w)/g)).join('')+"-"+data.area+"-" +data.city+"-"+data.stateCode+"-"+data.countryCode}>{((data.locationType).match(/\b(\w)/g)).join('')} - {data.area} {data.city}, {data.stateCode} - {(data.countryCode)}  </option>
-                                                        );
-                                                    })
-                                                    :
-                                                    null
-                                            }
-                                        </select>
-                                      </div>
-                                    </div>*/}
+                      
                                 </div>
                                 <div className="form-margin col-lg-9 col-md-12 col-sm-12 col-xs-12  employee person NOpadding-left NOpadding-right">
                                     <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 employee  person">
@@ -2327,9 +2298,9 @@ class PersonMaster extends Component {
                                   <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 driver  person">
                                     <div id="badgeNumber">  
                                       <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Badge Number
-                                        {/*<a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="" className="fa fa-question-circle"></i> </a>*/}
+                                        <a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="056683" className="fa fa-question-circle"></i> </a>
                                       </label>
-                                      <input type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.badgeNumber} ref="badgeNumber" name="badgeNumber" placeholder="" onChange={this.handleChange} />
+                                      <input type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="056683" value={this.state.badgeNumber} ref="badgeNumber" name="badgeNumber" placeholder="" onChange={this.handleChange} />
                                     </div>
                                   </div>
                                   <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 driver  person">
@@ -2354,20 +2325,20 @@ class PersonMaster extends Component {
                                   </div>
                                   {
                                     this.state.licenseProof && this.state.licenseProof.length > 0 ?
-                                        this.state.licenseProof.map((logo, i) => {
+                                        this.state.licenseProof.map((data, i) => {
                                             return (
                                                 <div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                        <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={logo} name="licenseProof" onClick={this.deleteDoc.bind(this)}>x</label>
+                                                        <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={data} name="licenseProof" onClick={this.deleteDoc.bind(this)}>x</label>
                                                         {
-                                                          (logo ? logo.split('.').pop() : "") === "pdf" || (logo ? logo.split('.').pop() : "") === "PDF" ?
+                                                          (data ? data.split('.').pop() : "") === "pdf" || (data ? data.split('.').pop() : "") === "PDF" ?
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdfContainerPM" id="LogoImageUpOne">
                                                               <img src="/images/pdfImg.png"/>
-                                                              <span>{(logo ? logo.split('.').pop() : "")}</span>
+                                                              <span>{(data ? data.split('.').pop() : "")}</span>
                                                           </div>
                                                           :
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos2" id="licenseProof">
-                                                            <img src={logo} className="img-responsive logoStyle2" />
+                                                            <img src={data} className="img-responsive logoStyle2" />
                                                           </div>
                                                         }
 
@@ -2407,20 +2378,20 @@ class PersonMaster extends Component {
 
                                     {
                                       this.state.aadharProof && this.state.aadharProof.length > 0 ?
-                                          this.state.aadharProof.map((logo, i) => {
+                                          this.state.aadharProof.map((data, i) => {
                                               return (
                                                   <div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                          <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={logo} name="aadharProof" onClick={this.deleteDoc.bind(this)}>x</label>
+                                                          <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={data} name="aadharProof" onClick={this.deleteDoc.bind(this)}>x</label>
                                                           {
-                                                          (logo ? logo.split('.').pop() : "") === "pdf" || (logo ? logo.split('.').pop() : "") === "PDF" ?
+                                                          (data ? data.split('.').pop() : "") === "pdf" || (data ? data.split('.').pop() : "") === "PDF" ?
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdfContainerPM" id="LogoImageUpOne">
                                                               <img src="/images/pdfImg.png"/>
-                                                              <span>{(logo ? logo.split('.').pop() : "")}</span>
+                                                              <span>{(data ? data.split('.').pop() : "")}</span>
                                                           </div>
                                                           :
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos2" id="aadharProof">
-                                                              <img src={logo} className="img-responsive logoStyle2" />
+                                                              <img src={data} className="img-responsive logoStyle2" />
                                                           </div>
                                                          }
                                                           
@@ -2461,21 +2432,21 @@ class PersonMaster extends Component {
 
                                     {
                                       this.state.verificationProof && this.state.verificationProof.length > 0 ?
-                                          this.state.verificationProof.map((logo, i) => {
+                                          this.state.verificationProof.map((data, i) => {
                                               return (
                                                   <div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                          <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={logo} name="verificationProof" title="delete" onClick={this.deleteDoc.bind(this)}>x</label>
+                                                          <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={data} name="verificationProof" title="delete" onClick={this.deleteDoc.bind(this)}>x</label>
                                                           {
-                                                          (logo ? logo.split('.').pop() : "") === "pdf" || (logo ? logo.split('.').pop() : "") === "PDF" ?
+                                                          (data ? data.split('.').pop() : "") === "pdf" || (data ? data.split('.').pop() : "") === "PDF" ?
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdfContainerPM" id="LogoImageUpOne">
                                                               <img src="/images/pdfImg.png"/>
-                                                              <span>{(logo ? logo.split('.').pop() : "")}</span>
+                                                              <span>{(data ? data.split('.').pop() : "")}</span>
                                                           </div>
                                                           :
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos2" id="aadharProof">
 
-                                                              <img src={logo} className="img-responsive logoStyle2" />
+                                                              <img src={data} className="img-responsive logoStyle2" />
                                                           </div>
                                                          }
 
@@ -2489,17 +2460,7 @@ class PersonMaster extends Component {
                                   </div>
                                 </div>
                                 <label className="subHead col-lg-12 col-md-12 col-sm-12 col-xs-12 driver person">Address Proof</label>
-                                {/*
-                                <div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
-                                  <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 driver person">
-                                     <div id="panNumber">
-                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">PAN Number <i className="astrick">*</i>
-                                        <a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="AYBOL0998L" className="fa fa-question-circle"></i> </a>
-                                      </label>
-                                      <input type="text"  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.panNumber} ref="panNumber" placeholder="AYBOL0998L" name="panNumber" onChange={this.handleChange} />
-                                    </div>
-                                  </div>
-                                </div>*/}
+                               
                                 <div className="form-margin col-lg-6 col-md-12 col-sm-12 col-xs-12  driver person NOpadding-left NOpadding-right">
                                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                       <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding driver person">Upload (jpg, jpeg, png, pdf)  <i className="astrick">*</i></label>
@@ -2514,20 +2475,20 @@ class PersonMaster extends Component {
                                   </div>
                                   {
                                     this.state.addressProof && this.state.addressProof.length > 0 ?
-                                        this.state.addressProof.map((logo, i) => {
+                                        this.state.addressProof.map((data, i) => {
                                             return (
                                                 <div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                        <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={logo} name="panProof" onClick={this.deleteDoc.bind(this)}>x</label>
+                                                        <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={data} name="panProof" onClick={this.deleteDoc.bind(this)}>x</label>
                                                        {
-                                                          (logo ? logo.split('.').pop() : "") === "pdf" || (logo ? logo.split('.').pop() : "") === "PDF" ?
+                                                          (data ? data.split('.').pop() : "") === "pdf" || (data ? data.split('.').pop() : "") === "PDF" ?
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdfContainerPM" id="LogoImageUpOne">
                                                               <img src="/images/pdfImg.png"/>
-                                                              <span>{(logo ? logo.split('.').pop() : "")}</span>
+                                                              <span>{(data ? data.split('.').pop() : "")}</span>
                                                           </div>
                                                           :
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos2" id="aadharProof">
-                                                              <img src={logo} className="img-responsive logoStyle2" />
+                                                              <img src={data} className="img-responsive logoStyle2" />
                                                           </div>
                                                          }
                                                     </div>
@@ -2543,17 +2504,7 @@ class PersonMaster extends Component {
                                
                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 person borderBottom">
                                 </div>
-                                {/*<label className="subHead col-lg-12 col-md-12 col-sm-12 col-xs-12 driver person">Voting Details</label>
-                                <div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 driver person NOpadding-left NOpadding-right">
-                                  <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 driver person">
-                                    <div id="voterId">    
-                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Voter ID <i className="astrick">*</i>
-                                        <a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="YUC1234567" className="fa fa-question-circle"></i> </a>
-                                      </label>
-                                      <input type="text"  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.voterId} ref="voterId" name="voterId" placeholder="YUC1234567" onChange={this.handleChange} />
-                                    </div> 
-                                  </div>
-                                </div>*/}
+                              
                                 <label className="subHead col-lg-12 col-md-12 col-sm-12 col-xs-12 driver person">Identity Proof</label>
                                 <div className="form-margin col-lg-6 col-md-12 col-sm-12 col-xs-12 driver person NOpadding-left NOpadding-right">
                                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -2569,20 +2520,20 @@ class PersonMaster extends Component {
                                   </div>
                                   {
                                     this.state.identityProof && this.state.identityProof.length > 0 ?
-                                        this.state.identityProof.map((logo, i) => {
+                                        this.state.identityProof.map((data, i) => {
                                             return (
                                                 <div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                        <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={logo} name="identityProof" onClick={this.deleteDoc.bind(this)}>x</label>
+                                                        <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={data} name="identityProof" onClick={this.deleteDoc.bind(this)}>x</label>
                                                         {
-                                                          (logo ? logo.split('.').pop() : "") === "pdf" || (logo ? logo.split('.').pop() : "") === "PDF" ?
+                                                          (data ? data.split('.').pop() : "") === "pdf" || (data ? data.split('.').pop() : "") === "PDF" ?
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdfContainerPM" id="LogoImageUpOne">
                                                               <img src="/images/pdfImg.png"/>
-                                                              <span>{(logo ? logo.split('.').pop() : "")}</span>
+                                                              <span>{(data ? data.split('.').pop() : "")}</span>
                                                           </div>
                                                           :
                                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos2" id="aadharProof">
-                                                              <img src={logo} className="img-responsive logoStyle2" />
+                                                              <img src={data} className="img-responsive logoStyle2" />
                                                           </div>
                                                          }
                                                     </div>
@@ -2593,53 +2544,6 @@ class PersonMaster extends Component {
                                         null
                                 }
                                 </div>
-                               {/*  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 person borderBottom">
-                                </div>
-                                <label className="subHead col-lg-12 col-md-12 col-sm-12 col-xs-12 driver person">Passport Details</label>
-                                <div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 driver person NOpadding-left NOpadding-right">
-                                  <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12 driver person">
-                                    <div id="passportNumber">  
-                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Passport Number <i className="astrick">*</i>
-                                        <a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="UC1234567" className="fa fa-question-circle"></i> </a>
-                                      </label>
-                                      <input type="text"  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.passportNumber} ref="passportNumber" placeholder="UC1234567" name="passportNumber" onChange={this.handleChange} />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 driver person NOpadding-left NOpadding-right">
-                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding driver person">Passport Proof (jpg, jpeg, png, pdf)  <i className="astrick">*</i></label>
-                                  </div>
-                                  <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 driver person">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos" id="LogoImageUpOne">
-                                          <div><i className="fa fa-camera"></i> <br /><p>ADD DOCUMENT</p></div>
-                                          <input multiple onChange={this.docBrowse.bind(this)} id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="passportProof" />
-                                      </div>
-                                    </div>
-                                  </div>
-                                  {
-                                    this.state.passportProof && this.state.passportProof.length > 0 ?
-                                        this.state.passportProof.map((logo, i) => {
-                                            return (
-                                                <div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                        <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" id={logo} name="passportProof" onClick={this.deleteDoc.bind(this)}>x</label>
-                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos2" id="passportProof">
-                                                            <img src={logo} className="img-responsive logoStyle2" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })
-                                        :
-                                        null
-                                }
-                                </div>
-                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 person borderBottom">
-                                </div>
-                              */}
-
                               </div>
                             </div>
                           </div>
@@ -2680,8 +2584,12 @@ class PersonMaster extends Component {
             </section>
           </div>
         </div>
+        :
+        null
+      }
       </div>
     );
   }
 }
 export default withRouter(PersonMaster);
+

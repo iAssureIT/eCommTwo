@@ -22,7 +22,7 @@ export default class Rightsidebar extends Component{
                 <ul className="list-unstyled components">
                   <li className="active">
                     <div className="rightsideHeading ">
-                      Admin Activites
+                      Admin Activities
                     </div>
                   </li>
                   <li className="sidebarMenuText">

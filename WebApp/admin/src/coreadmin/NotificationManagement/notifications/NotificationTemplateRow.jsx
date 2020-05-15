@@ -44,7 +44,7 @@ export default class NotificationTemplateRow extends Component{
 											<i className="fa fa-book iconCss " aria-hidden="true"></i>
 										</span>  
 										<span className="col-lg-10 emailSpan" id={templateData._id}>
-											{templateData.templateName}
+											{templateData.event}
 										</span>
 									</li>
 								);

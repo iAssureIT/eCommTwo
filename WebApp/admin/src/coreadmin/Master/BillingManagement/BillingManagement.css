@@ -180,6 +180,28 @@
   margin-bottom: 5%;
   padding: 0;
 }
+.ImgBox{
+  height: 95px;
+  background-size: 100% 100%;
+}
+.companyNameFontStyle{
+  font-size: 16px;
+  color: #5C6163;
+}
+.hiddenDiv{
+  height: 15px;
+}
+.billTo{
+  background: #367ea8;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 1%
+}
+.tableHeadingStyle{
+  background: #367ea8;
+  font-size: 14px;
+  color: #fff;
+}
 /*.tableBody td{
   border: 1px solid #eee;
 }*/

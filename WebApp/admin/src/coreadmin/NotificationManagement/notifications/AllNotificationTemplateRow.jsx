@@ -107,7 +107,21 @@ class AllNotificationTemplateRow extends Component{
 	                         </div>
 	                    </div>
 	               </div>
-				<div className="inputrow">
+	               <div className="col-md-12 NOpadding divStyle">
+						<div className="col-md-4">
+							<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Role</label>
+							<p className="subject noBorderBox col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">{this.props.notificationtemplateValues.role}</p>
+						</div>
+						<div className="col-md-4">
+							<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Status</label>
+							<p className="subject noBorderBox col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">{this.props.notificationtemplateValues.status}</p>
+						</div>
+						<div className="col-md-4">
+							<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Company</label>
+							<p className="subject noBorderBox col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">{this.props.company}</p>
+						</div>
+					</div>
+				<div className="inputrow col-md-12">
 					<div className="col-lg-10 col-md-12 col-sm-12 col-xs-12">
 						<div className="form-group">
 						 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Message:</label>     						

@@ -277,7 +277,7 @@ class DesignationBulkUpload extends Component {
          axios.post('/api/designationmaster/post', userDetails)
           .then((response) => {
 
-            swal(this.Capitalize(this.state.pathname) + " Added Sucessfully");
+            swal(this.Capitalize(this.state.pathname) + " Added Successfully");
 
               this.setState({
                 

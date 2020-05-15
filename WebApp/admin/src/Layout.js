@@ -64,6 +64,10 @@ import ListOfVendor         from './storeAdmin/vendorManagement/listOfVendors/co
 import VendorCategory       from './storeAdmin/vendorManagement/MasterData/VendorCategory/VendorCategory.jsx';
 import VendorLocationType   from './storeAdmin/vendorManagement/MasterData/VendorLocationType/VendorLocationType.jsx';
 
+//============ Franchise Management =============
+import FranchiseBasicInfo       from '../storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
+import FranchiseLocationDetails from '../storeAdmin/FranchiseMaster/FranchiseLocationDetails.js';
+import FranchiseContactDetails  from '../storeAdmin/FranchiseMaster/FranchiseContactDetails.js';
 
 
 
@@ -141,6 +145,17 @@ class Layout extends Component  {
                                           <Route path="/vendor-category/:vendorID" exact strict component={VendorCategory} />
                                           <Route path="/vendor-location-type" exact strict component={VendorLocationType} />
                                           <Route path="/vendor-location-type/:locationTypeID" exact strict component={VendorLocationType} />
+
+                                          { /* Franchise Master */}
+                                          <Route path="/franchise/basic-details"                          exact strict component={FranchiseBasicInfo} />
+                                          <Route path="/franchise/basic-details/:entityID"                exact strict component={FranchiseBasicInfo} />
+                                          <Route path="/franchise/location-details"                       exact strict component={FranchiseLocationDetails} />
+                                          <Route path="/franchise/location-details/:entityID"             exact strict component={FranchiseLocationDetails} />
+                                          <Route path="/franchise/location-details/:entityID/:locationID" exact strict component={FranchiseLocationDetails} />
+                                          <Route path="/franchise/contact-details"                        exact strict component={FranchiseContactDetails} />
+                                          <Route path="/franchise/contact-details/:entityID"              exact strict component={FranchiseContactDetails} />
+                                          <Route path="/franchise/contact-details/:entityID/:contactID"   exact strict component={FranchiseContactDetails} />
+                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntities} />
 
                                           { /*Order List*/}
                                           <Route path="/allorders" exact strict component={AllOrdersList} />

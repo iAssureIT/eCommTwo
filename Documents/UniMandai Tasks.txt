@@ -1,6 +1,220 @@
 UniMandai Tasks
 
+========================================
+							Admin
+========================================
+
+
 1) Create Preferences Page for all settings 
 	i.   Website model: Single Owner website / Multi vendor Marketplace / Franchise Model
 	ii.  Ask User Pincode = Yes/No
 	iii. 
+ 
+2) Deploy Franchise Master using Entity Master  (Done)
+		route = "/franchise-master"
+
+		<EntityMaster entity="Franchise" />
+
+
+3) Admin & Franchise side, Allowable Pincodes. 
+	New page 
+	/allowable-pincodes 
+
+	Franchise Name 				Allowable Pincodes
+												Where Delivery can be made
+
+	ShriKrishna Veggies		--------------------------
+	address & contact 		 411001, 411002, 411003 
+	Details 							--------------------------
+
+	Balaji Market					--------------------------
+	address & contact 		 411004, 411005, 411006
+	Details 							--------------------------
+
+	Radhe SabjiMandi			--------------------------
+	address & contact 		 411007, 411008, 411009 
+	Details 							--------------------------
+
+
+
+6) In Delivery address, use Google Places API. 
+It provides Lat/Long. Store detailed address. 
+
+
+5)  When delivery address is provided and WebsiteModel:"FranchiseModel"
+Using Lat/Long of User & Franchise, check the distance of all Franchise. 
+Find the CompanyID of nearest Franchise. 
+Add this CompanyID in the order as "allocatedtoFranchise_id" : CompanyID
+
+
+6) From admin side, design a dashboard with following blocks
+
+Summary block
+ - Total Users
+ - Total Franchise
+ - MTD Orders 
+   YTD Orders 
+ - Stock Inventory 
+
+Orders Block
+	- Latest 10 orders with Franchise ID column
+
+
+Stock Inventory Block
+	- Top 10 items reaching reorder level
+
+
+7) New Orders
+	If WebsiteModel:"FranchiseModel", then show the Franchise ID column. 
+
+8) Shopping List Details
+
+	Product Name  |		Franchise1 	| Franchise2 | Franchise3 |   Total   |  Unit
+
+		P1								 90 					150 					120 				 360 			 Kg
+		
+		P2								 90 					150 					120 				 360 			 Kg
+
+		P3								 90 					150 					120 				 360 			 Kg
+		
+		P4								 90 					150 					120 				 360 			 Kg
+		
+		P5								 90 					150 					120 				 360 			 Kg
+	
+		P6								 90 					150 					120 				 360 			 Kg
+		
+
+9) Shopping List Summary
+
+	Date: [ dd/mm/yyyy ]
+
+	Product Name  | Total   |  Unit
+
+		P1						 360 			 Kg
+		
+		P2						 360 			 Kg
+
+		P3						 360 			 Kg
+		
+		P4						 360 			 Kg
+		
+		P5						 360 			 Kg
+	
+		P6						 360 			 Kg
+	
+
+10) Raw Material Entry
+	Design given. UI & API developed. 
+
+
+11) Finished Goods Entry
+	Design given. UI & API developed. 
+
+
+12) Distribution Management
+	Design given. 
+	Need Franchise Ordered Items
+
+
+13) Delivery Challan
+	Same design as Distribution Management.
+	Just that input boxes will be replaced by plain text.
+
+
+14) 
+
+
+=======================================
+					Website Tasks
+=======================================
+
+1) On Homepage, if ask-pincode-to-user = true, then show modal. 
+	
+		What is the pincode of are where you want delivery? 
+		___________
+
+		When user enters the pincode, save that in cookies. 
+
+
+2) When clicked on add to cart, then ask to login. 
+- Make sure that we are taking User Pincode in Signup form. 
+- Pincode must be mandatory.
+- Pincode value must be validated using pincode validation API. 
+- Login must happen using either mobile number or email, anything. 
+- After signup, user must be "active" and logged in. No special login required. 
+- This login must remain always logged, so the token expiry must be 365 days or 1 year. 
+- If the User Pincode is not in the allowable pincode list, then display a message in modal that "At Present, we are not delivering in your area - pincode: 123456. When delivery is started in your area, we will notify you on mobile and email."
+- When logged in, store the entire user details in localstorage. 
+
+
+
+
+
+
+
+
+
+=======================================
+					Franchise Login
+=======================================
+
+1) On first login of Franchise, show Franchise Profile. When it is approved, add field "profileStatus" : "Approved". 
+Then don't show this profile during next login. 
+
+2) Franchise Dashboard
+
+Summary block
+ - Total Customers
+ - MTD Orders 
+   YTD Orders 
+ - Online Orders 
+ 	 Instore Orders
+ - Stock Inventory 
+
+Orders Block
+	- Latest 10 orders with Franchise ID column
+	- Franchise can change status of order as 
+		New -> Verified -> Packed -> Inspection -> Dispatched -> Delivered
+
+Stock Inventory Block
+	- Top 10 items reaching reorder level
+
+
+7) New Orders
+	Show all Orders with Filter on top for New Date and Orders with New, Delivered, Cancelled Orders
+
+8) Shopping List
+
+								Date : [ dd/mm/yyyy ]
+
+	ProductID |  Item Code | Product Name | Current Stock | Ordered Items |
+		
+		xxx 					xxx					xxx							nnn						[________]
+
+		xxx 					xxx					xxx							nnn						[________]
+
+		xxx 					xxx					xxx							nnn						[________]
+
+		xxx 					xxx					xxx							nnn						[________]
+
+
+																											[ Submit ]
+
+
+9) Product Purchase
+
+	Date:  [ dd/mm/yyyy ]
+
+	ProductID |  Item  | Product | Current | Ordered | Arrived | Action  | Final 
+						|  Code  | 	Name   |	Stock  |	Stock  |	Stock  | 				 | Stock
+
+		xxx 		   xxx			 xxx 			 nnn			 nnn			nnn  			A / R  	  nnn
+
+		xxx 		   xxx			 xxx 			 nnn			 nnn			nnn  			A / R  	  nnn
+
+		xxx 		   xxx			 xxx 			 nnn			 nnn			nnn  			A / R  	  nnn
+		
+		xxx 		   xxx			 xxx 			 nnn			 nnn			nnn  			A / R  	  nnn
+
+
+============================================

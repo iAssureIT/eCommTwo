@@ -1,3 +1,20 @@
+.mapBtn {
+    box-shadow: 3px 3px 3px #ddd;
+    font-weight: 700;
+    margin-top: 2%;
+    margin-bottom: 5px;
+    border: none;
+    color: var(--white-color);
+    padding: 4px 21px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 23px;
+    outline: 0;
+    letter-spacing: 1px;
+    background: var(--blue-background);
+}
 .wrapText{
   white-space: normal !important;
 }
@@ -99,29 +116,4 @@
 }
 .totalrow{
   background-color: #ddd;
-}
-#vendorContent{
-  position: absolute;
-  top: 15%;
-  left: 25%;
-  width: 51%;
-  /*height: 70%;*/
-  padding: 5px;
-  padding-bottom:2%;
-  /* border: 16px solid orange; */
-  background-color: #f3f3ed;
-  z-index: 1002;
-}
-.black_overlay {
-  /*display: none;*/
-  position: absolute;
-  top: 0%;
-  left: 0%;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  z-index: 1001;
-  -moz-opacity: 0.8;
-  opacity: .80;
-  filter: alpha(opacity=80);
 }

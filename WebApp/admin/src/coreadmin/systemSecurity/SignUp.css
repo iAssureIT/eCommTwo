@@ -30,11 +30,11 @@
   left: 3px;
 }
 .LoginWrapper{
-  /*background-image: url("/images/login.jpg");*/
+  background-image: url("/images/login.jpg");
   border-radius: 5px;
   background-size: 100% 100%;
   display: table-cell;
-  background-image: url("/images/Background.png");
+  background-image: url("/images/background.png");
   border-radius: 5px;
   background-size: 100% 100%;
   text-align: center;
@@ -136,12 +136,8 @@
 .loginBtn{
   border-radius: 25px;
   padding: 10px 15px;
-  background-color: #A2632C;  
+  background-color: var(--blue-color);  
   color: #fff !important;
-}
-#logInBtn {
-    padding: 10px 30px;
-    border-radius: 20px;
 }
 .resetBtn{
   border-radius: 25px;

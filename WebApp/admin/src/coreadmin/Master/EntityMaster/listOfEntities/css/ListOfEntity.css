@@ -109,7 +109,7 @@
     padding: 5px;
 }
 .box-title2{
-	padding-top: 15px !important; 
+	/*padding-top: 15px !important; */
 }
 .filter_wrapper{
 	display: none;
@@ -183,7 +183,7 @@
 .selectedSupplier{
     z-index: 1;
     background: white;
-    border: 1.2px solid var(--blue-color);
+    border: 1px solid var(--blue-color);
     border-radius: 0px;
 }
 .mapIconMargin{
@@ -269,4 +269,10 @@
 }
 .corporateDocs{
 	height: 6em !important;
+}
+.imageOuterContainer {
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
+    height: 4em;
+    padding: 0
 }

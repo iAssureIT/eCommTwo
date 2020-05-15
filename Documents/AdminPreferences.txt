@@ -1,0 +1,15 @@
+ ===================================
+ 					Admin Preferences
+ ===================================
+ 
+
+ 	Select Website Model: 
+		 	O Single Owner Website   		(value: SingleOwner)
+		 	O Multi Vendor Marketplace  (value: MarketPlace)
+		 	O Franchise Model 					(value: FranchiseModel)
+	
+
+	Ask Pincode To User on Homepage Launch
+		  O Yes  	O No
+
+	

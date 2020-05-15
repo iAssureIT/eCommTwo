@@ -37,10 +37,11 @@ class TwoFieldForm extends Component {
         });
         $("#twoFieldFormValid").validate({
           rules: {
-            textFieldOne: {
+           
+            selectField: {
               required: true,
             },
-            selectField: {
+             textFieldOne: {
               required: true,
             },
           },
@@ -49,16 +50,30 @@ class TwoFieldForm extends Component {
             if (element.attr("data_name") === "selectField") {
               error.insertAfter("#selectField");
             }
-            if (element.attr("name") === "textFieldOne") {
+            if (element.attr("name") === "attributeName") {
               error.insertAfter("#textFieldOne");
             }
-           
           }
         });
     }
    
     componentWillReceiveProps(nextProps) {
-        this.edit(nextProps.editId);
+        if(nextProps.editId)
+        {
+            this.edit(nextProps.editId);
+            console.log("nextProps",nextProps)
+
+        }
+        else{
+            this.setState({
+                attributeName                              : "",
+                [this.props.fields.secondAttributeName]    : "-- Select --"
+            })
+            console.log("nextProps",nextProps)
+
+
+        }
+      
     }
     handleChange(event) {
         event.preventDefault();
@@ -93,12 +108,19 @@ class TwoFieldForm extends Component {
 
         axios.post(apiLink+'post', formValues)
             .then((response) => {
-                swal(this.state.attributeName+" submitted sucessfully");
-                this.getData(this.state.startRange, this.state.limitRange);
-                this.setState({
-                   attributeName    : "",
-                   [this.props.fields.secondAttributeName]            : "-- Select --"
-                 })
+                console.log("response",response);
+                if(response.data.duplicated){
+                    swal(this.state.attributeName+" already exist");
+                }else
+                {
+                    swal(this.state.attributeName+" submitted Successfully");
+                    this.getData(this.state.startRange, this.state.limitRange);
+                    this.setState({
+                       attributeName    : "",
+                       [this.props.fields.secondAttributeName]            : "-- Select --"
+                     })
+
+                }
             })
             .catch((error) => {
                 
@@ -121,11 +143,16 @@ class TwoFieldForm extends Component {
                         editId: "",
                         [this.props.fields.secondAttributeName]            : "-- Select --"
                     },()=>{
+                    console.log("Here")
                         if(!this.state.editId)
                         {
                             this.props.history.push(this.props.tableObjects.editUrl);
+                            this.setState({
+                                attributeName                              : "",
+                                [this.props.fields.secondAttributeName]    : "-- Select --"
+                             })
                         }
-                        swal("Record updated sucessfully");
+                        swal("Record updated Successfully");
 
                     })
 
@@ -220,7 +247,7 @@ class TwoFieldForm extends Component {
                         <section className="content">
                             <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                                    <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">{this.props.fields.secondtitle} Master</h4>
+                                    <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">{this.props.fields.secondtitle}</h4>
                                 </div>
                                 <section className="Content">
                                     <div className="row">
@@ -248,7 +275,7 @@ class TwoFieldForm extends Component {
                                                 <div className="form-margin col-lg-6  col-md-6 col-sm-12 col-xs-12 pdcls">
                                                     <div  id="textFieldOne">
                                                         <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">{this.props.fields.secondtitle} <i className="astrick">*</i></label>
-                                                        <input type="text"  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.attributeName} ref={this.props.fields.attributeName} name={this.props.fields.attributeName} onChange={this.handleChange.bind(this)} placeholder={this.props.fields.placeholder} required />
+                                                        <input type="text"  className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.attributeName} ref={this.props.fields.attributeName} name="attributeName" onChange={this.handleChange.bind(this)} placeholder={this.props.fields.placeholder} required />
                                                     </div>
                                                 </div>
                                                 <br />

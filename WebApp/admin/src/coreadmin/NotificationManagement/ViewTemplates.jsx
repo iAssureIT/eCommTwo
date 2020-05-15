@@ -33,10 +33,12 @@ class ViewTemplates extends Component {
 
 		super(props);
 		this.state = {
-			templateType: props.templateType ? props.templateType : "-- Select --",
-			templateName: props.templateName ? props.templateName : "--Select Template Name--",
-			subject: props.subject ? props.subject : null,
-			editor: null,
+			templateType: props.templateType ? props.templateType : "Email",
+			templateName: props.templateName ? props.templateName : "",
+			subject: props.subject ? props.subject : "",
+			editorEmail: null,
+			editorNotification: null,
+			editorSMS: null,
 			contentError: '',
 			defaultLabel: ' --Select-- ',
 			subjecterror: '',
@@ -45,14 +47,23 @@ class ViewTemplates extends Component {
 			emailTemplates: {},
 			notificationTemplates: {},
 			smsTemplates: {},
+			event:"",
 			formerrors: {
 				message: '',
 				subject: '',
 
 			},
+			role:"",
+			roleArray:[],
+			status:"active",
+			company:"All",
+			companyArray:[],
+			companyname:""
 		};
 		this.updateContent = this.updateContent.bind(this);
-		this.onChange = this.onChange.bind(this);
+		this.onChangeEmail = this.onChangeEmail.bind(this);
+		this.onChangeNotification = this.onChangeNotification.bind(this);
+		this.onChangeSMS = this.onChangeSMS.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.getEmailData = this.getEmailData.bind(this);
 		this.deleteData = this.deleteData.bind(this);
@@ -73,30 +84,48 @@ class ViewTemplates extends Component {
 
 
 	componentDidMount() {
+        this.getRoles();
+        this.getCompany();
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("token");
 		$("html,body").scrollTop(0);
 		this.getData();
 		$.validator.addMethod("regxtemplateName", function (value, element, arg) {
 			return arg !== value;
 		}, "Please select the template Name ");
+		$.validator.addMethod("regxEvent", function (value, element, arg) {
+            return  arg !== value;
+        }, "Please select the Event.");
+        $.validator.addMethod("regxRole", function (value, element, arg) {
+            return arg !== value;
+        }, "Please select the Role.")
+        $.validator.addMethod("regxStatus", function (value, element, arg) {
+            return arg !== value;
+        }, "Please select the Status.");
 		/*$.validator.addMethod("regxtemplateType", function (value, element, arg) {
 			return arg !== value;
 		}, "Please select the template Type ");*/
 		    $("#newTemplateForm").validate({
 		      rules: {
-		        /*templateType: {
-		          required: true,
-		          regxtemplateType :" --Select-- "
-		        }, */
+		        event: {
+                    required: true,
+                    regxEvent: ""
+                },
 		         templateName: {
 		          required: true,
-		          regxtemplateName: "--Select Template Name--"
+		          regxtemplateName: ""
 		        }, 
 		        
 		        subject: {
 		          required: true,
 		        }, 
-		        
+		        role: {
+                    required: true,
+                    regxRole: ""
+                },
+                status: {
+                    required: true,
+                    regxStatus: "--Select Status--"
+                },
 		       /* editor: {
 		          required: true,
 		          regxeditor: this.state.editor
@@ -106,15 +135,30 @@ class ViewTemplates extends Component {
        /* if (element.attr("name") == "templateType"){
           error.insertAfter("#templateType");
         } */
+        if (element.attr("name") == "event") {
+                    error.insertAfter("#event");
+                }
         if (element.attr("name") == "templateName"){
           error.insertAfter("#templateName");
         }
         if (element.attr("name") == "subject"){
           error.insertAfter("#subject");
         }
-        if (element.attr("name") == "editor"){
-          error.insertAfter("#editor");
+        if (element.attr("name") == "editorEmail"){
+          error.insertAfter("#editorEmail");
         }
+        if (element.attr("name") == "editorNotification"){
+          error.insertAfter("#editorNotification");
+        }
+        if (element.attr("name") == "editorSMS"){
+          error.insertAfter("#editorSMS");
+        }
+        if (element.attr("name") == "role") {
+            error.insertAfter("#role");
+        }
+        if (element.attr("name") == "status") {
+                    error.insertAfter("#status");
+                }
       }
     });
 	
@@ -123,6 +167,30 @@ class ViewTemplates extends Component {
 	componentWillReceiveProps(nextProps) {
 		this.getData();
 	}
+	getRoles() {
+        var data = {
+	      "startRange": 0,
+	      "limitRange": 100000,
+	    }
+	    axios.post('/api/roles/get/list', data)
+	      .then((response) => {
+	        this.setState({
+	          roleArray: response.data
+	        }, () => {
+	        })
+	      }).catch(function (error) {
+	      });
+    }
+    getCompany() {
+	    axios.get('/api/entitymaster/get/corporate')
+	      .then((response) => {
+	        this.setState({
+	          companyArray: response.data
+	        }, () => {
+	        })
+	      }).catch(function (error) {
+	      });
+    }
 	AllNotificationTemplates() {
 		const id = this.state.currentNotificationId;
 		var notificationTemplates = this.state.notificationTemplates;
@@ -172,15 +240,26 @@ class ViewTemplates extends Component {
 		return [];
 	}
 
-	getId(id) {
-		axios({
-			method: 'get',
-			url: '/api/masternotifications/get/' + id,
-		}).then((response) => {
+	getId(id){
+		axios.get('/api/masternotifications/get/'+id)
+		.then((response) => {
 			this.setState({
 				emailTemplates: response.data
 			})
-		});
+			if(response.data.company === null){
+				this.setState({
+					companyname : 'All'
+				})
+			}else{
+				var companyId = response.data.company ;
+				axios.get('/api/entitymaster/get/one/'+companyId)
+				.then((res)=>{
+					this.setState({companyname : res.data.companyName})
+				})
+				.catch((error)=>{console.log(error)})
+			}
+		})
+		.catch((error)=>{console.log(error)})
 	}
 	getEmailData(id) {
 		if (id) {
@@ -226,24 +305,49 @@ class ViewTemplates extends Component {
 
 
 	getNotificationId(id) {
-		axios({
-			method: 'get',
-			url: '/api/masternotifications/get/' + id,
-		}).then((response) => {
+		
+		axios.get('/api/masternotifications/get/'+id)
+		.then((response) => {
 			this.setState({
 				notificationTemplates: response.data
 			})
-		});
+			if(response.data.company === null){
+				this.setState({
+					companyname : 'All'
+				})
+			}else{
+				var companyId = response.data.company ;
+				axios.get('/api/entitymaster/get/one/'+companyId)
+				.then((res)=>{
+					this.setState({companyname : res.data.companyName})
+				})
+				.catch((error)=>{console.log(error)})
+			}
+		})
+		.catch((error)=>{console.log(error)})
+
 	}
 	getSmsId(id) {
-		axios({
-			method: 'get',
-			url: '/api/masternotifications/get/' + id,
-		}).then((response) => {
+		
+		axios.get('/api/masternotifications/get/'+id)
+		.then((response) => {
 			this.setState({
 				smsTemplates: response.data
 			})
-		});
+			if(response.data.company === null){
+				this.setState({
+					companyname : 'All'
+				})
+			}else{
+				var companyId = response.data.company ;
+				axios.get('/api/entitymaster/get/one/'+companyId)
+				.then((res)=>{
+					this.setState({companyname : res.data.companyName})
+				})
+				.catch((error)=>{console.log(error)})
+			}
+		})
+		.catch((error)=>{console.log(error)})
 	}
 
 	deleteData(type, id) {
@@ -274,127 +378,27 @@ class ViewTemplates extends Component {
 		}
 	}
 
-	submitTemplate(event) {
-		event.preventDefault();
-		var templateType = this.state.templateType;
-		var templateName = this.state.templateName;
-		var subject = this.state.subject;
-		var cketext = this.state.editor;
-		//console.log("cketext",cketext);
-		// if (this.state.templateType == "-- Select --") {
-		if (cketext === null || cketext === "" || templateType === '-- Select --' || templateName === '--Select Template Name--') {
-			swal({
-				title: "Please reselect Template Type fields",	
-			});
-		} else {
-			if (this.state.editor == null) {
-
-				swal({
-					title: "Please enter message fields",
-				});
-			} else {
-				var formValues = {
-					"templateType": this.state.templateType,
-					"templateName": templateName,
-					"subject": subject,
-					"content": cketext,
-				}
-				console.log("formValues",formValues);
-				if ($('#newTemplateForm').valid()) {
-					axios.get('/api/masternotifications/get/list')
-						.then((response) => {
-							// console.log(response.data);
-							// console.log(templateName);
-						response.data.map((result, index)=>{
-							if (result.templateName == templateName) {
-								swal({
-									title: "This template already exists",
-								});
-								this.setState({
-									editor: null
-								});
-							} else {
-								axios.post('/api/masternotifications/post', formValues)
-							  	.then(function (response) {
-							    // handle success
-							    	 window.location.reload();
-							  	})
-							  	.catch(function (error) {
-							    // handle error
-							    	console.log(error);
-							  	});
-								// console.log("im in sucess message");
-								swal({
-									title: "Template added successfully",		
-								});
-							}
-							axios({
-								method: 'get',
-								url: '/api/masternotifications/get/list',
-							}).then((response) => {
-								var emailTemplatesList = response.data.filter((a) => { return a.templateType === "Email" });
-								var notificationTemplatesList = response.data.filter((a) => { return a.templateType === "Notification" });
-								var smsTemplatesList = response.data.filter((a) => { return a.templateType === "SMS" });
-								this.setState({
-									emailTemplatesList: emailTemplatesList,
-									notificationTemplatesList: notificationTemplatesList,
-									smsTemplatesList: smsTemplatesList
-								});
-
-								this.setState({
-									templateType: '-- Select --',
-									templateName: '--Select Template Name--',
-									subject: "",
-									content: null
-								});
-							}).catch(function (error) {
-							});
-						})
-							$('#createNotifyModal').hide();
-							$('.modal-backdrop').remove();
-						})
-						.catch(function (error) {
-						})
-				} else {
-					swal({
-						
-						title: "Please enter mandatory fields",
-						
-					});
-				}
-
-			}
-		}
-		
-	}
-
-
-	selectType(event) {
-		event.preventDefault();
+	selectType(type,event) {
 		const target = event.target;
 		const name = target.name;
 		this.setState({
-			[name]: event.target.value,
-		}, () => {
-			if (this.state.templateType === 'Notification' || this.state.templateType === 'SMS') {
-				$('.subjectRow').css({ 'display': 'none' });
-			} else if (this.state.templateType === 'Email') {
-				$('.subjectRow').css({ 'display': 'block' });
-			}
-		});
+			templateType: type,
+		})
 
 	}
 	updateContent(newContent) {
 		this.setState({
-			content: newContent
+			editorEmail: newContent,
+			editorNotification: newContent,
+			editorSMS: newContent
 		})
 	}
-	onChange(evt) {
+	onChangeEmail(evt) {
 		var newContent = evt.editor.getData();
 		this.setState({
-			editor: newContent
+			editorEmail: newContent
 		}, () => {
-			if (this.state.editor) {
+			if (this.state.editorEmail) {
 				this.setState({
 					contentError: ''
 				});
@@ -404,6 +408,229 @@ class ViewTemplates extends Component {
 				})
 			}
 		})
+	}
+	onChangeNotification(evt) {
+		var newContent = evt.editor.getData();
+		this.setState({
+			editorNotification: newContent
+		}, () => {
+			if (this.state.editorNotification) {
+				this.setState({
+					contentError: ''
+				});
+			} else {
+				this.setState({
+					contentError: ''
+				})
+			}
+		})
+	}
+	onChangeSMS(evt) {
+		var newContent = evt.editor.getData();
+		this.setState({
+			editorSMS: newContent
+		}, () => {
+			if (this.state.editorSMS) {
+				this.setState({
+					contentError: ''
+				});
+			} else {
+				this.setState({
+					contentError: ''
+				})
+			}
+		})
+	}
+
+	submitTemplate(event) {
+		event.preventDefault();
+		var event = this.state.event;
+		var role = this.state.role;
+		var company = this.state.company;
+		var status = this.state.status;
+		var templateType = this.state.templateType;
+		var subject = this.state.subject;
+		var emailContent = this.state.editorEmail;
+		var notificationContent = this.state.editorNotification;
+		var smsContent = this.state.editorSMS;
+		if(company == 'All'){
+			company = null
+		}
+		if(event && role){
+			if(templateType == 'Email'){
+				if(subject === "" & emailContent === null || emailContent === ""){
+					swal("For Email Template Subject & Message are mandatory")
+							// $('#createNotifyModal').hide();
+							// $('.modal-backdrop').remove();
+				}else{
+					
+					var formValues = {
+						"event":event,
+						"templateType": templateType,
+						"role": role,
+						"status":status,
+						"company":company,
+						"subject": subject,
+						"content": emailContent,
+					}
+					axios.post('/api/masternotifications/post', formValues)
+				  	.then(function (response) {
+				    // handle success
+				    	if(response.data.message === "Notification Details already exists"){
+				    		swal("Email Template already exists")
+				    		
+				    	}else{
+				    		
+					    	swal({
+								title: "Email Template added successfully",		
+							});
+						}
+				    	 // window.location.reload();
+				  	})
+				  	.catch(function (error) {
+				    // handle error
+				    	console.log(error);
+				  	});
+					// console.log("im in sucess message");
+					
+					axios({
+						method: 'get',
+						url: '/api/masternotifications/get/list',
+					}).then((response) => {
+						var emailTemplatesList = response.data.filter((a) => { return a.templateType === "Email" });
+						var notificationTemplatesList = response.data.filter((a) => { return a.templateType === "Notification" });
+						var smsTemplatesList = response.data.filter((a) => { return a.templateType === "SMS" });
+						this.setState({
+							emailTemplatesList: emailTemplatesList,
+							notificationTemplatesList: notificationTemplatesList,
+							smsTemplatesList: smsTemplatesList
+						});
+
+						this.setState({
+									subject: "",
+									editorEmail: null
+								});
+					}).catch(function (error) {
+					});
+				}
+			}else if(templateType == 'Notification'){
+				if(notificationContent === null || notificationContent === ""){
+					swal("Please enter message")
+				}else{
+					var formValues = {
+						"event":event,
+						"templateType": templateType,
+						"role": role,
+						"status":status,
+						"company":company,
+						"content": notificationContent,
+					}
+					axios.post('/api/masternotifications/post', formValues)
+				  	.then(function (response) {
+				    // handle success
+				    	if(response.data.message === "Notification Details already exists"){
+				    		swal("Notification Template already exists")
+				    		
+				    	}else{
+				    		
+					    	swal({
+								title: "Notification template added successfully",		
+							});
+						}
+				    	 // window.location.reload();
+				  	})
+				  	.catch(function (error) {
+				    // handle error
+				    	console.log(error);
+				  	});
+					// console.log("im in sucess message");
+					
+					axios({
+						method: 'get',
+						url: '/api/masternotifications/get/list',
+					}).then((response) => {
+						var emailTemplatesList = response.data.filter((a) => { return a.templateType === "Email" });
+						var notificationTemplatesList = response.data.filter((a) => { return a.templateType === "Notification" });
+						var smsTemplatesList = response.data.filter((a) => { return a.templateType === "SMS" });
+						this.setState({
+							emailTemplatesList: emailTemplatesList,
+							notificationTemplatesList: notificationTemplatesList,
+							smsTemplatesList: smsTemplatesList
+						});
+						this.setState({
+									editorNotification: null
+								});
+						
+					}).catch(function (error) {});
+				}
+			}else{
+				if(smsContent === null || smsContent === ""){
+					swal("Please enter message")
+				}else{
+					var formValues = {
+						"event":event,
+						"templateType": templateType,
+						"role": role,
+						"status":status,
+						"company":company,
+						"content": smsContent,
+					}
+					axios.post('/api/masternotifications/post', formValues)
+				  	.then(function (response) {
+				    // handle success
+				    	if(response.data.message === "Notification Details already exists"){
+				    		swal("SMS Template already exists")
+				    		
+				    	}else{
+				    		
+					    	swal({
+								title: "SMS template added successfully",		
+							});
+						}
+				    	 // window.location.reload();
+				  	})
+				  	.catch(function (error) {
+				    // handle error
+				    	console.log(error);
+				  	});
+					// console.log("im in sucess message");
+					
+					axios({
+						method: 'get',
+						url: '/api/masternotifications/get/list',
+					}).then((response) => {
+						var emailTemplatesList = response.data.filter((a) => { return a.templateType === "Email" });
+						var notificationTemplatesList = response.data.filter((a) => { return a.templateType === "Notification" });
+						var smsTemplatesList = response.data.filter((a) => { return a.templateType === "SMS" });
+						this.setState({
+							emailTemplatesList: emailTemplatesList,
+							notificationTemplatesList: notificationTemplatesList,
+							smsTemplatesList: smsTemplatesList
+						});
+						this.setState({
+									editorSMS: null
+								});
+						
+					}).catch(function (error) {});
+				}
+			}
+		}else{
+			swal("Please select Event & Role")
+		}
+		
+	}
+
+	closeModal(event){
+		event.preventDefault();
+		$('#createNotifyModal').hide();
+    	$(".modal-backdrop").remove();
+    	 window.location.reload();
+	}
+
+
+	getInfo(event){
+		event.preventDefault();
+		window.open('/NotificationVariableList','_blank');
 	}
 
 
@@ -444,99 +671,165 @@ class ViewTemplates extends Component {
 									</div>
 									<div className="">
 										<section className="">
-											<div className="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+											<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 												<div className="col-lg-3 col-md-3  col-sm-6 col-xs-12" id="createmodalcl">
-													<button className="addexamform addForm clickforhideshow col-lg-12 col-md-12 col-sm-12 col-xs-12 " data-toggle="modal" data-target="#createNotifyModal" data-whatever="@mdo"><i class="fa fa-plus" aria-hidden="true"></i><b> &nbsp;&nbsp;&nbsp;Add Template</b></button>
+													<button className="addexamform addForm clickforhideshow col-lg-12 col-md-12 col-sm-12 col-xs-12 " data-toggle="modal" data-target="#createNotifyModal"><i className="fa fa-plus" aria-hidden="true"></i><b> &nbsp;&nbsp;&nbsp;Add Template</b></button>
 												</div>
+												
 											</div>
 											<div className="modal modalHide col-lg-12 col-md-12 col-sm-12 col-xs-12 overflowHiddenxy" id="createNotifyModal" tabIndex="-1" role="dialog" aria-labelledby="createNotifyModal" aria-hidden="true">
 												<div className="modal-dialog modal-lg" role="document">
 													<div className="modal-content modalContent col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 														<div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-															<h4 className="CreateTempModal col-lg-11 col-md-11 col-sm-11 col-xs-11" id="exampleModalLabel">Create Template</h4>
-															<div className="adminCloseCircleDiv pull-right  col-lg-1 col-md-1 col-sm-1 col-xs-1 NOpadding-left NOpadding-right">
-																<button type="button" className="adminCloseButton" data-dismiss="modal" aria-label="Close">
-																	<span aria-hidden="true">&times;</span>
-																</button>
+															<h4 className="CreateTempModal col-lg-8 col-md-8 col-sm-8 col-xs-8" id="exampleModalLabel">Create Template</h4>
+															<div className="col-lg-4 col-md-4 NOpadding">
+															<div className="col-lg-5 col-md-6 pull-right">
+																<div className="adminCloseCircleDiv marginRT col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding-left NOpadding-right">
+																	<button type="button" className="adminCloseButton btn" onClick={this.getInfo.bind(this)}>
+																		<span aria-hidden="true"><i className="fa fa-info" aria-hidden="true"></i></span>
+																	</button>
+																</div> &nbsp; &nbsp;
+																<div className="adminCloseCircleDiv col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding-left NOpadding-right">
+																	<button type="button" className="adminCloseButton" onClick={this.closeModal.bind(this)} aria-label="Close">
+																		<span aria-hidden="true">&times;</span>
+																	</button>
+																</div>
+															</div>
 															</div>
 														</div>
 														<div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
-															<form className="newTemplateForm col-lg-12 col-md-12 col-sm-12 col-xs-12" id="newTemplateForm">
-																<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 forgtTextInp NOpadding-left">
-																	<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 NOpadding-left">
+															<div className="col-md-12 rowPadding">
+															<div className="col-md-3">
+																<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Event <sup className="astrick">*</sup></label>
+			                                                    <select id="event" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.event} ref="event" name="event" onChange={this.handleChange.bind(this)}>
+			                                                        <option disabled value="">--Select Event--</option>
+			                                                        <option value="Sign Up">Sign Up</option>
+																	<option value="Forgot Password">Forgot Password</option>
+																	<option value="User Activated">User Activated</option>
+																	<option value="User Blocked">User Blocked</option>
+																	<option value="TripBooking">Trip Booking</option>
+																	<option value="ManagerApproval">Manager Approval</option>
+																	<option value="ManagerRejection">Manager Rejection</option>
+																	<option value="TripAllocatedToVendor">Trip Allocated to Vendor</option>
+																	<option value="Vendor allocates (Car + Driver)">Vendor allocates (Car + Driver)</option>
+																	<option value="Informs Corporate Employee">Informs Corporate Employee</option>
+																	<option value="Trip Started">Trip Started</option>
+																	<option value="Reached Pick up point">Reached Pick up point</option>
+																	<option value="OTP Verified & Trip begins">OTP Verified & Trip begins</option>
+																	<option value="Reached Destination">Reached Destination</option>
+																	<option value="Returned back & Trip-End-OTP">Returned back & Trip-End-OTP</option>
+																	<option value="EndTrip">End Trip</option>
+																	<option value="GenerateInvoice">Generate Bill / Invoice</option>
+																	<option value="EmployeeCancelsTrip">Employee Cancels Trip</option>
+																	<option value="AdminCancelsTrip">Admin Cancels Trip</option>
+																	<option value="VendorCancelsTrip">Vendor Cancels Trip</option>
+																	<option value="VendorAcceptsTrip">Vendor Accepts Booking</option>
+																	<option value="VendorRejectsTrip">Vendor Rejects Booking</option>
+																	<option value="DriverApproved">Driver Approved Booking</option>
+																	<option value="DriverRejected">Driver Rejected Booking</option>
+																	<option value="Vendor Changes Driver">Vendor Changes Driver</option>
+			                                                    </select>   
+															</div>
+															<div className="col-md-3">
+																<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Role<sup className="astrick">*</sup></label>
+			                                                    <select id="role" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.role} ref="role" name="role" onChange={this.handleChange.bind(this)}>
+			                                                        <option disabled value="">--Select Role--</option>
+			                                                        {
+			                                                            this.state.roleArray && this.state.roleArray.length > 0 ?
+			                                                                this.state.roleArray.map((data, i)=>{
+			                                                                    return(
+			                                                                        <option key={i} value={data.role}>{data.role} </option>
+			                                                                    );
+			                                                                })
+			                                                            :
+			                                                            null
+			                                                        }
+			                                                    </select>
+															</div>
+															<div className="col-md-3">
+																<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Status<sup className="astrick">*</sup></label>
+			                                                    <select id="status" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.status} ref="status" name="status" onChange={this.handleChange.bind(this)}>
+			                                                        <option disabled value="">--Select Status--</option>
+			                                                        <option> active </option>
+																	<option> inactive </option>
+			                                                    </select>
+															</div>
+															<div className="col-md-3">
+																<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Company</label>
+			                                                    <select id="company" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.company} ref="company" name="company" onChange={this.handleChange.bind(this)}>
+			                                                        <option disabled value="All">--Select Company--</option>
+			                                                        {
+			                                                            this.state.companyArray && this.state.companyArray.length > 0 ?
+			                                                                this.state.companyArray.map((data, i)=>{
+			                                                                    return(
+			                                                                        <option key={i} value={data._id}>{data.companyName} </option>
+			                                                                    );
+			                                                                })
+			                                                            :
+			                                                            null
+			                                                        }
+			                                                    </select>
+															</div>
+															</div>
+															<div className="col-md-12">
+																<ul className="nav nav-pills nav-justified">
+																  <li className="active defaultColor" value="Email" onClick={this.selectType.bind(this,"Email")}><a data-toggle="pill" href="#email">Email</a></li>
+																  <li className="defaultColor" value="Notification" onClick={this.selectType.bind(this,"Notification")}><a data-toggle="pill" href="#notification">Notification</a></li>
+																  <li className="defaultColor" value="SMS" onClick={this.selectType.bind(this,"SMS")}><a data-toggle="pill" href="#sms">SMS</a></li>
+																</ul>
 
-																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																			<div className="form-group ">
-																				<label className="col-lg-6 col-md-6 col-sm-12 col-xs-12  label-category labelform">Template Type <span className="astrick">*</span></label>
-																				<select className="form-control inputBox-main templateType" name="templateType" id="templateType" onChange={this.selectType.bind(this)} value={this.state.templateType}>
-																					<option selected={true} disabled={true}>-- Select --</option>
-																					<option> Email </option>
-																					<option> Notification </option>
-																					<option> SMS </option>
-																				</select>
-																			</div>
-																		</div>
-																	</div>
-																	<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																			<div className="form-group"  id="templateName">
-																				<label className="label-category labelform" >Template Name <span className="astrick">*</span></label>
-																				<select name="templateName" value={this.state.templateName} onChange={this.handleChange} className="form-control inputBox-main templateType ">
-																					<option selected={true} disabled={true} >--Select Template Name--</option>
-																					<option value="Sign Up">Sign Up</option>
-																					<option value="Forgot Password">Forgot Password</option>
-																					<option value="User Activated">User Activated</option>
-																					<option value="User Blocked">User Blocked</option>
-																					<option value="Order Placed Successfully">Order Placed Successfully</option>																					
-																					<option value="Trip Booking">Trip Booking</option>
-																					<option value="Manager Approval">Manager Approval</option>
-																					<option value="Manager Rejection">Manager Rejection</option>
-																					<option value="Trip Allocated to Vendor by FB admin">Trip Allocated to Vendor by FB admin</option>
-																					<option value="Vendor allocates (Car + Driver)">Vendor allocates (Car + Driver)</option>
-																					<option value="Fivebees Informs Corporate Employee">Fivebees Informs Corporate Employee</option>
-																					<option value="Trip Started">Trip Started</option>
-																					<option value="Reached Pick up point">Reached Pick up point</option>
-																					<option value="OTP Verified & Trip begins">OTP Verified & Trip begins</option>
-																					<option value="Reached Destination">Reached Destination</option>
-																					<option value="Returned back & Trip-End-OTP">Returned back & Trip-End-OTP</option>
-																					<option value="Close Trip">Close Trip</option>
-																					<option value="Generate Bill / Invoice">Generate Bill / Invoice</option>
-																					<option value="Employee Cancels Trip">Employee Cancels Trip</option>
-																					<option value="FB Admin Cancels Trip">FB Admin Cancels Trip</option>
-																					<option value="Vendor Cancels Trip">Vendor Cancels Trip</option>
-																					<option value="Vendor Accepts a Trip">Vendor Accepts a Trip</option>
-																					<option value="Vendor Rejects a Trip">Vendor Rejects a Trip</option>
-																					<option value="Driver Approved a Trip">Driver Approved a Trip</option>
-																					<option value="Driver Rejected a Trip">Driver Rejected a Trip</option>
-																					<option value="Vendor Changes Driver">Vendor Changes Driver</option>
-																				</select>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-
-																<div className="row rowPadding subjectRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																<div className="tab-content">
+																  <div id="email" className="tab-pane fade in active">
+																    <div className="row rowPadding subjectRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																		<div className="form-group">
 																			<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelform">Subject <span className="astrick">*</span></label>
-																			<input type="text" name="subject" data-text="subject"  id="subject" value={this.state.subject} onChange={this.handleChange} className="subject form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputValid" required />
-																			
+																			<input type="text" name="subject" data-text="subject"  id="subject" value={this.state.subject} onChange={this.handleChange.bind(this)} className="subject form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputValid" required />
 																		</div>
 																	</div>
-																</div>
-																<div className="row rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																		<div className="form-group">
-																			<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelform">Message <span className="astrick">*</span></label>
-																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" id="editor">
-																				<CKEditor activeClass="p15"  name="editor" data-text="message" className="editor" content={this.state.editor} events={{ "change": this.onChange }}/>
-																				{/*<label className="error">{this.state.contentError}</label>*/}
-																				
-
+																	</div>
+																	<div className="row rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																			<div className="form-group">
+																				<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelform">Message <span className="astrick">*</span></label>
+																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" id="editorEmail">
+																					<CKEditor activeClass="p15"  name="editorEmail" data-text="message" className="editorEmail" content={this.state.editorEmail} events={{ "change": this.onChangeEmail }}/>
+																				</div>
 																			</div>
 																		</div>
 																	</div>
+																  </div>
+																  <div id="notification" className="tab-pane fade">
+																    <div className="row rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																			<div className="form-group">
+																				<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelform">Message <span className="astrick">*</span></label>
+																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" id="editorNotification">
+																					<CKEditor activeClass="p15"  name="editorNotification" data-text="message" className="editorNotification" content={this.state.editorNotification} events={{ "change": this.onChangeNotification }}/>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																  </div>
+																  <div id="sms" className="tab-pane fade">
+																    <div className="row rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																			<div className="form-group">
+																				<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 labelform">Message <span className="astrick">*</span></label>
+																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" id="editorSMS">
+																					<CKEditor activeClass="p15"  name="editorSMS" data-text="message" className="editorSMS" content={this.state.editorSMS} events={{ "change": this.onChangeSMS }}/>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																  </div>
 																</div>
+															</div>
+															<form className="newTemplateForm col-lg-12 col-md-12 col-sm-12 col-xs-12" id="newTemplateForm">
+																
+																
+
+																
 																<div className=" paddingtop-down col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																	<button type="submit" onClick={this.submitTemplate.bind(this)} className="col-lg-3 col-md-3 col-sm-6 col-xs-12 btn pull-right button3 outlinebox">Save Template</button>
 																	{/*<button type="submit" onClick={this.updateTemplate.bind(this)} className="btn pull-right col-lg-3 col-md-3 col-sm-6 col-xs-12 btnUpdate">Update Template</button>*/}
@@ -585,7 +878,7 @@ class ViewTemplates extends Component {
 																		<h1>Please Select The Template</h1>
 																		<i className="fa fa-hand-o-left" aria-hidden="true"></i>
 																	</div>
-																	{this.state.emailTemplates ? <EmailTemplateRow deleteData={this.deleteData.bind(this)} getData={this.getData.bind(this)} getEmailData={this.getEmailData.bind(this)} emailtemplateValues={this.state.emailTemplates} /> : null}
+																	{this.state.emailTemplates ? <EmailTemplateRow deleteData={this.deleteData.bind(this)} getData={this.getData.bind(this)} getEmailData={this.getEmailData.bind(this)} emailtemplateValues={this.state.emailTemplates} company={this.state.companyname} /> : null}
 																</div>
 															</div>
 														</div>
@@ -593,7 +886,7 @@ class ViewTemplates extends Component {
 															<div className="">
 																<div className="sidertemplatebar col-lg-3 col-md-3 col-xs-12 col-sm-12">
 																	<div className="row">
-																		<NotificationTemplateRow getNotificationId={this.getNotificationId.bind(this)} notificationTemplatesList={this.state.notificationTemplatesList} />
+																		<NotificationTemplateRow getNotificationId={this.getNotificationId.bind(this)} notificationTemplatesList={this.state.notificationTemplatesList}  />
 																	</div>
 																</div>
 																<div className="saveTemplateWrapper col-lg-9 col-md-9 col-xs-12 col-sm-12">
@@ -601,7 +894,7 @@ class ViewTemplates extends Component {
 																		<h1>Please Select The Template</h1>
 																		<i className="fa fa-hand-o-left" aria-hidden="true"></i>
 																	</div>
-																	{this.state.notificationTemplates ? <AllNotificationTemplateRow deleteData={this.deleteData.bind(this)} getNotiData={this.getNotiData.bind(this)} notificationtemplateValues={this.state.notificationTemplates} /> : null}
+																	{this.state.notificationTemplates ? <AllNotificationTemplateRow deleteData={this.deleteData.bind(this)} getNotiData={this.getNotiData.bind(this)} company={this.state.companyname} notificationtemplateValues={this.state.notificationTemplates} /> : null}
 																</div>
 															</div>
 														</div>
@@ -617,7 +910,7 @@ class ViewTemplates extends Component {
 																		<h1>Please Select The Template</h1>
 																		<i className="fa fa-hand-o-left" aria-hidden="true"></i>
 																	</div>
-																	{this.state.smsTemplates ? <AllSMSTemplateRow deleteData={this.deleteData.bind(this)} getSmsData={this.getSmsData.bind(this)} smstemplateValues={this.state.smsTemplates} /> : null}
+																	{this.state.smsTemplates ? <AllSMSTemplateRow deleteData={this.deleteData.bind(this)} getSmsData={this.getSmsData.bind(this)} company={this.state.companyname} smstemplateValues={this.state.smsTemplates} /> : null}
 																</div>
 															</div>
 														</div>

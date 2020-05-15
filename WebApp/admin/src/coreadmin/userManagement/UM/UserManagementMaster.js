@@ -58,7 +58,7 @@ Meteor.methods({
           } //End of set
           }); //end of update      
       }      
-      return 'Accounts created sucessfully!';
+      return 'Accounts created Successfully!';
     }
   },
 
@@ -119,7 +119,7 @@ Meteor.methods({
       return 'This user has added products in wishlist. You can not delete it.';
     }else{
       Meteor.users.remove({'_id': userId});
-      return 'Deleted Sucessfully!';
+      return 'Deleted Successfully!';
     }       
   },
 

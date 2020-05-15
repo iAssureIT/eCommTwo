@@ -66,20 +66,20 @@ export default class Leftsidebar extends Component{
             <nav id="sidebar">
               <div className="sidebar-header textAlignCenter">
                 <label  className="headerImage">Five Bees</label>
-                <img className="sidebarLogoName strong" src="/images/iAssureIT_favicon_white.png"/>
+                <img className="sidebarLogoName shortlogo strong" src="/images/logof.jpeg"/>
               </div>
               <ul className="list-unstyled components scrollBox" style={{height:  sidebarHeight+"px"}}>
                 <li className=" sidebarMenuText" >
-                  <Link to="/dashboard" title="Dashboard">
+                  <a href="/dashboard" title="Dashboard">
                     <i className="fa fa-dashboard"></i>
                     <span className="iconTitle">Dashboard</span>
-                  </Link>
+                  </a>
                 </li>
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="/All_Bookings" title="All Booking">
+                  <a href="/All_Bookings" title="All Booking">
                     <i className="fa fa-ticket" aria-hidden="true"></i>
                      <span className="iconTitle">All Booking</span>
-                  </Link>
+                  </a>
                 </li>
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
                   <a href="/BillingManagement" title="Billing Management">
@@ -88,174 +88,195 @@ export default class Leftsidebar extends Component{
                   </a>
                 </li>
                  <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a to="/coming_soon" title="Reporting System ">
+                  <a href="/coming_soon" title="Reporting System ">
                     <i className="fa fa-database" />
                      <span className="iconTitle">Reporting System</span>
                     <i className="leftarrow rotate fa fa-angle-left  pull-right" id="ReportingSystem"></i>
                   </a>
                   </li>
                   <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#Contract" data-toggle="collapse" className="menuContent"  aria-expanded="false" title=" Contract Management ">
+                  <a href="#Contract" data-toggle="collapse" className="menuContent"  aria-expanded="false" title=" Contract Management ">
                     <i className="fa fa-file" />
                      <span className="iconTitle">Contract Management</span>
                     <i className="leftarrow rotate fa fa-angle-left  pull-right" id="ContractManagement"></i>
-                  </Link>
+                  </a>
                   <ul className="collapse list-unstyled activeClass" id="Contract">
                     <li>
-                      <Link to="/contract-management" title="Make Contract">
+                      <a href="/contract-management" title="Make Contract">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Make Contract </span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/contract-list" title="Contract List">
+                      <a href="/contract-list" title="Contract List">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Contract List</span>
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </li>
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#EntityMappings" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Vendor Mapping">
+                  <a href="#EntityMappings" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Vendor Mapping">
                     <i className="fa fa-link" />
                      <span className="iconTitle">Vendor Mapping</span>
                     <i className="leftarrow rotate fa fa-angle-left  pull-right" id="Entitys"></i>
-                  </Link>
+                  </a>
                   <ul className="collapse list-unstyled activeClass" id="EntityMappings">
                     <li>
-                      <Link to="/entity-mapping" title="Map Corporate and Vendor">
+                      <a href="/entity-mapping" title="Map Corporate and Vendor">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Map Corporate and Vendor</span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link  to="/mapping-list" title="Mapped List">
+                      <a  href="/mapping-list" title="Mapped List">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Mapped List</span>
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </li>
 
                 <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
-                  <Link  to="#Corporate" data-toggle="collapse" aria-expanded="false" className="menuContent" title="Corporate Master">
+                  <a  href="#Corporate" data-toggle="collapse" aria-expanded="false" className="menuContent" title="Corporate Master">
                     <i className="fa fa-user" />
                     <span className="iconTitle">Corporate</span>
                     <i className="leftarrow rotate fa fa-angle-left  pull-right"  id="CorporateMaster"></i> 
-                  </Link>
+                  </a>
                   <ul className="collapse   list-unstyled activeClass" id="Corporate">
                     <li>
-                      <Link to="/corporate/list" title="Corporate List">
+                      <a href="/corporate/list" title="Corporate List">
                         <i className="fa fa-circle-o" />
 
                         <span className="sidebarMenuSubText">Corporate Master</span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/employee/lists" title="Employee List">
+                      <a href="/employee/lists" title="Employee List">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Employee Master</span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/guest/lists" title="Guest List">
+                      <a href="/guest/lists" title="Guest List">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Guest Master</span>
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </li> 
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#Vendor" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Vendor Master">
+                  <a href="#Vendor" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Vendor Master">
                     <i className="fa fa-book" />
                       <span className="iconTitle">Vendors</span>
                     <i className="leftarrow rotate fa fa-angle-left  pull-right"  id="VendorMaster"></i>
-                  </Link>
+                  </a>
                   <ul className="collapse   list-unstyled activeClass" id="Vendor">
                     <li>
-                      <Link to="/vendor/list" title="Vendor List">
+                      <a href="/vendor/list" title="Vendor List">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Vendor Master</span>
-                      </Link>
+                      </a>
                     </li> 
                     <li>
-                      <Link to="/supplier/list" title="Supplier List">
+                      <a href="/supplier/list" title="Supplier List">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Supplier Master</span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/vehicle-list" title="Vehicle List">
+                      <a href="/vehicle-list" title="Vehicle List">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Vehicle Master</span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/driver/lists" title="Driver List">
+                      <a href="/driver/lists" title="Driver List">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Driver Master</span>
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </li>
                  <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Master Data">
+                  <a href="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Master Data">
                     <i className="fa fa-address-book" />
                       <span className="iconTitle">Master Data</span>
                     <i className="leftarrow rotate fa fa-angle-left  pull-right"></i>
-                  </Link>
+                  </a>
                   <ul className="collapse list-unstyled activeClass" id="MasterData">
                   {
                     roles.indexOf('superAdmin') !== -1 ?
 
                     <li>
-                      <Link to="/umroleslist" title="Roles Master">
+                      <a href="/umroleslist" title="Roles Master">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Roles Master</span>
-                      </Link>
+                      </a>
                     </li> : null
                   }
                     <li>
-                      <Link to="/category" title="Vehicle Category">
+                      <a href="/category" title="Vehicle Category">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Vehicle Category </span>
-                      </Link>
+                      </a>
                     </li> 
                      <li>
-                      <Link to="/fuel-type" title="Fuel Type">
+                      <a href="/fuel-type" title="Fuel Type">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Fuel Type </span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/brand" title="Vehicle Brand">
+                      <a href="/purposeOfTravel" title="Purpose of Travel">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Purpose of Travel </span>
+                      </a>
+                    </li>
+                     
+                     <li>
+                      <a href="/documententitymaster" title="Documents Entity">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Documents Entity </span>
+                      </a>
+                    </li>
+                    
+                     <li>
+                      <a href="/documentlistmaster" title="Documents Required For">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Documents List Master </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="/brand" title="Vehicle Brand">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Vehicle Brand</span>
-                      </Link>
+                      </a>
                     </li> 
                     <li>
-                      <Link to="/model" title="Vehicle Model">
+                      <a href="/model" title="Vehicle Model">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Vehicle Model</span>
-                      </Link>
+                      </a>
                     </li> 
                     <li>
-                      <Link to="/package-type" title="Package Type">
+                      <a href="/package-type" title="Package Type">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Package Type</span>
-                      </Link>
+                      </a>
                     </li>
                     <li className=" ">
-                      <Link to="/package-master" title="Package Master">
+                      <a href="/package-master" title="Package Master">
                         <i className="fa fa-circle-o" />
                         <span className="iconTitle">Package Master</span>
-                      </Link>
+                      </a>
                     </li> 
                     <li>
-                      <Link to="/designation-mapping" title="Designation Mapping">
+                      <a href="/designation-mapping" title="Designation Mapping">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Designation Mapping</span>
-                      </Link>
+                      </a>
                     </li> 
                     <li>
                       <a href="/expenseType" title="Expense Type Master">
@@ -268,35 +289,35 @@ export default class Leftsidebar extends Component{
                   </ul>
                 </li>
                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <Link to="#BulkUpload" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Bulk Upload">
+                  <a href="#BulkUpload" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Bulk Upload">
                     <i className="fa fa-upload" />
                      <span className="iconTitle">Bulk Upload</span>
                     <i className="leftarrow rotate fa fa-angle-left  pull-right" id="Entitys1"></i>
-                  </Link>
+                  </a>
                   <ul className="collapse list-unstyled activeClass" id="BulkUpload">
                    <li>
-                      <Link to="/Departments" title="Map Corporate and Vendor">
+                      <a href="/Departments" title="Map Corporate and Vendor">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Department</span>
-                      </Link>
+                      </a>
                      </li>
                     <li>
-                      <Link to="/Designations" title="Map Corporate and Vendor">
+                      <a href="/Designations" title="Map Corporate and Vendor">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Designations</span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/vehiclebrand" title="Map Corporate and Vendor">
+                      <a href="/vehiclebrand" title="Map Corporate and Vendor">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Vehicle Brand</span>
-                      </Link>
+                      </a>
                     </li>
                     <li>
-                      <Link to="/vehiclemodel" title="Map Corporate and Vendor">
+                      <a href="/vehiclemodel" title="Map Corporate and Vendor">
                         <i className="fa fa-circle-o" />
                         <span className="sidebarMenuSubText">Vehicle Model</span>
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </li>

@@ -1,7 +1,7 @@
 import React, {Component}           from 'react';
 import {render}                     from 'react-dom';
 import $ from "jquery";
-// import CompanyInformation           from  '../Components/CompanyInformation.js';
+import CompanyInformation           from  '../Components/CompanyInformation.js';
 import CompanyLocation              from  '../Components/CompanyLocation.js';
 import '../css/CompanySetting.css';
 import CompanyBankDetails           from  '../Components/CompanyBankDetails.js';

@@ -71,7 +71,7 @@ class ResetPassword extends Component {
                 },
             },
             messages:{
-                confirmPassword:"Password do not match"
+                confirmPassword:"Passwords do not match"
             },
             errorPlacement: function (error, element) {
                 if (element.attr("name") === "newPassword") {
@@ -144,7 +144,7 @@ class ResetPassword extends Component {
                             <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25 textAlignCenter">Your password has been reset successfully!</p>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                                 <div className="row loginforgotpass textAlignCenter"> Please &nbsp;
-                                    <a href='/login' className=""><b>Click here</b></a> to sign in.
+                                    <a href='/login' className=""><b>Click here</b></a> to Sign In.
                                 </div>
                             </div>
                         </div>

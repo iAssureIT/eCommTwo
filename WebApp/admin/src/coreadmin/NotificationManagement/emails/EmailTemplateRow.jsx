@@ -60,8 +60,6 @@ class EmailTemplateRow extends Component{
 	}
 	render(evt) {
 			var text = this.props.emailtemplateValues.content ? this.props.emailtemplateValues.content : ''; 
-			console.log("text",text);
-			
 			if(this.props.emailtemplateValues && this.props.emailtemplateValues.content){
 
 		        return (
@@ -114,18 +112,31 @@ class EmailTemplateRow extends Component{
 	                    </div>
 	               </div>
 
-					
+					<div className="col-md-12 NOpadding divStyle">
+						<div className="col-md-4">
+							<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Role</label>
+							<p className="subject noBorderBox col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">{this.props.emailtemplateValues.role}</p>
+						</div>
+						<div className="col-md-4">
+							<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Status</label>
+							<p className="subject noBorderBox col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">{this.props.emailtemplateValues.status}</p>
+						</div>
+						<div className="col-md-4">
+							<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Company</label>
+							<p className="subject noBorderBox col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">{this.props.company}</p>
+						</div>
+					</div>
 
-					<div className="inputrow">
-						<div className="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+					<div className="inputrow col-md-12 NOpadding">
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<div className="form-group overAuto">
 							 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Subject:</label>     						
 						        <p className="subject noBorderBox col-lg-12 col-md-12 col-sm-12 col-xs-12">{this.props.emailtemplateValues.subject}</p>
 							</div>	
 						</div>
 					</div>
-					<div className="inputrow"> 
-						<div className="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+					<div className="inputrow col-md-12 NOpadding"> 
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<div className="form-group overAuto">
 							 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 label-category">Message:</label>     						
 							 <p  dangerouslySetInnerHTML={{ __html:text}} className="textAreaBox col-lg-12 col-md-12 col-sm-12 col-xs-12"></p>

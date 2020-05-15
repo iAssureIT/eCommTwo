@@ -25,6 +25,8 @@ class VendorsDetails extends Component {
       this.isLoaded = false
     }
     componentWillReceiveProps(nextProps){
+    			$("html,body").scrollTop(0);
+
     	this.setState({
   			id : nextProps.id
   		},()=>{
@@ -47,15 +49,14 @@ class VendorsDetails extends Component {
   		})
     }
 	componentDidMount(){
-		
+		$("html,body").scrollTop(0);
+
 		this.setState({
   			id : this.props.id
   		},()=>{
 
   			axios.get("/api/entitymaster/get/one/"+this.state.id)
             .then((response)=>{
-          	console.log("response.data:",response.data);
-          	console.log("response.data.reverse:",response.data.reverse());
               this.setState({
                   entityInfo : response.data,
                   entityType : response.data.entityType
@@ -86,10 +87,7 @@ class VendorsDetails extends Component {
   	getContacts(){
   		if(this.state.entityInfo ){
 
-  			console.log("entityInfo array:",this.state.entityInfo);
   			var contacts = this.state.entityInfo.contactPersons.reverse();
-			console.log("getContacts contacts:",this.state.entityInfo);
-			console.log("getContacts contacts:",this.state.entityInfo.contactPersons);
 			this.setState({contacts : contacts },()=>{
 				for (var i = 0; i < this.state.contacts.length; i++) {
 					
@@ -136,13 +134,11 @@ class VendorsDetails extends Component {
     }
     deleteEntity(event){
 		event.preventDefault();
-		console.log("data-id",event.currentTarget.getAttribute('data-id'))
 		this.setState({deleteID: event.currentTarget.getAttribute('data-id')})
 		$('#deleteEntityModal').show();
     }
     confirmDelete(event){
     	event.preventDefault();
-    	console.log("confirm delete");
     	axios.delete("/api/entitymaster/delete/"+this.state.deleteID)
             .then((response)=>{
            		if (response.data.deleted) {
@@ -169,7 +165,6 @@ class VendorsDetails extends Component {
     	$('#deleteEntityModal').hide(); 
     }
 	render() {
-				// console.log("this.state.entityInfo:",this.state.entityInfo);
        	return (	
        			this.state.entityInfo ? 
 
@@ -177,6 +172,13 @@ class VendorsDetails extends Component {
 		            <div className="row">	                   					  
 					        <div id="supplierprofile" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxshade">					   
 					        	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 singleClientDetails" data-child={this.state.entityInfo._id} id={this.state.entityInfo._id}>
+									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
+									  <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+										<button type="button" className="reset">
+											 Company ID &nbsp; :&nbsp;&nbsp; {this.state.entityInfo.companyID} 
+										</button>
+									</div>
+									</div>
 									<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 supplierLogoDiv">
 										<img src={this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className="supplierLogoImage"></img>
 									</div>
@@ -215,9 +217,16 @@ class VendorsDetails extends Component {
 					        					return (
 					        						<div key={ind} className=" col-lg-4 col-md-4 col-sm-6 col-xs-12">
 														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-															<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 corporateDocs" id="LogoImageUpOne">
-																<img src={doc} className="img-responsive logoStyle " />
-															</div>
+															  {
+															  (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
+	                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="LogoImageUpOne">
+	                                                              <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
+	                                                          </div>
+	                                                          :
+	                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+															 </div>
+	                                                         }
 														</div>
 													</div>
 					        					);
@@ -284,9 +293,17 @@ class VendorsDetails extends Component {
 										        					return (
 										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
 																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos corporateDocs" id="LogoImageUpOne">
-																					<img src={doc} className="img-responsive logoStyle" />
-																				</div>
+																				{
+						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
+						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="LogoImageUpOne">
+	                                                              					<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
+						                                                          </div>
+						                                                          :
+						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																					<a href={doc} target="_blank"  className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+																				 </div>
+						                                                         }
+
 																			</div>
 																		</div>
 										        					);
@@ -303,9 +320,16 @@ class VendorsDetails extends Component {
 										        					return (
 										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
 																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos corporateDocs" id="LogoImageUpOne">
-																					<img src={doc} className="img-responsive logoStyle" />
-																				</div>
+																				{
+						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
+						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+	                                                              					<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
+						                                                          </div>
+						                                                          :
+						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																					 <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+																				 </div>
+						                                                         }
 																			</div>
 																		</div>
 										        					);
@@ -349,9 +373,16 @@ class VendorsDetails extends Component {
 										        					return (
 										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
 																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos corporateDocs" id="LogoImageUpOne">
-																					<img src={doc} className="img-responsive logoStyle" />
-																				</div>
+																				{
+						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
+						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+	                                                              						<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
+						                                                          </div>
+						                                                          :
+						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																					<a href={doc} target="_blank"  className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+																				 </div>
+						                                                         }
 																			</div>
 																		</div>
 										        					);
@@ -369,9 +400,17 @@ class VendorsDetails extends Component {
 										        					return (
 										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
 																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos corporateDocs" id="LogoImageUpOne">
-																					<img src={doc} className="img-responsive logoStyle" />
-																				</div>
+																				
+																				{
+						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
+						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+	                                                             					 <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
+						                                                          </div>
+						                                                          :
+						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																					<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+																				 </div>
+						                                                         }
 																			</div>
 																		</div>
 										        					);
@@ -379,9 +418,14 @@ class VendorsDetails extends Component {
 										        			}
 															</div>
 														</div>
-														<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showMore.bind(this)}>
-															<label>Show More</label>
-														</div>
+														{
+															this.state.locations.length > 1?
+															<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showMore.bind(this)}>
+																<label>Show More</label>
+															</div>
+															:
+															null
+														}
 													</div>													
 
 													:
@@ -503,9 +547,14 @@ class VendorsDetails extends Component {
 											        			</ul>	
 															</div>
 														</div>
-														<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showMoreContacts.bind(this)}>
-															<label>Show More</label>
-														</div>
+														{
+															this.state.contacts.length > 1?
+															<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showMoreContacts.bind(this)}>
+																<label>Show More</label>
+															</div>
+															:
+															null
+														}
 													</div>
 														
 														:

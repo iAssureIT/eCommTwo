@@ -1,3 +1,6 @@
+.modalIndex{
+    z-index: 1045;
+}
 *:focus{
 	outline:none;
 }
@@ -100,6 +103,10 @@
     background-color: #337ab7 ! important;
     color: #ffffff ! important;
 }
+.deleteemplist{
+    background-color: #D9534F! important;
+    color: #ffffff ! important;
+}
 .guestdiv{
     opacity: -1 ! important;
 }
@@ -116,4 +123,36 @@
 }
 .loader_img{
     opacity:1;
+}
+.employeeLogoImage{
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    margin-top: 30px !important;
+    border: dashed 1px #aaa;
+}
+#LogoImageUpEmployee{
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
+    background: #ebebeb;
+    border: 1px dashed #999;
+    cursor: pointer;
+    height: 15em;
+    padding: 0
+}
+#LogoImageUpEmployee {
+    align-items: center;
+    text-align: center;
+    display: grid;
+}
+
+#LogoImageUpEmployee i {
+    font-size: 20px;
+    color: var(--waikawagrey-color);
+}
+
+#LogoImageUpEmployee p {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--waikawagrey-color);
 }

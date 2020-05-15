@@ -1,3 +1,7 @@
+.shortlogo{
+    width: 47px;
+    padding-top: 5px !important;
+}
  .collapse.in {
     height: auto !important;
     border-left-color: #3c8dbc;
@@ -595,7 +599,7 @@ a.article, a.article:hover {
      color: #444;
      padding: 18px 0px 3px 0px;
      color: #444;
-     z-index: 0 !important;
+     z-index: 5 !important;
      border-top:1px solid #ddd;
      position: fixed;
     bottom: 0;
@@ -650,6 +654,10 @@ a.article, a.article:hover {
  .content {
      min-height: calc(100vh - 50px);
      padding: 1%;
+ }
+
+ .mainContentBackground{
+    margin-bottom: 5%;
  }
  /* H1 - H6 font */
  
@@ -2091,12 +2099,12 @@ a.article, a.article:hover {
      margin: 15px 0 9px 0;
  }
  
- .list-link>a {
+ .list-li>a {
      padding: 4px;
      color: #777;
  }
  
- .list-link>a:hover {
+ .list-li>a:hover {
      color: #222;
  }
  

@@ -1,0 +1,36 @@
+ ===================================
+ 					Allowable Pincodes
+ ===================================
+ 
+
+ Admin & Franchise side, Allowable Pincodes. 
+	New page 
+	/allowable-pincodes 
+
+	Franchise Name 				Allowable Pincodes
+												Where Delivery can be made
+
+	ShriKrishna Veggies		+--------------------------+
+	address & contact 		|  411001, 411002, 411003  |
+	Details 							+--------------------------+
+
+	Balaji Market					--------------------------
+	address & contact 		 411004, 411005, 411006
+	Details 							--------------------------
+
+	Radhe SabjiMandi			--------------------------
+	address & contact 		 411007, 411008, 411009 
+	Details 							--------------------------
+
+
+																[  Submit ]
+
+
+allowablePincodes : {
+		_id : xxxx,
+		franchise_id : xxxx 			(_id of entityMaster ),
+		companyID 	 : companyID 	(from entityMaster),
+		allowPincodes : [
+			{}
+		]
+}																
