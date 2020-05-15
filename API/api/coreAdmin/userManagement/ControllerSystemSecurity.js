@@ -4,7 +4,7 @@ const jwt							= require("jsonwebtoken");
 var   ObjectID 				= require('mongodb').ObjectID;
 var   request         = require('request-promise');
 const User 						= require('./ModelUsers.js');
-const globalVariable 	= require("../../../nodemon.js");
+const globalVariable 	= require("../../nodemon.js");
 
 function getRandomInt(min, max) {
 	min = Math.ceil(min);
@@ -624,7 +624,6 @@ exports.fetch_user_ID = (req,res,next)=>{
 		});
 };
 exports.fetch_users = (req,res,next)=>{
-	console.log("inside UM fetch_user");
 	var limitRange    = 10;
     var countNum2   = limitRange * req.params.pageno;
     var startRange  = countNum2 - limitRange;

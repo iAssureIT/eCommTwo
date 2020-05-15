@@ -178,8 +178,9 @@ exports.insertSMSData = (req, res, next) => {
                         { type:'SMS' },   
                         {
                             $set:  {   
-                                        "authID"   : req.body.authID.toUpperCase(),
-                                        "authToken": req.body.authToken.toUpperCase()
+                                        "authID"        : req.body.authID.toUpperCase(),
+                                        "authToken"     : req.body.authToken,
+                                        "sourceMobile"  : req.body.sourceMobile,
                                     },
 
                         }
@@ -213,6 +214,7 @@ exports.insertSMSData = (req, res, next) => {
                     type            : 'SMS',
                     authID          : req.body.authID.toUpperCase(),
                     authToken       : req.body.authToken.toUpperCase(),
+                    sourceMobile    : req.body.sourceMobile,
                     createdAt       : new Date()
                 });
                 
@@ -233,6 +235,17 @@ exports.insertSMSData = (req, res, next) => {
 
 exports.get_tax_Data = (req,res,next)=>{
     GlobalMaster.find({type:'Tax',taxType:req.params.type,status:'Active'})
+    .exec() 
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
+};
+
+exports.getSMSDetails = (req,res,next)=>{
+    GlobalMaster.findOne({type:'SMS'})
     .exec() 
     .then(data=>{
         res.status(200).json(data);

@@ -30,5 +30,6 @@ router.post('/post/list/vehicleforallocation', vehicleMaster.getVehicleListForAl
 
 router.patch('/patch/temp_delete_vehicle', vehicleMaster.tempDeleteVehicle);
 
+router.patch('/patch/restore_vehicle', vehicleMaster.vehicle_update_recover_status);
 
 module.exports = router;

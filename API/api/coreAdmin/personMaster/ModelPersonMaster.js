@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const personMasterSchema = mongoose.Schema({
     _id                         : mongoose.Schema.Types.ObjectId,
     company_Id                  : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymasters' },
+    companyID                   : Number,
+    companyName                 : String,
     type                        : String,
+    CompanyID                   : String,
     firstName                   : String,
     middleName                  : String,
     lastName                    : String,
@@ -15,6 +18,7 @@ const personMasterSchema = mongoose.Schema({
     email                       : String,
     whatsappNo                  : String,
     workLocation                : String,
+    workLocationId              : String,
     badgeNumber                 : String,
     designationId               : { type: mongoose.Schema.Types.ObjectId, ref: 'designationmasters' },
     departmentId                : { type: mongoose.Schema.Types.ObjectId, ref: 'departmentmasters' },
@@ -46,21 +50,35 @@ const personMasterSchema = mongoose.Schema({
     drivingLicense              :{
                                     licenseNo       : String,
                                     effectiveTo     : Date,
-                                    licenseProof    : Array
+                                    licenseProof    : [{
+                                                            imgUrl : String,
+                                                            status : String,
+                                                            remarks : String,
+                                                            verifiedOn : Date,
+                                                            verifiedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+                                                        }]  
                                 },
-    identityProof               : Array,                            
-    // pan                      : [{
-    //                                 PAN             : String,
-    //                                 PANProof        : Array
-    //                             }],
+    identityProof               : [{
+                                        imgUrl : String,
+                                        status : String,
+                                        remarks : String,
+                                        verifiedOn : Date,
+                                        verifiedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+                                    }],                            
     aadhar                      :{
                                     aadharNo           : String,
-                                    aadharProof        : Array
+                                    aadharProof        : [{
+                                                            imgUrl : String,
+                                                            status : String,
+                                                            remarks : String,
+                                                            verifiedOn : Date,
+                                                            verifiedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+                                                        }]
                                 },
     verification                :{
                                     verificationNumber: String,
                                     verificationProof : Array
-                                },                            
+                                },  
 
     // voterID                     : [{
     //                                 voterID             : String,
@@ -81,7 +99,15 @@ const personMasterSchema = mongoose.Schema({
                                     updatedAt           : Date,
                                     updatedBy           : { type: mongoose.Schema.Types.ObjectId, ref: 'users' } 
                                 }
-                                ]
+                            ],
+    statusLog                   :   [
+                                        {
+                                            
+                                            status 				: String,
+                                            updatedAt           : Date,
+                                            updatedBy           : String,
+                                        }
+                                    ]
 });
 
 module.exports = mongoose.model('personmasters',personMasterSchema);

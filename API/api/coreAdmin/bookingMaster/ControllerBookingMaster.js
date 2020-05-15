@@ -39,6 +39,12 @@ exports.insertBooking = (req,res,next)=>{
             managerId1                  : req.body.managerId1,
             managerId2                  : req.body.managerId2,
             managerId3                  : req.body.managerId3,
+            managerID1                  : req.body.managerID1,
+            managerID2                  : req.body.managerID2,
+            managerID3                  : req.body.managerID3,
+            approver1exist               : req.body.approver1exist,
+            approver2exist               : req.body.approver2exist,
+            approver3exist               : req.body.approver3exist,
             approvalRequired            : req.body.approvalRequired,
             estimatedCost               : req.body.estimatedCost,
             intermediateStops           : req.body.intermediateStops,
@@ -46,7 +52,7 @@ exports.insertBooking = (req,res,next)=>{
             purposeOfTravel             : req.body.purposeOfTravel,
             reasonForSelectingVehicle   : req.body.reasonForSelectingVehicle,
             status                      : req.body.status,
-            statusValue                 : req.body.status.value,
+            statusValue                 : req.body.statusValue,
             createdBy                   : req.body.createdBy,
             createdAt                   : new Date()
         })
@@ -102,7 +108,7 @@ exports.getAllApprovalReqBookings = (req, res, next)=>{
          }
     },
     { $match :{"approvalRequired" : "Yes"}},
-    { $match :{"statusValue" :{$in:["New","Manager Approved","Manager Rejected","Cancel By Vendor","Cancel By User"]}}}
+    { $match :{"statusValue" :{$in:["New","Manager Approved","Manager Rejected","Cancelled By Vendor","Cancelled By User"]}}}
     ])
 
     // BookingMaster.find({"approvalRequired" : "Yes","statusValue" :{$in:["New","Approved","Rejected","Cancel By Vendor","Cancel By User"]},"managerId":req.params.managerId})
@@ -118,7 +124,8 @@ exports.getAllApprovalReqBookings = (req, res, next)=>{
 
 exports.getDailyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'createdAt':{$gte : new Date(req.body.date), $lt : new Date(req.body.nextDate) }}},
+        {$match:{'pickupDate':{$gte : new Date(req.body.date), $lt : new Date(req.body.nextDate) }}},
+        // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
             from:"entitymasters",
@@ -166,7 +173,13 @@ exports.getDailyBooking = (req,res,next)=>{
             foreignField: "_id",
             as:"manager3"
          }
-        }
+        },
+        { "$lookup": {
+        "from": "entitymasters",
+        localField:"status.allocatedToVendor",
+        foreignField:"_id",
+        "as": "vendor"
+        }}
     ])
     // BookingMaster.find({'createdAt':{$gte : req.body.date, $lt : req.body.nextDate }})
     // .sort({createdAt : -1})
@@ -181,7 +194,8 @@ exports.getDailyBooking = (req,res,next)=>{
 
 exports.getWeeklyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'createdAt':{$gte : new Date(req.body.monday), $lt : new Date(req.body.sunday) }}},
+        {$match:{'pickupDate':{$gte : new Date(req.body.monday), $lt : new Date(req.body.sunday) }}},
+        // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
             from:"entitymasters",
@@ -229,7 +243,13 @@ exports.getWeeklyBooking = (req,res,next)=>{
             foreignField: "_id",
             as:"manager3"
          }
-        }
+        },
+        { "$lookup": {
+        "from": "entitymasters",
+        localField:"status.allocatedToVendor",
+        foreignField:"_id",
+        "as": "vendor"
+        }}
     ])
     .exec()
     .then(data=>{
@@ -242,7 +262,8 @@ exports.getWeeklyBooking = (req,res,next)=>{
 
 exports.getMonthlyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'createdAt':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
+        {$match:{'pickupDate':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
+        // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
             from:"entitymasters",
@@ -290,7 +311,13 @@ exports.getMonthlyBooking = (req,res,next)=>{
             foreignField: "_id",
             as:"manager3"
          }
-        }
+        },
+        { "$lookup": {
+        "from": "entitymasters",
+        localField:"status.allocatedToVendor",
+        foreignField:"_id",
+        "as": "vendor"
+        }}
     ])
     .exec()
     .then(data=>{
@@ -302,7 +329,8 @@ exports.getMonthlyBooking = (req,res,next)=>{
 },
 exports.getYearlyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'createdAt':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
+        {$match:{'pickupDate':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
+        // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
             from:"entitymasters",
@@ -350,7 +378,13 @@ exports.getYearlyBooking = (req,res,next)=>{
             foreignField: "_id",
             as:"manager3"
          }
-        }
+        },
+        { "$lookup": {
+        "from": "entitymasters",
+        localField:"status.allocatedToVendor",
+        foreignField:"_id",
+        "as": "vendor"
+        }}
     ])
     .exec()
     .then(data=>{
@@ -362,7 +396,8 @@ exports.getYearlyBooking = (req,res,next)=>{
 },
 exports.getCustomBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'createdAt':{$gte : new Date(req.body.from), $lt : new Date(req.body.to) }}},
+        {$match:{'pickupDate':{$gte : new Date(req.body.from), $lt : new Date(req.body.to) }}},
+        // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
             from:"entitymasters",
@@ -410,7 +445,13 @@ exports.getCustomBooking = (req,res,next)=>{
             foreignField: "_id",
             as:"manager3"
          }
-        }
+        },
+        { "$lookup": {
+        "from": "entitymasters",
+        localField:"status.allocatedToVendor",
+        foreignField:"_id",
+        "as": "vendor"
+        }}
     ])
     .exec()
     .then(data=>{
@@ -450,7 +491,7 @@ exports.getAllBookingsForManager = (req, res, next)=>{
     { $match :{"statusValue" :req.body.status}},
     ])
     // BookingMaster.find({"approvalRequired" : "Yes","statusValue" :req.body.status,"managerId":req.body.managerId})
-        .sort({createdAt : -1})
+        // .sort({createdAt : -1})
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -548,6 +589,7 @@ exports.countAllBookings = (req,res,next)=>{
 exports.getBookings_User = (req,res,next)=>{
     // BookingMaster.find({createdBy: req.params.userID})
     BookingMaster.find({ $or: [ { "createdBy": req.params.userID }, { "employeeUserId": req.params.userID } ] })
+        .sort({createdAt : -1})
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -559,6 +601,7 @@ exports.getBookings_User = (req,res,next)=>{
 
 exports.getBookings_User_status = (req,res,next)=>{
     BookingMaster.find({ $or: [ { "createdBy": req.body.userId }, { "employeeUserId": req.body.userId } ] ,statusValue: req.body.status})
+        .sort({createdAt : -1})
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -569,6 +612,7 @@ exports.getBookings_User_status = (req,res,next)=>{
 };
 exports.getBookings_By_status = (req,res,next)=>{
     BookingMaster.find({statusValue: req.params.status})
+        .sort({createdAt : -1})
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -590,7 +634,7 @@ exports.countApprovalReqBookings = (req,res,next)=>{
         }
      },
      {$match:{"approvalRequired" : "Yes"}},
-     {$match:{"statusValue" : {$in:["New","Manager Approved","Manager Rejected","Cancel By Vendor","Cancel By User"]}}},
+     {$match:{"statusValue" : {$in:["New","Manager Approved","Manager Rejected","Cancelled By Vendor","Cancelled By User"]}}},
      {$count:"count"}
     ])
     // BookingMaster.find({"approvalRequired" : "Yes","statusValue" : {$in:["New","Manager Approved","Manager Rejected","Cancel By Vendor","Cancel By User"]},"managerId1":req.params.managerId}).count()
@@ -635,6 +679,7 @@ exports.fetchBookings = (req,res,next)=>{
             res.status(500).json({ error: err });
         });
 };
+
 
 
 exports.getBookings = (req,res,next)=>{
@@ -841,6 +886,13 @@ exports.updateBooking = (req, res, next)=>{
                             "managerId1"               : req.body.managerId1,
                             "managerId2"               : req.body.managerId2,
                             "managerId3"               : req.body.managerId3,
+                            "managerID1"                  : req.body.managerID1,
+                            "managerID2"                  : req.body.managerID2,
+                            "managerID3"                  : req.body.managerID3,
+                            "approver1exist"               : req.body.approver1exist,
+                            "approver2exist"               : req.body.approver2exist,
+                            "approver3exist"               : req.body.approver3exist,
+                            "approvalRequired"              : req.body.approvalRequired,
                             "intermediateStops"       : req.body.intermediateStops,
                             "vehicleID"                   : req.body.vehicleID,
                             "estimatedCost"               : req.body.estimatedCost,
@@ -921,21 +973,29 @@ exports.filterBookings = (req,res,next)=>{
 };
 
 exports.updateStatus = (req,res,next)=>{
+    var status = req.body.status;
+    var updateObj = {
+        "statusValue"   : status.value,
+    }
     if(req.body.vehicleID){
-        var updateObj = {
+        updateObj = {
             "vehicleID"     : req.body.vehicleID,
-            "statusValue"   : req.body.status.value,
-        }
-    }else{
-        var updateObj = {
-            "statusValue"   : req.body.status.value,
+            "statusValue"   : status.value,
         }
     }
+    if(status.value === "Started From Garage"){
+        var startOTP     = 1234;
+        var endOTP       = 5678;
+        status.startOTP = startOTP;
+        status.endOTP   = endOTP;
+    }
+    console.log("status",status);
+    console.log("updateObj",updateObj);
     BookingMaster.updateOne(
         { _id:req.body.bookingID },  
         {
             $push:  {  
-                        "status"      : req.body.status,
+                        "status"      : status,
                     },
             $set:  updateObj,
         }
@@ -964,6 +1024,12 @@ exports.updateStatus = (req,res,next)=>{
         res.status(500).json({ error: err });
     });
 }
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 
 exports.changeVehicle = (req,res,next)=>{
@@ -1216,9 +1282,10 @@ exports.getbookingListForVendor = (req,res,next)=>{
    .populate('employeeId')
    .populate('vehicleCategoryId')
    .populate('vehicleID')
-   .sort({updatedAt:1})
+   .sort({createdAt:1})
    .exec()
    .then(bookingList=>{
+        // console.log("bookingList",bookingList);
         main();
         async function main(){
             var k = 0 ;
@@ -1226,8 +1293,7 @@ exports.getbookingListForVendor = (req,res,next)=>{
             for(k = 0 ; k < bookingList.length ; k++){
                 if(bookingList[k].corporateId && bookingList[k].employeeId && bookingList[k].vehicleCategoryId){
                     // var driverInfo = bookingList[k].status.find(elem => elem.value === 'Vendor Allocated to Driver');
-                    var driverInfo = bookingList[k].status.filter((elem)=>{return elem.value==="Vendor Allocated to Driver"});
-                    console.log("driverInfo",driverInfo);
+                    var driverInfo = bookingList[k].status.filter((elem)=>{return elem.value==="Trip Allocated To Driver"});
                     var driverDetails = {
                         firstName   : "",
                         middleName  : "",
@@ -1236,6 +1302,11 @@ exports.getbookingListForVendor = (req,res,next)=>{
                     };
                     if( driverInfo && driverInfo.length > 0){
                         driverDetails = await getDriverDetails(driverInfo[driverInfo.length-1].allocatedToDriver);
+                    }
+                    var reasonData = bookingList[k].status.filter((elem)=>{return elem.value==="Driver Rejected"});
+                    var reamrk = "";
+                    if( reasonData && reasonData.length > 0){
+                        reamrk = reasonData[reasonData.length-1].remark
                     }
                     returnData.push({
                         "_id"                     : bookingList[k]._id,
@@ -1250,6 +1321,8 @@ exports.getbookingListForVendor = (req,res,next)=>{
                         "vehicleColor"            : bookingList[k].vehicleID ? bookingList[k].vehicleID.vehiclecolor : null ,
                         "driverDetails"           : driverDetails,
                         "statusValue"             : bookingList[k].statusValue,
+                        "status"                  : bookingList[k].status, 
+                        "reamrk"                  : reamrk,
                         "from"                    : bookingList[k].from,
                         "to"                      : bookingList[k].to,
                         "pickupDate"              : bookingList[k].pickupDate,
@@ -1271,7 +1344,7 @@ exports.getbookingListForVendor = (req,res,next)=>{
 
 function getDriverDetails(driver_id){
    return new Promise(function(resolve,reject){
-        PersonMaster.findOne({"_id" : driver_id,"status":"active"},{"firstName":1,middleName:1,lastName:1,contactNo:1})
+        PersonMaster.findOne({"_id" : driver_id,"status":"Active"},{"firstName":1,middleName:1,lastName:1,contactNo:1})
              .exec()
              .then(driverDetails=>{
                 resolve(driverDetails);
@@ -1286,80 +1359,68 @@ function getDriverDetails(driver_id){
 }
 
 exports.singleBookingForVendor = (req, res, next)=>{
-    BookingMaster.aggregate([
-        { "$match" : {_id: ObjectId(req.params.bookingID)} },
-        {
-            $lookup:
-            {
-               from: "packagetypemasters",
-               localField: "packageTypeId",
-               foreignField: "_id",
-               as: "packageType"
+    BookingMaster.find({_id: ObjectId(req.params.bookingID)})
+    .populate('packageTypeId')
+    .populate('packageId')
+    .populate('vehicleCategoryId')
+    .populate('employeeId')
+    .populate('vehicleCategoryId')
+    .populate('vehicleID')
+    .then(data=>{
+        main();
+        async function main(){
+            var returnData = data[0];
+            var driverInfo = returnData.status.filter((elem)=>{return elem.value==="Trip Allocated To Driver"});
+            console.log("driverInfo",driverInfo);
+            var driverDetails = {
+                firstName   : "",
+                middleName  : "",
+                lastName    : "",
+                contactNo   : "",
+            };
+            if( driverInfo && driverInfo.length > 0){
+                driverDetails = await getDriverDetails(driverInfo[driverInfo.length-1].allocatedToDriver);
+                console.log("driverDetails",driverDetails);
             }
-        },
-        {
-            $lookup:
-            {
-               from: "packagemasters",
-               localField: "packageId",
-               foreignField: "_id",
-               as: "package"
+            var reasonData = returnData.status.filter((elem)=>{return elem.value==="Driver Rejected"});
+            var remark = "";
+            if( reasonData && reasonData.length > 0){
+                remark = reasonData[reasonData.length-1].remark
             }
-        },
-        {
-            $lookup:
-            {
-               from: "personmasters",
-               localField: "employeeId",
-               foreignField: "_id",
-               as: "employee"
-            }
-        },
-        {
-            $lookup:
-            {
-               from: "categorymasters",
-               localField: "vehicleCategoryId",
-               foreignField: "_id",
-               as: "category"
-            }
-        },
-        { "$unwind": "$packageType" },
-        { "$unwind": "$package" },
-        { "$unwind": "$employee" },
-        { "$unwind": "$category" },
-        {
-            $project:
-            {
-                "_id"                 : 1,
-                "bookingId"           : 1,
-                "status"              : 1,
-                "statusValue"         : 1,
-                "from"                : 1,
-                "to"                  : 1,
-                "pickupDate"          : 1,
-                "pickupTime"          : 1,
-                "returnDate"          : 1,
-                "returnTime"          : 1,
-                "intermediateStops"   : 1,
-                "specialInstruction"  : 1,
-                "tripExpenses"        : 1,
-                "packageType"         : "$packageType.packageType",
-                "packageName"         : "$package.packageName",
-                "firstName"           : "$employee.firstName",
-                "middleName"          : "$employee.middleName",
-                "lastName"            : "$employee.lastName",
-                "contactNo"           : "$employee.contactNo",
-                "vehicleCategory"     : "$category.category",
-            }
-        },
-        ])
-        .then(data=>{
-            res.status(200).json(data);
-        })
-        .catch(err =>{
-            res.status(500).json({ error: err });
-        });
+            res.status(200).json({
+                "_id"                 : returnData._id,
+                "bookingId"           : returnData.bookingId,
+                "status"              : returnData.status,
+                "statusValue"         : returnData.statusValue,
+                "from"                : returnData.from,
+                "to"                  : returnData.to,
+                "pickupDate"          : returnData.pickupDate,
+                "pickupTime"          : returnData.pickupTime,
+                "returnDate"          : returnData.returnDate,
+                "returnTime"          : returnData.returnTime,
+                "intermediateStops"   : returnData.intermediateStops,
+                "specialInstruction"  : returnData.specialInstruction,
+                "tripExpenses"        : returnData.tripExpenses,
+                "packageType"         : returnData.packageTypeId.packageType,
+                "packageName"         : returnData.packageId.packageName,
+                "firstName"           : returnData.employeeId.firstName,
+                "middleName"          : returnData.employeeId.middleName,
+                "lastName"            : returnData.employeeId.lastName,
+                "contactNo"           : returnData.employeeId.contactNo,
+                "vehicleCategory"     : returnData.vehicleCategoryId.category,
+                "vehicleBrand"        : returnData.vehicleID ? returnData.vehicleID.brand : null ,
+                "vehicleModel"        : returnData.vehicleID ? returnData.vehicleID.model : null ,
+                "vehicleNumber"       : returnData.vehicleID ? returnData.vehicleID.vehicleNumber : null ,
+                "vehicleColor"        : returnData.vehicleID ? returnData.vehicleID.vehiclecolor : null ,
+                "vehicle_id"          : returnData.vehicleID ? returnData.vehicleID._id : null ,
+                'driverDetails'       : driverDetails,
+                'remark'              : remark,
+            });
+         }   
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
 };
 
 
@@ -1395,5 +1456,30 @@ exports.vehicleListForAllocation = (req, res, next)=>{
         })
         .catch(err =>{
             res.status(500).json({ error: err });
+        });
+};
+
+
+exports.trip_otp_verification = (req, res, next) => {
+    var selector = {}
+    if(req.body.startOTP){
+       selector = {"startOTP": req.body.startOTP}
+    }else if(req.body.endOTP){
+       selector = {"endOTP": req.body.endOTP}
+    }
+    BookingMaster.find({ _id: ObjectId(req.body.booking_id), status:{$elemMatch:selector}})
+        .exec()
+        .then(data => {
+            if (data.length > 0) {
+                 res.status(200).json({ message: "SUCCESS"});
+            } else {
+                res.status(200).json({ message: "FAILED"});
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "Failed to find the booking",
+                error: err
+            });
         });
 };

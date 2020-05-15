@@ -22,8 +22,9 @@ const userSchema = mongoose.Schema({
 	username	: {type:String},
 	profile 	:
 					{
-						company_id 				: { type: mongoose.Schema.Types.ObjectId, ref: 'companysettings' },
+						company_id 				: { type: mongoose.Schema.Types.ObjectId, ref: 'entitymasters' },
 						companyID 				: Number,
+						companyName  			: String,
 						firstname 				: String,
 						lastname  				: String,
 						fullName  				: String,
@@ -33,37 +34,17 @@ const userSchema = mongoose.Schema({
 						mobileVerified			: Boolean,
 						email 					: String,
 						otpEmail	  			: String,
+						otpMobile	  			: String,
 						emailVerified			: Boolean,
+						mobileVerified			: Boolean,
 						status					: String,
 						createdOn 				: String,
 					},
 	roles       : [String],
-	deliveryAddress : [
-		
-			{
-				"user_ID"      : String,
-				"name"         : String,
-				"email"        : String,
-				"addressLine1" : String,
-				"addressLine2" : String,
-				"pincode"      : String,
-				"district"     : String,
-				"city"         : String,
-				"stateCode"    : String,
-				"state"        : String,
-				"countryCode"  : String,
-				"country" 	   : String,
-				"mobileNumber" : String,
-				"addType"	   : String,
-			}
-		
-
-	],
 	statusLog   : [
 	                {
 	                	status 				: String,
 	                    updatedAt           : Date,
-	                    // updatedBy           : { type: mongoose.Schema.Types.ObjectId, ref: 'users' } 
 	                    updatedBy           : String,
 	                }
 	            ]

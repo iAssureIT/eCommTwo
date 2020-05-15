@@ -17,6 +17,7 @@ router.patch('/patch/status', GlobalMasterContoller.updateStatus);
 
 router.patch('/SMS', GlobalMasterContoller.insertSMSData);
 
+router.get('/get/sms_details', GlobalMasterContoller.getSMSDetails);
 
 module.exports = router;
 

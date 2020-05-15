@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const bookingMasterSchema = mongoose.Schema({
- 	_id			                : mongoose.Schema.Types.ObjectId,
+    _id                         : mongoose.Schema.Types.ObjectId,
     packageTypeId               : { type: mongoose.Schema.Types.ObjectId, ref: 'packagetypemasters' },
     packageId                   : { type: mongoose.Schema.Types.ObjectId, ref: 'packagemasters' },
     contractId                  : { type: mongoose.Schema.Types.ObjectId, ref: 'contracts' },
@@ -46,6 +46,12 @@ const bookingMasterSchema = mongoose.Schema({
     managerId1                  : { type: mongoose.Schema.Types.ObjectId, ref: 'personmasters' },
     managerId2                  : { type: mongoose.Schema.Types.ObjectId, ref: 'personmasters' },
     managerId3                  : { type: mongoose.Schema.Types.ObjectId, ref: 'personmasters' },
+    managerID1                  : String,
+    managerID2                  : String,
+    managerID3                  : String,
+    approver1exist               : String,
+    approver2exist               : String,
+    approver3exist               : String,
     approvalRequired            : String,
     estimatedCost               : Number,
     intermediateStops           : [{
@@ -68,7 +74,8 @@ const bookingMasterSchema = mongoose.Schema({
                                     remark              : String,
                                     latitude            : Number,
                                     longitude           : Number,
-                                    OTP                 : Number,
+                                    startOTP            : Number,
+                                    endOTP              : Number,
                                     odometerReading     : Number,
                                     proof               : String,  
                                 }],

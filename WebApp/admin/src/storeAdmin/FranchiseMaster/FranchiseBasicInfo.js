@@ -8,6 +8,7 @@ import 'bootstrap/js/tab.js';
 
 // import BasicInfo from '../../coreadmin/Master/EntityMaster/Onboarding/basicInfo/BasicInfo.js';
 import BasicInfo from '../../coreadmin/Master/EntityMaster/Onboarding/basicInfo/BasicInfo.js';
+
 class FranchiseBasicInfo extends Component {
     constructor(props) {
         super(props);

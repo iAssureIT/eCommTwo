@@ -217,26 +217,26 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state)=>{
-  console.log("state = ",state)
-  return {
-    userDetails   : state.userDetails,
-  }
-};
+// const mapStateToProps = (state)=>{
+//   console.log("state = ",state)
+//   return {
+//     userDetails   : state.userDetails,
+//   }
+// };
 
 
-const mapDispatchToProps = (dispatch)=>{
-  return {
-      setGlobalUser  : (userDetails)=> dispatch({
-                          type      : "SET_GLOBAL_USER",
-                          userDetails : userDetails,
-                        }),
-  }
-};
+// const mapDispatchToProps = (dispatch)=>{
+//   return {
+//       setGlobalUser  : (userDetails)=> dispatch({
+//                           type      : "SET_GLOBAL_USER",
+//                           userDetails : userDetails,
+//                         }),
+//   }
+// };
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
 
 
 

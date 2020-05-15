@@ -67,6 +67,8 @@ router.patch('/patch/tripExpenses', bookingMaster.insert_trip_expenses);
 
 router.patch('/patch/updateRouteCoordinates', bookingMaster.update_routeCoordinates);
 
+router.post('/post/trip_otp_verification', bookingMaster.trip_otp_verification);
+
 
 //Vendor APP API - Rushikesh Salunkhe
 router.post('/post/bookingListForVendor', bookingMaster.getbookingListForVendor);

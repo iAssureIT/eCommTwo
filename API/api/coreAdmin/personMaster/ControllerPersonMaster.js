@@ -16,6 +16,9 @@ exports.insertPerson = (req,res,next)=>{
         const person = new PersonMaster({
                     _id                         : new mongoose.Types.ObjectId(),
                     company_Id                  : req.body.company_Id,
+                    companyID                   : req.body.companyID,
+                    workLocationId              : req.body.workLocationId,
+                    companyName                 : req.body.companyName,
                     type                        : req.body.type,
                     firstName                   : req.body.firstName,
                     middleName                  : req.body.middleName,
@@ -41,10 +44,9 @@ exports.insertPerson = (req,res,next)=>{
                     approvingAuthorityId3       : req.body.approvingAuthorityId3 ? req.body.approvingAuthorityId3 : null,
                     address                     : req.body.address,
                     drivingLicense              : req.body.drivingLicense,
-                    //pan                         : req.body.pan, b 
                     aadhar                      : req.body.aadhar,
-                    verification                : req.body.verification,
                     identityProof               : req.body.identityProof,
+                    verification                : req.body.verification,
                     //voterID                     : req.body.voterID,
                     //passport                    : req.body.passport,
                     corporateId                 : req.body.corporateId,
@@ -93,7 +95,7 @@ exports.listPersons = (req,res,next)=>{
 
 
 exports.singlePerson = (req, res, next)=>{
-    //PersonMaster.findOne({ _id: req.params.personID })
+    PersonMaster.findOne({ _id: req.params.personID })
     PersonMaster.aggregate([
          {
             $lookup:
@@ -124,7 +126,7 @@ exports.singlePerson = (req, res, next)=>{
 };
 
 exports.singlePersonByUserId = (req, res, next)=>{
-    //PersonMaster.findOne({ _id: req.params.personID })
+    PersonMaster.findOne({ _id: req.params.personID })
     PersonMaster.aggregate([
          {
             $lookup:
@@ -161,6 +163,40 @@ exports.singlePersonByUserId = (req, res, next)=>{
             res.status(500).json({ error: err });
         }); 
 };
+exports.updatePersonStatus = (req,res,next)=>{
+    PersonMaster.updateOne(
+            { _id:req.body.personID},  
+            {
+                $set:   { 
+                            'status':req.body.status
+                        }
+            }
+        )
+        .exec()
+        .then(data=>{
+            if(data.nModified == 1){
+                PersonMaster.updateOne(
+                { _id:req.body.personID},
+                {
+                    $push:  { 'updateLog' : [{  updatedAt      : new Date(),
+                                                updatedBy      : req.body.updatedBy 
+                                            }] 
+                            }
+                } )
+                .exec()
+                .then(data=>{
+                    res.status(200).json({ updated : true });
+                })
+            }else{
+                res.status(200).json({ updated : false });
+            }
+        })
+        .catch(err =>{
+            res.status(500).json({
+                error: err
+            });
+        });
+};
 
 exports.updatePerson = (req, res, next)=>{
     console.log('userDetails', req.body);
@@ -169,6 +205,9 @@ exports.updatePerson = (req, res, next)=>{
             {
                 $set:   {   
                             'company_Id'                  : req.body.company_Id,
+                            'companyID'                   : req.body.companyID,
+                            'workLocationId'              : req.body.workLocationId,
+                            'companyName'                 : req.body.companyName,
                             'firstName'                   : req.body.firstName,
                             'middleName'                  : req.body.middleName,
                             'lastName'                    : req.body.lastName,
@@ -240,6 +279,129 @@ exports.deletePerson = (req, res, next)=>{
             res.status(500).json({ error: err });
         });            
 };
+
+exports.person_update_delete_status = (req,res,next)=>{
+	console.log("req.body.user_id_tobedeleted==>",req.body.personID_tobedeleted);
+	PersonMaster.findOne({_id:req.body.personID_tobedeleted})
+		.exec()
+		.then(user=>{
+			if(user){
+				// console.log("req.user==>",user);
+                var newstatus = "";
+                console.log("req.user==>",user.status);
+				if(user.status === 'Active'){
+					newstatus = 'deleted-Active';
+				}
+				if(user.status === 'Inactive'){
+					newstatus = 'deleted-Inactive';
+				}
+				PersonMaster.updateOne(
+					{_id:req.body.personID_tobedeleted},
+					{
+						$set:{
+							status : newstatus,
+						},
+					}
+				)
+				.exec() 
+		        .then(data=>{
+		            if(data.nModified == 1){
+		                PersonMaster.updateOne(
+							{_id:req.body.personID_tobedeleted},
+							{
+			                    $push:  { 'statusLog' : [{  
+			                    							status         : newstatus,
+			                    							updatedAt      : new Date(),
+			                                                updatedBy      : req.body.updatedBy,
+			                                            }] 
+			                            }
+			                })
+		                .exec()
+		                .then(data=>{
+							res.status(200).json("USER_SOFT_DELETED");
+		                })
+		            }else{
+						res.status(200).json("USER_NOT_DELETED")
+		            }
+		        })
+				.catch(err =>{
+					res.status(500).json({
+						error: err
+					});
+				});
+			}else{
+				res.status(200).json("User Not Found");
+			}
+		})
+		.catch(err=>{
+			res.status(500).json({
+				error:err
+			});
+		});
+};
+
+exports.person_update_recover_status = (req,res,next)=>{
+    console.log("personID_toberecover==>",req.body.personID_toberecover)
+	PersonMaster.findOne({_id:req.body.personID_toberecover})
+		.exec()
+		.then(user=>{
+            console.log("user.data in restore==>",user);
+			if(user){
+                var newstatus = "";
+                console.log("req.user==>",user.status);
+				if(user.status === 'deleted-Active'){
+					newstatus = 'Active';
+				}
+				if(user.status === 'deleted-Inactive'){
+					newstatus = 'Inactive';
+				}
+				PersonMaster.updateOne(
+					{_id:req.body.personID_toberecover},
+					{
+						$set:{
+							status : newstatus,
+						},
+					}
+				)
+				.exec() 
+		        .then(data=>{
+                    console.log("data in restore==>",data);
+                    res.status(200).json(data);
+		            if(data.nModified == 1){
+		                PersonMaster.updateOne(
+							{_id:req.body.personID_toberecover},
+							{
+			                    $push:  { 'statusLog' : [{  
+			                    							status         : newstatus,
+			                    							updatedAt      : new Date(),
+			                                                updatedBy      : req.body.updatedBy,
+			                                            }] 
+			                            }
+			                })
+		                .exec()
+		                .then(data=>{
+							res.status(200).json(data);
+							// res.status(200).json("USER_SOFT_DELETED");
+		                })
+		            }else{
+						res.status(200).json("USER_NOT_DELETED")
+		            }
+		        })
+				.catch(err =>{
+					res.status(500).json({
+						error: err
+					});
+				});
+			}else{
+				res.status(200).json("User Not Found");
+			}
+		})
+		.catch(err=>{
+			res.status(500).json({
+				error:err
+			});
+		});
+};
 exports.filterPersons = (req,res,next)=>{
     var selector = {};
     
@@ -297,8 +459,6 @@ exports.searchPerson = (req, res, next)=>{
         }); 
 };
 
-
-
 exports.bulkUploadEmployee = (req, res, next)=>{
     var employees = req.body.data;
     console.log("employees",employees);
@@ -345,6 +505,9 @@ exports.bulkUploadEmployee = (req, res, next)=>{
             if (employees[k].employeeId == '-') {
                 remark += "employeeId not found, " ;  
             }
+            if (employees[k].companyID == '-') {
+                remark += "companyID not found, " ;  
+            }
             console.log("remark",remark)
 
             if (remark == '') {
@@ -383,7 +546,7 @@ exports.bulkUploadEmployee = (req, res, next)=>{
                     if (data.firstName.trim().toLowerCase() == employees[k].firstName.trim().toLowerCase()
                         && data.middleName.trim().toLowerCase() == employees[k].middleName.trim().toLowerCase()
                         && data.lastName.trim().toLowerCase() == employees[k].lastName.trim().toLowerCase()
-                        && data.email.trim() == employees[k].email.trim()) {
+                        && data.email.trim() == employees[k].email.trim() && data.companyID.trim()==employees[k].companyID.trim()) {
                         return data;
                     }
                 })
@@ -625,149 +788,57 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
 //Mobile Driver API
 
 //For Driver Basic Info
-exports.insertPersonBasicInfo = (req,res,next)=>{
-        console.log(req.body)
-         PersonMaster.find({userId: req.body.userId})
-        .exec()
-        .then(person=>{
-            console.log("person",person);
-            if(person && person.length >0){
-                PersonMaster.updateOne(
-                    { _id:person[0]._id },   
-                    {
-                        $set:   {   
-                                    'company_Id'                  : req.body.company_Id,
-                                    'firstName'                   : req.body.firstName,
-                                    'middleName'                  : req.body.middleName,
-                                    'lastName'                    : req.body.lastName,
-                                    'DOB'                         : req.body.DOB,
-                                    'gender'                      : req.body.gender,
-                                    'contactNo'                   : req.body.contactNo,
-                                    'altContactNo'                : req.body.altContactNo,
-                                    'email'                       : req.body.email,
-                                    'whatsappNo'                  : req.body.whatsappNo,
-                            }  
-                    }
-                )
-                .exec()
-                .then(data=>{
-                    if(data.nModified == 1){
-                        PersonMaster.updateOne(
-                        { userId:req.body.userId},
-                        {
-                            $push:  { 'updateLog' : [{  updatedAt      : new Date(),
-                                                        updatedBy      : req.body.updatedBy 
-                                                    }] 
-                                    }
-                        } )
-                        .exec()
-                        .then(data=>{
-                            res.status(200).json({ updated : true });
-                        })
-                    }else{
-                        res.status(200).json({ updated : false });
-                    }
-                })
-                .catch(err =>{
-                    console.log(err);
-                    res.status(500).json({ error: err });
-                });
-            }else{
-                 const person = new PersonMaster({
-                    _id                         : new mongoose.Types.ObjectId(),
-                    type                        : req.body.type,
-                    firstName                   : req.body.firstName,
-                    middleName                  : req.body.middleName,
-                    lastName                    : req.body.lastName,
-                    DOB                         : req.body.DOB,
-                    gender                      : req.body.gender,
-                    contactNo                   : req.body.contactNo,
-                    altContactNo                : req.body.altContactNo,
-                    profilePhoto                : req.body.profilePhoto,
-                    email                       : req.body.email,
-                    whatsappNo                  : req.body.whatsappNo,
-                    userId                      : req.body.userId,
-                    createdBy                   : req.body.createdBy,
-                    createdAt                   : new Date()    
-                })
-                person.save()
-                .then(data=>{
-                    res.status(200).json({ created : true, PersonId : data._id });
-                })
-                .catch(err =>{
-                    console.log(err)
-                    res.status(500).json({ error: err }); 
-                });
-            } 
-        })
-        .catch(err =>{
-            res.status(500).json({ error: err });
-        });  
-       
+exports.updatePersonBasicInfo = (req,res,next)=>{
+    PersonMaster.updateOne(
+    { _id:req.body.person_id },   
+    {
+        $set:   {   
+                    'firstName'                   : req.body.firstName,
+                    'middleName'                  : req.body.middleName,
+                    'lastName'                    : req.body.lastName,
+                    'DOB'                         : req.body.DOB,
+                    'gender'                      : req.body.gender,
+                    'contactNo'                   : req.body.contactNo,
+                    'altContactNo'                : req.body.altContactNo,
+                    'email'                       : req.body.email,
+                    'whatsappNo'                  : req.body.whatsappNo,
+            }  
+    })
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            PersonMaster.updateOne(
+            { userId:req.body.userId},
+            {
+                $push:  { 'updateLog' : [{  updatedAt      : new Date(),
+                                            updatedBy      : req.body.updatedBy 
+                                        }] 
+                        }
+            } )
+            .exec()
+            .then(data=>{
+                res.status(200).json({ updated : true });
+            })
+        }else{
+            res.status(200).json({ updated : false });
+        }
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({ error: err });
+    });
 };
 //End
 
 
 //For Driver Address Info
-exports.insertPersonAddressInfo = (req,res,next)=>{
-        console.log(req.body)
-         PersonMaster.find({userId: req.body.userId})
-        .exec()
-        .then(person=>{
-            if(person && person.length >0){
-                PersonMaster.updateOne(
-                    { _id:person[0]._id },   
-                    {
-                        $set:   {   
-                                     
-                                    'address'                     : [{
-                                                                    addressLine1    : req.body.addressLine1,
-                                                                    addressLine2    : req.body.addressLine2,
-                                                                    landmark        : req.body.landmark,
-                                                                    area            : req.body.area,
-                                                                    city            : req.body.city,
-                                                                    district        : req.body.district,
-                                                                    stateCode       : req.body.stateCode,
-                                                                    state           : req.body.state,
-                                                                    countryCode     : req.body.countryCode,
-                                                                    country         : req.body.country,
-                                                                    pincode         : req.body.pincode,
-                                                                    latitude        : req.body.latitude,
-                                                                    longitude       : req.body.longitude,
-                                                                    addressProof    : req.body.addressProof    
-                                                                }],
-
-                                }  
-                    }
-                )
-                .exec()
-                .then(data=>{
-                    if(data.nModified == 1){
-                        PersonMaster.updateOne(
-                        { userId:req.body.userId},
-                        {
-                            $push:  { 'updateLog' : [{  updatedAt      : new Date(),
-                                                        updatedBy      : req.body.updatedBy 
-                                                    }] 
-                                    }
-                        } )
-                        .exec()
-                        .then(data=>{
-                            res.status(200).json({ updated : true });
-                        })
-                    }else{
-                        res.status(200).json({ updated : false });
-                    }
-                })
-                .catch(err =>{
-                    console.log(err);
-                    res.status(500).json({ error: err });
-                });
-            }else{
-                 const person = new PersonMaster({
-                    _id                         : new mongoose.Types.ObjectId(),
-                    type                        : req.body.type,
-                    address                     : [{
+exports.updatePersonAddressInfo = (req,res,next)=>{
+    PersonMaster.updateOne(
+        { _id:req.body.person_id }, 
+        {
+            $set:   {   
+                         
+                        'address'                     : [{
                                                         addressLine1    : req.body.addressLine1,
                                                         addressLine2    : req.body.addressLine2,
                                                         landmark        : req.body.landmark,
@@ -783,181 +854,125 @@ exports.insertPersonAddressInfo = (req,res,next)=>{
                                                         longitude       : req.body.longitude,
                                                         addressProof    : req.body.addressProof    
                                                     }],
-                    userId                      : req.body.userId,
-                    createdBy                   : req.body.createdBy,
-                    createdAt                   : new Date()
-                })
-                person.save()
-                .then(data=>{
-                    res.status(200).json({ created : true, PersonId : data._id });
-                })
-                .catch(err =>{
-                    console.log(err)
-                    res.status(500).json({ error: err }); 
-                });
-            } 
-        })
-        .catch(err =>{
-            res.status(500).json({ error: err });
-        });  
-       
+
+                    }  
+        }
+    )
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            PersonMaster.updateOne(
+            { _id:req.body.person_id},
+            {
+                $push:  { 'updateLog' : [{  updatedAt      : new Date(),
+                                            updatedBy      : req.body.updatedBy 
+                                        }] 
+                        }
+            } )
+            .exec()
+            .then(data=>{
+                res.status(200).json({ updated : true });
+            })
+        }else{
+            res.status(200).json({ updated : false });
+        }
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({ error: err });
+    });
+
 };
 //End
 
 //For Person Document Info
-exports.insertPersonDocumentsProof = (req,res,next)=>{
-        console.log(req.body)
-         PersonMaster.find({userId: req.body.userId})
-        .exec()
-        .then(person=>{
-            if(person && person.length >0){
-                PersonMaster.updateOne(
-                    { _id:person[0]._id },   
-                    {
-                        $set:   {   
-                                    'drivingLicense'            : {
-                                                                    licenseNo       : req.body.licenseNo,
-                                                                    effectiveTo     : req.body.effectiveTo,
-                                                                    licenseProof    : req.body.licenseProof
-                                                                 },
-                                    'identityProof'             : req.body.identityProof,
-                                    'aadhar'                    : {
-                                                                    aadharNo        : req.body.aadharNo,
-                                                                    aadharProof     : req.body.aadharProof
-                                                                  },
-                                    'verification'              : {
-                                                                    verificationNumber: req.body.verificationNumber,
-                                                                    verificationProof : req.body.verificationProof,
-                                                                  },  
-                                    'badgeNumber'               : req.body.badgeNumber,                                     
-                                }   
-                    }
-                )
-                .exec()
-                .then(data=>{
-                    if(data.nModified == 1){
-                        PersonMaster.updateOne(
-                        { userId:req.body.userId},
-                        {
-                            $push:  { 'updateLog' : [{  updatedAt      : new Date(),
-                                                        updatedBy      : req.body.updatedBy 
-                                                    }] 
-                                    }
-                        } )
-                        .exec()
-                        .then(data=>{
-                            res.status(200).json({ updated : true });
-                        })
-                    }else{
-                        res.status(200).json({ updated : false });
-                    }
-                })
-                .catch(err =>{
-                    console.log(err);
-                    res.status(500).json({ error: err });
-                });
-            }else{
-                 const person = new PersonMaster({
-                    _id                         : new mongoose.Types.ObjectId(),
-                    type                        : req.body.type,
-                    'drivingLicense'            : {
-                                                    licenseNo       : req.body.licenseNo,
-                                                    effectiveTo     : req.body.effectiveTo,
-                                                    licenseProof    : req.body.licenseProof
-                                                 },
-                    'identityProof'             : req.body.identityProof,
-                    'aadhar'                    : {
-                                                    aadharNo        : req.body.aadharNo,
-                                                    aadharProof     : req.body.aadharProof
-                                                  },    
-                    userId                      : req.body.userId,
-                    createdBy                   : req.body.createdBy,
-                    createdAt                   : new Date()
-                })
-                person.save()
-                .then(data=>{
-                    res.status(200).json({ created : true, PersonId : data._id });
-                })
-                .catch(err =>{
-                    console.log(err)
-                    res.status(500).json({ error: err }); 
-                });
-            } 
-        })
-        .catch(err =>{
-            res.status(500).json({ error: err });
-        });  
-       
+exports.updatePersonDocumentsProof = (req,res,next)=>{
+    PersonMaster.updateOne(
+        { _id:req.body.person_id },   
+        {
+            $set:   {   
+                        'drivingLicense'            : {
+                                                        licenseNo       : req.body.licenseNo,
+                                                        effectiveTo     : req.body.effectiveTo,
+                                                        licenseProof    : req.body.licenseProof
+                                                     },
+                        'identityProof'             : req.body.identityProof,
+                        'aadhar'                    : {
+                                                        aadharNo        : req.body.aadharNo,
+                                                        aadharProof     : req.body.aadharProof
+                                                      },
+                        'verification'              : {
+                                                        verificationNumber: req.body.verificationNumber,
+                                                        verificationProof : req.body.verificationProof,
+                                                      },  
+                        'badgeNumber'               : req.body.badgeNumber,                                     
+                    }   
+        }
+    )
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            PersonMaster.updateOne(
+            { _id:req.body.person_id},
+            {
+                $push:  { 'updateLog' : [{  updatedAt      : new Date(),
+                                            updatedBy      : req.body.updatedBy 
+                                        }] 
+                        }
+            } )
+            .exec()
+            .then(data=>{
+                res.status(200).json({ updated : true });
+            })
+        }else{
+            res.status(200).json({ updated : false });
+        }
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({ error: err });
+    });
 };
 
 exports.personProfilePhoto = (req,res,next)=>{
-    PersonMaster.find({userId:req.body.userId})
-        .exec()
-        .then(person=>{
-            if(person && person.length >0){
-                PersonMaster.updateOne(
-                    {userId:req.body.userId},
-                    {
-                        $set:{
-                            "profilePhoto"  : req.body.profilePhoto,
-                        },
-                    }
-                )
-                .exec()
-                .then(data=>{
-                    if(data.nModified == 1){
-                        PersonMaster.updateOne(
-                        { userId:req.body.userId},
-                        {
-                            $push:  { 'updateLog' : [{  updatedAt      : new Date(),
-                                                        updatedBy      : req.body.updatedBy 
-                                                    }] 
-                                    }
-                        } )
-                        .exec()
-                        .then(data=>{
-                            res.status(200).json({ updated : true });
-                        })
-                    }else{
-                        res.status(200).json({ updated : false });
-                    }
-                })
-                .catch(err =>{
-                    console.log('user error ',err);
-                    res.status(500).json({
-                        error: err
-                    });
-                });
-            }else{
-                const person = new PersonMaster({
-                    _id                         : new mongoose.Types.ObjectId(),
-                    type                        : req.body.type,
-                    profilePhoto                : req.body.profilePhoto, 
-                    userId                      : req.body.userId,
-                    createdBy                   : req.body.createdBy,
-                    createdAt                   : new Date()
-                })
-                person.save()
-                .then(data=>{
-                    res.status(200).json({ created : true, PersonId : data._id });
-                })
-                .catch(err =>{
-                    console.log(err)
-                    res.status(500).json({ error: err }); 
-                });
-            }
-        })
-        .catch(err=>{
-            console.log('update user error ',err);
-            res.status(500).json({
-                error:err
-            });
+    PersonMaster.updateOne(
+        {_id:req.body.person_id},
+        {
+            $set:{
+                "profilePhoto"  : req.body.profilePhoto,
+            },
+        }
+    )
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            PersonMaster.updateOne(
+            { _id:req.body.person_id},
+            {
+                $push:  { 'updateLog' : [{  updatedAt      : new Date(),
+                                            updatedBy      : req.body.updatedBy 
+                                        }] 
+                        }
+            } )
+            .exec()
+            .then(data=>{
+                res.status(200).json({ updated : true });
+            })
+        }else{
+            res.status(200).json({ updated : false });
+        }
+    })
+    .catch(err =>{
+        console.log('user error ',err);
+        res.status(500).json({
+            error: err
         });
+    });
 };
 
 
 exports.getPersonProfilePhoto = (req,res,next)=>{ 
-    PersonMaster.findOne({userId: req.params.userId},{profilePhoto:1,firstName:1,_id:0})
+    PersonMaster.findOne({userId: req.params.userId},{profilePhoto:1,firstName:1,lastName:1,contactNo:1,_id:0})
     .then(data=>{
         console.log(data)
         if(data){
@@ -1075,7 +1090,7 @@ exports.delete_file = (req,res,next)=>{
 };
 
 exports.getUserByEmpID = (req,res,next)=>{
-    PersonMaster.find({employeeId: req.params.employeeId})
+    PersonMaster.find({employeeId: req.params.employeeId,company_Id:req.params.corporateId})
         .exec() 
         .then(data=>{
             res.status(200).json({ data : data } );
@@ -1108,7 +1123,7 @@ exports.getUserByEmail = (req,res,next)=>{
 };
 
 exports.driverListMapping = (req,res,next)=>{ 
-    PersonMaster.find({company_Id: req.params.company_Id,type:"driver"},{ firstName: 1, middleName:1, lastName: 1,contactNo:1,profilePhoto:1,email:1,type:1})
+    PersonMaster.find({company_Id: req.params.company_Id,type:"driver",status:'Active'},{ firstName: 1, middleName:1, lastName: 1,contactNo:1,profilePhoto:1,email:1,type:1})
         .sort({createdAt : -1})
         .then(driverList=>{
              if(driverList){
@@ -1122,7 +1137,7 @@ exports.driverListMapping = (req,res,next)=>{
                             if(mappingList.length > 0){
                                 for(var i=0; i<mappingList.length; i++){
                                     for(let j=0; j<driverList.length; j++){
-                                        if(mappingList[i].driverID.equals(driverList[j]._id) && mappingList[i].status==="active"){
+                                        if(mappingList[i].driverID.equals(driverList[j]._id) && mappingList[i].status==="Active"){
                                             driverList[j] = {...driverList[j], matched:true};
                                             break;
                                         }
@@ -1172,7 +1187,7 @@ exports.getDriverListForVendor = (req,res,next)=>{
 exports.getDriverListForAllocation = (req,res,next)=>{ 
     var desiredFromDate = req.body.fromDate;
     var desiredToDate   = req.body.toDate;
-    PersonMaster.find({company_Id: req.body.company_Id,status:'active'})
+    PersonMaster.find({company_Id: req.body.company_Id,status:'Active',type:'driver'})
         .then(validDrivers=>{
             let driverIDArray = validDrivers.map(drivers => drivers._id);
             if(validDrivers && validDrivers.length > 0){
@@ -1216,18 +1231,16 @@ exports.getDriverListForAllocation = (req,res,next)=>{
                         var availabilityStatus = '';
                         if(bookedDrivers && bookedDrivers.length > 0){
                             for(var i=0; i<bookedDrivers.length; i++){
-                                if(bookedDrivers[i].status){
-                                    for(let j=0; j<bookedDrivers[i].status.length; j++){
-                                        if(bookedDrivers[i].status[j].allocatedToVendor){
-                                            for(let k=0; k<validDrivers.length; k++){
-                                                if(bookedDrivers[i].status[j].allocatedToVendor.equals(validDrivers[k]._id)){
-                                                    validDrivers[k] = {...validDrivers[k], availabilityStatus:'Booked'};
-                                                    break;
-                                                }
+                                for(let j=0; j<bookedDrivers[i].status.length; j++){
+                                    if(bookedDrivers[i].status[j].allocatedToDriver){
+                                        for(let k=0; k<validDrivers.length; k++){
+                                            if(bookedDrivers[i].status[j].allocatedToDriver.equals(validDrivers[k]._id)){
+                                                validDrivers[k] = {...validDrivers[k], availabilityStatus:'Booked'};
+                                                break;
                                             }
-                                        }    
-                                    }
-                                }    
+                                        }
+                                    }    
+                                }
                             } 
                             if(i >= bookedDrivers.length){
                                 res.status(200).json(validDrivers);
@@ -1252,50 +1265,299 @@ exports.getDriverListForAllocation = (req,res,next)=>{
         }); 
 };
 
-
-exports.tempDeleteDriver = (req, res, next)=>{
-    PersonMaster.updateOne(
-        {_id:req.body.driverID},
-        {
-            $set: { 
-                'status' : 'deleted'
-            }
-        }              
-    )
-    .exec()
-    .then(driver=>{
-        console.log("driver",driver);
-        if(driver.nModified === 1){
-            VehicleDriverMapping.updateOne(
-                {driverID: req.body.driverID},
-                {
-                    $set:   { 
-                        'unmapDate'                 :  new Date(),
-                        'status'                    :  'inactive',
-                    },
-                    $push:  { 
-                        'updateLog' :   [{  updatedAt      : new Date(),
-                                            updatedBy      : req.body.updatedBy 
-                                        }],
+exports.driver_update_recover_status = (req,res,next)=>{
+    PersonMaster.findOne({_id:req.body.driverID})
+        .exec()
+        .then(user=>{
+            if(user){
+                var newstatus = "";
+                if(user.status === 'deleted-Active'){
+                    newstatus = 'Active';
+                }
+                if(user.status === 'deleted-Inactive'){
+                    newstatus = 'Inactive';
+                }
+                PersonMaster.updateOne(
+                    {_id:req.body.driverID},
+                    {
+                        $set:{
+                            "status" : newstatus,
+                        },
                     }
-                }            
-            )
-            exec()
-            .then(mapping=>{
-                console.log("mapping",mapping)
-                res.status(200).json({ deleted : true });
-            })
-            .catch(err =>{
-                console.log("err",err);
-                res.status(500).json({ error: err });
+                )
+                .exec() 
+                .then(data=>{
+                    if(data.nModified == 1){
+                        PersonMaster.updateOne(
+                            {_id:req.body.driverID},
+                            {
+                                $push:  { 'statusLog' : [{  
+                                                            status         : newstatus,
+                                                            updatedAt      : new Date(),
+                                                            updatedBy      : req.body.updatedBy,
+                                                        }] 
+                                        }
+                            })
+                        .exec()
+                        .then(data=>{
+                            res.status(200).json("USER_IS_RESTORED");
+                        })
+                    }else{
+                        res.status(200).json("USER_IS_NOT_RESTORED")
+                    }
+                })
+                .catch(err =>{
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+            }else{
+                res.status(200).json("User Not Found");
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
             });
-        }else{
-            res.status(200).json({ deleted : false });
-        }
-    })
-    .catch(err =>{
-        res.status(500).json({ error: err });
-    });            
+        });
+};
+exports.tempDeleteDriver = (req, res, next)=>{
+    PersonMaster.findOne({_id:req.body.driverID})
+        .exec()
+        .then(driver=>{
+            if(driver){
+                VehicleDriverMapping.findOne(
+                    {
+                        driverID: req.body.driverID,
+                        status : "active"
+                    },
+                )
+                .exec()
+                .then(mapping=>{
+                    console.log("mapping",mapping);
+                    if(mapping){
+                        BookingMaster.findOne(
+                            {driverID: req.body.driverID},
+                        )
+                        .exec()
+                        .then(booking=>{
+                            console.log("mappif_booking",booking);
+                            if(booking){
+
+                            }else{
+                                // console.log("req.driver==>",driver);
+                                var newstatus = "";
+                                if(driver.status === 'Active'){
+                                    newstatus = 'deleted-Active';
+                                }
+                                if(driver.status === 'Inactive'){
+                                    newstatus = 'deleted-Inactive';
+                                }
+                                PersonMaster.updateOne(
+                                    {_id:req.body.driverID},
+                                    {
+                                        $set:{
+                                            "status" : newstatus,
+                                        },
+                                    }
+                                )
+                                .exec() 
+                                .then(data=>{
+                                    if(data.nModified == 1){
+                                        PersonMaster.updateOne(
+                                            {_id:req.body.driverID},
+                                            {
+                                                $push:  {  'statusLog' : [{  
+                                                                            status         : newstatus,
+                                                                            updatedAt      : new Date(),
+                                                                            updatedBy      : req.body.updatedBy,
+                                                                        }] 
+                                                        }
+                                            })
+                                        .exec()
+                                        .then(details=>{
+                                            console.log("details",details);
+                                            if(details.nModified === 1){
+                                                VehicleDriverMapping.updateOne(
+                                                    { _id    : mapping._id},
+                                                    {
+                                                        $set:   { 
+                                                            'unmapDate'                 :  new Date(),
+                                                            'status'                    :  'inactive',
+                                                        },
+                                                        $push:  { 
+                                                            'updateLog' :   [{  updatedAt      : new Date(),
+                                                                                updatedBy      : req.body.updatedBy 
+                                                                            }],
+                                                        }
+                                                    }            
+                                                )
+                                                .exec()
+                                                .then(mapping=>{
+                                                    console.log("unmapping",mapping)
+                                                    console.log("mappingif deleted")
+                                                    res.status(200).json({ deleted : true });
+                                                })
+                                                .catch(err =>{
+                                                    console.log("err",err);
+                                                    res.status(500).json({ error: err });
+                                                });
+                                            }else{
+                                                res.status(200).json({ deleted : false });
+                                            }
+                                            // res.status(200).json("USER_SOFT_DELETED");
+                                        })
+                                        .catch(err =>{
+                                            console.log("err",err);
+                                            res.status(500).json({
+                                                error: err
+                                            });
+                                        });
+                                    }else{
+                                        res.status(200).json("USER_NOT_DELETED")
+                                    }
+                                })
+                                .catch(err =>{
+                                    res.status(500).json({
+                                        error: err
+                                    });
+                                });
+                            }
+                        })
+                        .catch(err =>{
+                            console.log("err",err);
+                            res.status(500).json({ error: err });
+                        });
+                    }else{
+                        BookingMaster.findOne(
+                            {driverID: req.body.driverID},
+                        )
+                        .exec()
+                        .then(booking=>{
+                            console.log("mappelse_booking",booking);
+                            if(booking){
+
+                            }else{
+                                // console.log("req.driver==>",driver);
+                                var newstatus = "";
+                                if(driver.status === 'Active'){
+                                    newstatus = 'deleted-Active';
+                                }
+                                if(driver.status === 'Inactive'){
+                                    newstatus = 'deleted-Inactive';
+                                }
+                                PersonMaster.updateOne(
+                                    {_id:req.body.driverID},
+                                    {
+                                        $set:{
+                                            "status" : newstatus,
+                                        },
+                                    }
+                                )
+                                .exec() 
+                                .then(data=>{
+                                    console.log("RESPONSE.data==>",data);
+                                    if(data.nModified == 1){
+                                        PersonMaster.updateOne(
+                                            {_id:req.body.driverID},
+                                            {
+                                                $push:  {  'statusLog' : [{  
+                                                                            status         : newstatus,
+                                                                            updatedAt      : new Date(),
+                                                                            updatedBy      : req.body.updatedBy,
+                                                                        }] 
+                                                        }
+                                            })
+                                        .exec()
+                                        .then(details=>{
+                                            console.log("details",details);
+                                            if(details.nModified === 1){
+                                                VehicleDriverMapping.updateOne(
+                                                    { _id    : mapping._id},
+                                                    {
+                                                        $set:   { 
+                                                            'unmapDate'                 :  new Date(),
+                                                            'status'                    :  'inactive',
+                                                        },
+                                                        $push:  { 
+                                                            'updateLog' :   [{  updatedAt      : new Date(),
+                                                                                updatedBy      : req.body.updatedBy 
+                                                                            }],
+                                                        }
+                                                    }            
+                                                )
+                                                .exec()
+                                                .then(mapping=>{
+                                                    console.log("mapping",mapping)
+                                                    console.log("mappingelse deleted")
+                                                    res.status(200).json({ deleted : true });
+                                                })
+                                                .catch(err =>{
+                                                    console.log("err",err);
+                                                    res.status(500).json({ error: err });
+                                                });
+                                            }else{
+                                                res.status(200).json({ deleted : false });
+                                            }
+                                            // res.status(200).json("USER_SOFT_DELETED");
+                                        })
+                                        .catch(err =>{
+                                            console.log("err",err);
+                                            res.status(500).json({
+                                                error: err
+                                            });
+                                        });
+                                    }else{
+                                        res.status(200).json("USER_NOT_DELETED")
+                                    }
+                                })
+                                .catch(err =>{
+                                    res.status(500).json({
+                                        error: err
+                                    });
+                                });
+                            }
+                        })
+                        .catch(err =>{
+                            console.log("err",err);
+                            res.status(500).json({ error: err });
+                        });
+                    }
+                })
+                .catch(err =>{
+                    console.log("err",err);
+                    res.status(500).json({ error: err });
+                });
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            });
+        }); 
 };
 
-//End
+// End
+
+exports.searchPersonByID_Name = (req, res, next)=>{
+    PersonMaster.aggregate([
+        { $match : {"company_Id": ObjectID(req.params.companyID)} },
+        {$match:
+            {$or:
+              [
+                {"firstName":{ $regex : req.params.str, $options: "i"}},
+                { middleName   : { $regex : req.params.str, $options: "i"}},
+                { lastName     : { $regex : req.params.str, $options: "i"}},
+                { employeeId   : { $regex : req.params.str, $options: "i"}}
+              ]
+            }
+         },
+        ])
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
+};

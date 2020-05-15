@@ -19,6 +19,7 @@ exports.insertModel = (req,res,next)=>{
         }else{
             const modelMaster = new ModelMaster({
                                 _id                         : new mongoose.Types.ObjectId(),
+                                
                                 brandId                     : req.body.dropdownID,
                                 // brandName                   : req.body.brandName,
                                 model                       : req.body.fieldValue,

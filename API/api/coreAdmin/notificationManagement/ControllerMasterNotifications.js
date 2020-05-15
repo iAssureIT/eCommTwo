@@ -1,10 +1,16 @@
 const mongoose	= require("mongoose");
 const Masternotifications = require('./ModelMasterNotification.js');
+const Notifications         = require('./ModelNotification.js');
 const User 				    = require('../userManagement/ModelUsers.js');
-var nodeMailer              = require('nodemailer');
+const PersonMaster          = require('../personMaster/ModelPersonMaster.js');
+const EventMapping          = require('../EventMappingMaster/ModelEventMapping.js');
+const nodeMailer            = require('nodemailer');
+const globalVariable        = require('../../nodemon.js');
+
+
+
 exports.create_masternotification = (req,res,next)=>{
-    console.log(req.body)
-	Masternotifications.findOne({templateType:req.body.templateType,templateName:req.body.templateName})
+	Masternotifications.findOne({templateType:req.body.templateType,event:req.body.event,role:req.body.role,status:req.body.status,company:req.body.company})
 		.exec()
 		.then(data =>{
 			if(data){
@@ -15,9 +21,12 @@ exports.create_masternotification = (req,res,next)=>{
 				const masternotifications = new Masternotifications({
                     _id             : new mongoose.Types.ObjectId(),
                     templateType    : req.body.templateType,	
-                    templateName    : req.body.templateName,
+                    event           : req.body.event,    
+                    role            : req.body.role,
+                    company         : req.body.company,
                     subject         : req.body.subject,
                     content         : req.body.content,	
+                    status          : req.body.status, 
                     createdAt       : new Date(),
                     createdBy       : req.body.createdBy,
                 });
@@ -41,7 +50,22 @@ exports.create_masternotification = (req,res,next)=>{
 		});
 };
 exports.list_masternotification = (req,res,next)=>{
-    Masternotifications.find()
+    Masternotifications.find({})
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+exports.list_mode_masternotification = (req,res,next)=>{
+    console.log('req.body: ',req.body)
+    Masternotifications.find({"templateType":req.body.mode,"event":req.body.event})
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -55,28 +79,23 @@ exports.list_masternotification = (req,res,next)=>{
 };
 exports.detail_masternotification = (req,res,next)=>{
     Masternotifications.findOne({_id:req.params.notificationmaster_ID})
-        .exec()
-        .then(data=>{
-            if(data){
-                res.status(200).json(data);
-            }else{
-                res.status(404).json('Master Notification not found');
-            }
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
         });
+    });
 };
 exports.update_masternotification = (req,res,next)=>{
     Masternotifications.updateOne(
                                     { _id:req.params.ID},  
                                     {
                                         $set:{
-                                            templateType    : req.body.templateType,    
-                                            templateName    : req.body.templateName,
+                                            status          : req.body.status,
                                             subject         : req.body.subject,
                                             content         : req.body.content
                                         }
@@ -84,7 +103,6 @@ exports.update_masternotification = (req,res,next)=>{
                                 )
                                 .exec()
                                 .then(data=>{
-                                    console.log('data ',data);
                                     if(data.nModified == 1){
                                         res.status(200).json({ message:"Master notifications Updated"});
                                     }else{
@@ -102,7 +120,6 @@ exports.delete_masternotification = (req,res,next)=>{
     Masternotifications.deleteOne({_id:req.params.ID})
         .exec()
         .then(data=>{
-            console.log('data ',data);
             if(data.deletedCount == 1){
                 res.status(200).json("Master notification deleted");
             }else{
@@ -137,122 +154,106 @@ exports.deleteall_masternotification = (req,res,next)=>{
 
 
 exports.send_notifications = (req, res, next) => {
-    console.log("IN send_notifications");
-    const senderEmail = 'iassureitmail@gmail.com';
-    const senderEmailPwd = 'iAssureIT@123';
-    let transporter = nodeMailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        auth: {
-            user: senderEmail,
-            pass: senderEmailPwd
+    Masternotifications.find({event: req.body.event,status:'active'})
+    .sort({createdAt:1})
+    .exec()
+    .then(data=>{
+        main();
+        async function main(){
+            var returnData = [];
+            if(data && data.length > 0){
+                for(k = 0 ; k < data.length ; k++){
+                    returnData.push({
+                        role: data[k].role,
+                        mode : data[k].templateType,
+                        event : data[k].event,
+                        company : data[k].company
+                    })
+                }//k
+            }//if
+            console.log('!!!!!!!!!!!!!!!!')
+            console.log('returnData: ',returnData)
+            if(returnData && returnData.length > 0){
+                for(var i=0 ; i< returnData.length ; i++){
+                    var role = returnData[i].role;
+                    var templateName = returnData[i].event;
+                    var mode = returnData[i].mode;
+                    var company = returnData[i].company;
+                    console.log('========================================================')
+                    console.log('role,templateName,mode=>',role,templateName,mode)
+
+
+                    switch(role){
+                        case 'admin':
+                                    var userData = await getAdminUserId();
+                                    break;
+                        case 'manager':
+                                    var userData = await getManagerData(req.body.toUserId)
+                                    break;
+                        case 'employee':
+                                    var userData = await getProfileByUserId(req.body.toUserId);
+                                    break;
+                        case 'corporateadmin':
+                                    var userData = await getCorporateAdminData(req.body.toUserId);
+                                    break;
+                    }
+
+                    console.log('********************')
+                    console.log(company +'==='+ req.body.company)
+                    console.log('********************')
+                     // //==============  SEND EMAIL ================
+                    if(mode === 'Email'){
+                        console.log('1')
+                        var toEmail = userData.email;
+                        if(company === req.body.company){
+                            const emailDetails = await getTemplateDetailsEmail(company,templateName,role,req.body.variables);
+                            const sendMail = await sendEmail(toEmail,emailDetails.subject,emailDetails.content)
+                        }else{
+                            const emailDetails = await getTemplateDetailsEmail(null,templateName,role,req.body.variables);
+                            const sendMail = await sendEmail(toEmail,emailDetails.subject,emailDetails.content)
+                        }
+                        
+                    } // mode == 'Email'
+
+                      // //==============  SEND INAPP ================
+                    if(mode === 'Notification'){
+                        console.log('2')
+                        var toUserId = userData.id;
+                        if(company === req.body.company){
+                            const notificationDetails = await getTemplateDetailsInApp(company,templateName,role,req.body.variables); 
+                            const sendNotification = await sendInAppNotification(toUserId,userData.email,req.body.event,notificationDetails)
+                        }else{
+                            const notificationDetails = await getTemplateDetailsInApp(null,templateName,role,req.body.variables); 
+                            const sendNotification = await sendInAppNotification(toUserId,userData.email,req.body.event,notificationDetails)
+                        }
+                        
+                    }//mode == 'Notification'
+
+                       // //==============  SEND SMS ================
+                    if(mode === 'SMS'){
+                        console.log('3')
+                        var toMobile = userData.mobile;
+                        if(company === req.body.company){
+                            const SMSDetails = await getTemplateDetailsSMS(company,templateName,role,req.body.variables);
+                            var text = SMSDetails.content.replace(/<[^>]+>/g, '');
+                        const SMS = await sendSMS(toMobile,text); 
+                        }else{
+                            const SMSDetails = await getTemplateDetailsSMS(null,templateName,role,req.body.variables);
+                            var text = SMSDetails.content.replace(/<[^>]+>/g, '');
+                            const SMS = await sendSMS(toMobile,text); 
+                        }
+                        
+                    }// mode == 'SMS'
+
+                }//i
+            }//returnData
         }
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
     });
-    console.log("IN transporter==>",transporter);
-    main();
-    async function main() {
-        console.log("IN main");
-        var toEmail = "";
-        var userProfile = {};   
-        if (req.body.toUserId === "admin") {
-            toEmail = "iassureitmail@gmail.com";
-            console.log("IN toEmail==>",toEmail);
-        } else {
-            console.log("IN else");
-            userProfile = await getProfileByUserId(req.body.toUserId);
-            if (userProfile && userProfile !== null & userProfile !== "") {
-                toEmail = userProfile.profile.email;
-                // toMobile = userProfile.mobileNumber ;
-                // var MobileNumber  = [];
-                // if(userProfile.alternatemobile1 != null && userProfile.alternatemobile1 != "") MobileNumber.push(userProfile.alternatemobile1);
-                // if(userProfile.alternatemobile2 != null && userProfile.alternatemobile2 != "") MobileNumber.push(userProfile.alternatemobile2);
-                // if(userProfile.alternatemobile3 != null && userProfile.alternatemobile3 != "") MobileNumber.push(userProfile.alternatemobile3);
-                // MobileNumber.push(userProfile.mobileNumber);
-                // const templateDetailsSMS = await getTemplateDetailsSMS(req.body.templateName, req.body.variables);
-                // const client = new plivo.Client(globalVariable.plivo_auth,globalVariable.plivo_secret);   // Vowels LLP
-                // const sourceMobile = globalVariable.sourceMobile;
-                // var text = templateDetailsSMS.content.replace(/<[^>]+>/g, '');
-                // var k = 0;
-                // console.log("IN sourceMobile",sourceMobile);
-                // console.log("IN sourceMobile",MobileNumber.length);
 
-                // for(k = 0 ; k < MobileNumber.length; k++){
-                // console.log("IN MobileNumber",MobileNumber[k],k);
-                //     client.messages.create(
-                //         src = sourceMobile,
-                //         dst = MobileNumber[k],
-                //         text = text
-                //     ).then((result) => {
-                //         console.log("k ",k);
-                //     })
-                //     .catch(error => {
-                //         console.log("k ",k);
-                //         console.log("error ",error)
-                //         res.status(501).json({
-                //             message: "Some Error Occurred in SMS Send Function",
-                //             error : error
-                //         });
-                //     });
-                // }
-            }
-        }
-
-        // //==============  SEND INAPP ================
-        // const templateDetailsInApp = await getTemplateDetailsInApp(req.body.templateName,req.body.variables); 
-        // const InAppNotification = new Notifications({
-        //     _id             : mongoose.Types.ObjectId(),
-        //     user_id         : req.body.toUserId,
-        //     status          : 'Unread',
-        //     notifMessage    : templateDetailsInApp.content,
-        //     createdAt       : new Date()
-        // });
-        // InAppNotification.save( 
-            
-        //     function (err) {
-        //         if (err) {
-        //             console.log(err);
-        //             return res.status(500).json({
-        //                 error: err
-        //             });
-        //         }
-        //         res.header("Access-Control-Allow-Origin","*");
-        //         res.status(200).json({
-                    
-        //             message: 'New In App Notification created!',
-        //             data: InAppNotification
-        //         });
-        //     }
-        // )
-        // //==============  SEND EMAIL ================
-        console.log("IN SEND EMAIL");
-        const templateDetailsEmail = await getTemplateDetailsEmail(req.body.templateName, req.body.variables);
-        console.log("senderEmail ",senderEmail);
-        var mailOptions = {
-            from: '"Coffic Admin" <' + senderEmail + '>', // sender address
-            to: toEmail, // list of receiver
-            subject: templateDetailsEmail.subject, // Subject line
-            html: "<pre>" + templateDetailsEmail.content + "</pre>", // html body
-        };
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log("IN error masternotification",error);
-
-                res.status(500).json({
-                    message: "Send Email Failed",
-                });
-            }
-            if (info) {
-                console.log("IN info masternotification",info);
-
-                res.header("Access-Control-Allow-Origin","*");
-                res.status(200).json({
-                    
-                    message: "Mail Sent Successfully",
-                });
-            }
-            res.render('index');
-        });
-    }
+        
 }
 
 function getProfileByUserId(toUserId) {
@@ -261,23 +262,203 @@ function getProfileByUserId(toUserId) {
             .findOne({ "_id": toUserId })
             .exec()
             .then(data => {
-                resolve(data);
+                resolve({email:data.profile.email,
+                        id: data._id,
+                        mobile: data.profile.mobile
+                });
             })
             .catch(err => {
                 console.log(err);
-                res.status(500).json({
+                reject({
                     error: err
                 });
             });
 
     });
 }
-function getTemplateDetailsEmail(templateName, variables) {
-    console.log("IN SEND EMAILntemplateName==>",templateName);
-    console.log("IN SEND variables==>",variables);
+
+function getManagerData(toUserId) {
+    return new Promise(function (resolve, reject) {
+        PersonMaster.findOne({'userId':toUserId})
+        .exec()
+        .then(data=>{
+            if(data.approvingAuthorityId1){
+                PersonMaster.findOne({'employeeId':data.approvingAuthorityId1})
+                .exec()
+                .then(res=>{
+                    User
+                    .findOne({ "_id": res.userId })
+                    .exec()
+                    .then(data => {
+                        resolve({email:data.profile.email,
+                                id: data._id,
+                                mobile: data.profile.mobile
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        reject({
+                            error: err
+                        });
+                    });
+                })
+                .catch(err=>{
+                    console.log('error: ',err)
+                })
+            }
+            
+        })
+        .catch(error=>{
+            reject({error:error})
+        })
+        
+
+    });
+}
+
+function getCorporateAdminData(toUserId){
+    return new Promise(function (resolve, reject) {
+        User
+            .findOne({ "_id": toUserId })
+            .exec()
+            .then(data => {
+                if(data.profile && data.profile.companyID){
+                    User
+                    .findOne({ "profile.companyID": data.profile.companyID, "roles":"corporateadmin"})
+                    .exec()
+                    .then(data => {
+                        resolve({email:data.profile.email,
+                                id: data._id,
+                                mobile: data.profile.mobile
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        reject({
+                            error: err
+                        });
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                reject({
+                    error: err
+                });
+            });
+
+    });
+}
+
+function getAdminUserId() {
+    return new Promise(function (resolve, reject) {
+        User
+            .findOne({"roles":"admin"})
+            .exec()
+            .then(data => {
+                resolve({email:data.profile.email,
+                        id: data._id,
+                        mobile: data.profile.mobile
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                reject({
+                    error: err
+                });
+            });
+
+    });
+}
+
+function sendSMS(MobileNumber,text){
+    return new Promise(function (resolve, reject) {
+        const client = new plivo.Client(globalVariable.plivo_auth,globalVariable.plivo_secret);   // Vowels LLP
+        const sourceMobile = globalVariable.sourceMobile;
+        
+        client.messages.create(
+            src = sourceMobile,
+            dst = MobileNumber,
+            text = text
+        ).then((result) => {
+            resolve(result)
+        })
+        .catch(error => {
+            console.log("error ",error)
+            reject(error);
+        });
+    })
+}
+
+function sendInAppNotification(toUserId,email,event,notificationDetails){
+    return new Promise(function (resolve, reject) {
+        const InAppNotification = new Notifications({
+            _id             : new mongoose.Types.ObjectId(),
+            masternotificationId : notificationDetails.id,
+            toMailId        : email,
+            event           : event,
+            toUserId         : toUserId,
+            status          : 'Unread',
+            notifBody       : notificationDetails.content,
+            createdAt       : new Date()
+        });
+        InAppNotification.save()
+        .then(data=>{
+            resolve(data);
+        })
+        .catch(err =>{
+            reject(err);
+        });
+    })
+}
+
+function sendEmail(toEmail,subject,content){
+    console.log('====**INSIDE EMAIL**=====',toEmail,subject,content)
+
+    async function main() {
+      const senderEmail = globalVariable.user;
+      const senderEmailPwd = globalVariable.pass;
+
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodeMailer.createTransport({
+        host: globalVariable.emailHost,
+        port: globalVariable.emailPort,
+        // secure: false, // true for 465, false for other ports
+        auth: {
+          user: senderEmail, 
+          pass: senderEmailPwd 
+        }
+      });
+
+      console.log('email details====> ',senderEmail,toEmail,subject,content)
+
+      // send mail with defined transport object
+      var mailOptions = {
+            from: globalVariable.AppName+'" Admin" <' + senderEmail + '>', // sender address
+            to: toEmail, // list of receiver
+            subject: subject, // Subject line
+            html: "<pre>" + content + "</pre>", // html body
+        };
+       let info = await transporter.sendMail(mailOptions, (error, info) => {
+            console.log("Message sent: %s", error,info);
+        });
+     
+      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+// console.log("Message sent: %s", info.messageId);
+      // Preview only available when sending through an Ethereal account
+      console.log("Preview URL: %s", nodeMailer.getTestMessageUrl(info));
+      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    }
+
+    main().catch(err=>{console.log('mail error=>',err)});
+   
+}
+
+function getTemplateDetailsEmail(company,templateName,role,variables) {
+    console.log(company,templateName, variables)
     return new Promise(function (resolve, reject) {
         Masternotifications
-            .findOne({ "templateName": templateName, "templateType": 'Email' })
+            .findOne({ "event": templateName, "templateType": 'Email', "company":company, "role":role })
             .exec()
             .then(NotificationData => {
                 if (NotificationData) {
@@ -321,10 +502,10 @@ function getTemplateDetailsEmail(templateName, variables) {
             });
     });
 }
-function getTemplateDetailsSMS(templateName, variables) {
+function getTemplateDetailsSMS(company, templateName,role,variables) {
     return new Promise(function (resolve, reject) {
         Masternotifications
-            .findOne({ "templateName": templateName, "templateType": 'SMS' })
+            .findOne({ "event": templateName, "templateType": 'SMS', "company": company, "role":role })
             .exec()
             .then(NotificationData => {
                 if (NotificationData) {
@@ -364,11 +545,10 @@ function getTemplateDetailsSMS(templateName, variables) {
     });
 }
 
-function getTemplateDetailsInApp(templateName, variables) {
-    console.log("templateName = ", templateName);
+function getTemplateDetailsInApp(company, templateName,role,variables) {
+    console.log('in app: ',company,templateName, variables)
     return new Promise(function (resolve, reject) {
-        var selector = { "templateName": templateName, "templateType": 'InApp' };
-        console.log("selector = ",selector);
+        var selector = { "event": templateName, "templateType": 'Notification', "company": company, "role":role };
         Masternotifications
             .findOne(selector)
             .exec()
@@ -394,7 +574,8 @@ function getTemplateDetailsInApp(templateName, variables) {
                     }
                     content = content.split("[").join(" ");
                     content = content.split("]").join(" ");
-                    var tData = {    
+                    var tData = {  
+                        id:NotificationData._id,  
                         content: content,
                     }
                     resolve(tData);
@@ -402,9 +583,11 @@ function getTemplateDetailsInApp(templateName, variables) {
             })
             .catch(err => {
                 console.log(err);
-                err.status(500).json({
+                reject({
                     error: err
                 });
             });
     });
 }
+
+

@@ -6,6 +6,10 @@
 	var nodeMailer						= require('nodemailer');
 	const globalVariable				= require('./nodemon.js');
 
+// Routes - CMS
+const blockRoutes 					= require('./api/cms/routes/blocks.js');
+const pageRoutes 					= require('./api/cms/routes/pages.js');
+
 
 // console.log("globalVariable.dbname",dbname);
 	mongoose.connect('mongodb://localhost/'+globalVariable.dbname,{
@@ -90,6 +94,12 @@
 	app.use("/api/bulkUploadTemplate", BulkUploadTemplate);
 	app.use("/api/purchaseentry", PurchaseEntry);
 	app.use("/api/FinishedGoodsEntry", FinishedGoodsEntry);
+
+
+//CMS
+	app.use("/api/blocks",blockRoutes);
+	app.use("/api/pages",pageRoutes);
+
 
 	app.post('/send-email', (req, res)=> {
 	console.log("inside app.js req:");

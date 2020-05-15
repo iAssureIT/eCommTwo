@@ -4,7 +4,7 @@ const entitySchema = mongoose.Schema({
     _id                       : mongoose.Schema.Types.ObjectId,
     supplierOf                : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymaster' },
     entityType                : String,
-    entityCode                : Number, 
+    companyID                 : Number, 
     companyName               : String,
     groupName                 : String,
     CIN                       : String,   
@@ -39,14 +39,16 @@ const entitySchema = mongoose.Schema({
     contactPersons      :       [
                                 {
                                     branchCode          : Number,
+                                    branchName          : String,
                                     firstName           : String,
 						            lastName            : String,
                                     phone               : String,
                                     altPhone            : String,
-                                    
                                     email               : String,
                                     department          : String,
                                     designation         : String,
+                                    departmentName      : String,
+                                    designationName     : String,
                                     employeeID          : String,
                                     userID              : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
                                     personID            : { type: mongoose.Schema.Types.ObjectId, ref: 'personmasters' },

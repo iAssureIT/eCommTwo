@@ -4,6 +4,10 @@ const vehicleMasterSchema = mongoose.Schema({
     _id                       : mongoose.Schema.Types.ObjectId,
     vehicleImage              : Array,
     company_Id                : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymasters' },
+    companyID                 : String,
+    companyName               : String,
+    workLocation              : String,
+    workLocationId            : String,
     categoryId                : { type: mongoose.Schema.Types.ObjectId, ref: 'categorymasters' },
     category                  : String,  
     brandId                   : { type: mongoose.Schema.Types.ObjectId, ref: 'brandmasters' },
@@ -15,6 +19,7 @@ const vehicleMasterSchema = mongoose.Schema({
     fuelType                  : String,  
     vehicleDriveType          : String,  
     ownership                 : String,  
+    supplier                  : String,  
     vehicleNumber             : String,
     vehiclecolor              : String,
     registrationDate          : Date,   
@@ -30,6 +35,7 @@ const vehicleMasterSchema = mongoose.Schema({
     PUCDoc                    : Array,  
     FitnessValidUpto          : Date,
     FitnessDoc                : Array,  
+    status                    : String,
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,
     updateLog                 : [
@@ -38,7 +44,13 @@ const vehicleMasterSchema = mongoose.Schema({
                                     updatedBy           : { type: mongoose.Schema.Types.ObjectId, ref: 'users' } 
                                 }
                                 ],
-    status                    :String,                            
+    statusLog                   : [
+                                {
+                                    status              : String,
+                                    updatedAt           : Date,
+                                    updatedBy           : { type: mongoose.Schema.Types.ObjectId, ref: 'users' } 
+                                }
+                            ]                            
 });
 
 module.exports = mongoose.model('vehiclemasters',vehicleMasterSchema);

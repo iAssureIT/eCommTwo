@@ -1,4 +1,4 @@
-const mongoose	= require("mongoose");
+const mongoose  = require("mongoose");
 
 const EntityMaster = require('./ModelEntityMaster');
 var request = require('request-promise');
@@ -9,6 +9,7 @@ exports.insertEntity = (req,res,next)=>{
     insertEntityFun();
     async function insertEntityFun(){
         var getnext = await getNextSequence()
+        console.log(getnext);
 
         EntityMaster.findOne({  
                             companyName               : req.body.companyName,
@@ -27,7 +28,7 @@ exports.insertEntity = (req,res,next)=>{
                     supplierOf                : req.body.supplierOf,
                     entityType                : req.body.entityType,
                     profileStatus             : req.body.profileStatus,
-                    entityCode                : getnext, 
+                    companyID                 : getnext ? getnext : 1, 
                     companyName               : req.body.companyName,
                     groupName                 : req.body.groupName,
                     CIN                       : req.body.CIN,   
@@ -41,9 +42,10 @@ exports.insertEntity = (req,res,next)=>{
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
                 })
+                console.log("entity",entity)
                 entity.save()
                 .then(data=>{
-                    res.status(200).json({ created : true, entityID : data._id ,companyID : data.entityCode});
+                    res.status(200).json({ created : true, entityID : data._id ,companyID : data.companyID});
                 })
                 .catch(err =>{
                     res.status(500).json({ error: err }); 
@@ -60,11 +62,11 @@ exports.insertEntity = (req,res,next)=>{
 
 function getNextSequence() {
     return new Promise((resolve,reject)=>{
-    EntityMaster.findOne().sort({entityCode:-1})       
+    EntityMaster.findOne().sort({companyID:-1})       
         .exec()
         .then(data=>{
             if (data) { 
-                var seq = data.entityCode;
+                var seq = data.companyID;
                 seq = seq+1;
                 resolve(seq) 
             }else{
@@ -79,7 +81,7 @@ function getNextSequence() {
 }
 
 exports.listEntity = (req,res,next)=>{
-    EntityMaster.find({entityType:req.params.entityType})      
+    EntityMaster.find({entityType:req.params.entityType}).sort({createdAt : -1})    
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -131,7 +133,7 @@ exports.entityDetails = (req,res,next)=>{
 };
 
 exports.companyName = (req,res,next)=>{
-    EntityMaster.findOne({entityCode : req.params.entityCode},{companyName:1})
+    EntityMaster.findOne({companyID : req.params.companyID},{companyName:1})
     .exec()
     .then(data=>{
         if(data){
@@ -335,7 +337,7 @@ exports.updateSingleLocation = (req,res,next)=>{
 
 exports.addContact = (req,res,next)=>{
     var contactdetails = req.body.contactDetails;
-    EntityMaster.find({"contactPersons.email": contactdetails.email})
+    EntityMaster.find({"contactPersons.email": contactdetails.email,"contactPersons._id" : {$ne : req.body.entityID}})
     .then((datas)=>{
         if(datas.length > 0){
             res.status(200).json({ duplicated : true });
@@ -369,7 +371,7 @@ exports.addContact = (req,res,next)=>{
     
 };
 exports.singleContact = (req,res,next)=>{
-    EntityMaster.findOne({"_id" : req.body.entityID, "contactPersons._id":req.body.contactID },
+    EntityMaster.findOne({"_id" : req.body.entityID, "contactPersons._id":req.body.contactID,"contactPersons.employeeID" : {$ne : req.body.employeeID}  },
         {"contactPersons.$" : 1})
     .exec()
     .then(data=>{
@@ -412,7 +414,7 @@ exports.getAdminCompany = (req,res,next)=>{
 exports.updateSingleContact = (req,res,next)=>{
     var contactdetails = req.body.contactDetails;
     console.log('contactdetails', contactdetails, contactdetails.createUser);
-    EntityMaster.find({"contactPersons.email": contactdetails.email, _id: { $ne: req.body.entityID}, "contactPersons._id" : {$ne : req.body.contactID} })
+    EntityMaster.find({"contactPersons.email": contactdetails.email, _id: { $ne: req.body.entityID}, "contactPersons._id" : {$ne : req.body.contactID},"contactPersons.employeeID" : {$ne : req.body.employeeID} })
     .then((datas)=>{
         if(datas.length > 0){
             res.status(200).json({ duplicated : true });
@@ -421,21 +423,25 @@ exports.updateSingleContact = (req,res,next)=>{
             { "_id":req.body.entityID, "contactPersons._id": req.body.contactID},  
             {
                 $set:   { 'contactPersons.$.branchCode' : contactdetails.branchCode,
+                          'contactPersons.$.branchName'  : contactdetails.branchName,
                           'contactPersons.$.firstName'  : contactdetails.firstName,
                           'contactPersons.$.lastName'   : contactdetails.lastName,
+                          'contactPersons.$.employeeID' : contactdetails.employeeID,
                           'contactPersons.$.phone'      : contactdetails.phone,
                           'contactPersons.$.altPhone'   : contactdetails.altPhone,
                           'contactPersons.$.email'      : contactdetails.email,
                           'contactPersons.$.department' : contactdetails.department,
-                          'contactPersons.$.designation': contactdetails.designation,
-                          'contactPersons.$.role'       : contactdetails.role,
-                          'contactPersons.$.createUser' : contactdetails.createUser,
-                          'contactPersons.$.bookingApprovalRequired' 	: contactdetails.bookingApprovalRequired,
+                          'contactPersons.$.designationName'    : contactdetails.designationName,
+                          'contactPersons.$.designation'        : contactdetails.designation,
+                          'contactPersons.$.departmentName'     : contactdetails.departmentName,
+                          'contactPersons.$.role'               : contactdetails.role,
+                          'contactPersons.$.createUser'         : contactdetails.createUser,
+                          'contactPersons.$.bookingApprovalRequired'    : contactdetails.bookingApprovalRequired,
                           'contactPersons.$.approvingAuthorityId1'      : contactdetails.approvingAuthorityId1,
                           'contactPersons.$.approvingAuthorityId2'      : contactdetails.approvingAuthorityId2,
-                          'contactPersons.$.approvingAuthorityId3' 		: contactdetails.approvingAuthorityId3,
+                          'contactPersons.$.approvingAuthorityId3'      : contactdetails.approvingAuthorityId3,
                           'contactPersons.$.preApprovedParameter'       : contactdetails.preApprovedParameter,
-                          'contactPersons.$.preApprovedParameterValue' 	: contactdetails.preApprovedParameterValue,
+                          'contactPersons.$.preApprovedParameterValue'  : contactdetails.preApprovedParameterValue,
                         }
             }
             )

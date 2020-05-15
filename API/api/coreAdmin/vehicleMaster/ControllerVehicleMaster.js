@@ -18,6 +18,11 @@ exports.insertVehicle = (req,res,next)=>{
                             _id                       : new mongoose.Types.ObjectId(),
                             vehicleImage              : req.body.vehicleImage,
                             company_Id                : req.body.company_Id,
+                            companyID                 : req.body.companyID,
+                            workLocation              : req.body.workLocation,
+                            workLocationId            : req.body.workLocationId,
+                            companyName               : req.body.companyName,
+                            status                    : req.body.status,
                             categoryId                : req.body.categoryId,
                             category                  : req.body.category,  
                             brandId                   : req.body.brandId,
@@ -29,6 +34,7 @@ exports.insertVehicle = (req,res,next)=>{
                             fuelType                  : req.body.fuelType,
                             vehicleDriveType          : req.body.vehicleDriveType,  
                             ownership                 : req.body.ownership,  
+                            supplier                  : req.body.supplier,  
                             vehicleNumber             : req.body.vehicleNumber,
                             vehiclecolor              : req.body.vehiclecolor,
                             registrationDate          : req.body.registrationDate,   
@@ -160,7 +166,14 @@ exports.updateVehicle = (req, res, next)=>{
     VehicleMaster.updateOne(
             { _id:req.body.vehicleID },  
             {
-                $set:   {   'vehicleImage'              : req.body.vehicleImage,
+                $set:   {   
+
+                            "company_Id"                : req.body.company_Id,
+                            "companyID"                 : req.body.companyID,
+                            "workLocation"              : req.body.workLocation,
+                            "workLocationId"            : req.body.workLocationId,
+                            "companyName"               : req.body.companyName,
+                            'vehicleImage'              : req.body.vehicleImage,
                             'categoryId'                : req.body.categoryId,
                             'category'                  : req.body.category,
                             'brandId'                   : req.body.brandId,
@@ -172,6 +185,7 @@ exports.updateVehicle = (req, res, next)=>{
                             'fuelType'                  : req.body.fuelType,
                             'vehicleDriveType'          : req.body.vehicleDriveType,  
                             'ownership'                 : req.body.ownership,  
+                            'supplier'                  : req.body.supplier,  
                             'vehicleNumber'             : req.body.vehicleNumber,
                             'vehiclecolor '             : req.body.vehiclecolor,
                             'registrationDate'          : req.body.registrationDate,   
@@ -231,7 +245,7 @@ exports.deleteVehicle = (req, res, next)=>{
 
 
 exports.vehicleListMapping = (req,res,next)=>{ 
-    VehicleMaster.find({company_Id: req.params.company_Id},{ vehicleImage:1, brand: 1, model:1, fuelType: 1,vehicleNumber:1,category:1,vehiclecolor:1})
+    VehicleMaster.find({company_Id: req.params.company_Id,status:'Active'},{ vehicleImage:1, brand: 1, model:1, fuelType: 1,vehicleNumber:1,category:1,vehiclecolor:1})
         .sort({createdAt : -1})
         .then(vehicleList=>{
             if(vehicleList){
@@ -245,7 +259,7 @@ exports.vehicleListMapping = (req,res,next)=>{
                             if(mappingList.length > 0){
                                 for(var i=0; i<mappingList.length; i++){
                                     for(let j=0; j<vehicleList.length; j++){
-                                        if(mappingList[i].vehicleID.equals(vehicleList[j]._id) && mappingList[i].status==="active"){
+                                        if(mappingList[i].vehicleID.equals(vehicleList[j]._id) && mappingList[i].status==="Active"){
                                             vehicleList[j] = {...vehicleList[j], matched:true};
                                             break;
                                         }
@@ -296,7 +310,7 @@ exports.getVehicleListForAllocation = (req,res,next)=>{
     var desiredFromDate = req.body.fromDate;
     var desiredToDate   = req.body.toDate;
 
-    VehicleMaster.find({company_Id: req.body.company_Id, category: req.body.vehicleCategory})
+    VehicleMaster.find({company_Id: req.body.company_Id, category: req.body.vehicleCategory,status:'Active'})
         .then(validVehicles=>{
             let vehicleIDArray = validVehicles.map(vehicles => vehicles._id);
             if(validVehicles && validVehicles.length > 0){
@@ -317,14 +331,19 @@ exports.getVehicleListForAllocation = (req,res,next)=>{
                                         };
                     }
                 }
-                VehicleDriverMapping.find({vehicleID:{$in:vehicleIDArray},status:'active'}) 
+                VehicleDriverMapping.find({vehicleID:{$in:vehicleIDArray},status:'Active'}) 
                 .then(vehDrivers =>{
                     for(var i=0; i<validVehicles.length; i++){
-                        validVehicles[i] = {...validVehicles[i], 
-                                                driverID            : vehDrivers[i].driverID,
-                                                driverName          : vehDrivers[i].driverName,
+                        for(var j=0; j<vehDrivers.length; j++){
+                            if(validVehicles[i]._id.equals(vehDrivers[j].vehicleID)){
+                                validVehicles[i] = {...validVehicles[i], 
+                                                driverID            : vehDrivers[j].driverID,
+                                                driverName          : vehDrivers[j].driverName,
                                             };
-                                            
+                                break;            
+                            }
+
+                        }                    
                     }
 
                     BookingMaster
@@ -399,45 +418,118 @@ exports.getVehicleListForAllocation = (req,res,next)=>{
         }); 
 };
 
-
 exports.tempDeleteVehicle = (req, res, next)=>{
-    VehicleMaster.updateOne(
-        {_id:req.body.vehicleID},
-        {
-            $set: { 
-                status : 'deleted'
-            }
-        }              
-    )
-    .exec()
-    .then(vehicle=>{
-        if(vehicle.nModified === 1){
-            VehicleDriverMapping.updateOne(
-                {vehicleID: req.body.vehicleID},
-                {
-                    $set:   { 
-                        'unmapDate'                 :  new Date(),
-                        'status'                    :  'inactive',
-                    },
-                    $push:  { 
-                        'updateLog' :   [{  updatedAt      : new Date(),
-                                            updatedBy      : req.body.updatedBy 
-                                        }],
+    VehicleMaster.findOne({_id:req.body.vehicleID})
+        .exec()
+        .then(vehicle=>{
+            if(vehicle){
+                console.log("req.vehicle==>",vehicle);
+                var newstatus = "";
+                if(vehicle.status === 'Active'){
+                    newstatus = 'deleted-Active';
+                }
+                if(vehicle.status === 'Inactive'){
+                    newstatus = 'deleted-Inactive';
+                }
+                VehicleMaster.updateOne(
+                    {_id:req.body.vehicleID},
+                    {
+                        $set:{
+                            "status" : newstatus,
+                        },
                     }
-                }            
-            )
-            exec()
-            .then(mapping=>{
-                res.status(200).json({ deleted : true });
-            })
-            .catch(err =>{
-                res.status(500).json({ error: err });
+                )
+                .exec() 
+                .then(data=>{
+                    console.log("RESPONSE.data==>",data);
+                    if(data.nModified == 1){
+                        VehicleMaster.updateOne(
+                            {_id:req.body.vehicleID},
+                            {
+                                $push:  { 'statusLog' : [{  
+                                                            status         : newstatus,
+                                                            updatedAt      : new Date(),
+                                                            updatedBy      : req.body.updatedBy,
+                                                        }] 
+                                        }
+                            })
+                        .exec()
+                        .then(data=>{
+                            res.status(200).json("VEHICLE_SOFT_DELETED");
+                        })
+                    }else{
+                        res.status(200).json("VEHICLE_NOT_DELETED")
+                    }
+                })
+                .catch(err =>{
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+            }else{
+                res.status(200).json("Vehicle Not Found");
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
             });
-        }else{
-            res.status(200).json({ deleted : false });
-        }
-    })
-    .catch(err =>{
-        res.status(500).json({ error: err });
-    });            
+        });
+};
+
+exports.vehicle_update_recover_status = (req,res,next)=>{
+    VehicleMaster.findOne({_id:req.body.vehicleID})
+        .exec()
+        .then(user=>{
+            if(user){
+                var newstatus = "";
+                if(user.status === 'deleted-Active'){
+                    newstatus = 'Active';
+                }
+                if(user.status === 'deleted-Inactive'){
+                    newstatus = 'Inactive';
+                }
+                VehicleMaster.updateOne(
+                    {_id:req.body.vehicleID},
+                    {
+                        $set:{
+                            "status" : newstatus,
+                        },
+                    }
+                )
+                .exec() 
+                .then(data=>{
+                    if(data.nModified == 1){
+                        VehicleMaster.updateOne(
+                            {_id:req.body.vehicleID},
+                            {
+                                $push:  { 'statusLog' : [{  
+                                                            status         : newstatus,
+                                                            updatedAt      : new Date(),
+                                                            updatedBy      : req.body.updatedBy,
+                                                        }] 
+                                        }
+                            })
+                        .exec()
+                        .then(data=>{
+                            res.status(200).json("USER_IS_RESTORED");
+                        })
+                    }else{
+                        res.status(200).json("USER_IS_NOT_RESTORED")
+                    }
+                })
+                .catch(err =>{
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+            }else{
+                res.status(200).json("User Not Found");
+            }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            });
+        });
 };

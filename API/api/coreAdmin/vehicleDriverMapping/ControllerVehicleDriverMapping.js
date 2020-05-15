@@ -36,7 +36,7 @@ exports.countVehicleDriverMappings = (req, res, next)=>{
 exports.fetchVehicleDriverMappings = (req, res, next)=>{
     console.log("req.body=>",req.body);
     VehicleDriverMapping.aggregate([
-        { $match :{"company_Id" :ObjectId(req.body.company_Id)}},
+        { $match :{"company_Id" :ObjectId(req.body.company_Id),status:'Active'}},
         {
             $lookup: {
               from: "vehiclemasters",
@@ -86,7 +86,8 @@ exports.fetchVehicleDriverMappings = (req, res, next)=>{
         .exec()
         .then(data=>{
             console.log("VehicleDriverMapping data=>",data)
-            var allData = data.map((x, i)=>{
+            if(data && data.length > 0){
+              var allData = data.map((x, i)=>{
                 return {
                     "_id"                   : x._id,
                     "vehicleID"             : x.vehicleID,
@@ -102,8 +103,12 @@ exports.fetchVehicleDriverMappings = (req, res, next)=>{
                     "vehicleNumber"         : x.vehicleNumber,
                     "driverName"            : x.firstName + " " + x.middleName + " " + x.lastName,
                 }
-            })
-            res.status(200).json(allData);
+              })
+              res.status(200).json(allData);
+            }else{
+              res.status(200).json(data);
+            }
+
         })
         .catch(err =>{
             res.status(500).json({ error: err });

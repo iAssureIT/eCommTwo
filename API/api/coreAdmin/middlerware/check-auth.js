@@ -1,5 +1,5 @@
 const jwt 				= require('jsonwebtoken');
-const globalVariable	= require('../../../nodemon.js');
+const globalVariable	= require('../../nodemon.js');
 const Users 			= require('../userManagement/ModelUsers.js');
 const auth = (req, res, next) => {
 	if(req.headers.authorization){
