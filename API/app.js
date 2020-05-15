@@ -1,14 +1,15 @@
 	const express 						= require ('express');
-	const app 							= express();
-	const morgan 						= require('morgan');// morgan call next function if problem occure
+	const app 								= express();
+	const morgan 							= require('morgan');// morgan call next function if problem occure
 	const bodyParser 					= require('body-parser');// this package use to formate json data 
 	const mongoose 						= require ('mongoose');
-	var nodeMailer						= require('nodemailer');
-	const globalVariable				= require('./nodemon.js');
+	var   nodeMailer					= require('nodemailer');
+	const globalVariable			= require('./nodemon.js');
+	const fs 									= require('fs');
 
 // Routes - CMS
 const blockRoutes 					= require('./api/cms/routes/blocks.js');
-const pageRoutes 					= require('./api/cms/routes/pages.js');
+const pageRoutes 						= require('./api/cms/routes/pages.js');
 
 
 // console.log("globalVariable.dbname",dbname);
@@ -39,32 +40,41 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 
 	// Routes which should handle requests
 
-	
-	const systemRoutes				= require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
-	const usersRoutes				= require("./api/coreAdmin/userManagement/RoutesUsers.js");
-	const rolesRoutes				= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
-	const companySettingRoutes		= require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
+	//========== Core Admin ===========
+	const systemRoutes					= require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
+	const usersRoutes						= require("./api/coreAdmin/userManagement/RoutesUsers.js");
+	const rolesRoutes						= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
+	const companySettingRoutes	= require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
 	const notificationRoutes		= require("./api/coreAdmin/notificationManagement/RoutesMasterNotification.js");
 	const projectSettingsurl 		= require("./api/coreAdmin/projectSettings/RoutesProjectSettings.js");
 	// const preferenceurl 			= require("./api/coreAdmin/routes/preference");
 
-	const productsRoutes			= require("./api/Ecommerce/routes/products"); 
-	const categoryRoutes			= require("./api/Ecommerce/routes/categories"); 
-	const ordersRoutes				= require("./api/Ecommerce/routes/orders"); 
-	const vendorsRoutes				= require("./api/Ecommerce/routes/vendors"); 
-	const vendorCategoryRoutes		= require("./api/Ecommerce/routes/vendorCategory"); 
-	const vendorLocationTypeRoutes  = require("./api/Ecommerce/routes/vendorLocationType"); 
-	const cartsRoutes				= require("./api/Ecommerce/routes/cart"); 
-	const wishlistRoutes			= require("./api/Ecommerce/routes/wishlist"); 
-	const BARoutes					= require("./api/Ecommerce/routes/businessAssociate"); 
-	const customerQueryRoutes		= require("./api/Ecommerce/routes/customerQuery"); 
-	const customerReviewRoutes		= require("./api/Ecommerce/routes/customerReview"); 
+	//========== eCommerce Operations ===========
+	const productsRoutes				= require("./api/Ecommerce/routes/products"); 
+	const categoryRoutes				= require("./api/Ecommerce/routes/categories"); 
+	const ordersRoutes					= require("./api/Ecommerce/routes/orders"); 
+	const cartsRoutes						= require("./api/Ecommerce/routes/cart"); 
+	const wishlistRoutes				= require("./api/Ecommerce/routes/wishlist"); 
 	const SectionRoutes			    = require("./api/Ecommerce/routes/sections"); 
-	const taxSetting                = require("./api/Ecommerce/routes/taxManagement");
-	const ReturnedProductsRoutes	= require("./api/Ecommerce/routes/returnedProducts"); 
+	const taxSetting            = require("./api/Ecommerce/routes/taxManagement");
+	const ReturnedProductsRoutes= require("./api/Ecommerce/routes/returnedProducts"); 
 	const BulkUploadTemplate		= require("./api/Ecommerce/routes/bulkUploadTemplate"); 
+
+
+	//========== Vendor, BA, Customer Management ===========
+	const vendorsRoutes						= require("./api/Ecommerce/routes/vendors"); 
+	const vendorCategoryRoutes		= require("./api/Ecommerce/routes/vendorCategory"); 
+	const vendorLocationTypeRoutes= require("./api/Ecommerce/routes/vendorLocationType"); 
+	const BARoutes								= require("./api/Ecommerce/routes/businessAssociate"); 
+	const customerQueryRoutes			= require("./api/Ecommerce/routes/customerQuery"); 
+	const customerReviewRoutes		= require("./api/Ecommerce/routes/customerReview"); 
+
+
+	//========== Franchise Model ===========
 	const PurchaseEntry       		= require("./api/Ecommerce/PurchaseManagement/routes/PurchaseEntry");
 	const FinishedGoodsEntry   		= require("./api/Ecommerce/PurchaseManagement/routes/FinishedGoodsEntry");
+
+
 
 	app.use("/api/users",systemRoutes);
 	app.use("/api/auth",systemRoutes);
@@ -114,7 +124,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	console.log("transporter",transporter);
 	console.log("globalVariable.user:",globalVariable.user);
 	let mailOptions = {
-		from   : '"AnasHandicraft" <'+globalVariable.user+'>', // sender address
+		from   : globalVariable.project+'<'+globalVariable.user+'>', // sender address
 		to     : req.body.email, // list of receivers
 		subject: req.body.subject, // Subject line
 		text   : req.body.text, // plain text body
@@ -139,18 +149,30 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 
 
 	app.use((req, res, next) => {
-		const error = new Error("Not found");
+		const error = new Error("This Page Is Not Found");
 		error.status = 404;
 		next(error);
 	});
 
+
 	app.use((error, req, res, next) => {
-		res.status(error.status || 500);
-		res.json({
-				error: {
-				message: error.message
-				}
-			});
+
+		fs.readFile('./index.html', function (err, html) {
+	    if (err) {
+	        throw err; 
+	    }      
+			res.writeHeader(200, {"Content-Type": "text/html"});  
+	    res.write(html);  
+
+			res.status(error.status || 500);
+			// res.json({
+			// 		error: {
+			// 		message: error.message
+			// 		}
+			// 	});
+	    res.end();  
+	  });
+
 	});
 
 	module.exports = app;
