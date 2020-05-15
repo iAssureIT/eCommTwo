@@ -669,7 +669,6 @@ class BasicInfo extends Component {
                   <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">{this.state.pathname ? this.state.pathname : "Entity"} Master</h4>
                   :
                   <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Organization Settings</h4>
-  
                 }
                 </div>
 

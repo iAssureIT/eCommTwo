@@ -26,6 +26,13 @@ import ListOfEntities from '../Master/EntityMaster/listOfEntities/components/Lis
 import LocationType from '../Master/LocationType/LocationType.jsx';
 import SelectVendor from '../Master/EntityMaster/SelectVendor/SelectVendor.js';
 
+//============= Franchise Master ====================
+import FranchiseBasicInfo from '../../storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
+import FranchiseContactDetails from '../../storeAdmin/FranchiseMaster/FranchiseContactDetails.js';
+import FranchiseLocationDetails from '../../storeAdmin/FranchiseMaster/FranchiseLocationDetails.js';
+
+// import ListOfEntities from '../Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
+
 // ============ Orgnizational Setting ===========================
 import OrgnizationalBasicInfo from "../OrganizationalSettings/OrganizationalBasicInfo.js";
 import OrganizationalContactDetails from "../OrganizationalSettings/OrganizationalContactDetails.js";
@@ -62,6 +69,26 @@ class CoreLayout extends Component {
                 <Route path="/profile/:id" component={UserProfile} exact />
                 <Route path="/ViewTemplates" component={ViewTemplates} exact />
                 {/*<Route path="/companysetting" component={OrganizationSetting} exact />/}
+
+                { /* Entity Management */}
+                <Route path="/:entity/basic-details" exact strict component={BasicInfo} />
+                <Route path="/:entity/basic-details/:entityID" exact strict component={BasicInfo} />
+                <Route path="/:entity/location-details/:entityID" exact strict component={LocationDetails} />
+                <Route path="/:entity/location-details/:entityID/:locationID" exact strict component={LocationDetails} />
+                <Route path="/:entity/contact-details/:entityID" exact strict component={ContactDetails} />
+                <Route path="/:entity/contact-details/:entityID/:contactID" exact strict component={ContactDetails} />
+
+                { /* Franchise Master */}
+                <Route path="/franchise/basic-details" exact strict component={FranchiseBasicInfo} />
+                <Route path="/franchise/basic-details/:entityID" exact strict component={FranchiseBasicInfo} />
+                <Route path="/franchise/location-details" exact strict component={FranchiseLocationDetails} />
+                <Route path="/franchise/location-details/:entityID" exact strict component={FranchiseLocationDetails} />
+                <Route path="/franchise/location-details/:entityID/:locationID" exact strict component={FranchiseLocationDetails} />
+                <Route path="/franchise/contact-details" exact strict component={FranchiseContactDetails} />
+                <Route path="/franchise/contact-details/:entityID" exact strict component={FranchiseContactDetails} />
+                <Route path="/franchise/contact-details/:entityID/:contactID" exact strict component={FranchiseContactDetails} />
+                <Route path="/franchise/list" exact strict component={ListOfEntities} />
+
 
                 {/* Tax master */}
                 <Route path="/taxname" component={TaxName} exact />
