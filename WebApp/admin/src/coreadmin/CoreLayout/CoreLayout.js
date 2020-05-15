@@ -30,7 +30,7 @@ import EventMapping from '../NotificationManagement/EventMapping.js';
 import NotificationVariableList from '../NotificationManagement/NotificationVariableList.js';
 
 //============ Entity Master ======================
-import BasicInfo from '../Master/EntityMaster/Onboarding/basicInfo/BasicInfo.jsx';
+import BasicInfo from '../Master/EntityMaster/Onboarding/basicInfo/BasicInfo.js';
 import LocationDetails from '../Master/EntityMaster/Onboarding/locationDetails/LocationDetails.jsx';
 import ContactDetails from '../Master/EntityMaster/Onboarding/contactDetails/ContactDetails.jsx';
 import ListOfEntities from '../Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
@@ -386,5 +386,5 @@ const mapStateToProps = (state)=>{
   };
   
   
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CoreLayout));
-
+// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CoreLayout));
+export default CoreLayout;

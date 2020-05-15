@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ContactDetails from '../../coreAdmin/Master/EntityMaster/Onboarding/contactDetails/ContactDetails.jsx';
+import ContactDetails from '../../coreadmin/Master/EntityMaster/Onboarding/contactDetails/ContactDetails.jsx';
 import _ from 'underscore';
 import 'bootstrap/js/tab.js';
 

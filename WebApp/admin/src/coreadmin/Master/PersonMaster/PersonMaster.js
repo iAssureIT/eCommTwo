@@ -14,7 +14,7 @@ import BulkUpload from "../BulkUpload/BulkUpload.js";
 import "bootstrap-toggle/css/bootstrap2-toggle.min.css";
 import "bootstrap-toggle/js/bootstrap2-toggle.min.js";
 import "./PersonMaster.css";
-import ImageLoader from 'react-load-image';
+// import ImageLoader from 'react-load-image';
 
 
 class PersonMaster extends Component { 
