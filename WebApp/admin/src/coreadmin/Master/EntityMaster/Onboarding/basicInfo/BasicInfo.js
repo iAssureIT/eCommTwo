@@ -873,20 +873,21 @@ class BasicInfo extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    vendorID: state.vendorID,
-    vendorLocationID: state.vendorLocationID
-  }
-}
+// const mapStateToProps = (state) => {
+//   return {
+//     vendorID: state.vendorID,
+//     vendorLocationID: state.vendorLocationID
+//   }
+// }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    vendor: (vendorID, vendorLocationID) => dispatch({
-      type: 'VENDOR',
-      vendorID: vendorID,
-      vendorLocationID: vendorLocationID
-    }),
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BasicInfo));
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     vendor: (vendorID, vendorLocationID) => dispatch({
+//       type: 'VENDOR',
+//       vendorID: vendorID,
+//       vendorLocationID: vendorLocationID
+//     }),
+//   }
+// }
+// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BasicInfo));
+export default BasicInfo;

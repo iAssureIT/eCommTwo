@@ -65,12 +65,11 @@ class Login extends Component {
     if ($("#login").valid()) {
       console.log("auth = ",auth);
 
-      document.getElementById("logInBtn").value = 'xxxx Please Wait...';
+      document.getElementById("logInBtn").value = 'Please Wait...';
 
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
         console.log("response",response)
-          this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
             var  userDetails = {
               firstName : response.data.userDetails.firstName, 
@@ -120,14 +119,14 @@ class Login extends Component {
                 "emailSubject"	: "Email Verification", 
                 "emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
               }
-              axios.patch('/api/auth/patch/setsendemailotpusingEmail/'+this.refs.loginusername.value, emailText)
-              .then((response)=>{
-                swal("We send you a Verification Code to your registered email. Please verify your account.");
-                this.props.history.push("/confirm-otp/" + response.data.userID);
-              })
-              .catch((error)=>{
-                swal(" Failed to sent OTP");
-              })    
+              // axios.patch('/api/auth/patch/setsendemailotpusingEmail/'+this.refs.loginusername.value, emailText)
+              // .then((response)=>{
+              //   swal("We send you a Verification Code to your registered email. Please verify your account.");
+              //   this.props.history.push("/confirm-otp/" + response.data.userID);
+              // })
+              // .catch((error)=>{
+              //   swal(" Failed to sent OTP");
+              // })    
             });
             document.getElementById("logInBtn").value = 'Sign In';
 

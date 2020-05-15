@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import { Meteor } from 'meteor/meteor';
-import BasicInfo from '/imports/StoreManagement/SupplierManagement/supplierOnboarding/basicInfo/BasicInfo.jsx';
+import BasicInfo from '/imports/StoreManagement/SupplierManagement/supplierOnboarding/basicInfo/BasicInfo.js';
 import ContactDetails from '/imports/StoreManagement/SupplierManagement/supplierOnboarding/contactDetails/ContactDetails.jsx';
 import LocationDetails from '/imports/StoreManagement/SupplierManagement/supplierOnboarding/locationDetails/LocationDetails.jsx';
 import Product_Services from '/imports/StoreManagement/SupplierManagement/supplierOnboarding/productServices/Product_Services.jsx';

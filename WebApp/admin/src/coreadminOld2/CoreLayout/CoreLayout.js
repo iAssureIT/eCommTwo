@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
-//================== Dashboard ===================
-import Dashboard        from '../../storeAdmin/dashboard/Dashboard.js'
+
 
 //==============User Management ==================
 import UMListOfUsers    from '../userManagement/UM/UMListOfUsers.js';
@@ -43,9 +42,6 @@ class CoreLayout extends Component {
     render() {
         return (
             <Switch >
-                {/* Dashboard route */}
-                <Route path="/" component={Dashboard} exact />
-                <Route path="/dashboard" component={Dashboard} exact />
 
                 {/* Rightsidebar Routes */}
                 <Route path="/umlistofusers" component={UMListOfUsers} exact />

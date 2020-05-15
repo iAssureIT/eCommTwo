@@ -17,6 +17,9 @@ import Header               from './coreadmin/common/header/Header.js';
 import Footer               from './coreadmin/common/footer/Footer.js';
 import Leftsidebar          from './storeAdmin/leftSidebar/Leftsidebar.js';
 
+//================== Dashboard ===================
+import Dashboard            from './storeAdmin/dashboard/Dashboard.js'
+
 
 //============== Product Management ==============//
 import AddNewShopProduct    from './storeAdmin/product/addNewProduct/AddNewShopProduct/AddNewShopProduct.js';
@@ -116,6 +119,10 @@ class Layout extends Component  {
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground" >
                                         <CoreLayout />
                                         <Switch >
+                                          {/* Dashboard route */}
+                                          <Route path="/" component={Dashboard} exact />
+                                          <Route path="/dashboard" component={Dashboard} exact />
+
                                           {/* Product Management */}
                                           <Route path="/product-details/:productID" exact strict component={ProductDetails} />
                                           <Route path="/add-product" exact strict component={AddNewShopProduct} />
