@@ -10,7 +10,7 @@ import AddImgPublicCompanySetting          from "../../addFile/AddImgPublicCompa
 import validate               from 'jquery-validation';
 import PhoneInput from 'react-phone-input-2';
 
-import "../../../API";
+// import "../../../API";
 
 const formValid = formerrors=>{
   let valid = true;

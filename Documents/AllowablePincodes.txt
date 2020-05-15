@@ -30,7 +30,7 @@ allowablePincodes : {
 		_id : xxxx,
 		franchise_id : xxxx 			(_id of entityMaster ),
 		companyID 	 : companyID 	(from entityMaster),
-		allowPincodes : [
-			{}
-		]
+		allowPincodes : [ xx, xx, xx,]
+		createdby : user_id,
+		createdAt : timestamp
 }																

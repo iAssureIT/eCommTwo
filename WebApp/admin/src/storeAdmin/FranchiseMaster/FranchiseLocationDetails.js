@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LocationDetails from '../../coreAdmin/Master/EntityMaster/Onboarding/basicInfo/BasicInfo.jsx';
+import LocationDetails from '../../coreAdmin/Master/EntityMaster/Onboarding/locationDetails/LocationDetails.jsx';
 import _ from 'underscore';
 import 'bootstrap/js/tab.js';
 

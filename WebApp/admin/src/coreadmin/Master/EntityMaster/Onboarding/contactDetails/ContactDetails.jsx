@@ -421,7 +421,6 @@ class ContactDetails extends Component {
 		//var entityID = this.props.match.params.companyID;
 			var formValues = {
 				'entityID' 						: entityID,
-<<<<<<< Updated upstream
 				'contactDetails' 				: {
 					'branchCode'        		: this.state.branchCode,
 					'branchName'        		: this.state.workLocation,
@@ -431,38 +430,19 @@ class ContactDetails extends Component {
 					'altPhone'          		: this.state.altPhone,
 					'email'             		: this.state.email,
 					'department'        		: this.state.department,
-					'departmentName'        	: this.state.departmentName,
-					'designationName'       	: this.state.designationName,
-					'designation'       		: this.state.designation,
-					'employeeID'        		: this.state.employeeID,
-
-=======
-				'contactDetails' 			: {
-					'branchCode'        				: this.state.branchCode,
-					'firstName'             		: this.state.firstName,
-					'lastName'              		: this.state.lastName,
-					'phone'             				: this.state.phone,
-					'altPhone'          				: this.state.altPhone,
-					'email'             				: this.state.email,
-					'department'        				: this.state.department,
+					'departmentName'        		: this.state.departmentName,
+					'designationName'       		: this.state.designationName,
 					'designation'       				: this.state.designation,
 					'employeeID'        				: this.state.employeeID,
->>>>>>> Stashed changes
 					'bookingApprovalRequired' 	: this.state.bookingApprovalRequired,
 					'approvingAuthorityId1' 		: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId1 : "",
 					'approvingAuthorityId2' 		: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId2 : "",
 					'approvingAuthorityId3' 		: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId3 : "",
 					'preApprovedParameter' 			: this.state.bookingApprovalRequired ? this.state.preApprovedParameter : "",
 					'preApprovedParameterValue' : this.state.bookingApprovalRequired ? this.state.preApprovedParameterValue : "",
-<<<<<<< Updated upstream
 					'createUser'        		: this.state.createUser,
-					'role' 						: this.state.createUser ? this.state.role : "-- Select Role --",
-                    'addEmployee'       		: this.state.addEmployee,
-=======
-					'createUser'        				: this.state.createUser,
-					'role' 											: this.state.role,
-          'addEmployee'       				: this.state.addEmployee,
->>>>>>> Stashed changes
+					'role' 									: this.state.createUser ? this.state.role : "-- Select Role --",
+          'addEmployee'       		: this.state.addEmployee,
 				}
 			}
 			console.log("formValues",formValues);
@@ -501,7 +481,6 @@ class ContactDetails extends Component {
 	createUser = ()=>{
 		console.log("In here")
 		var userDetails = {
-<<<<<<< Updated upstream
 			firstname			: this.state.firstName,
 			lastname			: this.state.lastName,
 			mobNumber			: this.state.phone,
@@ -515,17 +494,6 @@ class ContactDetails extends Component {
 			status				: 'active',
 			"emailSubject"		: "Email Verification",
 			"emailContent"		: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
-=======
-			firstname				: this.state.firstName,
-			lastname				: this.state.lastName,
-			mobNumber				: this.state.phone,
-			email						: this.state.email,
-			pwd							: "fivebees123",
-			role						: this.state.pathname =="appCompany"  ? ["admin"] : this.state.role,
-			status					: 'active',
-			"emailSubject"	: "Email Verification",
-			"emailContent"	: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
->>>>>>> Stashed changes
 		}
 		console.log("userDetails",userDetails);
 		return new Promise(function(resolve, reject){
@@ -739,11 +707,7 @@ class ContactDetails extends Component {
 			companyID			: this.state.companyID,
 			companyName			: this.state.companyName,
 			pwd					: "fivebees123",
-<<<<<<< Updated upstream
 			role				: this.state.pathname =="appCompany"  ? "admin" : this.state.role,
-=======
-			role				: this.state.pathname =="appCompany"  ? ["admin"] : this.state.role,
->>>>>>> Stashed changes
 			status				: 'active',
 			"emailSubject"		: "Email Verification",
 			"emailContent"		: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",

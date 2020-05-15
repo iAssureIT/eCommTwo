@@ -34,6 +34,7 @@
     "react-image-zoom": "^0.7.0",
     "react-inline-editing": "^1.0.10",
     "react-input-mask": "^2.0.4",
+    "react-load-image": "^0.1.7",
     "react-loadable": "^5.5.0",
     "react-moment": "^0.9.7",
     "react-owl-carousel": "^2.3.1",

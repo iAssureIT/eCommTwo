@@ -65,10 +65,10 @@ import VendorCategory       from './storeAdmin/vendorManagement/MasterData/Vendo
 import VendorLocationType   from './storeAdmin/vendorManagement/MasterData/VendorLocationType/VendorLocationType.jsx';
 
 //============ Franchise Management =============
-import FranchiseBasicInfo       from '../storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
-import FranchiseLocationDetails from '../storeAdmin/FranchiseMaster/FranchiseLocationDetails.js';
-import FranchiseContactDetails  from '../storeAdmin/FranchiseMaster/FranchiseContactDetails.js';
-
+import FranchiseBasicInfo       from './storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
+import FranchiseLocationDetails from './storeAdmin/FranchiseMaster/FranchiseLocationDetails.js';
+import FranchiseContactDetails  from './storeAdmin/FranchiseMaster/FranchiseContactDetails.js';
+import ListOfEntities           from './coreadmin/Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
 
 
 class Layout extends Component  {
