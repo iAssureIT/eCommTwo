@@ -14,6 +14,7 @@ function getRandomInt(min, max) {
 };
 
 exports.user_signup_user = (req, res, next) => {
+	console.log("user_signup_user req.body = ",req.body);
 	var username = "EMAIL";
 	if(req.body.username){
 		if(req.body.username === "EMAIL"){
