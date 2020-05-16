@@ -19,14 +19,11 @@ import Leftsidebar          from './storeAdmin/leftSidebar/Leftsidebar.js';
 
 //================== Dashboard ===================
 import Dashboard            from './storeAdmin/dashboard/Dashboard.js'
-
-
 //============== Product Management ==============//
 import AddNewShopProduct    from './storeAdmin/product/addNewProduct/AddNewShopProduct/AddNewShopProduct.js';
 import AddNewProductImages  from './storeAdmin/product/addNewProduct/AddNewProductImages/AddNewProductImages.js';
 import CategoryManagement   from './storeAdmin/product/categoryManagement/component/CategoryManagement.js';
 import SectionManagement    from './storeAdmin/product/sectionManagement/component/SectionManagement.js';
-
 
 import AddNewBulkProduct    from './StoreManagement/product/productBulkUpload/component/ProductBulkUpload.js';
 import TemplateManagement   from './StoreManagement/product/productBulkUpload/component/TemplateManagement.js';
@@ -72,6 +69,9 @@ import FranchiseBasicInfo       from './storeAdmin/FranchiseMaster/FranchiseBasi
 import FranchiseLocationDetails from './storeAdmin/FranchiseMaster/FranchiseLocationDetails.js';
 import FranchiseContactDetails  from './storeAdmin/FranchiseMaster/FranchiseContactDetails.js';
 import ListOfEntities           from './coreadmin/Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
+
+//=============== Preferences =================
+import WebsiteModel from './storeAdmin/preferences/WebsiteModel.js';
 
 
 class Layout extends Component  {
@@ -122,6 +122,8 @@ class Layout extends Component  {
                                           {/* Dashboard route */}
                                           <Route path="/" component={Dashboard} exact />
                                           <Route path="/dashboard" component={Dashboard} exact />
+                                        
+                                          <Route path="/website-model" component={WebsiteModel} exact />                                          
 
                                           {/* Product Management */}
                                           <Route path="/product-details/:productID" exact strict component={ProductDetails} />
