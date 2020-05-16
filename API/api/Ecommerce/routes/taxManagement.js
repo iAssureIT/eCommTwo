@@ -23,5 +23,4 @@ router.delete('/deleterate/delete/:preferenceID/:taxRateID', preferenceControlle
 
 router.delete('/delete/:preferenceID', preferenceController.delete_preference);
 
-
 module.exports = router;

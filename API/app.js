@@ -57,6 +57,7 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	const wishlistRoutes				= require("./api/Ecommerce/routes/wishlist"); 
 	const SectionRoutes			    = require("./api/Ecommerce/routes/sections"); 
 	const taxSetting            = require("./api/Ecommerce/routes/taxManagement");
+	const adminPreference       = require("./api/Ecommerce/routes/adminPreference");
 	const ReturnedProductsRoutes= require("./api/Ecommerce/routes/returnedProducts"); 
 	const BulkUploadTemplate		= require("./api/Ecommerce/routes/bulkUploadTemplate"); 
 
@@ -99,6 +100,7 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	app.use("/api/customerQuery", customerQueryRoutes);
 	app.use("/api/customerReview", customerReviewRoutes);
 	app.use("/api/preference", taxSetting);
+	app.use("/api/adminpreference", adminPreference);
 	app.use("/api/sections", SectionRoutes);
 	app.use("/api/returnedProducts", ReturnedProductsRoutes);
 	app.use("/api/bulkUploadTemplate", BulkUploadTemplate);

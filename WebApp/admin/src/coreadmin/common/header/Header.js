@@ -174,7 +174,7 @@ export default class Header extends Component {
                       </span>
                     </div>
                     <div className="profiledetails">
-                      {this.state.inAppNotifications ?
+                      {/* {this.state.inAppNotifications ?
                         this.state.inAppNotifications.length > 0 ?
                           this.state.inAppNotifications.map((data, index) => {
                             return (
@@ -192,7 +192,7 @@ export default class Header extends Component {
                           </div>
                         :
                         null
-                      }
+                      } */}
                     </div>
                   </div>
                 </div>
