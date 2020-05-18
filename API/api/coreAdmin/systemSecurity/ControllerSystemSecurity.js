@@ -568,6 +568,7 @@ exports.check_username_EmailOTP = (req, res, next) => {
 		});
 };
 exports.user_login_using_email = (req, res, next) => {
+	console.log("inside login:",req);
 	var emailId = (req.body.email).toLowerCase();
 	var role = (req.body.role).toLowerCase();
 	var selector = {
@@ -581,7 +582,7 @@ exports.user_login_using_email = (req, res, next) => {
 		.exec()
 		.then(user => {
 			if (user) {
-				if ((user.profile.status).toLowerCase() == "active") {
+				if ((user.profile.status).toLowerCase() === "active") {
 					var pwd = user.services.password.bcrypt;
 					console.log('pwd', pwd);
 					if (pwd) {

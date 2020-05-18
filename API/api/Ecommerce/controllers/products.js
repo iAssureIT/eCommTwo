@@ -95,19 +95,20 @@ exports.bulkUploadProduct = (req,res,next)=>{
         var invalidData = [];
         var invalidObjects = [];
         var remark = ''; 
-
+        console.log("productData :",productData);
         for(k = 0 ; k < productData.length ; k++){
-            if(productData[k].section != undefined && productData[k].itemCode != undefined){
-                if (productData[k].section.trim() != '') {
+            if(productData[k].section !== undefined && productData[k].itemCode !== undefined){
+                if (productData[k].section.trim() !== '') {
                     var sectionObject = await sectionInsert(productData[k].section)
-                    //console.log('sectionObject',sectionObject)
-                    if (productData[k].category != undefined) {
+                    console.log('sectionObject:',sectionObject)
+                    if (productData[k].category !== undefined) {
                         var categoryObject = await categoryInsert(productData[k].category,productData[k].subCategory,productData[k].section,sectionObject.section_ID);
                         
-                        if (productData[k].itemCode != undefined) {
+                        if (productData[k].itemCode !== undefined) {
+                            console.log("productData[k]:", productData[k]);
                             var insertProductObject = await insertProduct(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
                             console.log('insertProductObject',insertProductObject)
-                            if (insertProductObject != 0) {
+                            if (insertProductObject !== 0) {
 
                                 Count++;
                             }else{
@@ -418,7 +419,9 @@ function findCat(catgName) {
 }
 
 var insertProduct = async (section_ID, section, categoryObject, data) => {
-    //console.log('categoryObject',categoryObject.subCategory_ID)
+    console.log("data:" ,data);
+    console.log('categoryObject',categoryObject.subCategory_ID)
+    
     return new Promise(function(resolve,reject){ 
         productDuplicateControl();
         async function productDuplicateControl(){

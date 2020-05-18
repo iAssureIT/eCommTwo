@@ -484,7 +484,7 @@ class BasicInfo extends Component {
       }else{
         if(this.state.vendorRadio === 'new'){
           console.log("add new vendor");
-          axios.post('/api/users/vendor', userDetails)
+          axios.post('/api/ecommusers/vendor', userDetails)
           .then((res) => {
             var formValues = {
               'typeOptions'   : this.state.typeOptions,

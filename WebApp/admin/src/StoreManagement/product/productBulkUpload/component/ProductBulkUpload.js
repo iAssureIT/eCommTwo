@@ -13,7 +13,8 @@ class AddNewBulkProduct extends Component {
         this.state = {
             "currentProducts": [],
             "productData": [],
-            "file": props && props.fileData && props.fileData[0] ? props.fileData[0].fileName : '',
+            "file"   : props && props.fileData && props.fileData[0] ? props.fileData[0].fileName : '',
+            "vendor" : "",
         }
     }
 
@@ -33,7 +34,7 @@ class AddNewBulkProduct extends Component {
                 return data.fileName === file;
             }
             var x = productData.filter(checkAdult);
-            // console.log('x',x);
+            console.log('x',x);
 
             this.setState({
                 productData: x
@@ -164,9 +165,15 @@ class AddNewBulkProduct extends Component {
     getVendorList() {
         axios.get('/api/vendors/get/list')
             .then((response) => {
-                this.setState({
-                    vendorArray: response.data
-                })
+                if(response){
+                    console.log("vendor response:",response);
+                    this.setState({
+                        vendorArray: response.data,
+                        vendor     : response.data._id
+                    })
+                    console.log("vendorArray:",this.state.vendorArray);
+                }
+                
             })
             .catch((error) => {
 
@@ -180,7 +187,7 @@ class AddNewBulkProduct extends Component {
         })
         axios.get('/api/bulkUploadTemplate/get/' + event.target.value.split('|')[1])
           .then((response) => {
-            console.log(response.data);
+            console.log("productBulkUpload :",response.data);
             if (response.data) {
                 this.setState({fileurl:response.data.templateUrl, messageData : {}})    
             }else{
@@ -202,12 +209,13 @@ class AddNewBulkProduct extends Component {
           })
     }
     render() {
-        console.log(localStorage.getItem('roles'))
+        console.log("role:",localStorage.getItem('roles'))
         const SheetJSFT = [
             "xlsx",
             "xls"
         ]
         const requiredData = {vendor: this.state.vendor};
+        console.log("required data:",requiredData);
         return (
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-right">
             <section className="content">

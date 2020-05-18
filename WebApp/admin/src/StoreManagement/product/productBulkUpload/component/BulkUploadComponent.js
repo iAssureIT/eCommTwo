@@ -140,7 +140,7 @@ constructor(props) {
   
 
   handleFile(file) {
-        
+            
         var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]/;
 
         if (format.test(file.name)) {
@@ -233,6 +233,8 @@ constructor(props) {
                                     else {
                                         documentObj[count][header[k]] = record[k];
                                     }
+                                    console.log(" requireddata vendor props:",this.props.requiredData.vendor);
+                                    console.log("localStorage.getItem('admin_ID'):",localStorage.getItem('admin_ID'));
                                     documentObj[count]['filename'] = file.name;
                                     documentObj[count]['vendor'] = this.props.requiredData.vendor;
                                     documentObj[count]['createdBy'] = localStorage.getItem('admin_ID');
@@ -244,7 +246,7 @@ constructor(props) {
                     }
 
                     this.setState({ finalData: documentObj }, () => {
-                        console.log(this.state.finalData);
+                        console.log("final data:",this.state.finalData);
                         $('.fullpageLoader').hide()
                     });
                 });
@@ -376,7 +378,7 @@ constructor(props) {
 
   render() {
     //console.log('tableData',this.state.tableData)  
-     console.log("==-=--=->",this.state.finalData)
+     console.log("===->",this.state.finalData)
     const SheetJSFT = [
         "xlsx",
         "xls",

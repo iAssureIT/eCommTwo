@@ -48,6 +48,7 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	const notificationRoutes		= require("./api/coreAdmin/notificationManagement/RoutesMasterNotification.js");
 	const projectSettingsurl 		= require("./api/coreAdmin/projectSettings/RoutesProjectSettings.js");
 	// const preferenceurl 			= require("./api/coreAdmin/routes/preference");
+	const eCommUsersRoutes         = require("./api/Ecommerce/routes/eCommSystemSecurity.js");
 
 	//========== eCommerce Operations ===========
 	const productsRoutes				= require("./api/Ecommerce/routes/products"); 
@@ -81,6 +82,7 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	app.use("/api/auth",systemRoutes);
 
 	app.use("/api/users",usersRoutes);	
+	app.use("/api/ecommusers",eCommUsersRoutes);	
 	app.use("/api/roles",rolesRoutes);
 	app.use("/api/projectSettings",projectSettingsurl);
 	app.use("/api/companysettings",companySettingRoutes);

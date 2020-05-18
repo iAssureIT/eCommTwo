@@ -288,6 +288,7 @@ class AddNewBulkProduct extends Component {
         var format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]/;
         console.log(file.name);
         if (format.test(file.name)) {
+
             this.setState({ fileWarningError: true, finalData: [] });
 
         } else {
@@ -384,7 +385,7 @@ class AddNewBulkProduct extends Component {
                     }
 
                     this.setState({ finalData: documentObj }, () => {
-                        console.log(this.state.finalData);
+                        console.log("Final data:",this.state.finalData);
                     });
                 });
             };

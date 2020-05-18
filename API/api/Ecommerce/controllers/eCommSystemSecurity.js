@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 var ObjectID = require('mongodb').ObjectID;
 var request = require('request-promise');
-const User = require('../userManagement/ModelUsers.js');
-const Role = require('../rolesManagement/ModelRoles.js');
+const User = require('../../coreAdmin/userManagement/ModelUsers.js');
+const Role = require('../../coreAdmin/rolesManagement/ModelRoles.js');
 const globalVariable = require("../../../nodemon.js");
 
 
@@ -513,32 +513,32 @@ exports.ba_signupadmin = (req, res, next) => {
 exports.vendor_signup = (req, res, next) => {
 	console.log("inside vendor signup:", req.body);
 	var mailSubject, mailText, smsText, NotificationData;
-	Masternotifications.findOne({ "templateType": "Email", "templateName": "Vendor New Registration" })
-		.exec()
-		.then((notificationData) => {
-			console.log("Notification response");
-			NotificationData = notificationData;
-			// mailSubject = maildata.subject;
-			// mailText = maildata.content
+	// Masternotifications.findOne({ "templateType": "Email", "templateName": "Vendor New Registration" })
+	// 	.exec()
+	// 	.then((notificationData) => {
+	// 		console.log("Notification response");
+	// 		NotificationData = notificationData;
+	// 		// mailSubject = maildata.subject;
+	// 		// mailText = maildata.content
 			
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({
-				error: err
-			});
-		});
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 		res.status(500).json({
+	// 			error: err
+	// 		});
+	// 	});
 
-	Masternotifications.findOne({ "templateType": "SMS", "templateName": "Vendor New Registration" })
-		.exec()
-		.then((smsdata) => {
-			var textcontent = smsdata.content;
-			var regex = new RegExp(/(<([^>]+)>)/ig);
-			var textcontent = smsdata.content.replace(regex, '');
-			textcontent = textcontent.replace(/\&nbsp;/g, '');
-			smsText = textcontent
-		})
-		.catch();
+	// Masternotifications.findOne({ "templateType": "SMS", "templateName": "Vendor New Registration" })
+	// 	.exec()
+	// 	.then((smsdata) => {
+	// 		var textcontent = smsdata.content;
+	// 		var regex = new RegExp(/(<([^>]+)>)/ig);
+	// 		var textcontent = smsdata.content.replace(regex, '');
+	// 		textcontent = textcontent.replace(/\&nbsp;/g, '');
+	// 		smsText = textcontent
+	// 	})
+	// 	.catch();
 	User.find()
 		.exec()
 		.then(user => {
@@ -583,92 +583,67 @@ exports.vendor_signup = (req, res, next) => {
 									"username"        : newUser.profile.email,
 									"password"        : req.body.pwd,
 								}
-								if(NotificationData){
-									var content = NotificationData.content;
-									if(content.indexOf('[') > -1 ){
-										var wordsplit = content.split('[');
-									}
+								// if(NotificationData){
+								// 	var content = NotificationData.content;
+								// 	if(content.indexOf('[') > -1 ){
+								// 		var wordsplit = content.split('[');
+								// 	}
 					
-									var tokens = [];
-									var n = 0;
-									for(i=0;i<wordsplit.length;i++){
-										if(wordsplit[i].indexOf(']') > -1 ){
-											tokensArr = wordsplit[i].split(']');
-											tokens[n] = tokensArr[0];
-											n++;
-										}
-									}
-									var numOfVar = Object.keys(variables).length;
+								// 	var tokens = [];
+								// 	var n = 0;
+								// 	for(i=0;i<wordsplit.length;i++){
+								// 		if(wordsplit[i].indexOf(']') > -1 ){
+								// 			tokensArr = wordsplit[i].split(']');
+								// 			tokens[n] = tokensArr[0];
+								// 			n++;
+								// 		}
+								// 	}
+								// 	var numOfVar = Object.keys(variables).length;
 					
-									for(i=0; i<numOfVar; i++){
-										var tokVar = tokens[i].substr(1,tokens[i].length-2);
-										content = content.replace(tokens[i],variables[tokens[i]]);
-									}
-									content = content.split("[").join("'");
-									content = content.split("]").join("'");
-									// console.log("content = ",content);
-									var tData={
-										content:content,
-										subject:NotificationData.subject
-									}
-									mailSubject = NotificationData.subject;
-									mailText = content 
-								}//NotificationData
+								// 	for(i=0; i<numOfVar; i++){
+								// 		var tokVar = tokens[i].substr(1,tokens[i].length-2);
+								// 		content = content.replace(tokens[i],variables[tokens[i]]);
+								// 	}
+								// 	content = content.split("[").join("'");
+								// 	content = content.split("]").join("'");
+								// 	// console.log("content = ",content);
+								// 	var tData={
+								// 		content:content,
+								// 		subject:NotificationData.subject
+								// 	}
+								// 	mailSubject = NotificationData.subject;
+								// 	mailText = content 
+								// }//NotificationData
 
-								request({
-									"method": "POST",
-									"url": "http://localhost:" + gloabalVariable.PORT + "/send-email",
-									"body": {
-										"email": newUser.profile.email,
-										"subject": mailSubject,
-										"text": "Submitted",
-										"mail": 'Hello ' + newUser.profile.fullName + ',' + '\n' + "\n <br><br>" + mailText + "<b> </b>" + '\n' + '\n' + ' </b><br><br>\nRegards,<br>Team AnasHandicraft',
-									},
-									"json": true,
-									"headers": {
-										"User-Agent": "Test App"
-									}
-								})
-								.then((sentemail) => {
-									res.header("Access-Control-Allow-Origin", "*");
+								// request({
+								// 	"method": "POST",
+								// 	"url": "http://localhost:" + gloabalVariable.PORT + "/send-email",
+								// 	"body": {
+								// 		"email": newUser.profile.email,
+								// 		"subject": mailSubject,
+								// 		"text": "Submitted",
+								// 		"mail": 'Hello ' + newUser.profile.fullName + ',' + '\n' + "\n <br><br>" + mailText + "<b> </b>" + '\n' + '\n' + ' </b><br><br>\nRegards,<br>Team AnasHandicraft',
+								// 	},
+								// 	"json": true,
+								// 	"headers": {
+								// 		"User-Agent": "Test App"
+								// 	}
+								// })
+								// .then((sentemail) => {
+								// 	res.header("Access-Control-Allow-Origin", "*");
 
-									res.status(200).json({
-										"message": 'NEW-USER-CREATED',
-										"user_id": newUser._id,
-									});
-								})
-								.catch((err) => {
-									res.status(500).json({
-										error: err
-									});
-								});
-
-								// const client = new plivo.Client('', '');
-								// const sourceMobile = "+919923393733";
-								// var text = "Dear User, " + '\n' + "" + smsText + " : ";
-
-								// client.messages.create(
-								// 	src = sourceMobile,
-								// 	dst = '+91' + req.body.mobileNumber,
-								// 	text = text
-								// ).then((result) => {
-								// 	// return res.status(200).json("OTP "+OTP+" Sent Successfully ");
-								// 	return res.status(200).json({
+								// 	res.status(200).json({
 								// 		"message": 'NEW-USER-CREATED',
 								// 		"user_id": newUser._id,
 								// 	});
 								// })
-								// .catch(otpError => {
-								// 	console.log('otp', otpError);
-								// 	return res.status(501).json({
-								// 		message: "Some Error Occurred in OTP Send Function",
-								// 		error: otpError
+								// .catch((err) => {
+								// 	res.status(500).json({
+								// 		error: err
 								// 	});
 								// });
-								// res.status(200).json({
-								// 	"message": 'NEW-USER-CREATED',
-								// 	"user_id": newUser._id,
-								// });
+
+								
 							}
 							res.status(200).json({
 								"message": 'NEW-USER-CREATED',

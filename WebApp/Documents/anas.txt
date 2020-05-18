@@ -9,3 +9,14 @@ customer - http://anashandicrafts.iassureit.com/
 admin    - http://admin-anashandicrafts.iassureit.com/
 api      - http://anashandicraftapi.iassureit.com/
 
+nodemon.js
+
+module.exports = {
+    "JWT_KEY"   : "secret",
+    "port"      : 3008,
+    "dbname"    : "anashandicraft",
+    "emailHost" : "smtp.gmail.com",
+    "emailPort" : 587,
+    "user"      : "iassureitmail@gmail.com",
+    "pass"      : "iAssureIT@123"    
+}
