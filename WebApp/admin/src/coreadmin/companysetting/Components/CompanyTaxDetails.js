@@ -236,7 +236,7 @@ delTax(event){
             </form>
 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              { this.state.companyTaxData && this.state.companyTaxData.length > 0 ?
+              { Array.isArray(this.state.companyTaxData) && this.state.companyTaxData.length > 0 ?
                 this.state.companyTaxData.map( (taxData,index)=>{
                 return (
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxTx" key={index}>

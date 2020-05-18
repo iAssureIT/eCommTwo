@@ -77,6 +77,7 @@ exports.user_signup_user = (req, res, next) => {
 												}
 												user.save()
 													.then(result => {
+														console.log("User Created");
 														res.status(200).json({
 															message: 'USER_CREATED',
 															ID: result._id,

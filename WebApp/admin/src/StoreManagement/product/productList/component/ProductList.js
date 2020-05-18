@@ -419,7 +419,7 @@ class ProductList extends Component {
                                                 <span className="publishedBoxIcon bg-aqua"><i className="fa fa-shopping-cart"></i></span>
                                                 <div className="publishedBoxContent">
                                                     <span className="publishedBoxtext">Total Products</span><br />
-                                                    <span className="publishedBoxNumber">{this.state.productCountByStatus ? this.state.productCountByStatus[0].total : 0}</span>
+                                                    <span className="publishedBoxNumber">{Array.isArray(this.state.productCountByStatus)&&this.state.productCountByStatus.length>0 ? this.state.productCountByStatus[0].total : 0}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -428,7 +428,7 @@ class ProductList extends Component {
                                                 <span className="publishedBoxIcon bg-green"><i className="fa fa-shopping-cart"></i></span>
                                                 <div className="publishedBoxContent">
                                                     <span className="publishedBoxtext">Published Products</span><br />
-                                                    <span className="publishedBoxNumber">{this.state.productCountByStatus ? this.state.productCountByStatus[0].totalPublish : 0}</span>
+                                                    <span className="publishedBoxNumber">{Array.isArray(this.state.productCountByStatus)&&this.state.productCountByStatus.length>0 ? this.state.productCountByStatus[0].totalPublish : 0}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -437,7 +437,7 @@ class ProductList extends Component {
                                                 <span className="publishedBoxIcon bg-redcolor"><i className="fa fa-shopping-cart"></i></span>
                                                 <div className="publishedBoxContent">
                                                     <span className="publishedBoxtext">Unpublished Products</span><br />
-                                                    <span className="publishedBoxNumber">{this.state.productCountByStatus ? this.state.productCountByStatus[0].totalUnpublish : 0}</span>
+                                                    <span className="publishedBoxNumber">{Array.isArray(this.state.productCountByStatus)&&this.state.productCountByStatus.length>0 ? this.state.productCountByStatus[0].totalUnpublish : 0}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -446,7 +446,7 @@ class ProductList extends Component {
                                                 <span className="publishedBoxIcon bg-yellow"><i className="fa fa-shopping-cart"></i></span>
                                                 <div className="publishedBoxContent">
                                                     <span className="publishedBoxtext">Draft Products</span><br />
-                                                    <span className="publishedBoxNumber">{this.state.productCountByStatus ? this.state.productCountByStatus[0].totalDraft : 0}</span>
+                                                    <span className="publishedBoxNumber">{Array.isArray(this.state.productCountByStatus)&&this.state.productCountByStatus.length>0 ? this.state.productCountByStatus[0].totalDraft : 0}</span>
                                                 </div>
                                             </div>
                                         </div>

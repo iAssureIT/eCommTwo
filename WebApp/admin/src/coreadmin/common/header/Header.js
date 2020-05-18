@@ -12,6 +12,7 @@ export default class Header extends Component {
     super(props);
     this.state = {
       loggedIn: false,
+      inAppNotifications: [{notifMessage:"-"}]
     }
   }
 
@@ -174,25 +175,15 @@ export default class Header extends Component {
                       </span>
                     </div>
                     <div className="profiledetails">
-                      {/* {this.state.inAppNotifications ?
-                        this.state.inAppNotifications.length > 0 ?
-                          this.state.inAppNotifications.map((data, index) => {
-                            return (
-                              <div className="msgborderbtm" key={index}>
-                                <div dangerouslySetInnerHTML={{ __html: data.notifMessage }} />
-                              </div>
-                            )
-                          })
-                          :
-                          <div >
-                            <div>
-                              <p>You have no notifications</p>
-                            </div>
 
-                          </div>
+                          :
+                            <div>
+                              <div>
+                                <p>You have no notifications</p>
+                              </div>
+                            </div>
                         :
-                        null
-                      } */}
+
                     </div>
                   </div>
                 </div>

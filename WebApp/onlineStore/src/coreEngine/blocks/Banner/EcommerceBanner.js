@@ -36,11 +36,11 @@ export default class EcommerceBanner extends Component {
 						 		<OwlCarousel
 									    className="owl-theme bannercaro"
 									    loop
-                            			responsive={this.state.responsive} 
-			                            autoplay={true}
-			                            autoplayHoverPause={true}
-			                            dots={true}
-			                            dotData={true}
+                			responsive={this.state.responsive} 
+                      autoplay={true}
+                      autoplayHoverPause={true}
+                      dots={true}
+                      dotData={true}
 									>
 									    <div className="item">
 									    	<img className="img img-responsive bannerimg" src="/images/banner1.png" alt="banner" />

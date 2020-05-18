@@ -157,9 +157,8 @@ class HomePage extends Component {
 					<div className="row">
             {/* <AskPincode/> */}
 						<EcommerceBanner/>
-            
-
           </div>
+          
             <div className="homeRow">
             { /*new product */}
             {
