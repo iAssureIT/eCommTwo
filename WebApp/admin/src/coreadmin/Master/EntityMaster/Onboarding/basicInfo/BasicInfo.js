@@ -15,28 +15,30 @@ import { withRouter } from 'react-router-dom';
 class BasicInfo extends Component {
   constructor(props) {
     super(props);
+    console.log("this.props = ",this.props);
+
     this.state = {
-      "pathname"      : this.props.entity,
+      "pathname"      : this.props.entity ? this.props.entity : false,
       "companyLogo"   : [],
       "imageUploaded" : true,
       "companyPhoneAvailable" : true,
       "companyPhone"  : '',
-      "COI"           : []
+      "COI"           : [],
+      "entityID"      : this.props.match ? this.props.match.params.entityID : false,
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.keyPress = this.keyPress.bind(this);
+    this.handleChange       = this.handleChange.bind(this);
+    this.keyPress           = this.keyPress.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
-    this.supplier = this.supplier.bind(this);
+    this.supplier           = this.supplier.bind(this);
+
+
   }
   componentDidMount() {
-    console.log("this.state.companyPhone",this.state.companyPhone)
-    this.setState({
-      entityID: this.props.match.params.entityID
-    }, () => {
-      console.log("Parmas:",this.props.entity)
+    if(this.state.entityID){
       this.edit();
-    })
+    }
+
     window.scrollTo(0, 0);
     $.validator.addMethod("regxA1", function (value, element, regexpr) {
       return regexpr.test(value);
@@ -117,8 +119,8 @@ class BasicInfo extends Component {
         }
       }
     });
-    console.log("this.props.match.params.entityID",this.props.match.params.entityID);
-    axios.get("/api/entitymaster/get/"+this.props.entity)
+
+    axios.get("/api/entitymaster/get/"+this.state.pathname)
       .then((response) => {
         this.setState({
           entityList   : response.data,
@@ -135,9 +137,6 @@ class BasicInfo extends Component {
       .catch((error) => {
       })
 
-  }
-  componentWillReceiveProps(nextProps) {
-    console.log('vendorID', nextProps.vendorID);
   }
   componentWillUnmount() {
     $("script[src='/js/adminLte.js']").remove();
@@ -306,7 +305,7 @@ class BasicInfo extends Component {
       var formValues = {
         "supplierOf": this.props.vendorID ? this.props.vendorID : localStorage.getItem("user_ID"),
         "profileStatus":"New",
-        "entityID": this.props.match.params.entityID,
+        "entityID": this.state.entityID,
         "entityType": this.state.pathname,
         "companyName": this.state.companyName,
         "groupName": this.state.groupName,
@@ -320,8 +319,7 @@ class BasicInfo extends Component {
         "userID": this.state.userID,
         "createdBy": localStorage.getItem("user_ID")
       }
-      console.log('formValues', formValues);
-      if (this.props.match.params.entityID) {
+      if (this.state.entityID) {
         
         axios.patch('/api/entitymaster/patch', formValues)
           .then((response) => {
@@ -329,7 +327,7 @@ class BasicInfo extends Component {
             swal((this.state.pathname === "appCompany" ? "Organzational Settings" : this.state.pathname ) + " updated successfully.");
             $(".swal-text").css("text-transform", "capitalize");
             $(".swal-text").css("font-family", "sans-serif");
-            this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname ) + '/location-details/' + this.props.match.params.entityID)
+            this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname ) + '/location-details/' + this.state.entityID)
           })
           .catch((error) => {
 
@@ -337,7 +335,7 @@ class BasicInfo extends Component {
       } else {
         axios.post('/api/entitymaster/post', formValues)
         .then((response) => {
-          console.log("response",response);
+          // console.log("response",response);
           swal((this.state.pathname === "appCompany" ? "Organzational Settings" : this.state.pathname ) + " created successfully.");
           $(".swal-text").css("text-transform", "capitalize");
           this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname )+ '/location-details/' + response.data.entityID)
@@ -392,7 +390,7 @@ class BasicInfo extends Component {
             companyLogo   : companyLogo,
             imageUploaded : false
           })
-          console.log("img uploaded status:",this.state.imageUploaded);
+          // console.log("img uploaded status:",this.state.imageUploaded);
         });
 
         async function main() {
@@ -488,7 +486,7 @@ class BasicInfo extends Component {
 
         async function main() {
           var formValues = [];
-          console.log("imageloader");
+          // console.log("imageloader");
           $("#imageLoader").show();
           for (var j = 0; j < COI.length; j++) {
             var config = await getConfig();
@@ -598,12 +596,12 @@ class BasicInfo extends Component {
   }
   edit() {
     var entityID = this.state.entityID;
-    console.log("entityID",this.state.entityID);
+    // console.log("entityID",this.state.entityID);
     if (entityID !== '') {
       axios.get('/api/entitymaster/get/one/' + entityID)
         .then((response) => {
           this.setState({
-            "entityID": this.props.match.params.entityID,
+            "entityID": this.state.entityID,
             "entityType": response.data.pathname,
             "companyName": response.data.companyName,
             "groupName": response.data.groupName,
@@ -658,217 +656,232 @@ class BasicInfo extends Component {
     })
   }
   render() {
+    var basicDetailsPath  = "";
+    var locDetailsPath    = "";
+    var contDetailsPath   = "";
+    if(this.props.entity){
+      if(this.state.entityID){
+        basicDetailsPath  = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/basic-details/"+this.state.entityID ;
+        locDetailsPath    = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/location-details/"+this.state.entityID ;
+        contDetailsPath   = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/contact-details/"+this.state.entityID ;
+      }else{
+        basicDetailsPath  = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/basic-details" ;      
+        locDetailsPath    = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/location-details/";
+        contDetailsPath   = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/contact-details/";
+      }      
+    }
+    
     return (
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div className="row">
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
-            <section className="content OrgSettingFormWrapper">
-              <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                  {this.state.pathname !="appCompany" ?
-                  <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">{this.state.pathname ? this.state.pathname : "Entity"} Master</h4>
-                  :
-                  <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Organization Settings</h4>
-                }
-                </div>
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div className="row">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
+              <section className="content OrgSettingFormWrapper">
+                <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
+                    {this.state.pathname !="appCompany" ?
+                    <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">{this.state.pathname ? this.state.pathname : "Entity"} Master</h4>
+                    :
+                    <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Organization Settings</h4>
+                  }
+                  </div>
 
-                <div className="nav-center OnboardingTabs col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <ul className="nav nav-pills vendorpills col-lg-8 col-lg-offset-2 col-md-12  col-sm-12 col-xs-12">
-                    <li className="active col-lg-4 col-md-3 col-sm-12 col-xs-12 pdcls pdclsOne btn1 NOpadding-left">
-                      <a href={this.props.match.params.entityID ? "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/basic-details/"+this.props.match.params.entityID : "/"+(this.props.entity === "appCompany" ? "org-settings" : this.props.entity)+"/basic-details"} className="basic-info-pillss pills">
-                        <i className="fa fa-info-circle" aria-hidden="true"></i> &nbsp;
-                        Basic Info
-                      </a>
-                      <div className="triangleone triangleones" id="triangle-right"></div>
-                    </li>
-                    <li className="col-lg-4 col-md-3 col-sm-12 col-xs-12 transactionTab pdcls pdclsOne btn2 disabled">
-                      <div className="triangletwo" id="triangle-right1"></div>
-                      <a href={this.props.match.params.entityID ? "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/location-details/"+this.props.match.params.entityID : "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/location-details" } className="basic-info-pillss backcolor">
-                        <i className="fa fa-map-marker iconMarginLeft" aria-hidden="true"></i> &nbsp;
-                        Locations
-                      </a>
-                      <div className="trianglethree forActive" id="triangle-right"></div>
-                    </li>
-                    <li className="col-lg-4 col-md-3 col-sm-12 col-xs-12 transactionTab noRightPadding pdcls btn4 disabled">
-                      <div className="trianglesix" id="triangle-right2"></div>
-                      <a href={this.props.match.params.entityID ? "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/contact-details/"+this.props.match.params.entityID : "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/contact-details"} className="basic-info-pillss backcolor">
-                        <i className="fa fa-phone phoneIcon" aria-hidden="true"></i> &nbsp;
-                        Contact 
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <section className="Content">
-                  <div className="row">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
-                      <form id="BasicInfo">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                          <div className="col-lg-12 col-md-12 col-sm-12 supplierForm">
-                            <div className="col-lg-12 col-md-12 col-sm-12">
-                              <br />
-                            </div>
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls">
-                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls NOpadding-left NOpadding-right">
-                                
-                                <div className="form-margin col-lg-9 col-md-12 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
-                                  <div className=" col-lg-8 col-md-6 col-sm-12 col-xs-12">
-                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Company Name<i className="astrick">*</i></label>
-                                    <input type="text" id="companyName" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.companyName} ref="companyName" name="companyName" onChange={this.handleChange} />
-                                  </div>
-                                  <div className=" col-lg-4 col-md-3 col-sm-12 col-xs-12">
-                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Group Name<i className="astrick">*</i></label>
-                                    <input type="text" id="groupName" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.groupName} ref="groupName" name="groupName" onChange={this.handleChange} required />
-                                  </div>
+                  <div className="nav-center OnboardingTabs col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <ul className="nav nav-pills vendorpills col-lg-8 col-lg-offset-2 col-md-12  col-sm-12 col-xs-12">
+                      <li className="active col-lg-4 col-md-3 col-sm-12 col-xs-12 pdcls pdclsOne btn1 NOpadding-left">
+                        <a  href={basicDetailsPath} className="basic-info-pillss pills">
+                          <i className="fa fa-info-circle" aria-hidden="true"></i> &nbsp;
+                          Basic Info
+                        </a>
+                        <div className="triangleone triangleones" id="triangle-right"></div>
+                      </li>
+                      <li className="col-lg-4 col-md-3 col-sm-12 col-xs-12 transactionTab pdcls pdclsOne btn2 disabled">
+                        <div className="triangletwo" id="triangle-right1"></div>
+                        <a href={locDetailsPath} className="basic-info-pillss backcolor">
+                          <i className="fa fa-map-marker iconMarginLeft" aria-hidden="true"></i> &nbsp;
+                          Locations
+                        </a>
+                        <div className="trianglethree forActive" id="triangle-right"></div>
+                      </li>
+                      <li className="col-lg-4 col-md-3 col-sm-12 col-xs-12 transactionTab noRightPadding pdcls btn4 disabled">
+                        <div className="trianglesix" id="triangle-right2"></div>
+                        <a href={contDetailsPath} className="basic-info-pillss backcolor">
+                          <i className="fa fa-phone phoneIcon" aria-hidden="true"></i> &nbsp;
+                          Contact 
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <section className="Content">
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
+                        <form id="BasicInfo">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                            <div className="col-lg-12 col-md-12 col-sm-12 supplierForm">
+                              <div className="col-lg-12 col-md-12 col-sm-12">
+                                <br />
+                              </div>
+                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls NOpadding-left NOpadding-right">
                                   
-                                  
-                                </div>
+                                  <div className="form-margin col-lg-9 col-md-12 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
+                                    <div className=" col-lg-8 col-md-6 col-sm-12 col-xs-12">
+                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Company Name<i className="astrick">*</i></label>
+                                      <input type="text" id="companyName" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.companyName} ref="companyName" name="companyName" onChange={this.handleChange} />
+                                    </div>
+                                    <div className=" col-lg-4 col-md-3 col-sm-12 col-xs-12">
+                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Group Name<i className="astrick">*</i></label>
+                                      <input type="text" id="groupName" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.groupName} ref="groupName" name="groupName" onChange={this.handleChange} required />
+                                    </div>
+                                    
+                                    
+                                  </div>
 
-                                <div className="form-margin col-lg-3 col-md-3 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
-                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding ">
-                                    <div className="col-lg-12 col-md-3 col-sm-12 col-xs-12">
-                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding " id="hide">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 uploadImageClient" id="LogoImageUpOne">
-                                          <div><i className="fa fa-camera"></i> <br /><p> Upload Logo</p></div>
-                                          <input multiple onChange={this.imgBrowse.bind(this)} id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="companyLogo" />
+                                  <div className="form-margin col-lg-3 col-md-3 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding ">
+                                      <div className="col-lg-12 col-md-3 col-sm-12 col-xs-12">
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding " id="hide">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 uploadImageClient" id="LogoImageUpOne">
+                                            <div><i className="fa fa-camera"></i> <br /><p> Upload Logo</p></div>
+                                            <input multiple onChange={this.imgBrowse.bind(this)} id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="companyLogo" />
+                                          </div>
                                         </div>
                                       </div>
+                                      {
+                                        this.state.companyLogo && this.state.companyLogo.length > 0 ?
+                                          this.state.companyLogo.map((logo, i) => {
+                                            return (
+                                              <div key={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBI">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+                                                  <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Logo"  id={logo} onClick={this.deleteLogo.bind(this)}>x</label>
+                                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBIImg" id="LogoImageUpOne">
+                                                    
+                                                        <img src={logo} className="img-responsive logoStyle" />
+                                                        
+                                                    
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            );
+                                          })
+                                          :
+                                          null
+                                                                               
+                                      }
+                                    </div>  
+                                  </div>
+
+
+                                  <div className="form-margin col-lg-9 col-md-9 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
+                                    
+                                    <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Company Email<i className="astrick">*</i></label>
+                                      <input disabled={this.state.entityID ? true : false} type="email" id="companyEmail" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.companyEmail} ref="companyEmail" name="companyEmail" onChange={this.handleChange} required />
                                     </div>
-                                    {
-                                      this.state.companyLogo && this.state.companyLogo.length > 0 ?
-                                        this.state.companyLogo.map((logo, i) => {
+
+                                    <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                      <label className="labelform  NOpadding-left">Company Number<i className="astrick">*</i></label>
+                                      <PhoneInput
+                                        country={'in'}
+                                        value={this.state.companyPhone}
+                                        name="companyPhone"
+                                        inputProps={{
+                                          name: 'companyPhone',
+                                          required: true
+                                        }}
+                                        onChange={this.changeMobile.bind(this)}
+                                      />
+                                     
+
+                                      {this.state.companyPhoneAvailable == true ? null : <label className="error">Please enter valid number</label>}
+                                      
+                                    </div>                                 
+                                  
+                                    <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
+                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Website
+                                        <a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="Eg. www.abc.xyz" className="fa fa-question-circle"></i> </a>
+                                      </label>
+                                      <input type="text" id="website" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputText" onKeyDown={this.keyPressWeb} value={this.state.website} ref="website" name="website" onChange={this.handleChange} />
+                                    </div>
+                                    
+                                   
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls ">
+                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 panerror" >
+                                      <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Tax Deduction Account Number
+                                        <a data-tip data-for='basicInfo2Tooltip' className="pull-right"> <i title="Eg. NGPO02911G" className="fa fa-question-circle"></i> </a>
+                                      </label>
+                                      <input maxLength="10" type="text" id="TAN" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputText UpperCase" value={this.state.TAN} ref="TAN" name="TAN" onChange={this.handleChange} placeholder="NGPO02911G" />
+                                    </div>
+                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12" >
+                                  <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Corporate Identification Number
+                                    <a data-tip data-for='basicInfo7Tooltip' className="pull-right"> <i title="Eg. L12345MH2019PTC123456" className="fa fa-question-circle"></i> </a>
+                                  </label>
+                                  <input type="text" id="CIN" maxLength="21" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 UpperCase inputText" placeholder="L12345MH2019PTC123456" value={this.state.CIN} ref="CIN" name="CIN" onChange={this.handleChange} />
+                                </div>
+                                <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding ">
+                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Add COI Document (jpg, jpeg, png, pdf)</label>
+                                  </div>
+                                  <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1" id="LogoImageUpOne">
+                                        <div><i className="fa fa-upload"></i> <br /></div>
+                                        <input multiple onChange={this.docBrowse.bind(this)} id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="COI" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {
+                                    this.state.COI && this.state.COI.length > 0 ?
+                                      this.state.COI.map((doc, i) => {
+                                        if(('extension',doc.substring(doc.lastIndexOf("."))) === '.pdf'){
                                           return (
-                                            <div key={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBI">
+                                            <div key={i} className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Logo"  id={logo} onClick={this.deleteLogo.bind(this)}>x</label>
-                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBIImg" id="LogoImageUpOne">
-                                                  
-                                                      <img src={logo} className="img-responsive logoStyle" />
-                                                      
-                                                  
+                                                <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Document" id={doc} onClick={this.deleteDoc.bind(this)}>x</label>
+                                                <div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1 " id="LogoImageUpOne">
+                                                  <img src={'/images/pdf.png'} className="img-responsive logoStyle" />
                                                 </div>
                                               </div>
                                             </div>
                                           );
-                                        })
-                                        :
-                                        null
-                                                                             
-                                    }
-                                  </div>  
-                                </div>
-
-
-                                <div className="form-margin col-lg-9 col-md-9 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
-                                  
-                                  <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Company Email<i className="astrick">*</i></label>
-                                    <input disabled={this.props.match.params.entityID ? true : false} type="email" id="companyEmail" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.companyEmail} ref="companyEmail" name="companyEmail" onChange={this.handleChange} required />
-                                  </div>
-
-                                  <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                    <label className="labelform  NOpadding-left">Company Number<i className="astrick">*</i></label>
-                                    <PhoneInput
-                                      country={'in'}
-                                      value={this.state.companyPhone}
-                                      name="companyPhone"
-                                      inputProps={{
-                                        name: 'companyPhone',
-                                        required: true
-                                      }}
-                                      onChange={this.changeMobile.bind(this)}
-                                    />
-                                   { console.log(this.state.companyPhoneAvailable )}
-
-                                    {this.state.companyPhoneAvailable == true ? null : <label className="error">Please enter valid number</label>}
-                                    
-                                  </div>                                 
-                                
-                                  <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
-                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Website
-                                      <a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="Eg. www.abc.xyz" className="fa fa-question-circle"></i> </a>
-                                    </label>
-                                    <input type="text" id="website" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputText" onKeyDown={this.keyPressWeb} value={this.state.website} ref="website" name="website" onChange={this.handleChange} />
-                                  </div>
-                                  
-                                 
-                                </div>
-                              </div>
-                            </div>
-                            <div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls ">
-                            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 panerror" >
-                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Tax Deduction Account Number
-                                      <a data-tip data-for='basicInfo2Tooltip' className="pull-right"> <i title="Eg. NGPO02911G" className="fa fa-question-circle"></i> </a>
-                                    </label>
-                                    <input maxLength="10" type="text" id="TAN" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 inputText UpperCase" value={this.state.TAN} ref="TAN" name="TAN" onChange={this.handleChange} placeholder="NGPO02911G" />
-                                  </div>
-                              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12" >
-                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Corporate Identification Number
-                                  <a data-tip data-for='basicInfo7Tooltip' className="pull-right"> <i title="Eg. L12345MH2019PTC123456" className="fa fa-question-circle"></i> </a>
-                                </label>
-                                <input type="text" id="CIN" maxLength="21" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 UpperCase inputText" placeholder="L12345MH2019PTC123456" value={this.state.CIN} ref="CIN" name="CIN" onChange={this.handleChange} />
-                              </div>
-                              <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding ">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Add COI Document (jpg, jpeg, png, pdf)</label>
-                                </div>
-                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1" id="LogoImageUpOne">
-                                      <div><i className="fa fa-upload"></i> <br /></div>
-                                      <input multiple onChange={this.docBrowse.bind(this)} id="LogoImageUp" type="file" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" title="" name="COI" />
-                                    </div>
-                                  </div>
-                                </div>
-                                {
-                                  this.state.COI && this.state.COI.length > 0 ?
-                                    this.state.COI.map((doc, i) => {
-                                      if(('extension',doc.substring(doc.lastIndexOf("."))) === '.pdf'){
-                                        return (
-                                          <div key={i} className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                              <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Document" id={doc} onClick={this.deleteDoc.bind(this)}>x</label>
-                                              <div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1 " id="LogoImageUpOne">
-                                                <img src={'/images/pdf.png'} className="img-responsive logoStyle" />
+                                        }else{
+                                          return (
+                                            <div key={i} className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+                                                <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Document" id={doc} onClick={this.deleteDoc.bind(this)}>x</label>
+                                                <div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1" id="LogoImageUpOne">
+                                                  <img src={doc} className="img-responsive logoStyle" />
+                                                </div>
                                               </div>
                                             </div>
-                                          </div>
-                                        );
-                                      }else{
-                                        return (
-                                          <div key={i} className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                              <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Document" id={doc} onClick={this.deleteDoc.bind(this)}>x</label>
-                                              <div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1" id="LogoImageUpOne">
-                                                <img src={doc} className="img-responsive logoStyle" />
-                                              </div>
-                                            </div>
-                                          </div>
-                                        );
-                                      }
-                                    })
-                                    :
-                                    null
-                                }
+                                          );
+                                        }
+                                      })
+                                      :
+                                      null
+                                  }
+                                </div>
+                            
                               </div>
-                          
+                            </div>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
+                                <button className="btn button3 pull-right" onClick={this.supplier.bind(this)} >Save & Next&nbsp;<i className="fa fa-angle-double-right" aria-hidden="true"></i></button>
+                              </div>
                             </div>
                           </div>
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                              <button className="btn button3 pull-right" onClick={this.supplier.bind(this)} >Save & Next&nbsp;<i className="fa fa-angle-double-right" aria-hidden="true"></i></button>
-                            </div>
-                          </div>
-                        </div>
 
-                      </form>
+                        </form>
+                      </div>
                     </div>
-                  </div>
-                </section>
-              </div>
-            </section>
+                  </section>
+                </div>
+              </section>
+            </div>
           </div>
         </div>
-      </div>
     );
   }
 }

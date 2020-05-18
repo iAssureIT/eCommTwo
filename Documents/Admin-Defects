@@ -1,0 +1,20 @@
+1. Dashboard - top-Left side logo must be dynamic. If image is not available, use Text. 
+2. Top-right side is misplaced. 
+3. Load UniMandai with all Master values
+
+
+
+
+
+Low Priority Tasks
+
+1. On Login, perform Mandetory checks. If all checks are passed, then go to dashboard. 
+		Mandaotry Checks
+		i)   Preferences
+		ii)  Check if Org Setting is added
+		iii) Global Masters 
+		iv)  Section Master -> Category Master -> Vendor Category
+		v)   Vendor Master
+		vi)  Always provide few mandatory values of master data
+
+2. Replace Vendor Management by Entity Master

@@ -72,15 +72,15 @@ class CoreLayout extends Component {
                 <Route path="/edituserprofile/:id" component={EditUserProfile} exact />
                 <Route path="/profile/:id" component={UserProfile} exact />
                 <Route path="/ViewTemplates" component={ViewTemplates} exact />
-                {/*<Route path="/companysetting" component={OrganizationSetting} exact />/}
+                {/*<Route path="/companysetting" component={OrganizationSetting} exact />/ */}
 
                 { /* Entity Management */}
-                <Route path="/:entity/basic-details" exact strict component={BasicInfo} />
+                {/*<Route path="/:entity/basic-details" exact strict component={BasicInfo} />
                 <Route path="/:entity/basic-details/:entityID" exact strict component={BasicInfo} />
                 <Route path="/:entity/location-details/:entityID" exact strict component={LocationDetails} />
                 <Route path="/:entity/location-details/:entityID/:locationID" exact strict component={LocationDetails} />
                 <Route path="/:entity/contact-details/:entityID" exact strict component={ContactDetails} />
-                <Route path="/:entity/contact-details/:entityID/:contactID" exact strict component={ContactDetails} />
+                <Route path="/:entity/contact-details/:entityID/:contactID" exact strict component={ContactDetails} />*/}
               
                 { /* Global master */}
                 <Route path="/location-type" exact strict component={LocationType} />
