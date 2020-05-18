@@ -80,13 +80,15 @@ class VendorsDetails extends Component {
 
   	getContacts(){
   		if(this.state.entityInfo ){
-
-  			var contacts = this.state.entityInfo.contactPersons.reverse();
-			this.setState({contacts : contacts },()=>{
+			if(this.state.entityInfo && Array.isArray(this.state.entityInfo.contactPersons)){
+				var contacts = this.state.entityInfo.contactPersons.reverse();
+				this.setState({contacts : contacts },()=>{
 				for (var i = 0; i < this.state.contacts.length; i++) {
 					
 				}	
 			});
+			}
+  			
 			
 		}
   	}

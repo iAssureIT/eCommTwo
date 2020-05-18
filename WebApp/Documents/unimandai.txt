@@ -1,0 +1,6 @@
+URL for Unimandai
+
+1) API - http://qaunimandaiapi.iassureit.com/
+2) Website - http://qaunimandai.iassureit.com/
+3) Admin - http://qaadmin-unimandai.iassureit.com/
+3) Franchise - http://qafranchise-unimandai.iassureit.com/

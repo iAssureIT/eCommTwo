@@ -10,7 +10,6 @@
 .paddingRightCss{
   padding-right: 0;
 }
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -650,4 +649,7 @@ th{
 }
 .main-footer{
   padding-top: 12px !important;
+}
+.pageHeader{
+  margin-top: -10px !important;
 }

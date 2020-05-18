@@ -69,14 +69,14 @@ class IAssureTable extends Component {
 	componentDidMount() {
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("token");
 		$("html,body").scrollTop(0);
-		
+		console.log("props",this.props);
 		const center_ID = localStorage.getItem("center_ID");
 		const centerName = localStorage.getItem("centerName");
 		this.setState({
 			center_ID: center_ID,
 			centerName: centerName,
 		}, () => {
-			this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+			// this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 		});
 
 		this.setState({
@@ -106,11 +106,14 @@ class IAssureTable extends Component {
 		$("html,body").scrollTop(0);
 		var tableObjects = this.props.tableObjects;
 		var id = event.target.id;
+		console.log("id:",id);
+		console.log("tableObjects.editUrl:",tableObjects.editUrl);		
 		this.props.history.push(tableObjects.editUrl + "/" + id);
 	}
 	delete(e) {
 		e.preventDefault();
 		var tableObjects = this.props.tableObjects;
+		console.log("this.props.tableObjects");
 		let id = (e.target.id).replace(".", "/");
 		axios({
 			method: tableObjects.deleteMethod,
@@ -119,7 +122,7 @@ class IAssureTable extends Component {
 			this.props.getData(this.state.startRange, this.state.limitRange);
 			this.props.history.push(tableObjects.editUrl);
 			swal({
-				text: "Record deleted successfully",
+				text: "Record deleted sucessfully",
 			});
 		}).catch((error) => {
 		});
@@ -667,11 +670,12 @@ class IAssureTable extends Component {
 															<span>
 																{this.props.tableObjects.editUrl ?
 																	<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i> : null}&nbsp; &nbsp;
-{this.props.editId && this.props.editId === value._id ? null : <i className={"fa fa-trash redFont " + value._id} id={value._id + '-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")}></i>}
+																	{this.props.editId && this.props.editId === value._id ? 
+																	null : <i className={"fa fa-trash redFont " + value._id} id={value._id + '-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")}></i>}
 															</span>
-															<div className="modal" id={"showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
-																<div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																	<div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
+															<div className="modal myModal" id={"showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
+																<div className=" adminModal adminModal-dialog col-lg-8 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
+																	<div className="modal-content adminModal-content col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 abc noPadding">
 																		<div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																			<div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
 																				<button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")}>&times;</button>

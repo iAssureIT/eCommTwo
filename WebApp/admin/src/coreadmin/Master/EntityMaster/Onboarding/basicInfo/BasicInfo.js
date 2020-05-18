@@ -675,7 +675,12 @@ class BasicInfo extends Component {
                 <div className="nav-center OnboardingTabs col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <ul className="nav nav-pills vendorpills col-lg-8 col-lg-offset-2 col-md-12  col-sm-12 col-xs-12">
                     <li className="active col-lg-4 col-md-3 col-sm-12 col-xs-12 pdcls pdclsOne btn1 NOpadding-left">
-                      <a href={this.props.match.params.entityID ? "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/basic-details/"+this.props.match.params.entityID : "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/basic-details"} className="basic-info-pillss pills">
+                      <a href={this.props.match.params.entityID  
+                              ? "/"+(this.props.entity === "appCompany" 
+                              ? "org-settings":this.props.entity)+"/basic-details/"+this.props.match.params.entityID 
+                              : "/"+(this.props.entity === "appCompany" 
+                              ? "org-settings"
+                              :this.props.entity)+"/basic-details"} className="basic-info-pillss pills">
                         <i className="fa fa-info-circle" aria-hidden="true"></i> &nbsp;
                         Basic Info
                       </a>
