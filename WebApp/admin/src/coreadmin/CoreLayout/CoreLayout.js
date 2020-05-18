@@ -23,8 +23,12 @@ import BasicInfo from '../Master/EntityMaster/Onboarding/basicInfo/BasicInfo.js'
 import LocationDetails from '../Master/EntityMaster/Onboarding/locationDetails/LocationDetails.jsx';
 import ContactDetails from '../Master/EntityMaster/Onboarding/contactDetails/ContactDetails.jsx';
 import ListOfEntities from '../Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
-import LocationType from '../Master/LocationType/LocationType.jsx';
 import SelectVendor from '../Master/EntityMaster/SelectVendor/SelectVendor.js';
+
+//Gobal master
+import LocationType from '../Master/LocationType/LocationType.jsx';
+import Designation from "../Master/Designation/Designation.js"
+import Department from "../Master/Department/Department.js"
 
 // //============= Franchise Master ====================
 // import FranchiseBasicInfo from '../../storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
@@ -77,6 +81,14 @@ class CoreLayout extends Component {
                 <Route path="/:entity/location-details/:entityID/:locationID" exact strict component={LocationDetails} />
                 <Route path="/:entity/contact-details/:entityID" exact strict component={ContactDetails} />
                 <Route path="/:entity/contact-details/:entityID/:contactID" exact strict component={ContactDetails} />
+              
+                { /* Global master */}
+                <Route path="/location-type" exact strict component={LocationType} />
+                <Route path="/location-type/:locationTypeID" exact strict component={LocationType} />
+                <Route path="/Department" exact strict component={Department} />
+                <Route path="/Department/:fieldID" exact strict component={Department} />
+                <Route path="/designation" exact strict component={Designation} />
+                <Route path="/designation/:fieldID" exact strict component={Designation} />
 
                  { /* Franchise Master */}
                {/* <Route path="/franchise/basic-details" exact strict component={FranchiseBasicInfo} />
