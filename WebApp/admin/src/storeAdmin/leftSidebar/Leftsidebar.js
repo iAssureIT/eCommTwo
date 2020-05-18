@@ -237,7 +237,7 @@ export default class Leftsidebar extends Component{
                     Franchise Management
                      <i className="fa fa-sort-down pull-right"></i>
                   </a>
-                  <ul className="collapse list-unstyled" id="vendors">
+                  <ul className="collapse list-unstyled" id="franchise">
                     <li>
                       <a href="/franchise/list">
                         <i className="fa fa-circle-o" /> 

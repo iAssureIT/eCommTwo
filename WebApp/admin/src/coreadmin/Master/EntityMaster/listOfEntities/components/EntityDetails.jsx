@@ -33,13 +33,10 @@ class VendorsDetails extends Component {
 
   			axios.get("/api/entitymaster/get/one/"+this.state.id)
             .then((response)=>{
-
-          	
               this.setState({
                   entityInfo : response.data,
                   entityType : response.data.entityType
-              },()=>{
-              	
+              },()=>{              	
               	this.getLocations();
               	this.getContacts();
               });
@@ -72,16 +69,13 @@ class VendorsDetails extends Component {
   	}
   	
   	getLocations(){
-  		if(this.state.entityInfo ){
-  			
-  			var location = this.state.entityInfo.locations.reverse();
-			
-			this.setState({locations : location },()=>{
-				for (var i = 0; i < this.state.locations.length; i++) {
-				}		
-			});
-			
-		}
+  		if(this.state.entityInfo && Array.isArray(this.state.entityInfo.locations)){  			
+  			var location = this.state.entityInfo.locations.reverse();			
+				this.setState({locations : location },()=>{
+					for (var i = 0; i < this.state.locations.length; i++) {
+					}		
+				});		
+			}
   	}
 
   	getContacts(){
@@ -180,7 +174,7 @@ class VendorsDetails extends Component {
 									</div>
 									</div>
 									<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 supplierLogoDiv">
-										<img src={this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className="supplierLogoImage"></img>
+										<img src={Array.isArray(this.state.entityInfo.companyLogo) && this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className="supplierLogoImage"></img>
 									</div>
 									<div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 listprofile">
 										<h5 className="titleprofileList">{this.state.entityInfo.companyName}</h5>
@@ -205,34 +199,41 @@ class VendorsDetails extends Component {
 										</ul>
 
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 docsAlign">
-										{
-					        				this.state.entityInfo.COI.length>0 ? 
+											{
+				        				Array.isArray(this.state.entityInfo.COI) && this.state.entityInfo.COI.length>0 
+				        				? 
 					        				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-												<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"> COI Document</label>
-											</div>
-					        				: null
-					        			}
-					        			{
+														<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"> COI Document</label>
+													</div>
+				        				: 
+				        					null
+						        	}
+				        			{
+				        				Array.isArray(this.state.entityInfo.COI) && this.state.entityInfo.COI.length>0
+				        				?
 					        				this.state.entityInfo.COI.map((doc,ind)=>{
 					        					return (
 					        						<div key={ind} className=" col-lg-4 col-md-4 col-sm-6 col-xs-12">
-														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-															  {
-															  (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
-	                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="LogoImageUpOne">
-	                                                              <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
-	                                                          </div>
-	                                                          :
-	                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-																<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
-															 </div>
-	                                                         }
-														</div>
-													</div>
+																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+																	{
+																	  (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" 
+																	  ?
+			                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="LogoImageUpOne">
+			                                    <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
+			                                </div>
+			                              :
+			                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																				<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+																			</div>
+				                          }
+																</div>
+															</div>
 					        					);
 					        				})
-					        			}
-					        			</div>
+					        			:
+					        				null
+				        			}
+					        	</div>
 
 									</div>
 								</div>

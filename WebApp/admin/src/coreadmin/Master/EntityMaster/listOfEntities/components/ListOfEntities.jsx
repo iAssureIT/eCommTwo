@@ -108,17 +108,20 @@ class ListOfEntities extends Component {
 
 			.then((response) => {
 				this.setState({
-					entityList   : response.data,
+					entityList  : response.data,
 					showDetails : true,
-					 id: response.data[0]._id
+					id 					: response.data[0]._id
 				},()=>{
-					document.getElementById(response.data[0]._id).classList.add("selectedSupplier")
+					if(document.getElementById(response.data[0]._id)){
+						document.getElementById(response.data[0]._id).classList.add("selectedSupplier");
+					}
+
 					for (var key in document.querySelectorAll('.alphab')) {
-					$($('.alphab')[key]).css('background', '#ddd');
-					$($('.alphab')[key]).css('color', '#000');
-					document.getElementById("filterallalphab").style.background = '#367ea8';
-					document.getElementById("filterallalphab").style.color = '#fff';
-		}
+						$($('.alphab')[key]).css('background', '#ddd');
+						$($('.alphab')[key]).css('color', '#000');
+						document.getElementById("filterallalphab").style.background = '#367ea8';
+						document.getElementById("filterallalphab").style.color = '#fff';
+					}
 				})
 
 				// $('.selected').removeClass('selectedSupplier');
@@ -366,7 +369,7 @@ class ListOfEntities extends Component {
 											<button type="button" className="btn alphab" value="Z" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Z</button>
 									</div>
 								</div>
-								{this.state.entityList && this.state.entityList.length > 0 ?
+								{Array.isArray(this.state.entityList) && this.state.entityList.length > 0 ?
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrollbar" id="style-2">
 										<div className="borderlist12">
 											{
