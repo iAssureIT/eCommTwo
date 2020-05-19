@@ -71,13 +71,13 @@ class ResetPassword extends Component {
                 },
             },
             messages:{
-                confirmPassword:"Passwords do not match"
+                confirmPassword:"Password do not match"
             },
             errorPlacement: function (error, element) {
-                if (element.attr("name") === "newPassword") {
+                if (element.attr("name") == "newPassword") {
                     error.insertAfter("#newPasswordmsg");
                 }
-                if (element.attr("name") === "confirmPassword") {
+                if (element.attr("name") == "confirmPassword") {
                     error.insertAfter("#confirmPass");
                 }
             }
@@ -111,7 +111,7 @@ class ResetPassword extends Component {
                         <h3>Reset Password</h3>
                     </div>
                     {
-                        this.state.showMessage === false ? 
+                        this.state.showMessage == false ? 
                         <div>
                             <form id="resetPassword">
                             <div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -135,7 +135,7 @@ class ResetPassword extends Component {
                                 <div id="confirmPass"></div>
                             </div>
                             <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 mt25 mb25">
-                                <button className="btn resetBtn" onClick={this.resetPassword.bind(this)}>Reset Password</button>
+                                <button className="btn loginBtn" onClick={this.resetPassword.bind(this)}>Reset Password</button>
                             </div>
                         </form>
                         </div>
@@ -144,7 +144,7 @@ class ResetPassword extends Component {
                             <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25 textAlignCenter">Your password has been reset successfully!</p>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                                 <div className="row loginforgotpass textAlignCenter"> Please &nbsp;
-                                    <a href='/login' className=""><b>Click here</b></a> to Sign In.
+                                    <a href='/login' className=""><b>Click here</b></a> to sign in.
                                 </div>
                             </div>
                         </div>

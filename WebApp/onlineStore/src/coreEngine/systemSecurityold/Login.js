@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect }        from 'react-redux';
-import { BrowserRouter, Route, Switch,Link,location } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
@@ -9,12 +8,14 @@ import axios from 'axios';
 import jQuery from 'jquery';
 import 'jquery-validation';
 import swal from 'sweetalert';
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 class Login extends Component {
 
   constructor() {
     super();
     this.state = {
+      
       loggedIn: false,
       auth: {
         email: '',
@@ -26,7 +27,6 @@ class Login extends Component {
     }
   }
   componentDidMount() {
-
     $.validator.addMethod("regxemail", function (value, element, regexpr) {
       return regexpr.test(value);
     }, "Please enter a valid email address.");
@@ -46,12 +46,13 @@ class Login extends Component {
         }
       },
       errorPlacement: function (error, element) {
-        if (element.attr("name") === "loginusername") {
+        if (element.attr("name") == "loginusername") {
           error.insertAfter("#loginusername");
         }
-        if (element.attr("name") === "loginpassword") {
+        if (element.attr("name") == "loginpassword") {
           error.insertAfter("#loginpassword");
         }
+        
       }
     });
   }
@@ -62,53 +63,61 @@ class Login extends Component {
       password: this.refs.loginpassword.value,
       role: "user"
     }
+    console.log("auth:==>",auth);  
     if ($("#login").valid()) {
       document.getElementById("logInBtn").value = 'Please Wait...';
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
-        console.log("response",response)
-          // this.props.setGlobalUser(response.data.userDetails);
+        console.log("response.data userDetails:==>",response.data.userDetails);  
+        var userDetails = response.data.userDetails
+          this.setState({ userDetails: userDetails}=()=>{
+            console.log("userDetails:==>",this.state.userDetails);  
+          });
+        this.props.setGlobalUser(response.data.userDetails)  
+        var  userDetails = {
+          firstName : response.data.userDetails.firstName, 
+          lastName  : response.data.userDetails.lastName, 
+          email 		: response.data.userDetails.email, 
+          phone 		: response.data.userDetails.phone, 
+          city 			: response.data.userDetails.city,
+          companyID : response.data.userDetails.companyID,
+          locationID: response.data.userDetails.locationID,
+          user_id   : response.data.userDetails.user_id,
+          roles 		: response.data.userDetails.roles,
+          token 		: response.data.userDetails.token, 
+        }
+        console.log("post Login userDetails===> ", userDetails)  
+        document.getElementById("logInBtn").value = 'Sign In';
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user_ID", response.data.ID);
+        localStorage.setItem("roles", response.data.roles);
+        localStorage.setItem('userDetails', JSON.stringify(userDetails));
+          
           if (response.data.ID) {
-            var  userDetails = {
-              firstName : response.data.userDetails.firstName, 
-              lastName  : response.data.userDetails.lastName, 
-              email     : response.data.userDetails.email, 
-              phone     : response.data.userDetails.phone, 
-              city      : response.data.userDetails.city,
-              companyID : parseInt(response.data.userDetails.companyID),
-              locationID: response.data.userDetails.locationID,
-              user_id   : response.data.userDetails.user_id,
-              roles     : response.data.userDetails.roles,
-              token     : response.data.userDetails.token, 
-            }
-            document.getElementById("logInBtn").value = 'Sign In';
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("user_ID", response.data.ID);
-            localStorage.setItem("roles", response.data.roles);
-            localStorage.setItem('userDetails', JSON.stringify(userDetails));
-            
             this.setState({
               loggedIn: true
-            },()=>{
-              this.props.history.push('/')
-              window.location.reload();
             })
-          }else if(response.data.message === "USER_BLOCK"){
+            // swal({
+            //   text: "Logged in successfully. Please click OK to move ahead."
+            // })
+            // .then((value)=>{
+              this.props.history.push('/');
+              // BrowserRouter.push('/dashboard');
+              window.location.reload();
+            // });
+          }else if(response.data.message == "USER_BLOCK"){
             swal({
               text : "You are blocked by admin. Please contact Admin."
             });
-            document.getElementById("logInBtn").value = 'Sign In';
-          }else if(response.data.message === "NOT_REGISTER"){
+          }else if(response.data.message == "NOT_REGISTER"){
             swal({
-              text : "This Email ID is not registered. Please try again."
+              text : "This email is not registered. Please do signup."
             });
-            document.getElementById("logInBtn").value = 'Sign In';
-          }else if(response.data.message === "INVALID_PASSWORD"){
+          }else if(response.data.message == "INVALID_PASSWORD"){
             swal({
               text : "You have entered wrong password. Please try again."
             });
-            document.getElementById("logInBtn").value = 'Sign In';
-          }else if(response.data.message === "USER_UNVERIFIED"){
+          }else if(response.data.message == "USER_UNVERIFIED"){
             swal({
               text : "You have not verified your account. Please verify your account."
             })
@@ -126,15 +135,10 @@ class Login extends Component {
                 swal(" Failed to sent OTP");
               })    
             });
-            document.getElementById("logInBtn").value = 'Sign In';
-
           }
       })
       .catch((error) => {
         console.log("error",error);
-         swal({
-              text : "Please enter valid Email ID and Password"
-            })
         document.getElementById("logInBtn").value = 'Sign In';
         if (localStorage !== null) {
         }
@@ -163,6 +167,7 @@ class Login extends Component {
     $(".toast-warning").removeClass('toast');
   }
   render() {
+    console.log("userDetails in sidebar prps",this.state.userDetails)
     return (
       <div style={{'height': window.innerHeight+'px', 'width': window.innerWidth+'px'}} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
@@ -178,7 +183,7 @@ class Login extends Component {
                   <label>Email ID</label><label className="astricsign">*</label>
                   <input type="email" className="form-control" onChange={this.handleChange} ref="loginusername" id="loginusername" name="loginusername" placeholder="Email ID" required />
                 </div>
-                <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb25">
+                <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 
                   <label>Password</label><label className="astricsign">*</label>
                   <input type="password" className="form-control" ref="loginpassword" name="loginpassword" id="loginpassword" placeholder="Password" required />
@@ -188,21 +193,22 @@ class Login extends Component {
                   </div>
 
                 </div>
+                
                 <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
                   <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
-                    <div className="textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                    <div className="textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10">
                       <div className="row loginforgotpass">
                         <a href='/forgotpassword' className="">Forgot Password?</a>
                       </div>
                     </div>
 
-                    <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt10 textAlignRight">
-                      {/* <div className="row loginforgotpass">
+                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignRight">
+                      <div className="row loginforgotpass">
                         <a href='/signup' className="">Sign Up</a>
-                      </div> */}
+                      </div>
                     </div>
 
                   </div>
@@ -217,24 +223,20 @@ class Login extends Component {
   }
 }
 
-// const mapStateToProps = (state)=>{
-//   console.log("state = ",state)
-//   return {
-//     userDetails   : state.userDetails,
-//   }
-// };
+const mapStateToProps = (state) => {
+  return {
+      selectedVehicle: state.selectedVehicle ,
+  }
+};
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setGlobalUser: (userDetails) => dispatch({
+        type : "SET_GLOBALUSER",
+        userDetails : userDetails,
+        
+      }),
+  }
+};
 
-// const mapDispatchToProps = (dispatch)=>{
-//   return {
-//       setGlobalUser  : (userDetails)=> dispatch({
-//                           type      : "SET_GLOBAL_USER",
-//                           userDetails : userDetails,
-//                         }),
-//   }
-// };
-
-
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
-export default Login;
+export default connect (mapStateToProps, mapDispatchToProps)(Login);

@@ -17,6 +17,7 @@ class SignUp extends Component {
 		super();
 		this.state = {
 			checkUserExists: 0,
+			companyID :"",
 			loggedIn: false,
 			auth: {
 				firstname: '',
@@ -50,6 +51,10 @@ class SignUp extends Component {
         $.validator.addMethod("regxEmail", function (value, element, regexpr) {
             return regexpr.test(value);
 		}, "Please enter a valid email address.");
+
+		$.validator.addMethod("regxcompanyID", function (value, element, regexpr) {
+			return regexpr.test(value);
+		  }, "Please enter valid company ID");
 		
         jQuery.validator.setDefaults({
             debug: true,
@@ -69,7 +74,11 @@ class SignUp extends Component {
                 signupEmail: {
 					required: true,
 					regxEmail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
-                },
+				},
+				companyID: {
+					required: true,
+					regxcompanyID: /[a-zA-Z0-9]/,
+				  },
                 signupPassword: {
                     required: true,
 				},
@@ -85,22 +94,25 @@ class SignUp extends Component {
 				signupConfirmPassword:"Password do not match"
 			},
             errorPlacement: function (error, element) {
-                if (element.attr("name") === "firstname") {
+                if (element.attr("name") == "firstname") {
                     error.insertAfter("#firstname");
 				}
-				if (element.attr("name") === "lastname") {
+				if (element.attr("name") == "lastname") {
                     error.insertAfter("#lastname");
                 }
-                if (element.attr("name") === "signupEmail") {
+                if (element.attr("name") == "signupEmail") {
                     error.insertAfter("#signupEmail");
                 }
-                if (element.attr("name") === "signupPassword") {
+                if (element.attr("name") == "companyID") {
+                    error.insertAfter("#companyID");
+                }
+                if (element.attr("name") == "signupPassword") {
                     error.insertAfter("#signupPassword");
 				}
-				if (element.attr("name") === "signupConfirmPassword") {
+				if (element.attr("name") == "signupConfirmPassword") {
                     error.insertAfter("#signupConfirmPassword");
                 }
-                if (element.attr("name") === "idacceptcondition") {
+                if (element.attr("name") == "idacceptcondition") {
                     error.insertAfter("#idacceptcondition");
                 }
             }
@@ -114,6 +126,7 @@ class SignUp extends Component {
 				lastname		: this.state.lastname,
 				mobNumber		: (this.state.mobNumber).replace("-", ""),
 				email			: this.state.signupEmail,
+				companyID		: this.state.companyID,
 				pwd				: this.state.signupPassword,
 				role			: 'user',
 				status			: 'unverified',
@@ -124,25 +137,29 @@ class SignUp extends Component {
 
 			var passwordVar = this.refs.signupPassword.value;
 			var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
-				console.log("passwordVar:",passwordVar);
+
 				if (passwordVar === signupConfirmPasswordVar) {
+					console.log("before signup:");
 					return (passwordVar.length >= 6) ?
 						(true,
-							document.getElementById("signUpBtn").innerHTML = 'Sign Up',
-							axios.post('/api/auth/post/signup/user/otp', auth)
+							document.getElementById("signUpBtn").innerHTML = 'Sign Up',							
+							axios.post('/api/auth/post/signup/user/emailotp', auth)
 							.then((response) => {
-								if(response.data.message === 'USER_CREATED'){									
+								var user_ID = response.data.ID;
+								console.log("response after signup:" ,response.data.ID);
+								if(response.data.message == 'USER_CREATED'){
 									// swal('Great, Information submitted successfully and OTP is sent to your registered Email.');
-									swal('Congratulations! Your account has been created successfully, Please Login to place order.');
+									swal('Congratulations! Your account hase been created successfully, Please Login to place order.');
 									localStorage.setItem('previousUrl' ,'signup');
 									// this.props.history.push("/confirm-otp/" + user_ID);
 									this.props.history.push("/login");
+							
 								}else{
 									swal(response.data.message);
 								}	
 							})
 							.catch((error) => {
-								
+								console.log("Error:",error);
 							})
 						)
 						:
@@ -175,7 +192,7 @@ class SignUp extends Component {
 	}
 
 	checkUserExists(event) {
-		if (event.target.value !== '') {
+		if (event.target.value != '') {
 			axios.get('/get/checkUserExists/' + event.target.value)
 				.then((response) => {
 
@@ -204,7 +221,7 @@ class SignUp extends Component {
 	}
 	acceptcondition(event) {
 		var conditionaccept = event.target.value;
-		if (conditionaccept === "acceptedconditions") {
+		if (conditionaccept == "acceptedconditions") {
 			$(".acceptinput").removeAttr('disabled');
 		} else {
 			$(".acceptinput").addAttr('disabled');
@@ -232,6 +249,18 @@ class SignUp extends Component {
 		$('.hidePwd').toggleClass('hidePwd1');
 		return $('.inputTextPass').attr('type', 'password');
 	}
+	//working
+	showSignUpPass() {
+	    $('.showPwd').toggleClass('showPwd1');
+	    $('.hidePwd').toggleClass('hidePwd1');
+	    return $('#signupPassword').attr('type', 'text');
+	}
+
+	hideSignUpPass() {
+	    $('.showPwd').toggleClass('showPwd1');
+	    $('.hidePwd').toggleClass('hidePwd1');
+	    return $('#signupPassword').attr('type', 'password');
+	}
 	proceed() {
 
 	}
@@ -239,7 +268,7 @@ class SignUp extends Component {
 		return (
 			<div style={{'height': window.innerHeight+'px', 'width': window.innerWidth+'px'}} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
 				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7  col-sm-12 col-xs-12 formShadow">
+					<div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 col-xs-12 formShadow">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
 							<h3>Sign Up</h3>
 						</div>
@@ -272,11 +301,21 @@ class SignUp extends Component {
 									onChange={mobNumber=>{this.setState({mobNumber})}}
 								/>
 							</div>
-							
+							{/*<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+								<label>Company ID</label><label className="astricsign">*</label>
+								<input type="Number" className="form-control" id="companyID" ref="companyID" name="companyID" placeholder="" onChange={this.handleChange} />
+							</div>*/}
 							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Password</label><label className="astricsign">*</label>
 								<input minLength="6" type="password" className="form-control" id="signupPassword" ref="signupPassword" placeholder="" name="signupPassword" onChange={this.handleChange} />
+								<div className="showHideSignDiv">
+				                    <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignUpPass.bind(this)}></i>
+				                    <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignUpPass.bind(this)}></i>
+				                </div>
 							</div>
+
+
+
 							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Confirm Password</label><label className="astricsign">*</label>
 								<input minLength="6" type="password" className="form-control" id="signupConfirmPassword" ref="signupConfirmPassword" placeholder="" name="signupConfirmPassword" />

@@ -2,6 +2,11 @@
     margin-bottom: 10px;
     font-weight: 600;
 }
-.webSitemodelBtn{
-    height: 18px !important;
+.webmodelInputWrapper{
+    margin-bottom: 5px;
 }
+.webModelInput{
+    height: 18px !important;
+    margin: 0px !important;
+}
+

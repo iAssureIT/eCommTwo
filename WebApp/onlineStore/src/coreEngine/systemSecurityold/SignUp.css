@@ -30,11 +30,11 @@
   left: 3px;
 }
 .LoginWrapper{
-  background-image: url("/images/login.jpg");
+  /* background-image: url("/images/login.jpg"); */
   border-radius: 5px;
   background-size: 100% 100%;
   display: table-cell;
-  background-image: url("/images/background.png");
+  background-image: url(/images/background.png);
   border-radius: 5px;
   background-size: 100% 100%;
   text-align: center;
@@ -182,4 +182,12 @@
   }
   #logInBtn:focus{
     outline: none;
+  }
+  .marginAlign{
+    margin-top: 65px;
+    margin-left: 22px;
+  }
+  .swal-button{
+    background-color: #A2632C !important;
+    border: none !important;
   }

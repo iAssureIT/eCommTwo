@@ -213,6 +213,7 @@ exports.user_signup_user = (req, res, next) => {
 	}	
 };
 exports.user_signup_user_otp = (req, res, next) => {
+	console.log("inside user signup");
 	var username = "EMAIL";
 	if(req.body.username){
 		if(req.body.username === "EMAIL"){
@@ -268,7 +269,8 @@ exports.user_signup_user_otp = (req, res, next) => {
 															mobile: mobNumber,
 															createdAt: new Date(),
 															otpEmail: emailOTP,
-															status: req.body.status ? req.body.status : "Inactive",
+															status  : "active",
+															// status: req.body.status ? req.body.status : "Inactive",
 															createdBy: req.body.createdBy,
 														},
 														roles: [userRole]
@@ -278,30 +280,33 @@ exports.user_signup_user_otp = (req, res, next) => {
 													}
 													user.save()
 														.then(result => {
+
 															if (result) {
-																request({
-																	"method": "POST",
-																	"url": "http://localhost:" + globalVariable.port + "/send-email",
-																	"body": {
-																		email: req.body.email,
-																		subject: req.body.emailSubject,
-																		text: req.body.emailContent + " Your OTP is " + emailOTP,
-																	},
-																	"json": true,
-																	"headers": {
-																		"User-Agent": "Test Agent"
-																	}
-																})
-																.then(source => {
-																	res.status(200).json({ message: "USER_CREATED", ID: result._id })
-																})
-																.catch(err => {
-																	console.log(err);
-																	res.status(500).json({
-																		message: "Failed to Send Email",
-																		error: err
-																	});
-																});
+																res.status(200).json({ message: "USER_CREATED", ID: result._id })
+
+																// request({
+																// 	"method": "POST",
+																// 	"url": "http://localhost:" + globalVariable.port + "/send-email",
+																// 	"body": {
+																// 		email: req.body.email,
+																// 		subject: req.body.emailSubject,
+																// 		text: req.body.emailContent + " Your OTP is " + emailOTP,
+																// 	},
+																// 	"json": true,
+																// 	"headers": {
+																// 		"User-Agent": "Test Agent"
+																// 	}
+																// })
+																// .then(source => {
+																// 	res.status(200).json({ message: "USER_CREATED", ID: result._id })
+																// })
+																// .catch(err => {
+																// 	console.log(err);
+																// 	res.status(500).json({
+																// 		message: "Failed to Send Email",
+																// 		error: err
+																// 	});
+																// });
 															}else {
 																res.status(200).json({ message: "USER_NOT_CREATED" })
 															}
@@ -576,23 +581,26 @@ exports.user_login_using_email = (req, res, next) => {
 		"roles": role,
 	};
 
-	console.log("selector = ",selector);
+	console.log("login selector = ",selector);
 
-	User.findOne(selector)
+	User.findOne(selector)	
 		.exec()
 		.then(user => {
 			if (user) {
-				if ((user.profile.status).toLowerCase() === "active") {
+				console.log("status:",user.profile.status);
+				if ((user.profile.status).toLowerCase() == "active") {
 					var pwd = user.services.password.bcrypt;
 					console.log('pwd', pwd);
 					if (pwd) {
 						bcrypt.compare(req.body.password, pwd, (err, result) => {
+							console.log("Passord correct");
 							if (err) {
 								return res.status(200).json({
 									message: 'Auth failed'
 								});
 							}
 							if (result) {
+								console.log("pass comapared");
 								const token = jwt.sign({
 									email: req.body.email,
 									userId: user._id,
@@ -617,20 +625,21 @@ exports.user_login_using_email = (req, res, next) => {
 									.then(updateUser => {
 
 										if (updateUser.nModified == 1) {
+											console.log("modified");
 											res.status(200).json({
 												message: 'Login Auth Successful',
 												token: token,
 												roles: user.roles,
 												ID: user._id,
-												companyID: user.profile.companyID,
+												// companyID: user.profile.companyID,
 												userDetails: {
 													firstName: user.profile.firstname,
 													lastName: user.profile.lastname,
 													email: user.profile.email,
-													phone: user.profile.phone,
-													city: user.profile.city,
-													companyID: user.profile.companyID,
-													locationID: user.profile.locationID,
+													// phone: user.profile.phone,
+													// city: user.profile.city,
+													// companyID: user.profile.companyID,
+													// locationID: user.profile.locationID,
 													user_id: user._id,
 													roles: user.roles,
 													token: token,

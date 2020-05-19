@@ -15,7 +15,7 @@ class ConfirmOtp extends Component {
   componentDidMount() {
     $.validator.addMethod("regxemailotp", function (value, element, regexpr) {
       return regexpr.test(value);
-    }, "Please enter a valid OTP.");
+    }, "Please enter valid OTP.");
 
     jQuery.validator.setDefaults({
       debug: true,
@@ -30,7 +30,7 @@ class ConfirmOtp extends Component {
         },
       },
       errorPlacement: function (error, element) {
-        if (element.attr("name") === "emailotp") {
+        if (element.attr("name") == "emailotp") {
           error.insertAfter("#emailotp");
         }
       }
@@ -39,19 +39,24 @@ class ConfirmOtp extends Component {
   confirmOTP(event) {
     event.preventDefault();
     var url = this.props.match.params;
+    console.log("url:" ,this.props.params.user_ID);
     var formValues = {
-      "user_ID": this.props.match.params.userID,
+      "user_ID": this.props.match.params,
       "emailOTP": parseInt(this.refs.emailotp.value),
       "status": "Active"
     }
     if ($("#OTPMobMail").valid()) {
-      axios.get('/api/auth/get/checkemailotp/usingID/' + this.props.match.params.userID + '/' + this.refs.emailotp.value)
+      // var user_Id = this.props.match.params.url.user_ID;
+      // console.log("UserId:",user_Id);
+      var user_Id = url.user_ID.user_ID;
+      console.log("url UserId:",url.user_ID.user_ID);
+      axios.get('/api/auth/get/checkemailotp/usingID/' +user_Id + '/' + this.refs.emailotp.value)
         .then((response) => {
 
-          if (response.data.message === 'SUCCESS') {
+          if (response.data.message == 'SUCCESS') {
             swal('OTP Verified Successfully.');
             var url = localStorage.getItem('previousUrl');
-            if (url === 'forgotpassword') {
+            if (url == 'forgotpassword') {
               localStorage.removeItem("previousUrl");
               this.props.history.push('/reset-pwd/' + this.props.match.params.userID);
             } else {
@@ -70,30 +75,32 @@ class ConfirmOtp extends Component {
   }
   inputEffect(event) {
     event.preventDefault();
-    if ($(event.target).val() !== "") {
+    if ($(event.target).val() != "") {
       $(event.target).addClass("has-content");
     } else {
       $(event.target).removeClass("has-content");
     }
   }
   resendOtp(event) {
-    const userid = this.props.match.params.userID;
-    if ($("#OTPMobMail").valid()) {
     document.getElementById("resendOtpBtn").innerHTML = 'Please wait...';
-      var formValues = {
-        "emailSubject": "Email Verification",
-        "emailContent": "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
-      }
-      axios.patch('/api/auth/patch/setsendemailotpusingID/' + userid, formValues)
-        .then((response) => {
-          document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
-          swal("OTP re-sent to your registered Email ID.");
-        })
-      .catch((error) => {
-          swal(" Failed to resent OTP");
-          document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
-     })
+    const userid = this.props.match.params.userID;
+    var formValues = {
+      "emailSubject": "Email Verification",
+      "emailContent": "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
     }
+    axios.patch('/api/auth/patch/setsendemailotpusingID/' + userid, formValues)
+      .then((response) => {
+        document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
+        swal("OTP send to your registered email ID.");
+      })
+      .catch((error) => {
+        swal(" Failed to resent OTP");
+        document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
+      })
+
+
+
+
   }
   Closepagealert(event) {
     event.preventDefault();
@@ -126,11 +133,11 @@ class ConfirmOtp extends Component {
                 <h3>Confirm OTP</h3>
               </div>
               {
-                this.state.showMessage === false ?
+                this.state.showMessage == false ?
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <p>We've sent you an OTP to your registered Email ID.</p>
+                    <p>We send you a Verification Code to your registered email </p>
                     <div className="">
-                      <span> Please enter your OTP below.<br /></span>
+                      <span>Enter verification code received on email.<br /></span>
                     </div>
                     <form id="OTPMobMail" className="textAlignLeft">
                       <div className="">
@@ -142,11 +149,11 @@ class ConfirmOtp extends Component {
                         </div>
                       </div>
                       <div className="loginforgotpass mt25">
-                        <lable>Found your Password?</lable>&nbsp;<a href='/login' className="">Sign In <b>&#8702;</b></a>
+                        <lable>Already have an account?</lable>&nbsp;<a href='/login' className="">Sign In <b>&#8702;</b></a>
                       </div>
                       <div className="mt30 col-lg-12 mb25">
                         <div className="col-lg-6">
-                          <div id="resendOtpBtn" onClick={this.resendOtp.bind(this)} className="col-lg-12 btn  systemsecBtn">
+                          <div id="resendOtpBtn" onClick={this.resendOtp.bind(this)} className="col-lg-12 btn loginBtn systemsecBtn">
                             Resend OTP
                           </div>
                         </div>

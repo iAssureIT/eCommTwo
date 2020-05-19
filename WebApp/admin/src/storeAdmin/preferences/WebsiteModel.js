@@ -73,34 +73,33 @@ class WebsiteModel extends Component {
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteModel NOpadding">
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Select Website Model <span><i className="astrick">*</i></span></div>
 
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 wedModelInput">
-                                                        <input name="websiteModel" type="radio" value="SingleOwner" className="webSitemodelBtn col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
+                                                        <input name="websiteModel" type="radio" value="SingleOwner" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                         onClick={this.handleChange.bind(this)} />
-                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Single Owner website</span>
+                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Single Owner website</span>
                                                     </div>
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 wedModelInput">
-                                                        <input name="websiteModel" type="radio" value="MarketPlace" className=" webSitemodelBtn col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
+                                                        <input name="websiteModel" type="radio" value="MarketPlace" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                         onClick={this.handleChange.bind(this)} />
-                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Multi vendor Marketplace</span>
+                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Multi vendor Marketplace</span>
                                                     </div>
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 wedModelInput">
-                                                        <input name="websiteModel" type="radio" value="FranchiseModel" className="webSitemodelBtn col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
+                                                        <input name="websiteModel" type="radio" value="FranchiseModel" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                         onClick={this.handleChange.bind(this)} />
-                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Franchise Model</span>
+                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Franchise Model</span>
                                                     </div>                                                                                                   
                                                 </div>
                                                 <br/> 
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    {this.state.editId ?
+                                                    {this.state.editId
+                                                        ?
                                                         <button onClick={this.update.bind(this)} className="btn button3 btn-primary pull-right">Update</button>
                                                         :
                                                         <button onClick={this.submit.bind(this)} className="btn button3 btn-primary pull-right">Submit</button>
                                                     }
                                                 </div> 
                                             </form>                                            
-                                        </div>
-                                        <div>                                         
-                                        </div>
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>

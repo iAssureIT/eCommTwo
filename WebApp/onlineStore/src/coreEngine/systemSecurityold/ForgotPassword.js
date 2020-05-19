@@ -36,7 +36,7 @@ class ForgotPassword extends Component {
                 document.getElementById("sendlink").innerHTML = 'Reset Password';
                 localStorage.setItem('previousUrl' ,'forgotpassword');
                 $('.fullpageloader').hide();
-                swal("OTP sent to your registered Email ID.");
+                swal("OTP send to your registered email ID.");
                 this.props.history.push('/confirm-otp/'+response.data.userID);
             })
             .catch((error)=>{
@@ -79,7 +79,7 @@ class ForgotPassword extends Component {
             },
             errorPlacement: function (error, element) {
 
-                if (element.attr("name") === "emailLink") {
+                if (element.attr("name") == "emailLink") {
                     error.insertAfter("#emailLink");
                 }
             }
@@ -95,9 +95,9 @@ class ForgotPassword extends Component {
                         <h3>Forgot Password</h3>
                     </div>
                     {
-                        this.state.showMessage === false ? 
+                        this.state.showMessage == false ? 
                         <div>
-                            <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">Please enter your registered email address below to receive an OTP.</p>
+                            <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">Please enter your registered email address below to receive a OTP.</p>
                             <form id="resetPass">
                                 <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25" >
                                     <label className="">Email ID</label><label className="astricsign">*</label>
@@ -105,7 +105,7 @@ class ForgotPassword extends Component {
                                     <div id="emailLink"></div>
                                 </div>
                                 <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 mt25 mb25">
-                                    <button id="sendlink" className="btn resetBtn" onClick={this.sendLink.bind(this)}>Send OTP</button>
+                                    <button id="sendlink" className="btn loginBtn" onClick={this.sendLink.bind(this)}>Send OTP</button>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                                     <div className="row loginforgotpass textAlignCenter">
