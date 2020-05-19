@@ -64,7 +64,7 @@ class BulkProductImageUpload extends Component{
                 // }
                 const main = async ()=>{
                     var config = await getConfig();
-                    
+                    console.log("config",config);
                     var s3urlArray = [];
                     var imageLength = 100;
                     console.log('imageLength',imageLength);
@@ -122,7 +122,7 @@ class BulkProductImageUpload extends Component{
                         axios
                            .get('/api/projectSettings/get/one/s3')
                            .then((response)=>{
-                                // console.log("proj set res = ",response.data);
+                                console.log("proj set res = ",response.data);
                                 const config = {
                                     bucketName      : response.data.bucket,
                                     dirName         : 'propertiesImages',

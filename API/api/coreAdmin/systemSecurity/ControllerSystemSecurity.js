@@ -592,15 +592,13 @@ exports.user_login_using_email = (req, res, next) => {
 					var pwd = user.services.password.bcrypt;
 					console.log('pwd', pwd);
 					if (pwd) {
-						bcrypt.compare(req.body.password, pwd, (err, result) => {
-							console.log("Passord correct");
+						bcrypt.compare(req.body.password, pwd, (err, result) => {							
 							if (err) {
 								return res.status(200).json({
 									message: 'Auth failed'
 								});
 							}
-							if (result) {
-								console.log("pass comapared");
+							if (result) {								
 								const token = jwt.sign({
 									email: req.body.email,
 									userId: user._id,
@@ -625,7 +623,7 @@ exports.user_login_using_email = (req, res, next) => {
 									.then(updateUser => {
 
 										if (updateUser.nModified == 1) {
-											console.log("modified");
+											
 											res.status(200).json({
 												message: 'Login Auth Successful',
 												token: token,
