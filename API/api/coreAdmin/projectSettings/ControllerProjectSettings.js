@@ -67,10 +67,13 @@ exports.create_projectSettings = (req, res, next) => {
     }
 };
 exports.fetch_projectsettings = (req, res, next)=>{
-    ProjectSettings.findOne({"type": req.params.type})
+    console.log("inside projectsettings");
+    // ProjectSettings.findOne({"type": req.params.type})
+    ProjectSettings.find({"type": req.params.type})
         .exec()
         .then(data=>{
             if(data){
+                console.log("Data:",data);
                 res.status(200).json(data);
             }else{
                 res.status(200).json({

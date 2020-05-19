@@ -59,17 +59,16 @@ class BulkProductImageUpload extends Component{
                   console.log('productImage', this.state.productImage)
                 });  
                 
-                // const foo = async () => {
-                //   // do something
-                // }
                 const main = async ()=>{
                     var config = await getConfig();
-                    console.log("config",config);
+                    console.log("2.config:",config);
+                    if(config){                    
                     var s3urlArray = [];
                     var imageLength = 100;
                     console.log('imageLength',imageLength);
                     var z = 0;
                     for (var i = 0; i<productImage.length; i++) {
+                      console.log("3. inside for loop");
                       var s3url = await s3upload(productImage[i].fileInfo, config, this);
                       var x = i + 1;
                       var progressLength = (x/productImage.length) * 100;
@@ -92,6 +91,7 @@ class BulkProductImageUpload extends Component{
                     
                     // console.log("1 formValues = ",formValues);
                     return Promise.resolve(formValues);
+                  }
                 }
                 main().then(formValues=>{
                   console.log('formValues.productImage', formValues);
@@ -104,12 +104,12 @@ class BulkProductImageUpload extends Component{
                   })
               });
                 function s3upload(image,configuration){
-        
+                    console.log("4. Config:",configuration);
                     return new Promise(function(resolve,reject){
                         S3FileUpload
                            .uploadFile(image,configuration)
                            .then((Data)=>{
-                                // console.log("Data = ",Data);
+                                console.log("5.Data = ",Data);
                                 resolve(Data.location);
                            })
                            .catch((error)=>{
@@ -118,19 +118,23 @@ class BulkProductImageUpload extends Component{
                     })
                 }   
                 function getConfig(){
-                    return new Promise(function(resolve,reject){
+                    return new Promise(function(resolve,reject){                      
                         axios
-                           .get('/api/projectSettings/get/one/s3')
+                           .get('/api/projectSettings/get/one/S3')
                            .then((response)=>{
-                                console.log("proj set res = ",response.data);
-                                const config = {
+                                console.log("1.project setting res = ",response.data);
+                                if(response.data){
+                                  const config = {
                                     bucketName      : response.data.bucket,
                                     dirName         : 'propertiesImages',
                                     region          : response.data.region,
                                     accessKeyId     : response.data.key,
                                     secretAccessKey : response.data.secret,
+                                  }
+                                  resolve(config);                               
                                 }
-                                resolve(config);                           
+                                
+                                                           
                             })
                            .catch(function(error){
                                 console.log(error);
