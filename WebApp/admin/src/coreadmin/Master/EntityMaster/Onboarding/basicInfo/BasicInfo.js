@@ -414,9 +414,10 @@ class BasicInfo extends Component {
 
         async function main() {
           var formValues = [];
-          for (var j = 0; j < companyLogo.length; j++) {
-            var config = await getConfig();
+          var config = await getConfig();
+          console.log("line 419 config = ",config);
 
+          for (var j = 0; j < companyLogo.length; j++) {
             var s3url = await s3upload(companyLogo[j].fileInfo, config, this);
             const formValue = {
               "companyLogo": s3url,
@@ -443,18 +444,22 @@ class BasicInfo extends Component {
         function getConfig() {
           return new Promise(function (resolve, reject) {
             axios
-              .get('/api/projectsettings/get/S3')
+              .get('/api/projectsettings/get/one/S3')
               .then((response) => {
-                const config = {
-                  bucketName: response.data.bucket,
-                  dirName: 'propertiesImages',
-                  region: response.data.region,
-                  accessKeyId: response.data.key,
-                  secretAccessKey: response.data.secret,
+                if(response.data){
+                  console.log("449 response = ",response.data);
+                  const config = {
+                    bucketName      : response.data[0].bucket,
+                    dirName         : process.env.ENVIRONMENT,
+                    region          : response.data[0].region,
+                    accessKeyId     : response.data[0].key,
+                    secretAccessKey : response.data[0].secret,
+                  }
+                  resolve(config);                  
                 }
-                resolve(config);
               })
               .catch(function (error) {
+                reject(error);
               })
 
           })
@@ -505,10 +510,10 @@ class BasicInfo extends Component {
 
         async function main() {
           var formValues = [];
-          // console.log("imageloader");
+          var config = await getConfig();
+          console.log("line 513 config = ",config);
           $("#imageLoader").show();
           for (var j = 0; j < COI.length; j++) {
-            var config = await getConfig();
             var s3url = await s3upload(COI[j].fileInfo, config, this);
             const formValue = {
               "COI": s3url,
@@ -535,16 +540,18 @@ class BasicInfo extends Component {
         function getConfig() {
           return new Promise(function (resolve, reject) {
             axios
-              .get('/api/projectsettings/get/S3')
+              .get('/api/projectsettings/get/one/S3')
               .then((response) => {
-                const config = {
-                  bucketName: response.data.bucket,
-                  dirName: 'propertiesImages',
-                  region: response.data.region,
-                  accessKeyId: response.data.key,
-                  secretAccessKey: response.data.secret,
+                if(response.data){
+                  const config = {
+                      bucketName      : response.data[0].bucket,
+                      dirName         : process.env.ENVIRONMENT,
+                      region          : response.data[0].region,
+                      accessKeyId     : response.data[0].key,
+                      secretAccessKey : response.data[0].secret,
+                  }
+                  resolve(config);                  
                 }
-                resolve(config);
               })
               .catch(function (error) {
               })
@@ -775,11 +782,8 @@ class BasicInfo extends Component {
                                               <div key={i} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBI">
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
                                                   <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Logo"  id={logo} onClick={this.deleteLogo.bind(this)}>x</label>
-                                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBIImg" id="LogoImageUpOne">
-                                                    
-                                                        <img src={logo} className="img-responsive logoStyle" />
-                                                        
-                                                    
+                                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBIImg" id="LogoImageUpOne">                                                    
+                                                        <img src={logo} className="img-responsive logoStyle" />                                                                                                            
                                                   </div>
                                                 </div>
                                               </div>
