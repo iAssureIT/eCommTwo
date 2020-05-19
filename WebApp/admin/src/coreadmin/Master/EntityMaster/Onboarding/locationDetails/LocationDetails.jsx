@@ -695,6 +695,7 @@ class LocationDetails extends Component {
 				this.setState({
 					locationTypeArry: response.data
 				})
+				console.log("locationTypeArry:",this.state.locationTypeArry);
 			})
 			.catch((error) => {
 
@@ -1051,7 +1052,7 @@ class LocationDetails extends Component {
 																		<select  className="form-control col-lg-11 col-md-12 col-sm-12 col-xs-12" value={this.state.locationType} ref="locationType" name="locationType" onChange={this.handleChange}>
 																			<option >--Select Location Type--</option>
 																			{
-																				this.state.locationTypeArry && this.state.locationTypeArry.length > 0 ?
+																				Array.isArray(this.state.locationTypeArry && this.state.locationTypeArry.length > 0) ?
 																					this.state.locationTypeArry.map((locationtypedata, index) => {
 																						return (
 																							<option key={index} data-attribute={index}>{locationtypedata.locationType}</option>

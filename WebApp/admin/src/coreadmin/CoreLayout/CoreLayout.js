@@ -30,12 +30,10 @@ import LocationType from '../Master/LocationType/LocationType.jsx';
 import Designation from "../Master/Designation/Designation.js"
 import Department from "../Master/Department/Department.js"
 
-// //============= Franchise Master ====================
+//============= Franchise Master ====================
 // import FranchiseBasicInfo from '../../storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
 // import FranchiseContactDetails from '../../storeAdmin/FranchiseMaster/FranchiseContactDetails.js';
 // import FranchiseLocationDetails from '../../storeAdmin/FranchiseMaster/FranchiseLocationDetails.js';
-
-// import ListOfEntities from '../Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
 
 // ============ Orgnizational Setting ===========================
 import OrgnizationalBasicInfo from "../OrganizationalSettings/OrganizationalBasicInfo.js";
@@ -90,8 +88,8 @@ class CoreLayout extends Component {
                 <Route path="/designation" exact strict component={Designation} />
                 <Route path="/designation/:fieldID" exact strict component={Designation} />
 
-                 { /* Franchise Master */}
-               {/* <Route path="/franchise/basic-details" exact strict component={FranchiseBasicInfo} />
+                 {/* { /* Franchise Master /*}
+               {/*<Route path="/franchise/basic-details" exact strict component={FranchiseBasicInfo} />
                 <Route path="/franchise/basic-details/:entityID" exact strict component={FranchiseBasicInfo} />
                 <Route path="/franchise/location-details" exact strict component={FranchiseLocationDetails} />
                 <Route path="/franchise/location-details/:entityID" exact strict component={FranchiseLocationDetails} />

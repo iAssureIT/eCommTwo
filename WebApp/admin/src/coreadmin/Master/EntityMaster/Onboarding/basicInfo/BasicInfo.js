@@ -338,6 +338,7 @@ class BasicInfo extends Component {
           console.log("response:",response);
           console.log(" response.data.entityID:" , response.data.entityID);
           console.log("this.state.pathname:",this.state.pathname);
+          console.log("Props value:",this.props);
           
           swal((this.state.pathname === "appCompany" ? "Organzational Settings" : this.state.pathname ) + " created successfully.");
           $(".swal-text").css("text-transform", "capitalize");
@@ -665,6 +666,7 @@ class BasicInfo extends Component {
     var basicDetailsPath  = "";
     var locDetailsPath    = "";
     var contDetailsPath   = "";
+    
     if(this.props.entity){
       if(this.state.entityID){
         basicDetailsPath  = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/basic-details/"+this.state.entityID ;
@@ -676,12 +678,14 @@ class BasicInfo extends Component {
         contDetailsPath   = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/contact-details/";
       }      
     }
-    
+    console.log("pathname",this.state.pathname);
+
     return (
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
               <section className="content OrgSettingFormWrapper">
+              {this.state.pathname != false?
                 <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                     {this.state.pathname !="appCompany" ?
@@ -781,7 +785,7 @@ class BasicInfo extends Component {
                                     
                                     <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                       <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Company Email<i className="astrick">*</i></label>
-                                      <input disabled={this.state.entityID ? true : false} type="email" id="companyEmail" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.companyEmail} ref="companyEmail" name="companyEmail" onChange={this.handleChange} required />
+                                      <input  type="email" id="companyEmail" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.companyEmail} ref="companyEmail" name="companyEmail" onChange={this.handleChange} required />
                                     </div>
 
                                     <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -884,6 +888,8 @@ class BasicInfo extends Component {
                     </div>
                   </section>
                 </div>
+              : null
+              }
               </section>
             </div>
           </div>
@@ -908,4 +914,4 @@ class BasicInfo extends Component {
 //   }
 // }
 // export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BasicInfo));
-export default BasicInfo;
+export default withRouter (BasicInfo);

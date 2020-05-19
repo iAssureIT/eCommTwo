@@ -113,7 +113,7 @@ class OneFieldForm extends React.Component {
             console.log("apiLink",apiLink);
             axios.post(apiLink+'post', formValues)
                 .then((response) => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     if (response.data.created) {
                         swal(this.state.fieldName+" "+this.props.fields.title+" submitted Successfully");
                     }else{
@@ -180,9 +180,9 @@ class OneFieldForm extends React.Component {
         }
         axios.post(apiLink+'get/list', data)
             .then((response) => {
-                console.log(" response.data ==>", response.data);
+                // console.log(" response.data ==>", response.data);
                 var tableData = response.data.map((a, i)=>{
-                    console.log(" response A ==>", a[this.props.fields.attributeName]);
+                    // console.log(" response A ==>", a[this.props.fields.attributeName]);
                     return({
                         _id                                 : a._id,
                         [this.props.fields.attributeName]   : a[this.props.fields.attributeName],
@@ -211,7 +211,7 @@ class OneFieldForm extends React.Component {
                         "fieldName": response.data[fieldName],
                         "profilePhoto": response.data.iconUrl,
                     },()=>{
-                        console.log("fieldName ++ ", this.state.fieldName);
+                        // console.log("fieldName ++ ", this.state.fieldName);
                     });
                 }
             })
