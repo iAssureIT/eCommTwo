@@ -2,7 +2,7 @@ const mongoose  = require("mongoose");
 
 const EntityMaster = require('./ModelEntityMaster');
 var request = require('request-promise');
-const gloabalVariable = require('../../nodemon.js');
+const gloabalVariable = require('../../../nodemon.js');
 var   ObjectID          = require('mongodb').ObjectID;
 
 exports.insertEntity = (req,res,next)=>{

@@ -335,10 +335,16 @@ class BasicInfo extends Component {
       } else {
         axios.post('/api/entitymaster/post', formValues)
         .then((response) => {
-          // console.log("response",response);
+          console.log("response:",response);
+          console.log(" response.data.entityID:" , response.data.entityID);
+          console.log("this.state.pathname:",this.state.pathname);
+          
           swal((this.state.pathname === "appCompany" ? "Organzational Settings" : this.state.pathname ) + " created successfully.");
           $(".swal-text").css("text-transform", "capitalize");
+          console.log("this.state.pathname:",this.state.pathname+ " "+response.data.entityID);
+         
           this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname )+ '/location-details/' + response.data.entityID)
+         
         })
         .catch((error) => {
 
@@ -628,7 +634,7 @@ class BasicInfo extends Component {
         this.setState({
           companyPhoneAvailable: this.state.companyPhone == "+" || this.state.companyPhone.length<15 ? false : true
         },()=>{
-          console.log("companyPhone",this.state.companyPhoneAvailable,this.state.companyPhone)
+          // console.log("companyPhone",this.state.companyPhoneAvailable,this.state.companyPhone)
         })
       }
     })

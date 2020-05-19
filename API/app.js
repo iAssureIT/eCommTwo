@@ -40,35 +40,37 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 
 	// Routes which should handle requests
 
-	//========== Core Admin ===========
-	const systemRoutes					= require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
-	const usersRoutes						= require("./api/coreAdmin/userManagement/RoutesUsers.js");
-	const rolesRoutes						= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
-	const companySettingRoutes	= require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
+	//========== Core Admin ===================
+	const systemRoutes				= require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
+	const usersRoutes				= require("./api/coreAdmin/userManagement/RoutesUsers.js");
+	const rolesRoutes				= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
+	const companySettingRoutes	    = require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
 	const notificationRoutes		= require("./api/coreAdmin/notificationManagement/RoutesMasterNotification.js");
 	const projectSettingsurl 		= require("./api/coreAdmin/projectSettings/RoutesProjectSettings.js");
 	// const preferenceurl 			= require("./api/coreAdmin/routes/preference");
-	const eCommUsersRoutes         = require("./api/Ecommerce/routes/eCommSystemSecurity.js");
+	const eCommUsersRoutes          = require("./api/Ecommerce/routes/eCommSystemSecurity.js");
 
 	//========== eCommerce Operations ===========
-	const productsRoutes				= require("./api/Ecommerce/routes/products"); 
-	const categoryRoutes				= require("./api/Ecommerce/routes/categories"); 
-	const ordersRoutes					= require("./api/Ecommerce/routes/orders"); 
-	const cartsRoutes						= require("./api/Ecommerce/routes/cart"); 
-	const wishlistRoutes				= require("./api/Ecommerce/routes/wishlist"); 
+	const productsRoutes			= require("./api/Ecommerce/routes/products"); 
+	const categoryRoutes			= require("./api/Ecommerce/routes/categories"); 
+	const ordersRoutes				= require("./api/Ecommerce/routes/orders"); 
+	const cartsRoutes				= require("./api/Ecommerce/routes/cart"); 
+	const wishlistRoutes			= require("./api/Ecommerce/routes/wishlist"); 
 	const SectionRoutes			    = require("./api/Ecommerce/routes/sections"); 
-	const taxSetting            = require("./api/Ecommerce/routes/taxManagement");
-	const adminPreference       = require("./api/Ecommerce/routes/adminPreference");
-	const ReturnedProductsRoutes= require("./api/Ecommerce/routes/returnedProducts"); 
+	const taxSetting            	= require("./api/Ecommerce/routes/taxManagement");
+	const adminPreference       	= require("./api/Ecommerce/routes/adminPreference");
+	const ReturnedProductsRoutes	= require("./api/Ecommerce/routes/returnedProducts"); 
 	const BulkUploadTemplate		= require("./api/Ecommerce/routes/bulkUploadTemplate"); 
 
+	//=========== Entity master ===============
+	const entityRoutes				= require("./api/coreAdmin/entityMaster/RoutesEntityMaster.js");
 
 	//========== Vendor, BA, Customer Management ===========
-	const vendorsRoutes						= require("./api/Ecommerce/routes/vendors"); 
+	const vendorsRoutes				= require("./api/Ecommerce/routes/vendors"); 
 	const vendorCategoryRoutes		= require("./api/Ecommerce/routes/vendorCategory"); 
-	const vendorLocationTypeRoutes= require("./api/Ecommerce/routes/vendorLocationType"); 
-	const BARoutes								= require("./api/Ecommerce/routes/businessAssociate"); 
-	const customerQueryRoutes			= require("./api/Ecommerce/routes/customerQuery"); 
+	const vendorLocationTypeRoutes  = require("./api/Ecommerce/routes/vendorLocationType"); 
+	const BARoutes					= require("./api/Ecommerce/routes/businessAssociate"); 
+	const customerQueryRoutes	    = require("./api/Ecommerce/routes/customerQuery"); 
 	const customerReviewRoutes		= require("./api/Ecommerce/routes/customerReview"); 
 
 
@@ -109,8 +111,10 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	app.use("/api/purchaseentry", PurchaseEntry);
 	app.use("/api/FinishedGoodsEntry", FinishedGoodsEntry);
 
-
-//CMS
+	//=========== Entitymaster ==============
+	app.use("/api/entitymaster", entityRoutes);
+	
+	//================ CMS ==================
 	app.use("/api/blocks",blockRoutes);
 	app.use("/api/pages",pageRoutes);
 
