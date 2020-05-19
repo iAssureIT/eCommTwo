@@ -212,7 +212,7 @@
      font-weight:900;
 }
 .priceEcommerceNew{
-    color:#A2632C;
+    color:#80b435;
     font-size: 1.8rem !important;
     font-weight: 700;
     line-height: 25px;
@@ -385,13 +385,13 @@
     padding-top: 15px;
     padding-bottom: 15px;
     border-radius: 4px;
-    border: 1px solid #A2632C;
+    border: 1px solid #80b435;
     text-align: center;
 }
 .qtyIncrease{
     cursor: pointer;
     border-radius: 4px;
-    border: 1px solid #A2632C;
+    border: 1px solid #80b435;
     padding: 5px;
     margin: 1px;
 }
@@ -399,15 +399,15 @@
     cursor: pointer;
     padding: 15px 10px;
     border-radius: 4px;
-    border: 1px solid #A2632C;
-    color: #A2632C;
+    border: 1px solid #80b435;
+    color: #80b435;
 }
 .viewWishList{
     cursor: pointer;
     padding: 15px 10px;
     border-radius: 4px;
-    border: 1px solid #A2632C;
-    color: #A2632C;
+    border: 1px solid #80b435;
+    color: #80b435;
 }
 .viewWishListActive{
     cursor: pointer;
@@ -419,6 +419,7 @@
 }
 .viewAddtoCart:hover{
     color: #A2632C;
+    border:1px solid #80b435;
 }
 .viewWishList:hover{
     color: #A2632C;
@@ -448,7 +449,7 @@
     font-weight: 900;
 }
 .viewAddtoCart:hover{
-    background: #A2632C;
+    background: #80b435;
     color: #fff;
 }
 
@@ -1005,7 +1006,7 @@ position:relative;
     height: 0;
 }
 .size input:checked ~ .checkmark {
-    border-color: #2196F3;
+    border-color: #80b435;
     color: #2196F3;
 }
 .colorBox input:checked ~ .color {

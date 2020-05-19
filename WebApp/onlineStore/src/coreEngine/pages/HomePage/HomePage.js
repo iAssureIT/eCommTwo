@@ -1,9 +1,9 @@
-import React, { Component } 		  from 'react';
+import React, { Component }       from 'react';
 // import { connect }                from 'react-redux';
 import $                          from 'jquery';
 import EcommerceProductCarousel 	from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
 import Ecommercenewproductcaro    from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
-import EcommerceBanner 				    from "../../blocks/Banner/EcommerceBanner.js";
+import EcommerceBanner            from "../../blocks/Banner/EcommerceBanner.js";
 import ProductDivider             from "../../blocks/ProductDivider/ProductDivider.js";
 import SaleProductDivider         from "../../blocks/ProductDivider/SaleProductDivider.js"
 import AskPincode                 from "../../blocks/AskPincode/AskPincode.js";
@@ -12,27 +12,26 @@ import Loader from "../../common/loader/Loader.js";
 
 
 class HomePage extends Component {
-	  constructor(props){
+    constructor(props){
     super(props);
-	    this.state = {
-	    	featuredProducts  : [],
+      this.state = {
+        featuredProducts  : [],
         exclusiveProducts : [],
         categories        : [],
         exclusiveprloading:true,
         bestsellerloading :true,
         newproductloading :true,
         featuredproductsloading : true
-	    };
+      };
       // this.featuredProductData();
       // this.exclusiveProductsData();
       // this.newProductsData();
       // this.bestSellerData();
-  	}  
-  	componentDidMount() {
 
-      // $(window).on('load',function(){
-      //   $("#pincodeModal").modal();
-      // });
+  	}  
+
+     
+    componentDidMount() {
 
       this.featuredProductData();
       this.exclusiveProductsData();
@@ -151,7 +150,7 @@ class HomePage extends Component {
       })
     }
   render() {
-		return (
+    return (
       <div className="">
 				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
 					<div className="row">
@@ -186,7 +185,7 @@ class HomePage extends Component {
             }
             
           {/*-----------------shop by category block---------------------*/}
-						<ProductDivider categories={this.state.categories} />
+            <ProductDivider categories={this.state.categories} />
             
             {
               this.state.newproductloading ?  
@@ -212,8 +211,8 @@ class HomePage extends Component {
         </div>
         <SaleProductDivider />
       </div>
-		);
-	}
+    );
+  }
 }
 
 
