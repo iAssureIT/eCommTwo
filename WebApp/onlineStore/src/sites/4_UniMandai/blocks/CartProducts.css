@@ -52,20 +52,20 @@
     font-size: 1.8rem;
 }
 .minusQuantity{
-    border: 1px solid #A2632C;
+    border: 1px solid #80b435;
     cursor: pointer;
     border-radius: 4px;
     padding: 7px;
     background: #fff;
-    color: #A2632C;
+    color: #80b435;
 }
 .plusQuantity{
-    border: 1px solid #A2632C;
+    border: 1px solid #80b435;
     cursor: pointer;
     border-radius: 4px;
     padding: 7px;
     /* background: #A2632C; */
-    color: #A2632C;
+    color: #80b435;
 }
 .inputQuantity{
     /* border-radius: 4px; */
@@ -116,7 +116,7 @@
     font-weight: 700;
     padding: 8px 0px;
     border-radius: 25px;
-    background-color: #A2632C;
+    background-color: #80b435;
     color: #fff;
 }
 .cartTotal{
@@ -161,7 +161,7 @@
     margin-top: 10px;
     padding: 4px 10px;
     font-size: 12px;
-    background-color: #A2632C;
+    background-color: #80b435;
     color: #fff;
 }
 .saving{

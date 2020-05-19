@@ -1,16 +1,16 @@
 import React, { Component }       from 'react';
 // import { connect }                from 'react-redux';
 // import $                          from 'jquery';
-import EcommerceProductCarousel   from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
-import Ecommercenewproductcaro    from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
-import EcommerceBanner_Unimandai  from "../../blocks/Banner/EcommerceBanner_Unimandai.js";
-import ProductDivider             from "../../blocks/ProductDivider/ProductDivider.js";
-import SaleProductDivider         from "../../blocks/ProductDivider/SaleProductDivider.js"
-import WhychooseUs                from "../../blocks/WhychooseUs/WhychooseUs.js"
-import axios                      from 'axios';
-import Loader                     from "../../common/loader/Loader.js";
-import Blogs                      from "../../blocks/Blogs/Blogs.js";
-import Ceo                        from "../../blocks/CEO/Ceo.js";
+import EcommerceProductCarousel     from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
+import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
+import EcommerceBanner_Unimandai    from "../../blocks/Banner/EcommerceBanner_Unimandai.js";
+import ProductDivider               from "../../blocks/ProductDivider/ProductDivider.js";
+import Unimandai_SaleProductDivider from "../../blocks/ProductDivider/Unimandai_SaleProductDivider.js"
+import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js"
+import axios                        from 'axios';
+import Loader                       from "../../common/loader/Loader.js";
+import Blogs                        from "../../blocks/Blogs/Blogs.js";
+import Ceo                          from "../../blocks/CEO/Ceo.js";
 
 class HomePage extends Component {
     constructor(props){
@@ -208,7 +208,7 @@ class HomePage extends Component {
             
           </div>
         </div>
-        <SaleProductDivider />
+        <Unimandai_SaleProductDivider />
 
          <WhychooseUs/>
 

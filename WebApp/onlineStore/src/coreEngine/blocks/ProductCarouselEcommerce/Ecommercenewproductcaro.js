@@ -306,7 +306,7 @@ class Ecommercenewproductcaro extends Component {
   render() {
     console.log("title:", this.props.title);
     return (
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20">
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 abc">
         <div className="row">
           <Message messageData={this.state.messageData} />
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
