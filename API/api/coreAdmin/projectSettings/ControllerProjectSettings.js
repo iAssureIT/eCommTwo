@@ -6,7 +6,7 @@ exports.create_projectSettings = (req, res, next) => {
     var listRequiredFields  = ""; 
     switch(req.body.type){
         case 'S3'       :
-            conditionQuery      = req.body.key && req.body.secret && req.body.bucket && req.body.region;
+            conditionQuery      = (req.body.key ? true : false)  && (req.body.secret ? true : false) && (req.body.bucket ? true : false) && (req.body.region ? true : false);
             listRequiredFields  = "Keys, secret, bucket and region";
             break;
         case 'SMS'      :
@@ -21,10 +21,12 @@ exports.create_projectSettings = (req, res, next) => {
             res.status(200).json("type can be either S3 or SMS or GOOGLE");
             break;
     }
+
     if(conditionQuery){
     	ProjectSettings.findOne({type:req.body.type})
     		.exec()
     		.then(data =>{
+                console.log("ProjectSettings data = ",data);
     			if(data){
     				return res.status(200).json({
     					message : 'Details already exists.',

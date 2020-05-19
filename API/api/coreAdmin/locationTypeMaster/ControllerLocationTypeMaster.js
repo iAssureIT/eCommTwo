@@ -23,6 +23,7 @@ exports.insertLocationType = (req,res,next)=>{
                         })
                         locationTypeMaster.save()
                         .then(data=>{
+                            console.log("loctypemaster line 26 data = ",data);
                             res.status(200).json({ created : true, fieldID : data._id });
                         })
                         .catch(err =>{

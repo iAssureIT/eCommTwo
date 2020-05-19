@@ -40,38 +40,69 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 
 	// Routes which should handle requests
 
+<<<<<<< Updated upstream
 	//========== Core Admin ===================
 	const systemRoutes				= require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
 	const usersRoutes				= require("./api/coreAdmin/userManagement/RoutesUsers.js");
 	const rolesRoutes				= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
 	const companySettingRoutes	    = require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
+=======
+
+	//========== Core Admin ===================
+
+	const systemRoutes					= require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
+	const usersRoutes						= require("./api/coreAdmin/userManagement/RoutesUsers.js");
+	const rolesRoutes						= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
+	const companySettingRoutes	= require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
+>>>>>>> Stashed changes
 	const notificationRoutes		= require("./api/coreAdmin/notificationManagement/RoutesMasterNotification.js");
 	const projectSettingsurl 		= require("./api/coreAdmin/projectSettings/RoutesProjectSettings.js");
 	// const preferenceurl 			= require("./api/coreAdmin/routes/preference");
-	const eCommUsersRoutes          = require("./api/Ecommerce/routes/eCommSystemSecurity.js");
+	const locationTypeMasterRoutes = require("./api/coreAdmin/locationTypeMaster/RoutesLocationTypeMaster.js");
 
 	//========== eCommerce Operations ===========
+<<<<<<< Updated upstream
+=======
+	const eCommUsersRoutes      = require("./api/Ecommerce/routes/eCommSystemSecurity.js");
+>>>>>>> Stashed changes
 	const productsRoutes			= require("./api/Ecommerce/products/Routes"); 
 	const categoryRoutes			= require("./api/Ecommerce/categories/Routes"); 
 	const ordersRoutes				= require("./api/Ecommerce/orders/Routes"); 
-	const cartsRoutes				= require("./api/Ecommerce/cart/Routes"); 
+	const cartsRoutes					= require("./api/Ecommerce/cart/Routes"); 
 	const wishlistRoutes			= require("./api/Ecommerce/wishlist/Routes"); 
+<<<<<<< Updated upstream
 	const SectionRoutes			    = require("./api/Ecommerce/sections/Routes"); 
 	const taxSetting                = require("./api/Ecommerce/taxManagement/Routes");
 	const adminPreference           = require("./api/Ecommerce/adminPreference/Routes");
 	const ReturnedProductsRoutes    = require("./api/Ecommerce/returnedProducts/Routes"); 
 	const BulkUploadTemplate		= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
+=======
+	const SectionRoutes			  = require("./api/Ecommerce/sections/Routes"); 
+	const taxSetting          = require("./api/Ecommerce/taxManagement/Routes");
+	const adminPreference     = require("./api/Ecommerce/adminPreference/Routes");
+	const ReturnedProductsRoutes = require("./api/Ecommerce/returnedProducts/Routes"); 
+	const BulkUploadTemplate	= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
+>>>>>>> Stashed changes
 
 	//=========== Entity master ===============
 	const entityRoutes				= require("./api/coreAdmin/entityMaster/RoutesEntityMaster.js");
 
 	//========== Vendor, BA, Customer Management ===========
+<<<<<<< Updated upstream
 	const vendorsRoutes				= require("./api/Ecommerce/vendors/Routes"); 
 	const vendorCategoryRoutes		= require("./api/Ecommerce/vendorCategory/Routes"); 
 	const vendorLocationTypeRoutes  = require("./api/Ecommerce/vendorLocationType/Routes"); 
 	const BARoutes					= require("./api/Ecommerce/businessAssociate/Routes"); 
 	const customerQueryRoutes		= require("./api/Ecommerce/customerQuery/Routes"); 
 	const customerReviewRoutes		= require("./api/Ecommerce/customerReview/Routes"); 
+=======
+	const vendorsRoutes							= require("./api/Ecommerce/vendors/Routes"); 
+	const vendorCategoryRoutes			= require("./api/Ecommerce/vendorCategory/Routes"); 
+	const vendorLocationTypeRoutes  = require("./api/Ecommerce/vendorLocationType/Routes"); 
+	const BARoutes									= require("./api/Ecommerce/businessAssociate/Routes"); 
+	const customerQueryRoutes				= require("./api/Ecommerce/customerQuery/Routes"); 
+	const customerReviewRoutes			= require("./api/Ecommerce/customerReview/Routes"); 
+>>>>>>> Stashed changes
 
 
 	//========== Franchise Model ===========
@@ -89,6 +120,8 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	app.use("/api/projectSettings",projectSettingsurl);
 	app.use("/api/companysettings",companySettingRoutes);
 	app.use("/api/masternotifications",notificationRoutes);
+	app.use("/api/locationtypemaster",locationTypeMasterRoutes);
+	
 	// app.use("/api/preference",preferenceurl);
 	// app.use("/api/notifications",notificationRoutes);
 	
@@ -169,15 +202,15 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	    if (err) {
 	        throw err; 
 	    }      
-			res.writeHeader(200, {"Content-Type": "text/html"});  
-	    res.write(html);  
+			// res.writeHeader(200, {"Content-Type": "text/html"});  
+	    // res.write(html);  
 
 			res.status(error.status || 500);
-			// res.json({
-			// 		error: {
-			// 		message: error.message
-			// 		}
-			// 	});
+			res.json({
+					error: {
+					message: error.message
+					}
+				});
 	    res.end();  
 	  });
 

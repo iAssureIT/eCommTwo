@@ -6,6 +6,8 @@ const gloabalVariable = require('../../../nodemon.js');
 var   ObjectID          = require('mongodb').ObjectID;
 
 exports.insertEntity = (req,res,next)=>{
+    console.log("insertEntity req = ", req.body);
+    
     insertEntityFun();
     async function insertEntityFun(){
         var getnext = await getNextSequence()
@@ -42,9 +44,9 @@ exports.insertEntity = (req,res,next)=>{
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
                 })
-                console.log("entity",entity)
                 entity.save()
                 .then(data=>{
+                    console.log("created new entity = ",data);
                     res.status(200).json({ created : true, entityID : data._id ,companyID : data.companyID});
                 })
                 .catch(err =>{
@@ -81,6 +83,8 @@ function getNextSequence() {
 }
 
 exports.listEntity = (req,res,next)=>{
+    console.log("line 86 listEntity req = ", req.params.entityType);
+    
     EntityMaster.find({entityType:req.params.entityType}).sort({createdAt : -1})    
         .exec()
         .then(data=>{

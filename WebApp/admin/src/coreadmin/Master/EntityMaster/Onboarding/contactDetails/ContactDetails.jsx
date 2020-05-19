@@ -29,6 +29,7 @@ class ContactDetails extends Component {
 			"pathname"					: this.props.entity,
 			'entityID'					: this.props.match.params ? this.props.match.params.entityID : '',
 			'contactID'					: this.props.match.params ? this.props.match.params.contactID : '',
+ 			'listOfEmpID' 			: [],
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}
@@ -71,25 +72,23 @@ class ContactDetails extends Component {
 		var formvalues = { type : "driver"}
 		}
 		var listOfEmpID = [];
-			axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
-			.then((response) => {
-
-				this.setState({
-					contactarray: response.data.contactPersons
-
-				},()=>{
-					for(let j=0;j<this.state.contactarray.length;j++)
-					{
-						listOfEmpID.push(this.state.contactarray[j].employeeID)
-					}
-				})
-			})
-			.catch((error) => {
-				
-			})
-		axios.post("/api/personmaster/get/list",formvalues)
+		axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
 		.then((response) => {
-	        
+
+			this.setState({
+				contactarray: response.data.contactPersons
+			},()=>{
+				for(let j=0;j<this.state.contactarray.length;j++)
+				{
+					listOfEmpID.push(this.state.contactarray[j].employeeID)
+				}
+			})
+		})
+		.catch((error) => {				
+		})
+
+		axios.post("/api/personmaster/get/list",formvalues)
+		.then((response) => {	        
 			this.setState({
 				personList   : response.data,
 			})
@@ -448,13 +447,14 @@ class ContactDetails extends Component {
 			console.log("formValues",formValues);
 			const main = async()=>{
 				if ($('#ContactDetail').valid()) {
-					console.log("this.state.listOfEmpID.indexOf(this.state.employeeID)",this.state.listOfEmpID.indexOf(this.state.employeeID))
-					if(this.state.createUser === true && this.state.listOfEmpID.indexOf(this.state.employeeID) == -1){
+					// console.log("this.state.listOfEmpID.indexOf(this.state.employeeID)",this.state.listOfEmpID.indexOf(this.state.employeeID))
+
+					if(this.state.createUser === true && this.state.listOfEmpID.indexOf(this.state.employeeID) === -1){
 						formValues.contactDetails.userID = await this.createUser();
 						formValues.contactDetails.personID = await this.savePerson(formValues.contactDetails.userID);
 						var formValues1 = {
-						userID: formValues.contactDetails.userID,
-						role: "employee",
+							userID: formValues.contactDetails.userID,
+							role: "employee",
 						}
 						console.log("formValues",formValues.contactDetails.userID,formValues1,formValues1.role);
 						if(this.state.pathname == "corporate" && (this.state.role == "manager" || this.state.role == "corporateadmin" ))
@@ -481,17 +481,15 @@ class ContactDetails extends Component {
 	createUser = ()=>{
 		console.log("In here")
 		var userDetails = {
-			firstname			: this.state.firstName,
-			lastname			: this.state.lastName,
-			mobNumber			: this.state.phone,
-			email				: this.state.email,
-			companyID			: this.state.companyID,
-			companyName			: this.state.companyName,
-			pwd					: "fivebees123",
-
-			//role				: this.state.pathname =="appCompany"  ? "admin" :(this.state.pathname != "vendor" ? ['employee',this.state.role] : this.state.pathname) ,
-			 role				: this.state.pathname =="appCompany"  ? "admin" : this.state.role,
-			status				: 'active',
+			"firstname"				: this.state.firstName,
+			"lastname"				: this.state.lastName,
+			"mobNumber"				: this.state.phone,
+			"email"						: this.state.email,
+			"companyID"				: this.state.companyID,
+			"companyName"			: this.state.companyName,
+			"pwd"							: "welcome123",
+			"role"						: this.state.pathname =="appCompany"  ? "admin" : this.state.role,
+			"status"					: 'active',
 			"emailSubject"		: "Email Verification",
 			"emailContent"		: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 		}

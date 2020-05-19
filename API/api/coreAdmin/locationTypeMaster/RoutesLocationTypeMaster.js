@@ -5,7 +5,7 @@ const locationTypeMaster = require('./ControllerLocationTypeMaster.js');
 
 const checkAuth = require('../middlerware/check-auth.js');
 
-router.post('/post', checkAuth, locationTypeMaster.insertLocationType);
+router.post('/post', locationTypeMaster.insertLocationType);
 
 router.post('/get/list', locationTypeMaster.fetchLocationTypes);
 

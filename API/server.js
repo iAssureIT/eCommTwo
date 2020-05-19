@@ -2,10 +2,9 @@ const http = require('http');
 const app = require('./app'); // app file include
 
 const globalVariable = require('./nodemon');
-//const port = process.env.port || globalVariable.port;
-const port = process.env.PORT || 3000;
+const port = globalVariable.port;
 
-console.log("port ---->",port);
+console.log("API is running on port ---> ",port);
 
 const server = http.createServer(app);
 server.listen(port);

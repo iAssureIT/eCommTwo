@@ -30,11 +30,13 @@ class BasicInfo extends Component {
     this.handleChange       = this.handleChange.bind(this);
     this.keyPress           = this.keyPress.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
-    this.supplier           = this.supplier.bind(this);
+    this.submit             = this.submit.bind(this);
 
 
   }
   componentDidMount() {
+    console.log("line 38 entityID = ", this.state.entityID);
+
     if(this.state.entityID){
       this.edit();
     }
@@ -120,22 +122,27 @@ class BasicInfo extends Component {
       }
     });
 
-    axios.get("/api/entitymaster/get/"+this.state.pathname)
-      .then((response) => {
-        this.setState({
-          entityList   : response.data,
-          entityID     : response.data[0]._id
-        },()=>{
-          if (this.state.entityList.length > 0 && this.state.entityList[0].entityType === "appCompany")
-          {
-           this.props.history.push('/org-settings/basic-details/' + this.state.entityID);
-           this.edit();
+    //============  ASHISH NAIK Commented this code ===========
+    //============ When required, we will uncomment it =========
+    // axios.get("/api/entitymaster/get/"+this.state.pathname)
+    //   .then((response) => {
+    //     console.log("line 125 response.data = ", response.data);
+    //     this.setState({
+    //       entityList   : response.data,
+    //       entityID     : response.data[0]._id
+    //     },()=>{
+    //       if (this.state.entityList.length > 0 && this.state.entityList[0].entityType === "appCompany")
+    //       {
+    //        this.props.history.push('/org-settings/basic-details/' + this.state.entityID);
+    //        this.edit();
+    //       }
+    //     })
+    //    })
+    //   .catch((error) => {
+    //   });
 
-          }
-        })
-       })
-      .catch((error) => {
-      })
+
+      console.log("Line 143 this.state = ", this.state);
 
   }
   componentWillUnmount() {
@@ -276,20 +283,25 @@ class BasicInfo extends Component {
       [name]: event.target.value
     });
   }
-  supplier(event) {
+
+
+  submit(event) {
     event.preventDefault();
 
-    if(this.state.companyPhone == "" || this.state.companyPhone == undefined)
-    {
+    console.log("2 this.props = ",this.props);
+    console.log("2 +this.state = ", this.state);
+    console.log("line 289 this.state.entityID = ", this.state.entityID);
+
+    if(this.state.companyPhone == "" || this.state.companyPhone == undefined){
       this.setState({
         companyPhoneAvailable : false
       })
-    }
-    else{
+    }else{
        this.setState({
         companyPhoneAvailable : true
       })
     }
+
     if ($('#BasicInfo').valid() && this.state.companyPhoneAvailable) {
       var userDetails = {
         firstname: this.state.companyName,
@@ -348,7 +360,7 @@ class BasicInfo extends Component {
          
         })
         .catch((error) => {
-
+          console.log("Error in Submit => ", error);
         })
       }
     } else {
@@ -603,7 +615,7 @@ class BasicInfo extends Component {
   }
   edit() {
     var entityID = this.state.entityID;
-    // console.log("entityID",this.state.entityID);
+    console.log("line 613 entityID = ",this.state.entityID);
     if (entityID !== '') {
       axios.get('/api/entitymaster/get/one/' + entityID)
         .then((response) => {
@@ -678,7 +690,7 @@ class BasicInfo extends Component {
         contDetailsPath   = "/"+(this.state.pathname === "appCompany" ? "org-settings":this.state.pathname)+"/contact-details/";
       }      
     }
-    console.log("pathname",this.state.pathname);
+    // console.log("pathname",this.state.pathname);
 
     return (
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -878,7 +890,7 @@ class BasicInfo extends Component {
                             </div>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-                                <button className="btn button3 pull-right" onClick={this.supplier.bind(this)} >Save & Next&nbsp;<i className="fa fa-angle-double-right" aria-hidden="true"></i></button>
+                                <button className="btn button3 pull-right" onClick={this.submit.bind(this)} >Save & Next&nbsp;<i className="fa fa-angle-double-right" aria-hidden="true"></i></button>
                               </div>
                             </div>
                           </div>
