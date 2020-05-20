@@ -3,7 +3,7 @@ import React, { Component }       from 'react';
 // import $                          from 'jquery';
 import EcommerceProductCarousel   from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
 import Ecommercenewproductcaro    from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
-import EcommerceBanner_Unimandai  from "../../blocks/Banner/EcommerceBanner_Unimandai.js";
+import EcommerceBanner            from "../../blocks/Banner/EcommerceBanner.js";
 import ProductDivider             from "../../blocks/ProductDivider/ProductDivider.js";
 import SaleProductDivider         from "../../blocks/ProductDivider/SaleProductDivider.js"
 import WhychooseUs                from "../../blocks/WhychooseUs/WhychooseUs.js"
@@ -151,7 +151,7 @@ class HomePage extends Component {
       <div className="">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
           <div className="row">
-            <EcommerceBanner_Unimandai/>
+            <EcommerceBanner/>
 
           </div>
             <div className="homeRow">
@@ -207,11 +207,7 @@ class HomePage extends Component {
         </div>
         <SaleProductDivider />
 
-         <WhychooseUs/>
 
-         <Ceo />
-
-          <Blogs />
 
       </div>
     );
