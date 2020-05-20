@@ -1,39 +1,35 @@
-import React, { Component }   from 'react';
+import React, { Component }       from 'react';
 // import { connect }                from 'react-redux';
-import $                          from 'jquery';
-import EcommerceProductCarousel from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
+// import $                          from 'jquery';
+import EcommerceProductCarousel   from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
 import Ecommercenewproductcaro    from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
-import EcommerceBanner     from "../../blocks/Banner/EcommerceBanner.js";
+import EcommerceBanner_Unimandai  from "../../blocks/Banner/EcommerceBanner_Unimandai.js";
 import ProductDivider             from "../../blocks/ProductDivider/ProductDivider.js";
 import SaleProductDivider         from "../../blocks/ProductDivider/SaleProductDivider.js"
-import AskPincode                 from "../../blocks/AskPincode/AskPincode.js";
-import axios                  from 'axios';
-import Loader from "../../common/loader/Loader.js";
-
+import WhychooseUs                from "../../blocks/WhychooseUs/WhychooseUs.js"
+import axios                      from 'axios';
+import Loader                     from "../../common/loader/Loader.js";
+import Blogs                      from "../../blocks/Blogs/Blogs.js";
+import Ceo                        from "../../blocks/CEO/Ceo.js";
 
 class HomePage extends Component {
-  constructor(props){
+    constructor(props){
     super(props);
-    this.state = {
-    featuredProducts  : [],
+      this.state = {
+        featuredProducts  : [],
         exclusiveProducts : [],
         categories        : [],
         exclusiveprloading:true,
         bestsellerloading :true,
         newproductloading :true,
         featuredproductsloading : true
-    };
+      };
       // this.featuredProductData();
       // this.exclusiveProductsData();
       // this.newProductsData();
       // this.bestSellerData();
-  } 
-  componentDidMount() {
-
-      // $(window).on('load',function(){
-      //   $("#pincodeModal").modal();
-      // });
-
+    }  
+    componentDidMount() {
       this.featuredProductData();
       this.exclusiveProductsData();
       this.newProductsData();
@@ -47,13 +43,13 @@ class HomePage extends Component {
             window.localStorage.setItem('refresh', "1");
       }
 
-    } 
+    }  
     componentWillReceiveProps(nextProps){
       // this.changeProductCateWise(categoryID, type);
     }
     featuredProductData(){
       var productType1 = 'featured';
-     
+      
       axios.get("/api/products/get/listbytype/"+productType1)
             .then((response)=>{
               // console.log('featuredProducts' , response.data)
@@ -93,7 +89,7 @@ class HomePage extends Component {
             })
             .catch((error)=>{
                 // console.log('error', error);
-            })   
+            })    
     }
     bestSellerData(){
       var productType4 = 'bestSeller';
@@ -107,7 +103,7 @@ class HomePage extends Component {
             })
             .catch((error)=>{
                 // console.log('error', error);
-            })   
+            })    
     }
     getCategories(){
       axios.get("/api/category/get/list")
@@ -151,68 +147,77 @@ class HomePage extends Component {
       })
     }
   render() {
-return (
+    return (
       <div className="">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
           <div className="row">
-            {/* <AskPincode/> */}
-      <EcommerceBanner/>
-                </div>
-               
-                  <div className="homeRow">
-                  { /*new product */}
-                  {
-                    this.state.exclusiveprloading ? 
-                    <Loader type="carouselloader" productLoaderNo = {4}/>     
-                    :
-                    (this.state.exclusiveProducts.length > 0 ?
-                      <EcommerceProductCarousel title={'FLASH SALE'} newProducts={this.state.exclusiveProducts}
-                       type={'exclusive'} categories={this.state.categories}
-                       getWishData={this.getWishData.bind(this)} wishList={this.state.wishList}
-                       changeProductCateWise={this.changeProductCateWise.bind(this)}/>
-                      :
-                      null
-                    )
-                  }
-                  {
-                    this.state.bestsellerloading ? 
-                    <Loader type="carouselloader" productLoaderNo = {4}/>     
-                    :
-                    ( this.state.bestSellerProducts.length  > 0 ?
-                      <Ecommercenewproductcaro   title={'BEST SELLERS'} newProducts={this.state.bestSellerProducts} type={'bestSeller'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>
-                      :
-                      null
-                      )
-                  }
-                 
-                {/*-----------------shop by category block---------------------*/}
-              <ProductDivider categories={this.state.categories} />
-                 
-                  {
-                    this.state.newproductloading ? 
-                    <Loader type="carouselloader" productLoaderNo = {4}/>     
-                    :
-                    (this.state.newProducts.length >0 ?
-                    <Ecommercenewproductcaro title={'NEW PRODUCTS'} newProducts={this.state.newProducts} type={'newProducts'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>               
-                    :
-                    null )
-                  }
-                 
-                  {
-                    this.state.featuredproductsloading ? 
-                    <Loader type="carouselloader" productLoaderNo = {4}/>     
-                    :
-                    (this.state.featuredProducts.length > 0 ?
-                      <Ecommercenewproductcaro  title={'FEATURE PRODUCTS'} newProducts={this.state.featuredProducts} type={'featured'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>
-                      : null
-                    )
-                  }
-                 
-                </div>
-              </div>
-              <SaleProductDivider />
-            </div>
-      );
-      }
+            <EcommerceBanner_Unimandai/>
+
+          </div>
+            <div className="homeRow">
+            { /*new product */}
+            {
+              this.state.exclusiveprloading ?  
+              <Loader type="carouselloader" productLoaderNo = {4}/>      
+              : 
+              (this.state.exclusiveProducts.length > 0 ? 
+                <EcommerceProductCarousel title={'FLASH SALE'} newProducts={this.state.exclusiveProducts}
+                 type={'exclusive'} categories={this.state.categories} 
+                 getWishData={this.getWishData.bind(this)} wishList={this.state.wishList}
+                 changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                :
+                null
+              )
+            }
+            {
+              this.state.bestsellerloading ?  
+              <Loader type="carouselloader" productLoaderNo = {4}/>      
+              :
+              ( this.state.bestSellerProducts.length  > 0 ? 
+                <Ecommercenewproductcaro   title={'BEST SELLERS'} newProducts={this.state.bestSellerProducts} type={'bestSeller'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                :
+                null
+                )
+            }
+            
+          {/*-----------------shop by category block---------------------*/}
+            <ProductDivider categories={this.state.categories} />
+            
+            {
+              this.state.newproductloading ?  
+              <Loader type="carouselloader" productLoaderNo = {4}/>      
+              :
+              (this.state.newProducts.length >0 ? 
+              <Ecommercenewproductcaro title={'NEW PRODUCTS'} newProducts={this.state.newProducts} type={'newProducts'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>                
+              :
+              null )
+            }
+            
+            {
+              this.state.featuredproductsloading ?  
+              <Loader type="carouselloader" productLoaderNo = {4}/>      
+              :
+              (this.state.featuredProducts.length > 0 ? 
+                <Ecommercenewproductcaro  title={'FEATURE PRODUCTS'} newProducts={this.state.featuredProducts} type={'featured'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                : null
+              )
+            }
+            
+          </div>
+        </div>
+        <SaleProductDivider />
+
+         <WhychooseUs/>
+
+         <Ceo />
+
+          <Blogs />
+
+      </div>
+    );
+  }
 }
+
+
+
 export default (HomePage);
