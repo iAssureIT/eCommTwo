@@ -8,7 +8,7 @@ import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getCartData, searchProductAction} from '../../actions/index';
 import $                          from "jquery";
-import '../../../sites/currentSite/common/Header.css';
+import '../../../sites/4_UniMandai/common/Header.css';
 // import './Header.css';
 // import jQuery from "jquery";
 
@@ -702,7 +702,7 @@ componentWillMount() {
           </div>
         </header>
         <nav>
-          <div className="col-lg-12 catogeryvaluebg">
+          <div className="col-lg-12 catogeryvaluebg_un">
             <div className="row">
               <Megamenu />
             </div>

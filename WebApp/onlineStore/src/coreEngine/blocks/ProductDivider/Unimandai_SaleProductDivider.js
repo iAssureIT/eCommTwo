@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "../../../sites/currentSite/blocks/ProductDivider.css";
+import "../../../sites/4_UniMandai/blocks/ProductDivider.css";
 
 export default class SaleProductDivider extends Component {
     // constructor(props){

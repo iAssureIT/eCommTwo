@@ -1,12 +1,13 @@
 import React, { Component }       from 'react';
 // import { connect }                from 'react-redux';
-// import $                          from 'jquery';
+import $                          from 'jquery';
 import EcommerceProductCarousel     from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
 import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
 import EcommerceBanner_Unimandai    from "../../blocks/Banner/EcommerceBanner_Unimandai.js";
 import ProductDivider               from "../../blocks/ProductDivider/ProductDivider.js";
 import Unimandai_SaleProductDivider from "../../blocks/ProductDivider/Unimandai_SaleProductDivider.js"
 import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js"
+import AskPincode                   from "../../blocks/AskPincode/AskPincode.js"
 import axios                        from 'axios';
 import Loader                       from "../../common/loader/Loader.js";
 import Blogs                        from "../../blocks/Blogs/Blogs.js";
@@ -36,6 +37,12 @@ class HomePage extends Component {
       this.bestSellerData();
       this.getCategories();
       this.getWishData();
+      // this.handleButtonClicked();
+     /* $(window).on('load',function(){
+        $('#myModal').modal('show');
+    });*/
+
+    $('#myModal').show();
         var refresh = window.localStorage.getItem('refresh');
         // console.log(refresh);
         if (refresh===null){
@@ -43,7 +50,19 @@ class HomePage extends Component {
             window.localStorage.setItem('refresh', "1");
       }
 
-    }  
+    } 
+    /* handleButtonClicked(event) {
+        event.preventDefault();
+        const target = event.target;
+        const name = target.name;
+        var YesForPincode = document.getElementById("yes");
+        console.log("YesForPincode",YesForPincode.id)
+        var value = event.target.value;
+        var pincodeEntered=YesForPincode.id;
+        if ( pincodeEntered !== "yes")
+         $('#myModal').hide();
+      }
+*/
     componentWillReceiveProps(nextProps){
       // this.changeProductCateWise(categoryID, type);
     }
@@ -154,6 +173,8 @@ class HomePage extends Component {
       <div className="">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
           <div className="row">
+           <AskPincode />
+
             <EcommerceBanner_Unimandai/>
 
           </div>
@@ -215,6 +236,7 @@ class HomePage extends Component {
          <Ceo />
 
           <Blogs />
+
 
       </div>
     );

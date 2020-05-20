@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
-import '../../../sites/currentSite/common/Footer.css';
+import '../../../sites/4_UniMandai/common/Footer.css';
 
 export default class Footer extends Component {
 
@@ -101,7 +101,7 @@ export default class Footer extends Component {
                 </div>  
                 <p className="footer-v3">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p> 
                 <form action="#" method="get" accept-charset="utf-8" className="subscribe">
-                    <input type="text" onblur="if (this.value == '') {this.value = 'Enter Your Email Address';}" onfocus="if(this.value != '') {this.value = '';}" value="Enter Your Email Address" class="input-text required-entry validate-email" title="Sign up for our newsletter" id="newsletter" name="email"/> 
+                    <input type="text"  value="Enter Your Email Address" class="input-text required-entry validate-email" title="Sign up for our newsletter" id="newsletter" name="email"/> 
                     <button class="button button1 hover-white" title="Subscribe" type="submit">Subscribe<i class="fa fa-long-arrow-right"></i></button>
                  </form>
                 </div>

@@ -1,0 +1,25 @@
+.modal_header{
+	background-color: #b1a409;
+}
+.newModalHeader{
+	background-color: #b1a409 ! important; 
+	border:1px solid #b1a409;
+}
+.pincodemodal{
+	height: 108px;
+
+}
+.addPincode{
+	background-color: #ffffff;
+    /*padding: 0;*/
+    width: 598px;
+    margin-left: -15px;
+    height: 100px;
+}
+.Pincode_div{
+	margin-top: 20px;
+}
+.pinocodeInput{  width: 219px;
+    /*margin-left: 16px;*/
+    margin-top: 5px;
+}
