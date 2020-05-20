@@ -244,6 +244,12 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Franchise Master</span>
                       </a>
                     </li>
+                    <li>
+                      <a href="/franchise-allowable-pincode">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Franchise Allowable Pincode</span>
+                      </a>
+                    </li>                    
                   </ul>
                 </li>
 

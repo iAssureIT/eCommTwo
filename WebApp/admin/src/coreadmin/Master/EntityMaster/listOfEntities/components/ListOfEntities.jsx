@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import _ from 'underscore';
+import { withRouter } from 'react-router-dom';
 import EntityDetails from './EntityDetails.jsx';
 import 'bootstrap/js/tab.js';
 import '../css/ListOfEntity.css';
@@ -34,6 +35,7 @@ class ListOfEntities extends Component {
 			"pathname": window.location.pathname.split('/')[1],
 			entityType : this.props.match.params.entity === "org-settings" ? "appCompany" : this.props.match.params.entity 
 		};
+		console.log("path:" ,this.state.pathname);
 		
 		this.handleChange = this.handleChange.bind(this);
 		this.ShowForm = this.ShowForm.bind(this);
@@ -95,6 +97,9 @@ class ListOfEntities extends Component {
 			.join(' ');
 	}
 	getEntities() {
+		console.log("entitytype:" ,this.props.match.params.entityType);
+		console.log("entitytype:" ,this.state.entityType);
+		console.log("path:" ,this.state.pathname);
 		axios.get("/api/entitymaster/get/count/"+this.state.entityType)
 			.then((response) => {
 				this.setState({
@@ -107,22 +112,25 @@ class ListOfEntities extends Component {
 		axios.get("/api/entitymaster/get/"+this.state.entityType)
 
 			.then((response) => {
-				this.setState({
-					entityList  : response.data,
-					showDetails : true,
-					id 					: response.data[0]._id
-				},()=>{
-					if(document.getElementById(response.data[0]._id)){
-						document.getElementById(response.data[0]._id).classList.add("selectedSupplier");
-					}
+				if(response){
+					console.log("franchise list:",response);
+					this.setState({
+						entityList  : response.data,
+						showDetails : true,
+						id 					: response.data[0]._id
+					},()=>{
+						if(document.getElementById(response.data[0]._id)){
+							document.getElementById(response.data[0]._id).classList.add("selectedSupplier");
+						}
 
-					for (var key in document.querySelectorAll('.alphab')) {
-						$($('.alphab')[key]).css('background', '#ddd');
-						$($('.alphab')[key]).css('color', '#000');
-						document.getElementById("filterallalphab").style.background = '#367ea8';
-						document.getElementById("filterallalphab").style.color = '#fff';
-					}
-				})
+						for (var key in document.querySelectorAll('.alphab')) {
+							$($('.alphab')[key]).css('background', '#ddd');
+							$($('.alphab')[key]).css('color', '#000');
+							document.getElementById("filterallalphab").style.background = '#367ea8';
+							document.getElementById("filterallalphab").style.color = '#fff';
+						}
+					})
+				}
 
 				// $('.selected').removeClass('selectedSupplier');
 			})
@@ -437,4 +445,4 @@ class ListOfEntities extends Component {
 		);
 	}
 }
-export default ListOfEntities;
+export default withRouter(ListOfEntities);

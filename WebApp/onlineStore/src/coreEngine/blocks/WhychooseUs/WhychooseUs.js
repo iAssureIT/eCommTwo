@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../sites/currentSite/blocks/WhychooseUs.css';
+import '../../../sites/4_UniMandai/blocks/WhychooseUs.css';
 
 export default class OurCources extends React.Component {
 	constructor(props) {

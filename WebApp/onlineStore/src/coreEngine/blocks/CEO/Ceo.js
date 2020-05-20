@@ -8,7 +8,7 @@ import React from 'react';
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 // import Slider from "react-slick";
-import "../../../sites/currentSite/blocks/Ceo.css";
+import "../../../sites/4_UniMandai/blocks/Ceo.css";
 
 export default class Ceo extends React.Component {
 	constructor(props) {

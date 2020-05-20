@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';
 import React from 'react';
-import "../../../sites/currentSite/blocks/Blogs.css";
+// import "../../../sites/currentSite/blocks/Blogs.css";
+import "../../../sites/4_UniMandai/blocks/Blogs.css";
 
 
 export default class OurCources extends React.Component {

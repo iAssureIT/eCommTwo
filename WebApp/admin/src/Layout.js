@@ -73,6 +73,9 @@ import ListOfEntities           from './coreadmin/Master/EntityMaster/listOfEnti
 //=============== Preferences =================
 import WebsiteModel from './storeAdmin/preferences/WebsiteModel.js';
 
+//=============== Allowable pincodes ===========
+import AllowablePincodes from './storeAdmin/allowablePincodes/AllowablePincodes.js';
+
 
 class Layout extends Component  {
 
@@ -124,6 +127,7 @@ class Layout extends Component  {
                                           <Route path="/dashboard" component={Dashboard} exact />
                                         
                                           <Route path="/website-model" component={WebsiteModel} exact />                                          
+                                          <Route path="/franchise-allowable-pincode" component={AllowablePincodes} exact />                                          
 
                                           {/* Product Management */}
                                           <Route path="/product-details/:productID" exact strict component={ProductDetails} />
