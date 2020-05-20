@@ -18,13 +18,27 @@ class BulkProductImageUpload extends Component{
   componentDidMount() {
     this.getData();
   }
+  getData(){
+    axios.get('/api/products/get/list')
+    .then((response)=>{
+        console.log('response', response.data)
+        this.setState({
+          allshopproductimages : response.data
+        })
+    })
+    .catch((error)=>{
+        console.log('error', error);
+    })
+}
+
+
   componentWillReceiveProps(nextProps){
     this.setState({
       'allshopproductimages':nextProps.productData,
     });
   }
+  
   bulkuplodaProductImages(event){
-    event.preventDefault();
     event.preventDefault();
         var productImage = [];
         if (event.currentTarget.files && event.currentTarget.files[0]) {
@@ -125,11 +139,11 @@ class BulkProductImageUpload extends Component{
                                 console.log("1.project setting res = ",response.data);
                                 if(response.data){
                                   const config = {
-                                    bucketName      : response.data.bucket,
-                                    dirName         : 'propertiesImages',
-                                    region          : response.data.region,
-                                    accessKeyId     : response.data.key,
-                                    secretAccessKey : response.data.secret,
+                                    bucketName      : response.data[0].bucket,
+                                    dirName         : process.env.ENVIRONMENT,
+                                    region          : response.data[0].region,
+                                    accessKeyId     : response.data[0].key,
+                                    secretAccessKey : response.data[0].secret,
                                   }
                                   resolve(config);                               
                                 }
@@ -146,18 +160,6 @@ class BulkProductImageUpload extends Component{
         }
     
   }
-  getData(){
-    axios.get('/api/products/get/list')
-    .then((response)=>{
-        console.log('response', response.data)
-        this.setState({
-          allshopproductimages : response.data
-        })
-    })
-    .catch((error)=>{
-        console.log('error', error);
-    })
-}
   saveImages(event){
     event.preventDefault();
     for(var i=0; i<this.state.productImageArray.length; i++){
@@ -317,6 +319,7 @@ class BulkProductImageUpload extends Component{
                               <tbody>
                                 {  
                                   this.state.allshopproductimages.map((data,index)=>{
+                                    {console.log("data.productImage = ",data.productImage)}
                                     return(
                                       <tr key ={index}>
                                         <td> {index+1}     </td>
