@@ -27,13 +27,13 @@ class AllowablePincodes extends Component {
     }
     getAllowablePincode(){
         axios.get("/api/allowablepincode/get")
-
 			.then((response) => {
 				if(response){
-					console.log("allowable pincodes list:",response);
+					// console.log("allowable pincodes list:",response);
 					this.setState({
 						allowablePincodeList  : response.data,												
-                    })
+                    });
+                    console.log("list=======",this.state.allowablePincodeList);
                 }
             })			
 			.catch((error) => {
@@ -47,11 +47,24 @@ class AllowablePincodes extends Component {
 
 			.then((response) => {
 				if(response){
-					console.log("franchise list:",response);
+                    console.log("franchise list:",response);
+                    this.getAllowablePincode();
 					this.setState({
 						franchiseList  : response.data,						
 						
-                    })
+                    });
+                    var finalList = [];
+                    console.log("list length:",this.state.franchiseList.length);
+                    for(let i=0;i<this.state.franchiseList.length;i++){
+                        console.log("inside for loop");
+                        finalList[i] = {
+                            "franchiseID"       : this.state.franchiseList[i]._id,
+                            "companyID"         : this.state.franchiseList[i].companyID,
+                            "allowablePincodes" : this.state.allowablePincodeList[i].allowablePincodes,
+                            "PincodesID"        : this.state.allowablePincodeList[i]._id
+                        }
+                    }
+                    console.log("finalList:" ,finalList);
                 }
             })            			
 			.catch((error) => {
@@ -123,7 +136,7 @@ class AllowablePincodes extends Component {
 
                                                         </thead>
                                                         <tbody>                                                              
-                                                            {this.state.franchiseList &&
+                                                            {Array.isArray(this.state.franchiseList && this.state.allowablePincodeList) &&
                                                                 this.state.franchiseList.map((data, index) => {
                                                                     return (
                                                                         <tr className ="pincodesRow">
@@ -136,7 +149,7 @@ class AllowablePincodes extends Component {
                                                                             <td>                                                              
                                                                                 {/* <input type="text" id="pincodes" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincodes}  ref="pincodes" name="pincodes" onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.." required/> */}
                                                                                 <input type="text" id="" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                                                 value={this.state.pincodes}  ref={"pincodes"+index} name={"pincodes"+index} onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
+                                                                                 value={this.state.allowablePincodeList.length>0 ? this.state.allowablePincodeList[index].allowablePincodes:null}  ref={"pincodes"+index} name={"pincodes"+index} onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
                                                                             </td>                                                                
                                                                         </tr> 
                                                                     );

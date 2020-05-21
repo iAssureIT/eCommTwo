@@ -33,7 +33,8 @@ class ListOfEntities extends Component {
 			showDetails : false,
 			district  : "Select District",
 			"pathname": window.location.pathname.split('/')[1],
-			entityType : this.props.match.params.entity === "org-settings" ? "appCompany" : this.props.match.params.entity 
+			// entityType : this.props.match.params.entity === "org-settings" ? "appCompany" : this.props.match.params.entity 
+			entityType : this.props.entity, 
 		};
 		console.log("path:" ,this.state.pathname);
 		
@@ -97,9 +98,6 @@ class ListOfEntities extends Component {
 			.join(' ');
 	}
 	getEntities() {
-		console.log("entitytype:" ,this.props.match.params.entityType);
-		console.log("entitytype:" ,this.state.entityType);
-		console.log("path:" ,this.state.pathname);
 		axios.get("/api/entitymaster/get/count/"+this.state.entityType)
 			.then((response) => {
 				this.setState({
@@ -108,7 +106,7 @@ class ListOfEntities extends Component {
 			})
 			.catch((error) => {
 			})
-			
+		console.log("entityType===",this.state.entityType);	
 		axios.get("/api/entitymaster/get/"+this.state.entityType)
 
 			.then((response) => {

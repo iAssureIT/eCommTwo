@@ -5,5 +5,6 @@ const allowablePincodeController = require('./Controller');
 
 //route for allowable pincodes
 router.post('/post', allowablePincodeController.add_allowablePincodes);
+router.get('/get', allowablePincodeController.get_allowablePincodes);
 
 module.exports = router;

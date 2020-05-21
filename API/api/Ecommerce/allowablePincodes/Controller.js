@@ -7,13 +7,11 @@ exports.add_allowablePincodes = (req, res, next) => {
     for (let franchiseID in allowablePincodeObj) { 
         if (allowablePincodeObj.hasOwnProperty(franchiseID)) { 
             value = allowablePincodeObj[franchiseID]; 
-            console.log("---Mydata:",franchiseID, value); 
+            console.log("value----",value); 
             Allowablepincode.find({"franchiseID":franchiseID})
             .exec()
-            .then(data =>{
-                // console.log(req.body)
+            .then(data =>{                
                 if(data && data.length > 0){    
-
                     Allowablepincode.find({"franchiseID":franchiseID})
                     .updateOne(
                         { franchiseID:franchiseID},  
@@ -36,18 +34,13 @@ exports.add_allowablePincodes = (req, res, next) => {
                         });
                     });
 
-
-
-                    // res.status(200).json({
-                    //     "message": "Franchise already exists."
-                    // });
                 }else{
                     const allowablePincode = new Allowablepincode({
-                        _id              : new mongoose.Types.ObjectId(),                    
-                        franchiseID     : franchiseID,
-                        companyID       : allowablePincodeObj[franchiseID].companyID,
-                        alloablePincodes : allowablePincodeObj[franchiseID].pincodes,
-                        createdAt        : new Date()
+                        _id               : new mongoose.Types.ObjectId(),                    
+                        franchiseID       : franchiseID,
+                        companyID         : allowablePincodeObj[franchiseID].companyID,
+                        allowablePincodes : allowablePincodeObj[franchiseID].pincodes,
+                        createdAt         : new Date()
                     });
                     console.log("---data to send:",allowablePincode); 
                     allowablePincode.save()
@@ -71,9 +64,20 @@ exports.add_allowablePincodes = (req, res, next) => {
             });
         });
         } 
-    } 
-
-
+    }
 };
+exports.get_allowablePincodes = (req, res, next)=>{
+    Allowablepincode.find()
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });         
+}
 
 

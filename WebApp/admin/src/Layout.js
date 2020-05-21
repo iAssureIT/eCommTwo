@@ -68,7 +68,7 @@ import VendorLocationType   from './storeAdmin/vendorManagement/MasterData/Vendo
 import FranchiseBasicInfo       from './storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
 import FranchiseLocationDetails from './storeAdmin/FranchiseMaster/FranchiseLocationDetails.js';
 import FranchiseContactDetails  from './storeAdmin/FranchiseMaster/FranchiseContactDetails.js';
-import ListOfEntities           from './coreadmin/Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
+import ListOfEntitiesPage           from './storeAdmin/FranchiseMaster/ListOfEntities.js';
 
 //=============== Preferences =================
 import WebsiteModel from './storeAdmin/preferences/WebsiteModel.js';
@@ -168,7 +168,7 @@ class Layout extends Component  {
                                           <Route path="/franchise/contact-details"                        exact strict component={FranchiseContactDetails} />
                                           <Route path="/franchise/contact-details/:entityID"              exact strict component={FranchiseContactDetails} />
                                           <Route path="/franchise/contact-details/:entityID/:contactID"   exact strict component={FranchiseContactDetails} />
-                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntities} />
+                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntitiesPage} />
 
                                           { /*Order List*/}
                                           <Route path="/allorders" exact strict component={AllOrdersList} />
