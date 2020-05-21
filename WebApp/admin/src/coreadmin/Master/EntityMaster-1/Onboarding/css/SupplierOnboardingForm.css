@@ -159,17 +159,16 @@
     padding: 0
 }
 .brdlogos1 {
-    background-size: 232p/*x 128px;
-    background-repeat: no*/-repeat;
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
     background: #ebebeb;
     border: 1px dashed #999;
-    height: 34px;
-    width: 50px;
+    height: 4.2em;
     padding: 0
 }
 #LogoImageUpOne{
-    /*background-size: 232px 128px;*/
-    /*background-repeat: no-repeat;*/
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
     background: #ebebeb;
     border: 1px dashed #999;
     cursor: pointer;
@@ -180,7 +179,7 @@
     height: 4em !important;
 }
 .logoStyle2 {
-    height: 100%;
+    /*height: 4.9em;*/
     padding: 0;
     width: 100%
 }
@@ -1019,12 +1018,12 @@ input:checked+.slider:before {
 }
 
 #LogoImageUpOne i {
-    font-size: 14px;
+    font-size: 20px;
     color: var(--waikawagrey-color);
 }
 
 #LogoImageUpOne p {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--waikawagrey-color);
 }
@@ -1077,8 +1076,7 @@ select#gender option[value="others"] {
 .uploadImageClient{
     position: absolute;
     top: 20px;
-    height: 34px !important;
-    width: 50px;
+    height: 104px !important;
      background-size: 232px 128px;
     background-repeat: no-repeat;
     background: #ebebeb;
@@ -1091,12 +1089,11 @@ select#gender option[value="others"] {
 }
 .CustomImageUploadBIImg {
     position: absolute;
-    /*background-size: 232px 128px;*/
-    /*background-repeat: no-repeat;*/
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
     background: #ebebeb;
     border: 1px dashed #999;
-    height: 34px;
-    width: 50px;
+    height: 9.2em;
     padding: 0;
 }
 {/*.CustomImageUploadBIImg img {
@@ -1208,23 +1205,4 @@ select#gender option[value="others"] {
  }
   #imageLoader{
     display: none;
-  }
-
-  .box_style{
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 3%;
-    flex: 1 1;
-    font-size: 13px;
-    background-color: var(--white-color);
-    border: 1px solid #ddd;
-    min-height: 107px;
-  }
-  .showMoreBtn{
-    padding: 0;
-    font-size: 12px;
-  }
-
-  .left-border-none{
-    border-radius: 1px !important;
   }

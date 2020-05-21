@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
+import _ from 'underscore';
+import { withRouter } from 'react-router-dom';
 import EntityDetails from './EntityDetails.jsx';
 import 'bootstrap/js/tab.js';
 import '../css/ListOfEntity.css';
 import '../css/ListOfEntityFilter.css';
 import '../css/ListOfAllEntity.css';
+import swal                   from 'sweetalert';
 
 class ListOfEntities extends Component {
 	constructor(props) {
@@ -30,8 +33,10 @@ class ListOfEntities extends Component {
 			showDetails : false,
 			district  : "Select District",
 			"pathname": window.location.pathname.split('/')[1],
-			entityType : this.props.match.params.entity 
+			// entityType : this.props.match.params.entity === "org-settings" ? "appCompany" : this.props.match.params.entity 
+			entityType : this.props.entity, 
 		};
+		console.log("path:" ,this.state.pathname);
 		
 		this.handleChange = this.handleChange.bind(this);
 		this.ShowForm = this.ShowForm.bind(this);
@@ -101,22 +106,29 @@ class ListOfEntities extends Component {
 			})
 			.catch((error) => {
 			})
-			
+		console.log("entityType===",this.state.entityType);	
 		axios.get("/api/entitymaster/get/"+this.state.entityType)
 
 			.then((response) => {
-				this.setState({
-					entityList   : response.data,
-					showDetails  : true,
-				},()=>{
-					if(this.state.entityList.length>0)
-					{
-					console.log("Reverse entityList :",this.state.entityList);
-					this.setState({ id: this.state.entityList[0]._id});
-					console.log("id",this.state.id,this.state.showDetails,this.state.entityList[0]._id)
-					document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")
+				if(response){
+					console.log("franchise list:",response);
+					this.setState({
+						entityList  : response.data,
+						showDetails : true,
+						id 					: response.data[0]._id
+					},()=>{
+						if(document.getElementById(response.data[0]._id)){
+							document.getElementById(response.data[0]._id).classList.add("selectedSupplier");
+						}
+
+						for (var key in document.querySelectorAll('.alphab')) {
+							$($('.alphab')[key]).css('background', '#ddd');
+							$($('.alphab')[key]).css('color', '#000');
+							document.getElementById("filterallalphab").style.background = '#367ea8';
+							document.getElementById("filterallalphab").style.color = '#fff';
+						}
+					})
 				}
-				})
 
 				// $('.selected').removeClass('selectedSupplier');
 			})
@@ -147,11 +159,12 @@ class ListOfEntities extends Component {
 
 		var selector=this.state.selector;
 		if ($(event.target).attr('value') === 'All') {
-			delete selector.initial;
+			/*delete selector.initial;
 			this.setState({	selector: selector },()=>{
 				this.getFilteredProducts(this.state.selector);
 			})
-			
+			*/
+			this.getEntities();
 		} else {
 			
 			
@@ -206,14 +219,14 @@ class ListOfEntities extends Component {
 			$($('.alphab')[key]).css('color', '#000');
 		}
 
-		document.getElementById("filterallalphab").style.background = '#000';
+		document.getElementById("filterallalphab").style.background = '#367ea8';
 		document.getElementById("filterallalphab").style.color = '#fff';
-
-		var selector = this.state.selector;
+		this.getEntities();
+		/*var selector = this.state.selector;
 		selector = {}
 		this.setState({	selector: selector },()=>{
 			this.getFilteredProducts(this.state.selector);
-		})
+		})*/
 	}
 
 	selectFilter(event){
@@ -244,13 +257,12 @@ class ListOfEntities extends Component {
 		axios.post("/api/entitymaster/get/filterEntities", selector)
 			.then((response) => {
 				this.setState({
-					entityList   : response.data
+					entityList   : response.data,
+					showDetails : true 
 				})
-				if(this.state.entityList.length>0)
-				{
 				document.getElementById(response.data[0]._id).classList.add("selectedSupplier")
-				this.setState({ id: response.data[0]._id, showDetails : true });
-				}
+				this.setState({ id: response.data[0]._id, });
+				console.log("id",this.state.id,response.data[0]._id)
 			})
 			.catch((error) => {
 			})
@@ -363,7 +375,7 @@ class ListOfEntities extends Component {
 											<button type="button" className="btn alphab" value="Z" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Z</button>
 									</div>
 								</div>
-								{this.state.entityList && this.state.entityList.length > 0 ?
+								{Array.isArray(this.state.entityList) && this.state.entityList.length > 0 ?
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrollbar" id="style-2">
 										<div className="borderlist12">
 											{
@@ -371,10 +383,23 @@ class ListOfEntities extends Component {
 													return (
 														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 borderlist selected" key={index} onClick={this.ShowForm.bind(this)} name={index} data-child={data._id + '-' + index} id={data._id}>
 															<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 supplierLogoDiv">
-																<img alt="companyLogo" src={data.companyLogo.length > 0 ? data.companyLogo[0]:"/images/noImagePreview.png"} className="supplierLogoImage"></img>															
+																<img src={data.companyLogo.length > 0 ? data.companyLogo[0]:"/images/noImagePreview.png"} className="supplierLogoImage"></img>															
 															</div>
 															<div className="col-lg-8 col-md-10 col-sm-10 col-xs-10 listprofile">
 																<h5 className="titleprofile">{data.companyName}</h5>
+																{/*<div className="dots dropdown1 col-lg-12 col-md-6 col-sm-6 col-xs-6">
+																	
+												        			<div className="dropdown-content1 dropdown2-content2">
+																		<ul className="pdcls ulbtm">
+																			<li id={data._id} className="styleContactActbtn" data-id={data._id} onClick={this.editBasicform.bind(this)} >	
+																		    	<a><i className="fa fa-pencil penmrleft" aria-hidden="true" ></i>&nbsp;&nbsp;<span className="mrflfedit">Edit</span></a>
+																		    </li>
+																		    <li className="styleContactActbtn" data-id={data._id} >
+																		    	<a><i className="fa fa-trash-o" aria-hidden="true" ></i>&nbsp;Delete</a>
+																		    </li>
+																	    </ul>
+																	</div>
+																</div>*/}
 																<ul className="col-lg-9 col-md-9 col-sm-9 col-xs-9 listfont">
 																	<li><i className="fa fa-user-o " aria-hidden="true"></i>&nbsp;{data.groupName}</li>
 																	<li><i className="fa fa-globe " aria-hidden="true"></i>&nbsp;{data.website}</li>
@@ -384,7 +409,7 @@ class ListOfEntities extends Component {
 															</div>
 															<div className="col-lg-2 noRightPadding">
 																<div className="addedDiv col-lg-10 col-lg-offset-2 ">
-																	<img  alt="leftArrow" src="/images/leftArrow.png"/>
+																	<img src="/images/leftArrow.png"/>
 																</div>
 															</div>
 														</div>
@@ -418,4 +443,4 @@ class ListOfEntities extends Component {
 		);
 	}
 }
-export default ListOfEntities;
+export default withRouter(ListOfEntities);

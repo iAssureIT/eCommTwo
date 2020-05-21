@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import ContactDetails from '../EntityMaster/Onboarding/contactDetails/ContactDetails.jsx';
+import LocationDetails from '../EntityMaster/Onboarding/locationDetails/LocationDetails.jsx';
 import _ from 'underscore';
 import 'bootstrap/js/tab.js';
 
-class CorporateContactDetails extends Component {
+class CorporateLocationDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,14 +19,10 @@ class CorporateContactDetails extends Component {
     render() {
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <ContactDetails entity="corporate" 
-                                roles={['employee','manager','corporateadmin']} 
-                                userRole="employee" 
-                                bookingRequired={true}
-                />
+                <LocationDetails entity="corporate" />
             </div>
         );
     }
 }
-export default CorporateContactDetails;
+export default CorporateLocationDetails;
 

@@ -19,7 +19,7 @@ import ViewTemplates    from '../NotificationManagement/ViewTemplates.jsx';
 import GlobalMasters from '../companysetting/Components/GlobalMasters.js';
 
 //============ Entity Master ======================
-import BasicInfo from '../Master/EntityMaster/Onboarding/basicInfo/BasicInfo.js';
+import BasicInfo from '../Master/EntityMaster/Onboarding/basicInfo/BasicInfo.jsx';
 import LocationDetails from '../Master/EntityMaster/Onboarding/locationDetails/LocationDetails.jsx';
 import ContactDetails from '../Master/EntityMaster/Onboarding/contactDetails/ContactDetails.jsx';
 import ListOfEntities from '../Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';

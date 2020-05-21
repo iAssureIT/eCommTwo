@@ -3,15 +3,11 @@ import $ from 'jquery';
 import jQuery from 'jquery';
 import axios from 'axios';
 import swal from 'sweetalert';
+import _ from 'underscore';
 import 'bootstrap/js/tab.js';
 import S3FileUpload from 'react-s3';
 import { withRouter } from 'react-router-dom';
 import OneFieldForm             from '../../../OneFieldForm/OneFieldForm.js';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng
-} from "react-places-autocomplete";
-
 
 class LocationDetails extends Component {
 	constructor(props) {
@@ -20,15 +16,14 @@ class LocationDetails extends Component {
 			'locationType': '',
 			'addressLine1': "",
 			'addressLine2': "",
+			'countryCode': "",
 			'country': "",
+			'stateCode': "",
 			'state': "",
 			'district': "",
 			'city': "",
 			'area': "",
 			'pincode': "",
-			'stateCode':"",
-			'countryCode':"",
-			'latLng':"",
 			'GSTIN': "",
 			'GSTDocument': [],
 			'PAN': "",
@@ -58,7 +53,7 @@ class LocationDetails extends Component {
                 apiLink: '/api/locationtypemaster/',
                 paginationApply: false,
                 searchApply: false,
-                editUrl: '/appCompany/location-details'
+                editUrl: '/org-settings/location-details'
             },
             "editId": this.props.match.params ? this.props.match.params.fieldID : '',
             "IdToDelete" : "",
@@ -66,10 +61,10 @@ class LocationDetails extends Component {
            
 		};
 		this.handleChange = this.handleChange.bind(this);
-		// this.handleChangeCountry = this.handleChangeCountry.bind(this);
-		// this.handleChangeState = this.handleChangeState.bind(this);
-		// this.handleChangeDistrict = this.handleChangeDistrict.bind(this);
-		// this.handleChangeBlock = this.handleChangeBlock.bind(this);
+		this.handleChangeCountry = this.handleChangeCountry.bind(this);
+		this.handleChangeState = this.handleChangeState.bind(this);
+		this.handleChangeDistrict = this.handleChangeDistrict.bind(this);
+		this.handleChangeBlock = this.handleChangeBlock.bind(this);
 		this.camelCase = this.camelCase.bind(this)
 	}
 	componentDidMount() {
@@ -199,126 +194,126 @@ class LocationDetails extends Component {
 		this.setState({
 			[name]: event.target.value
 		});
-		// console.log("toUpperCase",this.state.PAN.toUpperCase());
+		console.log("toUpperCase",this.state.PAN.toUpperCase());
 
-		// if (name === 'area') {
-		// 	var currentVal = event.currentTarget.value;
-		// 	if (currentVal.match('[a-zA-Z ]+')) {
-		// 		this.setState({
-		// 			[name]: event.target.value
-		// 		});
-		// 	} else {
-		// 		this.setState({
-		// 			[name]: ''
-		// 		});
-		// 	}
-		// }
+		if (name === 'area') {
+			var currentVal = event.currentTarget.value;
+			if (currentVal.match('[a-zA-Z ]+')) {
+				this.setState({
+					[name]: event.target.value
+				});
+			} else {
+				this.setState({
+					[name]: ''
+				});
+			}
+		}
 	}
-	// handleChangeCountry(event) {
-	// 	const target = event.target;
-	// 	this.setState({
-	// 		[event.target.name]: event.target.value
-	// 	});
-	// 	this.getStates(event.target.value.split('|')[0])
-	// }
-	// getStates(StateCode) {
-	// 	axios.get("http://locations2.iassureit.com/api/states/get/list/" + StateCode)
-	// 		.then((response) => {
-	// 			this.setState({
-	// 				stateArray: response.data
-	// 			})
-	// 			$('#Statedata').val(this.state.states);
-	// 		})
-	// 		.catch((error) => {
-	// 		})
-	// }
-	// handleChangeState(event) {
-	// 	this.setState({
-	// 		[event.target.name]: event.target.value
-	// 	});
-	// 	const target = event.target;
-	// 	const stateCode = $(target).val();
-	// 	const countryCode = $("#country").val();
-	// 	var entityID = this.state.entityID;
-	// 	axios.get('/api/entitymaster/get/one/' + entityID)
-	// 	.then((response)=>{
-	// 		console.log('loc', response.data.locations);
-	// 		var locStateCode = response.data.locations.filter((a)=>a.stateCode === stateCode.split("|")[0]);
-	// 		console.log('locStateCode', locStateCode, stateCode);
-	// 		if(locStateCode.length > 0){
-	// 			this.setState({
-	// 				'GSTIN'			: locStateCode[0].GSTIN,
-	// 				'GSTDocument'	: locStateCode[0].GSTDocument,
-	// 				'PAN'			: locStateCode[0].PAN,
-	// 				'PANDocument'	: locStateCode[0].PANDocument,
-	// 			})
-	// 		}else{
-	// 			this.setState({
-	// 				'GSTIN'			: "",
-	// 				'GSTDocument'	: [],
-	// 				'PAN'			: "",
-	// 				'PANDocument'	: [],
-	// 			})
-	// 		}
-	// 	})
-	// 	.catch((error)=>{})
-	// 	this.getDistrict(stateCode, countryCode);
+	handleChangeCountry(event) {
+		const target = event.target;
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+		this.getStates(event.target.value.split('|')[0])
+	}
+	getStates(StateCode) {
+		axios.get("http://locations2.iassureit.com/api/states/get/list/" + StateCode)
+			.then((response) => {
+				this.setState({
+					stateArray: response.data
+				})
+				$('#Statedata').val(this.state.states);
+			})
+			.catch((error) => {
+			})
+	}
+	handleChangeState(event) {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+		const target = event.target;
+		const stateCode = $(target).val();
+		const countryCode = $("#country").val();
+		var entityID = this.state.entityID;
+		axios.get('/api/entitymaster/get/one/' + entityID)
+		.then((response)=>{
+			console.log('loc', response.data.locations);
+			var locStateCode = response.data.locations.filter((a)=>a.stateCode === stateCode.split("|")[0]);
+			console.log('locStateCode', locStateCode, stateCode);
+			if(locStateCode.length > 0){
+				this.setState({
+					'GSTIN'			: locStateCode[0].GSTIN,
+					'GSTDocument'	: locStateCode[0].GSTDocument,
+					'PAN'			: locStateCode[0].PAN,
+					'PANDocument'	: locStateCode[0].PANDocument,
+				})
+			}else{
+				this.setState({
+					'GSTIN'			: "",
+					'GSTDocument'	: [],
+					'PAN'			: "",
+					'PANDocument'	: [],
+				})
+			}
+		})
+		.catch((error)=>{})
+		this.getDistrict(stateCode, countryCode);
 
-	// }
-	// getDistrict(stateCode, countryCode) {
-	// 	axios.get("http://locations2.iassureit.com/api/districts/get/list/" + countryCode + "/" + stateCode)
-	// 		.then((response) => {
-	// 			this.setState({
-	// 				districtArray: response.data
-	// 			})
-	// 			$('#Citydata').val(this.state.city);
-	// 		})
-	// 		.catch((error) => {
-	// 		})
-	// }
-	// handleChangeDistrict(event) {
-	// 	this.setState({
-	// 		[event.target.name]: event.target.value
-	// 	});
-	// 	// const target = event.target;
-	// 	// const districtName = $(target).val();
-	// 	// const stateCode = $('#Statedata').val();
-	// 	// const countryCode = $("#country").val();
-	// 	// this.getBlocks(districtName, stateCode, countryCode);
-	// }
-	// handleChangeBlock(event) {
-	// 	this.setState({
-	// 		[event.target.name]: event.target.value
-	// 	});
-	// 	const target = event.target;
-	// 	const blockName = $(target).val();
-	// 	const districtName = $('#Citydata').val();
-	// 	const stateCode = $('#Statedata').val();
-	// 	const countryCode = $("#country").val();
-	// 	this.getAreas(blockName, districtName, stateCode, countryCode);
-	// }
-	// getBlocks(districtName, stateCode, countryCode) {
-	// 	axios.get("http://locations2.iassureit.com/api/blocks/get/list/" + countryCode + '/' + stateCode + "/" + districtName)
-	// 		.then((response) => {
-	// 			this.setState({
-	// 				blocksArray: response.data
-	// 			})
-	// 			$('#Blocksdata').val(this.state.block);
-	// 		})
-	// 		.catch((error) => {
-	// 		})
-	// }
-	// getAreas(blockName, districtName, stateCode, countryCode) {
-	// 	axios.get("http://locations2.iassureit.com/api/areas/get/list/" + countryCode + '/' + stateCode + "/" + districtName + '/' + blockName + '/Pune city')
-	// 		.then((response) => {
-	// 			this.setState({
-	// 				areasArray: response.data
-	// 			})
-	// 			$('#Areasdata').val(this.state.area);
-	// 		})
-	// 		.catch((error) => {
-	// 		})
-	// }
+	}
+	getDistrict(stateCode, countryCode) {
+		axios.get("http://locations2.iassureit.com/api/districts/get/list/" + countryCode + "/" + stateCode)
+			.then((response) => {
+				this.setState({
+					districtArray: response.data
+				})
+				$('#Citydata').val(this.state.city);
+			})
+			.catch((error) => {
+			})
+	}
+	handleChangeDistrict(event) {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+		// const target = event.target;
+		// const districtName = $(target).val();
+		// const stateCode = $('#Statedata').val();
+		// const countryCode = $("#country").val();
+		// this.getBlocks(districtName, stateCode, countryCode);
+	}
+	handleChangeBlock(event) {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+		const target = event.target;
+		const blockName = $(target).val();
+		const districtName = $('#Citydata').val();
+		const stateCode = $('#Statedata').val();
+		const countryCode = $("#country").val();
+		this.getAreas(blockName, districtName, stateCode, countryCode);
+	}
+	getBlocks(districtName, stateCode, countryCode) {
+		axios.get("http://locations2.iassureit.com/api/blocks/get/list/" + countryCode + '/' + stateCode + "/" + districtName)
+			.then((response) => {
+				this.setState({
+					blocksArray: response.data
+				})
+				$('#Blocksdata').val(this.state.block);
+			})
+			.catch((error) => {
+			})
+	}
+	getAreas(blockName, districtName, stateCode, countryCode) {
+		axios.get("http://locations2.iassureit.com/api/areas/get/list/" + countryCode + '/' + stateCode + "/" + districtName + '/' + blockName + '/Pune city')
+			.then((response) => {
+				this.setState({
+					areasArray: response.data
+				})
+				$('#Areasdata').val(this.state.area);
+			})
+			.catch((error) => {
+			})
+	}
 	camelCase(str) {
 		return str
 			.toLowerCase()
@@ -353,12 +348,12 @@ class LocationDetails extends Component {
 				.then((value) => {
 					if (value) {
 						if (entityID) {
-							this.props.history.push("/" +this.state.pathname + "/basic-details/" + entityID);
+							this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/basic-details/" + entityID);
 						} else {
-							this.props.history.push("/" + this.state.pathname + "/basic-details");
+							this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/basic-details");
 						}
 					} else {
-						this.props.history.push("/" +this.state.pathname + "/location-details/" + entityID);
+						this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/location-details/" + entityID);
 					}
 				})
 			$(".OkButtonSwal").parents('.swal-button-container').addClass('postionSwalRight');
@@ -366,9 +361,9 @@ class LocationDetails extends Component {
 
 		} else {
 			if (entityID) {
-				this.props.history.push("/" +this.state.pathname+ "/basic-details/" + entityID);
+				this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/basic-details/" + entityID);
 			} else {
-				this.props.history.push("/" +this.state.pathname+ "/basic-details");
+				this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/basic-details");
 			}
 		}
 	}
@@ -382,20 +377,14 @@ class LocationDetails extends Component {
 					'locationType': this.state.locationType,
 					'addressLine1': this.state.addressLine1,
 					'addressLine2': this.state.addressLine2,
-					// 'countryCode': this.state.country.split("|")[0],
-					'countryCode': this.state.countryCode,
-					// 'country': this.state.country.split("|")[1],
-					'country': this.state.country,
-					// 'stateCode': this.state.states.split("|")[0],
-					'stateCode': this.state.stateCode,
-					// 'state': this.state.states.split("|")[1],
-					'state': this.state.states,
+					'countryCode': this.state.country.split("|")[0],
+					'country': this.state.country.split("|")[1],
+					'stateCode': this.state.states.split("|")[0],
+					'state': this.state.states.split("|")[1],
 					'district': this.state.district,
 					'city': this.state.city,
 					'area': this.state.area,
 					'pincode': this.state.pincode,
-					'latitude':this.state.latLng.lat,
-					'longitude':this.state.latLng.lng,
 					'GSTDocument': this.state.GSTDocument,
 					'GSTIN': this.state.GSTIN ? this.state.GSTIN.toUpperCase(): this.state.GSTIN,
 					'PAN': this.state.PAN ? this.state.PAN.toUpperCase():this.state.PAN,
@@ -420,7 +409,6 @@ class LocationDetails extends Component {
 						'city': "",
 						'area': "",
 						'pincode': "",
-						'latLng':"",
 						'GSTIN': "",
 						'GSTDocument': [],
 						'PAN': "",
@@ -435,7 +423,7 @@ class LocationDetails extends Component {
 					$("#locationsDetail").validate().resetForm();
 				})
 				.catch((error) => {
-					console.log('error adding location: ',error)
+
 				})
 		}
 	}
@@ -464,17 +452,17 @@ class LocationDetails extends Component {
 			})
 				.then((value) => {
 					if (value) {
-						this.props.history.push("/" + this.state.pathname + "/contact-details/" + entityID);
+						this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/contact-details/" + entityID);
 
 					} else {
-						this.props.history.push("/" + this.state.pathname + "/location-details/" + entityID);
+						this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/location-details/" + entityID);
 					}
 				})
 			$(".OkButtonSwal").parents('.swal-button-container').addClass('postionSwalRight');
 			$(".CancelButtonSwal").parents('.swal-button-container').addClass('postionSwalLeft');
 
 		} else {
-			this.props.history.push("/" + this.state.pathname + "/contact-details/" + entityID);
+			this.props.history.push("/" + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/contact-details/" + entityID);
 		}
 	}
 	componentWillReceiveProps(props) {
@@ -493,21 +481,18 @@ class LocationDetails extends Component {
 				.then((response) => {
 					console.log("response",response);
 					var editData = response.data.locations.filter((a) => a._id === locationID);
-					// this.getStates(editData[0].countryCode);
-					// this.getDistrict(editData[0].stateCode, editData[0].countryCode);
-					// this.getBlocks(editData[0].district, editData[0].stateCode, editData[0].countryCode);
+					this.getStates(editData[0].countryCode);
+					this.getDistrict(editData[0].stateCode, editData[0].countryCode);
+					this.getBlocks(editData[0].district, editData[0].stateCode, editData[0].countryCode);
 					this.setState({
 						'openForm': true,
 						'locationType': editData[0].locationType,
 						'addressLine1': editData[0].addressLine1,
 						'addressLine2': editData[0].addressLine2,
-						'country': editData[0].country,
-						'countryCode': editData[0].countryCode,
-						'states': editData[0].state,
-						'stateCode': editData[0].stateCode,
+						'country': editData[0].countryCode + '|' + editData[0].country,
+						'states': editData[0].stateCode + '|' + editData[0].state,
 						'district': editData[0].district,
 						'branchCode': editData[0].branchCode,
-						'latLng': {lat:editData[0].latitude, lng:editData[0].longitude},
 						'city': editData[0].city,
 						'area': editData[0].area,
 						'pincode': editData[0].pincode,
@@ -526,6 +511,7 @@ class LocationDetails extends Component {
 		}
 	}
 	locationDetails() {
+		var route = this.props.match.params.entityID;
 		axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
 			.then((response) => {
 				console.log("location array:",response.data.locations);
@@ -561,20 +547,19 @@ class LocationDetails extends Component {
 						'addressLine1': "",
 						'addressLine2': "",
 						'countryCode': "",
-						'country': '',
+						'country': '-- Select --',
 						'stateCode': "",
-						'states': '',
+						'states': '-- Select --',
 						'district': "",
 						'city': "",
 						'area': "",
 						'pincode': "",
-						'latLng':"",
 						'GSTIN': "",
 						'GSTDocument': [],
 						'PAN': "",
 						'PANDocument': [],
 					});
-					this.props.history.push('/' + this.state.pathname + '/location-details/' + entityID);
+					this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + '/location-details/' + entityID);
 					this.locationDetails();
            			swal({
 	                    text : "Location deleted successfully.",
@@ -603,6 +588,10 @@ class LocationDetails extends Component {
 		event.preventDefault();
 		var entityID = this.state.entityID;
 		var locationID = event.target.id;
+		var formValues = {
+			entityID: entityID,
+			locationID: locationID
+		}
 		axios.delete('/api/entitymaster/deleteLocation/' + entityID + "/" + locationID)
 			.then((response) => {
 				this.setState({
@@ -612,20 +601,19 @@ class LocationDetails extends Component {
 					'addressLine1': "",
 					'addressLine2': "",
 					'countryCode': "",
-					'country': '',
+					'country': '-- Select --',
 					'stateCode': "",
-					'states': '',
+					'states': '-- Select --',
 					'district': "",
 					'city': "",
 					'area': "",
 					'pincode': "",
-					'latLng':"",
 					'GSTIN': "",
 					'GSTDocument': [],
 					'PAN': "",
 					'PANDocument': [],
 				});
-				this.props.history.push('/' +this.state.pathname + '/location-details/' + entityID);
+				this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + '/location-details/' + entityID);
 				this.locationDetails();
 				$(".swal-text").css("font-family", "sans-serif");
 				swal('Location deleted successfully.');
@@ -646,15 +634,13 @@ class LocationDetails extends Component {
 					'addressLine1': this.state.addressLine1,
 					'addressLine2': this.state.addressLine2,
 					'branchCode'	: this.state.branchCode,
-					'countryCode': this.state.countryCode,
-					'country': this.state.country,
-					'stateCode': this.state.stateCode,
-					'state': this.state.states,
+					'countryCode': this.state.country.split("|")[0],
+					'country': this.state.country.split("|")[1],
+					'stateCode': this.state.states.split("|")[0],
+					'state': this.state.states.split("|")[1],
 					'district': this.state.district,
 					'city': this.state.city,
 					'area': this.state.area,
-					'latitude':this.state.latLng.lat,
-					'longitude':this.state.latLng.lng,
 					'pincode': this.state.pincode,
 					'GSTDocument': this.state.GSTDocument,
 					'PANDocument': this.state.PANDocument,
@@ -680,13 +666,12 @@ class LocationDetails extends Component {
 						'city': "",
 						'area': "",
 						'pincode': "",
-						'latLng':"",
 						'GSTIN': "",
 						'GSTDocument': [],
 						'PAN': "",
 						'PANDocument': [],
 					});
-					this.props.history.push('/' +this.state.pathname+ '/location-details/' + entityID);
+					this.props.history.push('/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + '/location-details/' + entityID);
 					this.locationDetails();
 					$(".swal-text").css("font-family", "sans-serif");
 					swal('Location details updated successfully');					
@@ -710,40 +695,41 @@ class LocationDetails extends Component {
 				this.setState({
 					locationTypeArry: response.data
 				})
+				console.log("locationTypeArry:",this.state.locationTypeArry);
 			})
 			.catch((error) => {
 
 			})
 	}
-	// handlePincode(event) {
-	// 	event.preventDefault();
-	// 	this.setState({
-	// 		[event.target.name]: event.target.value
-	// 	})
-	// 	console.log("event.target.name",event.target.value)
-	// 	if (event.target.value !== '') {
-	// 		axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
-	// 			.then((response) => {
-	// 				console.log("response",response)
-	// 				if ($("[name='pincode']").valid()) {
+	handlePincode(event) {
+		event.preventDefault();
+		this.setState({
+			[event.target.name]: event.target.value
+		})
+		console.log("event.target.name",event.target.value)
+		if (event.target.value !== '') {
+			axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
+				.then((response) => {
+					console.log("response",response)
+					if ($("[name='pincode']").valid()) {
 
-	// 					if (response.data[0].Status === 'Success') {
-	// 						this.setState({ pincodeExists: true })
-	// 					} else {
-	// 						this.setState({ pincodeExists: false })
-	// 					}
-	// 				} else {
-	// 					this.setState({ pincodeExists: true })
-	// 				}
+						if (response.data[0].Status === 'Success') {
+							this.setState({ pincodeExists: true })
+						} else {
+							this.setState({ pincodeExists: false })
+						}
+					} else {
+						this.setState({ pincodeExists: true })
+					}
 
-	// 			})
-	// 			.catch((error) => {
-	// 				this.setState({ pincodeExists: "NotAvailable" })
-	// 			})
-	// 	} else {
-	// 		this.setState({ pincodeExists: true })
-	// 	}
-	// }
+				})
+				.catch((error) => {
+					this.setState({ pincodeExists: "NotAvailable" })
+				})
+		} else {
+			this.setState({ pincodeExists: true })
+		}
+	}
 	GSTINBrowse(event) {
 		event.preventDefault();
 		var GSTDocument = [];
@@ -965,81 +951,6 @@ class LocationDetails extends Component {
 	OpenModal(event){
 
 	}
-
-	handleChangePlaces = address => {
-	    this.setState({ addressLine1 : address});
-	};
-
-	handleSelect = address => {
-
-    geocodeByAddress(address)
-     .then((results) =>{ 
-      for (var i = 0; i < results[0].address_components.length; i++) {
-          for (var b = 0; b < results[0].address_components[i].types.length; b++) {
-              switch (results[0].address_components[i].types[b]) {
-                  case 'sublocality_level_1':
-                      var area = results[0].address_components[i].long_name;
-                      break;
-                  case 'sublocality_level_2':
-                      area = results[0].address_components[i].long_name;
-                      break;
-                  case 'locality':
-                      var city = results[0].address_components[i].long_name;
-                      break;
-                  case 'administrative_area_level_1':
-                      var state = results[0].address_components[i].long_name;
-                      var stateCode = results[0].address_components[i].short_name;
-                      break;
-                  case 'administrative_area_level_2':
-                      var district = results[0].address_components[i].long_name;
-                      break;
-                  case 'country':
-                     var country = results[0].address_components[i].long_name;
-                     var countryCode = results[0].address_components[i].short_name;
-                      break; 
-                  case 'postal_code':
-                     var pincode = results[0].address_components[i].long_name;
-                      break;
-                  default :
-                  		break;
-              }
-          }
-      }
-
-      this.setState({
-        area : area,
-        city : city,
-        district : district,
-        states: state,
-        country:country,
-        pincode: pincode,
-        stateCode:stateCode,
-        countryCode:countryCode
-      })
-
-       
-        })
-     
-      .catch(error => console.error('Error', error));
-
-      geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => this.setState({'latLng': latLng}))
-      .catch(error => console.error('Error', error));
-     
-      this.setState({ addressLine1 : address});
-  };
-
-  hideModal(event){
-    	event.preventDefault();
-    	$("html,body").scrollTop(0);
-    	var token = $(event.target).attr('token');
-    	var idVar = '#exampleModal'+token
-    	$(idVar).hide()
-    	$(".modal-backdrop").remove();
-    	window.location.reload();
-    }
-
 	render() {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1086,7 +997,7 @@ class LocationDetails extends Component {
 								<div className="nav-center OnboardingTabs col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<ul className="nav nav-pills vendorpills col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-3 col-sm-12 col-xs-12">
 										<li className=" col-lg-4 col-md-3 col-sm-12 col-xs-12 transactionTab pdcls pdclsOne  NOpadding-left btn1 disabled">
-											<a href={this.props.match.params.entityID ? "/"+this.props.entity+"/basic-details/"+this.props.match.params.entityID : "/"+this.props.entity+"/basic-details"} className="basic-info-pillss pills backcolor">
+											<a href={this.props.match.params.entityID ? "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/basic-details/"+this.props.match.params.entityID : "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/basic-details"} className="basic-info-pillss pills backcolor">
 												<i className="fa fa-info-circle" aria-hidden="true"></i> &nbsp;
 												Basic Info
 											</a>
@@ -1094,7 +1005,7 @@ class LocationDetails extends Component {
 										</li>
 										<li className="active col-lg-4 col-md-3 col-sm-12 col-xs-12 transactionTab pdcls  pdclsOne btn2 ">
 											<div className="triangletwo" id="triangle-right1"></div>
-											<a href={this.props.match.params.entityID ? "/"+this.props.entity+"/location-details/"+this.props.match.params.entityID : "/"+this.props.entity+"/location-details" } className="basic-info-pillss backcolor">
+											<a href={this.props.match.params.entityID ? "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/location-details/"+this.props.match.params.entityID : "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/location-details" } className="basic-info-pillss backcolor">
 												<i className="fa fa-map-marker iconMarginLeft" aria-hidden="true"></i> &nbsp;
 												Location
 											</a>
@@ -1102,7 +1013,7 @@ class LocationDetails extends Component {
 										</li>
 										<li className="col-lg-4 col-md-3 col-sm-12 col-xs-12 transactionTab noRightPadding pdcls btn4 disabled">
 											<div className="trianglesix" id="triangle-right2"></div>
-											<a href={this.props.match.params.entityID ? "/"+this.props.entity+"/contact-details/"+this.props.match.params.entityID : "/"+this.props.entity+"/contact-details"} className="basic-info-pillss backcolor">
+											<a href={this.props.match.params.entityID ? "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/contact-details/"+this.props.match.params.entityID : "/"+(this.props.entity === "appCompany" ? "org-settings":this.props.entity)+"/contact-details"} className="basic-info-pillss backcolor">
 												<i className="fa fa-phone phoneIcon" aria-hidden="true"></i> &nbsp;
 												Contact
 											</a>
@@ -1141,13 +1052,14 @@ class LocationDetails extends Component {
 																		<select  className="form-control col-lg-11 col-md-12 col-sm-12 col-xs-12" value={this.state.locationType} ref="locationType" name="locationType" onChange={this.handleChange}>
 																			<option >--Select Location Type--</option>
 																			{
-																				this.state.locationTypeArry && this.state.locationTypeArry.length > 0 ?
+																				(Array.isArray(this.state.locationTypeArry) && this.state.locationTypeArry.length > 0) 
+																				?
 																					this.state.locationTypeArry.map((locationtypedata, index) => {
 																						return (
 																							<option key={index} data-attribute={index}>{locationtypedata.locationType}</option>
 																						);
 																					})
-																					:
+																				:
 																					null
 																			}
 																		</select>
@@ -1156,54 +1068,15 @@ class LocationDetails extends Component {
 																	  </div>
 																	</div>
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Flat No/Block No</label>
-																		<input id="Line2" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine2} ref="addressLine2" name="addressLine2" onChange={this.handleChange} />
+																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address Line 1 <sup className="astrick">*</sup></label>
+																		<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />
 																	</div>
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address Line 2 <sup className="astrick">*</sup></label>
-																		{/*<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />*/}
-																		 <PlacesAutocomplete
-								                                        value={this.state.addressLine1}
-								                                        onChange={this.handleChangePlaces}
-								                                        onSelect={this.handleSelect}
-								                                      >
-								                                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-								                                          <div>
-								                                            <input
-								                                              {...getInputProps({
-								                                                placeholder: 'Search Address ...',
-								                                                className: 'location-search-input col-lg-12 form-control',
-								                                              })}
-								                                            />
-								                                            <div className="autocomplete-dropdown-container">
-								                                              {loading && <div>Loading...</div>}
-								                                              {suggestions.map(suggestion => {
-								                                                const className = suggestion.active
-								                                                  ? 'suggestion-item--active'
-								                                                  : 'suggestion-item';
-								                                                // inline style for demonstration purpose
-								                                                const style = suggestion.active
-								                                                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-								                                                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-								                                                return (
-								                                                  <div
-								                                                    {...getSuggestionItemProps(suggestion, {
-								                                                      className,
-								                                                      style,
-								                                                    })}
-								                                                  >
-								                                                    <span>{suggestion.description}</span>
-								                                                  </div>
-								                                                );
-								                                              })}
-								                                            </div>
-								                                          </div>
-								                                        )}
-								                                      </PlacesAutocomplete>
+																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address Line 2</label>
+																		<input id="Line2" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine2} ref="addressLine2" name="addressLine2" onChange={this.handleChange} />
 																	</div>
-																	
 																</div>
-																{/*<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Country <sup className="astrick">*</sup>
 																		</label>
@@ -1248,8 +1121,8 @@ class LocationDetails extends Component {
 																			}
 																		</select>
 																	</div>
-																</div>*/}
-																{/*<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+																</div>
+																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">City 
 																		</label>
@@ -1266,7 +1139,7 @@ class LocationDetails extends Component {
 																		{this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
 																		{this.state.pincodeExists !== "NotAvailable" ? null : <label style={{ color: "red", fontWeight: "100" }}>Pincode can not be validated at this time. Please enter this value carefully</label>}
 																	</div>
-																</div>*/}
+																</div>
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">GSTIN
@@ -1407,7 +1280,7 @@ class LocationDetails extends Component {
 															this.state.locationarray.map((Suppliersdata, index) => {
 																return (
 																	<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 " key={index}>
-																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 box_style">
+																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxul1">
 																			<div className=" col-lg-1 col-md-1 col-sm-1 col-xs-1 NOpadding">
 																				<div className="locationIcon col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
 																					<i className="fa fa-map-marker" aria-hidden="true"></i>
@@ -1415,116 +1288,82 @@ class LocationDetails extends Component {
 																			</div>
 																			<ul className="col-lg-10 col-md-10 col-sm-10 col-xs-10 palfclr addrbox">
 																				<li>{Suppliersdata.locationType}</li>
-																				<li>{Suppliersdata.addressLine1}</li>
-																				{Suppliersdata.GSTIN || Suppliersdata.PAN ?
-																					<li>
-																					<button type="button" className="btn btn-link showMoreBtn" data-toggle="modal" data-target={"#exampleModal"+index}>
-																					  Show More
-																					</button>
-																					</li> 
-																				: null }
-																				<div id={"exampleModal"+index} className="modal" role="dialog">
-																				  <div className="modal-dialog">
-
-																				    <div className="modal-content col-lg-12">
-																				      <div className="modal-header">
-																				        <button type="button" className="close" token={index} onClick={this.hideModal.bind(this)}>&times;</button>
-																				      </div>
-																				      <div className="modal-body">
-																				
-																				        {Suppliersdata.GSTIN ?
-																						<div className="col-md-12">
-																						<li className="gst">GSTIN : {Suppliersdata.GSTIN}</li>
-																						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-																						{
-																							Suppliersdata.GSTDocument && Suppliersdata.GSTDocument.length > 0 ?
-																								Suppliersdata.GSTDocument.map((doc, i) => {
-																									if(('extension',doc.substring(doc.lastIndexOf("."))) === '.pdf'){
-																										return (
-																											<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
-																												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																													<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
-																														<img src={'/images/pdf.png'} className="img-responsive logoStyle" />
-																													</div>
-																												</div>
+																				<li>{Suppliersdata.addressLine1}{Suppliersdata.addressLine2 ? "," : ""} {Suppliersdata.addressLine2}{Suppliersdata.area ? "," : ""} {Suppliersdata.area}</li>
+																				<li>{Suppliersdata.city} {Suppliersdata.states}, {Suppliersdata.district}, {Suppliersdata.country} {Suppliersdata.pincode}</li>
+																				<li className="gst">GSTIN : {Suppliersdata.GSTIN}</li>
+																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+																				{
+																					Suppliersdata.GSTDocument && Suppliersdata.GSTDocument.length > 0 ?
+																						Suppliersdata.GSTDocument.map((doc, i) => {
+																							if(('extension',doc.substring(doc.lastIndexOf("."))) === '.pdf'){
+																								return (
+																									<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
+																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+																											<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
+																												<img src={'/images/pdf.png'} className="img-responsive logoStyle" />
 																											</div>
-																										);
-																									}else{
-																										return (
-																											<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
-																												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																													<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
-																														<img src={doc} className="img-responsive logoStyle" />
-																													</div>
-																												</div>
-																											</div>
-																										);
-																									}
-																								})
-																								:
-																								<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
-																									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom">
-																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos">
-																											<img src={"/images/no-image-1.png"} className="img-responsive logoStyle" />
 																										</div>
 																									</div>
-																								</div>
-																						}
-																						</div>
-																						</div>
-																						:
-																						null
-																						}
-																						{Suppliersdata.PAN ?
-																						<div className="col-md-12">
-																						<li className="pan">PAN : {Suppliersdata.PAN}</li>
-																						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-																						{
-																							Suppliersdata.PANDocument && Suppliersdata.PANDocument.length > 0 ?
-																								Suppliersdata.PANDocument.map((doc, i) => {
-																									if(('extension',doc.substring(doc.lastIndexOf("."))) === '.pdf'){
-																										return (
-																											<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
-																												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																													<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
-																														<img src={'/images/pdf.png'} className="img-responsive logoStyle" />
-																													</div>
-																												</div>
+																								);
+																							}else{
+																								return (
+																									<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
+																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+																											<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
+																												<img src={doc} className="img-responsive logoStyle" />
 																											</div>
-																										);
-																									}else{
-																										return (
-																											<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
-																												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																													<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
-																														<img src={doc} className="img-responsive logoStyle" />
-																													</div>
-																												</div>
-																											</div>
-																										);
-																									}
-																								})
-																								:
-																								<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
-																									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom">
-																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos">
-																											<img src={"/images/no-image-1.png"} className="img-responsive logoStyle" />
 																										</div>
 																									</div>
-																								</div>
-																						}
-																						</div>
-																						</div>
+																								);
+																							}
+																						})
 																						:
-																						null
-																						}
-																				        </div>
-																				     
-																				    </div>
-																				     
-																				  </div>
+																						<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
+																							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom">
+																								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos">
+																									<img src={"/images/no-image-1.png"} className="img-responsive logoStyle" />
+																								</div>
+																							</div>
+																						</div>
+																				}
 																				</div>
-																				
+																				<li className="pan">PAN : {Suppliersdata.PAN}</li>
+																				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+																				{
+																					Suppliersdata.PANDocument && Suppliersdata.PANDocument.length > 0 ?
+																						Suppliersdata.PANDocument.map((doc, i) => {
+																							if(('extension',doc.substring(doc.lastIndexOf("."))) === '.pdf'){
+																								return (
+																									<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
+																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+																											<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
+																												<img src={'/images/pdf.png'} className="img-responsive logoStyle" />
+																											</div>
+																										</div>
+																									</div>
+																								);
+																							}else{
+																								return (
+																									<div key={i} className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
+																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+																											<div title={(doc.substring(doc.lastIndexOf("/"))).replace('/', "")} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
+																												<img src={doc} className="img-responsive logoStyle" />
+																											</div>
+																										</div>
+																									</div>
+																								);
+																							}
+																						})
+																						:
+																						<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
+																							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom">
+																								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos">
+																									<img src={"/images/no-image-1.png"} className="img-responsive logoStyle" />
+																								</div>
+																							</div>
+																						</div>
+																				}
+																				</div>
 																			</ul>
 																			<div className=" dropdown col-lg-1 col-md-1 col-sm-1 col-xs-1 NOpadding">
 																				<div className=" dotsContainerLD col-lg-8 col-md-8 col-sm-8 col-xs-8">
@@ -1532,7 +1371,7 @@ class LocationDetails extends Component {
 																					<div className="dropdown-content dropdown-contentLocation">
 																						<ul className="pdcls ulbtm">
 																							<li name={index}>
-																								<a href={'/' + this.state.pathname + "/location-details/" + this.props.match.params.entityID + "/" + Suppliersdata._id}><i className="fa fa-pencil penmrleft" aria-hidden="true"></i>&nbsp;&nbsp;Edit</a>
+																								<a href={'/' + (this.state.pathname === "appCompany" ? "org-settings" :this.state.pathname) + "/location-details/" + this.props.match.params.entityID + "/" + Suppliersdata._id}><i className="fa fa-pencil penmrleft" aria-hidden="true"></i>&nbsp;&nbsp;Edit</a>
 																							</li>
 																							<li name={index} data-id={Suppliersdata._id} onClick={this.deleteEntity.bind(this)} >
 																								{/*<span onClick={this.locationDelete.bind(this)} id={Suppliersdata._id}>*/}

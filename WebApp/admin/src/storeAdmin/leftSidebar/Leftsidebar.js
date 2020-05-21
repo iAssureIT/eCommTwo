@@ -217,13 +217,13 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="vendors">
                     <li>
-                      <a href="/vendor-onboarding">
+                      <a href="/vendor/basic-details">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Add Vendor</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/vendor-list">
+                      <a href="/vendor/list">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Vendor List</span>
                       </a>

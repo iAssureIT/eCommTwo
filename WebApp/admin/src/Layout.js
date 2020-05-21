@@ -56,13 +56,18 @@ import Productreview        from './storeAdmin/Productreview/Productreview.js';
 // import ImageUpload from '../../ImageUpload/ImageUpload.js';
 
 //============ Vendor Management =============
-import VendorOnboardingForm from './storeAdmin/vendorManagement/VendorOnboarding/VendorOnboardingForm/VendorOnboardingForm.jsx';
-import BasicInfo            from './storeAdmin/vendorManagement/VendorOnboarding/basicInfo/BasicInfo.jsx';
-import LocationDetails      from './storeAdmin/vendorManagement/VendorOnboarding/locationDetails/LocationDetails.jsx';
-import ContactDetails       from './storeAdmin/vendorManagement/VendorOnboarding/contactDetails/ContactDetails.jsx';
-import ListOfVendor         from './storeAdmin/vendorManagement/listOfVendors/components/ListOfVendor.jsx';
-import VendorCategory       from './storeAdmin/vendorManagement/MasterData/VendorCategory/VendorCategory.jsx';
-import VendorLocationType   from './storeAdmin/vendorManagement/MasterData/VendorLocationType/VendorLocationType.jsx';
+// import VendorOnboardingForm from './storeAdmin/vendorManagement/VendorOnboarding/VendorOnboardingForm/VendorOnboardingForm.jsx';
+// import BasicInfo            from './storeAdmin/vendorManagement/VendorOnboarding/basicInfo/BasicInfo.jsx';
+// import LocationDetails      from './storeAdmin/vendorManagement/VendorOnboarding/locationDetails/LocationDetails.jsx';
+// import ContactDetails       from './storeAdmin/vendorManagement/VendorOnboarding/contactDetails/ContactDetails.jsx';
+// import ListOfVendor         from './storeAdmin/vendorManagement/listOfVendors/components/ListOfVendor.jsx';
+// import VendorCategory       from './storeAdmin/vendorManagement/MasterData/VendorCategory/VendorCategory.jsx';
+// import VendorLocationType   from './storeAdmin/vendorManagement/MasterData/VendorLocationType/VendorLocationType.jsx';
+
+import VendorBasicInfo         from './storeAdmin/VendorMaster/VendorBasicInfo.js';
+import VendorLocationDetails   from './storeAdmin/VendorMaster/VendorLocationDetails.js';
+import VendorContactDetails    from './storeAdmin/VendorMaster/VendorContactDetails.js';
+import VendorListOfEntities    from './storeAdmin/VendorMaster/VendorListOfEntities.js';
 
 //============ Franchise Management =============
 import FranchiseBasicInfo       from './storeAdmin/FranchiseMaster/FranchiseBasicInfo.js';
@@ -128,162 +133,156 @@ class Layout extends Component  {
         }
     }
 
-    render() {
-        if (this.state.loggedIn) {
-            return (
-            <Router>
-                <div className="App container-fluid" >
-                    <div className="row" >
-                        <div id="headerid" className="headerbackgroundcolor" >
-                            <div className="" >
-                                <Header />
-                            </div> 
-                        </div>
-                        <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding" >
-                            <div className="" >
-                                <div className=" mainContentBottom NOpadding" >
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground" >
-                                        <CoreLayout />
-                                        <Switch >
-                                          {/* Dashboard route */}
-                                          <Route path="/" component={Dashboard} exact />
-                                          <Route path="/dashboard" component={Dashboard} exact />
-                                        
-                                          <Route path="/preferences" component={WebsiteModel} exact />                                          
-                                          <Route path="/franchise-allowable-pincode" component={AllowablePincodes} exact />                                          
-
-                                          {/* Product Management */}
-                                          <Route path="/product-details/:productID" exact strict component={ProductDetails} />
-                                          <Route path="/add-product" exact strict component={AddNewShopProduct} />
-                                          <Route path="/add-product/:productID" exact strict component={AddNewShopProduct} />
-                                          <Route path="/add-product/image/:productID" exact strict component={AddNewProductImages} />
-                                          <Route path="/category-management" exact strict component={CategoryManagement} />
-                                          <Route path="/category-management/:categoryID" exact strict component={CategoryManagement} />
-                                          <Route path="/section-management" exact strict component={SectionManagement} />
-                                          <Route path="/section-management/:sectionID" exact strict component={SectionManagement} />
-                                          <Route path="/product-upload" exact strict component={AddNewBulkProduct} />
-                                          <Route path="/template-management" exact strict component={TemplateManagement} />
-                                          <Route path="/template-management/:template_ID" exact strict component={TemplateManagement} />
-                                          <Route path="/product-list" exact strict component={ProductList} />
-                                          <Route path="/product-image-bulk-upload" exact strict component={BulkProductImageUpload} />
-                                          <Route path="/file-wise-product-list" exact strict component={FileWiseProductList} />
-                                          {/* <Route path="/image" exact strict component={ImageUpload} /> */}
-
-                                          {/* Vendor Management */}
-                                          <Route path="/vendor-onboarding" exact strict component={BasicInfo} />
-                                          <Route path="/vendor-onboarding/:vendor_ID" exact strict component={BasicInfo} />
-                                          <Route path="/location-details/:vendor_ID" exact strict component={LocationDetails} />
-                                          <Route path="/location-details/:vendor_ID/:location_ID" exact strict component={LocationDetails} />
-                                          <Route path="/contact-details/:vendor_ID" exact strict component={ContactDetails} />
-                                          <Route path="/contact-details/:vendor_ID/:contactDetails_ID" exact strict component={ContactDetails} />
-                                          <Route path="/vendor-list" exact strict component={ListOfVendor} />
-                                          <Route path="/vendor-category" exact strict component={VendorCategory} />
-                                          <Route path="/vendor-category/:vendorID" exact strict component={VendorCategory} />
-                                          <Route path="/vendor-location-type" exact strict component={VendorLocationType} />
-                                          <Route path="/vendor-location-type/:locationTypeID" exact strict component={VendorLocationType} />
-
-                                          { /* Franchise Master */}
-                                          <Route path="/franchise/basic-details"                          exact strict component={FranchiseBasicInfo} />
-                                          <Route path="/franchise/basic-details/:entityID"                exact strict component={FranchiseBasicInfo} />
-                                          <Route path="/franchise/location-details"                       exact strict component={FranchiseLocationDetails} />
-                                          <Route path="/franchise/location-details/:entityID"             exact strict component={FranchiseLocationDetails} />
-                                          <Route path="/franchise/location-details/:entityID/:locationID" exact strict component={FranchiseLocationDetails} />
-                                          <Route path="/franchise/contact-details"                        exact strict component={FranchiseContactDetails} />
-                                          <Route path="/franchise/contact-details/:entityID"              exact strict component={FranchiseContactDetails} />
-                                          <Route path="/franchise/contact-details/:entityID/:contactID"   exact strict component={FranchiseContactDetails} />
-
-                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntitiesPage} />
-                                          
-
-                                          <Route path="/franchise-shopping-list"                          exact strict component={FranchiseShoppingList} />
-
-
-                                          { /*Order List*/}
-                                          <Route path="/allorders" exact strict component={AllOrdersList} />
-                                          <Route path="/new-orders-list" exact strict component={NewOrdersList} />
-                                          <Route path="/verified-orders-list" exact strict component={VerifiedOrdersList} />
-                                          <Route path="/packed-orders-list" exact strict component={PackedOrdersList} />
-                                          <Route path="/inspected-orders-list" exact strict component={InspectedOrdersList} />
-                                          <Route path="/approved-orders-list" exact strict component={ApprovedOrdersList} />
-                                          <Route path="/dispatched-orders-list" exact strict component={DispatchedOrdersList} />
-                                          <Route path="/delivery-initiated-orders" exact strict component={DeliveryInitiatedOrders} />
-                                          <Route path="/delivered-orders-list" exact strict component={DeliveredOrders} />
-                                          <Route path="/returned-products" exact strict component={ReturnProducts} />
-
-                                          <Route path="/viewOrder/:orderID" exact strict component={viewOrder} />
-
-                                          { /*Ba List*/}
-                                          <Route path="/ba-list" exact strict component={BaList} />
-                                          <Route path="/editBA/:BaId" exact strict component={AddNewBA} />
-                                          <Route path="/BA/locationDetails/:locationEdit/:BaId" exact strict component={AddNewBA} />
-                                          <Route path="/BA/contactDetails/:contactEdit/:BaId" exact strict component={AddNewBA} />
-                                          <Route path="/addNewBA" exact strict component={AddNewBA} />
-
-
-                                          {/*Report*/}
-                                          <Route path="/report" exact strict component={Reports} />
-
-                                          <Route path="/category-wise-reports" exact strict component={CategoryWiseReports} />
-
-                                          <Route path="/productreview" exact strict component={Productreview} />
-
-                                          {/*CMS*/}
-
-                                          {/*<Route path = "/" exact component = {App}/>*/}
-                                          <Route path = "/about" exact component = {CircleMenuBars} />
-                                          <Route path = "/cmspage/:id" exact component = {Cmspage} />
-                                          {/*<Route path = "/example/:id" exact component = {Example} />*/}
-                                          {/*<Route path = "/aws" exact component = { Awsfile } />*/}
-                                          {/*<Route path = "/designpagemaster" exact component = { DesignPageMaster } />*/}
-                                          {/*<Route path = "/selectpagedesign" exact component = { Selectpagedesign } />*/}
-                                          <Route path = "/viewpage1" exact component = { ViewPage_1 } />
-                                          <Route path = "/viewpage2/:id"exact component = { ViewPage_2 } />
-                                          <Route path = "/viewpage2" exact component = { ViewPage_2 } />
-                                          {/*<Route path = "/blockdesignmaster" exact component = { BlockDesignMaster } />*/}
-                                          {/*<Route path = "/selectblockdesign" exact component = { SelectBlockDesign } />*/}
-                                          <Route path = "/viewblock1" exact component = { ViewBlock_1 } />
-                                          <Route path = "/viewblock2" exact component = { ViewBlock_2 } />
-                                          <Route path="/masterpage/:pageurl"  component={ MasterPage } /> 
-
-                                          {/*purchase-management*/}
-
-                                          <Route path="/purchase-management" exact strict component={PurchaseManagement} />
-                                          <Route path="/finished-goods" exact strict component={FinishedGoods} />
-
-                                        </Switch>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="footerCSS col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" >
-                                <Footer />
-                            </div>
-                        </div>
-                        <div className="leftsidebarbackgroundcolor" >
-                            <div className="row" >
-                                <Leftsidebar />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Router>
-            );
-        } else {
-            return (
-                <div>
-                    <Router >
+  render() {
+    if (this.state.loggedIn) {
+      return (
+        <Router>
+          <div className="App container-fluid" >
+            <div className="row" >
+              <div id="headerid" className="headerbackgroundcolor" >
+                <div className="" >
+                  <Header />
+                </div> 
+              </div>
+              <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding" >
+                <div className="" >
+                  <div className=" mainContentBottom NOpadding" >
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground" >
+                      <CoreLayout />
                         <Switch >
-                            <Route path="/login" exact strict component={Login} />
-                            {<Route path="/" exact strict component={Login} />}
-                            <Route path="/signup" exact strict component={SignUp} />
-                            <Route path="/forgotpassword" exact strict component={ForgotPassword} />
-                            <Route path="/reset-pwd/:user_ID" exact strict component={ResetPassword} />
-                            <Route path="/confirm-otp/:userID" exact strict component={ConfirmOtp} />
+                          {/* Dashboard route */}
+                          <Route path="/"                                                 exact strict component={Dashboard}/>
+                          <Route path="/dashboard"                                        exact strict component={Dashboard} />
+                        
+                          <Route path="/preferences"                                      exact strict component={WebsiteModel} />
+                          <Route path="/franchise-allowable-pincode"                      exact strict component={AllowablePincodes} />
+
+                          {/* Product Management */}
+                          <Route path="/product-details/:productID"                       exact strict component={ProductDetails} />
+                          <Route path="/add-product"                                      exact strict component={AddNewShopProduct} />
+                          <Route path="/add-product/:productID"                           exact strict component={AddNewShopProduct} />
+                          <Route path="/add-product/image/:productID"                     exact strict component={AddNewProductImages} />
+                          <Route path="/category-management"                              exact strict component={CategoryManagement} />
+                          <Route path="/category-management/:categoryID"                  exact strict component={CategoryManagement} />
+                          <Route path="/section-management"                               exact strict component={SectionManagement} />
+                          <Route path="/section-management/:sectionID"                    exact strict component={SectionManagement} />
+                          <Route path="/product-upload"                                   exact strict component={AddNewBulkProduct} />
+                          <Route path="/template-management"                              exact strict component={TemplateManagement} />
+                          <Route path="/template-management/:template_ID"                 exact strict component={TemplateManagement} />
+                          <Route path="/product-list"                                     exact strict component={ProductList} />
+                          <Route path="/product-image-bulk-upload"                        exact strict component={BulkProductImageUpload} />
+                          <Route path="/file-wise-product-list"                           exact strict component={FileWiseProductList} />
+                          {/* <Route path="/image" exact strict component={ImageUpload} /> */}
+
+                          {/* Vendor Management */}
+                          <Route path="/vendor/basic-details"                             exact strict component={VendorBasicInfo} />
+                          <Route path="/vendor/basic-details/:entityID"                   exact strict component={VendorBasicInfo} />
+                          <Route path="/vendor/location-details/:entityID"                exact strict component={VendorLocationDetails} />
+                          <Route path="/vendor/location-details/:entityID/:locationID"    exact strict component={VendorLocationDetails} />
+                          <Route path="/vendor/contact-details/:entityID"                 exact strict component={VendorContactDetails} />
+                          <Route path="/vendor/contact-details/:entityID/:contactID"      exact strict component={VendorContactDetails} />
+                          <Route path="/vendor/list"                                      exact strict component={VendorListOfEntities} />
+                          {/*<Route path="/vendor-category" exact strict component={VendorCategory} />
+                          <Route path="/vendor-category/:vendorID" exact strict component={VendorCategory} />
+                          <Route path="/vendor-location-type" exact strict component={VendorLocationType} />
+                          <Route path="/vendor-location-type/:locationTypeID" exact strict component={VendorLocationType} />*/}
+
+                          { /* Franchise Master */}
+                          <Route path="/franchise/basic-details"                          exact strict component={FranchiseBasicInfo} />
+                          <Route path="/franchise/basic-details/:entityID"                exact strict component={FranchiseBasicInfo} />
+                          <Route path="/franchise/location-details/:entityID"             exact strict component={FranchiseLocationDetails} />
+                          <Route path="/franchise/location-details/:entityID/:locationID" exact strict component={FranchiseLocationDetails} />
+                          <Route path="/franchise/contact-details/:entityID"              exact strict component={FranchiseContactDetails} />
+                          <Route path="/franchise/contact-details/:entityID/:contactID"   exact strict component={FranchiseContactDetails} />
+                          <Route path="/franchise/list"                                   exact strict component={ListOfEntitiesPage} />                          
+
+                          <Route path="/franchise-shopping-list"                          exact strict component={FranchiseShoppingList} />
+
+
+                          { /*Order List*/}
+                          <Route path="/allorders"                                        exact strict component={AllOrdersList} />
+                          <Route path="/new-orders-list"                                  exact strict component={NewOrdersList} />
+                          <Route path="/verified-orders-list"                             exact strict component={VerifiedOrdersList} />
+                          <Route path="/packed-orders-list"                               exact strict component={PackedOrdersList} />
+                          <Route path="/inspected-orders-list"                            exact strict component={InspectedOrdersList} />
+                          <Route path="/approved-orders-list"                             exact strict component={ApprovedOrdersList} />
+                          <Route path="/dispatched-orders-list"                           exact strict component={DispatchedOrdersList} />
+                          <Route path="/delivery-initiated-orders"                        exact strict component={DeliveryInitiatedOrders} />
+                          <Route path="/delivered-orders-list"                            exact strict component={DeliveredOrders} />
+                          <Route path="/returned-products"                                exact strict component={ReturnProducts} />
+
+                          <Route path="/viewOrder/:orderID"                               exact strict component={viewOrder} />
+
+                          { /*Ba List*/}
+                          <Route path="/ba-list"                                          exact strict component={BaList} />
+                          <Route path="/editBA/:BaId"                                     exact strict component={AddNewBA} />
+                          <Route path="/BA/locationDetails/:locationEdit/:BaId"           exact strict component={AddNewBA} />
+                          <Route path="/BA/contactDetails/:contactEdit/:BaId"             exact strict component={AddNewBA} />
+                          <Route path="/addNewBA"                                         exact strict component={AddNewBA} />
+
+
+                          {/*Report*/}
+                          <Route path="/report"                                           exact strict component={Reports} />
+
+                          <Route path="/category-wise-reports"                            exact strict component={CategoryWiseReports} />
+
+                          <Route path="/productreview"                                    exact strict component={Productreview} />
+
+                          {/*CMS*/}
+                          {/*<Route path = "/" exact component = {App}/>*/}
+                          <Route path = "/about"                                          exact strict component = {CircleMenuBars} />
+                          <Route path = "/cmspage/:id"                                    exact strict component = {Cmspage} />
+                          {/*<Route path = "/example/:id" exact component = {Example} />*/}
+                          {/*<Route path = "/aws" exact component = { Awsfile } />*/}
+                          {/*<Route path = "/designpagemaster" exact component = { DesignPageMaster } />*/}
+                          {/*<Route path = "/selectpagedesign" exact component = { Selectpagedesign } />*/}
+                          <Route path = "/viewpage1"                                      exact strict component = { ViewPage_1 } />
+                          <Route path = "/viewpage2/:id"                                  exact strict component = { ViewPage_2 } />
+                          <Route path = "/viewpage2"                                      exact strict component = { ViewPage_2 } />
+                          {/*<Route path = "/blockdesignmaster" exact component = { BlockDesignMaster } />*/}
+                          {/*<Route path = "/selectblockdesign" exact component = { SelectBlockDesign } />*/}
+                          <Route path = "/viewblock1"                                     exact strict component = { ViewBlock_1 } />
+                          <Route path = "/viewblock2"                                     exact strict component = { ViewBlock_2 } />
+                          <Route path="/masterpage/:pageurl"                              exact strict component={ MasterPage } /> 
+
+                          {/*purchase-management*/}
+
+                          <Route path="/purchase-management"                              exact strict component={PurchaseManagement} />
+                          <Route path="/finished-goods"                                   exact strict component={FinishedGoods} />
                         </Switch>
-                    </Router>
+                    </div>
+                  </div>
                 </div>
-            );
-        }
+                <div className="footerCSS col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" >
+                    <Footer />
+                </div>
+              </div>
+              <div className="leftsidebarbackgroundcolor" >
+                  <div className="row" >
+                      <Leftsidebar />
+                  </div>
+              </div>
+            </div>
+          </div>
+        </Router>
+      );
+    } else {
+        return (
+          <div>
+              <Router >
+                  <Switch >
+                      <Route path="/login"                                            exact strict component={Login} />
+                      {<Route path="/"                                                exact strict component={Login} />}
+                      <Route path="/signup"                                           exact strict component={SignUp} />
+                      <Route path="/forgotpassword"                                   exact strict component={ForgotPassword} />
+                      <Route path="/reset-pwd/:user_ID"                               exact strict component={ResetPassword} />
+                      <Route path="/confirm-otp/:userID"                              exact strict component={ConfirmOtp} />
+                  </Switch>
+              </Router>
+          </div>
+        );
     }
+  }
 }
 
  

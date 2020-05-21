@@ -3,7 +3,7 @@ import $ from 'jquery';
 import jQuery from 'jquery';
 import axios from 'axios';
 import swal from 'sweetalert';
-import BasicInfo from '../Master/EntityMaster/Onboarding/basicInfo/BasicInfo.js';
+import BasicInfo from '../Master/EntityMaster/Onboarding/basicInfo/BasicInfo.jsx';
 import _ from 'underscore';
 import 'bootstrap/js/tab.js';
 
