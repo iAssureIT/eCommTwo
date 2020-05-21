@@ -76,6 +76,29 @@ import WebsiteModel from './storeAdmin/preferences/WebsiteModel.js';
 //=============== Allowable pincodes ===========
 import AllowablePincodes from './storeAdmin/allowablePincodes/AllowablePincodes.js';
 
+//=============== Purchase Management =================
+
+import PurchaseManagement from './storeAdmin/PurchaseManagement/PurchaseManagement.js';
+import FinishedGoods from './storeAdmin/PurchaseManagement/FinishedGoods.js';
+
+
+
+import FranchiseShoppingList from './storeAdmin/FranchiseShoppingList/FranchiseShoppingList.js';
+
+
+/*===================== CMS ========================*/
+
+
+import CircleMenuBars from './admin/CMS/component/circlemenubars.js';
+import Cmspage from './admin/CMS/component/cmspage.js';
+import ViewPage_1 from './admin/CMS/component/createnewpage/ViewPage1.js';
+import ViewPage_2 from './admin/CMS/component/createnewpage/Viewpage.js';
+import ViewBlock_1 from './admin/CMS/component/createnewblock/viewblock1.js';
+import ViewBlock_2 from './admin/CMS/component/createnewblock/ViewBlock_2.js';
+import MasterPage from './admin/CMS/component/MasterPage/MasterPage.js';
+
+/*========================================*/
+
 
 class Layout extends Component  {
 
@@ -168,7 +191,12 @@ class Layout extends Component  {
                                           <Route path="/franchise/contact-details"                        exact strict component={FranchiseContactDetails} />
                                           <Route path="/franchise/contact-details/:entityID"              exact strict component={FranchiseContactDetails} />
                                           <Route path="/franchise/contact-details/:entityID/:contactID"   exact strict component={FranchiseContactDetails} />
-                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntitiesPage} />
+
+                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntities} />
+                                          
+
+                                          <Route path="/franchise-shopping-list"                          exact strict component={FranchiseShoppingList} />
+
 
                                           { /*Order List*/}
                                           <Route path="/allorders" exact strict component={AllOrdersList} />
@@ -198,6 +226,29 @@ class Layout extends Component  {
                                           <Route path="/category-wise-reports" exact strict component={CategoryWiseReports} />
 
                                           <Route path="/productreview" exact strict component={Productreview} />
+
+                                          {/*CMS*/}
+
+                                          {/*<Route path = "/" exact component = {App}/>*/}
+                                          <Route path = "/about" exact component = {CircleMenuBars} />
+                                          <Route path = "/cmspage/:id" exact component = {Cmspage} />
+                                          {/*<Route path = "/example/:id" exact component = {Example} />*/}
+                                          {/*<Route path = "/aws" exact component = { Awsfile } />*/}
+                                          {/*<Route path = "/designpagemaster" exact component = { DesignPageMaster } />*/}
+                                          {/*<Route path = "/selectpagedesign" exact component = { Selectpagedesign } />*/}
+                                          <Route path = "/viewpage1" exact component = { ViewPage_1 } />
+                                          <Route path = "/viewpage2/:id"exact component = { ViewPage_2 } />
+                                          <Route path = "/viewpage2" exact component = { ViewPage_2 } />
+                                          {/*<Route path = "/blockdesignmaster" exact component = { BlockDesignMaster } />*/}
+                                          {/*<Route path = "/selectblockdesign" exact component = { SelectBlockDesign } />*/}
+                                          <Route path = "/viewblock1" exact component = { ViewBlock_1 } />
+                                          <Route path = "/viewblock2" exact component = { ViewBlock_2 } />
+                                          <Route path="/masterpage/:pageurl"  component={ MasterPage } /> 
+
+                                          {/*purchase-management*/}
+
+                                          <Route path="/purchase-management" exact strict component={PurchaseManagement} />
+                                          <Route path="/finished-goods" exact strict component={FinishedGoods} />
 
                                         </Switch>
                                     </div>

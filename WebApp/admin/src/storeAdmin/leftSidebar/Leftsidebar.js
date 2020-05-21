@@ -360,7 +360,35 @@ export default class Leftsidebar extends Component{
                         </a>
                       </li>   
                   </ul>
-                </li>          
+                </li>  
+                <li className="sidebarMenuText">
+                  <a href="#CmsData" data-toggle="collapse" aria-expanded="false">
+                    <i className="fa fa-university" />
+                    CMS
+                    <i className="fa fa-sort-down pull-right"></i>
+                  </a>
+                  <ul className="collapse list-unstyled" id="CmsData">
+                    <li>
+                      <a href="/viewpage1">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Create Page</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/viewblock1">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Create Block</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/static-block-list">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Static Blocks</span>
+                      </a>
+                    </li>
+                     
+                  </ul>
+                </li>         
               </ul>
             </nav>
           </div>
