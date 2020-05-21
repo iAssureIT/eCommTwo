@@ -608,7 +608,7 @@ editReDBlock(event){
    var id = event.target.id;
     console.log("id od index------",id);
     for (var i = 0; i < this.state.repetedGroup.length; i++) {
-      if (this.state.repetedGroup[i]._id == id) {
+      if (this.state.repetedGroup[i]._id === id) {
         console.log("=====>>>>>>",this.state.repetedGroup[i]);
         this.setState({
               repGBlockTitle      : this.state.repetedGroup[i].Title,
@@ -635,7 +635,7 @@ editReDBlock(event){
                         </div>
                         <form className="newTemplateForm">  
             							<div className="">
-            							  { this.state.parsed.blockTitle == ""
+            							  { this.state.parsed.blockTitle === ""
         											? null
         											: 
               								<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 NOpadding">
@@ -645,7 +645,7 @@ editReDBlock(event){
               											</div>
               								</div>
             								}
-            								{ this.state.parsed.blocksubTitle == ""
+            								{ this.state.parsed.blocksubTitle === ""
         											? null
         											:
             								    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -658,7 +658,7 @@ editReDBlock(event){
             							</div>
             							{/*<div className="formcontent col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20">*/}
                            
-  			                    	{ this.state.parsed.blockType == ""
+  			                    	{ this.state.parsed.blockType === ""
             											? null
             											: 
                     								<div className="col-lg-6 NOpadding">
@@ -681,7 +681,7 @@ editReDBlock(event){
             			          {/*</div>*/}
               							<div className="row ">
               								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                              { this.state.parsed.blockDescription == ""
+                              { this.state.parsed.blockDescription === ""
                                 ? null
                                 :
                                   <div>
@@ -706,7 +706,7 @@ editReDBlock(event){
 							
               							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 m20">
                             {
-                              this.state.parsed.RepetedBlock == ""
+                              this.state.parsed.RepetedBlock === ""
                                 ? null
                                 :
                       								<button type="button" className="btn  btn-lg mbottm20" onClick={this.onclickEvent.bind(this)}>
@@ -714,12 +714,12 @@ editReDBlock(event){
                       								</button>
                             }
               								{ 
-              									this.state.groupRepetedBlocks == true 
+              									this.state.groupRepetedBlocks === true 
               										?
               										<div className="col-lg-12 col-md-12 repGBlock">
                                   
               											<div className="row ">
-              														{ this.state.parsed.rBlocksTitle == ""
+              														{ this.state.parsed.rBlocksTitle === ""
               															? null
               															:
                     												<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -729,7 +729,7 @@ editReDBlock(event){
                     															</div>
                     												</div>
               														}
-              												    { this.state.parsed.rBlocksSubTitle == ""
+              												    { this.state.parsed.rBlocksSubTitle === ""
               															? null
               															:
                     												<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -741,7 +741,7 @@ editReDBlock(event){
               														}
               											</div>
               											<div className="formcontent col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20">
-              							              { this.state.parsed.rBlocksLink == ""
+              							              { this.state.parsed.rBlocksLink === ""
                                             ? null
                                             :
                                               <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 nopadd">
@@ -751,7 +751,7 @@ editReDBlock(event){
                       												    </div>
                       												</div>
                                           }
-                                          { this.state.parsed.rBlocksImage ==  ""
+                                          { this.state.parsed.rBlocksImage ===  ""
                                             ? null
                                             :
               												        <div className="col-lg-6">
@@ -786,7 +786,7 @@ editReDBlock(event){
               							                    </div>
                                               }
               							                </div>
-                                            { this.state.parsed.rBlocksDescription == ""
+                                            { this.state.parsed.rBlocksDescription === ""
                                              ? null
                                              :
                         											<div className="row  marginTop17">
@@ -855,7 +855,7 @@ editReDBlock(event){
 	                            <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 	                                <div className="" id="fileuploadelem">
 	                                	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                  { this.state.parsed.fgImage == ""
+		                                  { this.state.parsed.fgImage === ""
                     											? null
                     											: 
 			                                    <div className="form-group">
@@ -883,7 +883,7 @@ editReDBlock(event){
 	                                <div className="row " id="fileupload">
 		                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		                                    <div className="form-group">
-		                                    	{ this.state.parsed.bgImage == ""
+		                                    	{ this.state.parsed.bgImage === ""
                 													? null
                 													:
                 													<div>

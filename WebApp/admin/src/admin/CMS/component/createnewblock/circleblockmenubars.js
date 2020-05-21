@@ -48,7 +48,7 @@ export default class CircleBlockMenuBars extends Component{
                                     </Link>
                                     <div className="wizardNote"> Enter Data</div>
                                 </li>
-                               <li role="presentation" >{/*className={urlParam == "viewpage3"? "active" : ""}*/}
+                               <li role="presentation" >{/*className={urlParam === "viewpage3"? "active" : ""}*/}
                                     <Link to="/viewblock3" title="viewpage3">
                                         <span className="round-tab  circleSpan">
                                             <i className="fa fa-file fa-stack-1x circleIcon circleIconReceipt"></i>

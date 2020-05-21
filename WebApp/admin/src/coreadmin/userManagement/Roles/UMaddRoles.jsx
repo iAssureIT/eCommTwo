@@ -35,7 +35,7 @@ export default class UMaddRoles extends Component {
             },
           },
           errorPlacement: function (error, element) {
-            if (element.attr("name") == "roleName") {
+            if (element.attr("name") === "roleName") {
               error.insertAfter("#roleName");
             }
           }

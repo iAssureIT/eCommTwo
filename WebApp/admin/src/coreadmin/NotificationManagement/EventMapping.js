@@ -89,17 +89,17 @@ class EventMapping extends React.Component {
                 },
             },
             errorPlacement: function (error, element) {
-                if (element.attr("name") == "event") {
+                if (element.attr("name") === "event") {
                     error.insertAfter("#event");
                 }
-                if (element.attr("name") == "role") {
+                if (element.attr("name") === "role") {
                     error.insertAfter("#role");
                 }
-                if (element.attr("name") == "mode") {
+                if (element.attr("name") === "mode") {
                     error.insertAfter("#mode");
-                }if (element.attr("name") == "templateName") {
+                }if (element.attr("name") === "templateName") {
                     error.insertAfter("#templateName");
-                }if (element.attr("name") == "status") {
+                }if (element.attr("name") === "status") {
                     error.insertAfter("#status");
                 }
             }

@@ -93,12 +93,12 @@ class VendorsDetails extends Component {
 		}
   	}
   	LocationEdit(event){
-    	this.props.history.push("/"+(this.state.entityType == "appCompany" ? "org-settings" :this.state.entityType)+'/location-details/'+event.currentTarget.getAttribute('data-entityID'))
+    	this.props.history.push("/"+(this.state.entityType === "appCompany" ? "org-settings" :this.state.entityType)+'/location-details/'+event.currentTarget.getAttribute('data-entityID'))
     	
     }
     
     contactEdit(event){
-    	this.props.history.push("/"+(this.state.entityType == "appCompany" ? "org-settings" :this.state.entityType)+'/contact-details/'+event.currentTarget.getAttribute('data-entityID'))
+    	this.props.history.push("/"+(this.state.entityType === "appCompany" ? "org-settings" :this.state.entityType)+'/contact-details/'+event.currentTarget.getAttribute('data-entityID'))
     }
 
     showMore(event) { 
@@ -126,7 +126,7 @@ class VendorsDetails extends Component {
 		})
 	}
 	editBasicform(event){
-    	this.props.history.push("/"+(this.state.entityType == "appCompany" ? "org-settings" :this.state.entityType)+'/basic-details/'+event.currentTarget.getAttribute('data-id'))
+    	this.props.history.push("/"+(this.state.entityType === "appCompany" ? "org-settings" :this.state.entityType)+'/basic-details/'+event.currentTarget.getAttribute('data-id'))
     }
     deleteEntity(event){
 		event.preventDefault();

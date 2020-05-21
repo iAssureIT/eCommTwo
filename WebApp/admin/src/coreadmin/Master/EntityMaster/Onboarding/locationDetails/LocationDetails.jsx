@@ -370,7 +370,7 @@ class LocationDetails extends Component {
 	locationdetailsAdd(event) {
 		event.preventDefault();
 		var entityID = this.props.match.params.entityID;
-		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists == "NotAvailable")) {
+		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists === "NotAvailable")) {
 			var formValues = {
 				'entityID': entityID,
 				'locationDetails': {
@@ -563,7 +563,7 @@ class LocationDetails extends Component {
 					this.locationDetails();
            			swal({
 	                    text : "Location deleted successfully.",
-	                    // text : (this.state.entityType == "appCompany" ? "Organizational Settings" :this.state.entityType) +" is deleted successfully.",
+	                    // text : (this.state.entityType === "appCompany" ? "Organizational Settings" :this.state.entityType) +" is deleted successfully.",
 					  });
 					  $(".swal-text").css("text-transform", "capitalize");
            		}	else{
@@ -625,7 +625,7 @@ class LocationDetails extends Component {
 		event.preventDefault();
 		var entityID = this.props.match.params.entityID;
 		var locationID = this.props.match.params.locationID;
-		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists == "NotAvailable")) {
+		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists === "NotAvailable")) {
 			var formValues = {
 				'entityID': entityID,
 				'locationID': locationID,

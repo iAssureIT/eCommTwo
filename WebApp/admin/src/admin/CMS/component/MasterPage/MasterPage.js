@@ -128,7 +128,7 @@ componentDidMount(){
 	        }); 
 	}
 	editbtn(){
-		if (this.state.editbtnclick == false) {
+		if (this.state.editbtnclick === false) {
 		this.setState({
 		      		editbtnclick : true,
 		      	});

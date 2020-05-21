@@ -132,31 +132,31 @@ class ViewTemplates extends Component {
 		        },*/      
       },
       errorPlacement: function(error, element) {
-       /* if (element.attr("name") == "templateType"){
+       /* if (element.attr("name") === "templateType"){
           error.insertAfter("#templateType");
         } */
-        if (element.attr("name") == "event") {
+        if (element.attr("name") === "event") {
                     error.insertAfter("#event");
                 }
-        if (element.attr("name") == "templateName"){
+        if (element.attr("name") === "templateName"){
           error.insertAfter("#templateName");
         }
-        if (element.attr("name") == "subject"){
+        if (element.attr("name") === "subject"){
           error.insertAfter("#subject");
         }
-        if (element.attr("name") == "editorEmail"){
+        if (element.attr("name") === "editorEmail"){
           error.insertAfter("#editorEmail");
         }
-        if (element.attr("name") == "editorNotification"){
+        if (element.attr("name") === "editorNotification"){
           error.insertAfter("#editorNotification");
         }
-        if (element.attr("name") == "editorSMS"){
+        if (element.attr("name") === "editorSMS"){
           error.insertAfter("#editorSMS");
         }
-        if (element.attr("name") == "role") {
+        if (element.attr("name") === "role") {
             error.insertAfter("#role");
         }
-        if (element.attr("name") == "status") {
+        if (element.attr("name") === "status") {
                     error.insertAfter("#status");
                 }
       }
@@ -453,11 +453,11 @@ class ViewTemplates extends Component {
 		var emailContent = this.state.editorEmail;
 		var notificationContent = this.state.editorNotification;
 		var smsContent = this.state.editorSMS;
-		if(company == 'All'){
+		if(company === 'All'){
 			company = null
 		}
 		if(event && role){
-			if(templateType == 'Email'){
+			if(templateType === 'Email'){
 				if(subject === "" & emailContent === null || emailContent === ""){
 					swal("For Email Template Subject & Message are mandatory")
 							// $('#createNotifyModal').hide();
@@ -513,7 +513,7 @@ class ViewTemplates extends Component {
 					}).catch(function (error) {
 					});
 				}
-			}else if(templateType == 'Notification'){
+			}else if(templateType === 'Notification'){
 				if(notificationContent === null || notificationContent === ""){
 					swal("Please enter message")
 				}else{

@@ -144,7 +144,7 @@ class UMListOfUsers extends Component {
 			axios.post('/api/users/post/list', data)
 				.then((res) => {
 					console.log("res.data in getdata==>", res.data);
-					if (res.data.message == "COMPANYID_NOT_AVAILABLE") {
+					if (res.data.message === "COMPANYID_NOT_AVAILABLE") {
 						swal({
 							title: '',
 							text: "Company Id not found.",
@@ -262,7 +262,7 @@ class UMListOfUsers extends Component {
 					}
 					// this.getData(data)
 					checkedUsersList = [];
-					if (this.state.activeswal == true) {
+					if (this.state.activeswal === true) {
 						swal(" ", "Account activated successfully");
 					}
 				});
@@ -1296,7 +1296,7 @@ export default UMListOfUsers;
 // 					this.refs.userListDropdown.value = '-'
 // 					this.getData(this.state.startRange, this.state.limitRange,this.state.companyID)
 // 					checkedUsersList = [];
-// 					if (this.state.activeswal == true) {
+// 					if (this.state.activeswal === true) {
 // 						swal(" ", "Account activated successfully");
 // 					}
 // 				});

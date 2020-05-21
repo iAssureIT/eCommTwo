@@ -191,7 +191,7 @@ export default class Jobform extends React.Component {
 		  this.setState({
 						arrayValues : array,
 						})
-	   /* if (checked == true) {
+	   /* if (checked === true) {
 		    let filteredCheckBox = array.filter( function (user) {
 		    
 					return user

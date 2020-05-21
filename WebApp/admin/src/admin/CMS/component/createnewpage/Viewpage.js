@@ -262,7 +262,7 @@ class Viewpage extends React.Component {
 										Add new Block
 									</button>
 									{
-										this.state.listOfBlocks == true ?
+										this.state.listOfBlocks === true ?
 										<section>
 											<div className="row">
 												<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">

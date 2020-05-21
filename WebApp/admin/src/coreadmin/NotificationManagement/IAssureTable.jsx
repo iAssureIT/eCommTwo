@@ -510,7 +510,7 @@ class IAssureTable extends Component {
 		$("html,body").scrollTop(0);
 		var id = event.target.id;
 
-		if(status == 'active'){
+		if(status === 'active'){
 			var statusVar = 'inactive'
 		}else{
 			var statusVar = 'active'

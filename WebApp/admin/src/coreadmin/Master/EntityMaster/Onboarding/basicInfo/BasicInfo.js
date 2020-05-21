@@ -292,7 +292,7 @@ class BasicInfo extends Component {
     console.log("2 +this.state = ", this.state);
     console.log("line 289 this.state.entityID = ", this.state.entityID);
 
-    if(this.state.companyPhone == "" || this.state.companyPhone == undefined){
+    if(this.state.companyPhone === "" || this.state.companyPhone === undefined){
       this.setState({
         companyPhoneAvailable : false
       })
@@ -652,7 +652,7 @@ class BasicInfo extends Component {
     }, () => {
       if (this.state.companyPhone) {
         this.setState({
-          companyPhoneAvailable: this.state.companyPhone == "+" || this.state.companyPhone.length<15 ? false : true
+          companyPhoneAvailable: this.state.companyPhone === "+" || this.state.companyPhone.length<15 ? false : true
         },()=>{
           // console.log("companyPhone",this.state.companyPhoneAvailable,this.state.companyPhone)
         })
@@ -818,7 +818,7 @@ class BasicInfo extends Component {
                                       />
                                      
 
-                                      {this.state.companyPhoneAvailable == true ? null : <label className="error">Please enter valid number</label>}
+                                      {this.state.companyPhoneAvailable === true ? null : <label className="error">Please enter valid number</label>}
                                       
                                     </div>                                 
                                   

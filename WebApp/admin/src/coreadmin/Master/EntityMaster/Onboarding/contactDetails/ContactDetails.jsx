@@ -64,7 +64,7 @@ class ContactDetails extends Component {
 		this.getRoles();
 	}
 	getAllEntites() {
-		if(this.state.pathname == "corporate")
+		if(this.state.pathname === "corporate")
 		{
 		var formvalues = { type : "employee"}
 		}
@@ -219,10 +219,10 @@ class ContactDetails extends Component {
 				if (element.attr("name") === "branchCode") {
 					error.insertAfter("#branchCode");
 				}
-				if (element.attr("name") == "role") {
+				if (element.attr("name") === "role") {
 					error.insertAfter("#role");
 				}
-				if (element.attr("name") == "department") {
+				if (element.attr("name") === "department") {
 					error.insertAfter("#department");
 				}
 				if (element.attr("name") === "designation") {
@@ -457,7 +457,7 @@ class ContactDetails extends Component {
 							role: "employee",
 						}
 						console.log("formValues",formValues.contactDetails.userID,formValues1,formValues1.role);
-						if(this.state.pathname == "corporate" && (this.state.role == "manager" || this.state.role == "corporateadmin" ))
+						if(this.state.pathname === "corporate" && (this.state.role === "manager" || this.state.role === "corporateadmin" ))
 						{
 							axios
 							.patch('/api/users/patch/role/assign/' + formValues1.userID, formValues1)
@@ -514,7 +514,7 @@ class ContactDetails extends Component {
 		console.log("userID",userID);
 		if(userID){
 		var userDetails = {
-			type                    : this.state.pathname == "vendor"?"driver":"employee",
+			type                    : this.state.pathname === "vendor"?"driver":"employee",
 			companyID				: this.state.companyID,
 			company_Id				: this.state.entityID,
 			companyName 		    : this.state.companyName,
@@ -536,11 +536,11 @@ class ContactDetails extends Component {
 			userId 					: userID,
 			status					: "Active",
 			bookingApprovalRequired : this.state.bookingApprovalRequired,
-			approvingAuthorityId1    : this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId1 : "",
-			approvingAuthorityId2    : this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId2 : "",
-			approvingAuthorityId3     : this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId3 : "",
-			preApprovedParameterValue : this.state.bookingApprovalRequired == "Yes" ? this.state.preApprovedParameterValue : "",
-			preApprovedParameter      : this.state.bookingApprovalRequired == "Yes" ? this.state.preApprovedParameter : "",
+			approvingAuthorityId1    : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId1 : "",
+			approvingAuthorityId2    : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId2 : "",
+			approvingAuthorityId3     : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId3 : "",
+			preApprovedParameterValue : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedParameterValue : "",
+			preApprovedParameter      : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedParameter : "",
 		  }
 		  console.log("userDetails",userDetails);
 		  return new Promise(function(resolve, reject){
@@ -644,11 +644,11 @@ class ContactDetails extends Component {
 				
 					'employeeID'        		: this.state.employeeID,
 					'bookingApprovalRequired' 	: this.state.bookingApprovalRequired,
-					'approvingAuthorityId1' 	: this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId1 : "",
-					'approvingAuthorityId2' 	: this.state.bookingApprovalRequired == "Yes" ? this.state.approvingAuthorityId2 : "",
-					'approvingAuthorityId3' 	: this.state.bookingApprovalRequired == "Yes"  ? this.state.approvingAuthorityId3 : "",
-					'preApprovedParameter' 		: this.state.bookingApprovalRequired == "Yes"  ? this.state.preApprovedParameter : "",
-					'preApprovedParameterValue' : this.state.bookingApprovalRequired == "Yes"  ? this.state.preApprovedParameterValue : "",
+					'approvingAuthorityId1' 	: this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId1 : "",
+					'approvingAuthorityId2' 	: this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId2 : "",
+					'approvingAuthorityId3' 	: this.state.bookingApprovalRequired === "Yes"  ? this.state.approvingAuthorityId3 : "",
+					'preApprovedParameter' 		: this.state.bookingApprovalRequired === "Yes"  ? this.state.preApprovedParameter : "",
+					'preApprovedParameterValue' : this.state.bookingApprovalRequired === "Yes"  ? this.state.preApprovedParameterValue : "",
 					'createUser'        		: this.state.createUser,
 				    'role' 						: this.state.createUser ? this.state.role : "-- Select Role --", 
                     'addEmployee'       		: this.state.addEmployee,
@@ -672,7 +672,7 @@ class ContactDetails extends Component {
 		
 	}
 	updateUser = ()=>{
-		if(this.state.alreadyHasUser && this.state.createUser == false)
+		if(this.state.alreadyHasUser && this.state.createUser === false)
 		{
 			
 			var id = this.state.userID;
@@ -723,7 +723,7 @@ class ContactDetails extends Component {
     	}
 	}
 	updatePerson = ()=>{
-		if(this.state.alreadyHasUser && this.state.createUser == false)
+		if(this.state.alreadyHasUser && this.state.createUser === false)
 		{
 		   axios.delete("/api/personmaster/delete/"+this.state.personID)
 			.then((response) => {

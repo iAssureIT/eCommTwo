@@ -24,7 +24,7 @@ componentDidMount(){
 		let a = pageUrl ? pageUrl.split('/') : "";
         // console.log("a==>",a[1]); 
         const urlParam =a[1];
-        // console.log("urlParam  == ",urlParam);
+        // console.log("urlParam  === ",urlParam);
         axios
         .get('/api/blocks/get/list')
         .then((response)=>{
@@ -63,8 +63,8 @@ deleteblock(event){
 
 	let filteredBlocks = this.state.ListOfpages.filter( function (user) {
 		return user.pageBlocks.filter((child)=>{
-			if(URL == child.block_id){idArray.push(child._id)}
-			return URL == child.block_id
+			if(URL === child.block_id){idArray.push(child._id)}
+			return URL === child.block_id
 		}).length != 0
        
     });
