@@ -126,7 +126,7 @@ class Layout extends Component  {
                                           <Route path="/" component={Dashboard} exact />
                                           <Route path="/dashboard" component={Dashboard} exact />
                                         
-                                          <Route path="/website-model" component={WebsiteModel} exact />                                          
+                                          <Route path="/preferences" component={WebsiteModel} exact />                                          
                                           <Route path="/franchise-allowable-pincode" component={AllowablePincodes} exact />                                          
 
                                           {/* Product Management */}
@@ -186,11 +186,9 @@ class Layout extends Component  {
 
                                           { /*Ba List*/}
                                           <Route path="/ba-list" exact strict component={BaList} />
-
                                           <Route path="/editBA/:BaId" exact strict component={AddNewBA} />
                                           <Route path="/BA/locationDetails/:locationEdit/:BaId" exact strict component={AddNewBA} />
                                           <Route path="/BA/contactDetails/:contactEdit/:BaId" exact strict component={AddNewBA} />
-
                                           <Route path="/addNewBA" exact strict component={AddNewBA} />
 
 

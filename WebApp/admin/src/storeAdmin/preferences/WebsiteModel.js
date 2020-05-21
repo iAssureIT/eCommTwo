@@ -9,7 +9,8 @@ class WebsiteModel extends Component {
     constructor(props) {        
         super(props);
         this.state = {
-            "editId" : ""
+            "editId" : "",
+            "askPincodeToUser" : "",
         };
         
     }
@@ -27,15 +28,17 @@ class WebsiteModel extends Component {
             [name]: event.target.value
         });  
         console.log("websiteModel:", this.state.websiteModel); 
+        console.log("askpincode",this.state.askPincodeToUser);
     }
     submit(event){
         event.preventDefault();    
                 var formValues = {
-                    "websiteModel" : this.state.websiteModel ,           
+                    "websiteModel" : this.state.websiteModel ,  
+                    "askPincodeToUser" : this.state.askPincodeToUser,         
                 }
                  console.log('formValues', formValues);
                 if($("#websiteModelId").valid()){        
-                    axios.post('/api/adminpreference/postWebsitemodel', formValues)
+                    axios.post('/api/adminpreference/post', formValues)
                     .then((response)=>{                
                         console.log("response after insert webapp:",response.data.message); 
                         swal({
@@ -87,7 +90,21 @@ class WebsiteModel extends Component {
                                                         <input name="websiteModel" type="radio" value="FranchiseModel" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                         onClick={this.handleChange.bind(this)} />
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Franchise Model</span>
-                                                    </div>                                                                                                   
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 askPincodeToUser NOpadding">
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Ask Pincode To User on Homepage Launch <span><i className="astrick">*</i></span></div>
+
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
+                                                        <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                        onClick={this.handleChange.bind(this)} />
+                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Yes</span>
+                                                    </div>
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
+                                                        <input name="askPincodeToUser" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                        onClick={this.handleChange.bind(this)} />
+                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">No</span>
+                                                    </div>
                                                 </div>
                                                 <br/> 
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

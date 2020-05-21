@@ -247,7 +247,7 @@ export default class Leftsidebar extends Component{
                     <li>
                       <a href="/franchise-allowable-pincode">
                         <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Franchise Allowable Pincode</span>
+                        <span className="sidebarMenuSubText">Allowable Pincode</span>
                       </a>
                     </li>                    
                   </ul>
@@ -324,13 +324,7 @@ export default class Leftsidebar extends Component{
                     Master Data
                     <i className="fa fa-sort-down pull-right"></i>
                   </a>
-                  <ul className="collapse list-unstyled" id="MasterData">
-                    <li>
-                      <a href="/website-model">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Select WebSite Model</span>
-                      </a>
-                    </li>
+                  <ul className="collapse list-unstyled" id="MasterData">                    
                     <li>
                       <a href="/taxname">
                         <i className="fa fa-circle-o" /> 

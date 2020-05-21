@@ -12,7 +12,7 @@ exports.insert_preferences = (req, res, next) => {
                     { _id:data._id},  
                     {
                         $set:{
-                            "websiteModel"      : req.body.websiteModel
+                            "websiteModel"      : req.body.websiteModel,
                             "askPincodeToUser"  : req.body.askPincodeToUser
                         }
                     }
@@ -29,12 +29,12 @@ exports.insert_preferences = (req, res, next) => {
                         error: err
                     });
                 });
-			}else{
-                console.log("inside else");
+			}else{                
             const adminpreference = new Adminpreference({
                 _id                 : mongoose.Types.ObjectId(),      
                 "websiteModel"      : req.body.websiteModel,
-                "askPincodeToUser"  : req.body.askPincodeToUser
+                "askPincodeToUser"  : req.body.askPincodeToUser,
+                createdAt           : new Date()
             });            
             adminpreference.save(
                 function(err){
