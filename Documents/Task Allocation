@@ -6,18 +6,18 @@ Task Allocation
  		- Create 6 Franchise and Make sure everything is working fine. 
  - Allowable Pincodes 		(Done) 
 
- - Franchise Shopping List 		 
- - Admin Shopping List Details 
- - Admin Shopping List Summary 
+ - Franchise Shopping List 		 			(WIP)
+ - Admin Shopping List Details  		(Ashish)	
+ - Admin Shopping List Summary 			(Ashish)
 
- - Admin Raw Material Entry (Done)
- - Admin Finished Goods Entry (Done)
- - Admin Distribution Management 
- - Admin Delivery Challan
- - Franchise Product Purchase
- - Admin Inventory Management
- - Admin Dashboard
- - Franchise Dashboard
+ - Admin Raw Material Entry 				(Done)
+ - Admin Finished Goods Entry 			(Done)
+ - Admin Distribution Management  	(Ashish)
+ - Admin Delivery Challan 					(Ashish)
+ - Franchise Product Purchase 			(WIP)
+ - Admin Inventory Management 			(Ashish)
+ - Admin Dashboard 									(Ashish)
+ - Franchise Dashboard 							(Ashish)
 
 
 *2) Admin CMS - Ashish Chavan *
@@ -26,8 +26,8 @@ Task Allocation
 
 
 *3) Website - Karuna *
-	- Home Page  (Done)
-	- Section Page 
+	- Home Page  											(Done)
+	- Section Page  
 	- Category Page
 	- Login + Signup + Forgot Password
 	- Cart Page

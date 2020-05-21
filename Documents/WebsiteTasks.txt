@@ -16,12 +16,32 @@
 
 
 
-1) On Homepage, if ask-pincode-to-user = true, then show modal. 
+1) On Homepage, if preferences.askPincodeToUser = true, then show modal. 
 	
-		What is the pincode of are where you want delivery? 
-		___________
+		+-----------------------------------------------------------------------+
+		|      																																	|
+		|      	What is the pincode of are where you want delivery? 						|
+		|				__411028__		[Check Delivery]																	|
+		|																																				|
+		|																																				|
+		+-----------------------------------------------------------------------+
 
-		When user enters the pincode, save that in cookies. 
+			When user enters the pincode, 
+			1) save that pincode in cookies. 
+			2) using some API, check if this pincode is in the list of allowablePincodes
+			3) 	if(allowed){
+						show Message = "Great... We can deliver in your area. Go ahead and order your products!"
+					}else{
+						show Message = "Sorry... We can not deliver in your area. Check again after few days!"
+					}
+			4) Check if pincode is stored in Cookies
+						if(stored in cookies){
+							Don't ask pincode to user again. 
+							Check if this pincode is allowable. 
+							Store this allowable or not, in cookies. 
+						}else{
+							show modal. 
+						}
 
 
 2) When clicked on add to cart, then ask to login. 

@@ -1,7 +1,9 @@
  ===================================
  					Admin Preferences
  ===================================
- 
+ /preferences 
+
+preferences.js 
 
  	Select Website Model: 
 		 	O Single Owner Website   		(value: SingleOwner)
@@ -12,4 +14,12 @@
 	Ask Pincode To User on Homepage Launch
 		  O Yes  	O No
 
-	
+
+
+collection
+
+preferences = {
+	_id : xxx,
+	websideModel 			: "FranchiseModel",
+	askPincodeToUser 	: true,
+}

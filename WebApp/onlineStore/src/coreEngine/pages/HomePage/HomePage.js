@@ -30,6 +30,8 @@ class HomePage extends Component {
       // this.bestSellerData();
     }  
     componentDidMount() {
+      const preferences = localStorage.getItem("preferences");
+      
       this.featuredProductData();
       this.exclusiveProductsData();
       this.newProductsData();

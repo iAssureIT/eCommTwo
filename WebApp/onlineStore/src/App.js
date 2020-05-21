@@ -13,11 +13,29 @@ console.log("process.env.REACT_APP_BASE_URL:",process.env.REACT_APP_BASE_URL);
 console.log("process.env.REACT_APP_PROJECT_NAME:",process.env.REACT_APP_PROJECT_NAME);
 
 function App() {
+	getPreferences();
   return (
     <div className="App">
 	   <Routes />
     </div>
   );
 }
+
+
+function getPreferences(){
+	//Get all preferences and store them in localstorage
+	axios.get("/api/adminpreference/get")
+	.then(preferences =>{
+		localStorage.setItem('preferences', JSON.stringify(preferences));
+	})
+	.catch(error=>{
+		console.log("Error in preferences = ", error);
+	})
+
+}
+
+
+
 export default App;
  
+

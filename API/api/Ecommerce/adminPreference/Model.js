@@ -7,4 +7,4 @@ const adminPreferenceSchema = mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('adminPreference',adminPreferenceSchema);
+module.exports = mongoose.model('adminpreference',adminPreferenceSchema);
