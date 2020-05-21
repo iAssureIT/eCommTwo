@@ -279,7 +279,7 @@ class DesignationMapping extends Component {
                                                                                                                         name={updata.designation+"|"+data._id} 
                                                                                                                         // checked={this.state[updata.designation+"|"+data._id] ? "checked":"unchecked"}
                                                                                                                         onChange={this.handleChange}
-                                                                                                                        //onKeyDown={updata.max ? ((event)=>(event.target.value > updata.max ? (((event.which ? event.which : event.keyCode) != 8) ? (event.preventDefault(), true) : false) : true)): ()=>{}}
+                                                                                                                        //onKeyDown={updata.max ? ((event)=>(event.target.value > updata.max ? (((event.which ? event.which : event.keyCode) !== 8) ? (event.preventDefault(), true) : false) : true)): ()=>{}}
                                                                                                                        
                                                                                                                         //className="form-control" style={{"width" : "90px", "height": "25px", "display": "inline-block"}} 
                                                                                                                         />

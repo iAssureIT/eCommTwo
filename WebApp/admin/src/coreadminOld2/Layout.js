@@ -29,7 +29,7 @@ class Layout extends Component  {
 
     componentDidMount() {
         const token = localStorage.getItem("token");
-        if (token != null && token != "undefined") {
+        if (token !== null && token !== "undefined") {
             this.setState({
                 loggedIn: true
             })
@@ -39,7 +39,7 @@ class Layout extends Component  {
 
     logout() {
         var token = localStorage.removeItem("token");
-        if (token != null && token != "undefined") {
+        if (token !== null && token !== "undefined") {
             this.setState({
                 loggedIn: false
             })

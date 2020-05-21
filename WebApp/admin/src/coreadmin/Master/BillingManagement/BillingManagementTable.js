@@ -291,7 +291,7 @@ class BillingManagementTable extends Component {
 	}
 	tableSearch(){
     	var searchText = this.refs.tableSearch.value;
-		if(searchText && searchText.length != 0) {
+		if(searchText && searchText.length !== 0) {
 			this.setState({
 				"normalData"  : false,
 				"searchData"  : true,
@@ -461,7 +461,7 @@ class BillingManagementTable extends Component {
 																  return k === key;
 																});
 																if(found.length > 0){
-																	if(key != 'id'){
+																	if(key !== 'id'){
 																		return(<td className={textAlign} key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
 																	}
 																}																

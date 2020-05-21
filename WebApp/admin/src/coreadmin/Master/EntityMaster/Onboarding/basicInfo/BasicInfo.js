@@ -704,7 +704,7 @@ class BasicInfo extends Component {
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
               <section className="content OrgSettingFormWrapper">
-              {this.state.pathname != false?
+              {this.state.pathname !== false?
                 <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                     {this.state.pathname !="appCompany" ?

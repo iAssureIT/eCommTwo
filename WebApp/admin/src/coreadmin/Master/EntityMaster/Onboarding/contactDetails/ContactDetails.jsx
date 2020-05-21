@@ -1218,7 +1218,7 @@ class ContactDetails extends Component {
 																</div>
 																<div className="marginTop10 col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	
-																	{ this.state.pathname != "appCompany" ?
+																	{ this.state.pathname !== "appCompany" ?
 																		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 																			<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Booking Approval Required</label>
 																			

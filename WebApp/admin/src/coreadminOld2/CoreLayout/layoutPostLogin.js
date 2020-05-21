@@ -36,7 +36,7 @@ import Dashboard from '../dashboard/Dashboard.js'
 
 
 		    const token = localStorage.getItem("token");
-		    if(token!=null && token != undefined){
+		    if(token!=null && token !== undefined){
 		      this.setState({
 		        loggedIn : true
 		      })
@@ -47,7 +47,7 @@ import Dashboard from '../dashboard/Dashboard.js'
 
 		  logout(){
 		    var token = localStorage.removeItem("token");
-		      if(token!=null && token != undefined){
+		      if(token!=null && token !== undefined){
 		      this.setState({
 		        loggedIn : false
 		      })

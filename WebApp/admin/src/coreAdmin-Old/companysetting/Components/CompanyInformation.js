@@ -143,7 +143,7 @@ class CompanyInformation extends Component{
 
   componentWillReceiveProps(nextProps) {
 
-    if(nextProps.get && nextProps.get.length != 0){
+    if(nextProps.get && nextProps.get.length !== 0){
 
      this.setState({
                 companyName             : this.state.companyName,

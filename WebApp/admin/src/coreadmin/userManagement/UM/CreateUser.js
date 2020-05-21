@@ -451,7 +451,7 @@ class CreateUser extends Component {
                                 {
                                   this.state.adminRolesListData && this.state.adminRolesListData.length > 0 ?
                                     this.state.adminRolesListData.map((data, index) => {
-                                      // if (data.role != 'corporate' && data.role != 'vendor' && data.role != 'employee' && data.role != 'driver' && data.role != 'guest') {
+                                      // if (data.role !== 'corporate' && data.role !== 'vendor' && data.role !== 'employee' && data.role !== 'driver' && data.role !== 'guest') {
                                         return (
                                           <option key={index} value={data.role}>{data.role}</option>
                                         );
@@ -943,7 +943,7 @@ export default CreateUser;
 //                                 {
 //                                   this.state.adminRolesListData && this.state.adminRolesListData.length > 0 ?
 //                                     this.state.adminRolesListData.map((data, index) => {
-//                                       // if (data.role != 'corporate' && data.role != 'vendor' && data.role != 'employee' && data.role != 'driver' && data.role != 'guest') {
+//                                       // if (data.role !== 'corporate' && data.role !== 'vendor' && data.role !== 'employee' && data.role !== 'driver' && data.role !== 'guest') {
 //                                         return (
 //                                           <option key={index} value={data.role}>{data.role}</option>
 //                                         );

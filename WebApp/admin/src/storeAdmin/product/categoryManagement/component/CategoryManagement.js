@@ -632,7 +632,7 @@ class CategoryManagement extends Component{
                                       {/* <div className="divideCatgRows">
                                         <label>Category Image</label>
                                           <div className="col-lg-12 col-md-12 col-xs-6 col-sm-6">
-                                          <div className="col-lg-12 col-md-12 col-xs-6 col-sm-6 categoryImage" style={{"backgroundImage":`url(`+(this.state.categoryImage && this.state.categoryImage != "" ? this.state.categoryImage : "/images/notavailable.jpg")+`)`}}>
+                                          <div className="col-lg-12 col-md-12 col-xs-6 col-sm-6 categoryImage" style={{"backgroundImage":`url(`+(this.state.categoryImage && this.state.categoryImage !== "" ? this.state.categoryImage : "/images/notavailable.jpg")+`)`}}>
                                             <div className="row">
                                               <input type="file" onChange={this.uploadImage.bind(this)} title="Click to Edit Photo" className="imgUp col-lg-12 col-sm-12 col-xs-12 col-md-12" accept=".jpg,.jpeg,.png" />
                                             </div>

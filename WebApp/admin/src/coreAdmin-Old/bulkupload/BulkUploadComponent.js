@@ -149,7 +149,7 @@ constructor(props) {
     var excelData = [];
     var totalColumnsInRows = 0;
     $( "[id^='mappingToFile']" ).map((ind,data)=>{
-      if (data.value != "Dont Map" ) {
+      if (data.value !== "Dont Map" ) {
         totalColumnsInRows++;
       }
     })
@@ -161,7 +161,7 @@ constructor(props) {
         var validColumnsInRow = 0;
         this.props.dbdata.map((data,ind)=>{
           
-          if (data.name != '_id' && filedata[$('#mappingToFile'+ind+' option:selected').data('index')]) {
+          if (data.name !== '_id' && filedata[$('#mappingToFile'+ind+' option:selected').data('index')]) {
             //console.log($('#mappingToFile'+ind+' option:selected').val())
             if ($('#dbMappingRow'+ind).data('type').toLowerCase() === typeof filedata[$('#mappingToFile'+ind+' option:selected').data('index')]) {
               rowData[data.name] = filedata[$('#mappingToFile'+ind+' option:selected').data('index')]
@@ -296,7 +296,7 @@ constructor(props) {
             this.state.inputFileData.length > 0 ? 
             this.props.dbdata.map((data,index)=>{
               //console.log('data',data)
-              if (data.name != '_id') {
+              if (data.name !== '_id') {
                 return(
                   <tr key={index}>
                     <td scope="row">{data.label}</td>

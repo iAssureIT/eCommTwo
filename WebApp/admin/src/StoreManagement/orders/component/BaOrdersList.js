@@ -72,7 +72,7 @@ class AdminOrdersList extends Component{
         var status = $(event.currentTarget).attr('data-status');
         var id = $(event.currentTarget).attr('data-id');
         
-        if(status != "Dispatch"){
+        if(status !== "Dispatch"){
             if(status!="Done"){
                 swal({
                     title: 'Do you want to change status to '+status+ "?",
@@ -157,7 +157,7 @@ class AdminOrdersList extends Component{
 
         var expDeliveryDate = $('.expDeliveryDate').val();
         
-        if(businessAssociate != '' ){
+        if(businessAssociate !== '' ){
           var formValues = {
                           "orderID"             :  id,
                           "userid"              :  localStorage.getItem('admin_ID'),

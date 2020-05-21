@@ -504,7 +504,7 @@ class PersonList extends Component {
 				                                            </div>
 				                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				                                              	
-																{this.state.deletedDriversData != "-" ?
+																{this.state.deletedDriversData !== "-" ?
 																	<div className="table-responsive topmr40 col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																		<table className="table iAssureITtable-bordered table-striped table-hover">
 																			<thead className="tempTableHeader">

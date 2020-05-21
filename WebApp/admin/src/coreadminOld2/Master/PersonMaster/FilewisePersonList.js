@@ -44,11 +44,11 @@ class FilewisePersonList extends Component{
         console.log(response.data);
         var tableData = response.data.filter((a, i)=>{
 
-          if (a._id != null) {
+          if (a._id !== null) {
             return {
-              fileName: a._id != null ? a._id : "-", 
-              count: a.count != NaN ? "<p>"+a.count+"</p>" : "a", 
-              _id: a._id != null ? a._id : "-", 
+              fileName: a._id !== null ? a._id : "-", 
+              count: a.count !== NaN ? "<p>"+a.count+"</p>" : "a", 
+              _id: a._id !== null ? a._id : "-", 
             }
           }
         })

@@ -540,7 +540,7 @@ class BasicInfo extends Component {
   }
   edit() {
     var entityID = this.state.entityID;
-    if (entityID != '') {
+    if (entityID !== '') {
       axios.get('/api/entitymaster/get/one/' + entityID)
         .then((response) => {
           this.setState({

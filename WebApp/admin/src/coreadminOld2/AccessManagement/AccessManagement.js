@@ -32,7 +32,7 @@ class AccessManagement extends Component {
            var selectedRoles = []; 
             for (var i = 0; i < response.data.length; i++) {
                 
-                if (response.data[i].role != 'authuser' && response.data[i].role != 'admin') {
+                if (response.data[i].role !== 'authuser' && response.data[i].role !== 'admin') {
                     selectedRoles.push(response.data[i].role)
                 }
                 
@@ -60,7 +60,7 @@ class AccessManagement extends Component {
 
             var rolesArray = [];
             response.data.map((data, ind) => {
-                if (data.role != "admin") {
+                if (data.role !== "admin") {
                     rolesArray.push({ id: data._id, role: data.role })    
                 }
                 $("#addRoleModal").hide();

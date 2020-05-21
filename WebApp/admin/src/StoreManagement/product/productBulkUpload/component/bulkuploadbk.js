@@ -340,7 +340,7 @@ class AddNewBulkProduct extends Component {
                                      documentObj.push({ [header[k]]: record[k] });
                                 } else {
                                     if (header[k].startsWith("feature list")) {
-                                        if (typeof record[k] !== 'undefined' && record[k].trim() != '') {
+                                        if (typeof record[k] !== 'undefined' && record[k].trim() !== '') {
                                             var featuresArray = record[k].split("\n")
                                             var featuresString = "";
 
@@ -354,14 +354,14 @@ class AddNewBulkProduct extends Component {
                                     }
                                     else if (header[k].startsWith("attribute")) {
                                         
-                                        if (typeof record[k] !== 'undefined' && record[k].trim() != '') {
+                                        if (typeof record[k] !== 'undefined' && record[k].trim() !== '') {
                                             attributeArray.push({attributeName: header[k].replace(/^attribute +/i, '').trim(), attributeValue: record[k].trim()})
                                             documentObj[count]['attributes'] = attributeArray;
                                         }
                                         
                                     }
                                     else if (header[k] === 'tags') {
-                                        if (record[k] != undefined) {
+                                        if (record[k] !== undefined) {
                                             documentObj[count]['tags'] = record[k].split(',');
                                         }
                                     }

@@ -189,7 +189,7 @@ class BasicInfo extends Component {
     $(document).ready(function(){
         $("#companyIn").keypress(function(event){
             var inputValue = event.charCode;
-            if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0) && !(inputValue >=48 &&  inputValue <= 57)){
+            if(!(inputValue >= 65 && inputValue <= 120) && (inputValue !== 32 && inputValue !== 0) && !(inputValue >=48 &&  inputValue <= 57)){
                 event.preventDefault();
             }
         });
@@ -215,7 +215,7 @@ class BasicInfo extends Component {
       }
   }
   checkBAExists(email){
-    if (email != '' ) {
+    if (email !== '' ) {
       axios.get('/api/businessassociates/get/checkBAExists/'+email)
              .then((response)=>{
                   if (response.data.length>0 ) {
@@ -676,7 +676,7 @@ class BasicInfo extends Component {
     console.log(id);
 
     var arr = this.state.attachedDocuments.filter((item,index)  =>{
-      return Number(index) != Number(id);
+      return Number(index) !== Number(id);
     });
 
     this.setState({attachedDocuments : arr});
@@ -807,9 +807,9 @@ class BasicInfo extends Component {
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 addpicmr marginsBottom" id="hide">
-                                          <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingZeroo"> {this.state.logoUrl != "" ? "Change Logo" : "Add Logo"} </label>
+                                          <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingZeroo"> {this.state.logoUrl !== "" ? "Change Logo" : "Add Logo"} </label>
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos" id="LogoImageUpOne">
-                                            <img src={this.state.logoUrl != '' ? this.state.logoUrl : "/images/uploadimg.png"} className="img-responsive logoStyle" />
+                                            <img src={this.state.logoUrl !== '' ? this.state.logoUrl : "/images/uploadimg.png"} className="img-responsive logoStyle" />
                                               <input type="file" className="form-control commonFilesUpld" accept=".jpg,.jpeg,.png" onChange={this.uploadLogo.bind(this)}  name="upload-logo"/>
                                           </div>
                                         </div>

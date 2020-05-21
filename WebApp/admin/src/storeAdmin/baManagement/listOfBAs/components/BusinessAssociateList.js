@@ -93,13 +93,13 @@ export default class BusinessAssociateList extends Component {
     if ($(event.target).attr('value') === 'All') {
 
       this.setState({baList: this.state.masterBA});
-      if(this.state.states != '-'){
+      if(this.state.states !== '-'){
         this.showAllList(this.state.masterBA, "locationDetails", "stateCode",this.state.states);
       }
-      if(this.state.districts != '-'){
+      if(this.state.districts !== '-'){
         this.showAllList(this.state.masterBA, "locationDetails", "district",this.state.districts);
       }
-      if(this.state.city != '-'){
+      if(this.state.city !== '-'){
         this.showAllList(this.state.masterBA, "locationDetails", "city",this.state.city);
       }
     }else{
@@ -145,7 +145,7 @@ export default class BusinessAssociateList extends Component {
 
     var searchByName = this.state.searchByName;
     var currentState = this.state.states;
-    if(searchByName != ''){
+    if(searchByName !== ''){
 
     }else{
 

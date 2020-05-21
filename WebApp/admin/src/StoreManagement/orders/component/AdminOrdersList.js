@@ -66,7 +66,7 @@ class AdminOrdersList extends Component{
         var status = $(event.currentTarget).attr('data-status');
         var id = $(event.currentTarget).attr('data-id');
         
-        if(status != "Dispatch"){
+        if(status !== "Dispatch"){
             if(status!="Done"){
                 swal({
                     text: 'Do you want to change status to '+status+ "?",
@@ -253,7 +253,7 @@ class AdminOrdersList extends Component{
                             value.deliveryStatus === "Cancelled"   ? "col-lg-2" : ""
                                 ) 
                                                                                       
-                        } onClick={  value.deliveryStatus != "Dispatch Approved" ? this.changeOrderStatus.bind(this) : this.openModal.bind(this) } 
+                        } onClick={  value.deliveryStatus !== "Dispatch Approved" ? this.changeOrderStatus.bind(this) : this.openModal.bind(this) } 
                             data-id={value._id} data-status={
                             value.deliveryStatus === "New Order"         ? "Verified" :  
                             value.deliveryStatus === "Verified"          ? "Packed" :  

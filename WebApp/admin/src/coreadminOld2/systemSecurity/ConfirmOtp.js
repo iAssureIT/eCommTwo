@@ -70,7 +70,7 @@ class ConfirmOtp extends Component {
   }
   inputEffect(event) {
     event.preventDefault();
-    if ($(event.target).val() != "") {
+    if ($(event.target).val() !== "") {
       $(event.target).addClass("has-content");
     } else {
       $(event.target).removeClass("has-content");

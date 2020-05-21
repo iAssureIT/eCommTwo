@@ -6,7 +6,6 @@ import Loader from '../../../../coreadmin/common/Loader/Loader.js';
 import $ from 'jquery';
 import Message from '../../../../storeAdmin/message/Message.js';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-import swal from 'sweetalert';
 import IAssureTable           from "../../../../coreadmin/IAssureTable/IAssureTable.jsx";
 
 class BulkUploadComponent extends Component{
@@ -141,7 +140,7 @@ constructor(props) {
 
   handleFile(file) {
             
-        var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]/;
+        var format = /[!@#$%^&*()_+\-=[\]{};':"\\|,<>/?]/;
 
         if (format.test(file.name)) {
             this.setState({ fileWarningError: true, finalData: [] });
@@ -220,7 +219,7 @@ constructor(props) {
                                         
                                     }
                                     else if (header[k] === 'tags') {
-                                        if (record[k] != undefined) {
+                                        if (record[k] !== undefined) {
                                             documentObj[count]['tags'] = record[k].split(',');
                                         }
                                     }

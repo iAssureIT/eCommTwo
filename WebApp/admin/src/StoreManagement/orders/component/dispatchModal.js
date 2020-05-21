@@ -37,7 +37,7 @@ class dispatchModal extends Component{
 
         var expDeliveryDate = $('.expDeliveryDate').val();
         
-        if(businessAssociate != '' ){
+        if(businessAssociate !== '' ){
           var formValues = {
                           "orderID"             :  id,
                           "userid"              :  localStorage.getItem('admin_ID'),

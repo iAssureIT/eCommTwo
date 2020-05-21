@@ -48,9 +48,9 @@ class FileWiseProductList extends Component{
         console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName: a.fileName != null ? a.fileName.replace(/\s+/, "")  : "-", 
-            productCount: a.productCount != NaN ? "<p>"+a.productCount+"</p>" : "a", 
-            _id: a._id != null ? a._id.replace(/\s+/, "")  : "-", 
+            fileName: a.fileName !== null ? a.fileName.replace(/\s+/, "")  : "-", 
+            productCount: a.productCount !== NaN ? "<p>"+a.productCount+"</p>" : "a", 
+            _id: a._id !== null ? a._id.replace(/\s+/, "")  : "-", 
           }
         })
         console.log('tableData', tableData)

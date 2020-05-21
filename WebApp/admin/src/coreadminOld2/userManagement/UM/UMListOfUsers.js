@@ -575,13 +575,13 @@ render(){
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="active_selected" name="userListDDOption">Active Selected</option>
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="cancel_selected" name="userListDDOption">Delete Selected Acccounts</option>	
 													{ 	adminRolesListDataList.map( (rolesData,index)=>{
-															if(rolesData.role != 'corporate' && rolesData.role != 'vendor' && rolesData.role != 'employee' && rolesData.role != 'driver' && rolesData.role != 'guest'){
+															if(rolesData.role !== 'corporate' && rolesData.role !== 'vendor' && rolesData.role !== 'employee' && rolesData.role !== 'driver' && rolesData.role !== 'guest'){
 																return (<UMAddRolRow key={index} roleDataVales={rolesData.role}/>);
 															}
 													  	})
 													}
 													{ adminRolesListDataList.map( (rolesData,index)=>{
-															if(rolesData.role != 'corporate' && rolesData.role != 'vendor' && rolesData.role != 'employee' && rolesData.role != 'driver' && rolesData.role != 'guest'){
+															if(rolesData.role !== 'corporate' && rolesData.role !== 'vendor' && rolesData.role !== 'employee' && rolesData.role !== 'driver' && rolesData.role !== 'guest'){
 																return ( <UMDelRolRow key={index} roleDataVales={rolesData.role}/>);
 															}
 														})

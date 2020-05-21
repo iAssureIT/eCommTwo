@@ -783,7 +783,7 @@ class UMListOfUsers extends Component {
 			searchText: selectedValue,
 		}
 
-		if (this.refs.roleListDropdown.value && (this.refs.blockActive.value && this.refs.blockActive.value != "-- Select --")) {
+		if (this.refs.roleListDropdown.value && (this.refs.blockActive.value && this.refs.blockActive.value !== "-- Select --")) {
 			this.selectedStatuswithrole();
 		} else {
 			if (selectedValue === "all") {
@@ -838,7 +838,7 @@ class UMListOfUsers extends Component {
 		}
 		console.log("this.refs.roleListDropdown.value=>", this.refs.roleListDropdown.value)
 		console.log("this.refs.blockActive.value=>", this.refs.blockActive.value)
-		if (this.refs.blockActive.value && (this.refs.roleListDropdown.value && this.refs.roleListDropdown.value != "-- Select --")) {
+		if (this.refs.blockActive.value && (this.refs.roleListDropdown.value && this.refs.roleListDropdown.value !== "-- Select --")) {
 			this.selectedStatuswithrole();
 		} else {
 			if (selectedValue === "all") {
@@ -1929,7 +1929,7 @@ export default UMListOfUsers;
 // 			searchText: selectedValue,
 // 		}
 
-// 		if (this.refs.roleListDropdown.value && (this.refs.blockActive.value && this.refs.blockActive.value != "-- Select --")) {
+// 		if (this.refs.roleListDropdown.value && (this.refs.blockActive.value && this.refs.blockActive.value !== "-- Select --")) {
 // 			this.selectedStatuswithrole();
 // 		} else {
 // 			if (selectedValue === "all") {
@@ -1975,7 +1975,7 @@ export default UMListOfUsers;
 // 		}
 // 		console.log("this.refs.roleListDropdown.value=>", this.refs.roleListDropdown.value)
 // 		console.log("this.refs.blockActive.value=>", this.refs.blockActive.value)
-// 		if (this.refs.blockActive.value && (this.refs.roleListDropdown.value && this.refs.roleListDropdown.value != "-- Select --")) {
+// 		if (this.refs.blockActive.value && (this.refs.roleListDropdown.value && this.refs.roleListDropdown.value !== "-- Select --")) {
 // 			this.selectedStatuswithrole();
 // 		} else {
 // 			if (selectedValue === "all") {

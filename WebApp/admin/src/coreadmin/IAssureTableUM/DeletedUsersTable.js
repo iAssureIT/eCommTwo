@@ -1186,7 +1186,7 @@ class DeletedUsersTable extends Component {
 																				</div>
 																				<div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																					{
-																						this.state.logDetails != "-" ?
+																						this.state.logDetails !== "-" ?
 																							<div className="table-responsive topmr40 col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																								<table className="table iAssureITtable-bordered table-striped table-hover">
 																									<thead className="tempTableHeader">

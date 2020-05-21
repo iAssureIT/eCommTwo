@@ -591,7 +591,7 @@ class AddNewShopProduct extends Component {
     }
     var originalPrice = parseFloat(this.refs.originalPrice.value).toFixed(2);
 
-    if (originalPrice != "NaN") {
+    if (originalPrice !== "NaN") {
       var discountedPrice = parseFloat(originalPrice) - parseFloat((originalPrice * event.target.value) / 100).toFixed(2);
       this.setState({
         discountedPrice: discountedPrice < 0 ? 0 : parseFloat(discountedPrice).toFixed(2)
@@ -605,7 +605,7 @@ class AddNewShopProduct extends Component {
     })
 
     var originalPrice = parseFloat(this.refs.originalPrice.value).toFixed(2);
-    if (originalPrice != "NaN") {
+    if (originalPrice !== "NaN") {
       var discountPercent = parseFloat(((originalPrice - event.target.value) / originalPrice) * 100).toFixed(2);
       this.setState({
         discountPercent: parseFloat(discountPercent).toFixed(2)
@@ -618,7 +618,7 @@ class AddNewShopProduct extends Component {
       [event.target.name]: event.target.value,
 
     });
-    if (event.target.value != 0) {
+    if (event.target.value !== 0) {
       this.setState({
         showDiscount: false
       })

@@ -112,7 +112,7 @@ export default class CompanyLocationList extends Component {
 													</tr>
 												</thead>
 												<tbody>
-												{ this.state.allPosts != null ?
+												{ this.state.allPosts !== null ?
 													this.state.allPosts.map( (locData, index)=>{
 													console.log('locData',locData);
 												   return( 

@@ -384,7 +384,7 @@ class CompanyInformation extends Component{
         this.setState({
             [event.target.name]: event.target.value
         })
-        if (event.target.value != '') {
+        if (event.target.value !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + event.target.value,{ crossDomain: true,
               headers: {
               'Access-Control-Allow-Origin': true,
@@ -512,7 +512,7 @@ class CompanyInformation extends Component{
                 <div className="form-group valid_box">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 csImageWrapper">
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                    {this.state.companyLogo && this.state.companyLogo != ''
+                    {this.state.companyLogo && this.state.companyLogo !== ''
                       ? 
                       <div className=" padTopC">
                         <div className="row col-lg-12 col-md-12 col-sm-12 col-xs-12">

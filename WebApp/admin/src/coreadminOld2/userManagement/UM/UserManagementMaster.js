@@ -136,7 +136,7 @@ Meteor.methods({
     var addRoles = [role];
     for (var i=0; i<checkedUsersList.length; i++) {
       var userId = checkedUsersList[i];
-      if(checkedUsersList[i] != null){
+      if(checkedUsersList[i] !== null){
         Roles.addUsersToRoles(userId, addRoles);
       }
       

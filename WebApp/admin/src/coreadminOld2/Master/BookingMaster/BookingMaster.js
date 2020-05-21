@@ -733,9 +733,9 @@ class BookingMaster extends Component {
     addStop(event)
     {
         event.preventDefault();
-        if(this.state.stops != "")
+        if(this.state.stops !== "")
         {
-            if(this.state.stops != undefined)
+            if(this.state.stops !== undefined)
             {
                 // stopArr.push(this.state.stops);
                 stopArr.push({

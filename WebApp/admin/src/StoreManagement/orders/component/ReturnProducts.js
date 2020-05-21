@@ -234,10 +234,10 @@ export default class ReturnProducts extends Component{
                                 })  
                               }
                                 &nbsp;
-                                { returnApproved != 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.returnApproveModal.bind(this)} data-target="#returnApprove" id={data._id} >Approve</button> : "" }
-                                { returnApproved ==1 && pickupInitiated != 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.addpickupdetails.bind(this)} data-target="#pickupdetailsModal" id={data._id} >Add Pickup Details</button> : "" }
-                                { returnApproved ==1 && pickupInitiated ==1 && productPickedUp != 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.openpickupproduct.bind(this)} data-target="#pickupproductModal" id={data._id} >Pickup Product </button> : ""}
-                                { returnApproved ==1 && pickupInitiated ==1 && productPickedUp && productAccepted != 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.openproductApproval.bind(this)} data-target="#approveProductModal" id={data._id} >Accept Product </button> : ""}
+                                { returnApproved !== 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.returnApproveModal.bind(this)} data-target="#returnApprove" id={data._id} >Approve</button> : "" }
+                                { returnApproved ==1 && pickupInitiated !== 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.addpickupdetails.bind(this)} data-target="#pickupdetailsModal" id={data._id} >Add Pickup Details</button> : "" }
+                                { returnApproved ==1 && pickupInitiated ==1 && productPickedUp !== 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.openpickupproduct.bind(this)} data-target="#pickupproductModal" id={data._id} >Pickup Product </button> : ""}
+                                { returnApproved ==1 && pickupInitiated ==1 && productPickedUp && productAccepted !== 1 ? <button className="btn btn-warning" data-toggle="modal" onClick={this.openproductApproval.bind(this)} data-target="#approveProductModal" id={data._id} >Accept Product </button> : ""}
                                 
                               </div>
                               {

@@ -173,7 +173,7 @@ class SignUp extends Component {
 	}
 
 	checkUserExists(event) {
-		if (event.target.value != '') {
+		if (event.target.value !== '') {
 			axios.get('/get/checkUserExists/' + event.target.value)
 				.then((response) => {
 

@@ -332,7 +332,7 @@ class ProductList extends Component {
         $('#bulkActionModal').hide();
     }
     saveProductImages(productImage, productID, productImageArray) {
-        var productImage = productImage;
+        // var productImage = productImage;
         var formValues = {
             "product_ID": productID,
             "productImage": productImageArray,
@@ -365,32 +365,11 @@ class ProductList extends Component {
                 console.log("error = ", error);
             });
 
-        function getConfig() {
-            return new Promise(function (resolve, reject) {
-                axios
-                    .get('http://qagangaexpressapi.iassureit.com/api/projectSettings/get/one/s3')
-                    .then((response) => {
-                        // console.log("proj set res = ",response.data);
-                        const config = {
-                            bucketName: response.data.bucket,
-                            dirName: 'propertiesImages',
-                            region: response.data.region,
-                            accessKeyId: response.data.key,
-                            secretAccessKey: response.data.secret,
-                        }
-                        resolve(config);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-
-            })
-        }
     }
     render() {
 
         // maps the appropriate column to fields property
-        const fields: object = { text: 'vendor', value: 'id' };
+        // const fields: object = { text: 'vendor', value: 'id' };
         const sectionfields: object = { text: 'section', value: 'id' };
         const categoryfields: object = { text: 'category', value: 'id' };
 

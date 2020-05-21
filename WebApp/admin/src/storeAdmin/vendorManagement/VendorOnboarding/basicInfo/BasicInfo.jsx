@@ -801,7 +801,7 @@ class BasicInfo extends Component {
   edit() {
     var vendor_ID = this.state.vendor_ID;
 
-    if (vendor_ID != '') {
+    if (vendor_ID !== '') {
       axios.get('/api/vendors/get/one/' + vendor_ID)
         .then((response) => {
           this.setState({
@@ -1126,7 +1126,7 @@ class BasicInfo extends Component {
                                                 <img src={data.location.logo} className="img-responsive col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingZero" download />
                                               </div>
                                               :
-                                              data.extension != "pdfx" || data.extension != "pdf" || data.extension != "docx" || data.extension != "doc" || data.extension != "pptx" || data.extension != "ppt" || data.extension != "xlsx" || data.extension != "xls" ?
+                                              data.extension !== "pdfx" || data.extension !== "pdf" || data.extension !== "docx" || data.extension !== "doc" || data.extension !== "pptx" || data.extension !== "ppt" || data.extension !== "xlsx" || data.extension !== "xls" ?
 
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 attachfiles">
                                                   <img src="/images/imgNotFound.jpg" className="img-responsive col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingZero" download />

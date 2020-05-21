@@ -206,7 +206,7 @@ export default class Jobform extends React.Component {
 	     else {
 		    let filteredCheckBox = array.filter( function (user) {
 				return user==value
-				}).length != 0
+				}).length !== 0
 			if (filteredCheckBox) {
 	    		 array.pop(value);
 	    		 console.log("after pop array",array);

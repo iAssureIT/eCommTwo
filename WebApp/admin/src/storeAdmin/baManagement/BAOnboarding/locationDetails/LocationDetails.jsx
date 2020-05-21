@@ -324,7 +324,7 @@ class LocationDetails extends TrackerReact(Component) {
 
     locationdetailBtn(event){
         event.preventDefault();
-        if(this.state.locationType != "--Select Location Type--" || this.state.addressLineone != '' || this.state.city != '-- Select --' || this.state.states != '-- Select --' || this.state.area != '-- Select --' || this.state.addressLinetwo != '' || this.state.pincode != '' || this.state.country != '-- Select --'){
+        if(this.state.locationType !== "--Select Location Type--" || this.state.addressLineone !== '' || this.state.city !== '-- Select --' || this.state.states !== '-- Select --' || this.state.area !== '-- Select --' || this.state.addressLinetwo !== '' || this.state.pincode !== '' || this.state.country !== '-- Select --'){
 			
 			swal({
 				text: "It seem that you are trying to enter a location. Click 'Cancel' to continue entering location. Click 'Ok' to go to next page.But you may lose values if already entered in the location form",

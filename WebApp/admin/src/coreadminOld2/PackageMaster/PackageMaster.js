@@ -202,7 +202,7 @@ class PackageMaster extends Component {
   getMax(event) {
     var charCode = (event.which) ? event.which : event.keyCode
     if (event.target.value > 10000) {
-      if (charCode != 8) {
+      if (charCode !== 8) {
         event.preventDefault();
         return false;
       }
@@ -314,7 +314,7 @@ class PackageMaster extends Component {
                           type="number" name="maxHours"
                           value={this.state.maxHours}
                           onChange={this.handleChange.bind(this)}
-                          onKeyDown={(event)=>(event.target.value > 24 ? (((event.which ? event.which : event.keyCode) != 8) ? (event.preventDefault(), true) : false) : true)}
+                          onKeyDown={(event)=>(event.target.value > 24 ? (((event.which ? event.which : event.keyCode) !== 8) ? (event.preventDefault(), true) : false) : true)}
                           className="form-control" 
                           max="24"/>
                       </div>
@@ -329,7 +329,7 @@ class PackageMaster extends Component {
                           type="number" name="maxKm"
                           value={this.state.maxKm}
                           className="form-control"
-                          onKeyDown={(event)=>(event.target.value > 1000 ? (((event.which ? event.which : event.keyCode) != 8) ? (event.preventDefault(), true) : false) : true)}
+                          onKeyDown={(event)=>(event.target.value > 1000 ? (((event.which ? event.which : event.keyCode) !== 8) ? (event.preventDefault(), true) : false) : true)}
                           max="1000" />
                       </div>
                     </div>

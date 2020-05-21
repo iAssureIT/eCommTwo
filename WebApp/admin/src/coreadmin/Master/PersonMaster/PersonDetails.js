@@ -281,7 +281,7 @@ class PersonDetails extends Component {
 										:
 										<li><i className="fa fa-whatsapp" aria-hidden="true"></i>&nbsp;&nbsp;{this.state.personInfo.whatsappNo?this.state.personInfo.whatsappNo: " - "}</li>
 									    }
-										{this.state.personInfo.alternateNumber != null ? 
+										{this.state.personInfo.alternateNumber !== null ? 
 											 <li><i className="fa fa-phone " aria-hidden="true"></i>&nbsp;&nbsp;{this.state.personInfo.alternateNumber?this.state.personInfo.alternateNumber: " - "}</li>
 											 :
 											 null

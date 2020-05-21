@@ -298,7 +298,7 @@ export default class LocationDetails extends Component{
       });
       
       event.preventDefault();
-      /*if(this.state.locationType != "--Select Location Type--" || this.state.addressLineone != '' || this.state.city != '-- Select --' || this.state.states != '-- Select --' || this.state.area != '-- Select --' || this.state.addressLinetwo != '' || this.state.pincode != '' || this.state.country != '-- Select --'){
+      /*if(this.state.locationType !== "--Select Location Type--" || this.state.addressLineone !== '' || this.state.city !== '-- Select --' || this.state.states !== '-- Select --' || this.state.area !== '-- Select --' || this.state.addressLinetwo !== '' || this.state.pincode !== '' || this.state.country !== '-- Select --'){
       
       swal({
         title:'abc',
@@ -474,7 +474,7 @@ export default class LocationDetails extends Component{
   }
   handlePincode(pincode){
         //event.preventDefault();
-        if (pincode != '') {
+        if (pincode !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + pincode)
             .then((response) => {
                 

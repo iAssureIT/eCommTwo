@@ -426,7 +426,7 @@ selectType(event){
         this.setState({
             [event.target.name]: event.target.value
         })
-        if (event.target.value != '') {
+        if (event.target.value !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + event.target.value,{ crossDomain: true,
               headers: {
               'Access-Control-Allow-Origin': true,

@@ -549,7 +549,7 @@ class IAssureTable extends Component {
 	        	null
 	       	}
 	       	{ this.state.tableObjects.downloadApply === true ?
-            	this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 ?
+            	this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 ?
                 	
 		       <React.Fragment>
           

@@ -4,7 +4,7 @@ import jQuery                 from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
-import _                      from 'underscore';
+// import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
 
 class TaxName extends Component {

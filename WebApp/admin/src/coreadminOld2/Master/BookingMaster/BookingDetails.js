@@ -321,7 +321,7 @@ class BookingDetils extends Component {
                                         </span>
                                     </div>
                                     {
-                                        this.state.type != "guest" ?  
+                                        this.state.type !== "guest" ?  
                                         <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                                         <br/>
                                             <div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">

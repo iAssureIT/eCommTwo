@@ -589,7 +589,7 @@ class LocationDetails extends Component {
 		this.setState({
 			[event.target.name]: event.target.value
 		})
-		if (event.target.value != '') {
+		if (event.target.value !== '') {
 			axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
 				.then((response) => {
 					if ($("[name='pincode']").valid()) {

@@ -16,7 +16,7 @@ class EditNotificationModal extends Component{
 	    'event' 		    : props.data ? props.data.event : '',
 	    'templateType' 		: props.data ? props.data.templateType : '',
 		'role'		: props.data ? props.data.role : '',
-		'company'		: props.data && props.data.company != null ? props.data.company : 'All',
+		'company'		: props.data && props.data.company !== null ? props.data.company : 'All',
 		'status'		: props.data ? props.data.status : '',
 		'subject'			: props.data ? props.data.subject : '',
 		'content'			: props.data ? props.data.content : '',

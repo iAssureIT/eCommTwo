@@ -54,7 +54,7 @@ class ContactDetails extends Component {
 			return regexpr.test(value);
 		}, "Please enter valid email id.");
 		jQuery.validator.addMethod("notEqual", function(value, element, param) {
-	      return this.optional(element) || value != param;
+	      return this.optional(element) || value !== param;
 	    }, "Please specify a different value");
 		  
 		jQuery.validator.setDefaults({
@@ -197,7 +197,7 @@ class ContactDetails extends Component {
 	}   
     contactdetailBtn(event){
         event.preventDefault();
-        if(this.state.Location != "--Select Location Type--" || this.state.Designation != '' || this.state.Phone != '' || this.state.Email != '' || this.state.Name != '' || this.state.Reportinmanager != '' || this.state.AltPhone != '' || this.state.Landing != ''){
+        if(this.state.Location !== "--Select Location Type--" || this.state.Designation !== '' || this.state.Phone !== '' || this.state.Email !== '' || this.state.Name !== '' || this.state.Reportinmanager !== '' || this.state.AltPhone !== '' || this.state.Landing !== ''){
 			swal({
 				title: "abc",
 				text: "It seem that you are trying to enter a location. Click 'Cancel' to continue entering location. Click 'Ok' to go to next page.But you may lose values allready entered in the location form",

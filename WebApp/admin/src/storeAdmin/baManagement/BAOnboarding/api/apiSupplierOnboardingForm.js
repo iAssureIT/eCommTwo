@@ -144,7 +144,7 @@ Meteor.methods({
       var lengthDataLevel = contact.contactDetails[lengthData-1].LocationLevel.length;
       var levelIndex = lengthDataLevel-1;
       var contactID = contact.contactDetails[lengthData-1].LocationLevel[lengthDataLevel-1].contact_id
-      if (levelIndex != formValues.levelIndex) {
+      if (levelIndex !== formValues.levelIndex) {
         Suppliers.update({'_id':supplierId,"contactDetails.Location":formValues.Location},
           {$push:{
               "contactDetails.$.LocationLevel"    : {

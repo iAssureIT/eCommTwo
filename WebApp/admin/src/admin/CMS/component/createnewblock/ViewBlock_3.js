@@ -65,7 +65,7 @@ deleteblock(event){
 		return user.pageBlocks.filter((child)=>{
 			if(URL === child.block_id){idArray.push(child._id)}
 			return URL === child.block_id
-		}).length != 0
+		}).length !== 0
        
     });
     //console.log('idArray',idArray);

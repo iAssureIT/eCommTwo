@@ -144,7 +144,7 @@ Meteor.methods({
     for (var i=0; i<checkedUsersList.length; i++) {
       // // console.log(checkedUsersList[i]);
       var userId = checkedUsersList[i];
-      if(checkedUsersList[i] != null){
+      if(checkedUsersList[i] !== null){
         // if( role === 'Teacher' && Roles.userIsInRole(userId, ['Student'])){
         //   Roles.removeUsersFromRoles(userId, ['Student']);
         // }else if( role === 'Student' && Roles.userIsInRole(userId, ['Teacher'])){

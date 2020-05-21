@@ -186,7 +186,7 @@ class ListOfVendors extends Component {
     var searchByName = this.state.searchByName;
     var currentState = this.state.states;
 
-    if(searchByName != ''){
+    if(searchByName !== ''){
     	
     }else{
 
@@ -270,13 +270,13 @@ class ListOfVendors extends Component {
 	    if ($(event.target).attr('value') === 'All') {
 
 	      this.setState({vendorList: this.state.masterVendor});
-	      if(this.state.states != '-'){
+	      if(this.state.states !== '-'){
 	        this.showAllList(this.state.masterVendor, "locationDetails", "states",this.state.states);
 	      }
-	      if(this.state.districts != '-'){
+	      if(this.state.districts !== '-'){
 	        this.showAllList(this.state.masterVendor, "locationDetails", "district",this.state.districts);
 	      }
-	      if(this.state.city != '-'){
+	      if(this.state.city !== '-'){
 	        this.showAllList(this.state.masterVendor, "locationDetails", "city",this.state.city);
 	      }
 	    }else{
