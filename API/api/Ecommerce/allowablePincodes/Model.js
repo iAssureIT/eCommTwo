@@ -4,7 +4,7 @@ const allowablePincodeSchema = mongoose.Schema({
 	_id			       : mongoose.Schema.Types.ObjectId,    
     "franchiseID"      : String,
     "companyID"        : String,
-    "allowablePincodes": String,
+    "allowablePincodes": Array,
     createdAt          : Date
 });
 

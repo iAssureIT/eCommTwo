@@ -86,8 +86,23 @@ exports.check_delivery = (req, res, next)=>{
     Allowablepincode.find()
     .exec()
     .then(data=>{
-        console.log("Data============",data);
-        // res.status(200).json(data);
+        console.log("Data============",data);   
+        if(data){
+            console.log("data.lin=====",data.length);
+            for(var i=0;i<data.length;i++){
+                for(var k=0;k<data[i].allowablePincodes.length;k++){
+                    console.log("Inside k loop",data[i].allowablePincodes[k]);
+                    if(data[i].allowablePincodes[k] === pincode){
+                        var delivery = "available";
+                        console.log("========Delivery available===========");
+                        break;
+                    }
+                }
+            }
+        }     
+        res.status(200).json(data
+            // message : "Delivery available",
+        );
     })
     .catch(err =>{
         console.log(err);

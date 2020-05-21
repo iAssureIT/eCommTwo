@@ -51,6 +51,7 @@ export default class AskPincode extends Component {
 
         axios.get("/api/allowablepincode/checkpincode/"+pincode)
             .then((response)=>{
+                swal('Pincode match');
               //show swal
             })
             .catch((error)=>{
