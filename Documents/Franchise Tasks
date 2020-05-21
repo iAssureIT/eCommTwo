@@ -29,27 +29,132 @@ Stock Inventory Block
 
 8) Franchise Shopping List
 
+
+
+
 								Date : [ dd/mm/yyyy ]
 
-	ProductID |  Item Code | Product Name | Current Stock | Ordered Items |
+	productID |  Item Code | Product Name | Current Stock | Ordered Items |
 		
-		xxx 					xxx					xxx							nnn						[________]
+		xxx 					xxx					xxx							nnn					[________] _kg_v
 
-		xxx 					xxx					xxx							nnn						[________]
+		xxx 					xxx					xxx							nnn					[________] _gm_v
 
-		xxx 					xxx					xxx							nnn						[________]
+		xxx 					xxx					xxx							nnn					[________] _ltr_v
 
-		xxx 					xxx					xxx							nnn						[________]
+		xxx 					xxx					xxx							nnn					[________] _num_v
 
 
 																											[ Submit ]
+-----------------------------------------------------------------------------
+
+	Order Summary
+
+			Date :  [ dd/mm/yyyy ]
+
+		Order Number 	|  Total Items 	|	  Quantity  
+		--------------------------------------------
+ 			1111 			  |      30       |   960 Kg  =>  V / E / D
+ 			1112 			  |      10       |   330 Kg  =>  V / E / D
+ 			1113 			  |      27       |   690 Kg  =>  V / E / D
+
+
+	----------------------------------------------------------------------------------
+	Order Detail                                          [Accept Complete Order]
+	----------------------------------------------------------------------------------
+	Product | Item  | Product  | Current | Ordered | Received |  Approve	 |	Total 
+		ID		| Code	|	 Name		 |  Stock  |	Items  |   Items 	|  Quantity  |	Stock
+	--------|-------|----------|---------|---------|----------|------------|----------               
+					|       |          | 			   |         |          |            |
+		xxx 	|	 xxx	|		xxx    |  20 Kg  |  80 kg  |  65 Kg   |   ( _/ )  x|	85 Kg
+          |       |          | 			   |         |          |            |
+		xxx 	|	 xxx	|		xxx    |  nn1 Kg |  nn2 kg |  nn3 Kg  | [Received] |	nn4 Kg
+          |       |          | 			   |         |          |            |
+		xxx 	|	 xxx	|		xxx    |  nn1 Kg |  nn2 kg |  nn3 Kg  | [Received] |	nn4 Kg
+          |       |          | 			   |         |          |            |
+		xxx 	|	 xxx	|		xxx    |  nn1 Kg |  nn2 kg |  nn3 Kg  | [Received] |	nn4 Kg
+          |       |          | 			   |         |          |            |
+		xxx 	|	 xxx	|		xxx    |  nn1 Kg |  nn2 kg |  nn3 Kg  | [Received] |	nn4 Kg
+          |       |          | 			   |         |          |            |
+	----------------------------------------------------------------------------------
+
+
+Insert
+
+formValues = {
+	franchise_id : xxx,
+	companyID: xx,
+	orderDate: dd/mm/yyyy,
+	orderItems : [
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+	]
+	
+}
+
+===================================================================================
+
+Update One Item
+
+formValues = {
+	purchaseOrder_id : xxx,
+	item : { 	productID:xxx,
+						itemCode:xxx,
+						productName:xxx,
+						orderedQty:xxx, 
+						units:xxx, 
+						suppliedQty: 0, 
+						status:"Accepted" 
+					},
+	
+}
+
+===================================================================================
+
+
+franchisePurOrder:{
+	 _id 						: xxx,
+	franchise_id 		: xxx,
+	companyID 			: xx,
+	orderDate 			: dd/mm/yyyy,
+	orderItems 			: [
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+		{productID:xxx,itemCode:xxx,productName:xxx,orderedQty:xxx, units:xxx, suppliedQty: 0, status:xxx },
+	],
+	createdBy 			: loggedInUser_id,	 
+}
+
+
+API
+	i)  Product List => /api/products/get/list     									==>   Done
+
+	ii) 	Submit Order 					=> /api/franchisepo/post/      
+	iii) 	Display Order 				=> /api/franchisepo/get/purchaseorderList 
+	iv) 	Display purchaseorder => /api/franchisepo/get/one/purchaseorder/:purchaseorder_id 
+	v)  	Edit purchaseorder 		=> /api/franchisepo/patch/purchaseorder
+  vi)   Accept Item 					=> /api/franchisepo/patch/acceptitem/
+  vii)  Accept purchaseorder	=> /api/franchisepo/patch/acceptpurchaseorder/
+	viii) Delete purchaseorder 	=> /api/franchisepo/delete/purchaseorder/:purchaseorder_id  
+
+
+
+
+
 
 
 9) Franchise Product Purchase
 
 	Date:  [ dd/mm/yyyy ]
 
-	ProductID |  Item  | Product | Current | Ordered | Arrived | Action  | Final 
+	productID |  Item  | Product | Current | Ordered | Arrived | Action  | Final 
 						|  Code  | 	Name   |	Stock  |	Stock  |	Stock  | 				 | Stock
 
 		xxx 		   xxx			 xxx 			 nnn			 nnn			nnn  			A / R  	  nnn

@@ -81,6 +81,7 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	//========== Franchise Model ===========
 	const PurchaseEntry       		= require("./api/Ecommerce/PurchaseManagement/routes/PurchaseEntry");
 	const FinishedGoodsEntry   		= require("./api/Ecommerce/PurchaseManagement/routes/FinishedGoodsEntry");
+	const FranchisePORoutes				= require("./api/Ecommerce/Franchise/franchisePurOrder/Routes.js");
 
 
 
@@ -114,8 +115,13 @@ const pageRoutes 						= require('./api/cms/routes/pages.js');
 	app.use("/api/sections", SectionRoutes);
 	app.use("/api/returnedProducts", ReturnedProductsRoutes);
 	app.use("/api/bulkUploadTemplate", BulkUploadTemplate);
+
+
+	//=========== Franchisemaster ==============
 	app.use("/api/purchaseentry", PurchaseEntry);
-	app.use("/api/FinishedGoodsEntry", FinishedGoodsEntry);
+	app.use("/api/finishedGoodsEntry", FinishedGoodsEntry);
+	app.use("/api/franchisepo", FranchisePORoutes);
+
 
 	//=========== Entitymaster ==============
 	app.use("/api/entitymaster", entityRoutes);
