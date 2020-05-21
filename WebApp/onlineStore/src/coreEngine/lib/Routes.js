@@ -31,6 +31,7 @@ import Checkout                                  from '../pages/Checkout/Checkou
 import ViewOrder                                 from '../pages/MyOrders/ViewOrder.js'
 import Edituser                                  from '../pages/Edituser/Edituser.js';
 import MyOrders                                  from '../pages/MyOrders/MyOrders.js';
+import MyOrders_Unimandai                        from '../pages/MyOrders/MyOrders_Unimandai.js';
 import ShipmentTracking                          from '../pages/ShipmentTracking/ShipmentTracking.js';
 import ProductDetailsEcommerce                   from '../pages/ProductDetailsEcommerce/ProductDetailsEcommerce.js';
 import SearchProduct                             from '../pages/ProductCollage/SearchProductPage.js';
@@ -38,6 +39,7 @@ import ProductCollage                            from '../pages/ProductCollage/P
 
 import Payment                                   from '../pages/Payment/Payment.js';
 import Wishlist                                  from '../pages/Wishlist/Wishlist.js';
+import wishlist_unimandai                        from '../pages/Wishlist/wishlist_unimandai.js';
 import Productreview                             from '../pages/Productreview/Productreview.js';
 import Account                                   from '../pages/Account/Account.js';
 import EditAccount                               from '../pages/EditAccount/EditAccount.js';
@@ -89,6 +91,7 @@ class Routes extends Component{
             <Route path="/cart"                     exact strict component={ Cart } />
             <Route path="/checkout"                 exact strict component={ Checkout } />
             <Route path="/my-orders"                exact strict component={ MyOrders } />
+            <Route path="/my-ordersUni"             exact strict component={ MyOrders_Unimandai } />
             <Route path="/view-order/:order_ID"     exact strict component={ ViewOrder } />
             <Route path="/shipment-tracking"        exact strict component={ ShipmentTracking } />
             <Route path="/productdetails/:productID"             exact strict component={ ProductDetailsEcommerce } />
@@ -102,6 +105,7 @@ class Routes extends Component{
             <Route path="/profile"              exact strict component={ Edituser } />
             <Route path="/payment/:order_ID"            exact strict component={ Payment } />
             <Route path="/wishlist"            exact strict component={ Wishlist } />
+            <Route path="/wishlistuni"            exact strict component={ wishlist_unimandai } />
             <Route path="/productreview"            exact strict component={ Productreview } />
             <Route path="/account"            exact strict component={ Account } />
             <Route path="/edit"            exact strict component={ EditAccount } />
@@ -155,13 +159,13 @@ class Routes extends Component{
             <Route path="/contact-us" exact strict component={Login}  />
             <Route path="/cart"                     exact strict component={ Login } />
             <Route path="/checkout"                 exact strict component={ Login } />
-            <Route path="/my-orders"                exact strict component={ Login } />
+            <Route path="/my-ordersUni"                exact strict component={ Login } />
             <Route path="/view-order/:order_ID"     exact strict component={ Login } />
             <Route path="/shipment-tracking"        exact strict component={ Login } />
             <Route path="/profile"              exact strict component={ Login } />
             <Route path="/payment/:order_ID"            exact strict component={ Login } />
             
-            <Route path="/wishlist"            exact strict component={ Login } />
+            <Route path="/wishlistuni"            exact strict component={ Login } />
             <Route path="/account"            exact strict component={ Login } />
             <Route path="/edit"            exact strict component={ Login } />
             <Route path="/address-book"            exact strict component={ Login } />

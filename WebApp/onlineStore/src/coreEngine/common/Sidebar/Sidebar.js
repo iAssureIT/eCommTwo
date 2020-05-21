@@ -15,8 +15,14 @@ export default class Sidebar extends Component {
     		// console.log(window.location.pathname);
     		// console.log($(links[i]).find('a').attr('href'));
     		if (window.location.pathname === $(links[i]).find('a').attr('href')) {
+    			if(process.env.REACT_APP_PROJECT_NAME === '4_UniMandai'){
+                    $(links[i]).addClass('current_uni');
+    			}else{
+
+    				$(links[i]).addClass('current');
+    			}
     			
-    			$(links[i]).addClass('current');
+    			
     		}
     		
     	}

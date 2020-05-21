@@ -59,9 +59,9 @@ ul.main-nav > li > a {
   display: block; 
   padding: 10px 15px; 
   position: relative;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 400;
+  color: #ffffff;
+  font: 700 18px/40px "Roboto Slab" ! important;
+  font-weight: 600;
   box-sizing: border-box;
   cursor: pointer;
   text-decoration: none;
@@ -261,9 +261,9 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   background-color: #f9f9f9;
   position: absolute;
   margin-top: 0px;
-  width: 100%;
+  width: 17%;
   color: #333;
-  left: 0;
+  left: 125;
   box-sizing: border-box;
   z-index : 3;
   font-size: 16px;

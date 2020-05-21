@@ -8,7 +8,7 @@ import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getCartData, searchProductAction} from '../../actions/index';
 import $                          from "jquery";
-import '../../../sites/4_UniMandai/common/Header.css';
+import '../../../sites/currentSite/common/Header.css';
 // import './Header.css';
 // import jQuery from "jquery";
 
@@ -454,8 +454,8 @@ componentWillMount() {
                          {
 
                             user_ID ?
-                              <li className="dropdown"><i className="fa fa-user headercarticon" aria-hidden="true"></i>
-                                <ul className="dropdown-menu signinmenuul">
+                              <li className="dropdown"><i className="fa fa-user headercarticon_um" aria-hidden="true"></i>
+                                <ul className="dropdown-menu signinmenuul_um">
                                   <li className="col-lg-12 NOpadding">
                                     <a href="/">
                                       <div className="row">
@@ -479,15 +479,15 @@ componentWillMount() {
                                     </a>
 
                                   </li>
-                                  <li className="col-lg-12 NOpadding"><a href="/account">My Profile</a></li>
-                                  <li className="col-lg-12 NOpadding"><a href="/my-orders">My Orders</a></li>
-                                  <li className="col-lg-12 NOpadding"><a href="/wishlist">My Wishlist</a></li>
-                                  <li className="col-lg-12 NOpadding" onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#A2632C", color:"#fff"}}>Sign Out</a></li>
+                                  <li className="col-lg-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
+                                  <li className="col-lg-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
+                                  <li className="col-lg-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
+                                  <li className="col-lg-12 NOpadding headerlia" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
                                 </ul>
                               </li>
                               :
-                              <li className="dropdown"><i className="fa fa-user headercarticon" aria-hidden="true"></i>
-                                <ul className="dropdown-menu signinmenuul signoutmenuul slide-top">
+                              <li className="dropdown"><i className="fa fa-user headercarticon_um" aria-hidden="true"></i>
+                                <ul className="dropdown-menu signinmenuul_um signoutmenuul_um slide-top">
                                   <li className="col-lg-12">
                                     <label>Welcome</label>
                                     <p>To access account and manage orders</p>
@@ -522,7 +522,7 @@ componentWillMount() {
 
                <div className="col-lg-2 col-md-2 headerpaddingtop">
                  <div className="col-lg-1 col-md-1 ">
-                   <div className="col-lg-6 header1list2">
+                   <div className="col-lg-6 header1list2_um">
                       <div className="row">
                         <ul>
                           {/*
@@ -552,13 +552,13 @@ componentWillMount() {
                 </div>
                  
                 <div className="col-lg-1 col-md-1 pull-right">
-                   <div className="col-lg-12 headercart">
+                   <div className="col-lg-12 headercart_um">
                     <div className="row dropdown">
-                      <a href={user_ID ? "/cart" : "/login"}><i className="fa fa-shopping-bag headercarticon" aria-hidden="true"></i><span className="cartvalue">{this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}
+                      <a href={user_ID ? "/cart" : "/login"}><i className="fa fa-shopping-bag headercarticon_um" aria-hidden="true"></i><span className="cartvalue_un">{this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}
                       </span></a>
 
                       {user_ID ?
-                        <ul className="dropdown-menu cartdropmenu" role="menu" aria-labelledby="menu1">
+                        <ul className="dropdown-menu cartdropmenu_um" role="menu" aria-labelledby="menu1">
                           <div className="checkoutBtn">
                           <div>
                             <p className="categoryDetails"><b>Cart Details</b></p>
@@ -606,12 +606,12 @@ componentWillMount() {
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropborder">
 
                             <div className="col-lg-6 NOpaddingLeft">
-                              <a href="/cart"><div className="btn cartdropbtn2 col-lg-12" title="VIEW CART">VIEW CART</div></a>
+                              <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
                             </div>
                             {
                              this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0 ?  
                               <div className="col-lg-6 NOpaddingRight">
-                                <a href={user_ID ? "/checkout" : "/login"}><div className="btn cartdropbtn col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
+                                <a href={user_ID ? "/checkout" : "/login"}><div className="btn cartdropbtn_un col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
                               </div>
                               : "" 
                             }

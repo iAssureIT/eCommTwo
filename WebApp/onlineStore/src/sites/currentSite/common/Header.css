@@ -4,6 +4,9 @@ catogeryvaluebg.headerflow{
   /* height: 100px; */
   background-color: #fff;
 }
+.headerflow{
+  background-color: #ffffff;
+}
 .headerpaddingtop{
   padding-top: 30px;
 }
@@ -77,16 +80,16 @@ catogeryvaluebg.headerflow{
   font-size: 20px;
 
 }
-.headercarticon{
-  font-size: 28px;
+.headercarticon_um{
+  font-size: 26px;
   cursor:pointer;
-  color: #A2632C;
+  color: #000;
 }
 
-.headercart a{
+.headercart_um a{
   text-decoration: none;
 }
-.cartvalue:hover{
+.cartvalue_un:hover{
   text-decoration: none;
   color:#A2632C;
 }
@@ -95,12 +98,21 @@ catogeryvaluebg.headerflow{
   color:#A2632C;
 }
 
-.cartvalue{
-  padding-left: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #aaa;
+.cartvalue_un{
+    left: 18px;
+    top: 17px;
+    padding-bottom: 15px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #ffffff;
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    background-color: #1faf1d;
+    border-radius: 25px;
+    padding-left: 3px;
 }
+
 .cartitemscss{
   padding-left: 5px;
   cursor: pointer;
@@ -113,10 +125,10 @@ catogeryvaluebg.headerflow{
   /*height:1000px;*/
 }
 
-.catogeryvaluebg{
-  background-color: #A2632C;
-  margin-top: 25px;
-  /* text-align: center; */
+.catogeryvaluebg_un{
+  background-color: #80b435;
+  /*margin-top: -54px;*/
+   text-align: center; 
 }
 
 #menu1{
@@ -153,11 +165,11 @@ catogeryvaluebg.headerflow{
     color: #999;
 
 }
-.header1list2 ul{
+.header1list2_um ul{
   margin-right: 10%;
 }
-.signinmenuul:after {
-    position: absolute;
+.signinmenuul_um:after {
+    position: relative;
     left: 37.5%;
     top: -10px;
     width: 0;
@@ -166,11 +178,11 @@ catogeryvaluebg.headerflow{
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-bottom: 7px solid #fff;
-}  
-.cartdropmenu:after {
-    position: absolute;
-    left: 37%;
-    top: -7px;
+} 
+.cartdropmenu_um:after {
+    position: relative;
+    left: -66%;
+    top: -32px;
     width: 0;
     height: 0;
     content:'';
@@ -178,7 +190,7 @@ catogeryvaluebg.headerflow{
     border-right: 7px solid transparent;
     border-bottom: 7px solid #fff;
 }
-.header1list2 ul li{
+.header1list2_um ul li{
   float: right;
   text-decoration: none;
   list-style: none;
@@ -188,17 +200,18 @@ catogeryvaluebg.headerflow{
   /* border-left:1px solid #777; */
 
 }
-.header1list2{
+.header1list2_um{
   padding-top: 5px;
+  padding-left: 93px;
 }
 .borderLeft{
   border-left:1px solid #ccc;
 }
-.header1list2 ul{
+.header1list2_um ul{
   padding-inline-start: 0px!important;
   /*padding-top: 10px;*/
 }
-.header1list2 ul li a{
+.header1list2_um ul li a{
   text-decoration: none;
     color: #333;
     padding: 10px;
@@ -209,28 +222,28 @@ catogeryvaluebg.headerflow{
   background-color:#F3F3F3;
   height: 40px;
 }
-.signinmenuul{
+.signinmenuul_um{
   /* right: -140px !important; */
   left: -91px !important;
   font-size: 20px!important;
   border-radius: 0px;
   padding: 0px;
-  width: 250px;
+  width: 256px;
   border:1px solid #fff !important;
   margin: 0;
 }
 
-.signinmenuul li {
-  padding-top: 0px;
-  padding-bottom: 0px;
+.signinmenuul_um li {
+  padding-top: 3px;
+  padding-bottom: 3px;
   /* font-size: 12px; */
   border-bottom: 1px solid #aaa;
 }
-.signoutmenuul li {
+.signoutmenuul_um li {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
 }
-.signoutmenu li{
+.signoutmenu_um li{
   padding-top: 10px !important;
   padding-bottom: 5px !important;
 }
@@ -289,25 +302,25 @@ ul.box-static-link li span {
     text-transform: uppercase;
 }
 
-.cartdropmenu{
-  width: 400px!important;
+.cartdropmenu_um{
+    width: 328px!important;
     position: absolute;
-    left: -132px;
+    left: -263px;
     border-radius: 0px;
-    top:26px;
-    height: auto;
-    /* max-height: 500px; */
-     /* overflow-y: scroll;  */
+    /*top:26px;*/
+    max-height: 500px;
+    /*border-top:1px solid #ffbb00;*/
+    /* overflow-y: scroll; */
 }
 .dropScroll{
   width: 400px!important;
   position: relative;
-  max-height: 400px;
-  /*overflow-y: scroll;*/
+  max-height: 285px;
+  overflow-y: scroll;
 }
 
 .marginTop180{
-  margin-top: 0px;
+  /*margin-top: -30px;*/
 }
 .abc::-webkit-scrollbar {
     width: 7px;
@@ -323,27 +336,27 @@ ul.box-static-link li span {
   /*outline: 1px solid white;*/
 }
 
-.cartdropbtn{
+.cartdropbtn_un{
   border-radius: 20px;
   font-size: 15px;
   font-weight: 700;
-  color:#A2632C;
-  border:1px solid #A2632C;
+  color:#80b435;
+  border:1px solid #80b435;
   margin-top: 10px;
   margin-bottom: 10px;
   cursor: pointer;
   transition: 0.3s !important;
 }
-.cartdropbtn:hover{
-  background-color: #A2632C;
+.cartdropbtn_un:hover{
+  background-color: #80b435;
   color: #fff;
 }
-.cartdropbtn2{
+.cartdropbtn2_un{
   border-radius: 20px;
   font-size: 15px;
   font-weight: 700;
-  color: #A2632C;
-  border:1px solid #A2632C;
+  color: #80b435;
+  border:1px solid #80b435;
   /* padding: 10px; */
   margin-top: 10px;
   margin-bottom: 10px;
@@ -357,9 +370,9 @@ ul.box-static-link li span {
   border-bottom: 1px solid #eee;
   padding: 5px;
 }
-.cartdropbtn2:hover{
+.cartdropbtn2_un:hover{
   color:#fff;
-  background-color: #A2632C; 
+  background-color: #80b435; 
 }
 .cartdropimg img{
   height: 80px;
@@ -420,7 +433,7 @@ ul.box-static-link li span {
 }
 
 .shortnamebk{
-  background: #A2632C;
+  background: #80b435;
     border-radius: 50%;
     height: 38px;
     width: 38px;
@@ -606,16 +619,18 @@ ul.box-static-link li span {
 }
 
 .dropBtn a{
-  margin-top: 14px;
+    margin-top: 14px;
     border: 1px solid #ddd;
     border-radius: 2px;
-    padding: 10px;
+    padding: 7px;
     color: #f0ad4e !important;
-    font-weight: 600;
+    /*font-weight: 500;*/
+    font-size: 13px;
 }
 .dropBtn{
   margin-bottom: 15px;
   margin-top: 20px;
+  width: 112px;
 }
 .borderTop{
   border-top: 1px solid #eee;
@@ -626,3 +641,420 @@ ul.box-static-link li span {
 .avatar{
   fill: #A2632C;
 }
+
+/*unimandai css*/
+
+.logotext{
+  font-size:28px;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}
+.lofobelowtxt{
+  font-weight: 400px;
+}
+.firstDiv{
+  height: 90px;
+  border-bottom:1px solid #eee;
+  margin-top:20px;
+}
+.usericon{
+  font-size: 20px;
+  padding-right: 10px;
+}
+.contactNo{
+  color: #80b435;
+  font-size: 18px;
+}
+
+.navbar {
+  overflow: hidden;
+  /*background-color: #ffffff;*/
+}
+
+.navbar a {
+  float: left;
+  /*font-size: 16px;*/
+  color: #2b2b2b;
+  height: 40px;
+  text-align: center;
+  padding: 14px 30px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.dropdown {
+  float: left;
+  /*overflow: hidden;*/
+}
+.downarrow{
+  font-size: 11px;
+  padding-left: 5px;
+}
+
+.dropdown .dropbtn {
+  font-size: 18px;
+  font-weight: 600;  
+  border: none;
+  outline: none;
+  color: #2b2b2b;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    box-shadow: 0px 8px 33px 0px rgba(0, 0, 0, 0.13);
+    border: none;
+    padding: 10px 0px;
+    opacity: 1;
+    left: 0px;
+    min-width: 200px;
+    transform: translate(0px, 0px);
+    -webkit-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+    top: 100%;
+    background: #fff;
+    margin-top: 4px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 12px;
+
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  position: relative;
+  /*background-color: #333;*/
+}
+.headertop{
+  padding-left: 193px;
+}
+.dropdown-menu{
+  display: none;
+}
+.box{
+  display: inline-block;
+    width: 100%;
+}
+
+/*unimandai*/
+
+.box {
+    display: inline-block;
+    width: 100%;
+}
+#header .header-top {
+    text-align: center;
+    /*padding: 0px 0px 0px;*/
+}
+.icon-menu-mobile {
+    display: none;
+}
+#header .header-top .logo-mobile {
+    display: none;
+}
+.mega-menu {
+    display: inline-block;
+    width: auto;
+    position: relative;
+    margin: auto;
+}
+.mega-menu ul.navbar-nav {
+    width: 100%;
+}
+@media (min-width: 768px)
+.navbar-nav {
+    float: left;
+    margin: 0;
+}
+.mega-menu ul.navbar-nav li.dropdown {
+    position: relative;
+}
+.mega-menu ul.navbar-nav li.level1 {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+.mega-menu ul.navbar-nav li {
+    text-align: left;
+    padding: 0 30px;
+}
+@media (min-width: 768px)
+.navbar-nav > li {
+    float: left;
+}
+@media (min-width: 1200px)
+.mega-menu ul.navbar-nav li.level1.dropdown a {
+    position: relative;
+}
+.mega-menu ul.navbar-nav li a {
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+    transition: all 0.2s ease 0s;
+    color: #2b2b2b;
+    height: 40px;
+    padding: 0px;
+    font: 700 18px/40px "Roboto Slab";
+}
+@media (min-width: 1200px)
+.mega-menu ul.navbar-nav li.level1.dropdown a:before {
+    position: absolute;
+    top: 16px;
+    height: 10px;
+    width: 10px;
+    right: -15px;
+    content: "";
+    background-image: url("/images/icon-submenu-1.png") no-repeat scroll center;
+}
+.mega-menu ul.navbar-nav li.level1.dropdown a:before{
+    position: absolute;
+    top: 16px;
+    height: 10px;
+    width: 10px;
+    right: -15px;
+    content: "";
+    background: url(/images/icon-submenu-1.png) no-repeat scroll center;
+}
+.mega-menu ul.navbar-nav li.active a:after {
+    position: absolute;
+    content: "";
+    left: 0px;
+    right: 0px;
+    height: 1px;
+    background: #fff;
+    bottom: 5px;
+}
+#header .header-top i.fa {
+    font-size: 24px;
+    color: #bbb;
+}
+.mega-menu ul.navbar-nav li i {
+    display: none;
+}
+li.level1.dropdown a {
+    position: relative;
+}
+.mega-menu ul.navbar-nav li a:hover, .mega-menu ul.navbar-nav li a.focus {
+    background: none !important;
+    color: #80b435;
+}
+.mega-menu ul.navbar-nav li a {
+    text-transform: uppercase;
+    -webkit-transition: all 0.2s ease 0s;
+    -o-transition: all 0.2s ease 0s;
+    transition: all 0.2s ease 0s;
+    color: #2b2b2b;
+    height: 40px;
+    padding: 0px;
+    font: 700 18px/40px "Roboto Slab";
+}
+.mega-menu ul.navbar-nav li:hover ul.menu-level-1 {
+    opacity: 1;
+    display: block;
+}
+.mega-menu ul.navbar-nav ul.menu-level-1.hover {
+  display: block;
+    transform: translate(0px, -5px);
+}
+.level1 .dropdown .hassub active:hover ..mega-menu ul.navbar-nav ul.menu-level-1
+.mega-menu ul.navbar-nav ul.menu-level-1 {
+    /*display: none;*/
+    position: absolute;
+    box-shadow: 0px 8px 33px 0px rgba(0, 0, 0, 0.13);
+    border: none;
+    padding: 10px 0px;
+    opacity: 0;
+    left: 0px;
+    min-width: 200px;
+    transform: translate(0px, 0px);
+    /*-webkit-transition: all 0.4s ease 0s;*/
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+    top: 100%;
+    background: #fff;
+    z-index: 999;
+    margin-top: 4px;
+}
+.navbar-nav > li > .dropdown-menu {
+    margin-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    position: relative;
+}
+.mega-menu ul.navbar-nav ul.menu-level-1 li.level2 {
+    position: relative;
+    overflow: hidden;
+}
+.mega-menu ul.navbar-nav li.level2 {
+    border-bottom: none;
+}
+.mega-menu ul.navbar-nav li {
+    text-align: left;
+    padding: 0 30px;
+}
+.mega-menu ul.navbar-nav li.level1.dropdown a {
+    position: relative;
+}
+.mega-menu ul.navbar-nav ul.menu-level-1 li a {
+    font-size: 13px;
+    color: #333333;
+    text-transform: capitalize;
+    -webkit-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+    font: 400 14px/40px "Roboto Slab";
+    padding-left: 15px;
+    position: relative;
+    letter-spacing: 0px;
+    height: 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.mega-menu ul.navbar-nav li:hover ul.menu-level-1 {
+    opacity: 1;
+    display: block
+}
+.level1 .dropdown .hassub active:hover .mega-menu ul.navbar-nav ul.menu-level-1 {
+  display: block;
+}
+
+.signinmenuul:after {
+    position: absolute;
+    width: 0;
+    height: 0;
+    content: "";
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+}
+
+.signinmenuul:after {
+    left: 36.5%;
+    top: -10px;
+}
+.signinmenuul1 {
+    /* right: -140px !important; */
+    left: -279px !important;
+    font-size: 20px!important;
+    border-radius: 0px;
+    padding: 0px;
+    width: 327px;
+    border: 1px solid #fff !important;
+    margin: 0;
+}
+.signinmenuul1 .bottom{
+  padding: 20px;
+    padding-top: 0px;
+    float: left;
+    width: 100%;
+}
+.signinmenuul1 .bottom a {
+    font: 700 14px/40px "Roboto Slab";
+}
+.link-v1:hover, .link-v1:focus {
+    background: #80b435;
+    color: #fff;
+    border-color: #80b435;
+}
+.bottom a:first-child {
+    float: left;
+}
+.signinmenuul p{
+  font-size: 12px;
+}
+.slide-top {
+  -webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+          animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.headerlia{
+  font-size: 14px;
+}
+
+
+/*.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+#topbar .float-right .list-menu.cart-list {
+    border: none;
+    padding: 0px;
+}
+
+#topbar .float-right .list-menu {
+    background: #fff;
+    border: 1px solid #333;
+    min-width: 80px;
+    text-align: left;
+    padding: 0px 15px;
+}
+@media (min-width: 1200px)
+.cart.hover-menu .list-menu, #header .settings .submenu {
+    right: -50px;
+}
+.hover-menu:hover .list-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.hover-menu .list-menu {
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    right: 0;
+    transition: all 0.3s ease;
+    transform: translateY(30px);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 999;
+    box-shadow: 0px 8px 33px 0px rgba(0, 0, 0, 0.2);
+}*/
