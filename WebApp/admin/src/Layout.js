@@ -192,7 +192,7 @@ class Layout extends Component  {
                                           <Route path="/franchise/contact-details/:entityID"              exact strict component={FranchiseContactDetails} />
                                           <Route path="/franchise/contact-details/:entityID/:contactID"   exact strict component={FranchiseContactDetails} />
 
-                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntities} />
+                                          <Route path="/franchise/list"                                   exact strict component={ListOfEntitiesPage} />
                                           
 
                                           <Route path="/franchise-shopping-list"                          exact strict component={FranchiseShoppingList} />

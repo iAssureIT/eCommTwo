@@ -1,5 +1,5 @@
 import React from 'react';
-import IAssureTableUM 					 from '../../coreadmin/IAssureTableUM/IAssureTable.jsx';
+import IAssureTableUM from '../../coreadmin/IAssureTableUM/IAssureTable.jsx';
 import axios from 'axios';
 import moment from 'moment';
 import swal from 'sweetalert';
@@ -9,44 +9,80 @@ export default class FranchiseShoppingList extends React.Component {
 
 	constructor(props) {
 		super(props);
-		  this.state = {
-			      	tabledata : [
-			      		{
-			      			    ProductID        : '12',
-				        		ItemCode 		: "1001",
-				        		productName 	: "Mango",
-								CurrentStock    : '20',
-				                OrderedItems    : '',
-			      		},
-			      		{
-			      			    ProductID        : '13',
-				        		ItemCode 		: "1050",
-				        		productName 	: "Potato",
-								CurrentStock    : '25',
-				                OrderedItems    : '',
-			      		},
-
-
-			      	],
-			     
-		                objects 		: [],
-		            	Units 			: "",
-		            	OrderedItems 	: ""
-			      	
-      };
+	  	this.state = {
+         objects 			: [],
+         units 			: "",
+			productList 	: [],
+         currentStock 	: [],	
+         prodStockOrder : [],	      
+         selectedSection : ""	
+   	};
 	}
 
 	componentDidMount(){
-
+		this.getProductList();
+		this.getCurrentStock();
 	}
 
+	getProductList(){
+		axios.get('/api/products/get/list')
+			.then(prodlist => {
+				this.setState({
+					"productList" : prodlist.data,
+				},()=>{
+					// console.log("productList = ",this.state.productList);
+				})
+			})
+			.catch(error=>{
+				console.log("error in getProductList = ", error);
+			})
+	}
 
-    Submit(event){
-    event.preventDefault();
+	getCurrentStock(){
+		axios.get('/api/products/get/list')
+			.then(prodlist => {
+				this.setState({
+					"currentStock" :  [
+								         	{productCode : "FS101", itemCode: "1001", currentStock: 10, units: "Kg"},
+								         	{productCode : "FS101", itemCode: "1002", currentStock: 20, units: "Kg"},
+								         	{productCode : "FS101", itemCode: "1003", currentStock: 30, units: "Kg"},
+								         	{productCode : "FS102", itemCode: "1500", currentStock: 40, units: "Kg"},
+								         	{productCode : "FS103", itemCode: "2000", currentStock: 50, units: "Kg"},
+								         	{productCode : "FS104", itemCode: "2010", currentStock: 60, units: "Kg"},
+								         ],
+				},()=>{
+						var prodStockOrder = [];
 
-    const formValues1 = {
-        
-       
+						if(this.state.productList.length > 0){
+							if(this.state.currentStock.length > 0){
+								for (var i = 0; i < this.state.productList.length; i++) {
+									var obj = {};
+									obj.productCode 	= this.state.productList[i].productCode;
+									obj.itemCode 		= this.state.productList[i].itemCode;
+									obj.productName 	= this.state.productList[i].productName;									
+									obj.currentStock 	= 10 + i;	
+									obj.orderQty = 0;
+									obj.unit = "";
+
+									prodStockOrder[i] = obj;
+								}
+								this.setState({
+									prodStockOrder : prodStockOrder,
+								})
+							}
+						}
+
+					// console.log("currentStock = ",this.state.currentStock);
+				})
+			})
+			.catch(error=>{
+				console.log("error in getCurrentStock = ", error);
+			})
+	}
+
+   Submit(event){
+    	event.preventDefault();
+   	 const formValues1 = {
       };
       // console.log("formValues1",formValues1);
       axios
@@ -65,42 +101,31 @@ export default class FranchiseShoppingList extends React.Component {
 					
       	 })		
 	}
-	handleChange(event){
-		const {value} = event.target;
-		const name1 = event.target.name;
-		const name2 = name1.split('-');
-		const name = name2[0];
 
-    	this.setState({
-       		 [name]:value,
-       		
-			    
-    	});
-
-	}
-	inputBox(event){
+	setOrderQty(event){
 		event.preventDefault();
-			var ConcatedId = event.target.id;
-			let arrayofObjects= ConcatedId.split('-');
-			console.log("arrayofObjects",arrayofObjects);
-	        console.log("handleChange===>in Componant===>",this.state.OrderedItems);
-			var objArray = [];
-			var obj = {};
-				obj["ProductID"] 	= arrayofObjects[0];
-				obj["ItemCode"]     = arrayofObjects[1];
-				obj["productName"]  = arrayofObjects[2];
-				obj["CurrentStock"] = arrayofObjects[3];
-				obj["OrderedItems"] = this.state.OrderedItems;
-				obj["Units"] 		= this.state.Units;
-				objArray.push(obj);
-				objArray.push(obj);
-				this.state.objects.push(obj);
-			console.log("objArray",objArray);
-			// this.setState({
-	  		//      		objects : objArray    
-	  		//   	});
-    	console.log("objects",this.state.objects);
+		var orderQty = event.target.value;
+		var index  	 = event.target.name.split("-")[1];
+		var prodStockOrder = this.state.prodStockOrder; 
+
+		prodStockOrder[index].orderQty = orderQty;
+		this.setState({prodStockOrder : prodStockOrder});
 	}
+	setUnit(event){
+		event.preventDefault();
+		var unit 	= event.target.value;
+		var index  	= event.target.name.split("-")[1];
+		var prodStockOrder = this.state.prodStockOrder; 
+
+		prodStockOrder[index].unit = unit;
+		this.setState({prodStockOrder : prodStockOrder});		
+	}
+
+	handleSelectChange(event){
+		var selectedValue = event.target.value;
+		this.setState({selectedSection : selectedValue});
+	}
+
 	render() {
 		return (
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -110,53 +135,75 @@ export default class FranchiseShoppingList extends React.Component {
 								<h1 className="text-center">Franchise Shopping List</h1>
 							</div>
 							<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12 pull-right">
-									    <label className="col-lg-3 col-md-2 col-sm-6 col-xs-6">Date : </label>
-									    <div className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-									      <input className=" " id="date12" type="date"/>
-									    </div>
-									</div>	
+							    <label className="col-lg-3 col-md-2 col-sm-6 col-xs-6">Order Date : </label>
+							    <div className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+							      <input className=" " id="date12" type="date" value={new Date()}/>
+							    </div>
+							</div>	
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
-								
+								<div className="col-lg-3 col-md-3 col-sm-3 col-xs-3"> 
+									<label>Select Section</label>
+									<select defaultValue="Vegetables" onChange={this.handleSelectChange.bind(this)}>
+										<option> All Sections </option>
+										<option> Fruits </option>
+										<option> Vegetables </option>
+										<option> Frozen Items </option>
+									</select>
+								</div>
+							</div>
+							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div className="table-responsive">          
 							    	<table className="table table-bordered table-striped table-hover">
 									    <thead className="thead-dark text-center">
 									      	<tr>
-										        <th colSpan="2">ProductID</th>
-										        <th colSpan="4">Item Code</th>
-										        <th colSpan="2">Product Name</th>
-										        <th colSpan="2">Current Stock</th>
-										        <th colSpan="3">Ordered Items</th>
+										        <th>ProductID</th>
+										        <th>Item Code</th>
+										        <th>Product Name</th>
+										        <th>Current Stock</th>
+										        <th>Ordered Items</th>
 									      	</tr>
 									    </thead>
 									    <tbody>
 									    {
-									    	this.state.tabledata ? this.state.tabledata.map((result, index)=>{
-												// console.log('result', result);
-												return( 
+									    	Array.isArray(this.state.prodStockOrder) && this.state.prodStockOrder.length > 0
+									    	? 
+									    		this.state.prodStockOrder.map((result, index)=>{
+													// console.log('result', result);
+													return( 
 												      <tr key={index}>
-												        <td colSpan="2">{result.ProductID}</td>
-												        <td colSpan="4">{result.ItemCode}</td>
-												        <td colSpan="2">{result.productName}</td>
-												        <td colSpan="2">{result.CurrentStock}</td>
-												        <td colSpan="3">
-												        	<div>
-												        	<input type="number" className="col-lg-8 col-md-8 col-xs-8 col-sm-8 nobdrbtmbdr" name={"OrderedItems"+"-"+index} ref="OrderedItems" id={result.ProductID+"-"+result.ItemCode+"-"+result.productName+"-"+result.CurrentStock+"-"+index} value={this.state.OrderedItems} onChange={this.handleChange.bind(this)} onBlur={this.inputBox.bind(this)}/>
-													        	<select id={"Units"+"-"+index} name={"Units"+"-"+index} value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 nobdrbtmbdrdropdown">
-																	<option selected={true}> Units</option>
-																  	<option value="Kg">Kg</option>
-																  	<option value="Ltr">Ltr</option>
-																  	<option value="gram">gram</option>
-																  	<option value="Nos">Nos</option>
-																</select>
+												        	<td>{result.productCode}</td>
+												        	<td>{result.itemCode}</td>
+												        	<td>{result.productName}</td>
+												        	<td>{result.currentStock}</td>
+												        	<td>
+												        	<div class="form-group">
+							                           <div className="input-group">
+													        		<input type="number" className="form-control" 
+													        				 name={"orderedItems"+"-"+index} 
+													        				 id={result.productCode+"-"+result.itemCode} 
+													        				 value={result.orderQty} 
+													        				 onChange={this.setOrderQty.bind(this)}
+													        		/>
+													        		<div className="input-group-addon">
+																	  	<select id={"Units"+"-"+index} name={"Units"+"-"+index} 
+																	  			  value={result.unit} refs="Units" 
+																	  			  onChange={this.setUnit.bind(this)}  
+																	  			  className="input-group-addon">
+																			<option selected={true}> Units</option>
+																		  	<option value="Kg"> Kg 		</option>
+																		  	<option value="Gm"> Gm 		</option>
+																		  	<option value="Ltr">Ltr 	</option>
+																		  	<option value="Num">Number </option>
+																		</select>
+																  	</div>
+																</div>
 															</div>
-															
-												        </td>
-												       
+												        </td>													       
 												      </tr>
-												    )
+													)
 												})
 											:
-											null
+												null
 									  		}
 									    </tbody>
 									</table>
