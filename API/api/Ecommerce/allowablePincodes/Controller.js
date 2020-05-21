@@ -80,4 +80,20 @@ exports.get_allowablePincodes = (req, res, next)=>{
     });         
 }
 
+exports.check_delivery = (req, res, next)=>{
+    var pincode = req.params.pincode;
+    console.log("Pincode:======",pincode);
+    Allowablepincode.find()
+    .exec()
+    .then(data=>{
+        console.log("Data============",data);
+        // res.status(200).json(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+}
 

@@ -1,20 +1,38 @@
 .modal_header{
-	background-color: #b1a409;
+	background-color: #555;
 }
 .newModalHeader{
-	background-color: #b1a409 ! important; 
-	border:1px solid #b1a409;
+	background-color: #555 ! important; 
+    border:1px solid #555;
+    
+}
+.newModalHeader .close{
+    color: rgb(146, 21, 21) !important;
+}
+.pincodeModalHeader{
+    color: #fff;
+}
+.pinmodalHeader{
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+.ModalBtnWrapper{
+    margin-top: 30px;
 }
 .pincodemodal{
-	height: 108px;
-
+    height: 180px;
+    border-radius: 10px !important;
+}
+.pincodeModalHeader{
+    border-radius: 10px !important;
 }
 .addPincode{
 	background-color: #ffffff;
     /*padding: 0;*/
     width: 598px;
     margin-left: -15px;
-    height: 100px;
+    height: 110px;
+    border-radius: 8px;
 }
 .Pincode_div{
 	margin-top: 20px;

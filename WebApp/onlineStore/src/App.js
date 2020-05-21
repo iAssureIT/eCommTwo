@@ -26,7 +26,11 @@ function getPreferences(){
 	//Get all preferences and store them in localstorage
 	axios.get("/api/adminpreference/get")
 	.then(preferences =>{
-		localStorage.setItem('preferences', JSON.stringify(preferences));
+		var askpincodeToUser = preferences.data[0].askPincodeToUser;
+		console.log("AskpincodeToUser data:====",askpincodeToUser);	
+		localStorage.setItem('preferences',askpincodeToUser);	
+		// localStorage.setItem('preferences', JSON.stringify(preferences));
+		// console.log("localStorage value:=====",localStorage.getItem('preferences'));
 	})
 	.catch(error=>{
 		console.log("Error in preferences = ", error);

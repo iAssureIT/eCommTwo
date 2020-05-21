@@ -2,7 +2,7 @@ const mongoose	        = require("mongoose");
 const Adminpreference   = require('../adminPreference/Model');
 
 exports.insert_preferences = (req, res, next) => {
-    console.log("res:",res);
+    // console.log("res:",res);
 	Adminpreference.findOne()
 		.exec()
 		.then(data =>{
@@ -61,5 +61,18 @@ exports.insert_preferences = (req, res, next) => {
         });
 };
 
-
+exports.get_preferences = (req, res, next) => {
+    Adminpreference.find()
+    .exec()
+    .then(data=>{
+        console.log("=============data found===========",data);
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });   
+}
 

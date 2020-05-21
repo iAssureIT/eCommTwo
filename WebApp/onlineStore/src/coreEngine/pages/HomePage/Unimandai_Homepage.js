@@ -23,7 +23,8 @@ class HomePage extends Component {
         exclusiveprloading:true,
         bestsellerloading :true,
         newproductloading :true,
-        featuredproductsloading : true
+        featuredproductsloading : true,
+        askPincodeToUser : ""
       };
       // this.featuredProductData();
       // this.exclusiveProductsData();
@@ -31,26 +32,20 @@ class HomePage extends Component {
       // this.bestSellerData();
     }  
     componentDidMount() {
+
+      const preferences = localStorage.getItem("preferences");      
+      console.log("localstorage preferences:=============",preferences);
+      this.setState({"askPincodeToUser" : preferences});    
+      console.log("askPincodeToUser-----------",this.state.askPincodeToUser);  
+
       this.featuredProductData();
       this.exclusiveProductsData();
       this.newProductsData();
       this.bestSellerData();
       this.getCategories();
       this.getWishData();
-      // this.handleButtonClicked();
-     /* $(window).on('load',function(){
-        $('#myModal').modal('show');
-    });*/
-
-    $('#myModal').show();
-        var refresh = window.localStorage.getItem('refresh');
-        // console.log(refresh);
-        if (refresh===null){
-            window.location.reload();
-            window.localStorage.setItem('refresh', "1");
-      }
-
-    } 
+       
+  }
     /* handleButtonClicked(event) {
         event.preventDefault();
         const target = event.target;
@@ -114,7 +109,7 @@ class HomePage extends Component {
       var productType4 = 'bestSeller';
       axios.get("/api/products/get/listbytype/"+productType4)
             .then((response)=>{
-              console.log("Bestseller data => ", response.data);
+              // console.log("Bestseller data => ", response.data);
               this.setState({
                 bestsellerloading  : false,
                 bestSellerProducts : response.data
@@ -167,13 +162,23 @@ class HomePage extends Component {
     }
   render() {
     var projectName=process.env.REACT_APP_PROJECT_NAME;
-    console.log("projectNmae in homepage",projectName);
+    // console.log("projectNmae in homepage",projectName);
     return (
 
       <div className="">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
           <div className="row">
-           <AskPincode />
+          {this.state.askPincodeToUser === "true"
+          ?
+            document.cookie
+            ? 
+              null
+            :
+            <AskPincode />     
+            // <AskPincode/> 
+          :
+          null
+          }
 
             <EcommerceBanner_Unimandai/>
 
