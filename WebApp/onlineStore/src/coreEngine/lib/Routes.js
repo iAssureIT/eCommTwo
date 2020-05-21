@@ -65,6 +65,7 @@ class Routes extends Component{
       }
        
       componentDidMount(){
+        
         var user_ID = localStorage.getItem("user_ID");
         if (user_ID && user_ID !=='') {
             this.setState({

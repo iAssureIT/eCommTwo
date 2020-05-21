@@ -45,6 +45,13 @@ class ProductCollage extends Component {
   	componentDidMount() {
 
 		this.getWishData();
+
+		var envVariable=process.env.REACT_APP_PROJECT_NAME ;
+		// console.log("envVariable>>>>",envVariable);
+		this.setState({
+			envVariable:envVariable
+
+		})
   		
   	    var selector = this.state.selector;
  
@@ -145,7 +152,11 @@ class ProductCollage extends Component {
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
 		}else{
+			if(this.state.envVariable=='4_UniMandai'){
 			limit = "10";
+		}else{
+			limit = "50";
+		}
 		}
 		axios.get("/api/products/get/list/"+sectionID)
 	      .then((response)=>{ 
@@ -358,7 +369,13 @@ class ProductCollage extends Component {
 		if ($('.limitProducts').val()) {
 			selector.limit = $('.limitProducts').val();
 		}else{
+			if(process.env.REACT_APP_PROJECT_NAME === '4_UniMandai'){
+			selector.limit = "50";
+		}else{
 			selector.limit = "10";
+
+		}
+
 		}
 		
 		console.log('selector',selector);
@@ -792,7 +809,7 @@ class ProductCollage extends Component {
 					      	</li>
 
 					      	{
-					      		this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
+					      		this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" && this.state.envVariable!='4_UniMandai' ?
 						    <li className="dropdown-submenu">
 						        <a className="test" tabindex="-1" href="/">COLOR <span className="caret"></span></a>
 						        <ul className="dropdown-menu">
@@ -814,6 +831,8 @@ class ProductCollage extends Component {
 						          <li><a tabindex="-1" href="#">2nd level dropdown</a></li>*/}
 						        </ul>
 						    </li> 
+						    :
+						    null
 						    }
 						    {
 					      	this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
@@ -912,6 +931,8 @@ class ProductCollage extends Component {
 								}
 						      </div>
 						    </div>
+						    { this.state.envVariable!== '4_UniMandai' ?
+						    <div>
 							{
 								this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
 								<div className="card-header" id="headingTwo">
@@ -942,7 +963,10 @@ class ProductCollage extends Component {
 						      	: ''}	
 						      </div>
 						    </div>
-						
+						   </div>
+						   :
+						   null
+						}
 							{
 					      	this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
 						    <div className="card-header" id="headingFour">
@@ -968,7 +992,9 @@ class ProductCollage extends Component {
 	                            </select>	
 						      </div>
 						    </div>
-
+						    {
+						    	this.state.envVariable!=='4_UniMandai'?
+                           <div>
 						    <div className="card-header" id="headingThree">
 						      <div className="pagefilter"  data-toggle="collapse" data-target="#collapseThree" data-key="price" onClick={this.handleToggle.bind(this)}>	
 						        <button className="btn btn-link" type="button" data-key="price">
@@ -989,6 +1015,10 @@ class ProductCollage extends Component {
 							        <label>Max </label><input className="input-field max-value" type="text" maxLength="5" id="slider_max" name="slider_max" placeholder="To" value={this.state.price.max} onChange={this.handlePriceChange} />
 						      </div> 
 						    </div>
+						    </div>
+						    :
+						    null
+						}
 						    {
 						    	this.state.attributesArray ? 
 						    	Object.entries(this.state.attributesArray).map(([key, value1], i)=>{
@@ -1094,12 +1124,21 @@ class ProductCollage extends Component {
 					           
 					            <div className="col-lg-2 col-md-2 col-sm-3 col-xs-3 pull-right NoPadding">
 					              <label className="col-lg-5 col-md-5 col-sm-10 col-xs-10 NoPadding labeldiv">Show</label>
+					               { this.state.envVariable =='4_UniMandai' ?
 					              <select className="limitProducts col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding" onChange={this.limitProducts.bind(this)}>
-					                <option  value="10" >10</option>
+					                 <option  value="10">50</option>
+					                 <option value="20">100</option>
+					                 <option value="30">150</option>
+					                 <option value="40">200</option>
+					            </select>
+					             :
+					             <select className="limitProducts col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding" onChange={this.limitProducts.bind(this)}>
+                                    <option  value="10">10</option>
 					                <option value="20">20</option>
 					                <option value="30">30</option>
-					                <option value="40">40</option>
+					                <option value="40">40</option>    
 					            </select>
+					            }
 					            </div>
 					          </div>
 						    </div>
