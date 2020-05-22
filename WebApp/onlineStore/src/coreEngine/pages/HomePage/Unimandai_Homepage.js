@@ -5,9 +5,10 @@ import EcommerceProductCarousel     from "../../blocks/ProductCarouselEcommerce/
 import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
 import EcommerceBanner_Unimandai    from "../../blocks/Banner/EcommerceBanner_Unimandai.js";
 import ProductDivider               from "../../blocks/ProductDivider/ProductDivider.js";
-import Unimandai_SaleProductDivider from "../../blocks/ProductDivider/Unimandai_SaleProductDivider.js"
-import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js"
-import AskPincode                   from "../../blocks/AskPincode/AskPincode.js"
+import Unimandai_SaleProductDivider from "../../blocks/ProductDivider/Unimandai_SaleProductDivider.js";
+import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js";
+import AskPincode                   from "../../blocks/AskPincode/AskPincode.js";
+import AllowdeliveryModal           from "../../blocks/AskPincode/AllowdeliveryModal.js";
 import axios                        from 'axios';
 import Loader                       from "../../common/loader/Loader.js";
 import Blogs                        from "../../blocks/Blogs/Blogs.js";
@@ -17,14 +18,16 @@ class HomePage extends Component {
     constructor(props){
     super(props);
       this.state = {
-        featuredProducts  : [],
-        exclusiveProducts : [],
-        categories        : [],
-        exclusiveprloading:true,
-        bestsellerloading :true,
-        newproductloading :true,
+        featuredProducts        : [],
+        exclusiveProducts       : [],
+        categories              : [],
+        exclusiveprloading      : true,
+        bestsellerloading       : true,
+        newproductloading       : true,
         featuredproductsloading : true,
-        askPincodeToUser : ""
+        askPincodeToUser        : "",
+        userPincode             : "",
+        DeliveryStatus          : "",
       };
       // this.featuredProductData();
       // this.exclusiveProductsData();
@@ -34,10 +37,49 @@ class HomePage extends Component {
     componentDidMount() {
 
       const preferences = localStorage.getItem("preferences");      
-      console.log("localstorage preferences:=============",preferences);
+      // console.log("localstorage preferences:=============",preferences);
       this.setState({"askPincodeToUser" : preferences});    
-      console.log("askPincodeToUser-----------",this.state.askPincodeToUser);  
-
+      // console.log("askPincodeToUser-----------",this.state.askPincodeToUser);  
+      
+      var pincodeObj  = JSON.parse(localStorage.getItem("pincodData"));
+      console.log("pincodeObj---------",pincodeObj.pincode);
+      console.log("pincodeObj---------",pincodeObj.status);
+      this.setState({
+                userPincode : pincodeObj.pincode,
+      });
+      console.log("user Pincode :=====",this.state.userPincode);
+      console.log("Pincode Object:=====",pincodeObj);
+      
+      if(pincodeObj.status === "NotAllow"){
+      var pincode = this.state.userPincode;
+      console.log("Pincode status:=====",pincodeObj.status);
+      console.log("inside if NOTallow Pincode Object:=====",pincodeObj.pincode);
+      axios.get("/api/allowablepincode/checkpincode/"+pincodeObj.pincode)
+            .then((response)=>{
+                var status = "";
+                if(response){          
+                    console.log("Checking second time delivery========");
+                    if(response.data.message === "Delivery Available"){                                                                  
+                       var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
+                       pincodeObj.DeliveryStatus = "Allowable";
+                       this.setState({
+                            DeliveryStatus : "Allowable",
+                       })
+                       console.log("Delivery Status======",this.state.DeliveryStatus);
+                       pincodeObj.status = "Allow";
+                       localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
+                       console.log("delivery allow", localStorage.pincodData);
+                    }else{
+                      console.log("Delivery not available");
+                    }
+                }
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            })
+      }
+      console.log("pincodeObj:====",pincodeObj.pincode);
+      
       this.featuredProductData();
       this.exclusiveProductsData();
       this.newProductsData();
@@ -170,16 +212,19 @@ class HomePage extends Component {
           <div className="row">
           {this.state.askPincodeToUser === "true"
           ?
-            document.cookie
+            this.state.userPincode
             ? 
+            this.state.DeliveryStatus === "Allowable"
+              ?
+              <AllowdeliveryModal />    
+              :
               null
             :
-            <AskPincode />     
-            // <AskPincode/> 
+            <AskPincode />   
           :
-          null
+            null
           }
-
+          {/* <AskPincode />   */}
             <EcommerceBanner_Unimandai/>
 
           </div>

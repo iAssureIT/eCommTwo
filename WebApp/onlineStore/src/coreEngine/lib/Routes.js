@@ -5,7 +5,7 @@ import 'bootstrap/js/modal.js';
 import 'bootstrap/js/collapse.js';
 import 'bootstrap/js/tab.js';
 import 'font-awesome/css/font-awesome.min.css';
-// import $ from 'jquery';
+import $ from 'jquery';
 
 import '../../App.css';
 //-----------Main Menu Rout.................//

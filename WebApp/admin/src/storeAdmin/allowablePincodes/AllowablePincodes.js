@@ -78,8 +78,8 @@ class AllowablePincodes extends Component {
         var allowablePincodes = this.state.allowablePincodes;
 
         allowablePincodes[id]={
-                                "pincodes":event.target.value,
-                                "companyID":target.getAttribute('data-cid'),
+                                "pincodes"    :event.target.value.split(','),
+                                "companyID"   :target.getAttribute('data-cid'),
                                 "franchiseID" : id,
                               }
        

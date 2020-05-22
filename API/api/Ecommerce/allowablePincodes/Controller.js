@@ -24,7 +24,7 @@ exports.add_allowablePincodes = (req, res, next) => {
                     .exec()
                     .then(data=>{
                         res.status(200).json({
-                            "message": "Pincodes updated successfully."
+                            "message": "Allowable Pincodes Updated Successfully."
                         });
                     })
                     .catch(err =>{
@@ -46,7 +46,7 @@ exports.add_allowablePincodes = (req, res, next) => {
                     allowablePincode.save()
                     .then(data=>{
                         res.status(200).json({
-                            "message": "Allowable pincodes Submitted Successfully."
+                            "message": "Allowable Pincodes Submitted Successfully."
                         });
                     })
                     .catch(err =>{
@@ -86,23 +86,22 @@ exports.check_delivery = (req, res, next)=>{
     Allowablepincode.find()
     .exec()
     .then(data=>{
-        // console.log("Data============",data);   
+        // console.log("Data============",data);  
+        var delivery = ""; 
         if(data){
-            // console.log("data.lin=====",data.length);
-            for(var i=0;i<data.length;i++){
-                for(var k=0;k<data[i].allowablePincodes.length;k++){
-                    console.log("Inside k loop",data[i].allowablePincodes[k]);
-                    if(data[i].allowablePincodes[k] === pincode){
-                        var delivery = "available";
-                        // console.log("========Delivery available===========");
-                        break;
-                    }
-                }
+            for(var franchiseObj of data){
+                if(franchiseObj.allowablePincodes.includes(pincode)){
+                    delivery = "available";      
+                    break;
+                }                
+            }
+            console.log("Delivery status=========",delivery);
+            if(delivery === "available"){
+                res.status(200).json({ message: "Delivery Available" });
+            }else{
+                res.status(200).json({ message: "Delivery Not Available" });
             }
         }     
-        res.status(200).json(data
-            // message : "Delivery available",
-        );
     })
     .catch(err =>{
         console.log(err);

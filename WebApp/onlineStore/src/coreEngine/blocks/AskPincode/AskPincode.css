@@ -1,10 +1,21 @@
 .modal_header{
-	background-color: #555;
+	background-color: #80b435;
 }
-.newModalHeader{
-	background-color: #555 ! important; 
-    border:1px solid #555;
-    
+.newModalBtn{
+	background-color: #80b435 ! important; 
+    border:1px solid #80b435;
+    margin-left: 25px;
+    margin-top: 5px;
+    margin-right: 50px;   
+    color:#fff;
+    transition: 0.3s;
+}
+.newModalBtn:hover{
+    border: solid 1px #80b435 !important;
+    color : #fff;
+}
+.pincodeBtnwrapper{
+    margin-top: 10px;
 }
 .newModalHeader .close{
     color: rgb(146, 21, 21) !important;
@@ -20,24 +31,35 @@
     margin-top: 30px;
 }
 .pincodemodal{
-    height: 180px;
+    height: 200px;
     border-radius: 10px !important;
 }
 .pincodeModalHeader{
     border-radius: 10px !important;
 }
-.addPincode{
-	background-color: #ffffff;
-    /*padding: 0;*/
-    width: 598px;
-    margin-left: -15px;
-    height: 110px;
-    border-radius: 8px;
-}
 .Pincode_div{
 	margin-top: 20px;
 }
-.pinocodeInput{  width: 219px;
+.pinocodeInput{  
+    width: 150px;
     /*margin-left: 16px;*/
     margin-top: 5px;
+}
+.AllowDeliveryMsg,
+.NotAllowDeliveryMsg{
+    font-size: 12px;
+    color:#777;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: none;
+
+}
+.AllowDeliveryMsg{
+    margin-top: 10px;
+    background-color: rgb(232, 247, 233);
+}
+.NotAllowDeliveryMsg {
+    margin-bottom: 10px;
+    background-color: rgba(232, 174, 171, 0.25);
+    margin-top: -22px;
 }
