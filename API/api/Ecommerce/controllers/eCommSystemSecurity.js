@@ -17,7 +17,7 @@ function getRandomInt(min, max) {
 // ============ Account dashboard users API methods ============
 exports.user_details = (req, res, next) => {
 	var id = req.params.userID;
-	console.log("inside api:",id);
+	// console.log("inside api:",id);
 	User.findOne({ _id: id })
 		// .select("profile")
 		.exec()
@@ -78,7 +78,7 @@ exports.delete_user = function (req, res, next) {
 };
 
 exports.update_user = (req, res, next) => {
-	console.log("inside user-update id:",req.params.userID);
+	// console.log("inside user-update id:",req.params.userID);
 	// console.log("firstname:",req.body.firstName);
 	User.updateOne(
 		{ _id: req.params.userID },
@@ -112,12 +112,12 @@ exports.update_user = (req, res, next) => {
 
 exports.update_user_details = (req, res, next) => {
 	var field = req.body.field;
-	console.log("inside update user");
+	// console.log("inside update user");
 	User.findOne({ _id: req.params.userID })
 		.exec()
 		.then(user => {
 			if(user){
-				console.log(user);
+				// console.log(user);
 				if (user.profile.email === req.body.emailId) {
 					res.status(200).json({ message: "User already exist." });
 				}else{
@@ -322,7 +322,7 @@ exports.update_user_details = (req, res, next) => {
 
 exports.add_user_address = (req, res, next) => {
 	// var roleData = req.body.role;
-	console.log("inside update user address",req.body);
+	// console.log("inside update user address",req.body);
 	User.updateOne(
 		{ "_id": req.body.user_ID, "deliveryAddress[0]._id": req.body.deliveryAddressID },
 		{
@@ -377,7 +377,7 @@ exports.add_user_address = (req, res, next) => {
 		});
 };
 exports.add_delivery_address = (req, res, next) => {
-	console.log("inside add delivery req body:",req.body);
+	// console.log("inside add delivery req body:",req.body);
 	User.updateOne(
 		{ '_id': req.body.user_ID },
 		{
@@ -407,7 +407,7 @@ exports.add_delivery_address = (req, res, next) => {
 					"message": "Address added successfully."
 				});
 			} else {
-				console.log("data:" ,data);
+				// console.log("data:" ,data);
 				res.status(401).json({
 					"message": "User Not Found"
 				});
@@ -449,7 +449,7 @@ exports.delete_delivery_address = (req, res, next) => {
 };
 //===================insert BA  ==================
 exports.ba_signupadmin = (req, res, next) => {
-	console.log("Inside add ba");
+	// console.log("Inside add ba");
 	User.find()
 		.exec()
 		.then(user => {
@@ -511,7 +511,7 @@ exports.ba_signupadmin = (req, res, next) => {
 };
 //================ vendor signup ========================
 exports.vendor_signup = (req, res, next) => {
-	console.log("inside vendor signup:", req.body);
+	// console.log("inside vendor signup:", req.body);
 	var mailSubject, mailText, smsText, NotificationData;
 	// Masternotifications.findOne({ "templateType": "Email", "templateName": "Vendor New Registration" })
 	// 	.exec()

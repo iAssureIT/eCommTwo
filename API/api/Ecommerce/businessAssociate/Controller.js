@@ -7,7 +7,7 @@ const gloabalVariable       = require('./../../../nodemon');
 const Masternotifications   = require('../../coreAdmin/notificationManagement/ModelMasterNotification.js');
 
 exports.insert_ba = (req,res,next)=>{
-    console.log("***location Details***");
+    // console.log("***location Details***");
     var locationArray = [];
  
 	const BA = new BusinessAssociate({
@@ -28,7 +28,7 @@ exports.insert_ba = (req,res,next)=>{
     });
     BA.save()
     .then(data=>{
-        console.log("Data in API:  ",data);
+        // console.log("Data in API:  ",data);
         var header = "<table><tbody><tr><td align='center' width='100%'><a><img src='http://anashandicrafts.iassureit.com/images/anasLogo.png' style='width:25%'></a></td></tr></table>";
         var body = "";
         var footer = "<table width='100%' bgcolor='#232f3e' height='50'><tbody><tr><td>"
@@ -39,7 +39,7 @@ exports.insert_ba = (req,res,next)=>{
         Masternotifications.findOne({ "templateType": "Email", "templateName": "BA New Registration" })
             .exec()
             .then((maildata) => {
-                console.log("maildata in API:  ",maildata);
+                // console.log("maildata in API:  ",maildata);
                 if (maildata) {
                     otpMailSubject = maildata.subject != '' ? maildata.subject : "AnasHandicraft business associate account registration" ;                    
                     if (maildata.content != '') {

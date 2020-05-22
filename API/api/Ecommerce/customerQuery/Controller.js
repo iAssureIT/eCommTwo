@@ -3,7 +3,7 @@ var request         = require('request-promise');
 const gloabalVariable 	= require('../../../nodemon');
 
 exports.query_mail = (req,res,next)=>{
-	console.log(req.body);
+	// console.log(req.body);
 	request({
 	     "method"    : "POST",
 	     "url"       : "http://localhost:"+gloabalVariable.PORT+"/send-email",

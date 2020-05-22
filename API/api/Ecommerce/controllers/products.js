@@ -95,19 +95,19 @@ exports.bulkUploadProduct = (req,res,next)=>{
         var invalidData = [];
         var invalidObjects = [];
         var remark = ''; 
-        console.log("productData :",productData);
+        // console.log("productData :",productData);
         for(k = 0 ; k < productData.length ; k++){
             if(productData[k].section !== undefined && productData[k].itemCode !== undefined){
                 if (productData[k].section.trim() !== '') {
                     var sectionObject = await sectionInsert(productData[k].section)
-                    console.log('sectionObject:',sectionObject)
+                    // console.log('sectionObject:',sectionObject)
                     if (productData[k].category !== undefined) {
                         var categoryObject = await categoryInsert(productData[k].category,productData[k].subCategory,productData[k].section,sectionObject.section_ID);
                         
                         if (productData[k].itemCode !== undefined) {
-                            console.log("productData[k]:", productData[k]);
+                            // console.log("productData[k]:", productData[k]);
                             var insertProductObject = await insertProduct(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
-                            console.log('insertProductObject',insertProductObject)
+                            // console.log('insertProductObject',insertProductObject)
                             if (insertProductObject !== 0) {
 
                                 Count++;
@@ -209,7 +209,7 @@ var insertFailedRecords = async (invalidData) => {
             .exec()
             .then(data=>{
             if(data.length>0){
-                console.log('data',data)   
+                // console.log('data',data)   
                 if (data[0].failedRecords.length>0) {
                     FailedRecords.updateOne({ fileName:invalidData.fileName},  
                         {   $set:   { 'failedRecords': [] } })
@@ -338,7 +338,7 @@ function categoryInsert(catgName,subcatgName,sectionname,section) {
                     categoryObj
                     .save()
                     .then(data=>{
-                        console.log('insertCategory',data.subCategory);
+                        // console.log('insertCategory',data.subCategory);
                         resolve({category_ID : data._id, category : catgName, subCategory_ID : (data.subCategory.length>0 ? data.subCategory[0]._id : null) });
                     })
                     .catch(err =>{
@@ -419,8 +419,8 @@ function findCat(catgName) {
 }
 
 var insertProduct = async (section_ID, section, categoryObject, data) => {
-    console.log("data:" ,data);
-    console.log('categoryObject',categoryObject.subCategory_ID)
+    // console.log("data:" ,data);
+    // console.log('categoryObject',categoryObject.subCategory_ID)
     
     return new Promise(function(resolve,reject){ 
         productDuplicateControl();
@@ -612,7 +612,7 @@ exports.update_product = (req,res,next)=>{
     });
 };
 exports.update_product_attribute = (req,res,next)=>{
-    console.log('params', req.params.attribute);
+    // console.log('params', req.params.attribute);
     Products.updateOne(
             { _id:req.body.product_ID},  
             {
@@ -725,7 +725,7 @@ exports.list_productimage_with_vendor = (req,res,next)=>{
     });
 };
 exports.list_product_code = (req,res,next)=>{
-    console.log("productcode:",req.body);
+    // console.log("productcode:",req.body);
     Products.find({"productCode": req.params.productCode})       
     .exec()
     .then(data=>{
@@ -847,7 +847,7 @@ exports.list_productby_type_category = (req,res,next)=>{
     });
 };
 exports.list_product_with_limits = (req,res,next)=>{
-    console.log('req', req.body);
+    // console.log('req', req.body);
     Products.find()
     .sort({ "createdAt": -1 })
     .exec()
@@ -878,7 +878,7 @@ exports.list_product_with_limits = (req,res,next)=>{
     });
 };
 exports.list_product_with_vendor = (req,res,next)=>{
-    console.log('req', req.body);
+    // console.log('req', req.body);
     Products.find({"vendor_ID" : req.body.vendor_ID})
     .sort({ "createdAt": -1 })
     .exec()
@@ -938,7 +938,7 @@ exports.count_vendor_product = (req,res,next)=>{
     Products.find({"vendor_ID": req.params.vendorID}).count()
     .exec()
     .then(data=>{
-        console.log(data)
+        // console.log(data)
         res.status(200).json({"dataCount":data});
     })
     .catch(err =>{
@@ -1051,7 +1051,7 @@ exports.fetch_file_count = (req,res,next)=>{
     
 };
 exports.fetch_vendorfile_count = (req,res,next)=>{
-    console.log('req.params.vendorID', req.params.vendorID);
+    // console.log('req.params.vendorID', req.params.vendorID);
     Products.find({"vendor_ID" : req.params.vendorID})
     .exec()
     .then(data=>{
@@ -1076,7 +1076,7 @@ exports.fetch_vendorfile_count = (req,res,next)=>{
     
 };
 exports.delete_file = (req,res,next)=>{
-    console.log("inside delete function");
+    // console.log("inside delete function");
     Products.deleteMany({"fileName":req.params.fileName})
     .exec()
     .then(data=>{
@@ -1096,7 +1096,7 @@ exports.delete_product = (req,res,next)=>{
     Orders.find({"products.product_ID" : req.params.productID })
         .exec()
         .then(odata=>{
-            console.log('odata',odata);
+            // console.log('odata',odata);
             if (odata.length > 0) {
                 res.status(200).json({
                     "message": "You cannot delete this product as orders are related to this product."
@@ -1126,7 +1126,7 @@ exports.delete_product = (req,res,next)=>{
     
 };
 exports.upload_photo = (req,res,next)=>{
-    console.log("input = ",req.body);
+    // console.log("input = ",req.body);
     
     Products.findOne({"_id":req.body.product_ID})
     .exec()
@@ -1141,7 +1141,7 @@ exports.upload_photo = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-            console.log('data ',data);        
+            // console.log('data ',data);        
                 res.status(200).json({
                     "message": "Images and Video Updated"
                 });
@@ -1247,8 +1247,8 @@ exports.list_productby_category = (req,res,next)=>{
     });
 };
 exports.list_productby_subcategory = (req,res,next)=>{
-    console.log(req.params.categoryID);
-    console.log(req.params.subcategoryID);
+    // console.log(req.params.categoryID);
+    // console.log(req.params.subcategoryID);
     Products.find({category_ID : req.params.categoryID, subCategory_ID:req.params.subcategoryID, "status": "Publish"})
     .exec()
     .then(data=>{
@@ -1402,7 +1402,7 @@ exports.vendor_search_count_product = (req,res,next)=>{
     .count()
     .exec()
     .then(data=>{
-        console.log(data);
+        // console.log(data);
         res.status(200).json({"dataCount" :data});
     })
     .catch(err =>{
@@ -1922,7 +1922,7 @@ exports.vendorProductCount = (req,res,next)=>{
 
 exports.productBulkAction = (req, res, next) => {
     var field = req.body.selectedAction;
-    console.log('field', field);
+    // console.log('field', field);
     switch (field) {
         case 'Draft':
             Products.updateMany(
@@ -1998,7 +1998,7 @@ exports.getattributes = (req,res,next)=>{
     Products.distinct("attributes",{ "section_ID": req.params.sectionID })
     .exec()
     .then(data=>{ 
-        console.log(data);
+        // console.log(data);
         var Results = [];
         Results = _.groupBy(data, 'attributeName')
         res.status(200).json(Results);
@@ -2015,7 +2015,7 @@ exports.getattributesbycategory = (req,res,next)=>{
     Products.distinct("attributes",{ "category_ID": req.params.categoryID })
     .exec()
     .then(data=>{ 
-        console.log(data);
+        // console.log(data);
         var Results = [];
         Results = _.groupBy(data, 'attributeName')
         res.status(200).json(Results);
@@ -2031,7 +2031,7 @@ exports.getattributesbycategory = (req,res,next)=>{
     Products.distinct("attributes",{ "subCategory_ID": req.params.subCategoryID })
     .exec()
     .then(data=>{ 
-        console.log(data);
+        // console.log(data);
         var Results = [];
         Results = _.groupBy(data, 'attributeName')
         res.status(200).json(Results);
@@ -2049,7 +2049,7 @@ exports.getattributesbysubcategory = (req,res,next)=>{
     Products.distinct("attributes",{ "subCategory_ID": req.params.subCategoryID })
     .exec()
     .then(data=>{ 
-        console.log(data);
+        // console.log(data);
         var Results = [];
         Results = _.groupBy(data, 'attributeName')
         res.status(200).json(Results);

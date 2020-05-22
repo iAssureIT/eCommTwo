@@ -46,7 +46,7 @@ exports.listCustomerReview = (req,res,next)=>{
     });
 };
 exports.listCustomerProductReview = (req,res,next)=>{
-    console.log('param', req.params);
+    // console.log('param', req.params);
     CustomerReview.findOne({"customerID": ObjectId(req.params.customerID),  "productID" : ObjectId(req.params.productID), "orderID": ObjectId(req.params.orderID)})
     .exec()
     .then(data=>{
@@ -164,7 +164,7 @@ exports.delete_review = (req,res,next)=>{
     });
 };
 exports.updateCustomerReview = (req, res, next) => {
-    console.log('rating', req.body);
+    // console.log('rating', req.body);
     CustomerReview.updateOne(
         { _id: req.body.rating_ID},
         {

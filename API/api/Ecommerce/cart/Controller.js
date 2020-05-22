@@ -125,7 +125,7 @@ exports.list_cart = (req,res,next)=>{
     });
 };
 exports.list_cart_product = (req,res,next)=>{
-    console.log(req.params.user_ID);
+    // console.log(req.params.user_ID);
     Carts.aggregate([
         { "$match" : { "user_ID" : ObjectId(req.params.user_ID) } },
         { "$unwind": "$cartItems" },
@@ -193,7 +193,7 @@ exports.count_cart = (req,res,next)=>{
 };
 
 exports.remove_cart_items = (req, res, next)=>{
-    console.log('r', req.body);
+    // console.log('r', req.body);
     Carts.updateOne(
         {"user_ID": req.body.user_ID},
         {

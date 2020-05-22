@@ -2,12 +2,12 @@ const mongoose	        = require("mongoose");
 const Allowablepincode   = require('./Model');
 
 exports.add_allowablePincodes = (req, res, next) => {
-    console.log("=========req.body==========:",req.body);
+    // console.log("=========req.body==========:",req.body);
     var allowablePincodeObj = req.body;
     for (let franchiseID in allowablePincodeObj) { 
         if (allowablePincodeObj.hasOwnProperty(franchiseID)) { 
             value = allowablePincodeObj[franchiseID]; 
-            console.log("value----",value); 
+            // console.log("value----",value); 
             Allowablepincode.find({"franchiseID":franchiseID})
             .exec()
             .then(data =>{                
@@ -42,7 +42,7 @@ exports.add_allowablePincodes = (req, res, next) => {
                         allowablePincodes : allowablePincodeObj[franchiseID].pincodes,
                         createdAt         : new Date()
                     });
-                    console.log("---data to send:",allowablePincode); 
+                    // console.log("---data to send:",allowablePincode); 
                     allowablePincode.save()
                     .then(data=>{
                         res.status(200).json({
@@ -82,19 +82,19 @@ exports.get_allowablePincodes = (req, res, next)=>{
 
 exports.check_delivery = (req, res, next)=>{
     var pincode = req.params.pincode;
-    console.log("Pincode:======",pincode);
+    // console.log("Pincode:======",pincode);
     Allowablepincode.find()
     .exec()
     .then(data=>{
-        console.log("Data============",data);   
+        // console.log("Data============",data);   
         if(data){
-            console.log("data.lin=====",data.length);
+            // console.log("data.lin=====",data.length);
             for(var i=0;i<data.length;i++){
                 for(var k=0;k<data[i].allowablePincodes.length;k++){
                     console.log("Inside k loop",data[i].allowablePincodes[k]);
                     if(data[i].allowablePincodes[k] === pincode){
                         var delivery = "available";
-                        console.log("========Delivery available===========");
+                        // console.log("========Delivery available===========");
                         break;
                     }
                 }

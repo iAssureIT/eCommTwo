@@ -23,7 +23,6 @@ class CategoryManagement extends Component{
               category                          : "Category Title",
               subCategory                       : "Subcategory Title",
               categoryDescription               : "Category Description",
-              // categoryImage                     : "Category Image",
               actions                           : 'Action',
             },
             "tableObjects"              : {
@@ -427,13 +426,12 @@ class CategoryManagement extends Component{
               });
               async function main(){
                   var config = await getConfig();
-                  
+                  console.log("line 429 config = ",config);
                   var s3url = await s3upload(categoryImage.fileInfo, config, this);
 
-
                   const formValues = {
-                      "categoryImage"      : s3url,
-                      "status"            : "New"
+                    "categoryImage"    : s3url,
+                    "status"           : "New"
                   };
     
                   return Promise.resolve(formValues);
@@ -455,15 +453,15 @@ class CategoryManagement extends Component{
                   return new Promise(function(resolve,reject){
                       axios
                           // .get('/api/projectSettings/get/one/s3')
-                          .get('/api/projectSettings/get/s3')
+                          .get('/api/projectSettings/get/one/S3')
                           .then((response)=>{
-                            console.log("s3 response :",response);
+                            console.log("s3 response :",response.data);
                               const config = {
-                                  bucketName      : response.data.bucket,
-                                  dirName         : 'propertiesImages',
-                                  region          : response.data.region,
-                                  accessKeyId     : response.data.key,
-                                  secretAccessKey : response.data.secret,
+                                  bucketName      : response.data[0].bucket,
+                                  dirName         : process.env.ENVIRONMENT,
+                                  region          : response.data[0].region,
+                                  accessKeyId     : response.data[0].key,
+                                  secretAccessKey : response.data[0].secret,
                               }
                               resolve(config);                           
                           })

@@ -2,7 +2,7 @@ const mongoose  = require("mongoose");
 const BulkUploadTemplate = require('./Model');
 
 exports.addBulkUploadTemplate = (req,res,next)=>{
-	console.log('templateUrl',req.body.templateUrl)
+	// console.log('templateUrl',req.body.templateUrl)
     BulkUploadTemplate.findOne({"category_ID" : req.body.category_ID})
         .exec()
         .then(data =>{
@@ -17,7 +17,7 @@ exports.addBulkUploadTemplate = (req,res,next)=>{
         		})
         		.exec()
         		.then(updata=>{
-        			console.log(updata)
+        			// console.log(updata)
         			if (updata.nModified) {
 	        			res.status(200).json({
 		                    "message": "Template is saved successfully."
