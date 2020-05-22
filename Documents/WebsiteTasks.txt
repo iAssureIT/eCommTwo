@@ -23,22 +23,26 @@
 		|      	What is the pincode of are where you want delivery? 						|
 		|				__411028__		[Check Delivery]																	|
 		|																																				|
-		|																																				|
+		|				show Message																										|
 		+-----------------------------------------------------------------------+
 
 			When user enters the pincode, 
-			1) save that pincode in cookies. 
+			1) Save that pincode in cookies. 
 			2) using some API, check if this pincode is in the list of allowablePincodes
 			3) 	if(allowed){
-						show Message = "Great... We can deliver in your area. Go ahead and order your products!"
+						show Message = "We can deliver in your area of Pincode 411028. Continue You Shopping!"
 					}else{
-						show Message = "Sorry... We can not deliver in your area. Check again after few days!"
+						show Message = "Sorry... We can not deliver in your area of Pincode 411028. Check again after few days!"
 					}
+						save pincode and status (allow/notAllow) in cookies
+
 			4) Check if pincode is stored in Cookies
 						if(stored in cookies){
 							Don't ask pincode to user again. 
 							Check if this pincode is allowable. 
 							Store this allowable or not, in cookies. 
+							Show Message on Modal like
+							"Your saved Pincode is 411028. Delivery is possible in this area. Continue Your Shopping!"
 						}else{
 							show modal. 
 						}

@@ -1,6 +1,15 @@
 1. Dashboard - top-Left side logo must be dynamic. If image is not available, use Text. 
 2. Top-right side is misplaced. 
-3. Load UniMandai with all Master values
+3. Load UniMandai with all Master values 
+	 Create some arrangement to load the default values of master data on the first launch of the admin. 
+	 
+
+
+
+
+
+
+
 
 
 

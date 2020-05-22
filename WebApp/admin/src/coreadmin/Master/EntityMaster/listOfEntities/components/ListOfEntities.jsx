@@ -30,7 +30,7 @@ class ListOfEntities extends Component {
 			showDetails : false,
 			district  : "Select District",
 			"pathname": window.location.pathname.split('/')[1],
-			entityType : this.props.match.params.entity 
+			entityType : this.props.entity 
 		};
 		
 		this.handleChange = this.handleChange.bind(this);
