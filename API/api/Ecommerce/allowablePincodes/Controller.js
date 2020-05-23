@@ -6,23 +6,25 @@ exports.add_allowablePincodes = (req, res, next) => {
     var allowablePincodeObj = req.body;
     for (let franchiseID in allowablePincodeObj) { 
         if (allowablePincodeObj.hasOwnProperty(franchiseID)) { 
-            value = allowablePincodeObj[franchiseID]; 
-            // console.log("value----",value); 
+            var pincodes = allowablePincodeObj[franchiseID].pincodes; 
+            console.log("pincodes----",pincodes); 
             Allowablepincode.find({"franchiseID":franchiseID})
             .exec()
             .then(data =>{                
-                if(data && data.length > 0){    
-                    Allowablepincode.find({"franchiseID":franchiseID})
-                    .updateOne(
-                        { franchiseID:franchiseID},  
-                        {
-                            $set:{
-                                alloablePincodes : allowablePincodeObj[franchiseID].pincodes,
-                            }
+                if(data && data.length > 0){                
+                    // console.log("pincodes=====",allowablePincodeObj[franchiseID].pincodes,);
+                    Allowablepincode.replaceOne(
+                        {"franchiseID":franchiseID},                  
+                        {                         
+                            franchiseID       : franchiseID,
+                            companyID         : allowablePincodeObj[franchiseID].companyID,
+                            allowablePincodes : allowablePincodeObj[franchiseID].pincodes,
                         }
+                        
                     )
                     .exec()
                     .then(data=>{
+                        console.log("data:======",data);
                         res.status(200).json({
                             "message": "Allowable Pincodes Updated Successfully."
                         });
@@ -64,7 +66,7 @@ exports.add_allowablePincodes = (req, res, next) => {
             });
         });
         } 
-    }
+    }//end for loop
 };
 exports.get_allowablePincodes = (req, res, next)=>{
     Allowablepincode.find()
@@ -82,7 +84,7 @@ exports.get_allowablePincodes = (req, res, next)=>{
 
 exports.check_delivery = (req, res, next)=>{
     var pincode = req.params.pincode;
-    // console.log("Pincode:======",pincode);
+    console.log("Pincode:======",pincode);
     Allowablepincode.find()
     .exec()
     .then(data=>{

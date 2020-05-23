@@ -18,8 +18,7 @@ export default class AllowdeliveryModal extends Component {
                     pincode : pincodeObj.pincode,
         });
         console.log("allowdelivery modal======",this.state.pincode);
-    }
- 
+    } 
   render() {
 		return (
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12 mb50">

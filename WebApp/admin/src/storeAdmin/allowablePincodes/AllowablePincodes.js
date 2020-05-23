@@ -74,7 +74,7 @@ class AllowablePincodes extends Component {
         // event.preventDefault();
         const target = event.target;
         var id  = target.getAttribute('data-fid');
-        console.log("franchise Id :" ,id);
+        // console.log("franchise Id :" ,id);
         var allowablePincodes = this.state.allowablePincodes;
 
         allowablePincodes[id]={
@@ -148,8 +148,8 @@ class AllowablePincodes extends Component {
                                                                             </td>
                                                                             <td>                                                              
                                                                                 {/* <input type="text" id="pincodes" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincodes}  ref="pincodes" name="pincodes" onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.." required/> */}
-                                                                                <input type="text" id="" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                                                 value={this.state.allowablePincodeList.length>0 ? this.state.allowablePincodeList[index].allowablePincodes:null}  ref={"pincodes"+index} name={"pincodes"+index} onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
+                                                                                <input type="text" id="pincodes" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                                                 ref="pincodes" name="pincodes" defaultValue={this.state.allowablePincodeList.length>0 ? this.state.allowablePincodeList[index].allowablePincodes:null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
                                                                             </td>                                                                
                                                                         </tr> 
                                                                     );

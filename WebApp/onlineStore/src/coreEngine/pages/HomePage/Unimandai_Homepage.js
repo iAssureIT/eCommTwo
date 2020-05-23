@@ -42,13 +42,11 @@ class HomePage extends Component {
       // console.log("askPincodeToUser-----------",this.state.askPincodeToUser);  
       
       var pincodeObj  = JSON.parse(localStorage.getItem("pincodData"));
-      console.log("pincodeObj---------",pincodeObj.pincode);
-      console.log("pincodeObj---------",pincodeObj.status);
+      console.log("current localstorage pincodeObj---------",pincodeObj);
       this.setState({
                 userPincode : pincodeObj.pincode,
       });
-      console.log("user Pincode :=====",this.state.userPincode);
-      console.log("Pincode Object:=====",pincodeObj);
+      console.log("user setstate varialble Pincode :=====",this.state.userPincode);
       
       if(pincodeObj.status === "NotAllow"){
       var pincode = this.state.userPincode;

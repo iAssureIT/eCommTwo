@@ -44,27 +44,25 @@ export default class AskPincode extends Component {
         axios.get("/api/allowablepincode/checkpincode/"+userPincode)
             .then((response)=>{
                 var status = "";
-                if(response){                              
-                    // console.log("Before status change", localStorage.getItem("pincodData"));
+                if(response){  
                     if(response.data.message === "Delivery Available"){ 
                         this.setState({
                         	AllowDeliveryMsg  : "We can deliver in your area of Pincode " +this.state.pincode +" . Continue Your Shopping!",					
                         }); 
-                        $('.AllowDeliveryMsg').show(); 
-                        // console.log("AllowDeliveryMsg:===",this.state.AllowDeliveryMsg);                   
+                        $('.AllowDeliveryMsg').show();                                           
                         var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
                         pincodeObj.status = "Allow";
                         localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
-                        // console.log("delivery allow", localStorage.pincodData);                       
+                               
                     }else{
                         this.setState({
                             NotAllowDeliveryMsg : "Sorry... We can not deliver in your area of Pincode " +this.state.pincode +" . Check again after few days!",
                         }); 
-                        $('.NotAllowDeliveryMsg').show();                        // console.log("NotAllowDeliveryMsg:===",this.state.NotAllowDeliveryMsg); 
+                        $('.NotAllowDeliveryMsg').show();                       
                         var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
                         pincodeObj.status = "NotAllow";
                         localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
-                        // console.log("delivery not allow", localStorage.pincodData);            
+                        
                     }           
                 }
             })
