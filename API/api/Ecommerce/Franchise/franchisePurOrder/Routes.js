@@ -11,10 +11,10 @@ router.get('/get/one/purchaseorder/:purchaseorder_id',franchisePOController.one_
 
 router.patch('/patch/purchaseorder', franchisePOController.update_franchisePO);
  
-router.patch('patch/acceptitem', franchisePOController.update_franchisePOitem);
+router.patch('/patch/acceptitem', franchisePOController.update_franchisePOitem);
 
-router.patch('patch/patch/acceptpurchaseorder', franchisePOController.update_franchisePOaccept);
+router.patch('/patch/patch/acceptpurchaseorder', franchisePOController.update_franchisePOaccept);
 
-router.delete('delete/purchaseorder/:purchaseorder_id', franchisePOController.delete_franchisePO);
+router.delete('/delete/purchaseorder/:purchaseorder_id', franchisePOController.delete_franchisePO);
 
 module.exports = router;

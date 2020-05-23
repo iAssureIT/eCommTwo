@@ -5,28 +5,51 @@ const FranchisePO   = require('./Model');
 
 
 exports.insert_franchisePO = (req,res,next)=>{    
-    const franchisePO = new FranchisePO({
-        _id                       : new mongoose.Types.ObjectId(), 
-        franchise_id              : req.body.franchise_id, 
-        companyID                 : req.body.companyID, 
-        orderDate                 : req.body.orderDate, 
-        orderItems                : req.body.orderItems,
-        createdBy                 : req.body.user_id,
-        createdAt                 : new Date()
-    });
 
-    franchisePO.save()
-    .then(data => {
-        res.status(200).json({
-            "message"  : "Franchise Purchase Order Submitted Successfully",
-            "order_id" : data._id
+    FranchisePO.find({})
+    .sort({createdAt: -1})
+    .exec()
+    .then(data=>{
+        console.log("data",data);
+        if(data && data.length > 0){
+          var orderNo = data[0].orderNo + 1;
+        // console.log("orderNo",orderNo);
+
+        }else{
+          var orderNo = 1;
+        // console.log("orderNo orderNo",orderNo);
+
+        }
+        // console.log("req.body orderNo",req.body);
+
+        const franchisePO = new FranchisePO({
+            _id                       : new mongoose.Types.ObjectId(), 
+            franchise_id              : req.body.franchise_id, 
+            companyID                 : req.body.companyID, 
+            orderDate                 : req.body.orderDate, 
+            orderItems                : req.body.orderItems,
+            orderNo                   : orderNo,
+            createdBy                 : req.body.user_id,
+            createdAt                 : new Date()
         });
-    })
+
+        franchisePO.save()
+        .then(data => {
+            res.status(200).json({
+                "message"  : "Franchise Purchase Order Submitted Successfully",
+                "order_id" : data._id
+            });
+        })
+        .catch(err =>{
+            console.log("err0",err);
+            res.status(500).json({
+                error: err
+            });
+        })
+
     .catch(err =>{
-        console.log("err0",err);
-        res.status(500).json({
-            error: err
-        });
+        res.status(500).json({error:err})
+    });  
     });
 };
 
@@ -43,6 +66,7 @@ exports.update_franchisePO = (req,res,next)=>{
             ],
             user_id : xxx,
     } */
+    // console.log("req.params=>",req.body);
 
 
     FranchisePO.updateOne( 
@@ -204,6 +228,7 @@ exports.one_franchisePO = (req,res,next)=>{
 
 
 exports.delete_franchisePO = (req,res,next)=>{
+    // console.log("req.params.purchaseorder_id",req.params.purchaseorder_id);
     var purchaseorder_id    = req.params.purchaseorder_id;
 
     FranchisePO

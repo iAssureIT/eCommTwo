@@ -89,7 +89,7 @@ import FinishedGoods from './storeAdmin/PurchaseManagement/FinishedGoods.js';
 
 
 import FranchiseShoppingList from './storeAdmin/FranchiseShoppingList/FranchiseShoppingList.js';
-
+import FranchiseOrderSummary from './storeAdmin/FranchiseShoppingList/FranchiseOrderSummary.js';
 
 /*===================== CMS ========================*/
 
@@ -197,7 +197,9 @@ class Layout extends Component  {
                           <Route path="/franchise/list"                                   exact strict component={ListOfEntitiesPage} />                          
 
                           <Route path="/franchise-shopping-list"                          exact strict component={FranchiseShoppingList} />
-
+                          <Route path="/franchise-shopping-list/:editId"                          exact strict component={FranchiseShoppingList} />
+                                          
+                          <Route path="/franchise-order-summary"                          exact strict component={FranchiseOrderSummary} />
 
                           { /*Order List*/}
                           <Route path="/allorders"                                        exact strict component={AllOrdersList} />
