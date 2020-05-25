@@ -126,7 +126,7 @@ class SignUp extends Component {
 				"emailSubject"	: "Email Verification", 
 				"emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 			}
-			console.log("Auth:",auth);
+			// console.log("Auth:",auth);
 			document.getElementById("signUpBtn").innerHTML = 'Please Wait...';
 
 			var passwordVar = this.refs.signupPassword.value;
@@ -138,18 +138,20 @@ class SignUp extends Component {
 							document.getElementById("signUpBtn").innerHTML = 'Sign Up',
 							axios.post('/api/auth/post/signup/user/otp', auth)
 							.then((response) => {
-								if(response.data.message === 'USER_CREATED'){									
+								if(response.data.message === 'USER_CREATED'){
+									console.log("user created:");									
 									// swal('Great, Information submitted successfully and OTP is sent to your registered Email.');
 									// this.props.history.push("/confirm-otp/" + user_ID);
 
 									// swal('Congratulations! Your account has been created successfully, Please Login to place order.');
-									localStorage.setItem("pincode", response.data.pincode);
+									// localStorage.setItem("pincode", response.data.pincode);
 									
 									var auth = {
 										email: this.state.signupEmail,
-										password: this.refs.loginpassword.value,
+										password: this.state.signupPassword,
 										role: "user"
-									}									  
+									}	
+									console.log("Auth:", auth);								  
 									axios.post('/api/auth/post/login', auth)
 									.then((response) => {
 										if(response){
@@ -157,37 +159,33 @@ class SignUp extends Component {
 												firstName : response.data.userDetails.firstName, 
 												lastName  : response.data.userDetails.lastName, 
 												email     : response.data.userDetails.email, 
-												phone     : response.data.userDetails.phone, 
-												// city      : response.data.userDetails.city,
-												// companyID : parseInt(response.data.userDetails.companyID),
-												// locationID: response.data.userDetails.locationID,
+												phone     : response.data.userDetails.phone,
+												pincode   : response.data.userDetails.pincode, 										
 												user_id   : response.data.userDetails.user_id,
 												roles     : response.data.userDetails.roles,
 												token     : response.data.userDetails.token, 
 											}
-											swal('Congratulations! You have been successfully Login, Please place your order.');
+											swal('Congratulations! You have been successfully Login, Now you can place your order.');
 											localStorage.setItem('previousUrl' ,'signup');
 											// document.getElementById("logInBtn").value = 'Sign In';
+											localStorage.setItem("pincode", response.data.userDetails.pincode);
 											localStorage.setItem("token", response.data.token);
 											localStorage.setItem("user_ID", response.data.ID);
 											localStorage.setItem("roles", response.data.roles);
 											localStorage.setItem('userDetails', JSON.stringify(userDetails));
-											this.props.history.push("/");
+											console.log("token:",response.data.token);
+											// this.props.history.push("/");
 											
 										}
 
 									})
 									.catch((error) => {
 										console.log("Error:",error);
-									})
-									  
-									
-
-									
+									})	
 									this.setState({
 									loggedIn: true
 									},()=>{
-									this.props.history.push('/')
+									// this.props.history.push('/')
 									window.location.reload();
 									})
 									
@@ -196,7 +194,7 @@ class SignUp extends Component {
 								}	
 							})
 							.catch((error) => {
-								
+								console.log("Signup Error :",error);
 							})
 						)
 						:
@@ -340,13 +338,13 @@ class SignUp extends Component {
 								<input minLength="6" type="password" className="form-control" id="signupConfirmPassword" ref="signupConfirmPassword" placeholder="" name="signupConfirmPassword" />
 							</div>
 							<div className="col-lg-4 col-lg-offset-3 col-md-12 col-sm-12 col-xs-12 mt15">
-								<button id="signUpBtn" onClick={this.usersignup.bind(this)} className="col-lg-12 col-md-12 col-md-offset-3 col-sm-12 col-xs-12  btn loginBtn">Sign Up</button>
+								<button id="signUpBtn" onClick={this.usersignup.bind(this)} className="col-lg-12 col-md-12 col-md-offset-3 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni">Sign Up</button>
 							</div>
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center loginforgotpass mt25">
 								<label>Already have an account?</label> &nbsp; <a href='/login' className="">Sign In <b>&#8702;</b></a>
 							</div>
 						</form>
-						<div className="modal" id="myModal" role="dialog">
+						{/* <div className="modal" id="myModal" role="dialog">
 							<div className="modal-dialog">
 								<div className="modal-content">
 									<div className="modal-header">
@@ -373,7 +371,7 @@ class SignUp extends Component {
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

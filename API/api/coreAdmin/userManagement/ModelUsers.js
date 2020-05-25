@@ -29,6 +29,7 @@ const userSchema = mongoose.Schema({
 						lastname  				: String,
 						fullName  				: String,
 						mobile 		 			: String,
+						pincode 				: Number,
 						image 					: String,
 						otpMobile	  			: String,
 						mobileVerified			: Boolean,

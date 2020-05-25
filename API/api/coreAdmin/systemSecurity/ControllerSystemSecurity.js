@@ -214,6 +214,7 @@ exports.user_signup_user = (req, res, next) => {
 };
 exports.user_signup_user_otp = (req, res, next) => {
 	console.log("inside user signup");
+	console.log("user_signup_user req.body = ",req.body);
 	var username = "EMAIL";
 	if(req.body.username){
 		if(req.body.username === "EMAIL"){
@@ -225,6 +226,7 @@ exports.user_signup_user_otp = (req, res, next) => {
 	if(username==="EMAIL"){
 		if(req.body.email && req.body.pwd && req.body.role) {
 			var emailId = req.body.email;
+			console.log("req.body signup===",req.body);
 			var userRole = (req.body.role).toLowerCase();
 			if (userRole && emailId) {
 				Role.findOne({ role: userRole })
@@ -264,6 +266,7 @@ exports.user_signup_user_otp = (req, res, next) => {
 															lastname: req.body.lastname,
 															fullName: req.body.firstname + ' ' + req.body.lastname,
 															email: emailId.toLowerCase(),
+															pincode : req.body.pincode,
 															// companyID: req.body.companyID,
 															// companyName: req.body.companyName,
 															mobile: mobNumber,
@@ -573,7 +576,7 @@ exports.check_username_EmailOTP = (req, res, next) => {
 		});
 };
 exports.user_login_using_email = (req, res, next) => {
-	console.log("inside login:",req);
+	console.log("inside login:",req.body);
 	var emailId = (req.body.email).toLowerCase();
 	var role = (req.body.role).toLowerCase();
 	var selector = {
@@ -607,7 +610,7 @@ exports.user_login_using_email = (req, res, next) => {
 										expiresIn: "365d"
 									}
 								);
-
+								console.log("Token:",token);
 								User.updateOne(
 									{ "username": emailId.toLowerCase() },
 									{
@@ -634,6 +637,7 @@ exports.user_login_using_email = (req, res, next) => {
 													firstName: user.profile.firstname,
 													lastName: user.profile.lastname,
 													email: user.profile.email,
+													pincode : user.profile.pincode,
 													// phone: user.profile.phone,
 													// city: user.profile.city,
 													// companyID: user.profile.companyID,
