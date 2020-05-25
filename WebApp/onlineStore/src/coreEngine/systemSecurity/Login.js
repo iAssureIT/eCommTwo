@@ -202,16 +202,16 @@ class Login extends Component {
                 }
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
-                    <div className="textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                  <div className="textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10">
                       <div className="row loginforgotpass">
                         <a href='/forgotpassword' className="">Forgot Password?</a>
                       </div>
                     </div>
 
-                    <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt10 textAlignRight">
-                      {/* <div className="row loginforgotpass">
+                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignRight">
+                      <div className="row loginforgotpass">
                         <a href='/signup' className="">Sign Up</a>
-                      </div> */}
+                      </div>
                     </div>
 
                   </div>

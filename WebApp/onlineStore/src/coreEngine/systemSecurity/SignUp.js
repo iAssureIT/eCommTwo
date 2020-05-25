@@ -79,7 +79,12 @@ class SignUp extends Component {
 				},
 				idacceptcondition: {
 					required: true,
+				},
+				pincode : {
+					required : true,
 				}
+
+
 			},
 			messages:{
 				signupConfirmPassword:"Password do not match"
@@ -113,6 +118,7 @@ class SignUp extends Component {
 				firstname		: this.state.firstname,
 				lastname		: this.state.lastname,
 				mobNumber		: (this.state.mobNumber).replace("-", ""),
+				pincode         : this.state.pincode,
 				email			: this.state.signupEmail,
 				pwd				: this.state.signupPassword,
 				role			: 'user',
@@ -120,6 +126,7 @@ class SignUp extends Component {
 				"emailSubject"	: "Email Verification", 
 				"emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 			}
+			console.log("Auth:",auth);
 			document.getElementById("signUpBtn").innerHTML = 'Please Wait...';
 
 			var passwordVar = this.refs.signupPassword.value;
@@ -133,10 +140,57 @@ class SignUp extends Component {
 							.then((response) => {
 								if(response.data.message === 'USER_CREATED'){									
 									// swal('Great, Information submitted successfully and OTP is sent to your registered Email.');
-									swal('Congratulations! Your account has been created successfully, Please Login to place order.');
-									localStorage.setItem('previousUrl' ,'signup');
 									// this.props.history.push("/confirm-otp/" + user_ID);
-									this.props.history.push("/login");
+
+									// swal('Congratulations! Your account has been created successfully, Please Login to place order.');
+									localStorage.setItem("pincode", response.data.pincode);
+									
+									var auth = {
+										email: this.state.signupEmail,
+										password: this.refs.loginpassword.value,
+										role: "user"
+									}									  
+									axios.post('/api/auth/post/login', auth)
+									.then((response) => {
+										if(response){
+											var  userDetails = {
+												firstName : response.data.userDetails.firstName, 
+												lastName  : response.data.userDetails.lastName, 
+												email     : response.data.userDetails.email, 
+												phone     : response.data.userDetails.phone, 
+												// city      : response.data.userDetails.city,
+												// companyID : parseInt(response.data.userDetails.companyID),
+												// locationID: response.data.userDetails.locationID,
+												user_id   : response.data.userDetails.user_id,
+												roles     : response.data.userDetails.roles,
+												token     : response.data.userDetails.token, 
+											}
+											swal('Congratulations! You have been successfully Login, Please place your order.');
+											localStorage.setItem('previousUrl' ,'signup');
+											// document.getElementById("logInBtn").value = 'Sign In';
+											localStorage.setItem("token", response.data.token);
+											localStorage.setItem("user_ID", response.data.ID);
+											localStorage.setItem("roles", response.data.roles);
+											localStorage.setItem('userDetails', JSON.stringify(userDetails));
+											this.props.history.push("/");
+											
+										}
+
+									})
+									.catch((error) => {
+										console.log("Error:",error);
+									})
+									  
+									
+
+									
+									this.setState({
+									loggedIn: true
+									},()=>{
+									this.props.history.push('/')
+									window.location.reload();
+									})
+									
 								}else{
 									swal(response.data.message);
 								}	
@@ -161,8 +215,7 @@ class SignUp extends Component {
 				}
 		}
 
-	}
-	Closepagealert(event) {
+	}	Closepagealert(event) {
 		event.preventDefault();
 		$(".toast-error").html('');
 		$(".toast-success").html('');
@@ -272,6 +325,11 @@ class SignUp extends Component {
 									onChange={mobNumber=>{this.setState({mobNumber})}}
 								/>
 							</div>
+							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+								<label>Pincode</label><label className="astricsign">*</label>
+								<input minLength="6" type="number" className="form-control" id="signupPincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
+							</div>					
+							
 							
 							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Password</label><label className="astricsign">*</label>
