@@ -50,25 +50,25 @@ export default class EcommerceBanner extends Component {
 			                            dotData={true}
 									>
 									    <div className="item">
-									    	<img className="img img-responsive bannerimg" src="/images/carausel1img.jpg" alt="banner" />
+									    	<img className="img img-responsive bannerimg" src="/images/Background_2.png" alt="banner" />
 									    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
 									    		{/*<img className="img img-responsive banner1upImg" src="/images/banner1(1).png" alt="banner"  />*/}
 									    		<div className="BannerTitle NewBannerTitle"> FRESH FOOD  </div>
 									    		{/*<img className="img img-responsive banner1downImg" src="/images/banner1(2).png" alt="banner"  />*/}
-									    		<div className="bannertext ml16">We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home</div>
+									    		<div className="bannertext ml16">{/*We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home*/}</div>
 									    		<button className="col-lg-offset-5 viewdetails">VIEW DETAILS</button> 
 									    	</div>
 									    </div>
 									    <div className="item">
-									    	<img className="img img-responsive" src="/images/caroselmandai.jpg" alt="banner" />
+									    	<img className="img img-responsive" src="/images/Background_22.png" alt="banner" />
 									    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner2AnimationImg">
 									    		{/*<img className="img img-responsive banner2sideImg" src="/images/banner2(1).png" alt="banner" />*/}
 									    	</div>
 									    	<div className="banner2TextBox col-lg-12">									    		
-									    		<div className="BannerTitle2">Fresh Organic Food</div>	
+									    		<div className="BannerTitle2"></div>	
 									    		<div className="col-lg-6 col-lg-offset-3">								    		
 									    			{/*<div className="col-lg-2 hrLineBanner"/>*/}
-									    			<div className="bannertext1 col-lg-12">We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home</div>
+									    			<div className="bannertext1 col-lg-12">{/*We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home*/}</div>
 									    			 <button className="col-lg-offset-5 viewdetails">VIEW DETAILS</button> 
 									    			{/*<div className="col-lg-2 hrLineBanner" />*/}
 									    		</div>

@@ -136,8 +136,15 @@
 .loginBtn{
   border-radius: 25px;
   padding: 10px 15px;
+  background-color: #A2632C;  
+  color: #fff !important;
+}
+.loginBtn_uni{
+  border-radius: 25px;
+  padding: 10px 15px;
   background-color: #80b435;  
   color: #fff !important;
+
 }
 .resetBtn{
   border-radius: 25px;

@@ -80,13 +80,15 @@ export default class Footer extends Component {
             <div className="col-sm-12 col-sm-3">
                 <div className="footer-top">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
-                   Get It Touch
-                </div>
+                   <p className="footertxt">Get It Touch</p>
                 <div class="social space-30">
-                    <a href="#" title="t"><i class="fa fa-twitter"></i></a>
-                    <a href="#" title="f"><i class="fa fa-facebook"></i></a>
-                    <a href="#" title="y"><i class="fa fa-youtube-play"></i></a>
-                    <a href="#" title="g"><i class="fa fa-google"></i></a>
+                    <ul className="no-icon-list socialicon col-lg-12">
+                      <li className="col-lg-2"><a href="#" target="_blank"><i className="col-lg-3 fa fa-twitter" aria-hidden="true"></i></a></li>
+                      <li className="col-lg-2"><a href="#" target="_blank"><i className="facebook col-lg-3 fa fa-facebook" aria-hidden="true"></i></a></li>
+                      <li className="col-lg-2"><a href="#" target="_blank" ><i className="col-lg-3 fa fa-linkedin" aria-hidden="true"></i></a></li>
+                      <li className="col-lg-2"><a href="#" target="_blank"><i className="col-lg-3 fa fa-whatsapp whatsupIcon" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
                    Payment Accept
@@ -101,7 +103,7 @@ export default class Footer extends Component {
                 </div>  
                 <p className="footer-v3">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p> 
                 <form action="#" method="get" accept-charset="utf-8" className="subscribe">
-                    <input type="text"  value="Enter Your Email Address" class="input-text required-entry validate-email" title="Sign up for our newsletter" id="newsletter" name="email"/> 
+                   <input type="text" className="input-text required-entry validate-email form-control subscribeMail" placeholder="Enter your Email" />
                     <button class="button button1 hover-white" title="Subscribe" type="submit">Subscribe<i class="fa fa-long-arrow-right"></i></button>
                  </form>
                 </div>

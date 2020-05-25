@@ -188,9 +188,18 @@ class Login extends Component {
                   </div>
 
                 </div>
+                 {
+                  process.env.REACT_APP_PROJECT_NAME === '2_AnasHandicrafts' ?
+                
                 <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
                   <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
                 </div>
+                :
+                 <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
+                  <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
+                </div>
+                
+                }
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
                     <div className="textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">

@@ -281,8 +281,8 @@ class HomePage extends Component {
 
          <WhychooseUs/>
 
-         <Ceo />
-
+        {/* <Ceo />
+*/}
           <Blogs />
 
 

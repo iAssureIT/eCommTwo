@@ -1,15 +1,15 @@
 	const express 						= require ('express');
-	const app 								= express();
-	const morgan 							= require('morgan');// morgan call next function if problem occure
+	const app 						    = express();
+	const morgan 						= require('morgan');// morgan call next function if problem occure
 	const bodyParser 					= require('body-parser');// this package use to formate json data 
 	const mongoose 						= require ('mongoose');
 	var   nodeMailer					= require('nodemailer');
-	const globalVariable			= require('./nodemon.js');
-	const fs 									= require('fs');
+	const globalVariable			    = require('./nodemon.js');
+	const fs 							= require('fs');
 
 // Routes - CMS
 const blockRoutes 					= require('./api/cms/routes/blocks.js');
-const pageRoutes 						= require('./api/cms/routes/pages.js');
+const pageRoutes 					= require('./api/cms/routes/pages.js');
 
 
 // console.log("globalVariable.dbname",dbname);

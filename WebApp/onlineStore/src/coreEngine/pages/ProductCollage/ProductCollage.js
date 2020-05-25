@@ -180,7 +180,11 @@ class ProductCollage extends Component {
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
 		}else{
+			if(process.env.REACT_APP_PROJECT_NAME =='4_UniMandai'){
+				limit="50"
+			}else{
 			limit = "10";
+		}
 		}
 		axios.get("/api/products/get/listbycategory/"+categoryID)
 	      .then((response)=>{
@@ -204,7 +208,7 @@ class ProductCollage extends Component {
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
 		}else{
-			limit = "10";
+			limit = "12";
 		}
 		axios.get("/api/products/get/list/"+categoryID+'/'+subcategoryID)
 	      .then((response)=>{ 
@@ -363,19 +367,13 @@ class ProductCollage extends Component {
 			})
 		}
 	}
-	getFilteredProducts(selector){
+getFilteredProducts(selector){
 		
 		//console.log('limitProducts',$('.limitProducts').val());
 		if ($('.limitProducts').val()) {
 			selector.limit = $('.limitProducts').val();
 		}else{
-			if(process.env.REACT_APP_PROJECT_NAME === '4_UniMandai'){
-			selector.limit = "50";
-		}else{
-			selector.limit = "10";
-
-		}
-
+			selector.limit = "12";
 		}
 		
 		console.log('selector',selector);
@@ -388,7 +386,27 @@ class ProductCollage extends Component {
 	            console.log('error', error);
 	      	})
 	}
-	filterProducts(subcategoryID,selectedbrands,price,color,size){
+	getFilteredProducts_uni(selector){
+		
+		//console.log('limitProducts',$('.limitProducts').val());
+		if ($('.limitProducts').val()) {
+			selector.limit = $('.limitProducts').val();
+		}else{
+			selector.limit = "50";
+		}
+		
+		console.log('selector',selector);
+		axios.post("/api/products/post/list/filterProducts/",selector)
+
+	      	.then((response)=>{ 
+	      		this.setState({products :response.data});
+	      	})
+	      	.catch((error)=>{
+	            console.log('error', error);
+	      	})
+	}
+
+		filterProducts(subcategoryID,selectedbrands,price,color,size){
 		
 		if (subcategoryID !== '') { 
 
@@ -521,7 +539,7 @@ class ProductCollage extends Component {
 		axios.get("/api/products/get/listColor/"+this.props.match.params.sectionID)
 
 	      	.then((response)=>{ 
-	      	
+	      	 console.log("responsecolor",response.length);
 	          this.setState({
 	              colors : response.data
 	          })
@@ -670,7 +688,11 @@ class ProductCollage extends Component {
     selector.limit = $(event.target).val()
 
     this.setState({	selector: selector },()=>{
+    	if(this.state.envVariable=='4_UniMandai'){
+    		this.getFilteredProducts_uni(this.state.selector);
+    	}else{
 		this.getFilteredProducts(this.state.selector);
+	    }
 	})
     /*if (this.props.parameters) {
       if (this.props.parameters.categoryID && this.props.parameters.subcategoryID) { 
@@ -931,7 +953,7 @@ class ProductCollage extends Component {
 								}
 						      </div>
 						    </div>
-						    { this.state.envVariable!== '4_UniMandai' ?
+						  
 						    <div>
 							{
 								this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
@@ -952,7 +974,7 @@ class ProductCollage extends Component {
 						      {this.state.colors ? 
 						      	this.state.colors.map((data,index)=>{
 						      		return(
-									index>0?
+									index>1?
 						      		<a href="/" className="swatch-option-link-layered" onClick={ this.onSelectedItemsChange.bind(this,"color")}>
                                     	<div className="color-option" data-color={data} style={{backgroundColor:data}} option-tooltip-value={data} ></div>
 									</a>
@@ -964,9 +986,7 @@ class ProductCollage extends Component {
 						      </div>
 						    </div>
 						   </div>
-						   :
-						   null
-						}
+						 
 							{
 					      	this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
 						    <div className="card-header" id="headingFour">

@@ -514,7 +514,7 @@ componentWillMount() {
                   <div className="row">
                     <div className="col-lg-8">
                       <div className="row">
-                       <img src="/images/leafpage.png"/>
+                       <img src="/images/unimanda1Logo.png"/>
                       </div>
                     </div>
                   </div>
