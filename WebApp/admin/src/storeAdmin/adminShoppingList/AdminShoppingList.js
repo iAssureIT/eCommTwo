@@ -47,7 +47,7 @@ export default class AdminShoppingList extends React.Component {
 	getEditData(){
 		axios.get('/api/franchisepo/get/one/purchaseorder/'+this.state.editId)
             .then((editdatalist) => {
-				// console.log("prodlist prodlist",editdatalist.data);
+				console.log("prodlist prodlist",editdatalist.data);
 
                 this.setState({
                     "prodStockOrder": editdatalist.data.orderItems,

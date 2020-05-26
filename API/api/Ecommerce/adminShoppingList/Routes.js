@@ -5,7 +5,7 @@ const adminPOController = require('./Controller');
 
 router.post('/post', adminPOController.insert_adminPO);
 
-router.get('/get/one/purchaseorder/:purchaseorder_id',franchisePOController.one_adminPO);
+router.get('/get/one/purchaseorder/:purchaseorder_id',adminPOController.one_adminPO);
 
 router.delete('/delete/purchaseorder/:purchaseorder_id', adminPOController.delete_adminPO);
 
