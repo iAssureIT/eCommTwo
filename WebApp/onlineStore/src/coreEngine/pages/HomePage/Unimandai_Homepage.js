@@ -43,6 +43,7 @@ class HomePage extends Component {
       
       var pincodeObj  = JSON.parse(localStorage.getItem("pincodData"));
       console.log("current localstorage pincodeObj---------",pincodeObj);
+      if(pincodeObj){
       this.setState({
                 userPincode : pincodeObj.pincode,
       });
@@ -77,6 +78,7 @@ class HomePage extends Component {
             })
       }
       console.log("pincodeObj:====",pincodeObj.pincode);
+    }
       
       this.featuredProductData();
       this.exclusiveProductsData();

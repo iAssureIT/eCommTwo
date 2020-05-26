@@ -353,7 +353,6 @@ class Address extends Component {
             "addressLine1"    : this.state.modaladdressLine1,
             "addressLine2"    : this.state.modaladdressLine2,  
             "pincode"         : this.state.modalpincode,
-            // "block"           : this.state.modalblock,
             "district"        : this.state.modaldistrict,
             "city"            : this.state.modalcity,
             "stateCode"       : this.state.modalstateCode,
@@ -386,6 +385,7 @@ class Address extends Component {
                     // swal(response.data);
                     this.props.opDone();
                     $(".checkoutAddressModal").hide();
+                    
                     // $(".checkoutAddressModal").css({display: 'none'});
                     // $(".modal-header").css({display: 'block'});
                     // $(".modal-body").css({display: 'block'});
@@ -471,11 +471,11 @@ class Address extends Component {
         });
         $("#modalAddressForm").validate().resetForm();
     }
-    render() {       
+    render() {  
+        console.log("On address Page===");     
         return (
             <div>
-                <Message messageData={this.state.messageData} />
-            
+            <Message messageData={this.state.messageData} />            
             <div className="modal addressModal col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 checkoutAddressModal NOpadding" id="checkoutAddressModal" role="dialog">                
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">

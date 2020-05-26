@@ -984,7 +984,7 @@ class Checkout extends Component {
                                                     <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>    
                                                     <input
                                                         {...getInputProps({
-                                                        placeholder: 'Search Address ...',
+                                                        placeholder: 'Start typing ...',
                                                         className: 'location-search-input col-lg-12 form-control errorinputText',
                                                         id:"addressLine1",
                                                         name:"addressLine1"
