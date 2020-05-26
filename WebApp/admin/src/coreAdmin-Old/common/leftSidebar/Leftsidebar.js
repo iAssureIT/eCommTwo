@@ -118,7 +118,7 @@ export default class Leftsidebar extends Component{
                 <li className="sidebarMenuText">
                   <a href="#Shipment" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-map-marker" />
-                    Order Management
+                    Order Management1
                      <i className="fa fa-sort-down pull-right"></i>
                   </a>
                   <ul className="collapse list-unstyled" id="Shipment">

@@ -9,7 +9,7 @@ router.get('/get/list',PurchaseEntryController.list_purchaseEntry);
 
 router.get('/get/one/:fetchId'       , PurchaseEntryController.fetch_one);
 
-router.patch('/update/:purchaseID'    , PurchaseEntryController.update_PurchaseEntry);
+router.patch('/patch/:purchaseID'    , PurchaseEntryController.update_PurchaseEntry);
 
 router.delete('/delete/:purchaseID',PurchaseEntryController.delete_purchaseEntry);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import './PurchaseManagement.css';
-import IAssureTableUM 					 from '../../coreadmin/IAssureTableUM/IAssureTable.jsx';
+import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
@@ -21,20 +21,25 @@ export default class PurchaseManagement extends React.Component {
 						            apply  : false,
 						           },
 		             "tableHeading"     : {
-		                date        : 'Date',
-		        		ProductCode       		: "Product Code",
+		                date            : 'Date',
+		        		ProductCode     : "Product Code",
 		        		ItemCode 		: "Item Code",
-		        		productName 			: "Product Name",
-						OpeningStock        	: 'Opening Stock',
-		                StockAddedToday        	: 'Stock Added Today',
-		                TotalStock        	: 'Total Stock',
-						// actions        	: 'Action',
+		        		productName     : "Product Name",
+						OpeningStock    : 'Opening Stock',
+		                StockAddedToday : 'Stock Added Today',
+		                TotalStock      : 'Total Stock',
+						actions        	: 'Action',
 					},
 					"tableObjects" 		: {
-						paginationArray : true
+						deleteMethod              : 'delete',
+		                apiLink                   : '/api/purchaseentry',
+		                paginationApply           : false,
+		                searchApply               : false,
+		                editUrl                   : '/purchase-management'
 					},
 		            "startRange"        : 0,
 		            "limitRange"        : 10, 
+		            "editId"                    : this.props.match.params ? this.props.match.params.purchaseId : '',
 		            blockActive			: "all",
 		            "listofRoles"	    : "",
 		            adminRolesListData  : [],
@@ -49,9 +54,40 @@ export default class PurchaseManagement extends React.Component {
 	
 
 	componentDidMount(){
+		var editId = this.props.match.params.purchaseId;
+        console.log('ven', editId);
 		this.getData()
 
 	}
+	componentWillReceiveProps(nextProps) {
+        var editId = nextProps.match.params.purchaseId;
+        if(nextProps.match.params.purchaseId){
+          this.setState({
+            editId : editId
+          })
+          this.edit(editId);
+        }
+    }
+	edit(id){
+        // $("#taxMaster").validate().resetForm();
+        axios.get('/api/purchaseentry/get/one/'+id)
+        .then((response)=>{
+            console.log('res', response);
+            this.setState({
+                "amount"         	: response.data.amount ,
+		        "purchaseDate" 		: response.data.purchaseDate,
+		      	"purchaseStaff" 	: response.data.purchaseStaff,
+		      	"purchaseLocation"  : response.data.purchaseLocation,
+		      	"quantity" 			: response.data.quantity,
+		      	"productName" 		: response.data.product,
+		      	"unit" 				: response.data.Units,
+            });
+            
+        })
+        .catch((error)=>{
+            console.log('error', error);
+        });
+    }
 	getData(startRange, limitRange){ 
 	 axios
       .get('/api/purchaseentry/get/list')
@@ -77,6 +113,7 @@ export default class PurchaseManagement extends React.Component {
 			}*/
 			var tableData = tableData.map((a, i) => {
 					return {
+						_id                  :a._id,
 						date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
 						ProductCode 		: a.ProductCode ? a.ProductCode : "" ,
 						ItemCode 			: a.ItemCode ? a.ItemCode : "" ,
@@ -84,6 +121,7 @@ export default class PurchaseManagement extends React.Component {
 						OpeningStock 		: a.OpeningStock ? a.OpeningStock : "" ,
 						StockAddedToday 	: "",
 						TotalStock 			: "" ,
+						
 					/*	purchaseStaff		:
 						purchaseLocation 	:
 						quantity 			:
@@ -157,7 +195,7 @@ export default class PurchaseManagement extends React.Component {
 			.post('/api/purchaseentry/post',formValues1)
 		  	.then(function (response) {
 		    // handle success
-		    	// console.log("data in block========",response.data);
+		    	console.log("data in block========",response.data);
 		    	swal("Thank you. Your Product addeed successfully.");
 		    	 // window.location.reload();
 		  	})
@@ -166,24 +204,58 @@ export default class PurchaseManagement extends React.Component {
 		    	console.log(error);
 		  	});
 		  	this.setState({
-				 amount   : "",         	
-		         purchaseDate  : "", 		
-		      	 purchaseStaff  : "", 	
-		      	 purchaseLocation  : "",  
-		      	 quantity  : "", 			
-		      	 product  : "", 		
-		      	 Units  : ""		
+				 amount          : "",         	
+		         purchaseDate    : "", 		
+		      	 purchaseStaff   : "", 	
+		      	 purchaseLocation: "",  
+		      	 quantity        : "", 			
+		      	 product         : "", 		
+		      	 Units           : ""		
       	 })		
 	}
+	update(event){
+        event.preventDefault();
+        var formValues = {
+            
+             "amount"         	: this.state.amount ,
+	        "purchaseDate" 		: this.state.purchaseDate,
+	      	"purchaseStaff" 	: this.state.purchaseStaff,
+	      	"purchaseLocation"  : this.state.purchaseLocation,
+	      	"quantity" 			: this.state.quantity,
+	      	"productName" 		: this.state.product,
+	      	"unit" 				: this.state.Units,
+        }
+        /*if($("#taxMaster").valid()){*/
+            axios.patch('/api/purchaseentry/patch/'+this.state.editId,formValues)
+            .then((response)=>{
+                this.props.history.push('/purchase-management');
+                swal(response.data.message);
+                this.getData(this.state.startRange, this.state.limitRange);
+                this.setState({
+                    "amount"         	: "" ,
+			        "purchaseDate" 		: "",
+			      	"purchaseStaff" 	: "",
+			      	"purchaseLocation"  : "",
+			      	"quantity" 			: "",
+			      	"productName" 		: "",
+			      	"unit" 				: "",
+                     editId             : ""
+                })
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            })
+      /*  }*/
+    }
 
 	render() {
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
-						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
-							<h1 className="text-center">Purchase Management</h1>
-						</div>
+						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
+                            <h4 className="">Purchase Entry</h4>
+                        </div>
 						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20">
 								<div className="row">
@@ -192,8 +264,8 @@ export default class PurchaseManagement extends React.Component {
 										<input type="Date"  className="form-control"  value={ this.state.purchaseDate} name="purchaseDate" refs="purchaseDate" onChange={this.handleChange.bind(this)} id="purchaseDate"/>
 									</div>
 									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-										<label >Purchase Staf</label>
-										<input type="text" placeholder="Enter Purchase Staf"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
+										<label >Purchase Staff</label>
+										<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
 									</div>
 									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
 										<label >Purchase Location</label>
@@ -234,24 +306,23 @@ export default class PurchaseManagement extends React.Component {
 									</div>
 								</div>
 								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
-									<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+								    {this.state.editId ?
+                                    <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
+                                    :
+                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+                                   }
+									
 								</div>
 							</form>
 						</div>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
-								<IAssureTableUM
-									completeDataCount={this.state.completeDataCount}
-									twoLevelHeader={this.state.twoLevelHeader} 
-									getData={this.getData.bind(this)} 
-									tableHeading={this.state.tableHeading} 
-									tableData={this.state.tableData} 
-									Actioncol="Actioncol" 
-									tableObjects={this.state.tableObjects}
-									getSearchText={this.getSearchText.bind(this)}
-									selectedUser={this.selectedUser.bind(this)} 
-									setunCheckedUser={this.setunCheckedUser.bind(this)} 
-									unCheckedUser={this.state.unCheckedUser}
-            						UsersTable = {true}
+								<IAssureTable
+									tableHeading={this.state.tableHeading}
+                                    twoLevelHeader={this.state.twoLevelHeader} 
+                                    dataCount={this.state.dataCount}
+                                    tableData={this.state.tableData}
+                                    getData={this.getData.bind(this)}
+                                    tableObjects={this.state.tableObjects}
 								/>			
 							</div>
 					</div>

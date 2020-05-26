@@ -73,7 +73,7 @@ export default class Leftsidebar extends Component{
               </div>*/}
 
               <div className="sidebar-header">
-                <h4 className="text-center"><b><label  className="headerImage">Anas Handicrafts</label></b></h4>
+                <h4 className="text-center"><b><label  className="headerImage">UniMandai Admin</label></b></h4>
                 <strong><img className="slidlogo" src="/images/furniture-logo1.jpg"/></strong>
               </div>
               <ul className="list-unstyled components abc" style={{height:  sidebarHeight+"px"}} >
@@ -188,6 +188,27 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li> 
+                 <li className="sidebarMenuText">
+                  <a href="#baData1" data-toggle="collapse" aria-expanded="false">
+                    <i className="glyphicon glyphicon-briefcase" />
+                    Raw Material Entry
+                     <i className="fa fa-sort-down pull-right"></i>
+                  </a>
+                  <ul className="collapse list-unstyled" id="baData1">
+                    <li>
+                      <a href="/purchase-management">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Purchase Entry</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/finished-goods">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Finished Goods Entry</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
                 <li className="sidebarMenuText">
                   <a href="#baData" data-toggle="collapse" aria-expanded="false">
                     <i className="glyphicon glyphicon-briefcase" />
@@ -358,7 +379,13 @@ export default class Leftsidebar extends Component{
                         <a href="/section-management">
                           <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Section Master</span>
                         </a>
-                      </li>   
+                      </li>
+                      <li>
+                      <a href="/warehouse">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Warehouse Master</span>
+                      </a>
+                    </li>   
                   </ul>
                 </li>  
                 <li className="sidebarMenuText">

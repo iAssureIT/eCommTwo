@@ -44,6 +44,9 @@ import OrganizationalLocationDetails from "../OrganizationalSettings/Organizatio
 import TaxName from '../../storeAdmin/TaxName/TaxName.js';
 import TaxRate from '../../storeAdmin/TaxRate/TaxRate.js';
 
+//=================== Tax Master =====================
+import Warehouse from '../Master/Warehouse/Warehouse.js';
+
 // ========================== access-management ====================
 import AccessManagement from "../AccessManagement/AccessManagement.js"
 
@@ -105,6 +108,13 @@ class CoreLayout extends Component {
                 <Route path="/taxname/:id" component={TaxName} exact />
                 <Route path="/taxrate" component={TaxRate} exact />
                 <Route path="/taxrate/:id" component={TaxRate} exact />
+
+                {/* Tax master */}
+                <Route path="/warehouse"                      exact strict component={ Warehouse } />
+                <Route path="/warehouse/"                     exact strict component={ Warehouse } />
+                <Route path="/warehouse/:fieldID"             exact strict component={ Warehouse } />
+
+
 
                 {/* access-management */}
                 <Route path="/access-management" exact strict component={AccessManagement} />

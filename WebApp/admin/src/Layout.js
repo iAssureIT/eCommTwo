@@ -249,8 +249,10 @@ class Layout extends Component  {
 
                           {/*purchase-management*/}
 
-                          <Route path="/purchase-management"                              exact strict component={PurchaseManagement} />
+                          <Route path="/purchase-management"                              exact strict component={ PurchaseManagement } />
+                          <Route path="/purchase-management/:purchaseId"                  exact strict component = { PurchaseManagement }  />
                           <Route path="/finished-goods"                                   exact strict component={FinishedGoods} />
+                          <Route path="/finished-goods/:finishedGoodId"                       exact strict component={FinishedGoods} />
                         </Switch>
                     </div>
                   </div>

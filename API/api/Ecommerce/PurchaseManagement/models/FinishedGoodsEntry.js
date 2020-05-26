@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const FinishedGoodsEntrySchema = mongoose.Schema({
 	_id			              : mongoose.Schema.Types.ObjectId,
     Date                      : String,
-    itemId                    : String,/*itemID from productMaster*/
+    ItemCode                    : String,/*itemID from productMaster*/
     productName               : String,
     PackageWeight             : String,
     Unit                      : String,

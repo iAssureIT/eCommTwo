@@ -15,7 +15,7 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                 const finishedGoods = new FinishedGoodsEntry({
                     _id                       : new mongoose.Types.ObjectId(),                    
                     Date                      : req.body.Date,
-                    itemId                    : req.body.itemId,/*itemID from productMaster*/
+                    ItemCode                    : req.body.ItemCode,/*itemID from productMaster*/
                     productName               : req.body.productName,
                     PackageWeight             : req.body.PackageWeight,
                     Quantity                  : req.body.Quantity,
@@ -66,8 +66,8 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
             { _id:req.params.purchaseID},  
             {
                 $set:{
-                    purchaseDate              : req.body.purchaseDate,
-                    itemId                    : req.body.itemId,/*itemID from productMaster*/
+                    Date                     : req.body.purchaseDate,
+                    ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/
                     productName               : req.body.productName,
                     PackageWeight             : req.body.PackageWeight,
                     Quantity                  : req.body.Quantity,
