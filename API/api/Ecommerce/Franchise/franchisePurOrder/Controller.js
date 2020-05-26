@@ -10,13 +10,17 @@ exports.insert_franchisePO = (req,res,next)=>{
     .sort({createdAt: -1})
     .exec()
     .then(data=>{
-        console.log("data",data);
+        // console.log("data",data);
         if(data && data.length > 0){
-          var orderNo = data[0].orderNo + 1;
+            if (data[0].orderNo) {
+                var orderNo = data[0].orderNo + 1;
+            }else{
+                var orderNo = 1000;
+            }
         // console.log("orderNo",orderNo);
 
         }else{
-          var orderNo = 1;
+          var orderNo = 1000;
         // console.log("orderNo orderNo",orderNo);
 
         }

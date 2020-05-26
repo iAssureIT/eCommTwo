@@ -82,7 +82,10 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	//========== Franchise Model ===========
 	const PurchaseEntry       			= require("./api/Ecommerce/PurchaseManagement/routes/PurchaseEntry");
 	const FinishedGoodsEntry   			= require("./api/Ecommerce/PurchaseManagement/routes/FinishedGoodsEntry");
-	const FranchisePORoutes					= require("./api/Ecommerce/Franchise/franchisePurOrder/Routes.js");
+	const FranchisePORoutes				= require("./api/Ecommerce/Franchise/franchisePurOrder/Routes.js");
+
+
+	const AdminPORoutes					= require("./api/Ecommerce/adminShoppingList/Routes.js");
 
 
    /*WreHouse Master*/
@@ -128,6 +131,10 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	app.use("/api/franchisepo", FranchisePORoutes);
 
 	app.use("/api/warehousemaster",WareHouseRoutes);
+
+
+	//=========== admin Shopping List ==============
+	app.use("/api/adminpo", AdminPORoutes);
 
 
 	//=========== Entitymaster ==============

@@ -3,27 +3,27 @@ import IAssureTableUM from '../../coreadmin/IAssureTableUM/IAssureTable.jsx';
 import axios from 'axios';
 import moment from 'moment';
 import swal from 'sweetalert';
-import './FranchiseShoppingList.css';
+import '../FranchiseShoppingList/FranchiseShoppingList.css';
 
-export default class FranchiseShoppingList extends React.Component {
+
+export default class AdminShoppingList extends React.Component {
 
 	constructor(props) {
 		super(props);
 	  	this.state = {
             objects 			: [],
-            units 			: "",
-		    productList 	: [],
-            currentStock 	: [],	
-         	prodStockOrder : [],	      
-	        selectedSection : "",	
-	        date : ""	,
-	        editId : "",
-	        user_ID : ""
+            units 				: "",
+		    productList 		: [],
+            currentStock 		: [],	
+         	prodStockOrder 		: [],	      
+	        selectedSection 	: "",	
+	        date 				: "",
+	        editId 				: "",
+	        user_ID 			: ""
    	};
 	}
 
 	componentDidMount(){
-		/*this.getProductList();*/
 		this.getCurrentStock();
 
 		var editid1 = window.location.pathname;
@@ -62,30 +62,6 @@ export default class FranchiseShoppingList extends React.Component {
             })
 
 	}
-/*
-	getProductList(){
-		var data = {
-            startRange: 0,
-            limitRange: 100
-        }
-        this.getCount();
-        axios.post('/api/products/get/list', data)
-            .then(prodlist => {
-				console.log("prodlist prodlist",prodlist.data);
-
-                this.setState({
-                    "productList": prodlist.data,
-                },()=>{
-					console.log("productList = ",this.state.productList);
-				})
-
-            })
-            .catch((error) => {
-				console.log("error in getProductList = ", error);
-              
-            })
-	}*/
-
 	getCurrentStock(){
         axios.get('/api/products/get/list')
             .then(prodlist => {
@@ -134,8 +110,8 @@ export default class FranchiseShoppingList extends React.Component {
 			})
 	}
 
-   Submit(event){
-    event.preventDefault();
+    Submit(event){
+    	event.preventDefault();
     	var ProdArray = []
     	if (this.state.prodStockOrder) {
     		for (var i = 0; i < this.state.prodStockOrder.length; i++) {
@@ -158,7 +134,7 @@ export default class FranchiseShoppingList extends React.Component {
 	        createdBy                 : this.state.user_ID,
         };
         console.log("formValues1",formValues1);
-      axios
+        axios
 			.post('/api/franchisepo/post',formValues1)
 		  	.then(function (response) {
 		    // handle success
@@ -174,33 +150,7 @@ export default class FranchiseShoppingList extends React.Component {
 					
       	 })		
 	}
-	Update(event){
-		event.preventDefault();
 
-   	    const formValues1 = {
-   	    	
-	        purchaseorder_id    	  : this.state.editId, 
-	        orderItems                : this.state.prodStockOrder,
-	        orderDate				  : moment(new Date()).format("YYYY-MM-DD"),
-	        user_id                   : this.state.user_ID,
-	       
-        };
-        console.log("formValues1",formValues1);
-        axios
-			.patch('/api/franchisepo/patch/purchaseorder',formValues1)
-		  	.then(function (response) {
-		    // handle success
-		    	console.log("Order Updated========",response.data);
-		    	swal("Thank you. Your Product Order Updated successfully.");
-		    	 // window.location.reload();
-		  	})
-		  	.catch(function (error) {
-		    // handle error
-		    	console.log(error);
-		  	});
-		  	
-
-	}
 	setOrderQty(event){
 		event.preventDefault();
 		var orderQty = event.target.value;
@@ -210,6 +160,7 @@ export default class FranchiseShoppingList extends React.Component {
 		prodStockOrder[index].orderQty = orderQty;
 		this.setState({prodStockOrder : prodStockOrder});
 	}
+
 	setUnit(event){
 		event.preventDefault();
 		var unit 	= event.target.value;
@@ -233,7 +184,7 @@ export default class FranchiseShoppingList extends React.Component {
 					<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 						<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 							<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
-								<h1 className="text-center">Franchise Shopping List</h1>
+								<h1 className="text-center">Admin Shopping List</h1>
 							</div>
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtopbotm15">
 								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12 pull-right">
@@ -242,16 +193,7 @@ export default class FranchiseShoppingList extends React.Component {
 								      <input className=" " id="theDate" type="date" value={this.state.date}/>
 								    </div>
 								</div>
-							
-								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12"> 
-									<label>Select Section : </label>
-									<select defaultValue="Vegetables" className="col-lg-8 col-md-9 col-sm-12 col-xs-12 pull-right" onChange={this.handleSelectChange.bind(this)}>
-										<option> All Sections </option>
-										<option> Fruits </option>
-										<option> Vegetables </option>
-										<option> Frozen Items </option>
-									</select>
-								</div>
+
 							</div>
 							<hr/>
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -263,7 +205,12 @@ export default class FranchiseShoppingList extends React.Component {
 										        <th>Item Code</th>
 										        <th>Product Name</th>
 										        <th>Current Stock</th>
-										        <th>Ordered Items</th>
+										        <th>Total Ordered </th>
+										        <th>Shopping Quantity </th>
+										        <th>Franchise1 Order </th>
+										        <th>Franchise2 Order </th>
+										        <th>Franchise2 Order </th>
+										        <th>Franchise2 Order </th>
 									      	</tr>
 									    </thead>
 									    <tbody>
@@ -273,14 +220,16 @@ export default class FranchiseShoppingList extends React.Component {
 									    		this.state.prodStockOrder.map((result, index)=>{
 													// console.log('result', result);
 													return( 
-													this.state.selectedSection ?
-														result.section === this.state.selectedSection ? 
-													      <tr key={index}>
-													        	<td>{result.productCode}</td>
-													        	<td>{result.itemCode}</td>
-													        	<td>{result.productName}</td>
-													        	<td>{result.currentStock}</td>
-													        	<td>
+													
+														
+														<tr key={index}>
+												        	<td>{result.productCode}</td>
+												        	<td>{result.itemCode}</td>
+												        	<td>{result.productName}</td>
+												        	<td>{result.currentStock}</td>
+												        	<td>{result.currentStock}</td>
+
+												        	<td>
 													        	<div class="form-group">
 								                           			<div className="input-group">
 														        		<input type="number" className="form-control width90" 
@@ -303,56 +252,25 @@ export default class FranchiseShoppingList extends React.Component {
 																	  	</div>
 																	</div>
 																</div>
-													        </td>													       
-													      </tr>
-														:
-															null
-													:
-													<tr key={index}>
-													        	<td>{result.productCode}</td>
-													        	<td>{result.itemCode}</td>
-													        	<td>{result.productName}</td>
-													        	<td>{result.currentStock}</td>
-													        	<td>
-													        	<div class="form-group">
-								                           			<div className="input-group">
-														        		<input type="number" className="form-control width90" 
-														        				 name={"orderedItems"+"-"+index} 
-														        				 id={result.productCode+"-"+result.itemCode} 
-														        				 value={result.orderQty} 
-														        				 onChange={this.setOrderQty.bind(this)}
-														        		/>
-														        		<div className="input-group-addon">
-																		  	<select id={"Units"+"-"+index} name={"Units"+"-"+index} 
-																		  			  value={result.unit} refs="Units" 
-																		  			  onChange={this.setUnit.bind(this)}  
-																		  			  className="input-group-addon width66h">
-																				<option selected={true}> Units</option>
-																			  	<option value="Kg"> Kg 		</option>
-																			  	<option value="Gm"> Gm 		</option>
-																			  	<option value="Ltr">Ltr 	</option>
-																			  	<option value="Num">Number </option>
-																			</select>
-																	  	</div>
-																	</div>
-																</div>
-													        </td>													       
-													      </tr>
+													        </td>
+													        <td>10</td>
+												        	<td>10</td>
+												        	<td>10</td>
+												        	<td>10</td>													       
+													    </tr>
 
 													)
 												})
-											:
-												null
+												:
+													null
 									  		}
 									    </tbody>
 									</table>
 							    </div>
 								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
-									{this.state.editId ?
-										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Update.bind(this)}>Update</button>
-									:
+									
 										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
-									}
+									
 								</div>		
 							</div>
 						</div>

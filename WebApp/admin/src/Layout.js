@@ -88,6 +88,9 @@ import FinishedGoods from './storeAdmin/PurchaseManagement/FinishedGoods.js';
 
 
 
+import AdminShoppingList from './storeAdmin/adminShoppingList/AdminShoppingList.js';
+
+
 import FranchiseShoppingList from './storeAdmin/FranchiseShoppingList/FranchiseShoppingList.js';
 import FranchiseOrderSummary from './storeAdmin/FranchiseShoppingList/FranchiseOrderSummary.js';
 
@@ -252,7 +255,13 @@ class Layout extends Component  {
                           <Route path="/purchase-management"                              exact strict component={ PurchaseManagement } />
                           <Route path="/purchase-management/:purchaseId"                  exact strict component = { PurchaseManagement }  />
                           <Route path="/finished-goods"                                   exact strict component={FinishedGoods} />
+
                           <Route path="/finished-goods/:finishedGoodId"                       exact strict component={FinishedGoods} />
+
+                          {/* Admin shopping List AdminShoppingList*/}
+                          <Route path="/admin-shopping-list"                              exact strict component={AdminShoppingList} />
+
+
                         </Switch>
                     </div>
                   </div>
