@@ -80,25 +80,14 @@ class HomePage extends Component {
       
       this.featuredProductData();
       this.exclusiveProductsData();
-      this.newProductsData();
-      this.bestSellerData();
+      // this.newProductsData();
+      // this.bestSellerData();
       this.getCategories();
       this.getWishData();
        
   }
-    /* handleButtonClicked(event) {
-        event.preventDefault();
-        const target = event.target;
-        const name = target.name;
-        var YesForPincode = document.getElementById("yes");
-        console.log("YesForPincode",YesForPincode.id)
-        var value = event.target.value;
-        var pincodeEntered=YesForPincode.id;
-        if ( pincodeEntered !== "yes")
-         $('#myModal').hide();
-      }
-*/
-    componentWillReceiveProps(nextProps){
+
+    componentWillReceiveProps(){
       // this.changeProductCateWise(categoryID, type);
     }
     featuredProductData(){
@@ -222,7 +211,8 @@ class HomePage extends Component {
           :
             null
           }
-          {/* <AskPincode />   */}
+          {/* <AllowdeliveryModal />   */}
+          
             <EcommerceBanner_Unimandai/>
 
           </div>

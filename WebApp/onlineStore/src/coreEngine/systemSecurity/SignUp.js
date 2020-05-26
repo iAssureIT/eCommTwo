@@ -50,6 +50,9 @@ class SignUp extends Component {
         $.validator.addMethod("regxEmail", function (value, element, regexpr) {
             return regexpr.test(value);
 		}, "Please enter a valid email address.");
+		$.validator.addMethod("regxpincode", function (value, element, regexpr) {
+            return regexpr.test(value);
+        }, "Please enter valid pincode.");
 		
         jQuery.validator.setDefaults({
             debug: true,
@@ -82,6 +85,7 @@ class SignUp extends Component {
 				},
 				pincode : {
 					required : true,
+					regxpincode : /^[1-9][0-9]{5}$/,
 				}
 
 
@@ -98,7 +102,10 @@ class SignUp extends Component {
                 }
                 if (element.attr("name") === "signupEmail") {
                     error.insertAfter("#signupEmail");
-                }
+				}
+				if (element.attr("name") === "pincode") {
+					error.insertAfter("#pincode");
+				}
                 if (element.attr("name") === "signupPassword") {
                     error.insertAfter("#signupPassword");
 				}
@@ -107,10 +114,114 @@ class SignUp extends Component {
                 }
                 if (element.attr("name") === "idacceptcondition") {
                     error.insertAfter("#idacceptcondition");
-                }
+				}
+			
             }
         });
     }
+	// usersignup(event) {
+	// 	event.preventDefault();
+	// 	if($("#signUpUser").valid()){
+	// 		var auth = {
+	// 			firstname		: this.state.firstname,
+	// 			lastname		: this.state.lastname,
+	// 			mobNumber		: (this.state.mobNumber).replace("-", ""),
+	// 			pincode         : this.state.pincode,
+	// 			email			: this.state.signupEmail,
+	// 			pwd				: this.state.signupPassword,
+	// 			role			: 'user',
+	// 			status			: 'unverified',
+	// 			"emailSubject"	: "Email Verification", 
+	// 			"emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+	// 		}
+	// 		// console.log("Auth:",auth);
+	// 		document.getElementById("signUpBtn").innerHTML = 'Please Wait...';
+
+	// 		var passwordVar = this.refs.signupPassword.value;
+	// 		var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
+	// 			console.log("passwordVar:",passwordVar);
+	// 			if (passwordVar === signupConfirmPasswordVar) {
+	// 				return (passwordVar.length >= 6) ?
+	// 					(true,
+	// 						document.getElementById("signUpBtn").innerHTML = 'Sign Up',
+	// 						axios.post('/api/auth/post/signup/user/otp', auth)
+	// 						.then((response) => {
+	// 							if(response.data.message === 'USER_CREATED'){
+	// 								console.log("user created:");									
+	// 								// swal('Great, Information submitted successfully and OTP is sent to your registered Email.');
+	// 								// this.props.history.push("/confirm-otp/" + user_ID);
+
+	// 								// swal('Congratulations! Your account has been created successfully, Please Login to place order.');
+	// 								// localStorage.setItem("pincode", response.data.pincode);
+									
+	// 								var auth = {
+	// 									email: this.state.signupEmail,
+	// 									password: this.state.signupPassword,
+	// 									role: "user"
+	// 								}	
+	// 								console.log("login Auth:", auth);								  
+	// 								axios.post('/api/auth/post/login', auth)
+	// 								.then((response) => {
+	// 									if(response){
+	// 										var  userDetails = {
+	// 											firstName : response.data.userDetails.firstname, 
+	// 											lastName  : response.data.userDetails.lastname, 
+	// 											email     : response.data.userDetails.email, 
+	// 											phone     : response.data.userDetails.mobile,
+	// 											pincode   : response.data.userDetails.pincode, 										
+	// 											user_id   : response.data.userDetails.user_id,
+	// 											roles     : response.data.userDetails.roles,
+	// 											token     : response.data.userDetails.token, 
+	// 										}
+	// 										swal('Congratulations! You have been successfully Login, Now you can place your order.');
+	// 										localStorage.setItem('previousUrl' ,'signup');
+	// 										document.getElementById("logInBtn").value = 'Sign In';
+	// 										localStorage.setItem("pincode", response.data.userDetails.pincode);
+	// 										localStorage.setItem("token", response.data.token);
+	// 										localStorage.setItem("user_ID", response.data.ID);
+	// 										localStorage.setItem("roles", response.data.roles);
+	// 										localStorage.setItem('userDetails', JSON.stringify(userDetails));
+	// 										console.log("token:",response.data.token);
+	// 										// this.props.history.push("/");
+											
+	// 									}
+
+	// 								})
+	// 								.catch((error) => {
+	// 									console.log("Error:",error);
+	// 								})	
+	// 								this.setState({
+	// 								loggedIn: true
+	// 								},()=>{
+	// 								// this.props.history.push('/')
+	// 								window.location.reload();
+	// 								})
+									
+	// 							}else{
+	// 								swal(response.data.message);
+	// 							}	
+	// 						})
+	// 						.catch((error) => {
+	// 							console.log("Signup Error :",error);
+	// 						})
+	// 					)
+	// 					:
+	// 					(
+	// 						document.getElementById("signUpBtn").innerHTML = 'Sign Up',
+							
+	// 						swal("Password should be at least 6 Characters Long, Please try again or create an Account.")
+							
+	// 					)
+
+
+	// 			} else {
+	// 				document.getElementById("signUpBtn").innerHTML = 'Sign Up';
+					
+	// 				swal("Passwords does not match, Please Try Again.");
+	// 			}
+	// 	}
+
+	// }
 	usersignup(event) {
 		event.preventDefault();
 		if($("#signUpUser").valid()){
@@ -122,7 +233,7 @@ class SignUp extends Component {
 				email			: this.state.signupEmail,
 				pwd				: this.state.signupPassword,
 				role			: 'user',
-				status			: 'unverified',
+				status			: 'active',
 				"emailSubject"	: "Email Verification", 
 				"emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 			}
@@ -139,13 +250,7 @@ class SignUp extends Component {
 							axios.post('/api/auth/post/signup/user/otp', auth)
 							.then((response) => {
 								if(response.data.message === 'USER_CREATED'){
-									console.log("user created:");									
-									// swal('Great, Information submitted successfully and OTP is sent to your registered Email.');
-									// this.props.history.push("/confirm-otp/" + user_ID);
-
-									// swal('Congratulations! Your account has been created successfully, Please Login to place order.');
-									// localStorage.setItem("pincode", response.data.pincode);
-									
+									console.log("user created:",response.data);									
 									var auth = {
 										email: this.state.signupEmail,
 										password: this.state.signupPassword,
@@ -156,25 +261,25 @@ class SignUp extends Component {
 									.then((response) => {
 										if(response){
 											var  userDetails = {
-												firstName : response.data.userDetails.firstName, 
-												lastName  : response.data.userDetails.lastName, 
+												firstname : response.data.userDetails.firstname, 
+												lastname  : response.data.userDetails.lastname, 
 												email     : response.data.userDetails.email, 
-												phone     : response.data.userDetails.phone,
+												mobile    : response.data.userDetails.mobile,
 												pincode   : response.data.userDetails.pincode, 										
 												user_id   : response.data.userDetails.user_id,
 												roles     : response.data.userDetails.roles,
 												token     : response.data.userDetails.token, 
-											}
+                                            }
+                                            console.log("userDetails:", userDetails);								  
 											swal('Congratulations! You have been successfully Login, Now you can place your order.');
 											localStorage.setItem('previousUrl' ,'signup');
-											// document.getElementById("logInBtn").value = 'Sign In';
 											localStorage.setItem("pincode", response.data.userDetails.pincode);
 											localStorage.setItem("token", response.data.token);
 											localStorage.setItem("user_ID", response.data.ID);
 											localStorage.setItem("roles", response.data.roles);
 											localStorage.setItem('userDetails', JSON.stringify(userDetails));
 											console.log("token:",response.data.token);
-											// this.props.history.push("/");
+											this.props.history.push("/");
 											
 										}
 
@@ -186,7 +291,7 @@ class SignUp extends Component {
 									loggedIn: true
 									},()=>{
 									// this.props.history.push('/')
-									window.location.reload();
+									// window.location.reload();
 									})
 									
 								}else{
@@ -213,7 +318,7 @@ class SignUp extends Component {
 				}
 		}
 
-	}	Closepagealert(event) {
+	}   Closepagealert(event) {
 		event.preventDefault();
 		$(".toast-error").html('');
 		$(".toast-success").html('');
@@ -325,7 +430,7 @@ class SignUp extends Component {
 							</div>
 							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Pincode</label><label className="astricsign">*</label>
-								<input minLength="6" type="number" className="form-control" id="signupPincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
+								<input minLength="6" type="number" className="form-control" id="pincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
 							</div>					
 							
 							

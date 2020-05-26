@@ -34,6 +34,9 @@
     height: 200px;
     border-radius: 10px !important;
 }
+.deliveryAllowModal{
+    height: 160px;
+}
 .pincodeModalHeader{
     border-radius: 10px !important;
 }

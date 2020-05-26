@@ -246,10 +246,9 @@ componentWillMount() {
   }
   getUserData() {
     const userid = localStorage.getItem('user_ID');
-    console.log("inside getuserdata");
+    console.log("inside getuserdata",userid);
     axios.get('/api/users/' + userid)
       .then((res) => {
-
         console.log('userdata res', res.data);
         if(res.data.profile){
           this.setState({
@@ -376,9 +375,11 @@ componentWillMount() {
       })
   }
   render() {
-    // console.log('recentCartData', this.props.recentCartData.length);
+    console.log('recentCartData', this.props.recentCartData.length);
+    console.log('recentCartData item====', this.props.recentCartData);
+    
     const user_ID = localStorage.getItem("user_ID");
-    console.log("user_ID:",user_ID);
+    // console.log("user_ID:",user_ID);
     return (
       <div className="homecontentwrapper">
         <Message messageData={this.state.messageData} />

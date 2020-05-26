@@ -201,18 +201,19 @@ class Edituser extends Component{
     var userid = this.state.UserId;
      axios.get('/api/users/'+ userid)
         .then( (res)=>{
+          console.log("User response:",res);
           this.setState({
-            firstName       : res.data.profile.firstName,
-            lastName        : res.data.profile.lastName,
+            firstName       : res.data.profile.firstname,
+            lastName        : res.data.profile.lastname,
             username        : res.data.profile.emailId,
-            mobNumber       : res.data.profile.mobileNumber,
+            mobNumber       : res.data.profile.mobile,
             addressLine1    : res.data.profile.deliveryAdd[0].addressLine1,
             addressLine2    : res.data.profile.deliveryAdd[0].addressLine2,
             block           : res.data.profile.deliveryAdd[0].block,
             city            : res.data.profile.deliveryAdd[0].city,
             pincode         : res.data.profile.deliveryAdd[0].pincode,
             state           : res.data.profile.deliveryAdd[0].state,
-            country           : res.data.profile.deliveryAdd[0].country,
+            country         : res.data.profile.deliveryAdd[0].country,
             type            : res.data.profile.deliveryAdd[0].type,
             profileImage    : res.data.profile.profileImage
           })

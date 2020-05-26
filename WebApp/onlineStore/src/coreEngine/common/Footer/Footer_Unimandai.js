@@ -35,7 +35,7 @@ export default class Footer extends Component {
     getCompanyDetails(){
         axios.get("/api/companysettings/list")
           .then((response)=>{ 
-            console.log("companyData:" ,response.data[0]);
+            // console.log("companyData:" ,response.data[0]);
               this.setState({
                 companyInfo   : response.data[0],
                 locationdata  : response.data[0].companyLocationsInfo,

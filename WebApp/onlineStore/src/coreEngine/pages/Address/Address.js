@@ -5,6 +5,7 @@ import jQuery  from 'jquery';
 import Message from '../../blocks/Message/Message.js';
 import 'jquery-validation';
 import "../../../sites/currentSite/pages/Address.css";
+import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
 
 // import Sidebar from '../../common/Sidebar/Sidebar.js';
 // import _ from 'underscore';
@@ -226,53 +227,118 @@ class Address extends Component {
             this.setState({pincodeExists : true})
         }
     }
-    handleChangeCountry(event){
-      const target = event.target;
-      console.log("countryCode:", event.target.value);
-      this.getStates("IN");
-      this.setState({
-        [event.target.name] : event.target.value,
-        modalcountry : target.options[target.selectedIndex].innerHTML
-      })
-      
-    }
-    getStates(countryCode) {
-        console.log("inside getState countryCode:", countryCode);
-        axios.get("http://locations2.iassureit.com/api/states/get/list/" + countryCode)
-        .then((response) => {
-            this.setState({
-                stateArray: response.data
-            })
-            $('#Statedata').val(this.state.states);
+
+     //google API 
+     handleChangePlaces = address => {
+        this.setState({ addressLine1 : address});
+    };
+    
+    handleSelect = address => {    
+        geocodeByAddress(address)
+         .then((results) =>{
+          for (var i = 0; i < results[0].address_components.length; i++) {
+              for (var b = 0; b < results[0].address_components[i].types.length; b++) {
+                  switch (results[0].address_components[i].types[b]) {
+                      case 'sublocality_level_1':
+                          var area = results[0].address_components[i].long_name;
+                          break;
+                      case 'sublocality_level_2':
+                          area = results[0].address_components[i].long_name;
+                          break;
+                      case 'locality':
+                          var city = results[0].address_components[i].long_name;
+                          break;
+                      case 'administrative_area_level_1':
+                          var state = results[0].address_components[i].long_name;
+                          var stateCode = results[0].address_components[i].short_name;
+                          break;
+                      case 'administrative_area_level_2':
+                          var district = results[0].address_components[i].long_name;
+                          break;
+                      case 'country':
+                         var country = results[0].address_components[i].long_name;
+                         var countryCode = results[0].address_components[i].short_name;
+                          break;
+                      case 'postal_code':
+                         var pincode = results[0].address_components[i].long_name;
+                          break;
+                      default :
+                      break;
+                  }
+              }
+          }
+    
+          this.setState({
+            area : area,
+            city : city,
+            district : district,
+            states: state,
+            country:country,
+            pincode: pincode,
+            stateCode:stateCode,
+            countryCode:countryCode
+          })  
+          
         })
-        .catch((error) => {
-            console.log('error', error);
-        })
-    }
-    handleChangeState(event){
-        this.setState({
-            [event.target.name]: event.target.value,
-            modalstate : event.target.options[event.target.selectedIndex].innerHTML
-        })
-        const target = event.target;
-        const stateCode = event.target.value;
-        const countryCode = this.state.modalcountryCode;
         
-        this.getDistrict(stateCode,countryCode);
+        .catch(error => console.error('Error', error));
+    
+          geocodeByAddress(address)
+          .then(results => getLatLng(results[0]))
+          .then(latLng => this.setState({'latLng': latLng}))
+          .catch(error => console.error('Error', error));
+        
+          this.setState({ addressLine1 : address});
+      }; //end google api
+   
+
+    // handleChangeCountry(event){
+    //   const target = event.target;
+    //   console.log("countryCode:", event.target.value);
+    //   this.getStates("IN");
+    //   this.setState({
+    //     [event.target.name] : event.target.value,
+    //     modalcountry : target.options[target.selectedIndex].innerHTML
+    //   })
+      
+    // }
+    // getStates(countryCode) {
+    //     console.log("inside getState countryCode:", countryCode);
+    //     axios.get("http://locations2.iassureit.com/api/states/get/list/" + countryCode)
+    //     .then((response) => {
+    //         this.setState({
+    //             stateArray: response.data
+    //         })
+    //         $('#Statedata').val(this.state.states);
+    //     })
+    //     .catch((error) => {
+    //         console.log('error', error);
+    //     })
+    // }
+    // handleChangeState(event){
+    //     this.setState({
+    //         [event.target.name]: event.target.value,
+    //         modalstate : event.target.options[event.target.selectedIndex].innerHTML
+    //     })
+    //     const target = event.target;
+    //     const stateCode = event.target.value;
+    //     const countryCode = this.state.modalcountryCode;
+        
+    //     this.getDistrict(stateCode,countryCode);
          
-      }
-      getDistrict(stateCode,countryCode){
-        axios.get("http://locations2.iassureit.com/api/districts/get/list/"+countryCode+"/"+stateCode)
-              .then((response)=>{
-                this.setState({
-                    districtArray : response.data
-                })
-                $('#Citydata').val(this.state.city);
-              })
-              .catch((error)=>{
-                  console.log('error', error);
-              })
-      }
+    //   }
+    //   getDistrict(stateCode,countryCode){
+    //     axios.get("http://locations2.iassureit.com/api/districts/get/list/"+countryCode+"/"+stateCode)
+    //           .then((response)=>{
+    //             this.setState({
+    //                 districtArray : response.data
+    //             })
+    //             $('#Citydata').val(this.state.city);
+    //           })
+    //           .catch((error)=>{
+    //               console.log('error', error);
+    //           })
+    //   }
     saveAddress(event){
         event.preventDefault();
         var id = localStorage.getItem("user_ID");
@@ -405,8 +471,7 @@ class Address extends Component {
         });
         $("#modalAddressForm").validate().resetForm();
     }
-    render() {
-       
+    render() {       
         return (
             <div>
                 <Message messageData={this.state.messageData} />
@@ -437,16 +502,58 @@ class Address extends Component {
                                     </div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
+                                    {/* <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address Line 1 <span className="required">*</span></label>
                                         <input type="text" minLength="10" ref="modaladdressLine1" name="modaladdressLine1" id="modaladdressLine1" value={this.state.modaladdressLine1} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                    </div>
-                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
+                                    </div> */}
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address Line 2 </label>
                                         <input type="text" ref="modaladdressLine2" name="modaladdressLine2" id="modaladdressLine2" value={this.state.modaladdressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                     </div>
                                 </div>
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >                                            
+                                    <PlacesAutocomplete value={this.state.addressLine1}
+                                        onChange={this.handleChangePlaces}
+                                        onSelect={this.handleSelect}
+                                        >
+                                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                            <div>
+                                            <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>    
+                                            <input
+                                                {...getInputProps({
+                                                placeholder: 'Search Address ...',
+                                                className: 'location-search-input col-lg-12 form-control errorinputText',
+                                                id:"addressLine1",
+                                                name:"addressLine1"
+                                                })}
+                                            />
+                                            <div className="autocomplete-dropdown-container SearchListContainer">
+                                                {loading && <div>Loading...</div>}
+                                                {suggestions.map(suggestion => {
+                                                const className = suggestion.active
+                                                    ? 'suggestion-item--active'
+                                                    : 'suggestion-item';
+                                                // inline style for demonstration purpose
+                                                const style = suggestion.active
+                                                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                return (
+                                                    <div
+                                                    {...getSuggestionItemProps(suggestion, {
+                                                        className,
+                                                        style,
+                                                    })}
+                                                    >
+                                                    <span>{suggestion.description}</span>
+                                                    </div>
+                                                    );
+                                                    })}
+                                                </div>
+                                                </div>
+                                        )}
+                                    </PlacesAutocomplete>
+                                </div>
+                                {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding validationError">Country <span className="required">*</span></label>
                                         <select ref="modalcountry" name="modalcountryCode" id="modalcountry" value={this.state.modalcountryCode} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 validationError form-control" 
@@ -488,15 +595,12 @@ class Address extends Component {
                                             }
                                         </select>
                                     </div>
-                                    {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                        <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Block/Taluka <span className="required">*</span></label>
-                                        <input type="text" ref="modalblock" name="modalblock" id="modalblock" value={this.state.modalblock} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                    </div> */}
+                                    
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">City <span className="required">*</span></label>
                                         <input type="text" ref="modalcity" name="modalcity" id="modalcity" value={this.state.modalcity} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>

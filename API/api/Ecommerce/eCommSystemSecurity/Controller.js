@@ -17,15 +17,12 @@ function getRandomInt(min, max) {
 // ============ Account dashboard users API methods ============
 exports.user_details = (req, res, next) => {
 	var id = req.params.userID;
-	// console.log("inside api:",id);
+	console.log("inside api:",id);
 	User.findOne({ _id: id })
 		// .select("profile")
 		.exec()
 		.then(users => {
 			res.status(200).json(users);
-			// res.status(200).json({
-	  //           message : users
-	  //       });
 		})
 		.catch(err => {
 			console.log(err);
@@ -377,7 +374,7 @@ exports.add_user_address = (req, res, next) => {
 		});
 };
 exports.add_delivery_address = (req, res, next) => {
-	// console.log("inside add delivery req body:",req.body);
+	console.log("inside add delivery req body:",req.body);
 	User.updateOne(
 		{ '_id': req.body.user_ID },
 		{

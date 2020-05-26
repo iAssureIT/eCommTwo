@@ -15,9 +15,10 @@ import Loader from "../../common/loader/Loader.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {getCartData} from '../../actions/index';
-
 import "../../../sites/currentSite/pages/Checkout.css";
 
+import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
+  
 class Checkout extends Component {
     constructor(props) {
         super(props);
@@ -263,7 +264,7 @@ class Checkout extends Component {
                 this.setState({
                     "deliveryAddress": response.data.deliveryAddress,
                     "username" : response.data.profile.fullName,
-                    "mobileNumber" : response.data.profile.mobileNumber,
+                    "mobileNumber" : response.data.profile.mobile,
                     "email" : response.data.profile.emailId
                 });
             })
@@ -578,18 +579,19 @@ class Checkout extends Component {
                     "user_ID": localStorage.getItem('user_ID'),
                     "name": deliveryAddress.length > 0 ? deliveryAddress[0].name : "",
                     "email": deliveryAddress.length > 0 ? deliveryAddress[0].email : "",
+                    "mobileNumber": deliveryAddress.length > 0 ? deliveryAddress[0].mobile : "",
+                    "addType": deliveryAddress.length > 0 ? deliveryAddress[0].addType : "",
                     "addressLine1": deliveryAddress.length > 0 ? deliveryAddress[0].addressLine1 : "",
                     "addressLine2": deliveryAddress.length > 0 ? deliveryAddress[0].addressLine2 : "",
                     "pincode": deliveryAddress.length > 0 ? deliveryAddress[0].pincode : "",
-                    "block": deliveryAddress.length > 0 ? deliveryAddress[0].block : "",
-                    "city": deliveryAddress.length > 0 ? deliveryAddress[0].city : "",
-                    "district" : deliveryAddress.length > 0 ? deliveryAddress[0].district : "",
-                    "stateCode": deliveryAddress.length > 0 ? deliveryAddress[0].stateCode : "",
-                    "state": deliveryAddress.length > 0 ? deliveryAddress[0].state : "",
-                    "countryCode": deliveryAddress.length > 0 ? deliveryAddress[0].countryCode : "",
-                    "country": deliveryAddress.length > 0 ? deliveryAddress[0].country : "",
-                    "mobileNumber": deliveryAddress.length > 0 ? deliveryAddress[0].mobileNumber : "",
-                    "addType": deliveryAddress.length > 0 ? deliveryAddress[0].addType : "",
+                    "area": this.state.area,
+                    "city": this.state.city,
+                    "district" : this.state.district,
+                    "stateCode": this.state.stateCode,
+                    "state": this.state.state,
+                    "countryCode": this.state.countryCode,
+                    "country": this.country,
+            
                 }
             }else{
                 addressValues = {
@@ -599,7 +601,7 @@ class Checkout extends Component {
                     "addressLine1": this.state.addressLine1,
                     "addressLine2": this.state.addressLine2,
                     "pincode": this.state.pincode,
-                    "block": this.state.block,
+                    "area": this.state.area,
                     "district" : this.state.district,
                     "city": this.state.city,
                     "stateCode": this.state.stateCode,
@@ -612,6 +614,7 @@ class Checkout extends Component {
                 
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
+                    console.log("addressValues:===",addressValues);
                     axios.patch('/api/users/patch/address', addressValues)
                     .then((response) => {
                         $('.fullpageloader').hide();
@@ -769,55 +772,122 @@ class Checkout extends Component {
         $(".toast-success").removeClass('toast');
         $(".toast-info").removeClass('toast');
         $(".toast-warning").removeClass('toast');
+    }
 
-    }
-    handleChangeCountry(event) {
-        const target = event.target;
-        this.setState({
-            [event.target.name]: event.target.value,
-            country : target.options[target.selectedIndex].innerHTML
-        })
-        this.getStates(event.target.value);
-    }
+    // handleChangeCountry(event) {
+    //     const target = event.target;
+    //     this.setState({
+    //         [event.target.name]: event.target.value,
+    //         country : target.options[target.selectedIndex].innerHTML
+    //     })
+    //     this.getStates(event.target.value);
+    // }
     
-    getStates(countryCode) {
-        axios.get("http://locations2.iassureit.com/api/states/get/list/" + countryCode)
-            .then((response) => {
-                this.setState({
-                    stateArray: response.data
-                })
-                $('#Statedata').val(this.state.states);
-            })
-            .catch((error) => {
-                console.log('error', error);
-            })
-    }
-    handleChangeState(event){
-        this.setState({
-            [event.target.name]: event.target.value,
-            state : event.target.options[event.target.selectedIndex].innerHTML
-        })
-        const target = event.target;
-        const stateCode = event.target.value;
-        const countryCode = this.state.countryCode;
-        this.getDistrict(countryCode,stateCode);
+    // getStates(countryCode) {
+    //     axios.get("http://locations2.iassureit.com/api/states/get/list/" + countryCode)
+    //         .then((response) => {
+    //             this.setState({
+    //                 stateArray: response.data
+    //             })
+    //             $('#Statedata').val(this.state.states);
+    //         })
+    //         .catch((error) => {
+    //             console.log('error', error);
+    //         })
+    // }
+    // handleChangeState(event){
+    //     this.setState({
+    //         [event.target.name]: event.target.value,
+    //         state : event.target.options[event.target.selectedIndex].innerHTML
+    //     })
+    //     const target = event.target;
+    //     const stateCode = event.target.value;
+    //     const countryCode = this.state.countryCode;
+    //     this.getDistrict(countryCode,stateCode);
          
-    }
-    getDistrict(countryCode, stateCode){
+    // }
+    // getDistrict(countryCode, stateCode){
         
-    axios.get("http://locations2.iassureit.com/api/districts/get/list/"+countryCode+"/"+stateCode)
-            .then((response)=>{
-            // console.log('districtArray', response.data);
-            this.setState({
-                districtArray : response.data
-            })
-            // console.log(this.state.city);
-            $('#Citydata').val(this.state.city);
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })
-    }
+    // axios.get("http://locations2.iassureit.com/api/districts/get/list/"+countryCode+"/"+stateCode)
+    //         .then((response)=>{
+    //         // console.log('districtArray', response.data);
+    //         this.setState({
+    //             districtArray : response.data
+    //         })
+    //         // console.log(this.state.city);
+    //         $('#Citydata').val(this.state.city);
+    //         })
+    //         .catch((error)=>{
+    //             console.log('error', error);
+    //         })
+    // }
+    //google API 
+    handleChangePlaces = address => {
+        this.setState({ addressLine1 : address});
+    };
+    
+    handleSelect = address => {    
+        geocodeByAddress(address)
+         .then((results) =>{
+          for (var i = 0; i < results[0].address_components.length; i++) {
+              for (var b = 0; b < results[0].address_components[i].types.length; b++) {
+                  switch (results[0].address_components[i].types[b]) {
+                      case 'sublocality_level_1':
+                          var area = results[0].address_components[i].long_name;
+                          break;
+                      case 'sublocality_level_2':
+                          area = results[0].address_components[i].long_name;
+                          break;
+                      case 'locality':
+                          var city = results[0].address_components[i].long_name;
+                          break;
+                      case 'administrative_area_level_1':
+                          var state = results[0].address_components[i].long_name;
+                          var stateCode = results[0].address_components[i].short_name;
+                          break;
+                      case 'administrative_area_level_2':
+                          var district = results[0].address_components[i].long_name;
+                          break;
+                      case 'country':
+                         var country = results[0].address_components[i].long_name;
+                         var countryCode = results[0].address_components[i].short_name;
+                          break;
+                      case 'postal_code':
+                         var pincode = results[0].address_components[i].long_name;
+                          break;
+                      default :
+                      break;
+                  }
+              }
+          }
+    
+          this.setState({
+            area : area,
+            city : city,
+            district : district,
+            states: state,
+            country:country,
+            pincode: pincode,
+            stateCode:stateCode,
+            countryCode:countryCode
+          })  
+          
+        })
+        
+        .catch(error => console.error('Error', error));
+    
+          geocodeByAddress(address)
+          .then(results => getLatLng(results[0]))
+          .then(latLng => this.setState({'latLng': latLng}))
+          .catch(error => console.error('Error', error));
+        
+          this.setState({ addressLine1 : address});
+      }; //end google api
+    
+    
+    
+
+
     camelCase(str) {
         return str
             .toLowerCase()
@@ -836,6 +906,8 @@ class Checkout extends Component {
                     <Loader type="fullpageloader" /> 
                     <Address opDone={this.opDones.bind(this)}/>
                     <SmallBanner bannerData={this.state.bannerData} />
+                    
+                
                     <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                         <form id="checkout">
                             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -899,6 +971,52 @@ class Checkout extends Component {
                                                 <input type="email" ref="email" name="email" id="email" value={this.state.email} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">House No/Office No <span className="required">*</span></label>
+                                                <input type="text" minLength="10" ref="addressLine2" name="addressLine2" id="addressLine2" value={this.state.addressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                            </div>
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >                                            
+                                            <PlacesAutocomplete value={this.state.addressLine1}
+                                                onChange={this.handleChangePlaces}
+                                                onSelect={this.handleSelect}
+                                                >
+                                                {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                                    <div>
+                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>    
+                                                    <input
+                                                        {...getInputProps({
+                                                        placeholder: 'Search Address ...',
+                                                        className: 'location-search-input col-lg-12 form-control errorinputText',
+                                                        id:"addressLine1",
+                                                        name:"addressLine1"
+                                                        })}
+                                                    />
+                                                    <div className="autocomplete-dropdown-container SearchListContainer">
+                                                        {loading && <div>Loading...</div>}
+                                                        {suggestions.map(suggestion => {
+                                                        const className = suggestion.active
+                                                            ? 'suggestion-item--active'
+                                                            : 'suggestion-item';
+                                                        // inline style for demonstration purpose
+                                                        const style = suggestion.active
+                                                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                        return (
+                                                            <div
+                                                            {...getSuggestionItemProps(suggestion, {
+                                                                className,
+                                                                style,
+                                                            })}
+                                                            >
+                                                            <span>{suggestion.description}</span>
+                                                            </div>
+                                                            );
+                                                            })}
+                                                        </div>
+                                                        </div>
+                                                )}
+                                            </PlacesAutocomplete>
+                                            </div>
+                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address Line 1 <span className="required">*</span></label>
                                                 <input type="text" minLength="10" ref="addressLine1" name="addressLine1" id="addressLine1" value={this.state.addressLine1} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                             </div>
@@ -946,7 +1064,7 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">City <span className="required">*</span></label>
                                                 <input type="text" ref="city" name="city" id="city" value={this.state.city} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                            </div>
+                                            </div> */}
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
                                                 <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
