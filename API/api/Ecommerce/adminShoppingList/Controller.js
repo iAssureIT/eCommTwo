@@ -35,6 +35,51 @@ exports.insert_adminPO = (req,res,next)=>{
   
     };
 
+exports.update_adminPO = (req,res,next)=>{
+    /* req.body = {
+            purchaseorder_id : xxx,
+            orderDate : "2020-06-06",
+            orderItems : [
+                {productID:xxx,itemCode:xxx,productName:xxx,totalOrder:xxx,currentStock:xxx, purchaseOrder:xxx, actualPurchase:xxx, units:xxx, },
+                {productID:xxx,itemCode:xxx,productName:xxx,totalOrder:xxx,currentStock:xxx, purchaseOrder:xxx, actualPurchase:xxx, units:xxx, },
+                {productID:xxx,itemCode:xxx,productName:xxx,totalOrder:xxx,currentStock:xxx, purchaseOrder:xxx, actualPurchase:xxx, units:xxx, },
+                
+            ],
+            user_id : xxx,
+    } */
+    // console.log("req.params=>",req.body);
+
+
+    AdminPO.updateOne( 
+        { _id: req.body.purchaseorder_id }, 
+        {
+            $set: {
+                orderDate                 : req.body.orderDate, 
+                orderItems                : req.body.orderItems,
+            },
+            $push: {updateLog : {updatedBy : req.body.user_id, updatedAt : new Date() }  }
+        },
+    )
+    .then(data =>{
+        if(data.nModified == 1){
+            res.status(200).json({
+                "message": "Purchase Order Updated Successfully.",
+            });
+        }else{
+            res.status(401).json({
+                "message": "Purchase Order " + req.body.purchaseorder_id + " Not Found"
+            });
+        }
+    })
+    .catch(err =>{
+        console.log("err1",err);
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+
 exports.list_adminPO = (req,res,next)=>{
     var franchise_id = req.params.franchise_id;
     var orderDate    = req.params.orderDate;

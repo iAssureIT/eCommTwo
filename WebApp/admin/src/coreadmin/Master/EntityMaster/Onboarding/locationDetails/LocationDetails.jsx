@@ -130,37 +130,36 @@ class LocationDetails extends Component {
 			rules: {
 				locationType: {
 					required: true,
-					regxlocationType: "--Select Location Type--"
+					// valueNotEquals:""
 				},
 				addressLine1: {
 					required: true,
-					addressLineRegx: /^[A-Za-z0-9][A-Za-z0-9\-\s]/,
 				},
-				country: {
-					required: true,
-					regxcountry: "-- Select --"
-				},
-				states: {
-					required: true,
-					regxstate: "-- Select --"
-				},
-				district: {
-					required: true,
-					regxdistrict: "-- Select --"
-				},
-				pincode: {
-					required: true,
-					pincodeRegx: /^[0-9][0-9\-\s]/,
-				},
-				GSTIN: {
-					regxGSTIN: /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[A-Za-z1-9]{1}[z|Z]{1}[A-Za-z0-9]{1}$|^$/,
-				},
-				PAN: {
-					regxPAN: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$|^$/,
-				},
-				area: {
-					regxarea: /^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$|^$/,
-				},
+				// country: {
+				// 	required: true,
+				// 	regxcountry: "-- Select --"
+				// },
+				// states: {
+				// 	required: true,
+				// 	regxstate: "-- Select --"
+				// },
+				// district: {
+				// 	required: true,
+				// 	regxdistrict: "-- Select --"
+				// },
+				// pincode: {
+				// 	required: true,
+				// 	pincodeRegx: /^[0-9][0-9\-\s]/,
+				// },
+				// GSTIN: {
+				// 	regxGSTIN: /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[A-Za-z1-9]{1}[z|Z]{1}[A-Za-z0-9]{1}$|^$/,
+				// },
+				// PAN: {
+				// 	regxPAN: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$|^$/,
+				// },
+				// area: {
+				// 	regxarea: /^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$|^$/,
+				// },
 			},
 			errorPlacement: function (error, element) {
 				if (element.attr("name") === "locationType") {
@@ -375,7 +374,7 @@ class LocationDetails extends Component {
 	locationdetailsAdd(event) {
 		event.preventDefault();
 		var entityID = this.props.match.params.entityID;
-		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists === "NotAvailable")) {
+		if ($('#locationsDetail').valid()) {
 			var formValues = {
 				'entityID': entityID,
 				'locationDetails': {
@@ -402,7 +401,7 @@ class LocationDetails extends Component {
 					'PANDocument': this.state.PANDocument,
 				}
 			}
-			console.log('formValues', formValues);
+			console.log('formValues=====>', formValues);
 			axios.patch('/api/entitymaster/patch/addLocation', formValues)
 				.then((response) => {
 					$('.inputText').val('');
@@ -428,7 +427,11 @@ class LocationDetails extends Component {
 					});
 					this.locationDetails();
 					$(".swal-text").css("font-family", "sans-serif");
-					swal('Location details added successfully.');
+					if(response.data.duplicated === true){
+						swal('Location details already exist')
+					}else{
+						swal('Location details added successfully.');
+					}
 					// this.setState({			
 					// 	openFormIcon : this.state.openFormIcon === false ? true : false
 					// });
@@ -437,6 +440,8 @@ class LocationDetails extends Component {
 				.catch((error) => {
 					console.log('error adding location: ',error)
 				})
+		}else{
+			$(event.target).parent().parent().parent().find('.errorinputText.error:first').focus();
 		}
 	}
 	locationdetailBtn(event) {
@@ -525,6 +530,11 @@ class LocationDetails extends Component {
 				})
 		}
 	}
+
+	// updateStateDoc(){
+		
+	// }
+
 	locationDetails() {
 		axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
 			.then((response) => {
@@ -637,7 +647,7 @@ class LocationDetails extends Component {
 		event.preventDefault();
 		var entityID = this.props.match.params.entityID;
 		var locationID = this.props.match.params.locationID;
-		if ($('#locationsDetail').valid() && (this.state.pincodeExists || this.state.pincodeExists === "NotAvailable")) {
+		if ($('#locationsDetail').valid()) {
 			var formValues = {
 				'entityID': entityID,
 				'locationID': locationID,
@@ -689,7 +699,12 @@ class LocationDetails extends Component {
 					this.props.history.push('/' +this.state.pathname+ '/location-details/' + entityID);
 					this.locationDetails();
 					$(".swal-text").css("font-family", "sans-serif");
-					swal('Location details updated successfully');					
+					if(response.data.duplicated === true){
+						swal('Location details already exist')
+					}else{
+						swal('Location details updated successfully.');
+					}
+					// swal('Location details updated successfully');					
 					$("#locationsDetail").validate().resetForm();
 					// this.setState({			
 					// 	openFormIcon : this.state.openFormIcon === false ? true : false
@@ -698,6 +713,8 @@ class LocationDetails extends Component {
 				.catch((error) => {
 
 				})
+		}else{
+			$(event.target).parent().parent().parent().find('.errorinputText.error:first').focus();
 		}
 	}
 	admin(event) {
@@ -1112,7 +1129,7 @@ class LocationDetails extends Component {
 								<section className="Content">
 									<div className="row">
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-											<form id="locationsDetail" className="" >
+											<form id="locationsDetail" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 												<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12">
 													<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 														<div className="col-lg-6 col-md-6 col-sm-6 col-sm-6 locationTabs">
@@ -1137,9 +1154,9 @@ class LocationDetails extends Component {
 																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Location Type <sup className="astrick">*</sup></label>
-																		<div id="locationType">
-																		<select  className="form-control col-lg-11 col-md-12 col-sm-12 col-xs-12" value={this.state.locationType} ref="locationType" name="locationType" onChange={this.handleChange}>
-																			<option >--Select Location Type--</option>
+																		<div>
+																		<select className="form-control col-lg-11 col-md-12 col-sm-12 col-xs-12 errorinputText" value={this.state.locationType} ref="locationType" name="locationType" id="locationType" onChange={this.handleChange} required>
+																			<option value="" disabled>--Select Location Type--</option>
 																			{
 																				this.state.locationTypeArry && this.state.locationTypeArry.length > 0 ?
 																					this.state.locationTypeArry.map((locationtypedata, index) => {
@@ -1172,10 +1189,12 @@ class LocationDetails extends Component {
 								                                            <input
 								                                              {...getInputProps({
 								                                                placeholder: 'Search Address ...',
-								                                                className: 'location-search-input col-lg-12 form-control',
+								                                                className: 'location-search-input col-lg-12 form-control errorinputText',
+								                                                id:"addressLine1",
+								                                                name:"addressLine1"
 								                                              })}
 								                                            />
-								                                            <div className="autocomplete-dropdown-container">
+								                                            <div className="autocomplete-dropdown-container SearchListContainer">
 								                                              {loading && <div>Loading...</div>}
 								                                              {suggestions.map(suggestion => {
 								                                                const className = suggestion.active

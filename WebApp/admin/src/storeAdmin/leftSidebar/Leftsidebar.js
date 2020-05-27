@@ -207,6 +207,24 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Finished Goods Entry</span>
                       </a>
                     </li>
+                    <li>
+                      <a href="/franchise-shopping-list">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Franchise Shopping List</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/franchise-order-summary">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Franchise Order Summary</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/admin-shopping-list">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Admin Shopping List</span>
+                      </a>
+                    </li>
                   </ul>
                 </li>
                  <li className="sidebarMenuText">

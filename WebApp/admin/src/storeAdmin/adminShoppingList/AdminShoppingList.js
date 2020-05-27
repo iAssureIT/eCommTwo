@@ -19,12 +19,14 @@ export default class AdminShoppingList extends React.Component {
 	        selectedSection 	: "",	
 	        date 				: "",
 	        editId 				: "",
+	        allfrachiseList 	: "",
 	        user_ID 			: ""
    	};
 	}
 
 	componentDidMount(){
-		this.getCurrentStock();
+		
+		this.getAllfrachiseData();
 
 		var editid1 = window.location.pathname;
 			// console.log("pageUrl = ",pageUrl);
@@ -35,33 +37,44 @@ export default class AdminShoppingList extends React.Component {
 		var today = moment(new Date()).format("YYYY-MM-DD");
 		// console.log("today",today);
 		this.setState({
-				date : today,
+				// date : today,
 				editId : editId,
 				user_ID : user_ID,
 			},()=>{
 					console.log("editId = ",this.state.editId);
-					this.getEditData();
+					// this.getEditData();
 				});
 
 	}
-	getEditData(){
-		axios.get('/api/franchisepo/get/one/purchaseorder/'+this.state.editId)
-            .then((editdatalist) => {
-				console.log("prodlist prodlist",editdatalist.data);
 
-                this.setState({
-                    "prodStockOrder": editdatalist.data.orderItems,
-                },()=>{
-					// console.log("prodStockOrder = ",this.state.prodStockOrder);
-				})
-
-            })
-            .catch((error) => {
-				console.log("error in getEditData = ", error);
-              
-            })
+	handleChange(event){
+		event.preventDefault();
+		this.setState({
+			[event.target.name] : event.target.value,
+			},()=>{
+				this.getAllfrachiseData();
+				// console.log("date",this.state.date);
+			});
 
 	}
+
+	getAllfrachiseData(){
+		var dateOfOrder = this.state.date;
+		console.log("dateOfOrder",dateOfOrder);
+		 axios.get('/api/franchisepo/get/purchaseorderList/'+dateOfOrder)
+            .then((prodlist) => {
+			    console.log("productListproductList=>",prodlist.data);
+				this.getCurrentStock();
+				this.setState({
+                    "allfrachiseList" : prodlist.data,
+				})
+			})
+			.catch(error=>{
+				console.log("error in getCurrentStock = ", error);
+			})
+
+	}
+
 	getCurrentStock(){
         axios.get('/api/products/get/list')
             .then(prodlist => {
@@ -80,28 +93,43 @@ export default class AdminShoppingList extends React.Component {
 								         ],
 				},()=>{
 						var prodStockOrder = [];
+						console.log("allfrachiseList",this.state.allfrachiseList)
 						// console.log("productListproductList=>",this.state.productList);
-						if(this.state.productList.length > 0){
+						
 							if(this.state.currentStock.length > 0){
-								for (var i = 0; i < this.state.productList.length; i++) {
-									var obj = {};
-									obj.productCode 	= this.state.productList[i].productCode;
-									obj.itemCode 		= this.state.productList[i].itemCode;
-									obj.productName 	= this.state.productList[i].productName;									
-									obj.currentStock 	= 10 + i;	
-									obj.section 	= this.state.productList[i].section;	
-									obj.orderQty = 0;
-									obj.unit = "";
+								
+								if (this.state.allfrachiseList.length >0) {
 
-									prodStockOrder[i] = obj;
-								}
-								this.setState({
-									prodStockOrder : prodStockOrder,
-								},()=>{
-									// console.log("prodStockOrder = ",this.state.prodStockOrder);
-								})
-							}
-						}
+									for (var j = 0; j < this.state.allfrachiseList.length; j++) {
+										if (this.state.allfrachiseList[j].orderItems.length >0) {
+											for (var k = 0; k < this.state.allfrachiseList[j].orderItems.length; k++) {
+											
+													var obj = {};
+													obj.productCode 	= this.state.allfrachiseList[j].orderItems[k].productCode;
+													obj.itemCode 		= this.state.allfrachiseList[j].orderItems[k].itemCode;
+													obj.productName 	= this.state.allfrachiseList[j].orderItems[k].productName;									
+													obj.currentStock 	= 10 + k;	
+													obj.section 		= this.state.allfrachiseList[j].orderItems[k].section;	
+													obj.orderQty 		= 0;
+													obj.franchiseorderQty0 = this.state.allfrachiseList[j].orderItems[k].orderQty;
+													// obj.franchiseorderQty1 = this.state.allfrachiseList[j].orderItems[k].orderQty;
+													// obj.franchiseorderQty2 = this.state.allfrachiseList[2].orderItems[k].orderQty;
+													obj.unit = "";
+
+													prodStockOrder.push(obj);
+												}
+												this.setState({
+													prodStockOrder : prodStockOrder,
+												},()=>{
+													
+													console.log("prodStockOrder = ",this.state.prodStockOrder);
+												})
+											}
+										}
+									}
+								
+							}/*this.state.allfrachiseList.length*/
+						
 					// console.log("currentStock = ",this.state.currentStock);
 				})
 			})
@@ -125,7 +153,7 @@ export default class AdminShoppingList extends React.Component {
     	}
     	// console.log("ProdArray2",ProdArray);
 
-   	    const formValues1 = {
+   	    const formValues = {
    	    	franchise_id              : "5ec686a8a35f526967255a23", 
 	        companyID                 : "12345", 
 	        // orderNo                   : "1000", 
@@ -133,9 +161,9 @@ export default class AdminShoppingList extends React.Component {
 	        orderItems                : ProdArray,
 	        createdBy                 : this.state.user_ID,
         };
-        console.log("formValues1",formValues1);
+        console.log("formValues1",formValues);
         axios
-			.post('/api/franchisepo/post',formValues1)
+			.post('/api/adminpo/post',formValues)
 		  	.then(function (response) {
 		    // handle success
 		    	console.log("data in block========",response.data);
@@ -190,7 +218,9 @@ export default class AdminShoppingList extends React.Component {
 								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12 pull-right">
 								    <label className=" ">Order Date :</label>
 								    <div className="col-lg-8 col-md-9 col-sm-12 col-xs-12  pull-right nopadding">
-								      <input className=" " id="theDate" type="date" value={this.state.date}/>
+								      <input className=" " id="date" type="date" name="date" refs="date" value={this.state.date} onChange={this.handleChange.bind(this)}/>
+
+								      {/*<input className=" " id="theDate" type="date" value={this.state.date}/>*/}
 								    </div>
 								</div>
 
@@ -209,8 +239,8 @@ export default class AdminShoppingList extends React.Component {
 										        <th>Shopping Quantity </th>
 										        <th>Franchise1 Order </th>
 										        <th>Franchise2 Order </th>
-										        <th>Franchise2 Order </th>
-										        <th>Franchise2 Order </th>
+										        {/*<th>Franchise3 Order </th>
+										        <th>Franchise4 Order </th>*/}
 									      	</tr>
 									    </thead>
 									    <tbody>
@@ -230,7 +260,7 @@ export default class AdminShoppingList extends React.Component {
 												        	<td>{result.currentStock}</td>
 
 												        	<td>
-													        	<div class="form-group">
+													        	<div className="form-group">
 								                           			<div className="input-group">
 														        		<input type="number" className="form-control width90" 
 														        				 name={"orderedItems"+"-"+index} 
@@ -253,10 +283,9 @@ export default class AdminShoppingList extends React.Component {
 																	</div>
 																</div>
 													        </td>
-													        <td>10</td>
-												        	<td>10</td>
-												        	<td>10</td>
-												        	<td>10</td>													       
+													        <td>{result.franchiseorderQty0}</td>
+												        	<td>{result.franchiseorderQty1}</td>
+												        	{/*<td>10</td><td>10</td>	*/}												       
 													    </tr>
 
 													)
@@ -279,3 +308,40 @@ export default class AdminShoppingList extends React.Component {
 		);
 	}
 }
+
+{/*
+	if (this.state.prodStockOrder.length > 0 ) 
+												{
+													for (var i = 0; i < this.state.prodStockOrder.length; i++) {
+														if (
+															this.state.prodStockOrder[i].itemCode == this.state.allfrachiseList[j].orderItems[k].itemCode
+															) {
+																var obj = {};
+																obj.productCode 	= this.state.allfrachiseList[j].orderItems[k].productCode;
+																obj.itemCode 		= this.state.allfrachiseList[j].orderItems[k].itemCode;
+																obj.productName 	= this.state.allfrachiseList[j].orderItems[k].productName;									
+																obj.currentStock 	= 10 + k;	
+																obj.section 		= this.state.allfrachiseList[j].orderItems[k].section;	
+																obj.orderQty 		= 0;
+																obj.franchiseorderQty1 = this.state.allfrachiseList[j].orderItems[k].orderQty;
+																prodStockOrder.push(obj);
+
+														} 
+													}
+													
+
+												}else{
+													var obj = {};
+														obj.productCode 	= this.state.allfrachiseList[j].orderItems[k].productCode;
+														obj.itemCode 		= this.state.allfrachiseList[j].orderItems[k].itemCode;
+														obj.productName 	= this.state.allfrachiseList[j].orderItems[k].productName;									
+														obj.currentStock 	= 10 + k;	
+														obj.section 		= this.state.allfrachiseList[j].orderItems[k].section;	
+														obj.orderQty 		= 0;
+														obj.franchiseorderQty0 = this.state.allfrachiseList[j].orderItems[k].orderQty;
+														// obj.franchiseorderQty2 = this.state.allfrachiseList[2].orderItems[k].orderQty;
+														obj.unit = "";
+														this.state.prodStockOrder.push(obj);
+													}
+												}
+*/}

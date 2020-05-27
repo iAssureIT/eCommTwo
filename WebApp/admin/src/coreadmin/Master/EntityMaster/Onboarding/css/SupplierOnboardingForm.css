@@ -154,7 +154,7 @@
     background-size: 232px 128px;
     background-repeat: no-repeat;
     background: #ebebeb;
-    border: 1px dashed #999;
+    /*border: 1px dashed #999;*/
     height: 4em;
     padding: 0
 }
@@ -163,8 +163,8 @@
     background-repeat: no*/-repeat;
     background: #ebebeb;
     border: 1px dashed #999;
-    height: 34px;
-    width: 50px;
+    height: 34px !important;
+    width: 50px !important;
     padding: 0
 }
 #LogoImageUpOne{
@@ -1095,8 +1095,8 @@ select#gender option[value="others"] {
     /*background-repeat: no-repeat;*/
     background: #ebebeb;
     border: 1px dashed #999;
-    height: 34px;
-    width: 50px;
+    height: 34px !important;
+    width: 50px !important;
     padding: 0;
 }
 {/*.CustomImageUploadBIImg img {
@@ -1227,4 +1227,13 @@ select#gender option[value="others"] {
 
   .left-border-none{
     border-radius: 1px !important;
+  }
+
+  .SearchListContainer{
+    border: 1px solid #eee;
+    z-index: 1;
+    top: 90%;
+    position: absolute;
+    background: #fff;
+    box-shadow: 1px 1px 1px #ddd;
   }

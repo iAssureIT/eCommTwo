@@ -11,7 +11,6 @@ import BookingRequired from './BookingRequired.js'
 class ContactDetails extends Component {
 	constructor(props) {
 		super(props);
-		console.log('this.props.roles: ',this.props.roles)
 		this.state = {
 			'firstName'         		: '',
 			'lastName'          		: '',
@@ -173,6 +172,9 @@ class ContactDetails extends Component {
 		$.validator.addMethod("regxBranchCode", function (value, element, arg) {
 			return arg !== value;
 		}, "Please select the company branch ");
+		$.validator.addMethod("amtRegex", function (value, element, arg) {
+			return arg !== value;
+		}, "Please enter amount ");
 		
 		jQuery.validator.setDefaults({
 			debug: true,
@@ -213,15 +215,16 @@ class ContactDetails extends Component {
 				approvingAuthorityId3: {
 					required: true,
 				},
-				preApprovedAmount: {
-					required: true,
-				},
-				preApprovedRides: {
-					required: true,
-				},
-				preApprovedKilometers: {
-					required: true,
-				},
+				// preApprovedAmount: {
+				// 	required: true,
+				// 	// amtRegex : /^[0-9]+(,[0-9]+)*$/,
+				// },
+				// preApprovedRides: {
+				// 	required: true,
+				// },
+				// preApprovedKilometers: {
+				// 	required: true,
+				// },
 				employeeID: {
 					required: true,
 					//regexpremployeeID :/^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$/,
@@ -359,7 +362,7 @@ class ContactDetails extends Component {
 		if (this.state.branchCode || this.state.firstName || this.state.lastName || this.state.email || this.state.department || this.state.designation || this.state.employeeID) {
 			swal({
 				// title: "abc",
-				text: "It seem that you are trying to enter a contact details. Click 'Cancel' to continue entering contact details. Click 'Ok' to go to next page. But you may lose values already entered in the contact detail form",
+				text: "It seems that you are trying to enter contact details. Click 'Cancel' to continue entering contact details. Click 'Ok' to go to next page. But you may lose values already entered in the contact details form.",
 				// type: "warning",
 				buttons: {
 					cancel: {
@@ -396,7 +399,7 @@ class ContactDetails extends Component {
 		if (this.state.branchCode || this.state.firstName || this.state.lastName || this.state.email || this.state.department || this.state.designation || this.state.employeeID) {
 			swal({
 				// title: "abc",
-				text: "It seem that you are trying to enter a contact details. Click 'Cancel' to continue entering contact details. Click 'Ok' to go to next page. But you may lose values already entered in the contact detail form",
+				text: "It seems that you are trying to enter contact details. Click 'Cancel' to continue entering contact details. Click 'Ok' to go to next page. But you may lose values already entered in the contact details form.",
 				// type: "warning",
 				buttons: {
 					cancel: {
@@ -482,10 +485,27 @@ class ContactDetails extends Component {
 
 							});
 						}
+						var sendData = {
+		                  "event": "Contact Created", //Event Name
+		                  "toUserId": formValues.contactDetails.userID, //To user_id(ref:users)
+		                  "company": this.props.match.params.entityID, //company_id(ref:entitymaster)
+		                  "variables": {
+		                   'EmployeeName': this.state.firstName+' '+this.state.lastName,
+		                   'Password': this.state.firstName+"123",
+		                   'mobileNo': this.state.phone ? this.state.phone : 'NIL',
+		                   'email': this.state.email
+		                    }
+		                  }
+		                  console.log('sendData: ',sendData)
+		                  axios.post('/api/masternotifications/post/sendNotification', sendData)
+		                  .then((res) => {
+		                  console.log('sendDataToUser in result==>>>', res.data)
+		                  })
+		                  .catch((error) => { console.log('notification error: ',error)})
 					}
 					this.saveContact(formValues);
 				} else {
-					$(event.target).parent().parent().find('.inputText.error:first').focus();
+					$(event.target).parent().parent().find('.errorinputText .error:first').focus();
 				}
 			}
 			
@@ -509,6 +529,7 @@ class ContactDetails extends Component {
 			axios.post('/api/auth/post/signup/user', userDetails)
 			.then((response)=>{
 				console.log("response.data.ID",response.data.ID)
+				
 				resolve(response.data.ID);
 				if(response.data.message === 'USER_CREATED'){
 					
@@ -526,9 +547,9 @@ class ContactDetails extends Component {
 		if(userID){
 		var userDetails = {
 			type                    : "employee",
-			companyID								: this.state.companyID,
-			company_Id							: this.state.entityID,
-			companyName 		    		: this.state.companyName,
+			companyID				: this.state.companyID,
+			company_Id				: this.state.entityID,
+			companyName 		    : this.state.companyName,
 			workLocation            : this.state.workLocation,
 			workLocationId          : this.state.workLocationId,
 			firstName               : this.state.firstName,
@@ -680,6 +701,8 @@ class ContactDetails extends Component {
 					}
 					
 					this.updateContact(formValues);
+				}else{
+					$(event.target).parent().parent().parent().find('.errorinputText.error:first').focus();
 				}
 			}
 			main();
@@ -866,6 +889,13 @@ class ContactDetails extends Component {
 						'personID' 					: contactDetails[0].personID,
 						'alreadyHasUser' 			: contactDetails[0].createUser,
 						'alreadyHasEmployee' 		: contactDetails[0].addEmployee,
+						'bookingApprovalRequired' 	: contactDetails[0].bookingApprovalRequired,
+						'approvingAuthorityId1'    	: contactDetails[0].approvingAuthorityId1,
+						'approvingAuthorityId2'    	: contactDetails[0].approvingAuthorityId2,
+						'approvingAuthorityId3'    	: contactDetails[0].approvingAuthorityId3,
+						'preApprovedAmount' 		: contactDetails[0].preApprovedAmount,
+						'preApprovedRides'          : contactDetails[0].preApprovedRides,
+						'preApprovedKilometers'     : contactDetails[0].preApprovedKilometers,
 					},()=>{
 						if(this.state.openForm === true){
 							this.validation();
@@ -1104,7 +1134,7 @@ class ContactDetails extends Component {
 																			<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Company Branch <sup className="astrick">*</sup><span className="anyQuestion" title="In Location form, if you add Office location, then only it will show up here.">Any ?</span></label>
 																		}
 																		
-																		<select id="branchCode" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.branchCode} ref="branchCode" name="branchCode" onChange={this.handleChange.bind(this)} required>
+																		<select id="branchCode" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 errorinputText" value={this.state.branchCode} ref="branchCode" name="branchCode" onChange={this.handleChange.bind(this)} required>
 																			<option value="" disabled={true}>--Select Company Branch--</option>
 																			{
 																				this.state.branchCodeArry && this.state.branchCodeArry.length > 0 ?
@@ -1159,11 +1189,11 @@ class ContactDetails extends Component {
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 "  >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Employee ID <i className="astrick">*</i></label>
-																		<input type="number" id="employeeID" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.employeeID} ref="employeeID" name="employeeID" onChange={this.handleChange.bind(this)} />
+																		<input type="text" id="employeeID" className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.employeeID} ref="employeeID" name="employeeID" onChange={this.handleChange.bind(this)} />
 																	</div>
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 " >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">First Name <sup className="astrick">*</sup></label>
-																		<input id="firstName" maxLength="25" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.firstName} ref="firstName" name="firstName" onChange={this.handleChange.bind(this)} required />
+																		<input id="firstName" maxLength="25" type="text" className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.firstName} ref="firstName" name="firstName" onChange={this.handleChange.bind(this)} required />
 																	</div>
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 " >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Last Name <sup className="astrick">*</sup></label>
@@ -1174,7 +1204,7 @@ class ContactDetails extends Component {
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Email <sup className="astrick">*</sup></label>
-																		<input id="email" type="email" maxLength="30" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.email} ref="email" name="email" onChange={this.handleChange.bind(this)} required />
+																		<input id="email" type="email" maxLength="30" className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.email} ref="email" name="email" onChange={this.handleChange.bind(this)} required />
 																	</div>
 																    <div className="form-group valid_box col-lg-4 col-md-4 col-sm-12 col-xs-12">
 														                <div className="form-group">
@@ -1230,10 +1260,10 @@ class ContactDetails extends Component {
 																	this.state.createUser  && this.state.pathname !=="appCompany"? 
 
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" > 
-																		<div id="role">
+																		<div>
 							                                            <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Role <i className="astrick">*</i></label>
-							                                            <select className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-							                                              ref="role" name="role" value={this.state.role} onChange={this.handleChange}>
+							                                            <select className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
+							                                              ref="role" name="role" id="role" value={this.state.role} onChange={this.handleChange}>
 							                                              <option value="" disabled={true}>-- Select Role --</option>
 							                                              {this.state.rolesArray && this.state.rolesArray.length > 0 ?
 																				this.state.rolesArray.map((role, index) => {
@@ -1349,9 +1379,9 @@ class ContactDetails extends Component {
 																											
 																																				
 																			{data.createUser?
-																				<li>Created Login Credential: Yes</li>	
+																				<li><i className="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Created Login Credential: Yes</li>	
 																			:
-																			null
+																			<li><i className="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Created Login Credential: No</li>
 																			}																			
 																			
 																		</ul>

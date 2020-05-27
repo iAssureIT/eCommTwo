@@ -275,11 +275,11 @@ class VendorsDetails extends Component {
 										        				<li title="address">&nbsp;{ locationArr.state+", "+  locationArr.country},</li>
 										        				<li title="address">&nbsp;{ locationArr.pincode}</li>
 										        				{ locationArr.GSTIN ?
-										        					<li title="GSTIN Number">&nbsp;GSTIN Number &nbsp; : &nbsp;{ locationArr.GSTIN}</li>
+										        					<li title="GSTIN Number">&nbsp;GSTIN &nbsp; : &nbsp;{ locationArr.GSTIN}</li>
 										        					:null
 										        				}
 										        				{/*<li title="GSTIN Number">&nbsp;GSTIN Number &nbsp; : &nbsp;{ locationArr.GSTIN}</li>*/}
-										        				<li title="PAN Number">&nbsp;PAN Number &nbsp; : &nbsp;{ locationArr.PAN}</li>
+										        				<li title="PAN Number">&nbsp;PAN &nbsp; : &nbsp;{ locationArr.PAN}</li>
 
 										        			</ul>
 										        			
@@ -354,11 +354,11 @@ class VendorsDetails extends Component {
 										        				<li title="address">&nbsp;{ locationArr.state+", "+  locationArr.country},</li>
 										        				<li title="address">&nbsp;{ locationArr.pincode}</li>
 										        				{ locationArr.GSTIN ?
-										        					<li title="GSTIN Number">&nbsp;GSTIN Number &nbsp; : &nbsp;{ locationArr.GSTIN}</li>
+										        					<li title="GSTIN Number">&nbsp;GSTIN &nbsp; : &nbsp;{ locationArr.GSTIN}</li>
 										        					:null
 										        				}
 										        				{ locationArr.PAN ?
-										        					<li title="PAN Number">&nbsp;PAN Number &nbsp; : &nbsp;{ locationArr.PAN}</li>
+										        					<li title="PAN Number">&nbsp;PAN &nbsp; : &nbsp;{ locationArr.PAN}</li>
 										        					:null
 										        				}
 										        				

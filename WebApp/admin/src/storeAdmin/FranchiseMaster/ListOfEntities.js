@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import jQuery from 'jquery';
 import 'bootstrap/js/tab.js';
+import {withRouter}  from 'react-router-dom';
+
 
 import ListOfEntities from '../../coreadmin/Master/EntityMaster/listOfEntities/components/ListOfEntities.jsx';
 
@@ -11,5 +13,5 @@ function ListOfEntitiesPage(){
         </div>
     );
 }
-export default ListOfEntitiesPage;
+export default withRouter (ListOfEntitiesPage);
 

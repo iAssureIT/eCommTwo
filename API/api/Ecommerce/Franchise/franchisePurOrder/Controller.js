@@ -214,6 +214,26 @@ exports.list_franchisePO = (req,res,next)=>{
         });
 };
 
+exports.list_allfranchisePO = (req,res,next)=>{
+   
+    var orderDate    = req.params.orderDate;
+
+    FranchisePO
+        .find({
+               
+                orderDate : new Date(orderDate)
+            })       
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
 exports.one_franchisePO = (req,res,next)=>{
     var purchaseorder_id    = req.params.purchaseorder_id;
 

@@ -401,11 +401,11 @@ class BasicInfo extends Component {
         function getConfig() {
           return new Promise(function (resolve, reject) {
             axios
-              .get('/api/projectsettings/get/one/S3')
+              .get('/api/projectsettings/get/S3')
               .then((response) => {
                 const config = {
                   bucketName: response.data[0].bucket,
-                  dirName: 'propertiesImages',
+                  dirName: process.env.ENVIRONMENT,
                   region: response.data[0].region,
                   accessKeyId: response.data[0].key,
                   secretAccessKey: response.data[0].secret,
@@ -494,7 +494,7 @@ class BasicInfo extends Component {
         function getConfig() {
           return new Promise(function (resolve, reject) {
             axios
-              .get('/api/projectsettings/get/one/S3')
+              .get('/api/projectsettings/get/S3')
               .then((response) => {
                 const config = {
                   bucketName      : response.data.bucket,

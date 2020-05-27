@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import EntityDetails from './EntityDetails.jsx';
+import {withRouter}  from 'react-router-dom';
+
 import 'bootstrap/js/tab.js';
 import '../css/ListOfEntity.css';
 import '../css/ListOfEntityFilter.css';
@@ -10,7 +12,7 @@ import '../css/ListOfAllEntity.css';
 class ListOfEntities extends Component {
 	constructor(props) {
 		super(props);
-
+		console.log('this.props.entity : ',this.props.entity )
 		this.state = {
 			firstname: '',
 			supplierListOne: '',
@@ -48,12 +50,21 @@ class ListOfEntities extends Component {
 	}
 
 	componentDidMount() {
+		console.log("this.props",this.props);
 		this.getEntities();
 		this.getStates('IN');
-
+		this.setState({
+			entityType : this.props.entity
+		})
 		//by default All flter button should be active  
 		$(".allBtn").css("color", "#fff");
 		$(".allBtn").css("background", "#0275ce");
+	}
+
+	componentWillReceiveProps(nextProps){
+		this.setState({
+			entityType : nextProps.entity
+		})
 	}
 
 	getStates(StateCode) {
@@ -93,6 +104,7 @@ class ListOfEntities extends Component {
 			.join(' ');
 	}
 	getEntities() {
+		console.log('this.state.entityType: ',this.state.entityType)
 		axios.get("/api/entitymaster/get/count/"+this.state.entityType)
 			.then((response) => {
 				this.setState({
@@ -217,7 +229,7 @@ class ListOfEntities extends Component {
 	}
 
 	selectFilter(event){
-		$(".filterWrapper").show();
+		$(".filterWrapper").toggle();
 	}
 
 	onSelectedItemsChange(filterType, selecteditems){
@@ -260,10 +272,13 @@ class ListOfEntities extends Component {
     }
     redirectTo(event)
     {
-    	this.props.history.push("/"+this.state.pathname+"/basic-details")
+    		console.log('this.state.entityType: ',this.state.entityType)
+    	this.props.history.push("/"+this.state.entityType+"/basic-details")
     }
     
 	render() {
+    		// console.log('this.state.entityType: ',this.state.entityType)
+		
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div className="row">
@@ -299,7 +314,7 @@ class ListOfEntities extends Component {
 	                                </div>
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 firstElement filterWrapper">
 										<div className="col-lg-2 col-md-12 col-sm-12 col-xs-12 nopadding">
-											<button type="button" className="reset selheight" onClick={this.resetFilter.bind(this)}>RESET FILTER</button>
+											<button type="button" className="reset selheight" onClick={this.resetFilter.bind(this)}>RESET FILTERS</button>
 										</div>
 										
 										<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
@@ -319,7 +334,7 @@ class ListOfEntities extends Component {
 										<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
 											<select className="form-control resetinp selheight districtsdata" ref="district" name="district" value={this.state.district}
 											onChange={this.onSelectedItemsChange.bind(this,'district')}>
-												<option  disabled>Select District</option>
+												<option value="Select District" disabled>Select District</option>
 												{this.state.districtArray && this.state.districtArray.length > 0 &&
 													this.state.districtArray.map((districtdata, index) => {
 														return (
@@ -418,4 +433,4 @@ class ListOfEntities extends Component {
 		);
 	}
 }
-export default ListOfEntities;
+export default withRouter(ListOfEntities);

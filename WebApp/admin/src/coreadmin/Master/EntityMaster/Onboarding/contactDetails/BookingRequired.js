@@ -11,9 +11,9 @@ class BookingRequired extends React.Component {
         super(props);
         this.state = {
             pathname : props && props.pathname ? props.pathname : '',
-            'preApprovedAmount'      : props && props.editData != null ? props.editData.preApprovedAmount :'',
-            'preApprovedRides' : props && props.editData != null ? props.editData.preApprovedRides : '',
-            'preApprovedKilometers' : props && props.editData != null ? props.editData.preApprovedKilometers : '',
+            'preApprovedAmount'      : props && props.editData != null ? props.editData.preApprovedAmount :0,
+            'preApprovedRides' : props && props.editData != null ? props.editData.preApprovedRides : 0,
+            'preApprovedKilometers' : props && props.editData != null ? props.editData.preApprovedKilometers : 0,
             'approvingAuthorityId1'     : props && props.editData != null ? props.editData.approvingAuthorityId1 :'',
             'approvingAuthorityId2'     : props && props.editData != null ? props.editData.approvingAuthorityId2 :'',
             'approvingAuthorityId3'     : props && props.editData != null ? props.editData.approvingAuthorityId3 :'',
@@ -165,7 +165,7 @@ class BookingRequired extends React.Component {
                             <div className="col-md-12">
                               <div className="input-group" id="preApprovedAmount">
                                   <span className="input-group-addon transparent">Amount(&#8377;)</span>
-                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Amount" value={this.state.preApprovedAmount} ref="preApprovedAmount" name="preApprovedAmount" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)} required/>
+                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Amount" min="0" pattern="/^[0-9]+(,[0-9]+)*$/" value={this.state.preApprovedAmount} ref="preApprovedAmount" name="preApprovedAmount" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)} />
                               </div>
                             </div>
                         </div>
@@ -173,7 +173,7 @@ class BookingRequired extends React.Component {
                             <div className="col-md-12">
                               <div className="input-group" id="preApprovedRides">
                                   <span className="input-group-addon transparent">Rides</span>
-                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Rides" value={this.state.preApprovedRides} ref="preApprovedRides" name="preApprovedRides" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)} required />
+                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Rides" min="0" value={this.state.preApprovedRides} ref="preApprovedRides" name="preApprovedRides" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)}  />
                               </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@ class BookingRequired extends React.Component {
                             <div className="col-md-12">
                               <div className="input-group" id="preApprovedKilometers">
                                   <span className="input-group-addon transparent">Kilometer</span>
-                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Kilometer" value={this.state.preApprovedKilometers} ref="preApprovedKilometers" name="preApprovedKilometers" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)} required />
+                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Kilometer" min="0" value={this.state.preApprovedKilometers} ref="preApprovedKilometers" name="preApprovedKilometers" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)}  />
                               </div>
                             </div>
                         </div>
