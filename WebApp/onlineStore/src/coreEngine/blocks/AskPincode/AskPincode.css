@@ -58,8 +58,9 @@
 
 }
 .AllowDeliveryMsg{
-    margin-top: 10px;
+    margin-bottom: 10px;
     background-color: rgb(232, 247, 233);
+    margin-top: -22px;
 }
 .NotAllowDeliveryMsg {
     margin-bottom: 10px;

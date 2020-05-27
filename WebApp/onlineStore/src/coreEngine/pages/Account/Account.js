@@ -135,7 +135,7 @@ class Account extends Component{
                                                     Contact Number: {this.state.mobileNumber}
                                                 </p>
                                                 
-                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div data-toggle="modal" data-target="#checkoutAddressModal" onClick={this.getAddressId.bind(this)} id={this.state.deliveryAddressID} className="btn anasBtn"><i className="fa fa-pencil-square-o"></i> &nbsp; EDIT ADDRESS</div>
                                                 </div>
                                             </div>

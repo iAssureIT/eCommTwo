@@ -17,10 +17,39 @@ export default class AskPincode extends Component {
             "pincodeModal2"       : "false",
             "AllowDeliveryMsg"    : "",
             "NotAllowDeliveryMsg" : "",
+            "DeliveryStatus"      : "",
         }        
       }  
      componentDidMount(){
-       
+        var pincode = localStorage.getItem('pincode');
+      //when user visit the site second time, check again delivery is possible or not
+    //   if(localStorage.getItem('status') === "NotAllow"){
+    //     axios.get("/api/allowablepincode/checkpincode/"+pincode)
+    //           .then((response)=>{
+    //               var status = "";
+    //               if(response){          
+    //                   console.log("Askpincode Checking second time delivery========");
+    //                   if(response.data.message === "Delivery Available"){                              
+        
+    //                      localStorage.setItem("DeliveryStatus","Allowable");
+    //                      localStorage.setItem("status","Allow");
+    //                      this.setState({
+    //                           DeliveryStatus : "Allowable",
+    //                      })
+    //                      console.log("Delivery Status======",this.state.DeliveryStatus);
+    //                      console.log("delivery allow", localStorage.getItem('status'));
+    //                   }else{
+    //                     console.log("Delivery not available");
+    //                     this.setState({
+    //                       DeliveryStatus : "NotAllowable",
+    //                  })
+    //                   }
+    //               }
+    //           })
+    //           .catch((error)=>{
+    //               console.log('error', error);
+    //           })
+    //     }
      }
  
       getPincodeVlue(event){
@@ -39,7 +68,10 @@ export default class AskPincode extends Component {
                         "pincode" : userPincode,
                         "status"  : "notAllow"
                         };
-        localStorage.setItem("pincodData", JSON.stringify(pincodData));
+
+        localStorage.setItem("pincode",userPincode);
+        // localStorage.setItem("status","notAllow");
+        // localStorage.setItem("pincodData", JSON.stringify(pincodData));
 
         axios.get("/api/allowablepincode/checkpincode/"+userPincode)
             .then((response)=>{
@@ -49,19 +81,23 @@ export default class AskPincode extends Component {
                         this.setState({
                         	AllowDeliveryMsg  : "We can deliver in your area of Pincode " +this.state.pincode +" . Continue Your Shopping!",					
                         }); 
-                        $('.AllowDeliveryMsg').show();                                           
-                        var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
-                        pincodeObj.status = "Allow";
-                        localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
+                        $('.AllowDeliveryMsg').show();    
+                        $('.NotAllowDeliveryMsg').hide();                                        
+                        // var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
+                        // pincodeObj.status = "Allow";
+                        localStorage.setItem("status","Allow");
+                        console.log("pincode===",localStorage.getItem('pincode'));
+                        // localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
                                
                     }else{
                         this.setState({
                             NotAllowDeliveryMsg : "Sorry... We can not deliver in your area of Pincode " +this.state.pincode +" . Check again after few days!",
                         }); 
-                        $('.NotAllowDeliveryMsg').show();                       
-                        var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
-                        pincodeObj.status = "NotAllow";
-                        localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
+                        $('.NotAllowDeliveryMsg').show(); 
+                        $('.AllowDeliveryMsg').hide();                       
+                        // var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
+                        // pincodeObj.status = "NotAllow";
+                        localStorage.setItem("status", "NotAllow");
                         
                     }           
                 }
@@ -80,11 +116,20 @@ export default class AskPincode extends Component {
                         <div className="modal-content pincodemodal">                            
                             <div className="modal-body">   
                             <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>                             
+                                {/* {this.state.DeliveryStatus === "Allowable"
+                                ?
+                                    <div>Delivery allow</div>
+                                :
+                                    <div>Delivery Not allow</div>
+                                } */}
                                 <form>                                    
                                     <div className="col-lg-12 col-md-12 addPincode">
                                     <div id="pincode" className="Pincode_div">
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NotAllowDeliveryMsg">
                                             {this.state.NotAllowDeliveryMsg}                                    
+                                        </div>
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 AllowDeliveryMsg">
+                                            {this.state.AllowDeliveryMsg}                                            
                                         </div>
                                         <div  className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>
@@ -94,9 +139,7 @@ export default class AskPincode extends Component {
                                                 ref="pincode" name="pincode" placeholder = "Enter Pincode..."onChange={this.getPincodeVlue.bind(this)}/>
                                             <button className="col-lg-3 col-md-3 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
                                         </div>
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 AllowDeliveryMsg">
-                                            {this.state.AllowDeliveryMsg}                                            
-                                        </div>
+                                        
                                     </div>
                                     </div>
                                 </form>

@@ -6,6 +6,9 @@ import Message from '../../blocks/Message/Message.js';
 import 'jquery-validation';
 import "../../../sites/currentSite/pages/Address.css";
 import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/js/modal.js';
+// import 'bootstrap/js/collapse.js';
 
 // import Sidebar from '../../common/Sidebar/Sidebar.js';
 // import _ from 'underscore';
@@ -160,14 +163,13 @@ class Address extends Component {
         var user_ID = localStorage.getItem("user_ID");
         // var deliveryAddressID = this.props.match.params.deliveryAddressID;
         console.log('deliveryAddressID', deliveryAddressID);
-        axios.get('/api/users/'+user_ID)
+        axios.get('/api/ecommusers/'+user_ID)
         .then((response)=>{            
             var deliveryAddress = response.data.deliveryAddress.filter((a)=>{return a._id === deliveryAddressID});
-            // console.log("deliveryAddress:" ,response.data.deliveryAddress);
+            console.log("deliveryAddress:" ,response.data.deliveryAddress);
 
-            this.getStates(deliveryAddress[0].countryCode);
-            // this.getStates("IN");
-            this.getDistrict(deliveryAddress[0].stateCode,deliveryAddress[0].countryCode)
+            // this.getStates(deliveryAddress[0].countryCode);            
+            // this.getDistrict(deliveryAddress[0].stateCode,deliveryAddress[0].countryCode)
             this.setState({
                 "modalname"            : deliveryAddress[0].name,
                 "modalemail"           : deliveryAddress[0].email,
@@ -190,7 +192,7 @@ class Address extends Component {
         });
     }
     componentWillReceiveProps(nextProps){
-        this.edit(nextProps.addressId);
+        // this.edit(nextProps.addressId);
     }
     handleChange(event) {
         this.setState({
@@ -272,7 +274,7 @@ class Address extends Component {
             area : area,
             city : city,
             district : district,
-            states: state,
+            state: state,
             country:country,
             pincode: pincode,
             stateCode:stateCode,
@@ -365,7 +367,7 @@ class Address extends Component {
         if(deliveryAddressID){
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
                 console.log('if form deliveryAddressID', formValues);
-                axios.patch('/api/users/updateuseraddress', formValues)
+                axios.patch('/api/ecommusers/updateuseraddress', formValues)
                 .then((response)=>{
                     console.log("response after update:",response.data.message);
                 this.setState({
@@ -384,15 +386,15 @@ class Address extends Component {
                 }, 3000);
                     // swal(response.data);
                     this.props.opDone();
-                    $(".checkoutAddressModal").hide();
+                    // $(".checkoutAddressModal").hide();
                     
                     // $(".checkoutAddressModal").css({display: 'none'});
                     // $(".modal-header").css({display: 'block'});
                     // $(".modal-body").css({display: 'block'});
                     // $(".modal-footer").css({display: 'block'});
                     // $(".checkoutAddressModal").removeClass("in");
-                    $(".modal-backdrop").hide();
-                    window.location.reload();
+                    // $(".modal-backdrop").hide();
+                    // window.location.reload();
                 })
                 .catch((error)=>{
                     console.log('error', error)
@@ -401,7 +403,7 @@ class Address extends Component {
         }else{
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
                 console.log('else form deliveryAddressID', formValues);
-                axios.patch('/api/users/patch/address', formValues)
+                axios.patch('/api/ecommusers/patch/address', formValues)
                 .then((response)=>{
                     console.log(response.data.message);
                 this.setState({
@@ -420,14 +422,16 @@ class Address extends Component {
                 }, 3000);
                     // swal(response.data.message);
                     this.props.opDone();
-                    $(".checkoutAddressModal").hide();
+                    // $(".checkoutAddressModal").hide();
+                    $(".checkoutAddressModal").show();
+                    
                     // $(".checkoutAddressModal").css({display: 'none'});
                     $(".modal-header").css({display: 'block'});
-                    // $(".modal-body").css({display: 'block'});
+                    $(".modal-body").css({display: 'block'});
                     $(".modal-footer").css({display: 'block'});
                     // $(".checkoutAddressModal").removeClass("in");
-                    $(".modal-backdrop").hide();
-                    window.location.reload();
+                    // $(".modal-backdrop").hide();
+                    // window.location.reload();
                 })
                 .catch((error)=>{
                     console.log('error', error)
@@ -475,7 +479,27 @@ class Address extends Component {
         console.log("On address Page===");     
         return (
             <div>
-            <Message messageData={this.state.messageData} />            
+            <Message messageData={this.state.messageData} />   
+{/* 
+            <div id="myModal" className="modal fade" role="dialog">
+            <div className="modal-dialog">
+                
+                <div className="modal-content">
+                <div className="modal-header">
+                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+                    <h4 className="modal-title">Modal Header</h4>
+                </div>
+                <div className="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+
+            </div>
+            </div> */}
+
             <div className="modal addressModal col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 checkoutAddressModal NOpadding" id="checkoutAddressModal" role="dialog">                
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">

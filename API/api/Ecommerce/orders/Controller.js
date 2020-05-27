@@ -162,60 +162,58 @@ exports.insert_orders = (req,res,next)=>{
                   
                 }
                 //body += footer;
-                console.log('body',body)
-                request({
-                    "method"    : "POST",
-                    "url"       : "http://localhost:" + gloabalVariable.PORT + "/send-email",
-                    "body"      :   {
-                                        "email"     : data.profile.emailId,
-                                        "subject"   : mailSubject,
-                                        "text"      : mailSubject,
-                                        "mail"      : body 
-                                        //"mail"      : 'Hello '+data.profile.fullName+','+'\n'+mailText,
-                                        // "mail"      : 'Hello '+data.profile.fullName+','+'\n'+"\n <br><br>Your Order has been placed successfully and will be dispached soon."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team GangaExpress',
-                                    },
-                    "json"      : true,
-                    "headers"   : { "User-Agent": "Test App" }
-                  })
-                  .then((sentemail)=>{
-                      res.header("Access-Control-Allow-Origin","*");
-                      res.status(200).json({ "message": 'Order placed successfully' });
-                  })
-                  .catch((err) =>{
-                    console.log('e', error);
-                      res.status(500).json({
-                          error: err
-                      });
-                  }); 
+                // console.log('body',body)
+                // request({
+                //     "method"    : "POST",
+                //     "url"       : "http://localhost:" + gloabalVariable.PORT + "/send-email",
+                //     "body"      :   {
+                //                         "email"     : data.profile.emailId,
+                //                         "subject"   : mailSubject,
+                //                         "text"      : mailSubject,
+                //                         "mail"      : body 
+                //                         //"mail"      : 'Hello '+data.profile.fullName+','+'\n'+mailText,
+                //                         // "mail"      : 'Hello '+data.profile.fullName+','+'\n'+"\n <br><br>Your Order has been placed successfully and will be dispached soon."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team GangaExpress',
+                //                     },
+                //     "json"      : true,
+                //     "headers"   : { "User-Agent": "Test App" }
+                //   })
+                //   .then((sentemail)=>{
+                //       res.header("Access-Control-Allow-Origin","*");
+                //       res.status(200).json({ "message": 'Order placed successfully' });
+                //   })
+                //   .catch((err) =>{
+                //     console.log('e', error);
+                //       res.status(500).json({
+                //           error: err
+                //       });
+                //   }); 
               })
-              .catch()
-
+              .catch()          
           
           
-          
-          request({
-            "method"    : "POST",
-            "url"       : "http://localhost:"+gloabalVariable.PORT+"/send-email",
-            "body"      :  {
-                                "email"     : "priya.chavan@iassureit.com",
-                                "subject"   : 'Order Placed Successfully',
-                                "text"      : "WOW Its done",
-                                "mail"      : 'Hello '+'Admin'+','+'\n'+"\n <br><br>You have an order placed by "+data.profile.fullName+"."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team AnasHandicraft',
-                          },
-            "json"      : true,
-            "headers"   : {
-                            "User-Agent": "Test App"
-                        }
-          })
-          .then((sentemail)=>{
-              res.header("Access-Control-Allow-Origin","*");
-              res.status(200).json({message:"Mail Sent successfully"});
-          })
-          .catch((err) =>{
-              res.status(500).json({
-                  error: err
-              });
-          });
+          // request({
+          //   "method"    : "POST",
+          //   "url"       : "http://localhost:"+gloabalVariable.PORT+"/send-email",
+          //   "body"      :  {
+          //                       "email"     : "iassureitmail@gmail.com",
+          //                       "subject"   : 'Order Placed Successfully',
+          //                       "text"      : "WOW Its done",
+          //                       "mail"      : 'Hello '+'Admin'+','+'\n'+"\n <br><br>You have an order placed by "+data.profile.fullName+"."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team AnasHandicraft',
+          //                 },
+          //   "json"      : true,
+          //   "headers"   : {
+          //                   "User-Agent": "Test App"
+          //               }
+          // })
+          // .then((sentemail)=>{
+          //     res.header("Access-Control-Allow-Origin","*");
+          //     res.status(200).json({message:"Mail Sent successfully"});
+          // })
+          // .catch((err) =>{
+          //     res.status(500).json({
+          //         error: err
+          //     });
+          // });
           Carts.findOne({"user_ID":req.body.user_ID})
           .exec()
           .then(userCart=>{

@@ -14,14 +14,21 @@ export default class AllowdeliveryModal extends Component {
 
     componentDidMount(){
     } 
-    componentWillReceiveProps(){
+    componentWillMount(){
         
-        var pincodeObj  = JSON.parse(localStorage.getItem("pincodData"));
-        console.log("pincodeObj:",pincodeObj);
-        this.setState({
-                    pincode : pincodeObj.pincode,
-        });
-        console.log("allowdelivery modal======",this.state.pincode);   
+        // var pincodeObj  = JSON.parse(localStorage.getItem("pincodData"));
+        // console.log("pincodeObj:",pincodeObj);
+        var pincode = localStorage.getItem('pincode');
+        var DeliveryStatus = localStorage.getItem("DeliveryStatus");
+        if(pincode && DeliveryStatus){
+            this.setState({
+                pincode : pincode,
+                DeliveryStatus : DeliveryStatus,
+            });
+            console.log("allowdelivery modal======",this.state.pincode); 
+            console.log("allowdelivery modal deliveryStatus======",this.state.DeliveryStatus);   
+        }        
+        
     }
   render() {
 		return (
@@ -34,9 +41,16 @@ export default class AllowdeliveryModal extends Component {
                                                                    
                                 <div className="col-lg-12 col-md-12 addPincode">
                                 <div id="pincode" className="Pincode_div">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">                                            
-                                        "Your saved Pincode is {this.state.pincode}. Delivery is possible in this area. Continue Your Shopping!"                        
-                                    </div>                                       
+                                    {this.state.DeliveryStatus === "Allowable"
+                                        ?
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">                                            
+                                            "Your saved Pincode is {this.state.pincode}. Delivery is possible in this area. Continue Your Shopping!"                        
+                                        </div>
+                                        :
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">                                            
+                                            "Your saved Pincode is {this.state.pincode}. Sorry!! Delivery is still not possible in this area. Please check after some days! When delivery is started in your area, we will notify you on mobile and email."                        
+                                        </div>
+                                    }                                       
                                 </div>
                                 </div>
                                 

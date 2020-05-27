@@ -97,20 +97,19 @@ catogeryvaluebg.headerflow{
   text-decoration: none;
   color:#A2632C;
 }
-
-.cartvalue_un{
-    left: 18px;
-    top: 17px;
-    padding-bottom: 15px;
-    cursor: pointer;
-    font-size: 13px;
-    color: #ffffff;
-    position: absolute;
-    width: 17px;
-    height: 17px;
-    background-color: #1faf1d;
-    border-radius: 25px;
-    padding-left: 3px;
+.cartvalue_un {
+  left: 19px;
+  top: 17px;
+  padding-bottom: 15px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #ffffff;
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  background-color: #1faf1d;
+  border-radius: 25px;
+  padding-left: 6px;
 }
 
 .cartitemscss{
@@ -988,7 +987,9 @@ li.level1.dropdown a {
 .headerlia{
   font-size: 14px;
 }
-
+.swal-button {
+  background-color: #80b435 !important;
+}
 
 /*.dropbtn {
   background-color: #4CAF50;

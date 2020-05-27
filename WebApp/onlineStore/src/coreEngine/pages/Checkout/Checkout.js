@@ -258,7 +258,7 @@ class Checkout extends Component {
     }
     getUserAddress() {
         var user_ID = localStorage.getItem('user_ID');
-        axios.get("/api/users/" + user_ID)
+        axios.get("/api/ecommusers/" + user_ID)
             .then((response) => {
                 // console.log('res', response.data.profile);
                 this.setState({
@@ -572,6 +572,7 @@ class Checkout extends Component {
               }, 6000);
         }else{
             if (this.state.deliveryAddress && this.state.deliveryAddress.length > 0) {
+                console.log("Inside delivery address available");
                 var deliveryAddress = this.state.deliveryAddress.filter((a, i) => {
                     return a._id === checkoutAddess
                 })
@@ -593,7 +594,9 @@ class Checkout extends Component {
                     "country": this.country,
             
                 }
+                
             }else{
+                console.log("inside else new address");
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
                     "name": this.state.username,
@@ -615,7 +618,7 @@ class Checkout extends Component {
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     console.log("addressValues:===",addressValues);
-                    axios.patch('/api/users/patch/address', addressValues)
+                    axios.patch('/api/ecommusers/patch/address', addressValues)
                     .then((response) => {
                         $('.fullpageloader').hide();
                         this.setState({
@@ -633,8 +636,8 @@ class Checkout extends Component {
                             })
                         }, 3000);
                         this.getUserAddress();
-                        $(".checkoutAddressModal").hide();
-                        $(".modal-backdrop").hide();
+                        // $(".checkoutAddressModal").hide();
+                        // $(".modal-backdrop").hide();
 
                     })
                     .catch((error) => {
@@ -737,7 +740,7 @@ class Checkout extends Component {
         console.log("addressValues:",addressValues);
         if ($('#modalAddressForm').valid()) {
 
-            axios.patch('/api/users/patch/address', addressValues)
+            axios.patch('/api/ecommusers/patch/address', addressValues)
                 .then((response) => {
                     this.setState({
                       messageData : {
@@ -753,8 +756,8 @@ class Checkout extends Component {
                         })
                     }, 3000);
                     this.getUserAddress();
-                    $(".checkoutAddressModal").hide();
-                    $(".modal-backdrop").hide();
+                    // $(".checkoutAddressModal").hide();
+                    // $(".modal-backdrop").hide();
 
                 })
                 .catch((error) => {
@@ -828,49 +831,55 @@ class Checkout extends Component {
     
     handleSelect = address => {    
         geocodeByAddress(address)
-         .then((results) =>{
-          for (var i = 0; i < results[0].address_components.length; i++) {
-              for (var b = 0; b < results[0].address_components[i].types.length; b++) {
-                  switch (results[0].address_components[i].types[b]) {
-                      case 'sublocality_level_1':
-                          var area = results[0].address_components[i].long_name;
-                          break;
-                      case 'sublocality_level_2':
-                          area = results[0].address_components[i].long_name;
-                          break;
-                      case 'locality':
-                          var city = results[0].address_components[i].long_name;
-                          break;
-                      case 'administrative_area_level_1':
-                          var state = results[0].address_components[i].long_name;
-                          var stateCode = results[0].address_components[i].short_name;
-                          break;
-                      case 'administrative_area_level_2':
-                          var district = results[0].address_components[i].long_name;
-                          break;
-                      case 'country':
-                         var country = results[0].address_components[i].long_name;
-                         var countryCode = results[0].address_components[i].short_name;
-                          break;
-                      case 'postal_code':
-                         var pincode = results[0].address_components[i].long_name;
-                          break;
-                      default :
-                      break;
-                  }
-              }
-          }
-    
-          this.setState({
-            area : area,
-            city : city,
-            district : district,
-            states: state,
-            country:country,
-            pincode: pincode,
-            stateCode:stateCode,
-            countryCode:countryCode
-          })  
+        .then((results) =>{
+            if(results){
+                console.log("result===",results);
+            for (var i = 0; i < results[0].address_components.length; i++) {
+                for (var b = 0; b < results[0].address_components[i].types.length; b++) {
+                    switch (results[0].address_components[i].types[b]) {
+                        case 'sublocality_level_1':
+                            var area = results[0].address_components[i].long_name;
+                            console.log("area===",area);
+                            break;
+                        case 'sublocality_level_2':
+                            area = results[0].address_components[i].long_name;
+                            break;
+                        case 'locality':
+                            var city = results[0].address_components[i].long_name;
+                            console.log("area===",city);
+                            break;
+                        case 'administrative_area_level_1':
+                            var state = results[0].address_components[i].long_name;
+                            var stateCode = results[0].address_components[i].short_name;
+                            break;
+                        case 'administrative_area_level_2':
+                            var district = results[0].address_components[i].long_name;
+                            break;
+                        case 'country':
+                            var country = results[0].address_components[i].long_name;
+                            var countryCode = results[0].address_components[i].short_name;
+                            break;
+                        case 'postal_code':
+                            var pincode = results[0].address_components[i].long_name;
+                            break;
+                        default :
+                        break;
+                    }
+                }
+            }
+        
+            this.setState({
+                area       : area,
+                city       : city,
+                district   : district,
+                state      : state,
+                country    :country,
+                pincode    : pincode,
+                stateCode  :stateCode,
+                countryCode:countryCode
+            }) 
+            console.log("setstate:", this.state.area);
+            }  
           
         })
         
@@ -905,8 +914,7 @@ class Checkout extends Component {
                 <div className="row">
                     <Loader type="fullpageloader" /> 
                     <Address opDone={this.opDones.bind(this)}/>
-                    <SmallBanner bannerData={this.state.bannerData} />
-                    
+                    <SmallBanner bannerData={this.state.bannerData} />                    
                 
                     <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                         <form id="checkout">
@@ -941,7 +949,7 @@ class Checkout extends Component {
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <input type="radio" value={data._id} name="checkoutAddess" required /> &nbsp;
-                                                            <span className="checkoutADDCss"><b>{data.name}</b> <br/> {data.addressLine1} {data.addressLine2}, {data.city}, {data.district}, {data.state},{data.pincode} {data.country}.  <br/>Email: {data.email} <br/>Mobile: {data.mobileNumber} <br/><br/></span>
+                                                            <span className="checkoutADDCss"><b>{data.name}</b> <br/>{data.addressLine2}, &nbsp; {data.addressLine1}, {/*{data.city}, {data.district}, {data.state},{data.pincode} {data.country}.*/}  <br/>Email: {data.email} <br/>Mobile: {data.mobileNumber} <br/><br/></span> 
                                                         </div>
                                                     );
                                                 })
@@ -950,7 +958,7 @@ class Checkout extends Component {
                                             }
                                             
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
-                                                <button className="btn modalBtn" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
+                                                <button className="btn modalBtn anasBtn" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
                                             </div>
                                         </div>
                                         :
@@ -972,7 +980,7 @@ class Checkout extends Component {
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">House No/Office No <span className="required">*</span></label>
-                                                <input type="text" minLength="10" ref="addressLine2" name="addressLine2" id="addressLine2" value={this.state.addressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                <input type="text" ref="addressLine2" name="addressLine2" id="addressLine2" value={this.state.addressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >                                            
                                             <PlacesAutocomplete value={this.state.addressLine1}

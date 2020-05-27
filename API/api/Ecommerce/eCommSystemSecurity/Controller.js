@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 var ObjectID = require('mongodb').ObjectID;
 var request = require('request-promise');
-const User = require('../userManagement/ModelUsers.js');
-const Role = require('../rolesManagement/ModelRoles.js');
+const User = require('../../coreAdmin/userManagement/ModelUsers.js');
+const Role = require('../../coreAdmin/rolesManagement/ModelRoles.js');
 const globalVariable = require("../../../nodemon.js");
 
 
@@ -319,7 +319,7 @@ exports.update_user_details = (req, res, next) => {
 
 exports.add_user_address = (req, res, next) => {
 	// var roleData = req.body.role;
-	// console.log("inside update user address",req.body);
+	console.log("inside update user address",req.body);
 	User.updateOne(
 		{ "_id": req.body.user_ID, "deliveryAddress[0]._id": req.body.deliveryAddressID },
 		{
@@ -375,6 +375,7 @@ exports.add_user_address = (req, res, next) => {
 };
 exports.add_delivery_address = (req, res, next) => {
 	console.log("inside add delivery req body:",req.body);
+	console.log("userId:===",req.body.user_ID);
 	User.updateOne(
 		{ '_id': req.body.user_ID },
 		{
@@ -385,7 +386,7 @@ exports.add_delivery_address = (req, res, next) => {
 					"addressLine1": req.body.addressLine1,
 					"addressLine2": req.body.addressLine2,
 					"pincode": req.body.pincode,
-					"block": req.body.block,
+					"area": req.body.area,
 					"district" : req.body.district,
 					"city": req.body.city,
 					"stateCode": req.body.stateCode,
@@ -393,7 +394,7 @@ exports.add_delivery_address = (req, res, next) => {
 					"countryCode": req.body.countryCode,
 					"country": req.body.country,
 					"mobileNumber": req.body.mobileNumber,
-					"addType": ""
+					"addType": req.body.addType
 				}]
 			}
 		})

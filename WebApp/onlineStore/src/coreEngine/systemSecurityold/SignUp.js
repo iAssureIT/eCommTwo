@@ -255,7 +255,6 @@ class SignUp extends Component {
 	    $('.hidePwd').toggleClass('hidePwd1');
 	    return $('#signupPassword').attr('type', 'text');
 	}
-
 	hideSignUpPass() {
 	    $('.showPwd').toggleClass('showPwd1');
 	    $('.hidePwd').toggleClass('hidePwd1');

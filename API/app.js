@@ -41,9 +41,9 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	// Routes which should handle requests
 	//========== Core Admin ===================
 
-	const systemRoutes			   	 		= require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
-	const usersRoutes			   		 		= require("./api/coreAdmin/userManagement/RoutesUsers.js");
-	const rolesRoutes			   		 		= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
+	const systemRoutes			   	    = require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
+	const usersRoutes			   		= require("./api/coreAdmin/userManagement/RoutesUsers.js");
+	const rolesRoutes			   		= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
 	const companySettingRoutes	 		= require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
 	const notificationRoutes	   		= require("./api/coreAdmin/notificationManagement/RoutesMasterNotification.js");
 	const projectSettingsurl 	   		= require("./api/coreAdmin/projectSettings/RoutesProjectSettings.js");
@@ -51,32 +51,32 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	const locationTypeMasterRoutes 	= require("./api/coreAdmin/locationTypeMaster/RoutesLocationTypeMaster.js");
 
 	//========== eCommerce Operations ===========
-	const eCommUsersRoutes          = require("./api/Ecommerce/routes/eCommSystemSecurity.js");
-	const productsRoutes						= require("./api/Ecommerce/products/Routes"); 
-	const categoryRoutes						= require("./api/Ecommerce/categories/Routes"); 
-	const ordersRoutes							= require("./api/Ecommerce/orders/Routes"); 
-	const cartsRoutes								= require("./api/Ecommerce/cart/Routes"); 
-	const wishlistRoutes						= require("./api/Ecommerce/wishlist/Routes"); 
-	const SectionRoutes			  			= require("./api/Ecommerce/sections/Routes"); 
+	const eCommUsersRoutes          = require("./api/Ecommerce/eCommSystemSecurity/Routes");
+	const productsRoutes			= require("./api/Ecommerce/products/Routes"); 
+	const categoryRoutes			= require("./api/Ecommerce/categories/Routes"); 
+	const ordersRoutes				= require("./api/Ecommerce/orders/Routes"); 
+	const cartsRoutes				= require("./api/Ecommerce/cart/Routes"); 
+	const wishlistRoutes			= require("./api/Ecommerce/wishlist/Routes"); 
+	const SectionRoutes			  	= require("./api/Ecommerce/sections/Routes"); 
 	const taxSetting          	    = require("./api/Ecommerce/taxManagement/Routes");
 	const ReturnedProductsRoutes    = require("./api/Ecommerce/returnedProducts/Routes"); 
-	const BulkUploadTemplate				= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
+	const BulkUploadTemplate		= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
 	const adminPreference     	    = require("./api/Ecommerce/adminPreference/Routes");
 
 
 	//=========== Entity master ===============
-	const entityRoutes			    		= require("./api/coreAdmin/entityMaster/RoutesEntityMaster.js");
+	const entityRoutes			    = require("./api/coreAdmin/entityMaster/RoutesEntityMaster.js");
 	
 	//=========== Allowable Pincode ============
 	const pincodesRoute             = require("./api/Ecommerce/allowablePincodes/Routes.js");
 
 	//========== Vendor, BA, Customer Management ===========
-	const vendorsRoutes			    		= require("./api/Ecommerce/vendors/Routes"); 
+	const vendorsRoutes			    = require("./api/Ecommerce/vendors/Routes"); 
 	const vendorCategoryRoutes	    = require("./api/Ecommerce/vendorCategory/Routes"); 
 	const vendorLocationTypeRoutes  = require("./api/Ecommerce/vendorLocationType/Routes"); 
-	const BARoutes									= require("./api/Ecommerce/businessAssociate/Routes"); 
-	const customerQueryRoutes				= require("./api/Ecommerce/customerQuery/Routes"); 
-	const customerReviewRoutes			= require("./api/Ecommerce/customerReview/Routes"); 
+	const BARoutes				    = require("./api/Ecommerce/businessAssociate/Routes"); 
+	const customerQueryRoutes		= require("./api/Ecommerce/customerQuery/Routes"); 
+	const customerReviewRoutes		= require("./api/Ecommerce/customerReview/Routes"); 
 
 
 	//========== Franchise Model ===========
@@ -86,6 +86,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 
 
 	const AdminPORoutes					= require("./api/Ecommerce/adminShoppingList/Routes.js");
+
 
 
    /*WreHouse Master*/

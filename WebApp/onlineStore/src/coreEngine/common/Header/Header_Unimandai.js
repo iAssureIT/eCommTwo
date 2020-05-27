@@ -375,8 +375,8 @@ componentWillMount() {
       })
   }
   render() {
-    console.log('recentCartData', this.props.recentCartData.length);
-    console.log('recentCartData item====', this.props.recentCartData);
+    // console.log('recentCartData', this.props.recentCartData.length);
+    // console.log('recentCartData item====', this.props.recentCartData);
     
     const user_ID = localStorage.getItem("user_ID");
     // console.log("user_ID:",user_ID);

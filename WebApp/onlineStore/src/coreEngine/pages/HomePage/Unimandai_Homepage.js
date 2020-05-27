@@ -35,41 +35,44 @@ class HomePage extends Component {
       // this.bestSellerData();
     }  
     componentDidMount() {
-
       const preferences = localStorage.getItem("preferences");      
       // console.log("localstorage preferences:=============",preferences);
       this.setState({"askPincodeToUser" : preferences});    
       // console.log("askPincodeToUser-----------",this.state.askPincodeToUser);  
       
-      var pincodeObj  = JSON.parse(localStorage.getItem("pincodData"));
-      console.log("current localstorage pincodeObj---------",pincodeObj);
-      if(pincodeObj){
+      // var pincodeObj  = JSON.parse(localStorage.getItem("pincodData"));
+      var pincode = localStorage.getItem("pincode");
+      if(pincode){
+      console.log("current localstorage pincode---------",pincode);
       this.setState({
-                userPincode : pincodeObj.pincode,
+                userPincode : pincode,
       });
       console.log("user setstate varialble Pincode :=====",this.state.userPincode);
-      
-      if(pincodeObj.status === "NotAllow"){
-      var pincode = this.state.userPincode;
-      console.log("Pincode status:=====",pincodeObj.status);
-      console.log("inside if NOTallow Pincode Object:=====",pincodeObj.pincode);
-      axios.get("/api/allowablepincode/checkpincode/"+pincodeObj.pincode)
+
+      //when user visit the site second time, check again delivery is possible or not
+      if(localStorage.getItem('status') === "NotAllow"){
+      axios.get("/api/allowablepincode/checkpincode/"+pincode)
             .then((response)=>{
                 var status = "";
                 if(response){          
                     console.log("Checking second time delivery========");
                     if(response.data.message === "Delivery Available"){                                                                  
-                       var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
-                       pincodeObj.DeliveryStatus = "Allowable";
+                      //  var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
+                      //  pincodeObj.DeliveryStatus = "Allowable";
+                       localStorage.setItem("DeliveryStatus","Allowable");
+                       localStorage.setItem("status","Allow");
                        this.setState({
                             DeliveryStatus : "Allowable",
                        })
                        console.log("Delivery Status======",this.state.DeliveryStatus);
-                       pincodeObj.status = "Allow";
-                       localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
-                       console.log("delivery allow", localStorage.pincodData);
+                      //  pincodeObj.status = "Allow";
+                      //  localStorage.setItem("pincodData", JSON.stringify(pincodeObj));
+                       console.log("delivery allow", localStorage.getItem('status'));
                     }else{
                       console.log("Delivery not available");
+                      this.setState({
+                        DeliveryStatus : "NotAllowable",
+                   })
                     }
                 }
             })
@@ -77,7 +80,7 @@ class HomePage extends Component {
                 console.log('error', error);
             })
       }
-      console.log("pincodeObj:====",pincodeObj.pincode);
+      // console.log("pincodeObj:====",pincodeObj.pincode);
     }
       
       this.featuredProductData();
@@ -89,8 +92,47 @@ class HomePage extends Component {
        
   }
 
-    componentWillReceiveProps(){
-      // this.changeProductCateWise(categoryID, type);
+    componentWillMount(){
+      const preferences = localStorage.getItem("preferences");      
+      this.setState({"askPincodeToUser" : preferences});    
+      var pincode = localStorage.getItem("pincode");
+      if(pincode){
+      console.log("inside will mount localstorage pincode---------",pincode);
+      this.setState({
+                userPincode : pincode,
+      });
+      console.log("user setstate varialble Pincode :=====",this.state.userPincode);
+
+      //when user visit the site second time, check again delivery is possible or not
+      if(localStorage.getItem('status') === "NotAllow"){
+        console.log("inside component will recived props");
+      axios.get("/api/allowablepincode/checkpincode/"+pincode)
+            .then((response)=>{
+                var status = "";
+                if(response){          
+                    console.log("Checking second time delivery========");
+                    if(response.data.message === "Delivery Available"){                                                                  
+                       localStorage.setItem("DeliveryStatus","Allowable");
+                       localStorage.setItem("status","Allow");
+                       this.setState({
+                            DeliveryStatus : "Allowable",
+                       })
+                       console.log("Delivery Status======",this.state.DeliveryStatus);
+                       console.log("delivery allow", localStorage.getItem('status'));
+                    }else{
+                      console.log("Delivery not available");
+                      this.setState({
+                        DeliveryStatus : "NotAllowable",
+                   })
+                    }
+                }
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            })
+      }
+      // console.log("pincodeObj:====",pincodeObj.pincode);
+    }
     }
     featuredProductData(){
       var productType1 = 'featured';
@@ -203,7 +245,7 @@ class HomePage extends Component {
           ?
             this.state.userPincode
             ? 
-            this.state.DeliveryStatus === "Allowable"
+            this.state.DeliveryStatus
               ?
               <AllowdeliveryModal />    
               :

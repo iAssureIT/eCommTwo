@@ -166,7 +166,7 @@ class Edituser extends Component{
       "profileImage"  : this.state.profileImage
     }
     
-        axios.patch('/api/users/useraddress/'+userid, formvalues)
+        axios.patch('/api/ecommusers/useraddress/'+userid, formvalues)
         .then((response)=> {  
           this.setState({
             messageData : {

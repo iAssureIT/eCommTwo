@@ -42,6 +42,27 @@ const userSchema = mongoose.Schema({
 						createdOn 				: String,
 					},
 	roles       : [String],
+	deliveryAddress : [
+		
+		{
+			"user_ID"      : String,
+			"name"         : String,
+			"email"        : String,
+			"addressLine1" : String,
+			"addressLine2" : String,
+			"pincode"      : String,
+			"district"     : String,
+			"city"         : String,
+			"stateCode"    : String,
+			"state"        : String,
+			"countryCode"  : String,
+			"country" 	   : String,
+			"mobileNumber" : String,
+			"addType"	   : String,
+		}
+	
+
+],
 	statusLog   : [
 	                {
 	                	status 				: String,
