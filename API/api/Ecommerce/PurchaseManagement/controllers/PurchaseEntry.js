@@ -23,6 +23,9 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                     quantity                  : req.body.quantity,
                     unit                      : req.body.unit,
                     amount                    : req.body.amount,
+                    unitRate                  : req.body.unitRate,
+                    Details                   : req.body.Details,
+                    purchaseNumber            : req.body.purchaseNumber,
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
                 });
@@ -78,6 +81,9 @@ exports.update_PurchaseEntry = (req,res,next)=>{
                     quantity                  : req.body.quantity,
                     unit                      : req.body.unit,
                     amount                    : req.body.amount,
+                    unitRate                  : req.body.unitRate,
+                    Details                   : req.body.Details,
+                    purchaseNumber            : req.body.purchaseNumber,
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
                 }
@@ -101,6 +107,43 @@ exports.update_PurchaseEntry = (req,res,next)=>{
                 error: err
             });
         });
+};
+exports.get_datewise_purchaceEntry = (req, res, next)=>{
+    console.log("req body = ", req.params.purchaseDate);
+    const purchaseDate = req.params.purchaseDate;
+    console.log("purchaseDate",purchaseDate);
+    /*const monyr     = monthyear.split("-");
+    const year      = monyr[0];;
+    const month     = monyr[1];
+
+    const numberOfDaysInMonth = new Date(year,month,0).getDate();
+    const startDate = year+"-"+month+"-"+"01";
+    console.log("startDate--",startDate);
+    const endDate   = year+"-"+month+"-"+numberOfDaysInMonth;
+    console.log("endDate--",endDate);*/
+
+    PurchaseEntry.find({"purchaseDate":req.params.purchaseDate})
+    .then(data=>{
+       console.log("data----=",data);
+       res.status(200).json(data);   
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+
+    function getUserData(user_id){
+        return new Promise(function(resolve,reject){
+            User.findOne({_id : ObjectId(user_id)})
+                .then(staff => {
+                      resolve(staff);
+                })
+                .catch()
+        })
+    }
 };
 exports.list_purchaseEntry = (req, res, next)=>{
     PurchaseEntry.find({})

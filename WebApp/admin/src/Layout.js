@@ -83,12 +83,14 @@ import AllowablePincodes from './storeAdmin/allowablePincodes/AllowablePincodes.
 
 //=============== Purchase Management =================
 
-import PurchaseManagement from './storeAdmin/PurchaseManagement/PurchaseManagement.js';
-import FinishedGoods from './storeAdmin/PurchaseManagement/FinishedGoods.js';
+import PurchaseManagement  from './storeAdmin/PurchaseManagement/PurchaseManagement.js';
+import FinishedGoods       from './storeAdmin/PurchaseManagement/FinishedGoods.js';
 
+//=============== Purchase Management =================
 
+import Distribution       from './storeAdmin/DistributionManagement/Distribution.js';
 
-import AdminShoppingList from './storeAdmin/adminShoppingList/AdminShoppingList.js';
+import AdminShoppingList  from './storeAdmin/adminShoppingList/AdminShoppingList.js';
 
 
 import FranchiseShoppingList from './storeAdmin/FranchiseShoppingList/FranchiseShoppingList.js';
@@ -256,7 +258,10 @@ class Layout extends Component  {
                           <Route path="/purchase-management/:purchaseId"                  exact strict component = { PurchaseManagement }  />
                           <Route path="/finished-goods"                                   exact strict component={FinishedGoods} />
 
-                          <Route path="/finished-goods/:finishedGoodId"                       exact strict component={FinishedGoods} />
+                          <Route path="/finished-goods/:finishedGoodId"                    exact strict component={FinishedGoods} />
+
+                           <Route path="/distribution"                                    exact strict component={ Distribution } />
+                          <Route path="/distributiont/:purchaseId"                         exact strict component = { Distribution }  />
 
                           {/* Admin shopping List AdminShoppingList*/}
                           <Route path="/admin-shopping-list"                              exact strict component={AdminShoppingList} />

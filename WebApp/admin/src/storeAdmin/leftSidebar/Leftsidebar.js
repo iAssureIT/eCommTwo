@@ -209,6 +209,27 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li>
+                 <li className="sidebarMenuText">
+                  <a href="/distribution" >
+                    <i className="glyphicon glyphicon-briefcase" />
+                     Distribution Management
+                    {/* <i className="fa fa-sort-down pull-right"></i>*/}
+                  </a>
+                  <ul className="collapse list-unstyled" id="baData11">
+                    {/*<li>
+                      <a href="/purchase-management">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Purchase Entry</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/finished-goods">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Finished Goods Entry</span>
+                      </a>
+                    </li>*/}
+                  </ul>
+                </li>
                 <li className="sidebarMenuText">
                   <a href="#baData" data-toggle="collapse" aria-expanded="false">
                     <i className="glyphicon glyphicon-briefcase" />

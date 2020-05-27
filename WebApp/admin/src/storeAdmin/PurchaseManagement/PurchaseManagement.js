@@ -15,8 +15,12 @@ export default class PurchaseManagement extends React.Component {
 			      	purchaseStaff : '',
 			      	purchaseLocation : '',
 			      	quantity : '',
+			      	unitRate : '',
+			      	Details:'',
+			      	purchaseNumber:'',
 			      	product : '',
 			      	Units : '',
+			      	serchByDate:moment(new Date()).format("YYYY-MM-DD"),
 			      	"twoLevelHeader"    : {
 						            apply  : false,
 						           },
@@ -54,9 +58,12 @@ export default class PurchaseManagement extends React.Component {
 	
 
 	componentDidMount(){
+		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
+		// console.log("today",today);
+
 		var editId = this.props.match.params.purchaseId;
         console.log('ven', editId);
-		this.getData()
+        this.getData();
 
 	}
 	componentWillReceiveProps(nextProps) {
@@ -79,6 +86,9 @@ export default class PurchaseManagement extends React.Component {
 		      	"purchaseStaff" 	: response.data.purchaseStaff,
 		      	"purchaseLocation"  : response.data.purchaseLocation,
 		      	"quantity" 			: response.data.quantity,
+		      	"unitRate" 	        : response.data.unitRate,
+		      	"purchaseNumber"    : response.data.purchaseNumber,
+		      	"Details" 			: response.data.Details,
 		      	"productName" 		: response.data.product,
 		      	"unit" 				: response.data.Units,
             });
@@ -89,8 +99,10 @@ export default class PurchaseManagement extends React.Component {
         });
     }
 	getData(startRange, limitRange){ 
+		var dateToSearch=this.state.serchByDate;
+		console.log("dateToSearch", moment(dateToSearch).format("YYYY-MM-DD"));
 	 axios
-      .get('/api/purchaseentry/get/list')
+      .get('/api/purchaseentry/get/datewisepurchase/'+this.state.serchByDate)
       .then((response)=>{
         console.log("list===>",response.data);
         /*this.setState({
@@ -160,6 +172,23 @@ export default class PurchaseManagement extends React.Component {
 		event.preventDefault();
 					    
 	}
+	handleChangeDate(event){
+      event.preventDefault();
+      var dateVal = event.target.id;
+      // console.log("datVal",dateVal);
+      // const datatype = event.target.getAttribute('data-text');
+      const {name,value} = event.target;
+
+      this.setState({ 
+        [name]:value,
+ 
+      },()=>{
+      	console.log("date",this.state.serchByDate);
+		this.getData();
+
+      } );
+    }
+
 	handleChange(event){
       event.preventDefault();
 
@@ -177,6 +206,12 @@ export default class PurchaseManagement extends React.Component {
 		this.setState({product : valproduct});
 
     }
+    handleProduct1(event){
+    	var valpurchaseLocation = event.currentTarget.value;
+    	console.log("valpurchaseLocation",valpurchaseLocation);
+		this.setState({purchaseLocation : valpurchaseLocation});
+
+    }
     Submit(event){
     event.preventDefault();
 
@@ -188,6 +223,9 @@ export default class PurchaseManagement extends React.Component {
       	"quantity" 			: this.state.quantity,
       	"productName" 		: this.state.product,
       	"unit" 				: this.state.Units,
+      	"unitRate" 	    : this.state.unitRate,
+		"purchaseNumber"    : this.state.purchaseNumber,
+		"Details" 			: this.state.Details,
        
       };
       console.log("formValues1",formValues1);
@@ -210,7 +248,10 @@ export default class PurchaseManagement extends React.Component {
 		      	 purchaseLocation: "",  
 		      	 quantity        : "", 			
 		      	 product         : "", 		
-		      	 Units           : ""		
+		      	 Units           : "",
+		      	 unitRate    : "",
+			     purchaseNumber  : "",
+				 Details 		 :"",	
       	 })		
 	}
 	update(event){
@@ -224,6 +265,9 @@ export default class PurchaseManagement extends React.Component {
 	      	"quantity" 			: this.state.quantity,
 	      	"productName" 		: this.state.product,
 	      	"unit" 				: this.state.Units,
+	      	"unitRate" 	        : this.state.unitRate,
+			"purchaseNumber"    : this.state.purchaseNumber,
+			"Details" 			: this.state.Details,
         }
         /*if($("#taxMaster").valid()){*/
             axios.patch('/api/purchaseentry/patch/'+this.state.editId,formValues)
@@ -239,6 +283,9 @@ export default class PurchaseManagement extends React.Component {
 			      	"quantity" 			: "",
 			      	"productName" 		: "",
 			      	"unit" 				: "",
+                    "unitRate"      : "",
+				     "purchaseNumber"   : "",
+					 "Details" 		    :"",	
                      editId             : ""
                 })
             })
@@ -259,21 +306,40 @@ export default class PurchaseManagement extends React.Component {
 						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20">
 								<div className="row">
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
 										<label >Purchase Date</label>
 										<input type="Date"  className="form-control"  value={ this.state.purchaseDate} name="purchaseDate" refs="purchaseDate" onChange={this.handleChange.bind(this)} id="purchaseDate"/>
 									</div>
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-										<label >Purchase Staff</label>
-										<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
+									<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
+										<label >Supplier</label>
+										<input list="purchaseLocation" type="text" refs="purchaseLocation" className="form-control"    placeholder="Select Product" value={this.state.purchaseLocation}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct1.bind(this)} name="purchaseLocation" />
+	    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
+										
+										  <datalist id="purchaseLocation" name="purchaseLocation" >
+										    <option value="Open Market"/>
+										    {/*<option value="cauliflower"/>
+										    <option value="spinach"/>
+										    <option value="onion"/>
+										    <option value="garlic"/>*/}
+										  </datalist>
 									</div>
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-										<label >Purchase Location</label>
-										<input type="text" placeholder="Enter Purchase Location"  className="form-control"  value={ this.state.purchaseLocation} name="purchaseLocation" refs="purchaseLocation" onChange={this.handleChange.bind(this)} id="purchaseLocation"/>
+									
+									    <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+											<label >Purchase No</label>
+											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
+										</div>
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+											<label >Details</label>
+											<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
+										</div>
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+											<label >Purchased By(Staff Name)</label>
+											<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
+										</div>
 									</div>
-								</div>
+								
 								<div className="row">
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Select Product</label>
 										{/*<input type="text" className="form-control" id="email"/>*/}
 										<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
@@ -287,11 +353,15 @@ export default class PurchaseManagement extends React.Component {
 										    <option value="garlic"/>
 										  </datalist>
 									</div>
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<label >Unit Rate</label>
+										<input type="number" placeholder="1234" className="form-control" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate"/>
+									</div>
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Quantity</label>
 										<div className="">
-											<input type="number" placeholder="Enter quantity " className="h34 col-lg-9 col-md-9 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity"/>
-											<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-3 col-md-3 col-xs-4 col-sm-4 h34">
+											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity"/>
+											<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
 												<option selected={true} disabled={true}>-- Select --</option>
 											  	<option value="Kg">Kg</option>
 											  	<option value="Ltr">Ltr</option>
@@ -300,7 +370,7 @@ export default class PurchaseManagement extends React.Component {
 											</select>
 										</div>
 									</div>
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Amount</label>
 										<input type="number" placeholder="12345678" className="form-control" value={ this.state.amount} name="amount" refs="amount" onChange={this.handleChange.bind(this)} id="amount"/>
 									</div>
@@ -314,6 +384,14 @@ export default class PurchaseManagement extends React.Component {
 									
 								</div>
 							</form>
+						</div>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
+						  <div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
+							<div className="col-lg-4 col-md-4"><label>Search By Date:</label></div>
+							<div className="col-lg- col-md-6">
+							 <input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.serchByDate} name="serchByDate" refs="serchByDate" onChange={this.handleChangeDate.bind(this)} id="serchByDate"/>
+                            </div>
+						</div>
 						</div>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
 								<IAssureTable

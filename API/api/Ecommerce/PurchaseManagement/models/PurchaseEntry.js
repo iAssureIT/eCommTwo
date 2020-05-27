@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const PurchaseEntrySchema = mongoose.Schema({
 	_id			              : mongoose.Schema.Types.ObjectId,
-    purchaseDate              : String,
+    purchaseDate              : Date,
     purchaseStaff             : String,
     purchaseLocation          : String,
     productId                 : String,/*_id from productMaster*/
@@ -11,6 +11,9 @@ const PurchaseEntrySchema = mongoose.Schema({
     quantity                  : Number,
     unit                      : String,
     amount                    : Number,
+    unitRate                  : Number,
+    Details                   : String,
+    purchaseNumber            : Number,
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,
 });

@@ -13,7 +13,7 @@ router.patch('/patch/:purchaseID'    , PurchaseEntryController.update_PurchaseEn
 
 router.delete('/delete/:purchaseID',PurchaseEntryController.delete_purchaseEntry);
 
-
+router.get('/get/datewisepurchase/:purchaseDate',PurchaseEntryController.get_datewise_purchaceEntry);
 /*
 router.get('/get/list/:section_ID',PurchaseEntryController.list_category);
 
