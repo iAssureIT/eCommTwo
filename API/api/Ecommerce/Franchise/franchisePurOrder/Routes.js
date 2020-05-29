@@ -9,6 +9,8 @@ router.get('/get/purchaseorderList/:franchise_id/:orderDate',franchisePOControll
 
 router.get('/get/purchaseorderList/:orderDate',franchisePOController.list_allfranchisePO);
 
+router.get('/get/all-frachise-po-data/:orderDate',franchisePOController.allFrachisePOData);
+
 router.get('/get/one/purchaseorder/:purchaseorder_id',franchisePOController.one_franchisePO);
 
 router.patch('/patch/purchaseorder', franchisePOController.update_franchisePO);

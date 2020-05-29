@@ -2,11 +2,15 @@ Inventory Management + Warehouse Management
 
 Admin Side 
 1) Inventory Management Dashboard (Use companyID of Admin)
-2) Raw Material Entry    				(Done) => UI-Ashish, API+Integration - Karuna
-3) Finished Goods Entry 				(Done) => UI-Ashish, API+Integration - Karuna
-4) Distribution to Franchise    (TBD)  => 
-5) Delivery Challan 						(TBD)  => 
-6) Warehouse Master 						(Done)  => UI+API+Integration - Karuna (Single Field Master)
+2) Raw Material Entry    								(Done) => UI-Ashish, API+Integration - Karuna
+3) Finished Goods Entry 								(Done) => UI-Ashish, API+Integration - Karuna
+4) Create Consolidated Shopping List 		(Done) => Ashish Naik
+
+5) Display Consolidated Shopping List 	(TBD) => Ashish Naik
+
+6) Distribution to Franchise    				(TBD)  => 
+7) Delivery Challan 										(TBD)  => 
+8) Warehouse Master 										(Done) => UI+API+Integration - Karuna (Single Field Master)
 
 
 Reports 
@@ -33,6 +37,7 @@ Frachise/Vendor Side
 2) Purchase Order 							(Done)   	=> UI+API+Integration - Ashish
 3) Receive Goods /  											=> UI+API+Integration - Ashish
 	 Accept Delivery Challan 			(Done)
+
 
 4) Store Stock Report 					(TBD)  		=> UI+API+Integration - Karuna 		
 5) Productwise Stock History 		(TBD)  		=> UI+API+Integration - Karuna

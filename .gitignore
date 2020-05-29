@@ -1,7 +1,7 @@
 API/node_modules
 API/nodemon.js
 
-# MobileApp/node_modules
+MobileApp/node_modules
 MobileApp/AppDesigns/currentApp
 
 WebApp/admin/node_modules

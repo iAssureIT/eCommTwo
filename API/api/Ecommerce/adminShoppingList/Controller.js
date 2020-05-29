@@ -1,23 +1,17 @@
 const mongoose      = require("mongoose");
 var   ObjectId      = require('mongodb').ObjectID;
-
-const AdminPO   = require('./Model');
+const AdminPO       = require('./Model');
 
 
 exports.insert_adminPO = (req,res,next)=>{    
-
-         // console.log("req.body orderNo",req.body);
-
         const adminPO = new AdminPO({
             _id                       : new mongoose.Types.ObjectId(), 
-            franchise_id              : req.body.franchise_id, 
-            companyID                 : req.body.companyID, 
             orderDate                 : req.body.orderDate, 
             orderItems                : req.body.orderItems,
-            orderNo                   : req.body.orderNo,
             createdBy                 : req.body.user_id,
             createdAt                 : new Date()
         });
+        console.log("req.body orderNo = ",req.body);
 
         adminPO.save()
         .then(data => {
