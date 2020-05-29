@@ -8,7 +8,8 @@ import ProductDivider               from "../../blocks/ProductDivider/ProductDiv
 import Unimandai_SaleProductDivider from "../../blocks/ProductDivider/Unimandai_SaleProductDivider.js";
 import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js";
 import AskPincode                   from "../../blocks/AskPincode/AskPincode.js";
-import AllowdeliveryModal           from "../../blocks/AskPincode/AllowdeliveryModal.js";
+import HomePageBanner2              from "../../blocks/unimandaiBlock/HomePageBanner2/HomePageBanner2.js";
+import FreshFoodBlock               from "../../blocks/unimandaiBlock/FreshFoodBlock/FreshFoodBlock.js";
 import axios                        from 'axios';
 import Loader                       from "../../common/loader/Loader.js";
 import Blogs                        from "../../blocks/Blogs/Blogs.js";
@@ -36,7 +37,7 @@ class HomePage extends Component {
     }  
     componentDidMount() {
       const preferences = localStorage.getItem("preferences");      
-      console.log("localstorage preferences:=============",preferences);
+      // console.log("localstorage preferences:=============",preferences);
       this.setState({"askPincodeToUser" : preferences});    
       
       this.featuredProductData();
@@ -51,44 +52,6 @@ class HomePage extends Component {
       const preferences = localStorage.getItem("preferences");
       console.log("wilmount askPincodeToUser:",preferences);      
       this.setState({"askPincodeToUser" : preferences});    
-      var pincode = localStorage.getItem("pincode");
-      if(pincode){
-      console.log("inside will mount localstorage pincode---------",pincode);
-      this.setState({
-                userPincode : pincode,
-      });
-      console.log("user setstate varialble Pincode :=====",this.state.userPincode);
-
-      //when user visit the site second time, check again delivery is possible or not
-      // if(localStorage.getItem('status') === "NotAllow"){
-      //   console.log("1.check again pincode available or",pincode);
-      // axios.get("/api/allowablepincode/checkpincode/"+pincode)
-      //       .then((response)=>{
-      //           var status = "";
-      //           if(response){          
-      //               console.log("Checking second time delivery========");
-      //               if(response.data.message === "Delivery Available"){                                                                  
-      //                  localStorage.setItem("DeliveryStatus","Allowable");
-      //                  localStorage.setItem("status","Allow");
-      //                  this.setState({
-      //                       DeliveryStatus : "Allowable",
-      //                  })
-      //                  console.log("Delivery Status======",this.state.DeliveryStatus);
-      //                  console.log("delivery allow", localStorage.getItem('status'));
-      //               }else{
-      //                 console.log("Delivery not available");
-      //                 this.setState({
-      //                   DeliveryStatus : "NotAllowable",
-      //              })
-      //               }
-      //           }
-      //       })
-      //       .catch((error)=>{
-      //           console.log('error', error);
-      //       })
-      // }
-      // console.log("pincodeObj:====",pincodeObj.pincode);
-    }
     }
     featuredProductData(){
       var productType1 = 'featured';
@@ -195,7 +158,7 @@ class HomePage extends Component {
     return (
 
       <div className="">
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="row">         
          {this.state.askPincodeToUser === "true"
           ?
@@ -204,6 +167,8 @@ class HomePage extends Component {
             null
          }
             <EcommerceBanner_Unimandai/>
+            <HomePageBanner2 />
+            <FreshFoodBlock />
 
           </div>
             <div className="homeRow">
@@ -261,8 +226,8 @@ class HomePage extends Component {
 
          <WhychooseUs/>
 
-        {/* <Ceo />
-*/}
+        {/* <Ceo />*/}
+
           <Blogs />
 
 

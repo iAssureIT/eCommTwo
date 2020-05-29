@@ -62,9 +62,6 @@ button:focus{
     font-weight: 700!important;
     text-align: left!important;
 }
-.toasts-containerblock{
-  /*display: none!important;*/
-}
 .pagealertclose{
   font-size: 12px;
   cursor: pointer;
@@ -161,7 +158,7 @@ p{
 .fa-times{
   cursor: pointer;
 }
-..swal-button{
+.swal-button{
   background: #A2632C !important
 }
 #containerDiv{

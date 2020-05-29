@@ -1,0 +1,21 @@
+.HomePageBanner2{
+    position: relative;
+    z-index: 999;
+    margin-top: -165px;
+    margin-bottom: 40px;
+    /* background: #fff !important; */
+}
+.container.container-ver2 {
+    width: 1200px;
+    padding: 0 15px;
+}
+.hover-images {
+    overflow: hidden;
+    display: inline-block;
+}
+.hover-images img{
+    border-radius: 5px;
+}
+.HomePageBanner2 img {
+    border-radius: 5px;
+}

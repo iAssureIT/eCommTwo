@@ -84,7 +84,7 @@ export default class EcommerceBanner extends Component {
 									    	</div>
 									    </div>*/}
 									</OwlCarousel>
-									<div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 secondSection">
+									{/* <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 secondSection">
 									 <div class="col-md-3 col-sm-3 col-xs-6 shippingBox">
 				                        <img src="/images/icon-shipping-1.png" alt="images" className="Shippingimage"/>
 				                        <h4 className="text-center"><b>FREE SHIPPING</b></h4>
@@ -105,7 +105,9 @@ export default class EcommerceBanner extends Component {
 				                        <h4 className="text-center"><b>CONTACT WITH US</b></h4>
 				                        <p className="text-center onOrder">+07 (0) 7782 9137</p>
 				                    </div>
-									</div>
+									</div> */}
+
+									{/* <HomePageBanner2 /> */}
 							</div>
 						</div>
 					</div>	

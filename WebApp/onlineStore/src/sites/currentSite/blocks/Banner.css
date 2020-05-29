@@ -1,6 +1,12 @@
 .bannercaro .bannerimg{
 	height: 600px!important;
   }
+  .owl-theme{
+	  margin-bottom: 0px !important;
+  }
+  .backColorWhite{
+	  background-color: #ccc !important;
+  }
   .bannercaro .owl-dots {
 	  display: block;
 	  position: absolute;
