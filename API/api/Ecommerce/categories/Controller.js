@@ -45,8 +45,10 @@ exports.insert_category = (req,res,next)=>{
 		});
 	});
 };
-exports.update_category = (req,res,next)=>{subCategory
+exports.update_category = (req,res,next)=>{
+    
     // console.log("subCategory:" ,req.body.subCategory);
+    console.log("Data:" ,req.body);
     Category.updateOne(
             { _id:req.body.category_ID},  
             {

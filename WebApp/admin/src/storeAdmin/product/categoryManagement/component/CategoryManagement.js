@@ -247,6 +247,8 @@ class CategoryManagement extends Component{
               "categoryImage"             : this.state.categoryImage,
             }
 
+            console.log("Formvalues = ", formValues);
+
             axios.post('/api/category/post', formValues)
             .then((response)=>{
 
@@ -299,6 +301,7 @@ class CategoryManagement extends Component{
           "categoryImage"             : this.state.categoryImage,
         }
 
+        console.log("formValues = ", formValues);
         axios.get('/api/category/get/count')
         .then((response)=>{
           var catCodeLength = response.data.dataCount;
@@ -323,7 +326,9 @@ class CategoryManagement extends Component{
               }
             }
           }
+
           if(this.state.allowToUpdate === true){
+            console.log("In update");
             axios.patch('/api/category/patch', formValues)
             .then((response)=>{
 

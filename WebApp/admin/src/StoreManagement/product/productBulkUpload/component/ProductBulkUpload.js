@@ -163,7 +163,7 @@ class AddNewBulkProduct extends Component {
         });
     }
     getVendorList() {
-        axios.get('/api/vendors/get/list')
+        axios.get("/api/entitymaster/get/Vendor")
             .then((response) => {
                 if(response){
                     console.log("vendor response:",response);
@@ -176,7 +176,7 @@ class AddNewBulkProduct extends Component {
                 
             })
             .catch((error) => {
-
+                console.log('error', error);
             })
     }
     handleChangeCategory(event){
@@ -209,13 +209,13 @@ class AddNewBulkProduct extends Component {
           })
     }
     render() {
-        console.log("role:",localStorage.getItem('roles'))
+        // console.log("role:",localStorage.getItem('roles'))
         const SheetJSFT = [
             "xlsx",
             "xls"
         ]
         const requiredData = {vendor: this.state.vendor};
-        console.log("required data:",requiredData);
+        // console.log("required data:",requiredData);
         return (
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-right">
             <section className="content">
@@ -248,7 +248,7 @@ class AddNewBulkProduct extends Component {
                                     {this.state.vendorArray && this.state.vendorArray.length > 0 ?
                                         this.state.vendorArray.map((data, index) => {
                                             return (
-                                            <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({data.vendorID})</option>
+                                            <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({"CompanyID : "+data.companyID})</option>
                                             );
                                         })
                                         :
