@@ -26,7 +26,7 @@ export default class AdminShoppingList extends React.Component {
 
 	componentDidMount(){
 		
-		this.getAllfrachiseData();
+		this.getAllfrachisePOData();
 
 
 
@@ -56,20 +56,19 @@ export default class AdminShoppingList extends React.Component {
 		this.setState({
 			[event.target.name] : event.target.value,			
 			},()=>{
-				this.getAllfrachiseData();
+				this.getAllFrachiseData();
 			});
 
 	}
 
-	getAllfrachiseData(){
+	getAllFrachisePOData(){
 		var dateOfOrder = this.state.date;
 		// console.log("dateOfOrder",dateOfOrder);
-		axios.get('/api/franchisepo/get/purchaseorderList/'+dateOfOrder)
-          .then((franchisePurOrders) => {
+		axios.get('/api/franchisepo/get/all-frachise-po-data/'+dateOfOrder)
+          .then((allFrachisePO) => {
 						this.setState({
-		             "allFrachiseList" : franchisePurOrders.data,
+		             "allFrachiseList" : allFrachisePO.data,
 						})
-						this.getCurrentStock();
 					})
 					.catch(error=>{
 						console.log("error in getCurrentStock = ", error);

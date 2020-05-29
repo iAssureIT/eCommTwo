@@ -8,6 +8,7 @@ export const colors = {
 
 
   buttonRED:'#c10000',
+  inputText:'#333',
   buttonORANGE:'#ec971f',
   primary : '#2bbbad',
   button : '#ff3e6c',
