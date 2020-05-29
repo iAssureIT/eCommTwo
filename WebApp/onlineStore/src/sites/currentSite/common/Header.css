@@ -663,7 +663,8 @@ ul.box-static-link li span {
 }
 .contactNo{
   color: #80b435;
-  font-size: 18px;
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .navbar {

@@ -137,10 +137,10 @@ class AddressBook extends Component{
                                         <label>Default Shipping / Billing Address</label>
                                         <p>
                                             {this.state.name} <br />
-                                            {this.state.addressLine1} <br />
                                             {this.state.addressLine2 ? this.state.addressLine2+",  " : null}
-                                            {this.state.city},<br />
-                                            {this.state.state}, {this.state.country} - {this.state.pincode}<br />
+                                            {this.state.addressLine1} <br />                                            
+                                            {/* {this.state.city},<br /> */}
+                                            {/* {this.state.state}, {this.state.country} - {this.state.pincode}<br /> */}
                                             Contact Number: {this.state.mobileNumber}
                                         </p>
                                         <div data-toggle="modal" data-target="#checkoutAddressModal" id={this.state.deliveryAddressID} onClick={this.getAddressId.bind(this)} className="btn anasBtn mt15">Change Billing Address</div>
@@ -195,10 +195,11 @@ class AddressBook extends Component{
                                                 <div className="row">
                                                     <p>
                                                         {address.name} <br />
-                                                        {address.addressLine1} <br />
                                                         {this.state.addressLine2 ? this.state.addressLine2+",  " : null}
-                                                        {this.state.city},<br />
-                                                        {address.state}, {address.country} - {address.pincode}<br />
+                                                        {address.addressLine1} <br />                                                        
+                                                        {/* {this.state.city},<br /> */}
+                                                        {/* {address.state}, {address.country} - {address.pincode}<br /> */}
+                                                        Pincode : {address.pincode +"."} <br />
                                                         Contact Number: {address.mobileNumber}
                                                     </p>
                                                     <div  data-toggle="modal" data-target="#checkoutAddressModal" id={address._id} onClick={this.getAddressId.bind(this)} className="btn anasBtn">Edit Address</div> &nbsp;

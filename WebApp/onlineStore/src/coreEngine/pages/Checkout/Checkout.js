@@ -282,7 +282,7 @@ class Checkout extends Component {
     }
     handlePincode(pincode){
         
-        if (pincode != '') {
+        if (pincode !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + pincode)
             .then((response) => {
                 

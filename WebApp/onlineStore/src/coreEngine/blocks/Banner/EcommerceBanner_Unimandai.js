@@ -3,7 +3,7 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 // import Loadable    from 'react-loadable';
-import "../../../sites/4_UniMandai/blocks/Banner.css";
+import "../../../sites/currentSite/blocks/Banner.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';

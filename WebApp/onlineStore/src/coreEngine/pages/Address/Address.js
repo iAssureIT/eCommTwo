@@ -166,17 +166,17 @@ class Address extends Component {
         axios.get('/api/ecommusers/'+user_ID)
         .then((response)=>{            
             var deliveryAddress = response.data.deliveryAddress.filter((a)=>{return a._id === deliveryAddressID});
-            console.log("deliveryAddress:" ,response.data.deliveryAddress);
+            console.log("deliveryAddress:====" ,response.data.deliveryAddress);
 
             // this.getStates(deliveryAddress[0].countryCode);            
             // this.getDistrict(deliveryAddress[0].stateCode,deliveryAddress[0].countryCode)
             this.setState({
                 "modalname"            : deliveryAddress[0].name,
                 "modalemail"           : deliveryAddress[0].email,
-                "modaladdressLine1"    : deliveryAddress[0].addressLine1,
+                "addressLine1"         : deliveryAddress[0].addressLine1,
                 "modaladdressLine2"    : deliveryAddress[0].addressLine2,  
-                "modalpincode"         : deliveryAddress[0].pincode,
-                "modalblock"           : deliveryAddress[0].block,
+                "modalPincode"         : deliveryAddress[0].pincode,
+                "modalarea"            : deliveryAddress[0].block,
                 "modaldistrict"        : deliveryAddress[0].district,
                 "modalcity"            : deliveryAddress[0].city,
                 "modalstateCode"       : deliveryAddress[0].stateCode,
@@ -192,25 +192,25 @@ class Address extends Component {
         });
     }
     componentWillReceiveProps(nextProps){
-        // this.edit(nextProps.addressId);
+        this.edit(nextProps.addressId);
     }
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
         })
+        if (event.target.name === 'modalPincode') {
+            this.handlePincode(event.target.value);
+        }
     }
-    handlePincode(event){
-        event.preventDefault();
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-        if (event.target.value !== '') {
-            axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
+    handlePincode(pincode){
+        
+        if (pincode !== '') {
+            axios.get("https://api.postalpincode.in/pincode/" +pincode)
             .then((response) => {
                 // console.log('valid', $("[name='modalpincode']").valid())
                 // console.log('pincodeExists', this.state.pincodeExists);
 
-                if ($("[name='modalpincode']").valid()) {
+                if ($("[name='modalPincode']").valid()) {
 
                     if (response.data[0].Status === 'Success' ) {
                         this.setState({pincodeExists : true})
@@ -270,19 +270,18 @@ class Address extends Component {
               }
           }
     
-          this.setState({
-            area : area,
-            city : city,
-            district : district,
-            state: state,
-            country:country,
-            pincode: pincode,
-            stateCode:stateCode,
-            countryCode:countryCode
-          })  
-          
+            this.setState({
+                modalarea       : area,
+                modalcity       : city,
+                modaldistrict   : district,
+                modalstate      : state,
+                modalcountry    : country,
+                modalPincode    : pincode,
+                stateCode       :stateCode,
+                modalcountryCode:countryCode,
+            
+            })
         })
-        
         .catch(error => console.error('Error', error));
     
           geocodeByAddress(address)
@@ -352,11 +351,12 @@ class Address extends Component {
             "deliveryAddressID" : deliveryAddressID,
             "name"            : this.state.modalname,
             "email"           : this.state.modalemail,
-            "addressLine1"    : this.state.modaladdressLine1,
+            "addressLine1"    : this.state.addressLine1,
             "addressLine2"    : this.state.modaladdressLine2,  
             "pincode"         : this.state.modalpincode,
             "district"        : this.state.modaldistrict,
             "city"            : this.state.modalcity,
+            "area"            : this.state.modalarea,
             "stateCode"       : this.state.modalstateCode,
             "state"           : this.state.modalstate,
             "countryCode"     : this.state.modalcountryCode,
@@ -386,15 +386,15 @@ class Address extends Component {
                 }, 3000);
                     // swal(response.data);
                     this.props.opDone();
-                    // $(".checkoutAddressModal").hide();
+                    $(".checkoutAddressModal").hide();
                     
-                    // $(".checkoutAddressModal").css({display: 'none'});
+                    $(".checkoutAddressModal").css({display: 'none'});
                     // $(".modal-header").css({display: 'block'});
                     // $(".modal-body").css({display: 'block'});
                     // $(".modal-footer").css({display: 'block'});
                     // $(".checkoutAddressModal").removeClass("in");
-                    // $(".modal-backdrop").hide();
-                    // window.location.reload();
+                    $(".modal-backdrop").hide();
+                    window.location.reload();
                 })
                 .catch((error)=>{
                     console.log('error', error)
@@ -422,16 +422,16 @@ class Address extends Component {
                 }, 3000);
                     // swal(response.data.message);
                     this.props.opDone();
-                    // $(".checkoutAddressModal").hide();
-                    $(".checkoutAddressModal").show();
+                    $(".checkoutAddressModal").hide();
+                    // $(".checkoutAddressModal").show();
                     
                     // $(".checkoutAddressModal").css({display: 'none'});
                     $(".modal-header").css({display: 'block'});
                     $(".modal-body").css({display: 'block'});
                     $(".modal-footer").css({display: 'block'});
                     // $(".checkoutAddressModal").removeClass("in");
-                    // $(".modal-backdrop").hide();
-                    // window.location.reload();
+                    $(".modal-backdrop").hide();
+                    window.location.reload();
                 })
                 .catch((error)=>{
                     console.log('error', error)
@@ -462,7 +462,7 @@ class Address extends Component {
         this.setState({
             "modalname"            : '',
             "modalemail"           : '',
-            "modaladdressLine1"    : '',
+            "addressLine1"         : '',
             "modaladdressLine2"    : '',
             "modalpincode"         : '',
             "modalblock"           : '',
@@ -531,12 +531,12 @@ class Address extends Component {
                                         <input type="text" minLength="10" ref="modaladdressLine1" name="modaladdressLine1" id="modaladdressLine1" value={this.state.modaladdressLine1} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                     </div> */}
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                        <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address Line 2 </label>
+                                        <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">House No/Office No </label>
                                         <input type="text" ref="modaladdressLine2" name="modaladdressLine2" id="modaladdressLine2" value={this.state.modaladdressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                     </div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >                                            
-                                    <PlacesAutocomplete value={this.state.addressLine1}
+                                    <PlacesAutocomplete value= {this.state.addressLine1}
                                         onChange={this.handleChangePlaces}
                                         onSelect={this.handleSelect}
                                         >
@@ -545,10 +545,12 @@ class Address extends Component {
                                             <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>    
                                             <input
                                                 {...getInputProps({
-                                                placeholder: 'Search Address ...',
-                                                className: 'location-search-input col-lg-12 form-control errorinputText',
-                                                id:"addressLine1",
-                                                name:"addressLine1"
+                                                placeholder : 'Search Address ...',
+                                                className   : 'location-search-input col-lg-12 form-control errorinputText',
+                                                id          :"addressLine1",
+                                                name        :"addressLine1",
+                                                valueprop   : this.state.addressLine1,                                                
+                                                
                                                 })}
                                             />
                                             <div className="autocomplete-dropdown-container SearchListContainer">
@@ -628,9 +630,14 @@ class Address extends Component {
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
-                                        <input type="text" maxlength="6" ref="modalpincode" name="modalpincode" id="modalpincode" value={this.state.modalpincode}  onChange={this.handlePincode.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                        <input type="text" minLength="6" maxlength="6" ref="modalPincode" name="modalPincode" id="modalPincode" value={this.state.modalPincode}  onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                         {this.state.pincodeExists ? null : <label className="error" style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}
                                     </div>
+                                    {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
+                                                <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                {this.state.pincodeExists ? null : <label style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}
+                                    </div>  */}
 
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address type <span className="required">*</span></label>
