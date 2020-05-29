@@ -252,6 +252,7 @@ export default class FinishedGoods extends React.Component {
                             <h4 className="">Distribution Management</h4>
                         </div>
 						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+							  <button className="btn btn-primary autoDistributebtn col-lg-2 col-md-2 col-xs-12 col-sm-12 pull-left">Auto Distribute</button>
 							{/*<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20">
 								<div className="row">
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">

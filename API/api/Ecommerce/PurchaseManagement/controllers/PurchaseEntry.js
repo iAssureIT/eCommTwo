@@ -17,8 +17,8 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                     purchaseDate              : req.body.purchaseDate,
                     purchaseStaff             : req.body.purchaseStaff,
                     purchaseLocation          : req.body.purchaseLocation,
-                    productId                 : req.body.productId,
-                    itemId                    : req.body.itemId,
+                    /*productId                 : req.body.productId,
+                    itemId                    : req.body.itemId,*/
                     productName               : req.body.productName,
                     quantity                  : req.body.quantity,
                     unit                      : req.body.unit,

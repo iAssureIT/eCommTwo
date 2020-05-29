@@ -31,3 +31,8 @@
 .mbt25{
 	margin-bottom: 25px;
 }
+.new_inputbx1{
+	border-top:none;
+	border-bottom:none;
+	border-right: none;
+}
