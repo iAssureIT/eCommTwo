@@ -1,0 +1,9 @@
+import { StyleSheet, Dimensions,Platform } from 'react-native';
+import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+const window = Dimensions.get('window');
+
+export default StyleSheet.create({
+bannerWrapper:{
+	borderWidth:1,borderColor:'#ccc',backgroundColor:'#ccc',height:180,width:'100%'
+},
+});
