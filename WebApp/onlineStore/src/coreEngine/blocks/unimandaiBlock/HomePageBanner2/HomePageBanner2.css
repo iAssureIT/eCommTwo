@@ -12,6 +12,7 @@
 .hover-images {
     overflow: hidden;
     display: inline-block;
+    margin-left: 15px;
 }
 .hover-images img{
     border-radius: 5px;

@@ -16,6 +16,7 @@ exports.insert_category = (req,res,next)=>{
                     _id                       : new mongoose.Types.ObjectId(),                    
                     category                  : req.body.category,
                     categoryUrl               : req.body.categoryUrl,
+                    categoryRank              : req.body.categoryRank,
                     subCategory               : req.body.subCategory,
                     categoryDescription       : req.body.categoryDescription,
                     categoryImage             : req.body.categoryImage,
@@ -24,6 +25,7 @@ exports.insert_category = (req,res,next)=>{
                     section_ID                : req.body.section_ID,
                     createdAt                 : new Date()
                 });
+                console.log("Category:",category);
                 category.save()
                 .then(data=>{
                     res.status(200).json({
@@ -55,6 +57,7 @@ exports.update_category = (req,res,next)=>{
                 $set:{
                 category                  : req.body.category,
                 categoryUrl               : req.body.categoryUrl,
+                categoryRank              : req.body.categoryRank,
                 subCategory               : req.body.subCategory,
                 categoryDescription       : req.body.categoryDescription,
                 categoryImage             : req.body.categoryImage,

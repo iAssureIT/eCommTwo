@@ -145,6 +145,7 @@ class SectionManagement extends Component {
     if ($('#sectionManagement').valid()) {
       var formValues = {
         "section": this.state.section,
+        "sectionRank" : this.state.sectionRank,
         "createdBy": localStorage.getItem("admin_ID")
       }
       axios.post('/api/sections/post', formValues)
@@ -156,6 +157,7 @@ class SectionManagement extends Component {
             "section": '',
             "sectionUrl": '',
             "addEditModeSubsection": '',
+            "sectionRank" : '',
           });
           this.getData(this.state.startRange, this.state.limitRange);
         })
@@ -171,6 +173,7 @@ class SectionManagement extends Component {
       var formValues = {
         "sectionID": this.props.match.params.sectionID,
         "section": this.state.section,
+        "sectionRank" : this.state.sectionRank,
       }
       // console.log('form', formValues);
       axios.patch('/api/sections/patch', formValues)
@@ -182,7 +185,8 @@ class SectionManagement extends Component {
           this.setState({
             "section": '',
             "sectionUrl": '',
-            "editId" : ''
+            "editId" : '',
+            "sectionRank": '',
           });
           this.props.history.push('/section-management');
         })
@@ -254,6 +258,12 @@ class SectionManagement extends Component {
                             <div className="col-lg-12">
                               <label>Section URL <i className="redFont">*</i></label>
                               <input disabled value={this.state.sectionUrl} onChange={this.handleChange.bind(this)} id="sectionUrl" name="sectionUrl" type="text" className="form-control sectionUrl" placeholder="Section URL" ref="sectionUrl" />
+                            </div>                            
+                          </div>
+                          <div className="col-lg-12">
+                            <div className="col-lg-12">
+                                  <label>Section Rank <i className="redFont">*</i></label>                                                                    
+                                  <input value={this.state.sectionRank} onChange={this.handleChange.bind(this)} id="sectionRank" name="sectionRank" type="number" className="form-control sectionRank" placeholder="Section Rank" ref="sectionRank"  />
                             </div>
                           </div>
                         

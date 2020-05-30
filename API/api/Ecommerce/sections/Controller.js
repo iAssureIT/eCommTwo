@@ -13,6 +13,7 @@ exports.insert_section = (req,res,next)=>{
                         _id                       : new mongoose.Types.ObjectId(),                    
                         section                   : req.body.section,
                         sectionUrl                : sectionUrl,
+                        sectionRank               : req.body.sectionRank,
                         createdBy 				  : req.body.createdBy, 	
                         createdAt                 : new Date()
                     });
@@ -70,7 +71,8 @@ exports.update_section = (req,res,next)=>{
             {
                 $set:{
                 section                   : req.body.section,
-                sectionUrl                : sectionUrl 
+                sectionUrl                : sectionUrl,
+                sectionRank               : sectionRank,
                 }
             }
         )

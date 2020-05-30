@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './FreshFoodBlock.css';
+// import './FreshFoodBlock.css';
 
-// import "../../../sites/currentSite/blocks/HomePageBanner2.css";
+import "../../../../sites/currentSite/blocks/FreshFoodBlock.css";
 
 class FreshFoodBlock extends Component{
     constructor(props){

@@ -24,6 +24,7 @@ class CategoryManagement extends Component{
               subCategory                       : "Subcategory Title",
               categoryDescription               : "Category Description",
               actions                           : 'Action',
+              categoryRank                      : 1,
             },
             "tableObjects"              : {
               deleteMethod              : 'delete',
@@ -245,6 +246,7 @@ class CategoryManagement extends Component{
               "subCategory"               : categoryDimentionArray ? categoryDimentionArray : "",
               "categoryDescription"       : this.refs.categoryDescription.value,
               "categoryImage"             : this.state.categoryImage,
+              "categoryRank"               : this.state.categoryRank,
             }
 
             console.log("Formvalues = ", formValues);
@@ -264,7 +266,8 @@ class CategoryManagement extends Component{
                 "addEditModeSubCategory"        : '',
                 "categoryDescription"           : '',
                 "subcatgArr"                    : [],
-                "categoryImage"             : ""
+                "categoryImage"                 : "",
+                "categoryRank"                  : "",
               });
               $(':input').val('');
               this.getData(this.state.startRange, this.state.limitRange);
@@ -299,6 +302,7 @@ class CategoryManagement extends Component{
           "subCategory"               : categoryDimentionArray,
           "categoryDescription"       : this.refs.categoryDescription.value,
           "categoryImage"             : this.state.categoryImage,
+          "categoryRank"              : this.state.categoryRank,
         }
 
         console.log("formValues = ", formValues);
@@ -597,9 +601,13 @@ class CategoryManagement extends Component{
                                           <label>Category Title <i className="redFont">*</i></label>
                                           <input value={this.state.category} name="category" id="category" onChange={this.createCategoryUrl.bind(this)} type="text" className="form-control edit-catg-new" placeholder="Category Title" ref="category" />
                                       </div>
-                                      <div className="col-lg-12">
+                                      <div className="col-lg-8">
                                           <label>Category URL <i className="redFont">*</i></label>                                                                    
                                           <input disabled value={this.state.categoryUrl} onChange={this.handleChange.bind(this)} id="categoryUrl" name="categoryUrl" type="text" className="form-control categoryUrl" placeholder="Category URL" ref="categoryUrl"  />
+                                      </div>
+                                      <div className="col-lg-4">
+                                          <label>Category Rank <i className="redFont">*</i></label>                                                                    
+                                          <input value={this.state.categoryRank} onChange={this.handleChange.bind(this)} id="categoryRank" name="categoryRank" type="number" className="form-control categoryRank" placeholder="Category Rank" ref="categoryRank"  />
                                       </div>
                                       <div className="col-lg-12 subCatAddLabel">
                                           <label>Subcategories </label>

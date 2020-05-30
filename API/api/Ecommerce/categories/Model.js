@@ -4,6 +4,7 @@ const categorySchema = mongoose.Schema({
 	_id			              : mongoose.Schema.Types.ObjectId,
     category                  : String,
     categoryUrl               : String,
+    categoryRank              : Number,
     subCategory               : [
 	    {
 	    	index 			  : Number,
