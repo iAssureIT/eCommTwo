@@ -120,16 +120,14 @@ catogeryvaluebg.headerflow{
   color: #aaa;
 }
 
-.homecontentwrapper{
-  /*height:1000px;*/
-}
-
 .catogeryvaluebg_un{
-  background-color: #80b435;
+  background-color: #fff;
   /*margin-top: -54px;*/
    text-align: center; 
 }
-
+.mega-menu{
+  color: #333 !important;
+}
 #menu1{
   background-color: #232f3e;
   height: 50px;

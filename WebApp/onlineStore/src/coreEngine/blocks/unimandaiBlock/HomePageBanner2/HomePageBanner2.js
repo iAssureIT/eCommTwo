@@ -10,7 +10,7 @@ class HomePageBanner2 extends Component{
     }
     render(){
         return(
-            <div className="container container-ver2 HomePageBanner2">
+            <div className="col-lg-12 col-md-12 col-sm-12 HomePageBanner2">
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <a className="hover-images" href="#" title="images">

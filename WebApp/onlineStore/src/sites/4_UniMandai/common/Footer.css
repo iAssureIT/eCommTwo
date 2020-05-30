@@ -135,7 +135,7 @@
 .footer1{
   background: #f3f3f3 !important;
   padding: 30px 0;
-  margin-top: -20px;
+  margin-top: -2px;
 }
 .footer-top ul{
   list-style: none;
@@ -245,4 +245,30 @@
     padding-left: 0;
     padding-right: 0;
     /*padding-top: 28px;*/
+}
+/* .footer1:after{
+  height: 200px;
+  width: 100%;
+  position:absolute;
+  background: url(/images/unimandai/bg-footer.jpg) no-repeat scroll center bottom;
+  content: "";
+  left: 0px;
+  bottom: calc(100% - 3px);
+} */
+.footerWrapper{
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: -44px;
+}
+.footerAnimation{
+  height: 160px;
+  /* width: 100%; */
+  /* position:absolute; */
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  background: url(/images/unimandai/bg-footer.jpg) no-repeat scroll center bottom;
+  content: "";
+  left: 0px;
+  bottom: calc(100% - 3px);
+  background-color: #fff;
 }

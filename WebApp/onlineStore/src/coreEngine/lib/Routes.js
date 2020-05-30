@@ -10,11 +10,12 @@ import $ from 'jquery';
 import '../../App.css';
 //-----------Main Menu Rout.................//
 import Header                   from '../common/Header/Header.js';
-import Header_Unimandai         from '../common/Header/Header_Unimandai.js';
+// import Header_Unimandai         from '../common/Header/Header_Unimandai.js';
 import Footer                   from '../common/Footer/Footer.js'; 
 import Footer_Unimandai         from '../common/Footer/Footer_Unimandai.js'; 
 import HomePage                 from '../pages/HomePage/HomePage.js';
 import Unimandai_Homepage       from '../pages/HomePage/Unimandai_Homepage.js';
+import UnimandaiHeader          from '../common/Header/UnimandaiHeader.js';
 
 //-----------Syatem Security Rout.................//
 
@@ -123,7 +124,7 @@ class Routes extends Component{
         return (
         <div>
           <Router>
-            <Header_Unimandai />
+            <UnimandaiHeader />
             <Switch>
               <Route path="/" component={ WebLayout } />
             </Switch>
@@ -178,7 +179,7 @@ class Routes extends Component{
         return (
         <div>
           <Router>
-            <Header_Unimandai />
+            <UnimandaiHeader />
             <Switch>
               <Route path="/" component={ WebLayout } />
             </Switch>

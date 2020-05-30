@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
-import '../../../sites/4_UniMandai/common/Footer.css';
+import '../../../sites/currentSite/common/Footer.css';
 
 export default class Footer extends Component {
 
@@ -51,8 +51,9 @@ export default class Footer extends Component {
 
     render(){
        return(
-        <div>
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerWrapper">
         <br/>
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerAnimation"></div>
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer1">
             <div className="container col-lg-offset-1  col-lg-10 col-md-10 col-sm-10 col-xs-10">
             <div className="col-sm-12 col-sm-3">
