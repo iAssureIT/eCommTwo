@@ -81,23 +81,25 @@ class ProductList extends Component {
             })
     }
     getVendorList() {
-        axios.get('/api/vendors/get/list')
+        // axios.get('/api/vendors/get/list')
+        axios.get("/api/entitymaster/get/Vendor")
             .then((response) => {
 
                 var vendorArray = [];
 
                 response.data.map((data, ind) => {
-                    vendorArray.push({ id: data.vendor_ID, vendor: data.companyName })
+                    // vendorArray.push({ id: data.vendor_ID, vendor: data.companyName })
+                    vendorArray.push({ id: data._id, vendor: data.companyName })
                 });
                 this.setState({
                     vendorArray: vendorArray,
                     messageData: {}
                 })
-                console.log("vendorArray",this.state.vendorArray);
+                // console.log("vendorArray",this.state.vendorArray);
 
             })
             .catch((error) => {
-
+                console.log('error', error);
             })
     }
     getSectionData() {
@@ -139,7 +141,7 @@ class ProductList extends Component {
     getCount() {
         axios.get('/api/products/get/count')
             .then((response) => {
-                console.log('dataCount', response.data.dataCount);
+                // console.log('dataCount', response.data.dataCount);
                 this.setState({
                     dataCount: response.data.dataCount
                 })
@@ -216,11 +218,16 @@ class ProductList extends Component {
 
     handleChangeFilter(event){
         this.setState({ messageData:{} })
-        var currentSelection = event.element.getAttribute("id");
+        if (event.target) {
+            var currentSelection = event.target.getAttribute("id");
+        }else{
+            var currentSelection = event.element.getAttribute("id");
+        }
+        // var currentSelection = event.element.getAttribute("id");
         var selector = this.state.selector;
 
         if (currentSelection === 'vendorChange') {
-            selector.vendorIds = event.value;
+            selector.vendorIds = event.target.value;
         }
         if (currentSelection === 'sectionChange') {
             selector.sectionIds = event.value;
@@ -238,7 +245,7 @@ class ProductList extends Component {
         this.setState({ selector: selector })
         this.filterProductCount(selector);
 
-        //console.log(this.state.selector);
+        console.log("Selector Value = ",this.state.selector);
         axios.post('/api/products/post/list/adminFilterProducts', selector)
             .then((response) => {
                 this.setState({
@@ -310,7 +317,7 @@ class ProductList extends Component {
             })
     }
     bulkActionChange(event) {
-        console.log(event.target.value);
+        // console.log(event.target.value);
         if (event.target.value) {
             this.setState({ unCheckedProducts: false, selectedAction: event.target.value, messageData: {} })
             $('#bulkActionModal').show();
@@ -447,13 +454,15 @@ class ProductList extends Component {
                                                     fields={fields} placeholder="Select Vendor" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
                                                     <Inject services={[CheckBoxSelection]} />
                                                 </MultiSelectComponent>*/}
-                                                 <select className="form-control selectRole" ref="filterDropdown" name="filterDropdown"  onChange={this.getVendorList.bind(this)} style={{width:'200px'}} >
+                                                {/*<select className="form-control selectRole" ref="filterDropdown" name="filterDropdown" id="vendorChange" onChange={this.getVendorList.bind(this)} style={{width:'200px'}} > */}
+                                                <select className="form-control selectRole" ref="filterDropdown" name="filterDropdown" id="vendorChange" style={{width:'200px'}} 
+                                                    onChange={this.handleChangeFilter.bind(this)}>
                                                     <option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" disabled selected>-- Select --</option>  
                                                     {
                                                         this.state.vendorArray && this.state.vendorArray.length > 0 ?
                                                             this.state.vendorArray.map((data, i)=>{
-                                                                return(
-                                                                    <option key={i}  comp_Id={data.id} value={data.vendor}>{data.vendor}</option>
+                                                                return(                                                                    
+                                                                    <option key={i} comp_Id={data.id} value={data.id}>{data.vendor}</option>
                                                                     // <option key={i} id={data.entityCode}>{data.entityCode}</option>
                                                                 );
                                                             })

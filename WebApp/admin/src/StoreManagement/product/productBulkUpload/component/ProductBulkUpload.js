@@ -248,7 +248,7 @@ class AddNewBulkProduct extends Component {
                                     {this.state.vendorArray && this.state.vendorArray.length > 0 ?
                                         this.state.vendorArray.map((data, index) => {
                                             return (
-                                            <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({"CompanyID : "+data.companyID})</option>
+                                            <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({"VendorID : "+data.companyID})</option>
                                             );
                                         })
                                         :

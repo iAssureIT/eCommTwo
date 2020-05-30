@@ -59,6 +59,11 @@ class AddNewShopProduct extends Component {
     });
   }
   componentDidMount() {
+    const user_ID = localStorage.getItem("user_ID");
+    // console.log("User ID = ", user_ID);
+    this.setState({
+      user_ID : user_ID
+    });
 
     if (this.state.editId) {
       this.edit(this.state.editId);
@@ -375,6 +380,7 @@ class AddNewShopProduct extends Component {
         }
       }
     }
+    console.log("Vendor = ", this.refs.vendor.value);
     var formValues = {
       "vendor_ID": this.refs.vendor.value.split('|')[2],
       "user_ID": this.refs.vendor.value.split('|')[1],
@@ -644,7 +650,8 @@ class AddNewShopProduct extends Component {
     }
   }
   getVendorList() {
-    axios.get('/api/vendors/get/list')
+    // axios.get('/api/vendors/get/list')
+    axios.get("/api/entitymaster/get/Vendor")
       .then((response) => {
         console.log('res getVendorList', response);
         this.setState({
@@ -716,7 +723,8 @@ class AddNewShopProduct extends Component {
                                 {this.state.vendorArray && this.state.vendorArray.length > 0 ?
                                   this.state.vendorArray.map((data, index) => {
                                     return (
-                                      <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({data.vendorID})</option>
+                                      // <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({data.vendorID})</option>
+                                      <option key={index} value={data.companyName + '|' + this.state.user_ID + '|' + data._id}>{data.companyName} - ({"VendorID : "+data.companyID})</option>
                                     );
                                   })
                                   :
