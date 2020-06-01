@@ -185,9 +185,12 @@ exports.get_megamenu_list = (req,res,next)=>{
         }
     },
     {
+        // $sort: {
+        //   "categorylist.createdAt": -1
+        // }
         $sort: {
-          "categorylist.createdAt": -1
-        }
+            "sectionRank": 1
+          }
     }
     ])
     .exec()

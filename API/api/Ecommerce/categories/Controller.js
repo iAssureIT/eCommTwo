@@ -88,9 +88,10 @@ exports.update_category = (req,res,next)=>{
         });
 };
 exports.list_section = (req,res,next)=>{
-    Category.find()       
+    Category.find().sort({"categoryRank": 1})       
         .exec()
         .then(data=>{
+            console.log("data:===",data);
             res.status(200).json(data);
         })
         .catch(err =>{

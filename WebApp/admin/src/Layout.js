@@ -109,7 +109,6 @@ import MasterPage from './admin/CMS/component/MasterPage/MasterPage.js';
 
 /*========================================*/
 
-
 class Layout extends Component  {
 
     constructor(props) {

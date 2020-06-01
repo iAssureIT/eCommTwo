@@ -261,7 +261,7 @@ class SectionManagement extends Component {
                             </div>                            
                           </div>
                           <div className="col-lg-12">
-                            <div className="col-lg-12">
+                            <div className="col-lg-10">
                                   <label>Section Rank <i className="redFont">*</i></label>                                                                    
                                   <input value={this.state.sectionRank} onChange={this.handleChange.bind(this)} id="sectionRank" name="sectionRank" type="number" className="form-control sectionRank" placeholder="Section Rank" ref="sectionRank"  />
                             </div>
