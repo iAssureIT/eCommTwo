@@ -43,6 +43,12 @@ class AddNewBulkProduct extends Component {
     }
 
     componentDidMount() {
+    const user_ID = localStorage.getItem("user_ID");
+    // console.log("User ID = ", user_ID);
+    this.setState({
+      user_ID : user_ID
+    });
+
         this.getVendorList();
         this.getSectionData();
         // var dbdata = [];
@@ -248,7 +254,8 @@ class AddNewBulkProduct extends Component {
                                     {this.state.vendorArray && this.state.vendorArray.length > 0 ?
                                         this.state.vendorArray.map((data, index) => {
                                             return (
-                                            <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({"VendorID : "+data.companyID})</option>
+                                            // <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({"VendorID : "+data.companyID})</option>
+                                            <option key={index} value={data.companyName + '|' + this.state.user_ID + '|' + data._id}>{data.companyName} - ({"VendorID : "+data.companyID})</option>
                                             );
                                         })
                                         :

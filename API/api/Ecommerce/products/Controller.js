@@ -418,7 +418,7 @@ function findCat(catgName) {
 }
 
 var insertProduct = async (section_ID, section, categoryObject, data) => {
-    //console.log('categoryObject',categoryObject.subCategory_ID)
+    // console.log('Data',data);
     return new Promise(function(resolve,reject){ 
         productDuplicateControl();
         async function productDuplicateControl(){
@@ -427,7 +427,7 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
             if (productPresent==0) {
                     const productObj = new Products({
                         _id                       : new mongoose.Types.ObjectId(),  
-                        vendor_ID                 : data.vendor.split('|')[1],  
+                        vendor_ID                 : data.vendor.split('|')[2],  
                         user_ID                   : data.vendor.split('|')[1],  
                         vendorName                : data.vendor.split('|')[0],  
                         section_ID                : section_ID,           
