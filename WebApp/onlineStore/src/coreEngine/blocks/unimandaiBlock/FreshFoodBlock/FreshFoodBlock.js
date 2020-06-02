@@ -24,7 +24,7 @@ class FreshFoodBlock extends Component{
 
                         <div className="align-center border-choose">
                             <div className="images">
-                                <img src="images/unimandai/bg-border-center.png" alt="icon" />
+                                <img src="/images/unimandai/bg-border-center.png" alt="icon" />
                             </div>
                         </div>
 

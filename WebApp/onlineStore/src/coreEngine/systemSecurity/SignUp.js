@@ -183,9 +183,9 @@ class SignUp extends Component {
 											localStorage.setItem("user_ID", response.data.ID);
 											localStorage.setItem("roles", response.data.roles);
 											localStorage.setItem('userDetails', JSON.stringify(userDetails));
-											console.log("token:",response.data.token);
-
+											// console.log("token:",response.data.token);
 											this.props.history.push("/");
+											window.location.reload();
 
 											
 										}

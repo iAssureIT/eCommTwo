@@ -330,6 +330,11 @@ componentWillMount() {
       })
   }
 
+loginPage(event){
+    event.preventDefault();
+    localStorage.setItem('previousUrl' ,'/');
+}
+
   submitQuery() {
     var formValues = {
       "customerName": this.refs.firstName.value,
@@ -390,14 +395,14 @@ componentWillMount() {
                 <div className="container headerContainer">
                     <div className="inner-topbar box">
                         <div className="float-left">
-                            <p><img src="images/unimandai/icon-phone-header.png.png" alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
+                            <p><img src="/images/unimandai/icon-phone-header.png.png" alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
                         </div>
                         <div className="float-right align-right">
                             <div className="hover-menu">
                             {user_ID 
                             ?    
                                 <li className="dropdown">
-                                    <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src="images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                    <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
                                     <ul className="col-lg-5 dropdown-menu list-menu">
                                         
                                         <li className="col-lg-12 NOpadding">
@@ -431,10 +436,20 @@ componentWillMount() {
                             :
 
                             <li className="dropdown">
-                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src="images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
-                                <ul className="col-lg-3 dropdown-menu logout-list-menu">
+                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                {/* <ul className="col-lg-3 dropdown-menu logout-list-menu">
                                     <li><a href="/login" title="Login">LOGIN</a></li>
                                     <li><a href="/signup" title="Resgister">REGISTER</a></li>
+                                </ul> */}
+
+                                <ul className="dropdown-menu logout-list-menu">
+                                  <li className="col-lg-12 col-md-12 col-sm-12">
+                                    <div className="welcomeTxt">Welcome</div>
+                                    <p>To access account and manage orders</p>
+                                    <div className="borderTop"></div>
+                                    <span className=" pull-left signInOutBtn"><a href="/login"><b> SIGN IN</b> </a></span>
+                                    <span className=" pull-right signInOutBtn"><a href="/signup"><b>SIGN UP</b></a></span>
+                                  </li>
                                 </ul>
                             </li>
 
@@ -456,7 +471,7 @@ componentWillMount() {
                             <p className="icon-menu-mobile"><i class="fa fa-bars"></i></p>
                             <div className="logo">
                                 <a href="/" title="Uno">
-                                    <img src="images/unimandai/unimandaiLogo.png" alt="images"/>
+                                    <img src="/images/unimandai/unimandaiLogo.png" alt="images"/>
                                 </a>
                             </div>
                         </div>
@@ -492,7 +507,7 @@ componentWillMount() {
                     </div>
 
                     <div className="col-lg-5 col-md-5 col-sm-5 dropdown cart hover-menu ">                        
-                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart" title="Add to cart">
+                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart" title="Add to cart" onClick={this.loginPage.bind(this)}>
                             <i className="icon"></i>
                             <span className="cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                

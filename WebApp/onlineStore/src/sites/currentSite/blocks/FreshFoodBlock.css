@@ -61,3 +61,7 @@
     color: #979797;
     line-height: 15px;
 }
+.zoom:hover, .zoom:active, .zoom:focus {
+    transform: scale(1.2);
+    /* position: relative; */
+}

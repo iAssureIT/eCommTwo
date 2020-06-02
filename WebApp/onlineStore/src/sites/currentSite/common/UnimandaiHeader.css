@@ -166,7 +166,7 @@ ul.main-nav > li:hover {
 .box-right {
     padding-top: 20px;
     padding-left: 0px;
-    padding-right: 0px;
+    padding-right: 15px;
     /* margin-left: 50px; */
 }
 .box-right .search i.icon {
@@ -209,7 +209,7 @@ ul.main-nav > li:hover {
 .logout-list-menu {
     position: absolute;
     top: 100%;
-    left: 169px;
+    left: 204px;
     z-index: 1000;
     display: none;
     float: left;
@@ -228,6 +228,39 @@ ul.main-nav > li:hover {
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
     transition: 0.2s !important;
 }
+.logout-list-menu lable p{
+    font-size: 15px;
+}
+.logout-list-menu .welcomeTxt{
+    margin-top: 5px !important;
+    /* text-align: center !important; */
+    margin-bottom: 5px !important;
+    font-weight: 600;
+
+}
+.logout-list-menu .signInOutBtn a{
+    background-color: #80b435;
+    color: #fff !important;
+    padding: 10px 20px !important;
+    text-decoration: none !important;
+    border:solid 1px #fff;
+    transition: 0.5s;
+}
+.logout-list-menu .signInOutBtn a:hover{
+    background-color: #fff;
+    color: #80b435 !important;
+    border:solid 1px #80b435;
+}
+
+.list-menu .signoutBtn:hover{
+    color: #80b435 !important;
+    background-color: #80b435 !important;
+    border: solid 1px #80b435 !important;
+}
+
+.logout-list-menu .signInOutBtn{
+    margin: 20px 15px !important;   
+}
 .cart-dropdown-menu{
     left : -315px !important;
     margin: -2px !important;
@@ -235,6 +268,11 @@ ul.main-nav > li:hover {
 }
 .cartdropaction:hover{
     color: #80b435 !important;
+}
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    color: #262626;
+    text-decoration: none;
+    background-color: #fff;
 }
 /* search modal css */
 .popup-search .close {
@@ -298,6 +336,7 @@ button.button_search {
 .searchModal .modal{
     margin-top: 150px !important
 }
+
 /* hpmepage css */
 .uniHomepageWrapper{
     padding-left: 0px;
