@@ -248,6 +248,7 @@ class CartProducts extends Component{
                                             <th>ITEMS</th>
                                             <th>PRICE</th>
                                             <th>QUANTITY</th>
+                                            <th>SIZE</th>
                                             <th>TOTAL</th>
                                             <th></th>
                                         </tr>
@@ -297,14 +298,18 @@ class CartProducts extends Component{
                                                             
                                                             {
                                                                 data.productDetail.availableQuantity > 0 ?
-                                                                <div>
+                                                                <div className="quantityWrapper">
                                                                     <span className="minusQuantity fa fa-minus" id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} onClick={this.cartquantitydecrease.bind(this)}></span>&nbsp;
                                                                     <span className="inputQuantity">{this.state['quantityAdded|'+data._id] ? this.state['quantityAdded|'+data._id] : data.quantity}</span>&nbsp;
-                                                                    <span className="plusQuantity fa fa-plus" productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity}  onClick={this.cartquantityincrease.bind(this)}></span>
+                                                                    <span className="plusQuantity fa fa-plus" productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity}  onClick={this.cartquantityincrease.bind(this)}></span><br/>
+                                                                    <span className ="productUnit" id={data.productDetail._id}>Per &nbsp;{data.productDetail.unit}</span>
                                                                 </div>
                                                                 :
                                                                 <span className="sold textAlignCenter">SOLD OUT</span>
                                                             }
+                                                        </td>
+                                                        <td>
+                                                        <span className="productSize">&nbsp;{data.size}</span>
                                                         </td>
                                                         <td className="nowrap">
                                                         {

@@ -397,10 +397,9 @@ componentWillMount() {
                             {user_ID 
                             ?    
                                 <li className="dropdown">
-                                    <a className="acc" href="#" title="USD" area-hidden ="true"><img src="images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                    <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src="images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
                                     <ul className="col-lg-5 dropdown-menu list-menu">
-                                        {/* <li><a href="#" title="USD">LOGIN</a></li>
-                                        <li><a href="#" title="VND">REGISTER</a></li> */}
+                                        
                                         <li className="col-lg-12 NOpadding">
                                             <a href="/">
                                             <div className="row">
@@ -426,13 +425,13 @@ componentWillMount() {
                                   <li className="col-lg-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
                                   <li className="col-lg-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
                                   <li className="col-lg-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
-                                  <li className="col-lg-12 NOpadding headerlia" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
+                                  <li className="col-lg-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
                                     </ul>
                                 </li>
                             :
 
                             <li className="dropdown">
-                                <a className="acc" href="#" title="USD" area-hidden ="true"><img src="images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src="images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
                                 <ul className="col-lg-3 dropdown-menu logout-list-menu">
                                     <li><a href="/login" title="Login">LOGIN</a></li>
                                     <li><a href="/signup" title="Resgister">REGISTER</a></li>
@@ -471,11 +470,27 @@ componentWillMount() {
                 </nav>
 
 
-
+                          
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
-                    <div className="col-lg-5 col-md-5 col-sm-5 search dropdown" data-toggle="modal" data-target=".bs-example-modal-lg">
-                        <i class="icon"></i>
+                    <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
+                        <i class="icon"></i>                        
                     </div>
+                   {/* Search modal */}
+                    <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
+                        <div className="modal-dialog modal-lg">
+                            <div className="modal-content popup-search">
+                                <button type="button" className="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                <div className="modal-body search-modal-body">
+                                    <div className="input-group">
+                                        <input type="text" className="form-control control-search" placeholder="Search and hit enter..."/>
+                                        <button className="button_search" type="button">Search</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="col-lg-5 col-md-5 col-sm-5 dropdown cart hover-menu ">                        
                         <a href={user_ID ? "/cart" : "/login"} className="icon-cart" title="Add to cart">
                             <i className="icon"></i>

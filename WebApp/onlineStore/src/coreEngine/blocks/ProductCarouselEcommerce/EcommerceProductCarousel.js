@@ -127,6 +127,7 @@ class EcommerceProductCarousel extends Component {
           console.log('error', error);
         })
     } else {
+      console.log("inside cart");
       this.setState({
         messageData: {
           "type": "outpage",
