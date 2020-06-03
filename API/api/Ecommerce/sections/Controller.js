@@ -65,14 +65,15 @@ exports.get_single_section = (req,res,next)=>{
 };
 
 exports.update_section = (req,res,next)=>{
+    console.log("Update Body = ", req.body);
     var sectionUrl = req.body.section.replace(/\s+/g, '-').toLowerCase();
     Sections.updateOne(
             { _id:req.body.sectionID},  
             {
                 $set:{
                 section                   : req.body.section,
-                sectionUrl                : sectionUrl,
-                sectionRank               : sectionRank,
+                sectionRank               : req.body.sectionRank,
+                sectionUrl                : sectionUrl
                 }
             }
         )

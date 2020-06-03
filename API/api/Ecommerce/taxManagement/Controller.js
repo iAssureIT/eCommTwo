@@ -1,4 +1,4 @@
-const mongoose	        = require("mongoose");
+const mongoose	   = require("mongoose");
 const Preference   = require('../taxManagement/Model');
 
 
@@ -12,7 +12,7 @@ exports.create_preference = (req, res, next) => {
 				});
 			}else{
             const preference = new Preference({
-                _id             : mongoose.Types.ObjectId(),      
+                _id             : new mongoose.Types.ObjectId(),      
                 taxName         : req.body.taxName
             });
             

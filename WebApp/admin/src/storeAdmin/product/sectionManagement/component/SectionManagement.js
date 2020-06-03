@@ -201,8 +201,9 @@ class SectionManagement extends Component {
         console.log('edit', response.data);
         if (response.data) {
           this.setState({
-            "section": response.data.section,
-            "sectionUrl": response.data.sectionUrl
+            "section"     : response.data.section,
+            "sectionRank" : response.data.sectionRank,
+            "sectionUrl"  : response.data.sectionUrl
           });
         } else {
           this.setState({
