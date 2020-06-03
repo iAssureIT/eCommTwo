@@ -267,8 +267,7 @@ componentWillMount() {
           },()=>{
 
           })
-        }      
-        
+        }         
         
       })
       .catch((error) => {
@@ -507,7 +506,7 @@ loginPage(event){
                     </div>
 
                     <div className="col-lg-5 col-md-5 col-sm-5 dropdown cart hover-menu ">                        
-                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart" title="Add to cart" onClick={this.loginPage.bind(this)}>
+                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart" onClick={this.loginPage.bind(this)}>
                             <i className="icon"></i>
                             <span className="cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                

@@ -4,11 +4,17 @@
 .newModalBtn{
 	background-color: #80b435 ! important; 
     border:1px solid #80b435;
-    margin-left: 25px;
-    margin-top: 5px;
-    margin-right: 50px;   
+    border-radius: 0px !important;
+    font-weight: 600;
+    /* margin-left: 25px; */
+    margin-top: 2px;
+    /* margin-right: 50px;    */
+    padding: 9px;
     color:#fff;
     transition: 0.3s;
+}
+.addPincode{
+    margin-top: 20px;
 }
 .newModalBtn:hover{
     border: solid 1px #80b435 !important;
@@ -17,11 +23,22 @@
 .pincodeBtnwrapper{
     margin-top: 10px;
 }
-.newModalHeader .close{
-    color: rgb(146, 21, 21) !important;
+.pincodemodal .close{
+    /* color: rgb(146, 21, 21) !important; */
+    /* border:solid 1px #aaa; */
+    color: #999 !important;
+    border-radius: 5px;
+    height: 25px;
+    width: 25px;
+    box-shadow: 0 6px 12px rgba(2,2,2,.2);
 }
 .pincodeModalHeader{
     color: #fff;
+}
+.pincodemodal .labelform{
+    text-align: center !important;
+    font-weight: 600;
+    color: #999;
 }
 .pinmodalHeader{
     border-top-right-radius: 8px;
@@ -30,10 +47,15 @@
 .ModalBtnWrapper{
     margin-top: 30px;
 }
-.pincodemodal{
-    height: 200px;
-    border-radius: 10px !important;
+.pincodemodal {
+    height: 240px;
+    /* border-radius: 10px !important; */
+    background: url(/images/unimandai/modalBackground.png);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    margin-top: 170px !important;
 }
+
 .deliveryAllowModal{
     height: 160px;
 }
@@ -44,9 +66,12 @@
 	margin-top: 20px;
 }
 .pinocodeInput{  
-    width: 150px;
+    /* width: 150px; */
     /*margin-left: 16px;*/
+    /* border-radius: 5px; */
+    height: 38px;
     margin-top: 5px;
+
 }
 .AllowDeliveryMsg,
 .NotAllowDeliveryMsg{

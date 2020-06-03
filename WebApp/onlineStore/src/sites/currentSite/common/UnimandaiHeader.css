@@ -158,7 +158,7 @@ ul.main-nav > li:hover {
     text-align: center;
     position: absolute;
     bottom: 30px;
-    right: -20px;
+    right: -26px;
     font-family: "Montserrat";
     border-radius: 50%;
     background: #80b435;
@@ -255,7 +255,7 @@ ul.main-nav > li:hover {
 .list-menu .signoutBtn:hover{
     color: #80b435 !important;
     background-color: #80b435 !important;
-    border: solid 1px #80b435 !important;
+    /* border: solid 1px #80b435 !important; */
 }
 
 .logout-list-menu .signInOutBtn{
