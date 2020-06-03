@@ -93,6 +93,21 @@ exports.one_preference = (req, res, next)=>{
         });
     });         
 };
+exports.one_rate_preference = (req, res, next)=>{
+    console.log("Tax Data body = ", req.body);
+    console.log("Tax Data params = ", req.params);
+    Preference.findOne({"taxDetails._id" : req.params.preferenceID})
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });         
+};
 exports.update_preference = (req,res,next)=>{
     Preference.findOne({taxName     : req.body.taxName,  _id: { $ne: req.body.preferenceID } })
 		.exec()
@@ -171,6 +186,7 @@ exports.submit_rate_preference = (req,res,next)=>{
         });
 };
 exports.update_rate_preference = (req,res,next)=>{
+    console.log("Id = ", req.body);
     Preference.updateOne(
         { "_id":req.body.preferenceID, "taxDetails._id" : req.body.taxRateID},  
         {

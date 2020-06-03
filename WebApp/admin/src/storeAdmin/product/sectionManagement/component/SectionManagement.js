@@ -171,8 +171,8 @@ class SectionManagement extends Component {
     event.preventDefault();
     if ($('#sectionManagement').valid()) {
       var formValues = {
-        "sectionID": this.props.match.params.sectionID,
-        "section": this.state.section,
+        "sectionID"   : this.props.match.params.sectionID,
+        "section"     : this.state.section,
         "sectionRank" : this.state.sectionRank,
       }
       // console.log('form', formValues);

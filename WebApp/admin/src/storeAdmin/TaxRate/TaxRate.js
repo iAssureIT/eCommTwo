@@ -31,16 +31,19 @@ class TaxRate extends Component {
               "startRange"                : 0,
               "limitRange"                : 10,
               "effectiveFrom"             : moment(newDate).format('YYYY-MM-DD'),
-              "editId"                    : this.props.match.params ? this.props.match.params.preferenceID : ''
+              "editId"                    : this.props.match.params ? this.props.match.params.id : ''
         };
         
     }
     componentDidMount() {
         // this.getTaxData();
-        var editId = this.props.match.params.preferenceID;
+        var editId = this.props.match.params.id;
+        // console.log("split = ",editId.split(".")[1]);
         this.getData(this.state.startRange, this.state.limitRange);
         this.getTaxData();
-        this.edit(editId);
+        if(this.props.match.params.id){
+            this.edit(editId.split(".")[1]);
+        }
         window.scrollTo(0, 0);
         $.validator.addMethod("regxA1", function(value, element, regexpr) {          
         return regexpr.test(value);
@@ -79,12 +82,12 @@ class TaxRate extends Component {
     
     componentWillReceiveProps(nextProps) {
         this.getTaxData();
-        var editId = nextProps.match.params.preferenceID;
-        if(nextProps.match.params.preferenceID){
+        var editId = nextProps.match.params.id;
+        if(nextProps.match.params.id){
           this.setState({
             editId : editId
           })
-          this.edit(editId);
+          this.edit(editId.split(".")[1]);
         }
     }
     handleChange(event) {
@@ -126,12 +129,13 @@ class TaxRate extends Component {
     update(event){
         event.preventDefault();
         var formValues = {
-            "preferenceID" : this.state.editId,
-            "taxRateID"    : this.props.match.params.taxRateID,
-            "taxRate"      : this.state.taxRate,
-            "effectiveFrom"      : this.state.effectiveFrom,
-            "effectiveTo"      : this.state.effectiveTo,
+            "preferenceID"  : this.state.editId.split(".")[0],
+            "taxRateID"     : this.state.editId.split(".")[1],
+            "taxRate"       : this.state.taxRate,
+            "effectiveFrom" : this.state.effectiveFrom,
+            "effectiveTo"   : this.state.effectiveTo,
         }
+        console.log("Update Formvalues = ", formValues);
         if($("#taxRateMaster").valid()){
             axios.patch('/api/preference/patchrate', formValues)
             .then((response)=>{
@@ -203,10 +207,11 @@ class TaxRate extends Component {
     }
     edit(id){
         $("#taxRateMaster").validate().resetForm();
-        axios.get('/api/preference/get/one/'+id)
+        axios.get('/api/preference/get/onerate/'+id)
         .then((response)=>{
-            console.log('edit', response.data)
-            var editData =  response.data.taxDetails.filter(a=>a._id === this.props.match.params.taxRateID)
+            console.log('edit response = ', response.data);
+            var editData =  response.data.taxDetails.filter(a=>a._id === this.props.match.params.id.split(".")[1])
+            console.log("editData = ",editData);
             this.setState({
                 "taxName"                  : response.data.taxName,
                 "taxRate"                  : editData[0].taxRate,
@@ -221,7 +226,7 @@ class TaxRate extends Component {
     }
     render() {
         var minEffectiveTo = moment(this.state.effectiveFrom).add(1, "days").format('YYYY-MM-DD');
-        console.log(minEffectiveTo);
+        // console.log(minEffectiveTo);
         return (
             <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
                 <div className="row">

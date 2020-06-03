@@ -7,6 +7,8 @@ router.post('/post', preferenceController.create_preference);
 
 router.get('/get/one/:preferenceID', preferenceController.one_preference);
 
+router.get('/get/onerate/:preferenceID', preferenceController.one_rate_preference);
+
 router.get('/get/list', preferenceController.get_preference);
 
 router.patch('/get/list', preferenceController.list_preference);

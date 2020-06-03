@@ -11,10 +11,10 @@ class AddNewBulkProduct extends Component {
         super(props);
 
         this.state = {
-            "currentProducts": [],
-            "productData": [],
-            "file"   : props && props.fileData && props.fileData[0] ? props.fileData[0].fileName : '',
-            "vendor" : "",
+            "currentProducts"   : [],
+            "productData"       : [],
+            "file"              : props && props.fileData && props.fileData[0] ? props.fileData[0].fileName : '',
+            "vendor"            : "",
         }
     }
 
@@ -214,6 +214,8 @@ class AddNewBulkProduct extends Component {
             console.log('error', error);
           })
     }
+
+
     render() {
         // console.log("role:",localStorage.getItem('roles'))
         const SheetJSFT = [

@@ -25,14 +25,13 @@ class TaxName extends Component {
               },
               "startRange"                : 0,
               "limitRange"                : 10,
-              "editId"                    : this.props.match.params ? this.props.match.params.preferenceID : ''
+              "editId"                    : this.props.match.params ? this.props.match.params.id : ''
         };
     }
     componentDidMount() {
-        var editId = this.props.match.params.preferenceID;
-        console.log('ven', editId);
+        var editId = this.state.editId;
+        // console.log('Id = ', editId);
         this.getData(this.state.startRange, this.state.limitRange);
-
         this.edit(editId);
         window.scrollTo(0, 0);
         $.validator.addMethod("regxA1", function(value, element, regexpr) {          
@@ -59,8 +58,8 @@ class TaxName extends Component {
     }  
     
     componentWillReceiveProps(nextProps) {
-        var editId = nextProps.match.params.preferenceID;
-        if(nextProps.match.params.preferenceID){
+        var editId = nextProps.match.params.id;
+        if(nextProps.match.params.id){
           this.setState({
             editId : editId
           })
@@ -142,11 +141,11 @@ class TaxName extends Component {
                     taxName : a.taxName,
                 }
             })
-            console.log('table', tableData);
+            // console.log('table', tableData);
             this.setState({
                 tableData : tableData
             })
-            console.log(response.data);
+            // console.log(response.data);
         })
         .catch((error)=>{
             console.log('error', error);
@@ -156,9 +155,9 @@ class TaxName extends Component {
         $("#taxMaster").validate().resetForm();
         axios.get('/api/preference/get/one/'+id)
         .then((response)=>{
-            console.log('res', response);
+            console.log('edit response = ', response.data);
             this.setState({
-                "taxName"                  : response.data.taxName,
+                "taxName" : response.data.taxName,
             });
             
         })
