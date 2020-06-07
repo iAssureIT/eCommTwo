@@ -88,7 +88,7 @@ import FinishedGoods       from './storeAdmin/PurchaseManagement/FinishedGoods.j
 
 //=============== Purchase Management =================
 
-import Distribution       from './storeAdmin/DistributionManagement/Distribution.js';
+import Distribution       from './storeAdmin/DistributionManagement/DistributionManagement.js';
 
 import AdminShoppingList  from './storeAdmin/adminShoppingList/AdminShoppingList.js';
 
@@ -259,7 +259,7 @@ class Layout extends Component  {
 
                           <Route path="/finished-goods/:finishedGoodId"                    exact strict component={FinishedGoods} />
 
-                           <Route path="/distribution"                                    exact strict component={ Distribution } />
+                          <Route path="/distribution"                                    exact strict component={ Distribution } />
                           <Route path="/distributiont/:purchaseId"                         exact strict component = { Distribution }  />
 
                           {/* Admin shopping List AdminShoppingList*/}

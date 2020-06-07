@@ -83,7 +83,7 @@ class FileWiseProductList extends Component{
                   <section className="content">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                       <div className="row">
-                        <div className="box">
+                        <div className="">
                            <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                                 <h4 className="NOpadding-right"> File Wise Product List</h4>
                           </div>

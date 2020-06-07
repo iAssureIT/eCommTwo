@@ -231,7 +231,7 @@ class AddNewBulkProduct extends Component {
             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
                     <div className="addNewProductWrap col-lg-12 col-md-12 col-sm-12 col-xs-12 add-new-productCol">
-                        <div className="box">
+                        <div className="">
                             <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                 <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left" >
                                     <h4 className="NOpadding-right">Product Bulk Upload</h4>

@@ -109,7 +109,9 @@ class AddNewShopProduct extends Component {
     $.validator.addMethod("regxShortDesc", function (value, element, regexpr) {
       return regexpr.test(value);
     }, "Product Short Description should only contain letters & number.");
-
+    $.validator.addMethod("noSpace", function(value, element) { 
+      return value == '' || value.trim().length != 0;
+    }, "No space please and don't leave it empty");
     jQuery.validator.setDefaults({
       debug: true,
       success: "valid"
@@ -174,6 +176,8 @@ class AddNewShopProduct extends Component {
         },
         shortDescription: {
           required: true,
+          noSpace: true
+          
         },
         status: {
           required: true,
@@ -709,7 +713,7 @@ class AddNewShopProduct extends Component {
         <section className="content">
           <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
             <div className="row">
-              <div className="box">
+              <div className="">
                 <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
                   <h4 className="NOpadding-right">Add Products</h4>
                 </div>

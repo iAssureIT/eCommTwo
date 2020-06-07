@@ -240,10 +240,14 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Allowable Pincode</span>
                       </a>
                     </li>                    
-
                   </ul>
                 </li>
-
+                <li className="sidebarMenuText add">
+                  <a href="/distribution">
+                    <i className="fa fa-industry"></i>
+                    Distribution Management
+                  </a>
+                </li>
                 <li className="sidebarMenuText">
                   <a href="#baData" data-toggle="collapse" aria-expanded="false">
                     <i className="glyphicon glyphicon-briefcase" />
