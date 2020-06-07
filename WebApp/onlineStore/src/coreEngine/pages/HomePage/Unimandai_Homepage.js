@@ -186,7 +186,7 @@ class HomePage extends Component {
                 null
               )
             }
-            {
+            {/* {
               this.state.bestsellerloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
               :
@@ -195,12 +195,12 @@ class HomePage extends Component {
                 :
                 null
                 )
-            }
+            } */}
             
           {/*-----------------shop by category block---------------------*/}
             <ProductDivider categories={this.state.categories} />
             
-            {
+            {/* {
               this.state.newproductloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
               :
@@ -208,7 +208,7 @@ class HomePage extends Component {
               <Ecommercenewproductcaro title={'NEW PRODUCTS'} newProducts={this.state.newProducts} type={'newProducts'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>                
               :
               null )
-            }
+            } */}
             
             {
               this.state.featuredproductsloading ?  
