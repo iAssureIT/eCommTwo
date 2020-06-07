@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
-import './AskPincode.css';
 import jQuery                 from 'jquery';
 import $                          from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import '../../../sites/currentSite/blocks/AskPincode.css';
+import '../../../sites/currentSite/blocks/AskPincode.css';
 
 
 export default class AskPincode extends Component {

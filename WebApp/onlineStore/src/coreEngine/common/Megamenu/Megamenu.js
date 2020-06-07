@@ -126,7 +126,7 @@ componentWillMount() {
                                           </li>
                                                                               
                                      
-                                       <ul className="sub-menu-head"> 
+                                       {/* <ul className="sub-menu-head"> 
                                         {
                                           cateoryDetails.subCategory.map((subCat,subindex)=>{
                                             return(
@@ -134,15 +134,14 @@ componentWillMount() {
                                               );
                                           })
                                         }
-                                      </ul>            
+                                      </ul>             */}
                                     </div>
                                   );
                                 }                                
                               })
                             }
                             </ul>
-                          </div> 
-                          
+                          </div>                          
                         </div>
                       </div>
                     </li>

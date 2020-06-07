@@ -457,9 +457,7 @@ loginPage(event){
                         </div>
                     </div>
                 </div>                
-            </div>           
-
-
+            </div> 
 
             <div className="col-lg-12 firstDiv">
               <div className="row">              
@@ -469,8 +467,9 @@ loginPage(event){
                         <div className="box">
                             <p className="icon-menu-mobile"><i class="fa fa-bars"></i></p>
                             <div className="logo">
-                                <a href="/" title="Uno">
+                                <a href="/" title="Unimandai logo">
                                     <img src="/images/unimandai/unimandaiLogo.png" alt="images"/>
+                                    {/* <img src="/images/unimandai/unimanda1Logo.png" alt="images" className="col-lg-12 col-md-12  uniLogo"/> */}
                                 </a>
                             </div>
                         </div>
@@ -569,7 +568,7 @@ loginPage(event){
                                   <a href={user_ID ? "/checkout" : "/login"}><div className="btn cartdropbtn_un col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
                                 </div>
                                 : "" 
-                              }                          
+                              }                      
 
                             </div>
                           </ul>

@@ -175,17 +175,36 @@ class SignUp extends Component {
 												roles     : response.data.userDetails.roles,
 												token     : response.data.userDetails.token, 
                                             }
-                                            console.log("userDetails:", userDetails);								  
+											// console.log("userDetails:", userDetails);	
+											var previousUrl = localStorage.getItem('previousUrl');
+											console.log("previousUrl=====",previousUrl);
+											if(previousUrl.includes('com')){
+												var previousUrl_split     = previousUrl.split('com');
+												
+											}else{
+												var port = window.location.port;
+												console.log("Port======",port);
+												var previousUrl_split     = previousUrl.split(port);
+											}
+											// console.log("previousUrl=====",previousUrl);
+											// console.log("previousUrl[0]=====",previousUrl_split[0]);
+											// console.log("previousUrl[1]=====",previousUrl_split[1]);							  
 											swal('Congratulations! You have been successfully Login, Now you can place your order.');
-											localStorage.setItem('previousUrl' ,'signup');
+											// localStorage.setItem('previousUrl' ,'signup');
 											localStorage.setItem("pincode", response.data.userDetails.pincode);
 											localStorage.setItem("token", response.data.token);
 											localStorage.setItem("user_ID", response.data.ID);
 											localStorage.setItem("roles", response.data.roles);
 											localStorage.setItem('userDetails', JSON.stringify(userDetails));
 											// console.log("token:",response.data.token);
-											this.props.history.push("/");
-											window.location.reload();
+											if(previousUrl === "/"){
+												this.props.history.push("/");
+											}else{
+												// this.props.history.push("/");
+												this.props.history.push(previousUrl_split[1]);
+											}
+											
+											// window.location.reload();
 
 											
 										}

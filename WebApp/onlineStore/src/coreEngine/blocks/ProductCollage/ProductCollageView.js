@@ -85,6 +85,10 @@ class ProductCollageView extends Component {
       }
       axios.post('/api/wishlist/post', formValues)
         .then((response) => {
+
+          var previousUrl = window.location.href;
+
+          localStorage.setItem("previousUrl", previousUrl);
           this.setState({
             messageData: {
               "type": "outpage",
@@ -106,6 +110,8 @@ class ProductCollageView extends Component {
         })
     }
     else {
+      var previousUrl = window.location.href;
+      localStorage.setItem("previousUrl",previousUrl);
       this.setState({
         messageData: {
           "type": "outpage",
@@ -212,6 +218,10 @@ class ProductCollageView extends Component {
           console.log('error', error);
         })
     } else {
+      var previousUrl = window.location.href;
+      localStorage.setItem("previousUrl",previousUrl);
+      // console.log("previousUrl===",previousUrl);
+      // console.log("localstorage previousUrl===",localStorage.getItem('previousUrl'));
       this.setState({
         messageData: {
           "type": "outpage",

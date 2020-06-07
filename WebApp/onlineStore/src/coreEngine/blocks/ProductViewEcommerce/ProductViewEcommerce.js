@@ -229,6 +229,8 @@ class ProductViewEcommerce extends Component {
 				}
 			}
 		}else{
+		  var previousUrl = window.location.href;
+      	  localStorage.setItem("previousUrl",previousUrl);
 		  this.setState({
 			messageData : {
 			  "type" : "outpage",
@@ -285,6 +287,8 @@ class ProductViewEcommerce extends Component {
 					console.log('error', error);
 				})
 		} else {
+			var previousUrl = window.location.href;
+      		localStorage.setItem("previousUrl",previousUrl);
 			this.setState({
 				messageData: {
 					"type": "outpage",
@@ -527,7 +531,7 @@ class ProductViewEcommerce extends Component {
 														<i className="fa fa-minus qtyIncrease" id="decreaseQuantity" onClick={this.decreaseQuantity.bind(this)}></i>
 													</div>
 													<div className="col-lg-7 col-md-7 col-sm-7 col-xs-7 NOpadding">
-														<div id={this.state.productData._id} availableQuantity={this.state.productData.availableQuantity} onClick={this.addtocart.bind(this)} className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 viewAddtoCart"> &nbsp; Add to Cart</div>
+														<div id={this.state.productData._id} availableQuantity={this.state.productData.availableQuantity} onClick={this.addtocart.bind(this)} className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 viewAddtoCart"> &nbsp; Add To Cart</div>
 													</div>
 												</div>
 											:

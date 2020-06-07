@@ -159,6 +159,8 @@ class ProductModalViewEcommerce extends Component {
         })
     }
     else {
+	  var previousUrl = window.location.href;
+      localStorage.setItem("previousUrl",previousUrl);
       this.setState({
         messageData : {
           "type" : "outpage",
@@ -233,7 +235,8 @@ class ProductModalViewEcommerce extends Component {
 	      console.log('error', error);
 	    })
     }else{
-          
+		var previousUrl = window.location.href;
+		localStorage.setItem("previousUrl",previousUrl);
           this.setState({
           messageData : {
             "type" : "outpage",
@@ -432,7 +435,7 @@ class ProductModalViewEcommerce extends Component {
 										</div>
 										<div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 NoPadding">
 											<span onClick={this.addtocart.bind(this)} id={this.state.productData._id} className="qtycart clr cursorpointer">
-												<i className="fa fa-shopping-cart " aria-hidden="true" id={this.state.productData._id}></i> Add to Cart
+												<i className="fa fa-shopping-cart " aria-hidden="true" id={this.state.productData._id}></i> Add To Cart
 											</span>
 										</div>
 									</div>

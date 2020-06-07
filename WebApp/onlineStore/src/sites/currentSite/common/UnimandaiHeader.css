@@ -1,3 +1,7 @@
+.uniLogo{
+    height:100px;
+}
+
 .headerContainer {
     border-bottom: 1px solid #cdcdcd;
     height: 36px;
@@ -236,8 +240,11 @@ ul.main-nav > li:hover {
     /* text-align: center !important; */
     margin-bottom: 5px !important;
     font-weight: 600;
-
 }
+.logout-list-menu p{
+    margin-bottom: 20px;
+}
+
 .logout-list-menu .signInOutBtn a{
     background-color: #80b435;
     color: #fff !important;
