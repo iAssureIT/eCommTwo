@@ -47,15 +47,18 @@ class ProductCollage extends Component {
 		this.getWishData();
 
 		var envVariable=process.env.REACT_APP_PROJECT_NAME ;
-		// console.log("envVariable>>>>",envVariable);
 		this.setState({
 			envVariable:envVariable
 
 		})
   		
   	    var selector = this.state.selector;
- 
+		console.log("sectionId ===",this.props.match.params.sectionID );
+		console.log("categoryId ===",this.props.match.params.categoryID );
+		
+		
   		if (this.props.match.params.categoryID && this.props.match.params.subcategoryID) {
+			console.log("inside categoryId and subcategory",this.props.match.params.categoryID );
   			selector.category_ID = this.props.match.params.categoryID;
         	selector.subCategory_ID = this.props.match.params.subcategoryID;
         	this.setState({selector: selector});
@@ -68,6 +71,7 @@ class ProductCollage extends Component {
   			this.getAttributesBySubcategory();
   		}
   		else if(this.props.match.params.categoryID){
+			console.log("inside categoryId",this.props.match.params.categoryID );
   			selector.category_ID = this.props.match.params.categoryID;
         	this.setState({selector: selector});
         	var catArray = [];
@@ -79,7 +83,8 @@ class ProductCollage extends Component {
   			this.getAttributesByCategory();
   		}
   		else{
-  			selector.section_ID = this.props.match.params.sectionID;
+			selector.section_ID = this.props.match.params.sectionID;
+			console.log("inside sectionId ===",this.props.match.params.categoryID );
         	this.setState({selector: selector});
         	this.getBrands();
         	this.getSize();
@@ -115,7 +120,8 @@ class ProductCollage extends Component {
 	      .then((response)=>{ 
 	          this.setState({
 	              categoryDetails : response.data
-	          })
+			  })
+			  console.log("Category Details ===>", this.state.categoryDetails);
 	          
 	      })
 	      .catch((error)=>{
@@ -163,7 +169,8 @@ class ProductCollage extends Component {
 
 	      		var products = response.data.filter( (array_el, index)=>  {
 			        return index < limit ;
-			    });
+				});
+				console.log("Products data========",products);
 	          	this.setState({
 	          	  loading:false,
 	              products 		 : products
@@ -188,9 +195,12 @@ class ProductCollage extends Component {
 		}
 		axios.get("/api/products/get/listbycategory/"+categoryID)
 	      .then((response)=>{
+			console.log("products api response ==",response);
 	      		var products = response.data.filter( (array_el, index)=>  {
 			        return index < limit ;
-			    });
+				});
+				console.log("products api ==",products);
+				
 	          	this.setState({
 	          	  loading:false,
 	              products 		 : products
@@ -768,7 +778,7 @@ getFilteredProducts(selector){
   //   	var tempdata = [1,2,3]
 		// let minPrice = this.state.price.min;
 		// let maxPrice = this.state.price.max;
-		
+		console.log("productCollage this.state.products = ",this.state.products);
 		return (
 	      	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv">
 	     	 <div className="row"> 
@@ -955,8 +965,9 @@ getFilteredProducts(selector){
 						    </div>
 						  
 						    <div>
-							{
-								this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
+							{/* temporary commented	 */}
+							{/* {
+								this.state.categoryDetails[0] &&
 								<div className="card-header" id="headingTwo">
 						      <div className="pagefilter" data-toggle="collapse" data-target="#collapseTwo" data-key="color" onClick={this.handleToggle.bind(this)} >	
 						        <button className="btn btn-link" type="button" data-key="color">
@@ -965,26 +976,26 @@ getFilteredProducts(selector){
 						        <span className="expand"><i className={this.state["toggleIconcolor"] ? this.state["toggleIconcolor"] : "fa fa-plus-circle colorIcon"} data-key="color"></i></span>
 						     </div>
 						    </div>
-							}
+							} */}
 						    
 
-						    <div id="collapseTwo" className="collapse" >
-						      <div className="card-body">
-						      <br/>
-						      {this.state.colors ? 
-						      	this.state.colors.map((data,index)=>{
-						      		return(
-									index>1?
-						      		<a href="/" className="swatch-option-link-layered" onClick={ this.onSelectedItemsChange.bind(this,"color")}>
-                                    	<div className="color-option" data-color={data} style={{backgroundColor:data}} option-tooltip-value={data} ></div>
-									</a>
-									:null
-									);
-						      	})
-						      	
-						      	: ''}	
-						      </div>
-						    </div>
+								<div id="collapseTwo" className="collapse" >
+								<div className="card-body">
+								<br/>
+								{this.state.colors ? 
+									this.state.colors.map((data,index)=>{
+										return(
+										index>1?
+										<a href="/" className="swatch-option-link-layered" onClick={ this.onSelectedItemsChange.bind(this,"color")}>
+											<div className="color-option" data-color={data} style={{backgroundColor:data}} option-tooltip-value={data} ></div>
+										</a>
+										:null
+										);
+									})
+									
+									: ''}	
+								</div>
+								</div>
 						   </div>
 						 
 							{
@@ -1013,8 +1024,8 @@ getFilteredProducts(selector){
 						      </div>
 						    </div>
 						    {
-						    	this.state.envVariable!=='4_UniMandai'?
-                           <div>
+						    this.state.envVariable!=='4_UniMandai'?
+                           <div>FEATURED BRANDS
 						    <div className="card-header" id="headingThree">
 						      <div className="pagefilter"  data-toggle="collapse" data-target="#collapseThree" data-key="price" onClick={this.handleToggle.bind(this)}>	
 						        <button className="btn btn-link" type="button" data-key="price">
@@ -1076,22 +1087,8 @@ getFilteredProducts(selector){
 						 </div>
               		</div>
               		<br/>
- 					<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
-					 <div className="Featured-Brands-tittle">Featured Brands</div>	
-						{/*<ul className="Featured-Brands">
-																
-							<li className="Featured-Brands-li">
-								<div className="Featured-Brands-li-div">
-									<div className="Featured-Brands-li-div-div">
-									<a className="imgs" href="http://demo8.cmsmart.net/mag2_amazon_themeforest/france/shopbybrand/index/view/id/1/">
-									<img className="img_logo_brand" src="http://demo8.cmsmart.net/mag2_amazon_themeforest/pub/media///Shopbybrand//techservice.png" />
-									</a>
-
-									<a href="http://demo8.cmsmart.net/mag2_amazon_themeforest/france/shopbybrand/index/view/id/1/" className="name_brand"> iPhone</a>	
-									</div>
-								</div>	
-							</li>
-						</ul>*/}
+ 					{/* <div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
+					 <div className="Featured-Brands-tittle">Featured Brands</div>						
 						<br/>
 						{ this.state.brands && this.state.brands.length > 0 ? 
 							this.state.brands.map((data,index)=>{											
@@ -1109,7 +1106,7 @@ getFilteredProducts(selector){
 							})
 							: ''
 						}
-					</div>
+					</div> */}
               </div> : ""
           	}
               	{ 

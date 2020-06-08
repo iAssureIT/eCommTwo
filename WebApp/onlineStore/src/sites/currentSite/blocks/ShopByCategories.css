@@ -1,7 +1,7 @@
 .shopByCat{
     height: auto;
     background-color: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 .backColorOther{
 	background-color: transparent;
@@ -82,4 +82,14 @@
     cursor: pointer;
     padding-top: 3px;
     font-size: 14px;
+}
+.block{
+    margin-bottom: 30px !important;
+    position: relative;
+    overflow: hidden !important;
+    border: solid 1px #eee !important;
+    height: 230px !important;
+}
+.block .image{
+    /* height: 230px !important; */
 }

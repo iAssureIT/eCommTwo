@@ -247,7 +247,6 @@ componentWillMount() {
   }
   getUserData() {
     const userid = localStorage.getItem('user_ID');
-    console.log("inside getuserdata",userid);
     axios.get('/api/users/' + userid)
       .then((res) => {
         console.log('userdata res', res.data);
@@ -464,12 +463,12 @@ loginPage(event){
                 
                 <div className="col-lg-2 col-md-2 col-sm-2 header-top">
                     <div className="contaner">
-                        <div className="box">
+                        <div className="box col-lg-12 col-md-12 col-sm-12">
                             <p className="icon-menu-mobile"><i class="fa fa-bars"></i></p>
-                            <div className="logo">
+                            <div className="logo col-lg-12 col-md-12 col-sm-12">
                                 <a href="/" title="Unimandai logo">
-                                    <img src="/images/unimandai/unimandaiLogo.png" alt="images"/>
-                                    {/* <img src="/images/unimandai/unimanda1Logo.png" alt="images" className="col-lg-12 col-md-12  uniLogo"/> */}
+                                    {/* <img src="/images/unimandai/unimandaiLogo.png" alt="images"/> */}
+                                    <img src="/images/unimandai/unimanda1Logo.png" alt="images" className="col-lg-12 uniLogo"/>
                                 </a>
                             </div>
                         </div>

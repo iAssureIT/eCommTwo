@@ -98,7 +98,7 @@ componentWillMount() {
                           <ul className="sub-menu-head">
                             {
                               data.categorylist.map((cateoryDetails,catindex)=>{                                
-                                if(!cateoryDetails.subCategory.length > 0){
+                                // if(!cateoryDetails.subCategory.length > 0){
                                   return(
                                     <div className="col-md-12 col-lg-12 col-sm-12 megamenusubwidth1">
                                       {/* <h1 className="sub-menu-head"><a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a></h1> */}   
@@ -107,13 +107,13 @@ componentWillMount() {
                                           </li>
                                     </div>
                                   );
-                                }
+                                // }
                                 
                               })
                             }
                           </ul>
                           </div>
-                          <div className="col-md-7 col-lg-7 col-sm-7 megamenusubwidth">
+                          {/* <div className="col-md-7 col-lg-7 col-sm-7 megamenusubwidth">
                           <ul className="sub-menu-head">
                             {
                               data.categorylist.map((cateoryDetails,catindex)=>{
@@ -126,7 +126,7 @@ componentWillMount() {
                                           </li>
                                                                               
                                      
-                                       {/* <ul className="sub-menu-head"> 
+                                        <ul className="sub-menu-head"> 
                                         {
                                           cateoryDetails.subCategory.map((subCat,subindex)=>{
                                             return(
@@ -134,14 +134,15 @@ componentWillMount() {
                                               );
                                           })
                                         }
-                                      </ul>             */}
+                                      </ul>           
+
                                     </div>
                                   );
                                 }                                
                               })
                             }
                             </ul>
-                          </div>                          
+                          </div>                           */}
                         </div>
                       </div>
                     </li>

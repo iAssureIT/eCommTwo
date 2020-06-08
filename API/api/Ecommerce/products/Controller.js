@@ -1231,9 +1231,11 @@ exports.list_productby_section = (req,res,next)=>{
     });
 };
 exports.list_productby_category = (req,res,next)=>{
+    // console.log("categoryID==============",req.params.categoryID);
     Products.find({category_ID : req.params.categoryID, "status": "Publish"})
     .exec()
     .then(data=>{
+        console.log("category data ===:", data);
         res.status(200).json(data);
     })
     .catch(err =>{

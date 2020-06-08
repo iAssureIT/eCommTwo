@@ -160,12 +160,12 @@ class HomePage extends Component {
       <div className="container-fluid uniHomepageWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="row">         
-         {/* {this.state.askPincodeToUser === "true"
+         {this.state.askPincodeToUser === "true"
           ?
             <AskPincode />
           :
             null
-         } */}
+         }
             <EcommerceBanner_Unimandai/>
             <HomePageBanner2 />
             <FreshFoodBlock />

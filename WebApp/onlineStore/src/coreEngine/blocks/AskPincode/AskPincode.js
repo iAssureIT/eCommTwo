@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component }   from 'react';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import jQuery                 from 'jquery';
-import $                          from 'jquery';
+import $                      from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../../sites/currentSite/blocks/AskPincode.css';
 
@@ -43,14 +43,17 @@ export default class AskPincode extends Component {
                             }else{
 
                                 this.setState({
-                                DeliveryStatus : "NotAllowable",
-                            })
+                                    DeliveryStatus : "NotAllowable",
+                                });
+                                
                             }
                         }
                     })
                     .catch((error)=>{
                         console.log('error', error);
                     })
+                }else{
+                    $('.AllowDeliveryMsg').show();
                 }
             }//end pincode
      }
@@ -81,6 +84,10 @@ export default class AskPincode extends Component {
                         this.setState({
                         	AllowDeliveryMsg  : "We can deliver in your area of Pincode " +this.state.pincode +" . Continue Your Shopping!",					
                         }); 
+                        // localStorage.setItem('DeliveryStatus',"Allowable");
+                        localStorage.setItem('pincodeAllowMsg','true');
+                        localStorage.setItem('pincodeAllowMsg',"We can deliver in your area of Pincode " +this.state.pincode +" . Continue Your Shopping!")
+                        
                         $('.AllowDeliveryMsg').show();    
                         $('.NotAllowDeliveryMsg').hide();                         
                         localStorage.setItem("status","Allow");
@@ -90,6 +97,8 @@ export default class AskPincode extends Component {
                         this.setState({
                             NotAllowDeliveryMsg : "Sorry... We can not deliver in your area of Pincode " +this.state.pincode +" . Check again after few days!",
                         }); 
+                        localStorage.setItem('pincodeNotAllow','true');
+                        localStorage.setItem('pincodeNotAllowMsg',"Sorry... We can not deliver in your area of Pincode " +this.state.pincode +" . Check again after few days!")
                         $('.NotAllowDeliveryMsg').show(); 
                         $('.AllowDeliveryMsg').hide();                       
                         // var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
@@ -108,7 +117,7 @@ export default class AskPincode extends Component {
   render() {
 		return (
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12 mb50">
-                {localStorage.getItem('pincode') === null || localStorage.getItem('status') === "Allow" || localStorage.getItem('status') === "NOtAllow"
+                {localStorage.getItem('pincode') === null || localStorage.getItem('pincode') !== null 
 				?<div id="myModal" className="modal in">
                     <div className="modal-dialog">
                         <div className="modal-content pincodemodal">                            
@@ -117,14 +126,25 @@ export default class AskPincode extends Component {
                                 <form>                                    
                                     <div className="col-lg-12 col-md-12 addPincode">
                                         <div id="pincode" className="Pincode_div">
-                                            {localStorage.getItem('pincode') === null || localStorage.getItem('status') === "Allow" || localStorage.getItem('status') === "NOtAllow"
+                                            {localStorage.getItem('pincode') === null  || localStorage.getItem('pincode') !== null 
+                                            
                                             ?   <div>
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NotAllowDeliveryMsg">
+                                                    <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 NotAllowDeliveryMsg">
                                                         {this.state.NotAllowDeliveryMsg}                                    
                                                     </div>
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 AllowDeliveryMsg">
+                                                    <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 AllowDeliveryMsg">
                                                         {this.state.AllowDeliveryMsg}                                            
                                                     </div>
+                                                        {localStorage.getItem('status') === "Allow"
+                                                        ?
+                                                            <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 AllowDeliveryMsg">
+                                                                {localStorage.getItem('pincodeAllowMsg')}                                            
+                                                            </div>
+                                                        :
+                                                            <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 NotAllowDeliveryMsg">
+                                                                {localStorage.getItem('pincodeNotAllowMsg')}                                            
+                                                            </div>  
+                                                        }       
                                                     <div  className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>
                                                     </div>

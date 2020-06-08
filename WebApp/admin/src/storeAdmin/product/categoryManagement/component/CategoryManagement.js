@@ -246,7 +246,7 @@ class CategoryManagement extends Component{
               "subCategory"               : categoryDimentionArray ? categoryDimentionArray : "",
               "categoryDescription"       : this.refs.categoryDescription.value,
               "categoryImage"             : this.state.categoryImage,
-              "categoryRank"               : this.state.categoryRank,
+              "categoryRank"              : this.state.categoryRank,
             }
 
             console.log("Formvalues = ", formValues);
@@ -331,7 +331,7 @@ class CategoryManagement extends Component{
             }
           }
 
-          if(this.state.allowToUpdate === true){
+          // if(this.state.allowToUpdate === true){
             console.log("In update");
             axios.patch('/api/category/patch', formValues)
             .then((response)=>{
@@ -356,7 +356,7 @@ class CategoryManagement extends Component{
             .catch((error)=>{
               console.log('error', error);
             });
-          }
+          // }
         })
         .catch((error)=>{
           console.log('error', error);

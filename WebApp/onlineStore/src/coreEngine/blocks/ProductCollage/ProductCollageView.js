@@ -61,7 +61,7 @@ class ProductCollageView extends Component {
           return true;
         });
 
-        console.log('unique', unique);
+        // console.log('unique', unique);
         this.setState({
           relatedProductArray: unique,
           productSizeArray: unique,
@@ -171,7 +171,7 @@ class ProductCollageView extends Component {
       // this.getProductData(productCode, clr);
       axios.get("/api/products/get/productcode/" + productCode)
         .then((response) => {
-          console.log('getProductData', response.data);
+          // console.log('getProductData', response.data);
           let mymap = new Map();
           var colorFilter = response.data.filter(x => {
             return x.color === clr && x.availableQuantity > 0
@@ -306,6 +306,7 @@ class ProductCollageView extends Component {
     })
   }
   render(){
+    console.log("render this.state.products===",this.state.products);
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
         <Message messageData={this.state.messageData} />
