@@ -139,7 +139,8 @@ constructor(props) {
 
   handleFile(file) {
             
-        var format = /[!@#$%^&*()_+\-=[\]{};':"\\|,<>/?]/;
+        // var format = /[!@#$%^&*()_+\-=[\]{};':"\\|,<>/?]/;
+        var format = /^\s*$/;
 
         if (format.test(file.name)) {
             this.setState({ fileWarningError: true, finalData: [] });

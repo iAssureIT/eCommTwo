@@ -93,7 +93,7 @@ export default class Leftsidebar extends Component{
                   <ul className="collapse list-unstyled" id="Plan">
                       <li>
                         <a href="/add-product">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add Products</span>
+                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add Product</span>
                         </a>
                       </li>
                       <li>

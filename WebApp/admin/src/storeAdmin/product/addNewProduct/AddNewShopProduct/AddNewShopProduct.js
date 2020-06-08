@@ -78,9 +78,9 @@ class AddNewShopProduct extends Component {
     $.validator.addMethod("regxsection", function (value, element, arg) {
       return arg !== value;
     }, "Please select the section");
-    $.validator.addMethod("regxbrand", function (value, element, regexpr) {
-      return regexpr.test(value);
-    }, "Brand should only contain letters & number.");
+    // $.validator.addMethod("regxbrand", function (value, element, regexpr) {
+    //   return regexpr.test(value);
+    // }, "Brand should only contain letters & number.");
     $.validator.addMethod("regxProductCode", function (value, element, regexpr) {
       return regexpr.test(value);
     }, "Product Code should only contain letters & number.");
@@ -128,10 +128,10 @@ class AddNewShopProduct extends Component {
           required: true,
           valueNotEquals: "Select Category"
         },
-        brand: {
-          required: true,
-          regxbrand: /^[A-Za-z][A-Za-z0-9\-\s]/,
-        },
+        // brand: {
+        //   // required: true,
+        //   regxbrand: /^[A-Za-z][A-Za-z0-9\-\s]/,
+        // },
         productCode: {
           required: true,
           regxProductCode: /^[a-zA-Z0-9@&()_+-]*$/i,
@@ -462,7 +462,7 @@ class AddNewShopProduct extends Component {
             .catch((error) => {
               console.log('error', error);
             })
-        }
+         }
       }else{
       swal({
             title: "Please enter Product details",
@@ -576,8 +576,10 @@ class AddNewShopProduct extends Component {
     var url = $(event.currentTarget).val();
     if (url) {
       url = url.replace(/\s+/g, '-').toLowerCase();
-      $(".productUrl").val(url);
     }
+    this.setState({
+      productUrl:url
+    })
   }
   discountedPrice(event) {
     event.preventDefault();
@@ -715,7 +717,7 @@ class AddNewShopProduct extends Component {
             <div className="row">
               <div className="">
                 <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                  <h4 className="NOpadding-right">Add Products</h4>
+                  <h4 className="NOpadding-right">Add Product</h4>
                 </div>
                       <form className="newTemplateForm" id="addNewShopProduct">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 marginTopp">
@@ -815,7 +817,7 @@ class AddNewShopProduct extends Component {
                                 </div>
                                 <div className="addNewProductWrap col-lg-12 col-md-12 col-sm-12 col-xs-12 add-new-productCol">
                                   <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields">
-                                    <label>Brand Name <i className="redFont">*</i></label>
+                                    <label>Brand Name</label>
                                     <input value={this.state.brand} name="brand" id="brand" type="text" className="form-control productBrandName" placeholder="Brand Name" aria-label="Brand" aria-describedby="basic-addon1" ref="brand" onChange={this.handleChange.bind(this)} />
                                   </div>
 

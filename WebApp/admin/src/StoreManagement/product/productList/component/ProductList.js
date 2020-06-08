@@ -534,11 +534,9 @@ class ProductList extends Component {
                                     </div>
                                     <br />
                                 </div>
-                                <div className="modal-footer">
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                      <a href="#" className="btn btn-warning" id="bulkActionModalbtn" data-dismiss="modal" onClick={this.productBulkAction.bind(this)} >Yes</a>
+                                <div className="modal-footer"> 
+                                      <a href="#" className="btn btn-warning" id="bulkActionModalbtn" data-dismiss="modal" onClick={this.productBulkAction.bind(this)} style={{"margin-bottom": 0,"margin-left": "5px"}}>Yes</a>
                                       <button type="button" className="btn btn-default" onClick={this.closeModal.bind(this)} data-dismiss="modal">Close</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

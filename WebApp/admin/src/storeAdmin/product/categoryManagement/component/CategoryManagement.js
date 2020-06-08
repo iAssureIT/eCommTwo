@@ -613,7 +613,7 @@ class CategoryManagement extends Component{
                                           <label>Subcategories </label>
                                           {
                                               this.state.subcatgArr.map((dataRowArray, index)=>{
-                                                  // console.log(dataRowArray, 'subCategoryTitle'+dataRowArray.subCategoryCode);
+                                                  console.log(dataRowArray, 'subCategoryTitle'+dataRowArray.subCategoryCode);
                                                   return(
                                                       <div className="col-lg-12 col-md-12 NOpadding" key={index}>                                                                                  
                                                           <div className="col-lg-12 col-md-12 NOpadding newSubCatgArr">   
