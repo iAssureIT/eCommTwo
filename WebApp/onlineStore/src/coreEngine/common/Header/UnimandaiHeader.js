@@ -401,7 +401,7 @@ loginPage(event){
                             ?    
                                 <li className="dropdown">
                                     <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
-                                    <ul className="col-lg-5 dropdown-menu list-menu">
+                                    <ul className="col-lg-4 dropdown-menu list-menu">
                                         
                                         <li className="col-lg-12 NOpadding">
                                             <a href="/">
@@ -467,8 +467,8 @@ loginPage(event){
                             <p className="icon-menu-mobile"><i class="fa fa-bars"></i></p>
                             <div className="logo col-lg-12 col-md-12 col-sm-12">
                                 <a href="/" title="Unimandai logo">
-                                    {/* <img src="/images/unimandai/unimandaiLogo.png" alt="images"/> */}
-                                    <img src="/images/unimandai/unimanda1Logo.png" alt="images" className="col-lg-12 uniLogo"/>
+                                {/* <img src="/images/unimandai/logoUnimandai.png" alt="images" className="col-lg-12 uniLogo"/> */}
+                                    <img src="/images/unimandai/logoUnimandai.png" alt="images" className="col-lg-12"/>
                                 </a>
                             </div>
                         </div>

@@ -22,13 +22,16 @@ export default class AskPincode extends Component {
       }  
      componentDidMount(){
         var pincode = localStorage.getItem('pincode');
+        if(localStorage.getItem('flag')=== null){
+            localStorage.setItem('flag','false');
+        }        
         // localStorage.setItem('deliveryStatusMsg',"false");
         //when user visit the site second time, check again delivery is possible or not
         if(pincode){
             this.setState({
                     pincode : pincode,
             })
-            console.log("UserPincode:====",this.state.pincode);
+            // console.log("UserPincode:====",this.state.pincode);
             if(localStorage.getItem('status') === "NotAllow"){
                 axios.get("/api/allowablepincode/checkpincode/"+pincode)
                     .then((response)=>{
@@ -36,9 +39,11 @@ export default class AskPincode extends Component {
                             if(response.data.message === "Delivery Available"){                
                                 localStorage.setItem("DeliveryStatus","Allowable");
                                 localStorage.setItem("status","Allow");
+                                localStorage.setItem('flag','true');
                                 this.setState({
                                     DeliveryStatus : "Allowable",
                                 })
+                                localStorage.setItem('flag','true');
                                 // console.log("delivery allow", localStorage.getItem('status'));
                             }else{
 
@@ -87,7 +92,7 @@ export default class AskPincode extends Component {
                         // localStorage.setItem('DeliveryStatus',"Allowable");
                         localStorage.setItem('pincodeAllowMsg','true');
                         localStorage.setItem('pincodeAllowMsg',"We can deliver in your area of Pincode " +this.state.pincode +" . Continue Your Shopping!")
-                        
+                        localStorage.setItem('flag','true');
                         $('.AllowDeliveryMsg').show();    
                         $('.NotAllowDeliveryMsg').hide();                         
                         localStorage.setItem("status","Allow");
@@ -117,7 +122,8 @@ export default class AskPincode extends Component {
   render() {
 		return (
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12 mb50">
-                {localStorage.getItem('pincode') === null || localStorage.getItem('pincode') !== null 
+                {/* {localStorage.getItem('pincode') === null || localStorage.getItem('flag') === false  */}
+                {localStorage.getItem('flag') === 'false' 
 				?<div id="myModal" className="modal in">
                     <div className="modal-dialog">
                         <div className="modal-content pincodemodal">                            
@@ -126,7 +132,7 @@ export default class AskPincode extends Component {
                                 <form>                                    
                                     <div className="col-lg-12 col-md-12 addPincode">
                                         <div id="pincode" className="Pincode_div">
-                                            {localStorage.getItem('pincode') === null  || localStorage.getItem('pincode') !== null 
+                                            {localStorage.getItem('pincode')  
                                             
                                             ?   <div>
                                                     <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 NotAllowDeliveryMsg">
