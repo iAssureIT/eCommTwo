@@ -49,7 +49,7 @@ class Login extends Component {
         if (element.attr("name") === "loginusername") {
           error.insertAfter("#loginusername");
         }
-        if (element.attr("name") === "loginpassword") {
+        if (element.attr("name") === "loginpassword"){
           error.insertAfter("#loginpassword");
         }
       }
@@ -179,15 +179,14 @@ class Login extends Component {
                   <label>Email ID</label><label className="astricsign">*</label>
                   <input type="email" className="form-control" onChange={this.handleChange} ref="loginusername" id="loginusername" name="loginusername" placeholder="Email ID" required />
                 </div>
-                <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb25">
 
+                <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb25">
                   <label>Password</label><label className="astricsign">*</label>
                   <input type="password" className="form-control" ref="loginpassword" name="loginpassword" id="loginpassword" placeholder="Password" required />
                   <div className="showHideSignDiv">
                     <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
                     <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
                   </div>
-
                 </div>
                  {
                   process.env.REACT_APP_PROJECT_NAME === '2_AnasHandicrafts' ?

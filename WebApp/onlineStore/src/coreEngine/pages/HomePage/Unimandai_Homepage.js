@@ -36,10 +36,23 @@ class HomePage extends Component {
       // this.bestSellerData();
     }  
     componentDidMount() {
+      // console.log("2.Didmount askPincodeToUser:");
       const preferences = localStorage.getItem("preferences");      
       // console.log("localstorage preferences:=============",preferences);
-      this.setState({"askPincodeToUser" : preferences});    
-      
+      this.setState({"askPincodeToUser" : preferences}); 
+
+      // if(localStorage.getItem('flag')=== null){
+      //   localStorage.setItem('flag','false');
+      // }
+
+      // if(localStorage.getItem('flag')=== null){
+      //   localStorage.setItem('flag','false');
+      //   import("../../blocks/AskPincode/AskPincode.js")
+      //   .catch(error => {
+      //     console.error('AskPincode not yet supported');
+      //   });
+      // } 
+     
       this.featuredProductData();
       this.exclusiveProductsData();
       // this.newProductsData();
@@ -49,9 +62,11 @@ class HomePage extends Component {
   }
 
     componentWillMount(){
+      // console.log("1.wilmount askPincodeToUser:");  
       const preferences = localStorage.getItem("preferences");
-      console.log("wilmount askPincodeToUser:",preferences);      
-      this.setState({"askPincodeToUser" : preferences});    
+      // console.log("wilmount askPincodeToUser:",preferences);      
+      this.setState({"askPincodeToUser" : preferences});  
+         
     }
     featuredProductData(){
       var productType1 = 'featured';
@@ -153,6 +168,10 @@ class HomePage extends Component {
       })
     }
   render() {
+    console.log("1.rnder askPincodeToUser:");
+    // if(localStorage.getItem('flag')=== null){
+    //   localStorage.setItem('flag','false');
+    // }     
     var projectName=process.env.REACT_APP_PROJECT_NAME;
     // console.log("projectNmae in homepage",projectName);
     return (
@@ -160,12 +179,16 @@ class HomePage extends Component {
       <div className="container-fluid uniHomepageWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="row">         
-         {this.state.askPincodeToUser === "true"
-          ?
+            {/* {localStorage.getItem("preferences") === "true"
+              ?          
+              
+                <AskPincode />
+               
+              :
+                null
+            } */}
+            
             <AskPincode />
-          :
-            null
-         }
             <EcommerceBanner_Unimandai/>
             <HomePageBanner2 />
             <FreshFoodBlock />

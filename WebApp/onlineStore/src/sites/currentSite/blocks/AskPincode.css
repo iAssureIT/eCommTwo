@@ -93,3 +93,7 @@
     background-color: rgba(232, 174, 171, 0.25);
     margin-top: -22px;
 }
+.DeliveryStatusMsg{
+    display: none;
+    text-align: center;
+}
