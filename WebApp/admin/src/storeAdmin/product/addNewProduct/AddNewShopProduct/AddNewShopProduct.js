@@ -425,9 +425,10 @@ class AddNewShopProduct extends Component {
           console.log("formValues",formValues);
           axios.post('/api/products/post', formValues)
             .then((response) => {
-              if (response.data.message === "Item code already exists.") {
+              console.log('response',response.data.message);
+              if (response.data.message === "Item code for this product code already exists.") {
                 swal({
-                  title: response.data.message,
+                  title: "Item code already exist", 
                 });
               } else {
                 swal({

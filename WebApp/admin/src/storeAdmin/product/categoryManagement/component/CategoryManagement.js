@@ -24,7 +24,7 @@ class CategoryManagement extends Component{
               subCategory                       : "Subcategory Title",
               categoryDescription               : "Category Description",
               actions                           : 'Action',
-              categoryRank                      : 1,
+              // categoryRank                      : 1,
             },
             "tableObjects"              : {
               deleteMethod              : 'delete',

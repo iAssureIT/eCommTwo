@@ -43,7 +43,6 @@ class TemplateManagement extends Component {
         this.getSectionData();
         $("#addTemplate").validate({
         rules: {
-
             section: {
               required: true
             },
@@ -120,7 +119,6 @@ class TemplateManagement extends Component {
             if(ext=="xlsx" || ext=="xls"){
                 this.setState({ fileObj: fileObj, validFormat: true, messageData : {} },()=>{});
             }else{
-
                 this.setState({
                     finalData: [],
                     validFormat: false,
@@ -142,13 +140,12 @@ class TemplateManagement extends Component {
     }
     addTemplate(event){
         event.preventDefault();
-        console.log('validFormat',this.state.validFormat)
+        console.log('validFormat',this.fileInput);
         if($('#addTemplate').valid() && this.state.validFormat){
             var fileObj = this.state.fileObj;
             main().then(templateUrl=>{
               
               this.setState({templateUrl : templateUrl})
-
                 var formValues = {
                     section_ID                : $('#section').val().split('|')[1], 
                     section                   : $('#section').val().split('|')[0], 
@@ -160,7 +157,7 @@ class TemplateManagement extends Component {
                 axios.post("/api/bulkUploadTemplate/post/addBulkUploadTemplate",formValues)
                       .then((response)=>{
                         //this.fileInput.value = '';
-
+                       // this.fileInput.value = "";
                         this.setState({
                             finalData: [],
                             section : "Select Section",
@@ -229,16 +226,18 @@ class TemplateManagement extends Component {
             })
           }
         }
-        if (!this.state.validFormat) {
+        if ($('#addTemplate').valid()) {
+          if(!this.state.validFormat){
             this.setState({
-                    messageData : {
-                      "type" : "outpage",
-                      "icon" : "fa fa-exclamation",
-                      "message" : "Invalid file format.",
-                      "class": "warning",
-                      "autoDismiss" : true
-                    }
-                })
+              messageData : {
+                "type" : "outpage",
+                "icon" : "fa fa-exclamation",
+                "message" : "Invalid file format.",
+                "class": "warning",
+                "autoDismiss" : true
+              }
+          })
+          }
         }
     }
     getDataCount(){

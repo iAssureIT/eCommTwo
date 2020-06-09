@@ -8,7 +8,8 @@ const Orders        = require('../orders/Model');
 var ObjectId        = require('mongodb').ObjectID;
 
 exports.insert_product = (req,res,next)=>{
-    Products.find({"itemCode" : req.body.itemCode})
+    console.log("response",res);
+    Products.find({"itemCode" : req.body.itemCode,"vendor_ID":req.body.vendor_ID})
         .exec()
         .then(data =>{
         if(data && data.length > 0){
