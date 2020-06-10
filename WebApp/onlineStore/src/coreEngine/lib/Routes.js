@@ -55,8 +55,6 @@ import SiteMap                                   from '../pages/SiteMap/SiteMap.
 
 /*unimandai static blocks*/
 
-
-
 class Routes extends Component{
     constructor(props) {
        super(props);

@@ -147,7 +147,7 @@ class SignUp extends Component {
 
 			var passwordVar = this.refs.signupPassword.value;
 			var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
-				console.log("passwordVar:",passwordVar);
+				// console.log("passwordVar:",passwordVar);
 				if (passwordVar === signupConfirmPasswordVar) {
 					return (passwordVar.length >= 6) ?
 						(true,
@@ -177,7 +177,7 @@ class SignUp extends Component {
                                             }
 											// console.log("userDetails:", userDetails);	
 											var previousUrl = localStorage.getItem('previousUrl');
-											console.log("previousUrl=====",previousUrl);
+											if(previousUrl !== null){											console.log("previousUrl=====",previousUrl);
 											if(previousUrl.includes('com')){
 												var previousUrl_split     = previousUrl.split('com');
 												
@@ -203,10 +203,15 @@ class SignUp extends Component {
 												// this.props.history.push("/");
 												this.props.history.push(previousUrl_split[1]);
 											}
-											
-											// window.location.reload();
-
-											
+											}else{
+												localStorage.setItem("pincode", response.data.userDetails.pincode);
+												localStorage.setItem("token", response.data.token);
+												localStorage.setItem("user_ID", response.data.ID);
+												localStorage.setItem("roles", response.data.roles);
+												localStorage.setItem('userDetails', JSON.stringify(userDetails));
+												this.props.history.push("/");
+												swal('Congratulations! You have been successfully Login, Now you can place your order.');
+											}										
 										}
 
 									})
@@ -319,9 +324,9 @@ class SignUp extends Component {
 		
 		//set dynamic background image
 		var projectName = process.env.REACT_APP_PROJECT_NAME;
-		console.log("process.env.REACT_APP_PROJECT_NAME=========:",process.env.REACT_APP_PROJECT_NAME);
+		// console.log("process.env.REACT_APP_PROJECT_NAME=========:",process.env.REACT_APP_PROJECT_NAME);
 		if(projectName === "4_UniMandai"){
-			$(".LoginWrapper").css("background-image", "url("+"/images/unimandai/Background_3.png"+")");
+			$(".LoginWrapper").css("background-image", "url("+"/images/unimandai/signInBackground.png"+")");
 		}else if(projectName === "2_AnasHandicraft"){
 			$(".LoginWrapper").css("background-image", "url("+"/images/background.png"+")");
 		}
@@ -347,7 +352,7 @@ class SignUp extends Component {
 								<label className="checkUserExistsError">User already exists!!!</label>
 								
 							</div>
-							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Mobile Number</label><label className="astricsign">*</label>
 								
 								<PhoneInput
@@ -361,13 +366,13 @@ class SignUp extends Component {
 									onChange={mobNumber=>{this.setState({mobNumber})}}
 								/>
 							</div>
-							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Pincode</label><label className="astricsign">*</label>
 								<input minLength="6" maxLength="6" type="number" className="form-control" id="pincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
 							</div>					
 							
 							
-							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Password</label><label className="astricsign">*</label>
 								<input minLength="6" type="password" className="form-control" id="signupPassword" ref="signupPassword" placeholder="" name="signupPassword" onChange={this.handleChange} />
 								<div className="showHideSignDiv">
@@ -375,12 +380,16 @@ class SignUp extends Component {
 				                    <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignUpPass.bind(this)}></i>
 				                </div> 
 							</div>
-							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Confirm Password</label><label className="astricsign">*</label>
 								<input minLength="6" type="password" className="form-control" id="signupConfirmPassword" ref="signupConfirmPassword" placeholder="" name="signupConfirmPassword" />
+								{/* <div className="showHideSignDiv">
+				                    <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignUpPass.bind(this)}></i>
+				                    <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignUpPass.bind(this)}></i>
+				                </div> */}
 							</div>
-							<div className="col-lg-4 col-lg-offset-3 col-md-12 col-sm-12 col-xs-12 mt15">
-								<button id="signUpBtn" onClick={this.usersignup.bind(this)} className="col-lg-12 col-md-12 col-md-offset-3 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni">Sign Up</button>
+							<div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt15">
+								<button id="signUpBtn" onClick={this.usersignup.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni">Sign Up</button>
 							</div>
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center loginforgotpass mt25">
 								<label>Already have an account?</label> &nbsp; <a href='/login' className="">Sign In <b>&#8702;</b></a>

@@ -192,7 +192,7 @@ ul.main-nav > li:hover {
 .list-menu{
     position: absolute;
     top: 100%;
-    left: 650px !important;
+    left: 620px !important;
     z-index: 1000;
     display: none;
     float: left;

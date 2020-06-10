@@ -890,7 +890,7 @@ getFilteredProducts(selector){
 						   <span className="caret"></span></button>
 						    <ul className="dropdown-menu">
 						     <li className="dropdown-submenu">
-						        <a className="test" tabindex="-2" href="/">Featured Brands<span className="caret"></span></a>
+						        <a className="test" tabindex="-2" href="/">FEATURED BRANDS<span className="caret"></span></a>
 						        <ul className="dropdown-menu">
 
 						        { this.state.brands && this.state.brands.length > 0 ? 
@@ -1070,7 +1070,7 @@ getFilteredProducts(selector){
 									    			value1.map((attrvalue, ind)=>{
 									    				//console.log('attrvalue', attrvalue.attributeValue);
 									    				return(<div class="checkbox">
-																  <label><input type="checkbox" name={key} value={attrvalue.attributeValue} onClick={this.onSelectedItemsChange.bind(this,'attributes')} />{ attrvalue.attributeValue}</label>
+																  <label><input type="checkbox" name={key} className="attributes" value={attrvalue.attributeValue} onClick={this.onSelectedItemsChange.bind(this,'attributes')} />{ attrvalue.attributeValue}</label>
 																</div>
 															);
 

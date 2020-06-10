@@ -117,11 +117,11 @@ class AddressBook extends Component{
         return(
         <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-            // <Loader type="fullpageloader" />
+            <Loader type="fullpageloader" />
             <Address addressId={this.state.addressId} opDone={this.opDone.bind(this)}/>
-            <div className="pagealertnone">
+            <div className="pagealertnone col-lg-12 col-md-12 col-sm-12">
               <Message messageData={this.state.messageData} />
-              </div>
+            </div>
                 <div className="container">
                     <br/>
                     <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4 NOpadding mr20">
@@ -138,7 +138,7 @@ class AddressBook extends Component{
                                         <p>
                                             {this.state.name} <br />
                                             {this.state.addressLine2 ? this.state.addressLine2+",  " : null}
-                                            {this.state.addressLine1} <br />                                            
+                                            {this.state.addressLine1} - {this.state.pincode}. <br />                                            
                                             {/* {this.state.city},<br /> */}
                                             {/* {this.state.state}, {this.state.country} - {this.state.pincode}<br /> */}
                                             Contact Number: {this.state.mobileNumber}

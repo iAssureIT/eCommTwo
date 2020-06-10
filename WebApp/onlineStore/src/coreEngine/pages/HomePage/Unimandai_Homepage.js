@@ -168,12 +168,8 @@ class HomePage extends Component {
       })
     }
   render() {
-    console.log("1.rnder askPincodeToUser:");
-    // if(localStorage.getItem('flag')=== null){
-    //   localStorage.setItem('flag','false');
-    // }     
+       
     var projectName=process.env.REACT_APP_PROJECT_NAME;
-    // console.log("projectNmae in homepage",projectName);
     return (
 
       <div className="container-fluid uniHomepageWrapper">

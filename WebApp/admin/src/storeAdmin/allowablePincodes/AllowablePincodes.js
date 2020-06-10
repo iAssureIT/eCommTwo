@@ -143,7 +143,7 @@ class AllowablePincodes extends Component {
                                                                             <td>{index +1}</td>
                                                                             <td>
                                                                                 {data.companyName},<br/>
-                                                                                {data.locations[0].locationType},&nbsp;{data.locations[0].addressLine1},<br/>
+                                                                                {data.locations[0].locationType !== undefined ? data.locations[0].locationType : null},&nbsp;{data.locations[0].addressLine1 !== undefined ? data.locations[0].addressLine1 : null},<br/>
                                                                                 {data.locations.state}
                                                                             </td>
                                                                             <td>                                                              

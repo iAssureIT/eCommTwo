@@ -53,7 +53,7 @@ class Payment extends Component {
             <br />
             <br />
             <h4 className="table-caption">Order Details</h4>
-            <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | Order {this.state.orderData.orderID}</p>
+            <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | OrderID -  {this.state.orderData.orderID}</p>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <strong class="box-title">
@@ -61,10 +61,11 @@ class Payment extends Component {
                 </strong>
                 <div className="box-content">
                   {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.name} <br />
-                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.addressLine1}
-                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.addressLine2} <br />
-                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.district + ', ' + this.state.orderData.deliveryAddress.state + ', ' + this.state.orderData.deliveryAddress.pincode} <br />
-                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.country} <br />
+                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.addressLine2} - &nbsp;
+                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.addressLine1} &nbsp; - &nbsp; 
+                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.pincode}. <br />                  
+                  {/* {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.district + ', ' + this.state.orderData.deliveryAddress.state + ', ' + this.state.orderData.deliveryAddress.pincode} <br />
+                  {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.country} <br /> */}
                 </div>
               </div>
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6">
@@ -157,13 +158,15 @@ class Payment extends Component {
                                 </div>
                               </td>
                               <td className="textAlignRight">
-                                <span className="productPrize textAlignRight"><i className={"fa fa-" + data.currency}></i> &nbsp;{parseInt(data.discountedPrice).toFixed(2)}</span>
+                                {/* <span className="productPrize textAlignRight"><i className={"fa fa-" + data.currency}></i> &nbsp;{parseInt(data.discountedPrice).toFixed(2)}</span> */}
+                                <span className="productPrize textAlignRight"><i className="fa fa-inr"></i> &nbsp;{parseInt(data.discountedPrice).toFixed(2)}</span>
                               </td>
                               <td className="textAlignRight">
                                 <span className=" textAlignRight">{data.quantity}</span>
                               </td>
                               <td className="textAlignRight">
-                                <span className="productPrize textAlignRight"><i className={"fa fa-" + data.currency}></i> &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
+                                {/* <span className="productPrize textAlignRight"><i className={"fa fa-" + data.currency}></i> &nbsp;{parseInt(data.subTotal).toFixed(2)}</span> */}
+                                <span className="productPrize textAlignRight"><i className="fa fa-inr"></i> &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
                               </td>
                             </tr>
                           );

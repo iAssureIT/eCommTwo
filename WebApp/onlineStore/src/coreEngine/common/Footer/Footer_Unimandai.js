@@ -200,7 +200,7 @@ export default class Footer extends Component {
             <div className="container">
             <div className="footer_bottom">
                 <div className="col-sm-4 col-md-4 col-lg-6 copyrighttxt">
-                    <p>Copyright @2016 <i className="fa fa-copyright"></i> Fresh Food-All Rights Reserved.</p>
+                    <p>Copyright @2020 <i className="fa fa-copyright"></i> Unimandai All Rights Reserved.</p>
                 </div>
                 <div className="col-sm-6 col-md-6 col-lg-6 footernabbar">
                  <ul>

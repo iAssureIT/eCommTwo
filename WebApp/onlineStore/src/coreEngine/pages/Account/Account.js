@@ -33,7 +33,7 @@ class Account extends Component{
                 firstName       : res.data.profile.firstname,
                 lastName        : res.data.profile.lastname,
                 fullName        : res.data.profile.fullName,
-                emailId         : res.data.profile.emailId,
+                emailId         : res.data.profile.email,
                 mobileNumber    : res.data.profile.mobile,
                 name            : res.data.deliveryAddress.length > 0 ? res.data.deliveryAddress[0].name : "",
                 deliveryAddressID : res.data.deliveryAddress.length > 0 ? res.data.deliveryAddress[0]._id : "",
@@ -128,11 +128,12 @@ class Account extends Component{
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25 mb25">
                                                 <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12">{this.state.name}</p>
                                                 <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                {this.state.addressLine1},<br />
-                                                {this.state.addressLine2},<br />
-                                                {this.state.city},<br />
-                                                {this.state.state}, {this.state.country} - {this.state.pincode}<br />
-                                                    Contact Number: {this.state.mobileNumber}
+                                                {this.state.addressLine2} - &nbsp;
+                                                {this.state.addressLine1} - &nbsp;
+                                                {this.state.pincode},<br />                                                
+                                                {/* {this.state.city},<br />
+                                                {this.state.state}, {this.state.country} - {this.state.pincode}<br /> */}
+                                                Contact Number: {this.state.mobileNumber}
                                                 </p>
                                                 
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -160,12 +161,13 @@ class Account extends Component{
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25 mb25">
 
                                                 <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                {this.state.addressLine1}, &nbsp;
-                                                {this.state.addressLine2 ? this.state.addressLine2+"," : null} &nbsp;
-                                                {this.state.city}, &nbsp;
-                                                {this.state.state}, {this.state.country} - {this.state.pincode}<br />
-                                                    Email: {this.state.emailId}<br />
-                                                    Contact Number: {this.state.mobileNumber} 
+                                                {this.state.addressLine2 ? this.state.addressLine2+"-" : null} &nbsp;
+                                                {this.state.addressLine1}- &nbsp;
+                                                {this.state.pincode}<br />
+                                                {/* {this.state.city}, &nbsp;
+                                                {this.state.state}, {this.state.country} - {this.state.pincode}<br /> */}
+                                                Email: {this.state.emailId}<br />
+                                                Contact Number: {this.state.mobileNumber} 
                                                 </p>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div data-toggle="modal" data-target="#checkoutAddressModal" onClick={this.getAddressId.bind(this)} id={this.state.deliveryAddressID} className="btn anasBtn"><i className="fa fa-pencil-square-o"></i> &nbsp; EDIT ADDRESS</div>

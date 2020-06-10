@@ -30,7 +30,7 @@
   left: 3px;
 }
 .LoginWrapper{
-  background-image: url("/images/unimandai/Background_11.png");
+  background-image: url("/images/unimandai/signInBackground.png");
   border-radius: 5px;
   background-size: 100% 100%;
   display: table-cell;
@@ -190,4 +190,17 @@
   }
   #logInBtn:focus{
     outline: none;
+  }
+  #signUpUser .form-group{
+    margin-bottom: 0px !important;
+  }
+  #login .errorLable{
+    height: 10px !important;
+  }
+  .formShadow{
+    margin-top: -50px;
+  }
+  .innloginwrap h4{
+    text-transform: capitalize;
+    font-weight: 700;
   }

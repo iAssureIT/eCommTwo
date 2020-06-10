@@ -66,7 +66,7 @@ class Login extends Component {
       document.getElementById("logInBtn").value = 'Please Wait...';
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
-        console.log("response",response)
+        // console.log("response",response)
           // this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
             var  userDetails = {
@@ -164,6 +164,14 @@ class Login extends Component {
     $(".toast-warning").removeClass('toast');
   }
   render() {
+    //set dynamic background image
+		var projectName = process.env.REACT_APP_PROJECT_NAME;
+    if(projectName === "4_UniMandai"){
+			$(".LoginWrapper").css("background-image", "url("+"/images/unimandai/Background_3.png"+")");
+		}else if(projectName === "2_AnasHandicraft"){
+			$(".LoginWrapper").css("background-image", "url("+"/images/background.png"+")");
+    } 
+    
     return (
       <div style={{'height': window.innerHeight+'px', 'width': window.innerWidth+'px'}} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
@@ -177,7 +185,8 @@ class Login extends Component {
               <form id="login" onSubmit={this.userlogin.bind(this)}>
                 <div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt25">
                   <label>Email ID</label><label className="astricsign">*</label>
-                  <input type="email" className="form-control" onChange={this.handleChange} ref="loginusername" id="loginusername" name="loginusername" placeholder="Email ID" required />
+                  <input type="email" className="form-control" ref="loginusername" id="loginusername" name="loginusername" placeholder="Email ID" required />
+                  {/* <label id="loginusername-error" class="error" for="loginusername" style={{'display' : 'block'}}></label> */}
                 </div>
 
                 <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb25">
@@ -186,7 +195,7 @@ class Login extends Component {
                   <div className="showHideSignDiv">
                     <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
                     <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
-                  </div>
+                  </div>                 
                 </div>
                  {
                   process.env.REACT_APP_PROJECT_NAME === '2_AnasHandicrafts' ?
@@ -195,7 +204,7 @@ class Login extends Component {
                   <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
                 </div>
                 :
-                 <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
+                 <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight">
                   <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
                 </div>
                 
