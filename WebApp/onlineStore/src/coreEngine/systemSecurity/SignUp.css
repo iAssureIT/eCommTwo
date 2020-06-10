@@ -204,3 +204,12 @@
     text-transform: capitalize;
     font-weight: 700;
   }
+  .loginLeafimg{
+    height: 245px;
+    width: 220px;
+    background-image: url("/images/unimandai/Leaf_1.png");
+    z-index: 100;
+    background-position: center;
+    position: relative;
+
+  }
