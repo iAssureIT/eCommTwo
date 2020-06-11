@@ -55,7 +55,8 @@ exports.insertDocuments = (req, res, next) => {
         .find({documententity:req.body.fieldValue})
         .then(data =>{
             if (data.length > 0) {
-                res.status(409).json({ duplicated: true });
+                res.status(200).json({message:"Document Entity already exists"});
+                // res.status(409).json({ duplicated: true });
             } else {
                 const documentEntityMaster = new DocumentEntityMaster({
                     _id: new mongoose.Types.ObjectId(),

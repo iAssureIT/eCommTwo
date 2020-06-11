@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const designationSchema = mongoose.Schema({
     _id                       : mongoose.Schema.Types.ObjectId,
     designation               : String,
+    companyID                 : String,
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,
     fileName                  : String,

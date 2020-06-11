@@ -24,7 +24,7 @@ router.delete('/delete/:vehicleID', vehicleMaster.deleteVehicle);
 //Vendor App API (Rushikesh Salunkhe)
 router.get('/get/vehicleListMapping/:company_Id', vehicleMaster.vehicleListMapping);
 
-router.get('/get/list/:company_Id', vehicleMaster.getVehicleListForVendor);
+router.post('/get/list', vehicleMaster.getVehicleList);
 
 router.post('/post/list/vehicleforallocation', vehicleMaster.getVehicleListForAllocation);
 

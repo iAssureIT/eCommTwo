@@ -18,6 +18,7 @@ router.post('/get/list/statusrole/:role/:status',UserController.fetch_users_stat
 router.post('/get/searchlist',UserController.search_text);
 router.post('/get/searchlist/delete',UserController.search_text_delete);
 router.post('/post/list',UserController.post_list_users);
+router.post('/post/deleteduser/list',UserController.post_list_deleted_users);
 router.get('/get/:ID',UserController.fetch_user_ID);
 router.get('/get/email/:userID',UserController.fetch_email);
 router.get('/get/id/:id',UserController.getID);

@@ -53,7 +53,7 @@ router.get('/get/personProfilePhoto/:userId',personMaster.getPersonProfilePhoto)
 
 router.get('/get/driverListMapping/:company_Id',personMaster.driverListMapping);
 
-router.get('/get/list/:company_Id',personMaster.getDriverListForVendor);
+router.post('/get/person/list',personMaster.getPersonList);
 
 
 router.post('/post/list/driverforallocation', personMaster.getDriverListForAllocation);
@@ -66,7 +66,13 @@ router.get('/get/files/count/:type', personMaster.fetch_file_count);
 
 router.get('/get/UserID/:employeeId/:corporateId',personMaster.getUserByEmpID);
 
+router.get('/get/User/:employeeId',personMaster.getEmpByEmpID);
+
 router.get('/get/emailID/:emailId',personMaster.getUserByEmail);
+
+router.get('/get/guest/:email/:corporateId',personMaster.getGuestByEmail);
+
+router.get('/getUserByUserId/:userId',personMaster.getUserByUserId);
 
 router.get('/get/ID/:userId',personMaster.getUserByID);
 

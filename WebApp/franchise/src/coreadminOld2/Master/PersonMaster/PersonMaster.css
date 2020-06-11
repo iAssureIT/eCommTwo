@@ -1,0 +1,78 @@
+*:focus{
+	outline:none;
+}
+.subHead{
+	padding-top:20px;
+}
+.toggleButton:focus, .toggleButton.focus{
+	color:#333;
+	outline:none;
+}
+.toggleButton.active.focus, .toggleButton.active:focus, .toggleButton.focus, .toggleButton:active.focus, .toggleButton:active:focus, .toggleButton:focus{
+	outline:none;
+}
+.customToggleButton{
+	border: 1px solid #e4e0e0;
+    margin-right: 8px;
+    font-size: 12px !important;
+    padding-left:5px !important;
+    padding-right:5px !important;
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+
+}
+.customToggleButtonPermission{
+    border: 1px solid #e4e0e0;
+    margin-right: 8px !important;
+    font-size: 12px !important;
+    padding-left: 19px !important;
+    padding-right: 19px !important;
+    padding-top: 3px !important;
+    padding-bottom: 2px !important;
+
+}
+.addedDivPM{
+    display: none;
+   	height: 120px;
+    background-color: var(--blue-color);
+}
+.addedDivPM img{
+	height: 20px;
+    padding: 3px;
+    margin-top: 50px;
+}
+.selectedSupplier .addedDivPM{
+	display: block !important;
+}
+.addMarginTopPM{
+	margin-top: 20px;
+}
+
+.toggleButton.active, .toggleButton:active{
+    border-radius: 3px;
+	background-color: var(--blue-background);
+	color:#fff;
+}
+.CustomImageUpload{
+	margin-top: -180px;
+}
+.uploadImage{
+    height: 100px;
+    border:1px solid #eee;
+    margin-top: -30px;
+}
+.brdlogosPM{
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
+    background: #ebebeb;
+    border: 1px dashed #999;
+    height: 15em;
+    padding: 0;
+}
+.subHeadingPM{
+    font-size: 14px;
+    font-weight: bold;
+}
+.noRightMargin{
+    margin-right: 0px !important;
+}

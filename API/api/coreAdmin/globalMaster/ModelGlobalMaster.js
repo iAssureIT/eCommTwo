@@ -11,7 +11,16 @@ const globalmasterSchema = mongoose.Schema({
     authID          : String,
     authToken       : String,
     sourceMobile    : String,
+    user            : String,
+    password        : String,
+    port            : Number,
+    emailHost       : String,
+    projectName     : String,
     createdAt       : Date,
+    updateLog       : [{
+                        updatedAt           : Date,
+                        updatedBy           : { type: mongoose.Schema.Types.ObjectId, ref: 'users' } 
+                    }]
                                                  
 }); 
 

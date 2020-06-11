@@ -9,7 +9,7 @@ exports.insertDesignation = (req,res,next)=>{
 
     var allDesignations = await fetchDesignations();
     var designation = allDesignations.filter((data)=>{
-        if (data.designation.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase()) {
+        if (data.designation.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
             return data;
         }
         })    
@@ -19,6 +19,7 @@ exports.insertDesignation = (req,res,next)=>{
         }else{
             const designationMaster = new DesignationMaster({
                             _id                         : new mongoose.Types.ObjectId(),
+                            companyID                   : req.body.companyID,
                             designation                 : req.body.fieldValue,
                             createdBy                   : req.body.createdBy,
                             createdAt                   : new Date()
@@ -373,17 +374,13 @@ exports.bulkUploadDesignation = (req, res, next)=>{
 
                     validData.push(validObjects); 
 
-                }else{
-                        
+                }else{                        
                         remark += "designation already exists." ; 
                         invalidObjects = designations[k];
                         invalidObjects.failedRemark = remark;
                         invalidData.push(invalidObjects); 
-                    }
-         
-                      
-                    }
-
+                    }                      
+                }
         }
          DesignationMaster.insertMany(validData)
         .then(data=>{
@@ -405,7 +402,6 @@ exports.bulkUploadDesignation = (req, res, next)=>{
         });
 
     }
-
 };
 
 exports.filedetails = (req,res,next)=>{

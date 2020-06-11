@@ -3,9 +3,10 @@ const Masternotifications = require('./ModelMasterNotification.js');
 const Notifications         = require('./ModelNotification.js');
 const User 				    = require('../userManagement/ModelUsers.js');
 const PersonMaster          = require('../personMaster/ModelPersonMaster.js');
-const EventMapping          = require('../EventMappingMaster/ModelEventMapping.js');
+const EntityMaster          = require('../entityMaster/ModelEntityMaster.js');
 const nodeMailer            = require('nodemailer');
-const globalVariable        = require('../../../nodemon.js');
+const GlobalMaster        = require('../projectSettings/ModelProjectSettings.js');
+const plivo             = require('plivo');
 
 
 
@@ -64,7 +65,6 @@ exports.list_masternotification = (req,res,next)=>{
 };
 
 exports.list_mode_masternotification = (req,res,next)=>{
-    console.log('req.body: ',req.body)
     Masternotifications.find({"templateType":req.body.mode,"event":req.body.event})
         .exec()
         .then(data=>{
@@ -116,6 +116,29 @@ exports.update_masternotification = (req,res,next)=>{
                                     });
                                 });
 };
+
+exports.update_status = (req,res,next)=>{
+    Masternotifications.updateOne(
+                                    { _id:req.body.notifId},  
+                                    {
+                                        $set:{
+                                            status          : req.body.status,
+                                        }
+                                    }
+                                )
+                                .exec()
+                                .then(data=>{
+                                    if(data.nModified == 1){
+                                        res.status(200).json({ updated : true });
+                                    }
+                                })
+                                .catch(err =>{
+                                    console.log(err);
+                                    res.status(500).json({
+                                        error: err
+                                    });
+                                });
+};
 exports.delete_masternotification = (req,res,next)=>{
     Masternotifications.deleteOne({_id:req.params.ID})
         .exec()
@@ -152,35 +175,53 @@ exports.deleteall_masternotification = (req,res,next)=>{
         });
 };
 
+exports.filterTemplate = (req,res,next)=>{
+    var selector = {}; 
+    selector['$and']=[];
 
-exports.send_notifications = (req, res, next) => {
-    Masternotifications.find({event: req.body.event,status:'active'})
-    .sort({createdAt:1})
+    if (req.body.filterEvent) {
+        selector["$and"].push({ event : { $regex : req.body.filterEvent, $options: "i"}  })
+    }
+    if (req.body.filterRole) {
+        selector["$and"].push({ role : { $regex : req.body.filterRole, $options: "i"}  })
+    }
+    if (req.body.filterStatus) {
+        selector["$and"].push({ status : { $regex : req.body.filterStatus, $options: "i"}  })
+    }
+    if (req.body.filterCompany) {
+        selector["$and"].push({ company : req.body.filterCompany })
+    }
+    
+    Masternotifications.find(selector)
+    .sort({createdAt : -1})
     .exec()
     .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+
+exports.send_notifications = (req, res, next) => {
+    // Masternotifications.find({event: req.body.event,status:'active'})
+    // .sort({createdAt:1})
+    // .exec()
+    // .then(data=>{
         main();
         async function main(){
-            var returnData = [];
-            if(data && data.length > 0){
-                for(k = 0 ; k < data.length ; k++){
-                    returnData.push({
-                        role: data[k].role,
-                        mode : data[k].templateType,
-                        event : data[k].event,
-                        company : data[k].company
-                    })
-                }//k
-            }//if
-            console.log('!!!!!!!!!!!!!!!!')
-            console.log('returnData: ',returnData)
+            
+            var returnData = ["admin","manager","employee","corporateadmin","vendoradmin"]
             if(returnData && returnData.length > 0){
                 for(var i=0 ; i< returnData.length ; i++){
-                    var role = returnData[i].role;
-                    var templateName = returnData[i].event;
-                    var mode = returnData[i].mode;
-                    var company = returnData[i].company;
+                    var role = returnData[i];
+                    var company = req.body.company;
+                    var templateName = req.body.event;
                     console.log('========================================================')
-                    console.log('role,templateName,mode=>',role,templateName,mode)
+                    console.log('role=>',role)
 
 
                     switch(role){
@@ -196,64 +237,48 @@ exports.send_notifications = (req, res, next) => {
                         case 'corporateadmin':
                                     var userData = await getCorporateAdminData(req.body.toUserId);
                                     break;
+                        case 'vendoradmin':
+                                    var userData = await getVendorAdminUserId(req.body.company);
+                                    break;
                     }
 
-                    console.log('********************')
-                    console.log(company +'==='+ req.body.company)
-                    console.log('********************')
+                   
                      // //==============  SEND EMAIL ================
-                    if(mode === 'Email'){
+                    // if(mode === 'Email'){
                         console.log('1')
                         var toEmail = userData.email;
-                        if(company === req.body.company){
-                            const emailDetails = await getTemplateDetailsEmail(company,templateName,role,req.body.variables);
-                            const sendMail = await sendEmail(toEmail,emailDetails.subject,emailDetails.content)
-                        }else{
-                            const emailDetails = await getTemplateDetailsEmail(null,templateName,role,req.body.variables);
-                            const sendMail = await sendEmail(toEmail,emailDetails.subject,emailDetails.content)
-                        }
+                        const emailDetails = await getTemplateDetailsEmail(company,templateName,role,req.body.variables);
+                        const sendMail = await sendEmail(toEmail,emailDetails.subject,emailDetails.content)
                         
-                    } // mode == 'Email'
+                    // } // mode == 'Email'
 
                       // //==============  SEND INAPP ================
-                    if(mode === 'Notification'){
+                    // if(mode === 'Notification'){
                         console.log('2')
                         var toUserId = userData.id;
-                        if(company === req.body.company){
-                            const notificationDetails = await getTemplateDetailsInApp(company,templateName,role,req.body.variables); 
-                            const sendNotification = await sendInAppNotification(toUserId,userData.email,req.body.event,notificationDetails)
-                        }else{
-                            const notificationDetails = await getTemplateDetailsInApp(null,templateName,role,req.body.variables); 
-                            const sendNotification = await sendInAppNotification(toUserId,userData.email,req.body.event,notificationDetails)
-                        }
-                        
-                    }//mode == 'Notification'
+                        const notificationDetails = await getTemplateDetailsInApp(company,templateName,role,req.body.variables); 
+                        const sendNotification = await sendInAppNotification(toUserId,userData.email,req.body.event,notificationDetails)
+                       
+                    // }//mode == 'Notification'
 
                        // //==============  SEND SMS ================
-                    if(mode === 'SMS'){
-                        console.log('3')
+                    // if(mode === 'SMS'){
+                        console.log('................3.................')
                         var toMobile = userData.mobile;
-                        if(company === req.body.company){
-                            const SMSDetails = await getTemplateDetailsSMS(company,templateName,role,req.body.variables);
-                            var text = SMSDetails.content.replace(/<[^>]+>/g, '');
+                        const SMSDetails = await getTemplateDetailsSMS(company,templateName,role,req.body.variables);
+                        var text = SMSDetails.content.replace(/<[^>]+>/g, '');
                         const SMS = await sendSMS(toMobile,text); 
-                        }else{
-                            const SMSDetails = await getTemplateDetailsSMS(null,templateName,role,req.body.variables);
-                            var text = SMSDetails.content.replace(/<[^>]+>/g, '');
-                            const SMS = await sendSMS(toMobile,text); 
-                        }
                         
-                    }// mode == 'SMS'
+                    // }// mode == 'SMS'
 
                 }//i
             }//returnData
         }
-    })
-    .catch(err =>{
-        res.status(500).json({ error: err });
-    });
-
-        
+    // })
+    // .catch(err =>{
+    //     res.status(500).json({ error: err });
+    // });
+    
 }
 
 function getProfileByUserId(toUserId) {
@@ -371,23 +396,61 @@ function getAdminUserId() {
     });
 }
 
-function sendSMS(MobileNumber,text){
+function getVendorAdminUserId(company){
     return new Promise(function (resolve, reject) {
-        const client = new plivo.Client(globalVariable.plivo_auth,globalVariable.plivo_secret);   // Vowels LLP
-        const sourceMobile = globalVariable.sourceMobile;
-        
-        client.messages.create(
+        EntityMaster.findOne({'_id':company})
+        .exec()
+        .then(result => {
+            User
+            .findOne({"roles":"vendoradmin","profile.companyID":result.companyID})
+            .exec()
+            .then(data => {
+                resolve({email:data.profile.email,
+                        id: data._id,
+                        mobile: data.profile.mobile
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                reject({
+                    error: err
+                });
+            });
+        })
+        .catch(err =>{
+            console.log('entityMaster error: ',err)
+        })
+
+    });
+}
+
+function sendSMS(MobileNumber,text){
+    console.log('=====INSIDE SMS======',MobileNumber,text)
+    // return new Promise(function (resolve, reject) {
+
+        GlobalMaster.findOne({type:'SMS'})
+        .exec() 
+        .then(data=>{
+            const client = new plivo.Client(data.authID,data.authToken);   // Vowels LLP
+            const sourceMobile = data.sourceMobile;
+            client.messages.create(
             src = sourceMobile,
             dst = MobileNumber,
             text = text
-        ).then((result) => {
-            resolve(result)
+            ).then((result) => {
+                console.log('result: ',result)
+                return(result)
+            })
+            .catch(error => {
+                return(error);
+            });
         })
-        .catch(error => {
-            console.log("error ",error)
-            reject(error);
+        .catch(err =>{
+            console.log('sms error: ',err)
         });
-    })
+        
+        
+    // })
 }
 
 function sendInAppNotification(toUserId,email,event,notificationDetails){
@@ -414,51 +477,59 @@ function sendInAppNotification(toUserId,email,event,notificationDetails){
 
 function sendEmail(toEmail,subject,content){
     console.log('====**INSIDE EMAIL**=====',toEmail,subject,content)
+    // async function main() { 
+      GlobalMaster.findOne({type:'EMAIL'})
+        .exec() 
+        .then(data=>{
+            const senderEmail = data.user;
+            const senderEmailPwd = data.password;
+            // create reusable transporter object using the default SMTP transport
+              let transporter = nodeMailer.createTransport({
+                host: data.emailHost,
+                port: data.port,
+                // secure: false, // true for 465, false for other ports
+                auth: {
+                  user: senderEmail, 
+                  pass: senderEmailPwd 
+                }
+              });
 
-    async function main() {
-      const senderEmail = globalVariable.user;
-      const senderEmailPwd = globalVariable.pass;
+              // send mail with defined transport object
+              var mailOptions = {
+                    from: data.projectName+'" Admin" <' + senderEmail + '>', // sender address
+                    to: toEmail, // list of receiver
+                    subject: subject, // Subject line
+                    html: "<pre>" + content + "</pre>", // html body
+                };
+               let info =  transporter.sendMail(mailOptions, (error, info) => {
+                    console.log("Message sent: %s", error,info);
+                });
+             
+              // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        // console.log("Message sent: %s", info.messageId);
+              // Preview only available when sending through an Ethereal account
+              // console.log("Preview URL: %s", nodeMailer.getTestMessageUrl(info));
+              // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+              
+            
 
-      // create reusable transporter object using the default SMTP transport
-      let transporter = nodeMailer.createTransport({
-        host: globalVariable.emailHost,
-        port: globalVariable.emailPort,
-        // secure: false, // true for 465, false for other ports
-        auth: {
-          user: senderEmail, 
-          pass: senderEmailPwd 
-        }
-      });
-
-      console.log('email details====> ',senderEmail,toEmail,subject,content)
-
-      // send mail with defined transport object
-      var mailOptions = {
-            from: globalVariable.AppName+'" Admin" <' + senderEmail + '>', // sender address
-            to: toEmail, // list of receiver
-            subject: subject, // Subject line
-            html: "<pre>" + content + "</pre>", // html body
-        };
-       let info = await transporter.sendMail(mailOptions, (error, info) => {
-            console.log("Message sent: %s", error,info);
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
         });
-     
-      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-// console.log("Message sent: %s", info.messageId);
-      // Preview only available when sending through an Ethereal account
-      console.log("Preview URL: %s", nodeMailer.getTestMessageUrl(info));
-      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-    }
-
-    main().catch(err=>{console.log('mail error=>',err)});
+         // main().catch(err=>{console.log('mail error=>',err)});
+      
+   // }
    
 }
 
+
 function getTemplateDetailsEmail(company,templateName,role,variables) {
     console.log(company,templateName, variables)
+    
     return new Promise(function (resolve, reject) {
         Masternotifications
-            .findOne({ "event": templateName, "templateType": 'Email', "company":company, "role":role })
+            .findOne({ "event": templateName, "templateType": 'Email', "company":company, "role":role, status:'active' })
             .exec()
             .then(NotificationData => {
                 if (NotificationData) {
@@ -493,7 +564,46 @@ function getTemplateDetailsEmail(company,templateName,role,variables) {
                         });
                     }
                 }else{
-                    resolve(true);
+                    Masternotifications
+                    .findOne({ "event": templateName, "templateType": 'Email', "company":null, "role":role, status:'active' })
+                    .exec()
+                    .then(NotificationData => {
+                            var content = NotificationData.content;
+                            var wordsplit = [];
+                            if (content.indexOf('[') > -1) {
+                                wordsplit = content.split('[');
+                            }
+                            var tokens = [];
+                            var n = 0;
+                            for (i = 0; i < wordsplit.length; i++) {
+                                if (wordsplit[i].indexOf(']') > -1) {
+                                    tokensArr = wordsplit[i].split(']');
+                                    tokens[n] = tokensArr[0];
+                                    n++;
+                                }
+                            }
+                            var numOfVar = Object.keys(variables).length;
+                            for (i = 0; i < numOfVar; i++) {
+                                content = content.replace(tokens[i], variables[tokens[i]]);
+                            }
+                            if(i >= numOfVar){
+                                content = content.split("[").join(" ");
+                                content = content.split("]").join(" ");
+                                var tData = {
+                                    content: content,
+                                    subject: NotificationData.subject
+                                }
+                                resolve({
+                                    content: content,
+                                    subject: NotificationData.subject
+                                });
+                            }
+                        
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        reject(err);
+                    });
                 }
             })
             .catch(err => {
@@ -501,11 +611,14 @@ function getTemplateDetailsEmail(company,templateName,role,variables) {
                 reject(err);
             });
     });
+        
+   
 }
 function getTemplateDetailsSMS(company, templateName,role,variables) {
+    console.log('|||||||||||||INSIDE SMS TEMPLATE||||||||||||',company, templateName,role,variables)
     return new Promise(function (resolve, reject) {
         Masternotifications
-            .findOne({ "event": templateName, "templateType": 'SMS', "company": company, "role":role })
+            .findOne({ "event": templateName, "templateType": 'SMS', "company": company, "role":role, status:'active' })
             .exec()
             .then(NotificationData => {
                 if (NotificationData) {
@@ -534,7 +647,46 @@ function getTemplateDetailsSMS(company, templateName,role,variables) {
                         subject: NotificationData.subject
                     }
                     resolve(tData);
-                }//NotificationData
+                }else{
+                     Masternotifications
+                    .findOne({ "event": templateName, "templateType": 'SMS', "company": null, "role":role, status:'active' })
+                    .exec()
+                    .then(NotificationData => {
+                        if (NotificationData) {
+                            var content = NotificationData.content;
+                            var wordsplit = [];
+                            if (content.indexOf('[') > -1) {
+                                wordsplit = content.split('[');
+                            }
+                            var tokens = [];
+                            var n = 0;
+                            for (i = 0; i < wordsplit.length; i++) {
+                                if (wordsplit[i].indexOf(']') > -1) {
+                                    tokensArr = wordsplit[i].split(']');
+                                    tokens[n] = tokensArr[0];
+                                    n++;
+                                }
+                            }
+                            var numOfVar = Object.keys(variables).length;
+                            for (i = 0; i < numOfVar; i++) {
+                                content = content.replace(tokens[i], variables[tokens[i]]);
+                            }
+                            content = content.split("[").join(" ");
+                            content = content.split("]").join(" ");
+                            var tData = {
+                                content: content,
+                                subject: NotificationData.subject
+                            }
+                            resolve(tData);
+                        }//NotificationData
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        err.status(500).json({
+                            error: err
+                        });
+                    });
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -548,9 +700,8 @@ function getTemplateDetailsSMS(company, templateName,role,variables) {
 function getTemplateDetailsInApp(company, templateName,role,variables) {
     console.log('in app: ',company,templateName, variables)
     return new Promise(function (resolve, reject) {
-        var selector = { "event": templateName, "templateType": 'Notification', "company": company, "role":role };
         Masternotifications
-            .findOne(selector)
+            .findOne({ "event": templateName, "templateType": 'Notification', "company": company, "role":role, status:'active' })
             .exec()
             .then(NotificationData => {
                 if (NotificationData) {
@@ -579,7 +730,46 @@ function getTemplateDetailsInApp(company, templateName,role,variables) {
                         content: content,
                     }
                     resolve(tData);
-                }//NotificationData
+                }else{
+                     Masternotifications
+                    .findOne({ "event": templateName, "templateType": 'Notification', "company": null, "role":role, status:'active' })
+                    .exec()
+                    .then(NotificationData => {
+                        if (NotificationData) {
+                            var content = NotificationData.content;
+                            var wordsplit = [];
+                            if (content.indexOf('[') > -1) {
+                                wordsplit = content.split('[');
+                            }
+                            var tokens = [];
+                            var n = 0;
+                            for (i = 0; i < wordsplit.length; i++) {
+                                if (wordsplit[i].indexOf(']') > -1) {
+                                    tokensArr = wordsplit[i].split(']');
+                                    tokens[n] = tokensArr[0];
+                                    n++;
+                                }
+                            }
+                            var numOfVar = Object.keys(variables).length;
+                            for (i = 0; i < numOfVar; i++) {
+                                content = content.replace(tokens[i], variables[tokens[i]]);
+                            }
+                            content = content.split("[").join(" ");
+                            content = content.split("]").join(" ");
+                            var tData = {  
+                                id:NotificationData._id,  
+                                content: content,
+                            }
+                            resolve(tData);
+                        }//NotificationData
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        reject({
+                            error: err
+                        });
+                    });
+                }
             })
             .catch(err => {
                 console.log(err);

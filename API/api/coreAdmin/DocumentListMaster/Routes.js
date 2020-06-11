@@ -8,6 +8,8 @@ router.post('/post', DocumentListMaster.insertDocumentListMaster);
 router.get('/get/list', DocumentListMaster.getDocumentList);
 
 router.post('/get/list', DocumentListMaster.fetchDocumentList); 
+
+router.get('/get/list/:entityname', DocumentListMaster.getDriverData); 
  
 router.get('/get/one/:fieldID', DocumentListMaster.fetchSingleDocumentList);
 

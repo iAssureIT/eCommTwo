@@ -14,7 +14,16 @@ exports.insertPackage = (req,res,next)=>{
                 packageName                 : req.body.packageName,
                 fixCharges                  : req.body.fixCharges, 
                 maxHours                    : req.body.maxHours, 
-                maxKm                       : req.body.maxKm,
+                maxKm                       : req.body.maxKm,                
+                way                         : req.body.way,
+                cityTypeId                  : req.body.cityTypeId,
+                categoryId                  : req.body.categoryId,
+                extraHr                     : req.body.extraHr,
+                extraKms                    : req.body.extraKms,
+                driverAllow                 : req.body.driverAllow,
+                nightHalt                   : req.body.nightHalt,
+                nightCharges                : req.body.nightCharges,
+                morningCharges              : req.body.morningCharges,
                 createdBy                   : req.body.createdBy,
                 createdAt                   : new Date()
             })
@@ -68,6 +77,7 @@ exports.fetchListPackages = (req, res, next)=>{
         .sort({packageName : 1})
         .exec()
         .then(data=>{
+            console.log(res.data);
             res.status(200).json(data);
         })
         .catch(err =>{

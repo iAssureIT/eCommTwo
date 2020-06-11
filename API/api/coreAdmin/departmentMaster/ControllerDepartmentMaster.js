@@ -7,7 +7,7 @@ exports.insertDepartment = (req,res,next)=>{
     async function processData(){
     var allDepartments = await fetchDepartments();
     var department = allDepartments.filter((data)=>{
-        if (data.department.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase()) {
+        if (data.department.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
             return data;
         }
         })    
@@ -17,6 +17,7 @@ exports.insertDepartment = (req,res,next)=>{
         }else{
             const departmentMaster = new DepartmentMaster({
                                 _id                         : new mongoose.Types.ObjectId(),
+                                companyID                   : req.body.companyID,
                                 department                  : req.body.fieldValue,
                                 createdBy                   : req.body.createdBy,
                                 type                        : req.body.type,
@@ -383,6 +384,7 @@ exports.fetch_file = (req,res,next)=>{
     });   
 };
 exports.filedetails = (req,res,next)=>{
+    console.log('req',req,'res',res);
     var finaldata = {};
     console.log(req.params.fileName)
     DepartmentMaster.find( { fileName:req.params.fileName  }
@@ -472,8 +474,8 @@ exports.fetch_file = (req,res,next)=>{
 exports.filedetails = (req,res,next)=>{
     var finaldata = {};
     console.log(req.params.fileName)
-    DepartmentMaster.find({ $match : { type: req.params.type, fileName:req.params.fileName } }
-    )
+    // DepartmentMaster.find({ $match : { type: req.params.type, fileName:req.params.fileName } })
+    DepartmentMaster.find( { fileName:req.params.fileName  } )
     .exec()
     .then(data=>{
         //finaldata.push({goodrecords: data})

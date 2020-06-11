@@ -2,8 +2,10 @@ const mongoose = require("mongoose");
 
 const BookingMaster     = require('./ModelBookingMaster');
 const PersonMaster      = require('../personMaster/ModelPersonMaster');
+const User                  = require('../userManagement/ModelUsers.js');
+const EntityMaster          = require('../entityMaster/ModelEntityMaster.js');
+
 var request             = require('request-promise');
-const gloabalVariable   = require('../../nodemon.js');
 var   ObjectId          = require('mongodb').ObjectID;
 var moment              = require('moment');
 
@@ -50,6 +52,7 @@ exports.insertBooking = (req,res,next)=>{
             intermediateStops           : req.body.intermediateStops,
             specialInstruction          : req.body.specialInstruction,
             purposeOfTravel             : req.body.purposeOfTravel,
+            purposeOfTravelOther             : req.body.purposeOfTravelOther,
             reasonForSelectingVehicle   : req.body.reasonForSelectingVehicle,
             status                      : req.body.status,
             statusValue                 : req.body.statusValue,
@@ -124,7 +127,7 @@ exports.getAllApprovalReqBookings = (req, res, next)=>{
 
 exports.getDailyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'pickupDate':{$gte : new Date(req.body.date), $lt : new Date(req.body.nextDate) }}},
+        {$match:{'createdAt':{$gte : new Date(req.body.date), $lt : new Date(req.body.nextDate) }}},
         // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
@@ -194,7 +197,7 @@ exports.getDailyBooking = (req,res,next)=>{
 
 exports.getWeeklyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'pickupDate':{$gte : new Date(req.body.monday), $lt : new Date(req.body.sunday) }}},
+        {$match:{'createdAt':{$gte : new Date(req.body.monday), $lt : new Date(req.body.sunday) }}},
         // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
@@ -262,7 +265,7 @@ exports.getWeeklyBooking = (req,res,next)=>{
 
 exports.getMonthlyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'pickupDate':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
+        {$match:{'createdAt':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
         // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
@@ -329,7 +332,7 @@ exports.getMonthlyBooking = (req,res,next)=>{
 },
 exports.getYearlyBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'pickupDate':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
+        {$match:{'createdAt':{$gte : new Date(req.body.start), $lt : new Date(req.body.end) }}},
         // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
@@ -396,7 +399,7 @@ exports.getYearlyBooking = (req,res,next)=>{
 },
 exports.getCustomBooking = (req,res,next)=>{
     BookingMaster.aggregate([
-        {$match:{'pickupDate':{$gte : new Date(req.body.from), $lt : new Date(req.body.to) }}},
+        {$match:{'createdAt':{$gte : new Date(req.body.from), $lt : new Date(req.body.to) }}},
         // {$match:{'statusValue':'Manager Approved'}},
         {$lookup:
         {
@@ -488,7 +491,7 @@ exports.getAllBookingsForManager = (req, res, next)=>{
          }
     },
     { $match :{"approvalRequired" : "Yes"}},
-    { $match :{"statusValue" :req.body.status}},
+    { $match :{"statusValue" :{$in:req.body.status}}},
     ])
     // BookingMaster.find({"approvalRequired" : "Yes","statusValue" :req.body.status,"managerId":req.body.managerId})
         // .sort({createdAt : -1})
@@ -737,14 +740,16 @@ exports.matchBookingStatus = (req,res,next)=>{
    
     BookingMaster.aggregate([
         {$match:{"_id":ObjectId(req.params.bookingID)}},
-        {$match:{$or:[{"statusValue":"Manager Rejected"},{"statusValue":"Manager Approved"}]}},
+        {$match:{$or:[{"statusValue":"Manager Rejected"},{"statusValue":"Manager Approved"},{"statusValue":"Edited Manager Rejected"},{"statusValue":"Edited Manager Approved"}]}},
         {$project:{
            status: {$filter:{
                input:'$status',
                as: 'status',
                cond: { $or:[
                    {$eq: ['$$status.value','Manager Approved']},
-                   {$eq: ['$$status.value','Manager Rejected']}
+                   {$eq: ['$$status.value','Manager Rejected']},
+                   {$eq: ['$$status.value','Edited Manager Approved']},
+                   {$eq: ['$$status.value','Edited Manager Rejected']}
                 ]
            }
        },
@@ -766,8 +771,8 @@ exports.getBookingByID_empDetails = (req,res,next)=>{
         {
             $lookup:
             {
-               from: "users",
-               localField: "status[1].statusBy",
+               from: "personmasters",
+               localField: "employeeId",
                foreignField: "_id",
                as: "user"
             }
@@ -775,7 +780,6 @@ exports.getBookingByID_empDetails = (req,res,next)=>{
         ])
         .exec()
         .then(data=>{
-            console.log('------------',data)
             res.status(200).json({ data : data } );
         })
         .catch(err =>{
@@ -841,16 +845,20 @@ exports.singleBookingForDriver = (req, res, next)=>{
                 "returnTime"          : 1,
                 "intermediateStops"   : 1,
                 "specialInstruction"  : 1,
-                "tripExpenses"          : 1,
+                "tripExpenses"        : 1,
+                "employeeUserId"      : 1,
+                "corporateId"         : 1,
                 "packageType"         : "$packageType.packageType",
                 "packageName"         : "$package.packageName",
                 "firstName"           : "$employee.firstName",
                 "middleName"          : "$employee.middleName",
                 "lastName"            : "$employee.lastName",
                 "employeeMobile"      : "$employee.contactNo",
+                "vehicleCategory"     : "$vehicle.category",
                 "vehicleBrand"        : "$vehicle.brand",
                 "vehicleModel"        : "$vehicle.model",
                 "vehicleNumber"       : "$vehicle.vehicleNumber",
+                "vehicleColor"        : "$vehicle.vehiclecolor",
                 "vehicleImage"        : "$vehicle.vehicleImage",
             }
         },
@@ -898,8 +906,10 @@ exports.updateBooking = (req, res, next)=>{
                             "estimatedCost"               : req.body.estimatedCost,
                             "specialInstruction"          : req.body.specialInstruction,
                             "purposeOfTravel"             : req.body.purposeOfTravel,
+                            "purposeOfTravelOther"             : req.body.purposeOfTravelOther,
                             "reasonForSelectingVehicle"   : req.body.reasonForSelectingVehicle,
-                            //"status"                  : req.body.status,
+                            "status"                      : req.body.status,
+                            "statusValue"                 : req.body.statusValue,
                         }
             }
         )
@@ -943,29 +953,35 @@ exports.deleteBooking = (req, res, next)=>{
         });           
 };
 exports.filterBookings = (req,res,next)=>{
-    var selector = {};
-   
-    for (var key in req.body) {
-        if (key=='departments' && req.body.departments.length > 0) {
-            selector.department =  { $in: req.body.departments }
-        }
-        if (key=='designations' && req.body.designations.length > 0 ) {
-            selector.designation =  { $in: req.body.designations }
-        }
-       
-        if (req.body.initial && req.body.initial != 'All') {
-            selector.firstName = { $regex : "^"+req.body.initial,$options: "i"}
-        }
+    var selector = {}; 
+    selector['$and']=[];
+
+    if (req.body.userId){
+    selector["$and"].push({"createdBy": req.body.userId })
+    selector["$and"].push({"employeeUserId": req.body.userId })
     }
-    selector.type = { $regex : req.body.type,$options: "i"}
-    console.log(selector)
+    if (req.body.filteredMonth && req.body.filteredMonth != 'All') {
+        selector["$and"].push({'createdAt':{$gte : new Date(req.body.monthStart), $lt : new Date(req.body.monthEnd) }})
+    }
+    if (req.body.filteredYear && (req.body.filteredMonth == "" || req.body.filteredMonth == 'All')) {
+        selector["$and"].push({'createdAt':{$gte : new Date(req.body.yearStart), $lt : new Date(req.body.yearEnd) }})
+    }
+    if (req.body.filteredStatus && req.body.filteredStatus != 'All') {
+        selector["$and"].push({ statusValue : { $regex : req.body.filteredStatus, $options: "i"} })
+    }
+    if (req.body.filteredStatus == 'All' && req.body.filteredMonth == 'All'){
+        selector["$and"].push({'createdAt':{$gte : new Date(req.body.yearStart), $lt : new Date(req.body.yearEnd) }})
+    }
+    if (req.body.filteredStatus && req.body.filteredMonth == 'All'){
+        selector["$and"].push({'createdAt':{$gte : new Date(req.body.yearStart), $lt : new Date(req.body.yearEnd) }})
+    }
     BookingMaster.find(selector)
+    .sort({createdAt : -1})
     .exec()
     .then(data=>{
         res.status(200).json(data);
     })
     .catch(err =>{
-        console.log(err);
         res.status(500).json({
             error: err
         });
@@ -1482,4 +1498,173 @@ exports.trip_otp_verification = (req, res, next) => {
                 error: err
             });
         });
+};
+
+function getManagerDetails(id){
+   return new Promise(function(resolve,reject){
+        PersonMaster.findOne({"_id" : id},{"firstName":1,employeeId:1,lastName:1,contactNo:1})
+             .exec()
+             .then(managerDetails=>{
+                resolve(managerDetails);
+             })
+            .catch(err =>{
+                res.status(500).json({
+                    message : "employee not found.",
+                    error: err
+                   });
+            });
+    });
+}
+
+exports.managerDetail_ByID = (req, res, next)=>{
+    BookingMaster.find({_id: ObjectId(req.params.bookingID)})
+    .populate('employeeId')
+    .then(data=>{
+        main();
+        async function main(){
+            var returnData = data[0];
+            var managerInfo = returnData.status.filter((elem)=>{return elem.value===req.params.status});
+            console.log("managerInfo",managerInfo);
+            var managerDetails = {
+                firstName   : "",
+                lastName    : "",
+                employeeId  : "",
+                contactNo   : "",
+            };
+            if( managerInfo && managerInfo.length > 0){
+                managerDetails = await getManagerDetails(managerInfo[managerInfo.length-1].statusBy);
+            }
+            res.status(200).json({
+                "bookingId"           : returnData.bookingId,
+                "from"                : returnData.from.address,
+                "to"                  : returnData.to.address,
+                "pickupDate"          : returnData.pickupDate,
+                "pickupTime"          : returnData.pickupTime,
+                "returnDate"          : returnData.returnDate,
+                "returnTime"          : returnData.returnTime,
+                "intermediateStops"   : returnData.intermediateStops,
+                "specialInstruction"  : returnData.specialInstruction,
+                "employeeId"          : returnData.employeeId.employeeId,
+                "corporateId"         : returnData.corporateId,
+                "firstName"           : returnData.employeeId.firstName,
+                "middleName"          : returnData.employeeId.middleName,
+                "lastName"            : returnData.employeeId.lastName,
+                "employeeID"            : returnData.employeeId.userId,
+                "contactNo"           : returnData.employeeId.contactNo,
+                'managerDetails'      : managerDetails,
+            });
+         }   
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
+};
+
+function getvendorDetails(company){
+   return new Promise(function(resolve,reject){
+     EntityMaster.findOne({'_id':company})
+        .exec()
+        .then(result => {
+            User
+            .findOne({"roles":"vendoradmin","profile.companyID":result.companyID},{"profile.fullName":1,"profile.companyName":1,"profile.mobile":1})
+            .exec()
+            .then(vendorDetails=>{
+                resolve(vendorDetails);
+             })
+            .catch(err => {
+                console.log(err);
+                reject({
+                    error: err
+                });
+            });
+        })
+        .catch(err =>{
+            console.log('entityMaster error: ',err)
+        })
+        
+    });
+}
+
+exports.getVendorDetail_ByBookingID = (req, res, next)=>{
+    BookingMaster.find({_id: ObjectId(req.params.bookingID)})
+    .populate('employeeId')
+    .then(data=>{
+        main();
+        async function main(){
+            var returnData = data[0];
+            var vendorInfo = returnData.status.filter((elem)=>{return elem.value==="Allocated To Vendor"});
+            var vendorDetails = {
+                fullName   : "",
+                companyName    : "",
+                mobile  : "",
+            };
+            if( vendorInfo && vendorInfo.length > 0){
+                vendorDetails = await getvendorDetails(vendorInfo[vendorInfo.length-1].allocatedToVendor);
+            }
+            console.log('vendorDetails: ',vendorDetails)
+            res.status(200).json({
+                "bookingId"           : returnData.bookingId,
+                "from"                : returnData.from.address,
+                "to"                  : returnData.to.address,
+                "pickupDate"          : returnData.pickupDate,
+                "pickupTime"          : returnData.pickupTime,
+                "returnDate"          : returnData.returnDate,
+                "returnTime"          : returnData.returnTime,
+                "intermediateStops"   : returnData.intermediateStops,
+                "specialInstruction"  : returnData.specialInstruction,
+                "employeeId"          : returnData.employeeId.employeeId,
+                "corporateId"         : returnData.corporateId,
+                "firstName"           : returnData.employeeId.firstName,
+                "middleName"          : returnData.employeeId.middleName,
+                "lastName"            : returnData.employeeId.lastName,
+                "employeeID"            : returnData.employeeUserId,
+                "contactNo"           : returnData.employeeId.contactNo,
+                'vendorDetails'      : vendorDetails,
+            });
+         }   
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
+};
+
+exports.filedetails = (req, res, next) => {
+    var finaldata = {};
+    BookingMaster.aggregate([
+        {
+            $lookup:
+            {
+                from: "departmentmasters",
+                localField: "departmentId",
+                foreignField: "_id",
+                as: "department"
+            }
+        },
+        { $match: {fileName: req.params.fileName } }
+    ])
+        .exec()
+        .then(data => {
+            //finaldata.push({goodrecords: data})
+            finaldata.goodrecords = data;
+            FailedRecords.find({ fileName: req.params.fileName })
+                .exec()
+                .then(badData => {
+                    finaldata.failedRecords = badData[0].failedRecords
+                    finaldata.totalRecords = badData[0].totalRecords
+                    res.status(200).json(finaldata);
+                })
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+exports.bulkUploadBooking = (req, res, next) => {
+    var bookings = req.body.data;
+
+    
 };

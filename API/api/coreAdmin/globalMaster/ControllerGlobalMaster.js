@@ -233,6 +233,74 @@ exports.insertSMSData = (req, res, next) => {
 
 };
 
+exports.insertEmailData = (req, res, next) => {
+    GlobalMaster.find({type:'Email'}).count()
+    .exec()
+        .then(data=>{
+            if(data > 0){
+                GlobalMaster.updateOne(
+                        { type:'Email' },   
+                        {
+                            $set:  {   
+                                        "user"         : req.body.user,
+                                        "password"     : req.body.password,
+                                        "port"         : req.body.port,
+                                        "emailHost"    : req.body.emailHost,
+                                        "projectName"  : req.body.projectName,
+                                    },
+
+                        }
+                    )
+                    .exec()
+                    .then(data=>{
+                        if(data.nModified == 1){
+                            GlobalMaster.updateOne(
+                            { type:'Email'},
+                            {
+                                $push:  { 'updateLog' : [{  updatedAt      : new Date(),
+                                                            updatedBy      : req.body.updatedBy 
+                                                        }] 
+                                        }
+                            } )
+                            .exec()
+                            .then(data=>{
+                                res.status(200).json({ updated : true });
+                            })
+                        }else{
+                            res.status(200).json({ updated : false });
+                        }
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                        res.status(500).json({ error: err });
+                    });
+            }else{
+                const globalMaster = new GlobalMaster({
+                    _id             : mongoose.Types.ObjectId(),      
+                    type            : 'Email',
+                    user           : req.body.user,
+                    password       : req.body.password,
+                    port           : req.body.port,
+                    emailHost      : req.body.emailHost,
+                    projectName    : req.body.projectName,
+                    createdAt       : new Date()
+                });
+                
+                globalMaster.save()
+                .then(data=>{
+                    res.status(200).json({ created : true, fieldID : data._id });
+                })
+                .catch(err =>{
+                    res.status(500).json({ error: err }); 
+                });
+            }
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
+
+};
+
 exports.get_tax_Data = (req,res,next)=>{
     GlobalMaster.find({type:'Tax',taxType:req.params.type,status:'Active'})
     .exec() 
@@ -246,6 +314,16 @@ exports.get_tax_Data = (req,res,next)=>{
 
 exports.getSMSDetails = (req,res,next)=>{
     GlobalMaster.findOne({type:'SMS'})
+    .exec() 
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
+};
+exports.getEmailDetails = (req,res,next)=>{
+    GlobalMaster.findOne({type:'Email'})
     .exec() 
     .then(data=>{
         res.status(200).json(data);
