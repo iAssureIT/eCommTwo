@@ -316,6 +316,8 @@ export default class PurchaseManagement extends React.Component {
 	
 	AddProduct(e){
 		e.preventDefault();
+		var obj = {};
+		
 	}
 
 

@@ -39,6 +39,7 @@ class ContactDetails extends Component {
 			"pathname"					: this.props.entity,
 			'entityID'					: this.props.match.params ? this.props.match.params.entityID : '',
 			'contactID'					: this.props.match.params ? this.props.match.params.contactID : '',
+			'listOfEmpID'               : []
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}
