@@ -312,7 +312,11 @@ export default class PurchaseManagement extends React.Component {
                 console.log('error', error);
             })
       /*  }*/
-    }
+	}
+	
+	AddProduct(e){
+		e.preventDefault();
+	}
 
 
 	render() {
@@ -346,21 +350,29 @@ export default class PurchaseManagement extends React.Component {
 									</div>
 								  </div>
 								 </div>	
-								      <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding"> 
-									    <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-											<label >Purchase No</label>
-											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
-										</div>
-										<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
-											<label >Details</label>
-											<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
-										</div>
-										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-											<label >Purchased By(Staff Name)</label>
-											<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
-										</div>
+								 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding"> 
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<label >Purchase No</label>
+										<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
 									</div>
-						         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
+									<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
+										<label >Details</label>
+										<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
+									</div>
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<label >Purchased By(Staff Name)</label>
+										<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
+									</div>
+								 </div>
+								 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
+								    {this.state.editId ?
+                                    <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
+                                    :
+                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+                                   }
+									
+								</div>
+						         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12  NOpadding">
 {/*
                                        <div className="form-margin col-lg-6 col-md-6 col-sm-12 col-xs-12" >
                                                     <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Vendor <sup className="astrick">*</sup></label>
@@ -379,7 +391,7 @@ export default class PurchaseManagement extends React.Component {
                                                     </select>
                                                 </div>
 */}
-
+										
 										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 											<label >Select Product</label>
 											{/*<input type="text" className="form-control" id="email"/>*/}
@@ -441,12 +453,13 @@ export default class PurchaseManagement extends React.Component {
                    					</div>
 								</div>	
 								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
-								    {this.state.editId ?
+								    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.AddProduct.bind(this)}>Add</button>
+								    {/* {this.state.editId ?
                                     <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
                                     :
-                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit1</button>
                                    }
-									
+									 */}
 								</div>
 							</form>
 						</div>
@@ -458,7 +471,7 @@ export default class PurchaseManagement extends React.Component {
                             </div>
 						</div>
 						</div>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<IAssureTable
 									tableHeading={this.state.tableHeading}
                                     twoLevelHeader={this.state.twoLevelHeader} 

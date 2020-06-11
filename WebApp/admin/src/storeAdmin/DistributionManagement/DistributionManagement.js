@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { version } from 'react';
 import './PurchaseManagement.css';
 import swal from 'sweetalert';
 import axios from 'axios';
@@ -10,21 +10,26 @@ export default class DistributionManagement extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
-					currentDate           : '',
-					selectedFranchise  : 'Franchise1',
+					currentDate           : moment(new Date()).format("YYYY-MM-DD"),
+					selectedFranchise  : 'Select Franchise',
 					DistributionData :[],
+					FranchiseData :[],
 					totalDemand:0,
 					totalSupply:0,
-					
+					user_id:''
 
       };
 	}
     
 	componentDidMount(){
 		var currentDate = moment().startOf('day').format("YYYY-MM-DD");
-		document.getElementsByClassName('date').value = moment().startOf('day').format("DD/MM/YYYY") ;
-		this.setState({ currentDate:currentDate });
-		this.getData(currentDate,this.state.selectedFranchise);
+		document.getElementsByClassName('date').value = moment().startOf('day').format("YYYY-MM-DD") ;
+		const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+		this.setState({
+			currentDate:currentDate,
+			user_id : userDetails.user_id,
+		});
+		this.getAllfrachiseData();
 	}
 	componentWillReceiveProps(nextProps) {
         // var editId = nextProps.match.params.finishedGoodId;
@@ -36,91 +41,71 @@ export default class DistributionManagement extends React.Component {
         // }
 	}
 
-	getData(date,franchise){
-		var data = [
-			{franchiseId:1,franchiseName:'Franchise1',date:'2020-06-07',productCode : "FS101", itemCode: "1001",name:"Potato", totalStock: 1000, demand: "100",supply:''},
-			{franchiseId:2,franchiseName:'Franchise2',date:'2020-06-07',productCode : "FS101", itemCode: "1002",name:"Tomato",totalStock: 1500,  demand: "100",supply:''},
-			{franchiseId:1,franchiseName:'Franchise1',date:'2020-06-07',productCode : "FS101", itemCode: "1003",name:"Bringal", totalStock: 30,  demand: "100",supply:''},
-			{franchiseId:1,franchiseName:'Franchise1',date:'2020-06-08',productCode : "FS102", itemCode: "1500",name:"Onion", totalStock: 400, demand: "100",supply:''},
-			{franchiseId:3,franchiseName:'Franchise3',date:'2020-06-08',productCode : "FS102", itemCode: "1500",name:"Onion", totalStock: 400, demand: "100",supply:''},
-			{franchiseId:4,franchiseName:'Franchise4',date:'2020-06-07',productCode : "FS102", itemCode: "1500",name:"Potato", totalStock: 5000, demand: "100",supply:''},
+	getAllfrachiseData(){
+		var dateOfOrder = moment(new Date(this.state.currentDate)).format("YYYY-MM-DD");
+		 axios.get('/api/franchisepo/get/purchaseorderList/'+dateOfOrder)
+          .then((franchisePurOrders) => {
+					var FranchiseData = [];
+					var DistributionData = [];
+					var FranchiseOrderedData = []; 
+					franchisePurOrders.data.filter(function(item,index){
+						var i = FranchiseData.findIndex(x => x.name == item.name);
+						if(i <= -1){
+							FranchiseData.push({franchiseId: item.franchise_id, franchiseName: item.franchise_id});
+						}
+						return null;
+					});
 
-		];
-		this.setState({
-			DistributionData:data
-		});
-		
-		
-		let demand = data.reduce((prev, current) => {
-			if (current.franchiseName === franchise &&  date == current.date ) {
-			  return prev + +current.demand;
+					var franchisePurOrdersdata = franchisePurOrders.data;
+					for (var i = 0; i < franchisePurOrdersdata.length; i++) {
+						for (var j = 0; j < franchisePurOrdersdata[i].orderItems.length; j++) {
+							console.log(franchisePurOrdersdata[i].orderItems[j]);
+							franchisePurOrdersdata[i].orderItems[j].franchiseId = franchisePurOrdersdata[i].franchise_id;
+							franchisePurOrdersdata[i].orderItems[j].supply = 0;
+							DistributionData.push(franchisePurOrders.data[i].orderItems[j]);
+						}
+					}
+
+					this.setState({
+						"DistributionData" : DistributionData,
+						"FranchiseData" : FranchiseData
+					})
+					this.getFooterTotal();
+					console.log("DistributionData",DistributionData);
+			})
+			.catch(error=>{
+				console.log("error in getCurrentStock = ", error);
+			})
+
+	}
+
+	getFooterTotal(){
+		var franchise = this.state.selectedFranchise;
+		console.log('franchise',this.state);
+		let demand = this.state.DistributionData.reduce((prev, current) => {
+			console.log("current franchiseId",current.franchiseId,franchise);
+			if (current.franchiseId === franchise) {
+				console.log("current demand",current.orderQty);
+			  return prev + +current.orderQty;
 			}
 			return prev;
 		  }, 0); 
 
-	    let supply = data.reduce(function(prev, current) {
-			if (current.franchiseName === franchise && date == current.date) {
+	    let supply = this.state.DistributionData.reduce(function(prev, current) {
+			console.log("current supply",current.supply);
+
+			if (current.franchiseId === franchise) {
 				return prev + +current.supply
 			}
 			return prev;
 		}, 0); 
 		
 		this.setState({
-			totalDemand:demand,
-			totalSupply:supply
+			"totalDemand":demand,
+			"totalSupply":supply
 		});
-		
-	//  axios
-    //   .get('/api/finishedGoodsEntry/get/list')
-    //   .then((response)=>{
-    //     console.log("list===>",response.data);
-    //     /*this.setState({
-          
-    //       tableData : response.data,
-    //     });*/
-    //     var  tableData = response.data ;
-    //     console.log("tableData",tableData);
- 
-	// 	/*return{  tableData: {
-	// 					fullName        : 'Date',
-	// 	        		city       		: "Product Code",
-	// 	        		company 		: "Item Code",
-	// 	        		role 			: "Product Name",
-	// 					email        	: 'Opening Stock',
-						
-	// 	                status        	: 'Stock Added Today',
-	// 	                TotalStock      : 'Total Stock', 
-	// 	                }  
-	// 		}*/
-	// 		var tableData = tableData.map((a, i) => {
-	// 				return {
- 
-	// 					_id                  : a._id,
-	// 					Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
-	// 					productName 	     : a.productName ? a.productName : "" ,
-	// 					ItemCode 		     : a.ItemCode ? a.ItemCode : "" ,
-	// 					PackageWeight 		 : a.PackageWeight,
-	// 					Quantity 		     : a.Quantity ? a.Quantity : "" ,
-	// 					Unit 	             : a.Unit,
-	// 					// TotalStock 			: "" ,
-						
-	// 				/*	purchaseStaff		:
-	// 					purchaseLocation 	:
-	// 					Quantity 			:
-	// 					amount 				:
-	// 					Units 				:*/
-	// 				}
-	// 			})
-	// 		this.setState({
-             
-    //           tableData 		: tableData,          
-    //         })
-    //         })
-    //   .catch((error)=>{
-    //      console.log("error = ", error);              
-    //   }); 
-		
-    }
+
+	}
    
 	handleChange(event){
 	  event.preventDefault();
@@ -129,37 +114,54 @@ export default class DistributionManagement extends React.Component {
 	  var supplyValue = event.target.value;
 	  var index  	 = event.target.name.split("-")[1];
 	  var DistributionData = this.state.DistributionData; 
-	  DistributionData[index].supply = supplyValue;
-	  this.setState({DistributionData : DistributionData});
+	
+		  if(DistributionData[index].currentStock < supplyValue){
+			DistributionData[index].supply = DistributionData[index].currentStock;
+		  }else{
+			DistributionData[index].supply = supplyValue;
+		  }
+	
+	  this.setState({"DistributionData" : DistributionData});
 	  let supply = DistributionData.reduce(function(prev, current) {
-		if (current.franchiseName === franchise && date == current.date) {
+		if (current.franchiseId === franchise) {
 			return prev + +current.supply
 		}
 		return prev;
 	  }, 0); 
 	
 	  this.setState({
-		totalSupply:supply
+		"totalSupply":supply
 	  });
-	//   this.getData(this.state.currentDate,this.state.selectedFranchise);
+	   this.getFooterTotal();
 	  
     }
 
   
     Submit(event){
-    /*event.preventDefault();
+        event.preventDefault();
+        var orderArray = [];
+    	for (var i = 0; i < this.state.DistributionData.length; i++) {
+			var obj = {};
+			if(this.state.DistributionData[i].supply){
+				obj.productCode 	= this.state.DistributionData[i].productCode;
+				obj.itemCode 			= this.state.DistributionData[i].itemCode;
+				obj.productName 	= this.state.DistributionData[i].productName;
+				obj.currentStock 			= this.state.DistributionData[i].currentStock;
+				obj.orderQty 			= this.state.DistributionData[i].orderQty;
+				obj.suppliedQty 			= this.state.DistributionData[i].supply;
+				orderArray.push(obj);
+			}
+    		
+    	}
+    	var formValues = {
+			orderDate 	: this.state.currentDate,
+			franchiseId : this.state.selectedFranchise,
+    		orderItems	: orderArray,
+    		createdBy 	: this.state.user_id,
+    	};
 
-    const formValues1 = {
-        // "amount"         	: this.state.amount ,
-        "Date" 		        : this.state.Date,
-      	"ItemCode" 	        : this.state.ItemCode,
-      	"PackageWeight"     : this.state.PackageWeight,
-      	"Quantity" 			: this.state.Quantity,
-      	"productName" 	    : this.state.productName,
-      	"Unit" 		     	: this.state.Unit,
-       
-      };
-      console.log("formValues1",formValues1);
+    	console.log("formValues = ",formValues);
+      /*console.log("formValues1",formValues1);
       axios
 			.post('/api/finishedGoodsEntry/post',formValues1)
 		  	.then(function (response) {
@@ -184,29 +186,30 @@ export default class DistributionManagement extends React.Component {
 
     previousDate(event){
         event.preventDefault();
-    
-        var selectedDate1 = $(".date").val();
-    
+		var selectedDate1 = $(".date").val();
         this.setState({currentDate: moment(selectedDate1).subtract(1, "days").format("YYYY-MM-DD")}, () => {
-            this.getData(this.state.currentDate,this.state.selectedFranchise);
-        }) 
+            this.getFooterTotal();
+		});
+		this.getAllfrachiseData();
+		console.log("currentDate",this.state.currentDate);
       }
-      nextDate(event){
+    nextDate(event){
         event.preventDefault();
-    
         var selectedDate1 = $(".date").val();
-    
         this.setState({currentDate: moment(selectedDate1).add(1, "days").format("YYYY-MM-DD")}, () => {
-            this.getData(this.state.currentDate,this.state.selectedFranchise);
-        }) 
-	  }
+            this.getFooterTotal();
+		});
+		this.getAllfrachiseData();
+	}
 	  
-	  handleSelectChange(event){
+	handleSelectChange(event){
 		var selectedValue = event.target.value;
-		this.setState({selectedFranchise : selectedValue});
-		this.getData(this.state.currentDate,selectedValue);
-
-	 }
+		this.setState({"selectedFranchise" : event.target.value},()=>{
+			console.log("selectedFranchise",this.state.selectedFranchise);
+		});
+		
+		this.getFooterTotal();
+	}
 	 
 	 onReset(event){
 		event.preventDefault();
@@ -215,13 +218,13 @@ export default class DistributionManagement extends React.Component {
 			DistributionData[index].supply = 0;
 		});
 		
-		this.setState({DistributionData : DistributionData});
+		this.setState({"DistributionData" : DistributionData});
 		let supply = this.state.DistributionData.reduce(function(prev, current) {
 			return 0;
 		  }, 0); 
 		
 		this.setState({
-			totalSupply:supply
+			"totalSupply":supply
 		});
 	 }
 
@@ -232,27 +235,34 @@ export default class DistributionManagement extends React.Component {
 		var date = this.state.currentDate;
 
 		DistributionData.map((result, index)=>{
-			if(result.totalStock >= result.demand){
-				DistributionData[index].supply = result.demand;
+			if(result.currentStock >= result.orderQty){
+				DistributionData[index].supply = result.orderQty;
 			}else{
-				DistributionData[index].supply = result.totalStock;
+				DistributionData[index].supply = result.currentStock;
 			}
-
 			
 		});
 
 		let supply = DistributionData.reduce(function(prev, current) {
-			if (current.franchiseName === franchise && date == current.date) {
+			if (current.franchiseId === franchise) {
 				return prev + +current.supply
 			}
 			return prev;
 		}, 0); 
-		
 		this.setState({
-			totalSupply:supply
+			"totalSupply":supply,
+			"DistributionData" : DistributionData
 		});
 
-		this.setState({DistributionData : DistributionData});
+		this.getFooterTotal();
+	 }
+
+	 onChageDate(e){
+		console.log("EEE",e.target.value);
+		this.setState({
+			currentDate : e.target.value
+		});
+		this.getAllfrachiseData();
 	 }
 
 
@@ -270,27 +280,32 @@ export default class DistributionManagement extends React.Component {
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                                         <button className="btn btn-primary autoDistributebtn mt" onClick={this.autoDistribute.bind(this)}>Auto Distribute</button>
 									</div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12"> 
-										<label>Select Franchise : </label>
-										<select defaultValue={this.state.selectedFranchise} className="col-lg-12 col-md-9 col-sm-12 col-xs-12 pull-right form-control" onChange={this.handleSelectChange.bind(this)}>
-											<option> Franchise1 </option>
-											<option> Franchise2 </option>
-											<option> Franchise3 </option>
-											<option> Franchise4 </option>
-										</select>
-								    </div>
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-                                        <label >Date</label>
+                                        <label >Ordered Date</label>
                                         <div class="input-group">
                                             <span onClick={this.previousDate.bind(this)} class="commonReportArrowPoiner input-group-addon" id="basic-addon1">
                                                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
                                             </span>
-                                            <input name="date" type="date" class="date form-control" defaultValue={this.state.currentDate}/>
+                                            <input name="date" type="date" class="date form-control" defaultValue={this.state.currentDate}  onChange={this.onChageDate.bind(this)}/>
                                             <span onClick={this.nextDate.bind(this)} class="commonReportArrowPoiner input-group-addon" id="basic-addon1">
                                                    <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
                                             </span>
                                         </div>
 									</div>
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12"> 
+										<label>Select Franchise : </label>
+										<select value={this.state.selectedFranchise} className="col-lg-12 col-md-9 col-sm-12 col-xs-12 pull-right form-control" onChange={this.handleSelectChange.bind(this)}>
+										    <option  defaultValue="">Select Franchise</option>
+											{
+											Array.isArray(this.state.FranchiseData) && this.state.FranchiseData.length > 0
+									    	? 
+									    		this.state.FranchiseData.map((result, index)=>{
+													return(  <option value={result.franchiseId}> {result.franchiseName} </option> );
+												})
+											: <option disabled>{"No franchise"}</option>
+											}
+										</select>
+								    </div>
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
 										<input type="reset" value="Reset" className="btn btn-default mt pull-right" onClick={this.onReset.bind(this)}/>
 									</div>
@@ -300,12 +315,9 @@ export default class DistributionManagement extends React.Component {
 										<table className="table table-bordered table-striped table-hover">
 											<thead className="thead-light text-center bg-primary">
 												<tr>
-													<th rowspan="2">Product Name 
-														<br/> 
-														<small style={{fontWeight:'normal'}}>  Product Code </small>
-														<br/> 
-														<small style={{fontWeight:'normal'}}>  Item Code</small>
-													</th>
+													<th rowspan="2">Product Name </th>
+													<th rowspan="2">Product Code </th>
+													<th rowspan="2">Item Code </th>
 													<th rowspan="2">Total Stock</th>
 													<th colspan="2">{this.state.selectedFranchise}</th>
 												</tr>
@@ -319,26 +331,20 @@ export default class DistributionManagement extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
+													console.log('resulttttt',result.franchiseId,this.state.selectedFranchise);
 													return( 
-														this.state.selectedFranchise && this.state.currentDate ?
-															result.franchiseName === this.state.selectedFranchise  ? 
-															    result.date == this.state.currentDate  ? 
+													    result.franchiseId === this.state.selectedFranchise  ? 
 																<tr key={index}>
-																	<td>{result.productCode} - {result.itemCode} - {result.name}</td>
-																	<td style={{fontWeight:'bold'}}>{result.totalStock} </td>
-																	<td style={{fontWeight:'bold'}}>{result.demand} </td>
+																	<td>{result.productCode}</td>
+																	<td>{result.itemCode}</td>
+																	<td>{result.productName}</td>
+																	<td style={{fontWeight:'bold'}}>{result.currentStock} </td>
+																	<td style={{fontWeight:'bold'}}>{result.orderQty} </td>
 																	<td><input type="number"  name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0"/></td>															
 																</tr>
-																: null
 															:
 																null
-														:
-														<tr key={index}>
-															<td>{result.productCode} - {result.itemCode} - {result.name}</td>
-															<td style={{fontWeight:'bold'}}>{result.totalStock} </td>
-															<td style={{fontWeight:'bold'}}>{result.demand} </td>
-															<td><input type="number" name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0"/></td>													
-														</tr>
+													
 														)
 												})
 											:
@@ -348,7 +354,7 @@ export default class DistributionManagement extends React.Component {
 											</tbody>
 											<tfoot style={{fontWeight:'bold'}}>
 												<tr>
-													<td colspan="2">Total</td>
+													<td colspan="4">Total</td>
 													<td>
                                                       {this.state.totalDemand}
 													</td>

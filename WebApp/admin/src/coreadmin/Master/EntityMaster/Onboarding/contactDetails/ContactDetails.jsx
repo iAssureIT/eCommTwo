@@ -43,6 +43,7 @@ class ContactDetails extends Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
+		console.log("Nextprops",nextProps);
 		this.edit();
 		this.setState({'rolesArray' : nextProps.roles,'isBookingRequired':nextProps.bookingRequired})
 	}
@@ -71,7 +72,7 @@ class ContactDetails extends Component {
 		this.getBranchCode();
 		this.contactDetails();
 		this.edit();
-		// this.getRoles();
+	    this.getRoles();
 	}
 	getAllEntites() {
 		var formvalues = {};
@@ -124,22 +125,23 @@ class ContactDetails extends Component {
 		  .catch((error) => {
 		  })
 	}
-	// getRoles() {
-	// 	var data = {
-	// 	"startRange"        : this.state.startRange,
-	// 	"limitRange"        : this.state.limitRange, 
-	//   }
+	getRoles() {
+		var data = {
+		"startRange"        : this.state.startRange,
+		"limitRange"        : this.state.limitRange, 
+	  }
 	
-	// 	axios.post("/api/roles/get/list",data)
-	// 	  .then((response) => {
-	// 		this.setState({
-	// 		  rolesArray: response.data
-	// 		},()=>{
-	// 		})
-	// 	  })
-	// 	  .catch((error) => {
-	// 	  })
-	// }
+		axios.post("/api/roles/get/list",data)
+		  .then((response) => {
+			this.setState({
+			  rolesArray: response.data
+			},()=>{
+
+			});
+		  })
+		  .catch((error) => {
+		  })
+	}
 	getDepartment() {
 	axios.get("/api/departmentmaster/get/list")
 		.then((response) => {
@@ -1032,7 +1034,7 @@ class ContactDetails extends Component {
 		event.preventDefault();
 		this.setState({
 			createUser : val,
-			rolesArray : this.props.roles
+			// rolesArray : this.props.roles
 		})
 	}
 
@@ -1261,14 +1263,14 @@ class ContactDetails extends Component {
 
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" > 
 																		<div>
-							                                            <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Role <i className="astrick">*</i></label>
+							                                            <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Role<i className="astrick">*</i></label>
 							                                            <select className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
 							                                              ref="role" name="role" id="role" value={this.state.role} onChange={this.handleChange}>
 							                                              <option value="" disabled={true}>-- Select Role --</option>
 							                                              {this.state.rolesArray && this.state.rolesArray.length > 0 ?
 																				this.state.rolesArray.map((role, index) => {
 																				return (
-																					<option key={index} value={role}>{role}</option>
+																					<option key={index} value={role.role}>{role.role}</option>
 																				);
 																				}) : ''
 																			}
