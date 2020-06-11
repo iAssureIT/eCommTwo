@@ -64,10 +64,10 @@ class Login extends Component {
     }
     if ($("#login").valid()) {
       document.getElementById("logInBtn").value = 'Please Wait...';
-      axios.post('/api/auth/post/login', auth)
+      axios.post('/api/auth/post/franchise/login', auth)
       .then((response) => {
         console.log("response",response)
-          this.props.setGlobalUser(response.data.userDetails);
+          // this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
             var  userDetails = {
               firstName : response.data.userDetails.firstName, 

@@ -682,7 +682,7 @@ exports.user_login_using_email = (req, res, next) => {
 		.exec()
 		.then(user => {
 			if (user) {
-				if ((user.profile.status).toLowerCase() == "active") {
+				if ((user.profile.status).toLowerCase() === "active") {
 					var pwd = user.services.password.bcrypt;
 					console.log('pwd', pwd);
 					if (pwd) {
@@ -778,6 +778,114 @@ exports.user_login_using_email = (req, res, next) => {
 		});
 };
 
+exports.franchise_login_using_email = (req, res, next) => {
+	var emailId = (req.body.email).toLowerCase();
+	var role = (req.body.role).toLowerCase();
+	if(role === 'franchise'){
+	User.findOne({
+		"username": emailId,
+		"roles": 'franchise',
+		// "profile.status"	: "active",
+	})
+		.exec()
+		.then(user => {
+			if (user) {
+				if ((user.profile.status).toLowerCase() == "active") {
+					var pwd = user.services.password.bcrypt;
+					console.log('pwd', pwd);
+					if (pwd) {
+						bcrypt.compare(req.body.password, pwd, (err, result) => {
+							if (err) {
+								return res.status(200).json({
+									message: 'Auth failed'
+								});
+							}
+							if (result) {
+								const token = jwt.sign({
+									email: req.body.email,
+									userId: user._id,
+								}, globalVariable.JWT_KEY,
+									{
+										expiresIn: "365d"
+									}
+								);
+
+								User.updateOne(
+									{ "username": emailId.toLowerCase() },
+									{
+										$push: {
+											"services.resume.loginTokens": {
+												whenLogin: new Date(),
+												loginTimeStamp: new Date(),
+												hashedToken: token
+											}
+										}
+									}
+								)
+									.exec()
+									.then(updateUser => {
+										console.log("updateUser ==>",updateUser)
+										if (updateUser.nModified == 1) {
+											res.status(200).json({
+												message: 'Login Auth Successful',
+												token: token,
+												roles: user.roles,
+												ID: user._id,
+												companyID: user.profile.companyID,
+												userDetails: {
+													firstName: user.profile.firstname,
+													lastName: user.profile.lastname,
+													email: user.profile.email,
+													phone: user.profile.phone,
+													city: user.profile.city,
+													companyID: user.profile.companyID,
+													locationID: user.profile.locationID,
+													user_id: user._id,
+													roles: user.roles,
+													token: token,
+												}
+											});
+										} else {
+											return res.status(200).json({
+												message: 'Auth failed'
+											});
+										}
+									})
+
+									.catch(err => {
+										console.log("500 err ", err);
+										res.status(500).json({
+											message: "Failed to save token",
+											error: err
+										});
+									});
+							} else {
+								return res.status(200).json({
+									message: 'INVALID_PASSWORD'
+								});
+							}
+						})
+					} else {
+						res.status(200).json({ message: "INVALID_PASSWORD" });
+					}
+				} else if ((user.profile.status).toLowerCase() == "blocked") {
+					res.status(200).json({ message: "USER_BLOCK" });
+				} else if ((user.profile.status).toLowerCase() == "unverified") {
+					res.status(200).json({ message: "USER_UNVERIFIED" });
+				}
+			} else {
+				res.status(200).json({ message: "NOT_REGISTER" });
+			}
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({
+				message: "Failed to find the User",
+				error: err
+			});
+		});
+	}//end if
+};
 
 
 exports.user_login_using_mobile = (req, res, next) => {

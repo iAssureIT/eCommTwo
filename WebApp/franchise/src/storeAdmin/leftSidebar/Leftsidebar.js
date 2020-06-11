@@ -73,8 +73,9 @@ export default class Leftsidebar extends Component{
               </div>*/}
 
               <div className="sidebar-header">
-                <h4 className="text-center"><b><label  className="headerImage">UniMandai Admin</label></b></h4>
-                <strong><img className="slidlogo" src="/images/furniture-logo1.jpg"/></strong>
+                <h4 className="text-center"><b><label  className="headerImage">UniMandai Franchise</label></b></h4>
+                {/* <strong><img className="slidlogo" src="/images/logoUnimandai.png"/></strong> */}
+                <strong className="umSmall">UM</strong>
               </div>
               <ul className="list-unstyled components abc" style={{height:  sidebarHeight+"px"}} >
                 <li className="active sidebarMenuText add">
@@ -242,12 +243,12 @@ export default class Leftsidebar extends Component{
                     </li>                    
                   </ul>
                 </li>
-                <li className="sidebarMenuText add">
+                {/* <li className="sidebarMenuText add">
                   <a href="/distribution">
                     <i className="fa fa-industry"></i>
                     Distribution Management
                   </a>
-                </li>
+                </li> */}
                 {/* <li className="sidebarMenuText">
                   <a href="#baData" data-toggle="collapse" aria-expanded="false">
                     <i className="glyphicon glyphicon-briefcase" />
