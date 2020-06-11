@@ -8,7 +8,7 @@ exports.insertLocationType = (req,res,next)=>{
     var allLocationTypes = await fetchLocationTypes();
 
     var locationType = allLocationTypes.filter((data)=>{
-        if (data.locationType.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase()) {
+        if (data.locationType.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
             return data;
         }
         })
@@ -17,13 +17,13 @@ exports.insertLocationType = (req,res,next)=>{
         }else{
             const locationTypeMaster = new LocationTypeMaster({
                             _id                         : new mongoose.Types.ObjectId(),
+                            companyID                   : req.body.companyID,
                             locationType                : req.body.fieldValue,
                             createdBy                   : req.body.createdBy,
                             createdAt                   : new Date()
                         })
                         locationTypeMaster.save()
                         .then(data=>{
-                            console.log("loctypemaster line 26 data = ",data);
                             res.status(200).json({ created : true, fieldID : data._id });
                         })
                         .catch(err =>{

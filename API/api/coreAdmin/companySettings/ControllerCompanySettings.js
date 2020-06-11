@@ -180,6 +180,20 @@ exports.singleLocation = (req,res,next)=>{
             });
         });
 }
+exports.singleTaxDetails = (req,res,next)=>{
+    // var roleData = req.body.role;
+    Companysettings.findOne({"taxSettings._id":req.params.taxDetailsID}, {"taxSettings.$" : 1})
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
 exports.update_location = (req,res,next)=>{
     // var roleData = req.body.role;
     Companysettings.updateOne(
@@ -219,6 +233,35 @@ exports.update_location = (req,res,next)=>{
             });
         });
 }
+exports.update_taxDetails = (req,res,next)=>{
+    // var roleData = req.body.role;
+    Companysettings.updateOne(
+        {  _id : req.body.companyId, "taxSettings._id":req.body.taxID },
+        {
+            $set:{
+                    "taxSettings.$.locationType"    : req.body.locationType,
+                    "taxSettings.$.contactNumber"   : req.body.contactnumber,
+                    "taxSettings.$.blockName"       : req.body.blockname,
+                    "taxSettings.$.area"            : req.body.area,
+                                               
+            }
+        }
+        )
+        .exec()
+        .then(data=>{
+            if(data.nModified == 1){
+                res.status(200).json("Company Tax Details added");
+            }else{
+                res.status(404).json("Company Tax Details Not found");
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
 
 exports.delete_location = (req,res,next)=>{    
     Companysettings.updateOne(
@@ -231,11 +274,38 @@ exports.delete_location = (req,res,next)=>{
         .then(data=>{
             if(data.nModified == 1){
                 res.status(200).json({
-                    "message": "Location is deleted uccessfully."
+                    "message": "Location is deleted successfully."
                 });
             }else{
                 res.status(401).json({
                     "message": "Location not found"
+                });
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+exports.delete_taxDetails = (req,res,next)=>{    
+    Companysettings.updateOne(
+            { _id:req.params.companyID},  
+            {
+                $pull: { 'taxSettings' : {_id:req.params.taxDetailsID}}
+            }
+        )
+        .exec()
+        .then(data=>{
+            if(data.nModified == 1){
+                res.status(200).json({
+                    "message": "Tax details is deleted successfully."
+                });
+            }else{
+                res.status(401).json({
+                    "message": "Tax details not found"
                 });
             }
         })
@@ -313,7 +383,7 @@ exports.updateBankDetails = (req,res,next)=>{
 }
 
 exports.addTaxSettings = (req,res,next)=>{
-    var fromDate1 = req.body.effectiveFrom.replace(/-/g, '\/');
+    var fromDate1 = req.body.taxSettings.effectiveFrom.replace(/-/g, '\/');
     var toDateForPreviousRecordISOFormat = new Date(new Date(fromDate1) - (24*60*60*1000) );
     var formateddate = new Date(toDateForPreviousRecordISOFormat);
     var toDateForPreviousRecord = formateddate.getFullYear()+'-' + (formateddate.getMonth()+1) + '-'+formateddate.getDate();
@@ -366,10 +436,10 @@ exports.addTaxSettings = (req,res,next)=>{
         .then((respose)=>{
             Companysettings.updateOne({'_id': req.body.companyId},
               {$push:{ taxSettings :{
-                  taxType       : req.body.taxType,
-                  taxRating : req.body.taxRating,
-                  effectiveFrom : req.body.effectiveFrom,
-                  effectiveTo : "",
+                  taxType       : req.body.taxSettings.taxType,
+                  taxRating : req.body.taxSettings.taxRating,
+                  effectiveFrom : req.body.taxSettings.effectiveFrom,
+                  effectiveTo : req.body.taxSettings.effectiveTo,
                   createdAt     : new Date(),
                 }
               }
@@ -433,12 +503,13 @@ exports.updateTaxSettings = (req,res,next)=>{
         {  _id : req.body.companyId,"taxSettings._id":req.body.taxId},
         {
             $set:{
-                "taxSettings.$.taxType"         : req.body.taxType,
-                "taxSettings.$.taxRating"       : req.body.taxRating,
-                "taxSettings.$.effectiveFrom"   : req.body.effectiveFrom,
-                
+                "taxSettings.$.taxType"         : req.body.taxSettings.taxType,
+                "taxSettings.$.taxRating"       : req.body.taxSettings.taxRating,
+                "taxSettings.$.effectiveFrom"   : req.body.taxSettings.effectiveFrom,
+                "taxSettings.$.effectiveTo"     : req.body.taxSettings.effectiveTo,
             }
         }
+
         )
         .exec()
         .then(data=>{

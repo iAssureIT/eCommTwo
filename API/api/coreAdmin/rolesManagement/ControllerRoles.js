@@ -49,8 +49,6 @@ exports.create_role = (req,res,next)=>{
 };
 exports.list_role = (req,res,next)=>{
     Role.find()
-        .skip(req.body.startRange)
-        .limit(req.body.limitRange)
         .exec()
         .then(data=>{
             res.status(200).json(data);

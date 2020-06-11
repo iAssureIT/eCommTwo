@@ -11,9 +11,9 @@ const userSchema = mongoose.Schema({
 		resume: {
 			loginTokens:[
 				{
-					loginTimeStamp: Date,
-					logoutTimeStamp: Date,
-					ValidateTill: Date,
+					loginTimeStamp: {type:Date},
+					logoutTimeStamp: {type:Date},
+					ValidateTill: {type:Date},
 					hashedToken : String
 				}
 			]
@@ -29,7 +29,6 @@ const userSchema = mongoose.Schema({
 						lastname  				: String,
 						fullName  				: String,
 						mobile 		 			: String,
-						pincode 				: Number,
 						image 					: String,
 						otpMobile	  			: String,
 						mobileVerified			: Boolean,
@@ -42,27 +41,6 @@ const userSchema = mongoose.Schema({
 						createdOn 				: String,
 					},
 	roles       : [String],
-	deliveryAddress : [
-		
-		{
-			"user_ID"      : String,
-			"name"         : String,
-			"email"        : String,
-			"addressLine1" : String,
-			"addressLine2" : String,
-			"pincode"      : String,
-			"district"     : String,
-			"city"         : String,
-			"stateCode"    : String,
-			"state"        : String,
-			"countryCode"  : String,
-			"country" 	   : String,
-			"mobileNumber" : String,
-			"addType"	   : String,
-		}
-	
-
-],
 	statusLog   : [
 	                {
 	                	status 				: String,

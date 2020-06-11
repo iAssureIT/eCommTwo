@@ -19,6 +19,7 @@ const personMasterSchema = mongoose.Schema({
     whatsappNo                  : String,
     workLocation                : String,
     workLocationId              : String,
+    branchCode                  : String,
     badgeNumber                 : String,
     designationId               : { type: mongoose.Schema.Types.ObjectId, ref: 'designationmasters' },
     departmentId                : { type: mongoose.Schema.Types.ObjectId, ref: 'departmentmasters' },
@@ -28,8 +29,10 @@ const personMasterSchema = mongoose.Schema({
     approvingAuthorityId1       : String,
     approvingAuthorityId2       : String,
     approvingAuthorityId3       : String,
-    preApprovedParameter        : String,
-    preApprovedParameterValue   : Number,
+    preApprovedAmount           : Number,
+    preApprovedRides            : Number,
+    preApprovedKilometer        : Number,
+
     address                     : [{
                                     addressLine1    : String,
                                     addressLine2    : String,
@@ -46,48 +49,23 @@ const personMasterSchema = mongoose.Schema({
                                     longitude       : String,
                                     addressProof    : Array
                                 }],
-
-    drivingLicense              :{
-                                    licenseNo       : String,
-                                    effectiveTo     : Date,
-                                    licenseProof    : [{
-                                                            imgUrl : String,
-                                                            status : String,
-                                                            remarks : String,
-                                                            verifiedOn : Date,
-                                                            verifiedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
-                                                        }]  
-                                },
-    identityProof               : [{
-                                        imgUrl : String,
-                                        status : String,
-                                        remarks : String,
-                                        verifiedOn : Date,
-                                        verifiedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
-                                    }],                            
-    aadhar                      :{
-                                    aadharNo           : String,
-                                    aadharProof        : [{
-                                                            imgUrl : String,
-                                                            status : String,
-                                                            remarks : String,
-                                                            verifiedOn : Date,
-                                                            verifiedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
-                                                        }]
-                                },
+    Documentarray               : [{
+                                        documentName        : String,
+                                        documentNumber      : String,
+                                        documentValidFrom   : Date,
+                                        documentValidTo     : Date,
+                                        documentProof       : {
+                                                                imgUrl : Array,
+                                                                status : String,
+                                                                remark : String,
+                                                                createdBy : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+                                                                createdAt : Date
+                                                            },
+                                    }],
     verification                :{
                                     verificationNumber: String,
                                     verificationProof : Array
                                 },  
-
-    // voterID                     : [{
-    //                                 voterID             : String,
-    //                                 voterIDProof        : Array
-    //                             }],
-    // passport                    : [{
-    //                                 passportNo           : String,
-    //                                 passportProof        : Array
-    //                             }], 
     corporateId                 : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymasters' },                              
     userId                      : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     status                      : String,

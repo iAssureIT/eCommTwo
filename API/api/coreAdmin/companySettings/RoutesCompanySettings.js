@@ -15,17 +15,21 @@ router.patch('/addLocation', CompanySettingController.addLocation);
 
 router.get('/singleLocation/:locationID', CompanySettingController.singleLocation);
 
+router.get('/singleTaxDetails/:taxDetailsID', CompanySettingController.singleTaxDetails);
+
 router.get('/getTaxData/:companyID', CompanySettingController.showAllTaxDetails);
 
 router.patch('/update_location', CompanySettingController.update_location);
 
+router.patch('/update_taxDetails', CompanySettingController.updateTaxSettings);
+
 router.patch('/deleteLocation/:companyID/:locationID',CompanySettingController.delete_location);
+
+router.patch('/delete/:companyID/:taxDetailsID',CompanySettingController.delete_taxDetails);
 
 router.patch('/bankDetails', CompanySettingController.addBankDetails);
 
 router.patch('/updateBankDetails', CompanySettingController.updateBankDetails);
-
-router.patch('/taxSettings', CompanySettingController.addTaxSettings);
 
 router.patch('/taxSettings', CompanySettingController.addTaxSettings);
 

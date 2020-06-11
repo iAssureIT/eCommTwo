@@ -17,7 +17,11 @@ router.patch('/patch/status', GlobalMasterContoller.updateStatus);
 
 router.patch('/SMS', GlobalMasterContoller.insertSMSData);
 
+router.patch('/Email', GlobalMasterContoller.insertEmailData);
+
 router.get('/get/sms_details', GlobalMasterContoller.getSMSDetails);
+
+router.get('/get/email', GlobalMasterContoller.getEmailDetails);
 
 module.exports = router;
 

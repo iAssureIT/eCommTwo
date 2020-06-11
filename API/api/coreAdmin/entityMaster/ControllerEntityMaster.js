@@ -6,12 +6,9 @@ const gloabalVariable = require('../../../nodemon.js');
 var   ObjectID          = require('mongodb').ObjectID;
 
 exports.insertEntity = (req,res,next)=>{
-    console.log("insertEntity req = ", req.body);
-    
     insertEntityFun();
     async function insertEntityFun(){
         var getnext = await getNextSequence()
-        console.log(getnext);
 
         EntityMaster.findOne({  
                             companyName               : req.body.companyName,
@@ -46,7 +43,6 @@ exports.insertEntity = (req,res,next)=>{
                 })
                 entity.save()
                 .then(data=>{
-                    console.log("created new entity = ",data);
                     res.status(200).json({ created : true, entityID : data._id ,companyID : data.companyID});
                 })
                 .catch(err =>{
@@ -83,8 +79,6 @@ function getNextSequence() {
 }
 
 exports.listEntity = (req,res,next)=>{
-    console.log("line 86 listEntity req = ", req.params.entityType);
-    
     EntityMaster.find({entityType:req.params.entityType}).sort({createdAt : -1})    
         .exec()
         .then(data=>{
@@ -134,6 +128,20 @@ exports.entityDetails = (req,res,next)=>{
             error: err
         });
     });
+};
+
+exports.fetchLocationEntities = (req, res, next)=>{
+    EntityMaster.findOne({_id : req.body.entityID})
+        .sort({createdAt : -1})
+        .skip(req.body.startRange)
+        .limit(req.body.limitRange)
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
 };
 
 exports.companyName = (req,res,next)=>{
@@ -246,29 +254,52 @@ exports.addLocation = (req,res,next)=>{
     
     insertLocationdetails();
     async function insertLocationdetails() {
-        var getnext = await getNextBranchCode(req.body.entityID)
-        
-        locationdetails.branchCode = getnext;
-        console.log(locationdetails)
-        EntityMaster.updateOne(
-                { _id: ObjectID(req.body.entityID) },  
-                {
-                    $push:  { 'locations' : locationdetails }
-                }
-            )
-            .exec()
-            .then(data=>{
-                if(data.nModified == 1){
-                    res.status(200).json({ created : true });
-                }else{
-                    res.status(401).json({ created : false });
-                }
-            })
-            .catch(err =>{
-                res.status(500).json({ error: err });
-            });
+        // var data = await updateDocInLoc(req.body.entityID,locationdetails)
+        // console.log('data====>',data)
+         var getData = await fetchLocData(req.body.entityID,locationdetails);
+        if (getData.length > 0) {
+            res.status(200).json({ duplicated : true });
+        }else{
+            if(locationdetails.GSTIN || locationdetails.PAN){
+                var compare = await updateSameStateDocuments(req.body.entityID,locationdetails)
+            }
+            var getnext = await getNextBranchCode(req.body.entityID)
+            locationdetails.branchCode = getnext;
+            EntityMaster.updateOne(
+                    { _id: ObjectID(req.body.entityID) },  
+                    {
+                        $push:  { 'locations' : locationdetails }
+                    }
+                )
+                .exec()
+                .then(data=>{
+                    if(data.nModified == 1){
+                        res.status(200).json({ created : true });
+                    }else{
+                        res.status(401).json({ created : false });
+                    }
+                })
+                .catch(err =>{
+                    res.status(500).json({ error: err });
+                });
+        }
     }
 };
+
+function fetchLocData(entityID,locationdetails){
+    return new Promise((resolve,reject)=>{
+        EntityMaster.find(
+        {_id: entityID,"locations.locationType":locationdetails.locationType, "locations.addressLine1": locationdetails.addressLine1},{ 'locations.$': 1 })
+        .exec()
+        .then(data=>{
+            resolve(data)
+        })
+        .catch(err =>{
+            reject(0)
+        });
+    })
+}
+
 function getNextBranchCode(entityID) {
     return new Promise((resolve,reject)=>{
     EntityMaster.findOne({"_id" : entityID }).sort({"locations.branchCode":-1})       
@@ -288,6 +319,47 @@ function getNextBranchCode(entityID) {
         });
     });
 }
+
+function updateSameStateDocuments(entityID,locationdetails){
+    return new Promise((resolve,reject)=>{
+        EntityMaster.updateMany({"_id":entityID, "locations.state":locationdetails.state},
+            {
+                $set:   { 
+                          'locations.$[].GSTIN'        : locationdetails.GSTIN,
+                          'locations.$[].GSTDocument'  : locationdetails.GSTDocument,
+                          'locations.$[].PAN'          : locationdetails.PAN,
+                          'locations.$[].PANDocument'  : locationdetails.PANDocument
+                        }
+            },{ multi: true }
+        )
+        .exec()
+        .then(data=>{
+            resolve(data)
+        })
+        .catch(err =>{
+            reject(0)
+        });
+    })
+}
+
+exports.updateDocInLoc= (req,res,next)=>{
+    EntityMaster.find({"_id":req.body.entityID, "locations.state":req.body.state},{_id: 0, 'locations.$': 1})
+    .exec()
+    .then(data=>{
+         console.log('results====>',JSON.stringify(data[0].locations[0].GSTIN)) 
+         // EntityMaster.updateOne({"_id":entityID, "locations._id":})
+//              const category = await Category.findOne({ _id:req.params.categoryId });
+// const lastIndex: number = category.items.length - 1;
+
+// console.log(category.items[lastIndex]);
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+}
+
 exports.singleLocation = (req,res,next)=>{
     EntityMaster.find({"_id" : req.body.entityID, "locations._id":req.body.locationID },
         {"locations.$" : 1})
@@ -303,40 +375,53 @@ exports.singleLocation = (req,res,next)=>{
 };
 exports.updateSingleLocation = (req,res,next)=>{
     var locationdetails = req.body.locationDetails;
+    insertLocationdetails();
+    async function insertLocationdetails() {
+    // var getData = await fetchLocData(req.body.entityID,locationdetails);
+    //     if (getData.length > 0) {
+    //         res.status(200).json({ duplicated : true });
+    //     }else{
+            if(locationdetails.GSTIN || locationdetails.PAN){
+                var compare = await updateSameStateDocuments(req.body.entityID,locationdetails)
+            }
     
-    EntityMaster.updateOne(
-            { "_id":req.body.entityID, "locations._id": req.body.locationID},  
-            {
-                $set:   { 'locations.$.locationType' : locationdetails.locationType,
-                          'locations.$.branchCode'   : locationdetails.branchCode,
-                          'locations.$.addressLine1' : locationdetails.addressLine1,
-                          'locations.$.addressLine2' : locationdetails.addressLine2,
-                          'locations.$.countryCode'  : locationdetails.countryCode,
-                          'locations.$.country'      : locationdetails.country,
-                          'locations.$.stateCode'    : locationdetails.stateCode,
-                          'locations.$.state'        : locationdetails.state,
-                          'locations.$.district'     : locationdetails.district,
-                          'locations.$.city'         : locationdetails.city,
-                          'locations.$.area'         : locationdetails.area,
-                          'locations.$.pincode'      : locationdetails.pincode,
-                          'locations.$.GSTIN'        : locationdetails.GSTIN,
-                          'locations.$.GSTDocument'  : locationdetails.GSTDocument,
-                          'locations.$.PAN'          : locationdetails.PAN,
-                          'locations.$.PANDocument'  : locationdetails.PANDocument
-                        }
-            }
-        )
-        .exec()
-        .then(data=>{
-            if(data.nModified == 1){
-                res.status(200).json({ updated : true });
-            }else{
-                res.status(200).json({ updated : false });
-            }
-        })
-        .catch(err =>{
-            res.status(500).json({ error: err });
-        });
+           EntityMaster.updateOne(
+                { "_id":req.body.entityID, "locations._id": req.body.locationID},  
+                {
+                    $set:   { 'locations.$.locationType' : locationdetails.locationType,
+                              'locations.$.branchCode'   : locationdetails.branchCode,
+                              'locations.$.addressLine1' : locationdetails.addressLine1,
+                              'locations.$.addressLine2' : locationdetails.addressLine2,
+                              'locations.$.countryCode'  : locationdetails.countryCode,
+                              'locations.$.country'      : locationdetails.country,
+                              'locations.$.stateCode'    : locationdetails.stateCode,
+                              'locations.$.state'        : locationdetails.state,
+                              'locations.$.district'     : locationdetails.district,
+                              'locations.$.city'         : locationdetails.city,
+                              'locations.$.area'         : locationdetails.area,
+                              'locations.$.pincode'      : locationdetails.pincode,
+                              'locations.$.latitude'     : locationdetails.latitude,
+                              'locations.$.longitude'    : locationdetails.longitude,
+                              'locations.$.GSTIN'        : locationdetails.GSTIN,
+                              'locations.$.GSTDocument'  : locationdetails.GSTDocument,
+                              'locations.$.PAN'          : locationdetails.PAN,
+                              'locations.$.PANDocument'  : locationdetails.PANDocument
+                            }
+                }
+            )
+            .exec()
+            .then(data=>{
+                if(data.nModified == 1){
+                    res.status(200).json({ updated : true });
+                }else{
+                    res.status(200).json({ updated : false });
+                }
+            })
+            .catch(err =>{
+                res.status(500).json({ error: err });
+            });
+        // }
+    }
 };
 
 exports.addContact = (req,res,next)=>{
@@ -389,7 +474,7 @@ exports.singleContact = (req,res,next)=>{
 };
 
 exports.getAllVendors = (req,res,next)=>{
-    EntityMaster.find({"entityType":"vendor"})
+    EntityMaster.find({"entityType":"vendor","locations.city":req.params.city})
     .exec()
     .then(data=>{
         res.status(200).json(data);
@@ -427,25 +512,32 @@ exports.updateSingleContact = (req,res,next)=>{
             { "_id":req.body.entityID, "contactPersons._id": req.body.contactID},  
             {
                 $set:   { 'contactPersons.$.branchCode' : contactdetails.branchCode,
-                          'contactPersons.$.branchName'  : contactdetails.branchName,
+                          'contactPersons.$.branchName' : contactdetails.branchName,
+                          'contactPersons.$.profilePhoto': contactdetails.profilePhoto,
                           'contactPersons.$.firstName'  : contactdetails.firstName,
+                          'contactPersons.$.middleName' : contactdetails.middleName,
                           'contactPersons.$.lastName'   : contactdetails.lastName,
+                          'contactPersons.$.DOB'        : contactdetails.DOB,
                           'contactPersons.$.employeeID' : contactdetails.employeeID,
                           'contactPersons.$.phone'      : contactdetails.phone,
                           'contactPersons.$.altPhone'   : contactdetails.altPhone,
+                          'contactPersons.$.whatsappNo' : contactdetails.whatsappNo,
                           'contactPersons.$.email'      : contactdetails.email,
+                          'contactPersons.$.gender'     : contactdetails.gender,
                           'contactPersons.$.department' : contactdetails.department,
                           'contactPersons.$.designationName'    : contactdetails.designationName,
                           'contactPersons.$.designation'        : contactdetails.designation,
                           'contactPersons.$.departmentName'     : contactdetails.departmentName,
+                          'contactPersons.$.address'            : contactdetails.address,
                           'contactPersons.$.role'               : contactdetails.role,
                           'contactPersons.$.createUser'         : contactdetails.createUser,
                           'contactPersons.$.bookingApprovalRequired'    : contactdetails.bookingApprovalRequired,
                           'contactPersons.$.approvingAuthorityId1'      : contactdetails.approvingAuthorityId1,
                           'contactPersons.$.approvingAuthorityId2'      : contactdetails.approvingAuthorityId2,
                           'contactPersons.$.approvingAuthorityId3'      : contactdetails.approvingAuthorityId3,
-                          'contactPersons.$.preApprovedParameter'       : contactdetails.preApprovedParameter,
-                          'contactPersons.$.preApprovedParameterValue'  : contactdetails.preApprovedParameterValue,
+                          'contactPersons.$.preApprovedKilometer'       : contactdetails.preApprovedKilometer,
+                          'contactPersons.$.preApprovedAmount'  : contactdetails.preApprovedAmount,
+                          'contactPersons.$.preApprovedRides'  : contactdetails.preApprovedRides,
                         }
             }
             )
@@ -560,10 +652,9 @@ exports.filterEntities = (req,res,next)=>{
         selector["$or"].push({ locations   : { $elemMatch: { district : { $regex : req.body.searchStr, $options: "i"} } }  })
         selector["$or"].push({ locations   : { $elemMatch: { stateCode : { $regex : req.body.searchStr, $options: "i"} } }  })
     }
-    console.log(req.body)
-    console.log("selector",JSON.stringify(selector))
 
     EntityMaster.find(selector)
+    .sort({createdAt : -1})
     .exec()
     .then(data=>{
         res.status(200).json(data);
@@ -573,6 +664,63 @@ exports.filterEntities = (req,res,next)=>{
             error: err
         });
     });
+};
+exports.filterEntities_grid = (req,res,next)=>{
+    
+    var selector = {}; 
+    selector['$and']=[];
+
+    selector["$and"].push({ entityType : { $regex : req.body.entityType,$options: "i"} })
+    if (req.body.stateCode) {
+        selector["$and"].push({ locations : { $elemMatch: { stateCode : req.body.stateCode } }  })
+    }
+    if (req.body.district) {
+        selector["$and"].push({ locations : { $elemMatch: { district : { $regex : req.body.district, $options: "i"} } }  })
+    }
+    if (req.body.initial && req.body.initial != 'All') {
+        selector["$and"].push({ companyName : { $regex : "^"+req.body.initial,$options: "i"}   })
+    }
+    if (req.body.searchStr && req.body.searchStr != '') {
+        selector['$or']=[];
+        if (req.body.initial && req.body.initial != 'All') {
+            selector["$and"].push({ companyName : { $regex : "^"+req.body.initial,$options: "i"}   })
+        }
+        
+        selector["$or"].push({ companyName : { $regex : req.body.searchStr, $options: "i"}  })
+        selector["$or"].push({ groupName   : { $regex : req.body.searchStr, $options: "i"}  })
+        selector["$or"].push({ locations   : { $elemMatch: { addressLine1 : { $regex : req.body.searchStr, $options: "i"} } }  })
+        selector["$or"].push({ locations   : { $elemMatch: { area : { $regex : req.body.searchStr, $options: "i"} } }  })
+        selector["$or"].push({ locations   : { $elemMatch: { district : { $regex : req.body.searchStr, $options: "i"} } }  })
+        selector["$or"].push({ locations   : { $elemMatch: { stateCode : { $regex : req.body.searchStr, $options: "i"} } }  })
+    }
+
+    EntityMaster.find(selector)
+    .sort({createdAt : -1})
+    .skip(req.body.startRange)
+    .limit(req.body.limitRange)
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+exports.fetchEntities = (req, res, next)=>{
+    EntityMaster.find({entityType:req.body.type})
+        .sort({createdAt : -1})
+        .skip(req.body.startRange)
+        .limit(req.body.limitRange)
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
 };
 
 

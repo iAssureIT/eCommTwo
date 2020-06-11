@@ -1,5 +1,7 @@
 const express 	= require("express");
 const router 	= express.Router();
+const checkAuth = require('../middlerware/check-auth.js');
+
 
 const entityMaster = require('./ControllerEntityMaster');
 
@@ -11,7 +13,9 @@ router.get('/get/count/:entityType',entityMaster.countEntity);
 
 router.post('/get/filterEntities',entityMaster.filterEntities);
 
-router.post('/get/getAllVendors',entityMaster.getAllVendors);
+router.post('/get/gridfilterEntities',entityMaster.filterEntities_grid);
+
+router.get('/get/getAllVendors/:city',entityMaster.getAllVendors);
 
 router.post('/get/getAdminCompany',entityMaster.getAdminCompany);
 
@@ -30,6 +34,10 @@ router.patch('/patch/profileStatus', entityMaster.updateProfileStatus);
 router.patch('/patch/addLocation', entityMaster.addLocation);
  
 router.post('/post/singleLocation',entityMaster.singleLocation);
+
+router.post('/getAll',entityMaster.fetchEntities);
+
+router.post('/getAllLocation',entityMaster.fetchLocationEntities);
 
 router.patch('/patch/updateSingleLocation', entityMaster.updateSingleLocation);
 

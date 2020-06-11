@@ -10,6 +10,7 @@ router.post('/post/signup/user/otp', UserController.user_signup_user_otp); //Wor
 router.get('/get/checkemailotp/usingID/:ID/:emailotp',UserController.check_userID_EmailOTP);
 router.get('/get/checkemailotp/usingUsername/:username/:emailotp',UserController.check_username_EmailOTP);
 router.post('/post/login',UserController.user_login_using_email); //Working
+router.post('/post/logout',UserController.logouthistory); //Working
 router.post('/post/loginwithcompanyid',UserController.user_login_with_companyID); //Working
 router.patch('/patch/change_password_withoutotp/id/:ID',UserController.user_update_password_withoutotp_ID);
 router.patch('/patch/change_password_withoutotp/username/:username',UserController.user_update_password_withoutotp_username);

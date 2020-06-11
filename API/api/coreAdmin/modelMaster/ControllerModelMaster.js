@@ -5,37 +5,25 @@ const FailedRecords     = require('../failedRecords/ModelFailedRecords');
 
 
 exports.insertModel = (req,res,next)=>{
-    processData();
-    async function processData(){
-    var allModels = await fetchModels();
+    // console.log("insertModel req.body = ",req.body);
+    const modelMaster = new ModelMaster({
+                        _id                         : new mongoose.Types.ObjectId(),                        
+                        brandId                     : req.body.dropdownID,
+                        model                       : req.body.fieldValue,
+                        createdBy                   : req.body.createdBy,
+                        createdAt                   : new Date()
+                    })
 
-    var model = allModels.filter((data)=>{
-        if ( data.brandId == req.body.dropdownID && data.model.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase()) {
-            return data;
-        }
+    modelMaster
+        .save()
+        .then(data=>{
+            res.status(200).json({ created : true, fieldID : data._id });
         })
-        if (model.length > 0) {
-            res.status(200).json({ duplicated : true });
-        }else{
-            const modelMaster = new ModelMaster({
-                                _id                         : new mongoose.Types.ObjectId(),
-                                
-                                brandId                     : req.body.dropdownID,
-                                // brandName                   : req.body.brandName,
-                                model                       : req.body.fieldValue,
-                                createdBy                   : req.body.createdBy,
-                                createdAt                   : new Date()
-                            })
-                            modelMaster.save()
-                            .then(data=>{
-                                res.status(200).json({ created : true, fieldID : data._id });
-                            })
-                            .catch(err =>{
-                                res.status(500).json({ error: err }); 
-                            });
-        }
-    }          
+        .catch(err =>{
+            res.status(500).json({ error: err }); 
+        });
 };
+
 function insertModel(brandId, createdBy){
     return new Promise(function(resolve,reject){ 
         const modelMaster = new ModelMaster({
@@ -98,24 +86,28 @@ exports.countModels = (req, res, next)=>{
         }); 
 };
 exports.fetchModels = (req, res, next)=>{
-    ModelMaster.aggregate([
-    {
-    $lookup:
-        {
-           from: "brandmasters",
-           localField: "brandId",
-           foreignField: "_id",
-           as: "brand"
-        }
-    },
-    { "$unwind": "$brand" },{$addFields: { brandName : "$brand.brand"} }])
+
+    // console.log("fetchModels req.body = ",req.body);
+
+    ModelMaster
+        .aggregate([{
+            $lookup:
+                {
+                   from: "brandmasters",
+                   localField: "brandId",
+                   foreignField: "_id",
+                   as: "brand"
+                }
+            },
+            { "$unwind": "$brand" },
+            {$addFields: { brandName : "$brand.brand"} 
+        }])
         .sort({createdAt : -1})
         .skip(req.body.startRange)
         .limit(req.body.limitRange)
         .exec()
         .then(data=>{
             var alldata = data.map((a, i)=>{
-                    // console.log("a ",a);
                     return {
                         "_id"                : a._id,
                         "brandName"          : a.brandName,
@@ -123,6 +115,7 @@ exports.fetchModels = (req, res, next)=>{
                         "brandId"            : a.brandId  
                     }
             })
+            // console.log("alldata = ",alldata);
             res.status(200).json(alldata);
         })
         .catch(err =>{
@@ -223,32 +216,6 @@ exports.deleteModel = (req, res, next)=>{
             res.status(500).json({ error: err });
         });            
 };
-/*var fetchModels = async ()=>{
-    return new Promise(function(resolve,reject){ 
-    ModelMaster.find({})
-        .exec()
-        .then(data=>{
-            resolve( data );
-        })
-        .catch(err =>{
-            reject(err);
-        }); 
-    });
-};*/
-var fetchAllModels = async (type)=>{
-    return new Promise(function(resolve,reject){ 
-    ModelMaster.find()
-        .sort({createdAt : -1})
-        // .skip(req.body.startRange)
-        // .limit(req.body.limitRange)
-        .then(data=>{
-            resolve( data );
-        })
-        .catch(err =>{
-            reject(err);
-        });
-    });
-};
 var fetchBrands = async ()=>{
     return new Promise(function(resolve,reject){ 
     BrandMaster.find({})
@@ -261,10 +228,40 @@ var fetchBrands = async ()=>{
         }); 
     });
 };
+function insertBrand(brand, createdBy){
+    // console.log('brand',brand);
+    return new Promise(function(resolve,reject){ 
+        const brandMaster = new BrandMaster({
+            _id                         : new mongoose.Types.ObjectId(),
+            brand                       : brand,
+            createdBy                   : createdBy,
+            createdAt                   : new Date()
+        })
+        brandMaster.save()
+        .then(data=>{
+            resolve( data._id );
+        })
+        .catch(err =>{
+            reject(err); 
+        });
+    });
+}
+function fetchBrandName (brandId){
+    // console.log('brandId',brandId);
+    return new Promise(function(resolve,reject){ 
+        BrandMaster.findOne({ _id: brandId })
+            .exec()
+            .then(data=>{
+                resolve( data.brand );
+            })
+            .catch(err =>{
+                reject(err); 
+            }); 
+    });
+};
 exports.bulkUploadVehicleModel = (req, res, next)=>{
     var models = req.body.data;
     // var models = [{brandId:"mesh", model:"kkk"}];
-    console.log("models",models);
     
     var validData = [];
     var validObjects = [];
@@ -276,11 +273,10 @@ exports.bulkUploadVehicleModel = (req, res, next)=>{
     var DuplicateCount = 0;
     processData();
     async function processData(){
-        var allmodels=await fetchAllModels(); 
+        var allmodels=await fetchModels(); 
         var brands = await fetchBrands();
-        console.log("brands...",brands);
         for(var k = 0 ; k < models.length ; k++){
-            if (models[k].brandId== '-') {
+            if (models[k].brand== '-') {
                 remark += "brandId not found, " ;  
             }
             if (models[k].model == '-') {
@@ -288,46 +284,48 @@ exports.bulkUploadVehicleModel = (req, res, next)=>{
             }
 
               if (remark == '') {
-              var brandId;
+               var brandId;
                var brandExists = brands.filter((data)=>{
-                console.log("brandExists",brandExists);
-                    if (data.brand == models[k].brandId) {
+                    if (data.brand == models[k].brand) {
                         return data;
                     }
                 })
-               if (brandExists.length>0) {
+                console.log("brandExists",brandExists);
+                if (brandExists.length>0) {
                     brandId = brandExists[0]._id;
                 }else{
-                    brandId = await insertModel(models[k].brandName);
-                    //departmentId = departmentExists[0]._id;
+                    brandId = await insertBrand(models[k].brand, req.body.createdBy);
                 }
-             var modelExists = allmodels.filter((data)=>{
-                    if (data.model== models[k].model) {
+                var modelExists = allmodels.filter((data)=>{
+                    if (data.model== models[k].model && data.brandName== models[k].brand) {
                         return data;
                     }
                 })
-              if (modelExists.length==0) {
 
+                if (modelExists.length==0) {
                     validObjects = models[k];
-                    // validObjects.brandId        = brandId;
+                    console.log('validObjects=====',validObjects);
+                    console.log('models[k]=====',models[k]);
+                    validObjects.brandId          = brandId;
+                    validObjects.model          = models[k].model;
                     validObjects.fileName       = req.body.fileName;
                     validObjects.createdBy      = req.body.reqdata.createdBy;
                     validObjects.createdAt      = new Date();
 
                     validData.push(validObjects);  
+                    console.log('validDataaa',validData);
 
-              }else{
-
+                }else{
                     remark += "Model already exists." ; 
 
                     invalidObjects = models[k];
                     invalidObjects.failedRemark = remark;
                     invalidData.push(invalidObjects); 
-              }
+                }
             }
 
         }
-        //console.log("validData",validData);
+        console.log("validData",validData);
         ModelMaster.insertMany(validData)
         .then(data=>{
             
@@ -428,7 +426,6 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
                     });
             }
             })  
-    
     })            
 }
 
@@ -448,19 +445,32 @@ exports.fetch_file = (req,res,next)=>{
 };
 exports.filedetails = (req,res,next)=>{
     var finaldata = {};
-    console.log(req.params.fileName)
-    ModelMaster.find( { fileName:req.params.fileName  }
-    )
+    // console.log(req.params.fileName)
+    ModelMaster.aggregate([
+    {
+        $lookup:
+        {
+           from: "brandmasters",
+           localField: "brandId",
+           foreignField: "_id",
+           as: "brand"
+        }
+    },
+    { "$unwind": "$brand" },
+    { $addFields: { brandName : "$brand.brand"} },
+    ])
     .exec()
     .then(data=>{
         //finaldata.push({goodrecords: data})
         finaldata.goodrecords = data;
+        // console.log('data',data);
         FailedRecords.find({fileName:req.params.fileName})  
             .exec()
             .then(badData=>{
                 finaldata.failedRecords = badData[0].failedRecords
                 finaldata.totalRecords = badData[0].totalRecords
                 res.status(200).json(finaldata);
+                // console.log('finaldata',finaldata);
             })
         
     })

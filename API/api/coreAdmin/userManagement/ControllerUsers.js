@@ -479,7 +479,11 @@ exports.user_update_name_mobile = (req,res,next)=>{
 					if(data.nModified == 1){
 						res.status(200).json("USER_UPDATED");
 					}else{
-						res.status(401).status("USER_NOT_UPDATED")
+                        res.status(200).json({ 
+                            updated : false, 
+                            "message"    : "USER_NOT_UPDATED", 
+                        });
+						// res.status(401).status("USER_NOT_UPDATED")
 					}
 				})
 				.catch(err =>{
@@ -821,7 +825,7 @@ exports.user_update_password_ID = (req,res,next)=>{
 };
 exports.fetch_user_ID = (req,res,next)=>{
 	User.findOne({_id:req.params.ID})
-		.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.clientId createdAt services.resume.loginTokens statusLog")
+		.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.image profile.clientId createdAt services.resume.loginTokens statusLog")
 
 		// .select("profile.firstname profile.lastname profile.status profile.fullName roles profile.email profile.mobile profile.image")
 		.exec()
@@ -858,12 +862,13 @@ exports.fetch_user_ID = (req,res,next)=>{
 			});
 		});
 };
-exports.post_list_users = (req,res,next)=>{
+exports.post_list_deleted_users = (req,res,next)=>{
 	var companyID= parseInt(req.body.companyID);
 	console.log("req.body==>",req.body);
 	if(req.body.companyID){
 		if(companyID === 1){
-			var selector = {roles:{$ne:["admin"]}};
+			// var selector = {roles:{$ne:["admin"]}};
+			var selector = {roles:{$ne:["admin"]}, "profile.status":{$ne:"active"}};
 		}else{
 			var selector = {"profile.companyID":companyID,roles:{$ne:["admin"]}};
 		}
@@ -880,6 +885,7 @@ exports.post_list_users = (req,res,next)=>{
 					var returnData = [];
 					for(i = 0 ; i < data.length ; i++){
 						var loginTokenscount = data[i].services.resume.loginTokens.length 
+						// console.log('data in services.resume.loginTokens ==>',data[i].services.resume.loginTokens);
 						var statuslogLength = data[i].statusLog.length
 						returnData.push({
 							"_id"		      : data[i]._id,
@@ -896,7 +902,7 @@ exports.post_list_users = (req,res,next)=>{
 							"clientId"	      : data[i].clientId,
 							"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
 							"statusupdatedAt" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedAt : "-",
-							"statusupdatedBy" : statuslogLength > 0 ? "<div class='noWrapText'>"+data[i].statusLog[statuslogLength-1].updatedBy+"</div>" : "-"
+							"statusupdatedBy" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedBy : "-"
 
 						});
 					}
@@ -921,10 +927,84 @@ exports.post_list_users = (req,res,next)=>{
 		});
 	}
 };
+
+exports.post_list_users = (req,res,next)=>{
+	var companyID= parseInt(req.body.companyID);
+	console.log("req.body==>",req.body);
+	if(req.body.companyID){
+		if(companyID === 1){
+			var selector = {roles:{$ne:["admin"]}, "profile.status":{$ne:"deleted-active"}};
+		}else{
+			var selector = {"profile.companyID":companyID,roles:{$ne:["admin"]}};
+		}
+		// console.log("selector==>",selector);
+		User.find(selector)
+			.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.clientId createdAt services.resume.loginTokens statusLog")
+			.sort({createdAt : -1})
+			.skip(req.body.startRange)
+			.limit(req.body.limitRange)
+			.exec()
+			.then(data=>{
+				if(data){
+					var i = 0;
+					var returnData = [];
+					for(i = 0 ; i < data.length ; i++){
+						// console.log('data in post ==>',data[i]);
+						var loginTokenscount = data[i].services.resume.loginTokens.length;
+						// const TImeloginTokenscount = {};
+						// for(j= 0 ; j<data[i].services.resume.loginTokens.length; j++){
+						// 	const TImeloginTokenscount = data[i].services.resume.loginTokens[j].loginTimeStamp; 
+						// 	console.log('data in services.resume.loginTokens ==>',TImeloginTokenscount);
+						// }
+						// const TImeloginTokenscount = data[i].services.resume.loginTokens;
+						// var loginTokenscount = data[i].services.resume.loginTokens.length 
+						console.log('data in services.resume.loginTokens ==>',loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null );
+						var statuslogLength = data[i].statusLog.length
+						returnData.push({
+							"_id"		      : data[i]._id,
+							"firstname"       : data[i].profile.firstname,
+							"lastname"	      : data[i].profile.lastname,
+							"companyID"	      : data[i].profile.companyID,
+							"companyName"	  : data[i].profile.companyName,
+							"email"		      : data[i].profile.email, //Mandatory 
+							"mobNumber"       : data[i].profile.mobile,
+							"role"            : data[i].roles, //Mandatory
+							"status"		  : data[i].profile.status, //Either "Active" or "Inactive"
+							"fullName"	      : data[i].profile.fullName,
+							"createdAt"       : data[i].createdAt,
+							"clientId"	      : data[i].clientId,
+							"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null ,
+							"statusupdatedAt" : statuslogLength  > 0 ? data[i].statusLog[statuslogLength-1].updatedAt : "-",
+							"statusupdatedBy" : statuslogLength  > 0 ? data[i].statusLog[statuslogLength-1].updatedBy : "-"
+
+						});
+					
+				}
+					if( i >= data.length){
+						res.status(200).json(returnData);
+						// console.log('returnData',returnData);
+					}
+				}else{
+					res.status(200).json({message:"USER_NOT_FOUND"});
+				}
+			})
+			.catch(err =>{
+				res.status(500).json({
+					error: err
+				});
+			});
+	} //end of if condition
+	else{
+		res.status(500).json({
+			message : "COMPANYID_NOT_AVAILABLE",
+			error: err
+		});
+	}
+};
 exports.fetch_users_roles = (req,res,next)=>{
 	
 	User.find({roles:req.params.role})
-		.select("profile.firstname profile.lastname profile.status profile.companyID profile.fullName roles profile.email profile.mobile profile.clientId createdAt services.resume.loginTokens")
+		.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.clientId createdAt services.resume.loginTokens")
 		.sort({createdAt : -1})
         .skip(req.body.startRange)
         .limit(req.body.limitRange)
@@ -940,6 +1020,7 @@ exports.fetch_users_roles = (req,res,next)=>{
 										"firstname" : data[i].profile.firstname,
 										"lastname"	: data[i].profile.lastname,
 										"companyID"	: data[i].profile.companyID,
+										"companyName" : data[i].profile.companyName,
 										"email"		: data[i].profile.email, //Mandatory 
 										"mobNumber" : data[i].profile.mobile,
 										"role"      : data[i].roles, //Mandatory
@@ -947,6 +1028,7 @@ exports.fetch_users_roles = (req,res,next)=>{
 										"fullName"	: data[i].profile.fullName,
 										"lastLogin" : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
 									});
+					console.log("returnData==>",returnData);
 				}
 				if( i >= data.length){
 					res.status(200).json(returnData);
@@ -997,6 +1079,7 @@ exports.fetch_users_status = (req,res,next)=>{
 										"firstname" : data[i].profile.firstname,
 										"lastname"	: data[i].profile.lastname,
 										"companyID"	: data[i].profile.companyID,
+										"companyName" : data[i].profile.companyName,
 										"email"		: data[i].profile.email, //Mandatory 
 										"mobNumber" : data[i].profile.mobile,
 										"role"      : data[i].roles, //Mandatory
@@ -1056,6 +1139,7 @@ exports.fetch_users_status_roles = (req,res,next)=>{
 										"firstname" : data[i].profile.firstname,
 										"lastname"	: data[i].profile.lastname,
 										"companyID"	: data[i].profile.companyID,
+										"companyName" : data[i].profile.companyName,
 										"email"		: data[i].profile.email, //Mandatory 
 										"mobNumber" : data[i].profile.mobile,
 										"role"      : data[i].roles, //Mandatory
@@ -1344,7 +1428,7 @@ exports.search_text_delete = (req, res, next)=>{
 				]},
 		]
 	})
-	.select("profile.firstname profile.lastname profile.companyID profile.companyName profile.status profile.companyID profile.fullName roles profile.email profile.mobile services.resume.loginTokens")
+	.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.clientId createdAt services.resume.loginTokens statusLog")
 	.skip(req.body.startRange)
 	.limit(req.body.limitRange)
 	.exec()
@@ -1352,23 +1436,52 @@ exports.search_text_delete = (req, res, next)=>{
 		console.log("Data in delete list==>",data)
 		if(data){
 			var i = 0;
-			var returnData = [];
-			for(i = 0 ; i < data.length ; i++){
-				var loginTokenscount = data[i].services.resume.loginTokens.length 
-				returnData.push({
-									"_id"			: data[i]._id,
-									"email"			: data[i].profile.email,
-									"firstname" 	: data[i].profile.firstname,
-									"lastname"  	: data[i].profile.lastname,
-									"companyID"  	: data[i].profile.companyID,
-									"companyName"  	: data[i].profile.companyName,
-									"mobNumber" 	: data[i].profile.mobile,
-									"role"      	: data[i].roles,
-									"status"		: data[i].profile.status,
-									"fullName"		: data[i].profile.fullName,
-									"lastLogin" 	: loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
-								});
-			}
+					var returnData = [];
+					for(i = 0 ; i < data.length ; i++){
+						var loginTokenscount = data[i].services.resume.loginTokens.length 
+						// console.log('data in services.resume.loginTokens ==>',data[i].services.resume.loginTokens);
+						var statuslogLength = data[i].statusLog.length
+						returnData.push({
+							"_id"		      : data[i]._id,
+							"firstname"       : data[i].profile.firstname,
+							"lastname"	      : data[i].profile.lastname,
+							"companyID"	      : data[i].profile.companyID,
+							"companyName"	  : data[i].profile.companyName,
+							"email"		      : data[i].profile.email, //Mandatory 
+							"mobNumber"       : data[i].profile.mobile,
+							"role"            : data[i].roles, //Mandatory
+							"status"		  : data[i].profile.status, //Either "Active" or "Inactive"
+							"fullName"	      : data[i].profile.fullName,
+							"createdAt"       : data[i].createdAt,
+							"clientId"	      : data[i].clientId,
+							"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
+							"statusupdatedAt" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedAt : "-",
+							"statusupdatedBy" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedBy : "-"
+
+						});
+					}
+			// var i = 0;
+			// var returnData = [];
+			// for(i = 0 ; i < data.length ; i++){
+			// 	var statuslogLength = data[i].statusLog.length
+			// 	var loginTokenscount = data[i].services.resume.loginTokens.length 
+			// 	returnData.push({
+			// 						"_id"			: data[i]._id,
+			// 						"email"			: data[i].profile.email,
+			// 						"firstname" 	: data[i].profile.firstname,
+			// 						"lastname"  	: data[i].profile.lastname,
+			// 						"companyID"  	: data[i].profile.companyID,
+			// 						"companyName"  	: data[i].profile.companyName,
+			// 						"mobNumber" 	: data[i].profile.mobile,
+			// 						"role"      	: data[i].roles,
+			// 						"status"		: data[i].profile.status,
+			// 						"fullName"		: data[i].profile.fullName,
+			// 						"lastLogin" 	: loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
+
+			// 						"statusupdatedAt" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedAt : "-",
+			// 						"statusupdatedBy" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedBy : "-"
+			// 					});
+			// }
 			console.log("returnData in delete list==>",returnData)
 			if( i >= data.length){
 				res.status(200).json(returnData);

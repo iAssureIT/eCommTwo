@@ -9,8 +9,21 @@ const projectSettingsSchema = mongoose.Schema({
     region      : String,
     authID 		: String,
     authToken 	: String,
+    sourceMobile: String,
+    googleapikey: String,
+    user            : String,
+    password        : String,
+    port            : Number,
+    emailHost       : String,
+    projectName     : String,
     createdBy   : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt   : { type: Date, default: Date.now() },
+    updateLog           : [
+                            {
+                                updatedAt           : Date,
+                                updatedBy           : { type: mongoose.Schema.Types.ObjectId, ref: 'users' } 
+                            }
+                        ],
 });
 
 module.exports = mongoose.model('projectsettings',projectSettingsSchema);

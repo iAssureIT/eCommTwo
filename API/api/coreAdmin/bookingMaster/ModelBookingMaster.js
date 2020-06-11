@@ -35,6 +35,7 @@ const bookingMasterSchema = mongoose.Schema({
     returnTime                  : String,
     specialInstruction          : String,
     purposeOfTravel             : String,
+    purposeOfTravelOther        : String,
     reasonForSelectingVehicle   : String,
     signature                   : String,
     vehicleCategoryId           : { type: mongoose.Schema.Types.ObjectId, ref: 'categorymasters' },

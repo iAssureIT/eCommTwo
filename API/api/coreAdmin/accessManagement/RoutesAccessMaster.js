@@ -2,6 +2,8 @@ const express 	= require("express");
 const router 	= express.Router();
 
 const accessMaster = require('./ControllerAccessMaster.js');
+const checkAuth = require('../middlerware/check-auth.js');
+
 
 router.post('/post', accessMaster.insertAccess);
 

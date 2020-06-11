@@ -6,27 +6,29 @@ exports.create_projectSettings = (req, res, next) => {
     var listRequiredFields  = ""; 
     switch(req.body.type){
         case 'S3'       :
-            conditionQuery      = (req.body.key ? true : false)  && (req.body.secret ? true : false) && (req.body.bucket ? true : false) && (req.body.region ? true : false);
+            conditionQuery      = req.body.key && req.body.secret && req.body.bucket && req.body.region;
             listRequiredFields  = "Keys, secret, bucket and region";
             break;
         case 'SMS'      :
-            conditionQuery      = req.body.key && req.body.secret;
-            listRequiredFields  = "Keys and secret";
+            conditionQuery      = req.body.authID && req.body.authToken && req.body.sourceMobile;
+            listRequiredFields  = "authID and authToken and sourceMobile";
+            break; 
+        case 'EMAIL'      :
+            conditionQuery      = req.body.user && req.body.password && req.body.port && req.body.emailHost && req.body.projectName;
+            listRequiredFields  = "user and password and port";
             break;  
         case 'GOOGLE'   :
-            conditionQuery      = req.body.key;
-            listRequiredFields  = "Keys";
+            conditionQuery      = req.body.googleapikey;
+            listRequiredFields  = "googleapikey";
             break;
         default         :
             res.status(200).json("type can be either S3 or SMS or GOOGLE");
             break;
     }
-
     if(conditionQuery){
     	ProjectSettings.findOne({type:req.body.type})
     		.exec()
     		.then(data =>{
-                console.log("ProjectSettings data = ",data);
     			if(data){
     				return res.status(200).json({
     					message : 'Details already exists.',
@@ -35,10 +37,22 @@ exports.create_projectSettings = (req, res, next) => {
     			}else{
                 const projectsetting = new ProjectSettings({
                     _id             : mongoose.Types.ObjectId(),      
+                    googleapikey    : req.body.googleapikey,
                     key             : req.body.key,
                     secret          : req.body.secret,
                     bucket          : req.body.bucket,
                     region          : req.body.region,
+
+                    authID          : req.body.authID,
+                    authToken       : req.body.authToken,
+                    sourceMobile    : req.body.sourceMobile,
+
+                    user           : req.body.user,
+                    password       : req.body.password,
+                    port           : req.body.port,
+                    emailHost      : req.body.emailHost,
+                    projectName    : req.body.projectName,
+
                     type            : req.body.type
                 });
                 
@@ -68,14 +82,12 @@ exports.create_projectSettings = (req, res, next) => {
         res.status(200).json({message : "REQUIRED_FIELDS : "+listRequiredFields});
     }
 };
+
 exports.fetch_projectsettings = (req, res, next)=>{
-    console.log("inside projectsettings");
-    // ProjectSettings.findOne({"type": req.params.type})
-    ProjectSettings.find({"type": req.params.type})
+    ProjectSettings.findOne({"type": req.params.type})
         .exec()
         .then(data=>{
             if(data){
-                console.log("Data:",data);
                 res.status(200).json(data);
             }else{
                 res.status(200).json({
@@ -90,6 +102,7 @@ exports.fetch_projectsettings = (req, res, next)=>{
             });
         });            
 };
+
 exports.fetch_projectsettings_all = (req, res, next)=>{
     ProjectSettings.find({})
         .exec()
@@ -103,6 +116,7 @@ exports.fetch_projectsettings_all = (req, res, next)=>{
             });
         });            
 };
+
 exports.patch_projectsettings = (req, res, next)=>{
     var conditionQuery      = "";
     var listRequiredFields  = ""; 
@@ -112,12 +126,16 @@ exports.patch_projectsettings = (req, res, next)=>{
             listRequiredFields  = "Keys, secret, bucket and region";
             break;
         case 'SMS'      :
-            conditionQuery      = req.body.key && req.body.secret;
-            listRequiredFields  = "Keys and secret";
+            conditionQuery      = req.body.authID && req.body.authToken && req.body.sourceMobile;
+            listRequiredFields  = "authID and authToken";
+            break; 
+        case 'EMAIL'      :
+            conditionQuery      = req.body.user && req.body.password && req.body.port && req.body.emailHost && req.body.projectName;
+            listRequiredFields  = "user and password and port";
             break;  
         case 'GOOGLE'   :
-            conditionQuery      = req.body.key;
-            listRequiredFields  = "Keys";
+            conditionQuery      = req.body.googleapikey;
+            listRequiredFields  = "googleapikey";
             break;
         default         :
             res.status(200).json("type can be either S3 or SMS or GOOGLE");
@@ -128,15 +146,25 @@ exports.patch_projectsettings = (req, res, next)=>{
                                     {"type": req.params.type},
                                     {
                                         $set : {
+                                                "googleapikey" : req.body.googleapikey,
+                                                "authID"          : req.body.authID,
+                                                "authToken"       : req.body.authToken,
+                                                "sourceMobile"    : req.body.sourceMobile,
                                                 "key"         : req.body.key,
                                                 "secret"      : req.body.secret,
                                                 "bucket"      : req.body.bucket,
-                                                "region"      : req.body.region,                    
+                                                "region"      : req.body.region, 
+                                                "user"           : req.body.user,
+                                                "password"       : req.body.password,
+                                                "port"           : req.body.port,
+                                                "emailHost"      : req.body.emailHost,
+                                                "projectName"    : req.body.projectName,                   
                                         }
                                     }
                                 )
             .exec()
             .then(data=>{
+                console.log("req.DATA===>",data);
                 if(data.nModified == 1){
                     res.status(200).json({
                         message : "DETAILS_UPDATED",
@@ -157,6 +185,61 @@ exports.patch_projectsettings = (req, res, next)=>{
         res.status(200).json({message : "REQUIRED_FIELDS : "+listRequiredFields});
     } 
 };
+// exports.patch_projectsettings_google = (req, res, next)=>{
+//     var conditionQuery      = "";
+//     var listRequiredFields  = ""; 
+//     console.log("req.body.key===>",req.body.googleapikey);
+//     switch(req.body.type){
+//         case 'S3'       :
+//             conditionQuery      = req.body.key && req.body.secret && req.body.bucket && req.body.region;
+//             listRequiredFields  = "Keys, secret, bucket and region";
+//             break;
+//         case 'SMS'      :
+//             conditionQuery      = req.body.key && req.body.secret;
+//             listRequiredFields  = "Keys and secret";
+//             break;  
+//         case 'GOOGLE'   :
+//             conditionQuery      = req.body.googleapikey;
+//             listRequiredFields  = "googleapikey";
+//             break;
+//         default         :
+//             res.status(200).json("type can be either S3 or SMS or GOOGLE");
+//             break;
+//     }
+//     if(conditionQuery){
+//         console.log("req.params.type===>",req.params.type);
+//         ProjectSettings.updateOne(
+//                                     {"type": req.params.type},
+//                                     {
+//                                         $set :  {
+//                                                     "googleapikey" : req.body.googleapikey,
+//                                                 }
+//                                     }
+//                                 )
+//             .exec()
+//             .then(data=>{
+//                 console.log("req.data===>",data);
+//                 if(data.nModified == 1){
+//                     res.status(200).json({
+//                         message : "DETAILS_UPDATED",
+//                     });
+//                 }else{
+//                     res.status(500).json({
+//                         message : "DETAILS_NOT_UPDATED",
+//                     })
+//                 }
+//             })
+//             .catch(err =>{
+//                 console.log(err);
+//                 res.status(500).json({
+//                     error: err
+//                 });
+//             });   
+//     }else{
+//         res.status(200).json({message : "REQUIRED_FIELDS : "+listRequiredFields});
+//     } 
+// };
+
 exports.delete_projectsettings = (req, res, next)=>{
     ProjectSettings.deleteOne({"type": req.params.type})
         .exec()
@@ -179,5 +262,78 @@ exports.delete_projectsettings = (req, res, next)=>{
         });            
 };
 
+exports.insertS3Data = (req, res, next) => {
+    ProjectSettings.find({type:'S3'}).count()
+    .exec()
+        .then(data=>{
+            if(data > 0){
+                ProjectSettings.updateOne(
+                        { type:'S3' },   
+                        {
+                            $set:   {   
+                                        "key"             : req.body.key,
+                                        "secret"          : req.body.secret,
+                                        "bucket"          : req.body.bucket,
+                                        "region"          : req.body.region,
+                                    },
+                        }
+                    )
+                    .exec()
+                    .then(data=>{
+                        if(data.nModified == 1){
+                            ProjectSettings.updateOne(
+                            { type:'S3'},
+                            {
+                                $push:  { 'updateLog' : [{  updatedAt      : new Date(),
+                                                            updatedBy      : req.body.updatedBy 
+                                                        }] 
+                                        }
+                            } )
+                            .exec()
+                            .then(data=>{
+                                res.status(200).json({ 
+                                    updated : true, 
+                                    "message"    : "S3 Details updated Successfully", 
+                                });
+                            })
+                        }else{
+                            res.status(200).json({ 
+                                updated : false, 
+                                "message"    : "S3 Details not modified", 
+                            });
+                            // res.status(200).json({ updated : false });
+                        }
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                        res.status(500).json({ error: err });
+                    });
+            }else{
+                const projectSettings = new ProjectSettings({
+                    _id             : mongoose.Types.ObjectId(),      
+                    type            : 'S3',
+                    key             : req.body.key,
+                    secret          : req.body.secret,
+                    bucket          : req.body.bucket,
+                    region          : req.body.region,
+                    createdAt       : new Date()
+                });
+                
+                projectSettings.save()
+                .then(data=>{
+                    res.status(200).json({ 
+                        created : true,
+                        "message"    : "S3 Details submitted Successfully", 
+                    });
+                })
+                .catch(err =>{
+                    res.status(500).json({ error: err }); 
+                });
+            }
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
 
+};
 

@@ -1,5 +1,6 @@
 const express 	= require("express");
 const router 	= express.Router();
+const checkAuth = require('../middlerware/check-auth.js');
 
 const bookingMaster = require('./ControllerBookingMaster.js');
 
@@ -51,7 +52,19 @@ router.patch('/patch', bookingMaster.updateBooking);
 
 router.delete('/delete/:bookingID', bookingMaster.deleteBooking);
 
-router.get('/get/matchStatus/:bookingID',bookingMaster.matchBookingStatus)
+router.get('/get/matchStatus/:bookingID',bookingMaster.matchBookingStatus);
+
+router.get('/get/vendor/:bookingID',bookingMaster.getVendorDetail_ByBookingID);
+
+router.get('/get/manager/:bookingID/:status',bookingMaster.managerDetail_ByID);
+
+router.post('/bulkUploadBooking',bookingMaster.bulkUploadBooking);
+
+router.get('/get/filedetails/:fileName', bookingMaster.filedetails);
+
+router.post('/get/filter',bookingMaster.filterBookings);
+
+
 
 
 //Driver App API  - Rushikesh Salunkhe
