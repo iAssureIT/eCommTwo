@@ -12,9 +12,13 @@ router.get('/get/one/:fetchId'       , PurchaseEntryController.fetch_one);
 router.patch('/patch/:purchaseID'    , PurchaseEntryController.update_PurchaseEntry);
 
 router.delete('/delete/:purchaseID',PurchaseEntryController.delete_purchaseEntry);
+router.post('/post/datewisepurchase/',PurchaseEntryController.get_datewise_purchaceEntry);
+router.get('/get/PurchaseNumbers'       , PurchaseEntryController.get_purchase_numbers);
 
-router.get('/get/datewisepurchase/:purchaseDate',PurchaseEntryController.get_datewise_purchaceEntry);
+
 /*
+router.get('/get/datewisepurchase/:purchaseDate',PurchaseEntryController.get_datewise_purchaceEntry);
+
 router.get('/get/list/:section_ID',PurchaseEntryController.list_category);
 
 router.get('/get/count',PurchaseEntryController.count_category);

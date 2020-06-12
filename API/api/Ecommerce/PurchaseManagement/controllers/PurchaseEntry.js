@@ -109,8 +109,8 @@ exports.update_PurchaseEntry = (req,res,next)=>{
         });
 };
 exports.get_datewise_purchaceEntry = (req, res, next)=>{
-    console.log("req body = ", req.params.purchaseDate);
-    const purchaseDate = req.params.purchaseDate;
+    console.log("req body = ",req.body);
+    const purchaseDate = req.body.purchaseDate;
     console.log("purchaseDate",purchaseDate);
     /*const monyr     = monthyear.split("-");
     const year      = monyr[0];;
@@ -121,8 +121,19 @@ exports.get_datewise_purchaceEntry = (req, res, next)=>{
     console.log("startDate--",startDate);
     const endDate   = year+"-"+month+"-"+numberOfDaysInMonth;
     console.log("endDate--",endDate);*/
-
-    PurchaseEntry.find({"purchaseDate":req.params.purchaseDate})
+    var selector = {};
+    if(req.body.purchaseNumber != "Select Purchase Number" && req.body.productName != "Select Product"){
+        selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
+    }else{
+        if(req.body.purchaseNumber != "Select Purchase Number"){
+            selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber};
+        }else if(req.body.productName != "Select Product"){
+            selector ={"purchaseDate":req.body.purchaseDate,"productName":req.body.productName};
+        }else{
+            selector ={"purchaseDate":req.body.purchaseDate};
+        }
+    }
+    PurchaseEntry.find(selector)
     .then(data=>{
        console.log("data----=",data);
        res.status(200).json(data);   
@@ -172,6 +183,20 @@ exports.delete_purchaseEntry = (req,res,next)=>{
         });
     });
 };
+exports.get_purchase_numbers = (req,res,next)=>{
+    PurchaseEntry.distinct( "purchaseNumber" )
+    .then(data=>{
+       console.log("purchaseNumber----=",data);
+       res.status(200).json(data);   
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }); 
+}
 
 /*exports.list_category = (req,res,next)=>{
     Category.find({"section_ID":req.params.section_ID})

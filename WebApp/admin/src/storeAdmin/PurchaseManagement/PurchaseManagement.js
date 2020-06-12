@@ -3,6 +3,8 @@ import './PurchaseManagement.css';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import swal from 'sweetalert';
 import axios from 'axios';
+import jQuery from 'jquery';
+import $ from 'jquery';
 import moment from 'moment';
 
 export default class PurchaseManagement extends React.Component {
@@ -19,19 +21,21 @@ export default class PurchaseManagement extends React.Component {
 			      	Details:'',
 			      	purchaseNumber:'',
 			      	product : '',
-			      	Units : '',
+			      	Units : 'Kg',
 			      	serchByDate:moment(new Date()).format("YYYY-MM-DD"),
 			      	"twoLevelHeader"    : {
 						            apply  : false,
 						           },
 		             "tableHeading"     : {
-		                date            : 'Date',
-		        		ProductCode     : "Product Code",
-		        		ItemCode 		: "Item Code",
-		        		productName     : "Product Name",
-						OpeningStock    : 'Opening Stock',
-		                StockAddedToday : 'Stock Added Today',
-		                TotalStock      : 'Total Stock',
+						date            : 'Purchase Date',
+						PurchaseNumber  : 'Purchase Number',
+						Details         : 'Details',
+						Supplier        : 'Supplier',
+						PurchasedBy     : 'Purchased By',
+						productName     : "Product Name",
+						UnitRate        : 'Unit Rate',
+						Quantity        : 'Quantity',
+						TotalAmount     : 'Total Amount',
 						actions        	: 'Action',
 					},
 					"tableObjects" 		: {
@@ -51,7 +55,12 @@ export default class PurchaseManagement extends React.Component {
 		            activeswal : false,
 		            blockswal : false,
 		            confirmDel : false,
-		            tableData : ""
+					tableData : "",
+					PoNumbersArray:[],
+					selectedPurchaseNum :'Select Purchase Number',
+					selectedProductName : 'Select Product',
+					filterData : {},
+					PurchaseNumberArray:[]
 			      	
       };
 	}
@@ -60,11 +69,77 @@ export default class PurchaseManagement extends React.Component {
 	componentDidMount(){
 		this.getproducts();
 		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
-		// console.log("today",today);
-
+		
 		var editId = this.props.match.params.purchaseId;
         console.log('ven', editId);
-        this.getData();
+		this.getData();
+		this.getPurNumberList();
+		jQuery.validator.setDefaults({
+			debug: true,
+			success: "valid"
+		  });
+	  
+		  $("#addNewPurchaseOrder").validate({
+			rules: {
+			  purchaseDate: {
+				required: true,
+			  },
+			  purchaseLocation: {
+				required: true,
+			  },
+			  purchaseNumber: {
+				required: true,				
+			  },
+			  Details: {
+				required: true,
+			  },
+			  purchaseStaff:{
+				required: true,
+			  },
+			  product:{
+				  required:true
+			  },
+			  unitRate:{
+				  required:true
+			  },
+			  quantity:{
+				  required:true
+			  },
+			  amount:{
+				  required:true
+			  }
+
+			},
+			errorPlacement: function (error, element) {
+			  if (element.attr("name") === "purchaseDate") {
+				error.insertAfter("#purchaseDate");
+			  }
+			  if (element.attr("name") === "purchaseLocation") {
+				error.insertAfter("#purchaseLocation");
+			  }
+			  if (element.attr("name") === "purchaseNumber") {
+				error.insertAfter("#purchaseNumber");
+			  }
+			  if (element.attr("name") === "Details") {
+				error.insertAfter("#Details");
+			  }
+			  if (element.attr("name") === "purchaseStaff") {
+				error.insertAfter("#purchaseStaff");
+			  }
+			  if (element.attr("name") === "product") {
+				error.insertAfter("#product");
+			  }
+			  if (element.attr("name") === "unitRate") {
+				error.insertAfter(".unitRateDiv");
+			  }
+			  if (element.attr("name") === "quantity") {
+				error.insertAfter(".quantityDiv");
+			  }
+			  if (element.attr("name") === "amount") {
+				error.insertAfter(".amountDiv");
+			  }
+			}
+		  });
 
 	}
 	componentWillReceiveProps(nextProps) {
@@ -77,22 +152,23 @@ export default class PurchaseManagement extends React.Component {
         }
     }
 	edit(id){
-        // $("#taxMaster").validate().resetForm();
+         $("#addNewPurchaseOrder").validate().resetForm();
         axios.get('/api/purchaseentry/get/one/'+id)
         .then((response)=>{
             console.log('res', response);
             this.setState({
                 "amount"         	: response.data.amount ,
-		        "purchaseDate" 		: response.data.purchaseDate,
+		        "purchaseDate" 		: moment(response.data.purchaseDate).format("YYYY-MM-DD"),
 		      	"purchaseStaff" 	: response.data.purchaseStaff,
 		      	"purchaseLocation"  : response.data.purchaseLocation,
 		      	"quantity" 			: response.data.quantity,
 		      	"unitRate" 	        : response.data.unitRate,
 		      	"purchaseNumber"    : response.data.purchaseNumber,
 		      	"Details" 			: response.data.Details,
-		      	"productName" 		: response.data.product,
-		      	"unit" 				: response.data.Units,
-            });
+		      	"product" 		    : response.data.productName,
+		      	"Units" 			: response.data.unit,
+			});
+			console.log('res state', this.state.Units);
             
         })
         .catch((error)=>{
@@ -102,59 +178,94 @@ export default class PurchaseManagement extends React.Component {
 	getData(startRange, limitRange){ 
 		var dateToSearch=this.state.serchByDate;
 		console.log("dateToSearch", moment(dateToSearch).format("YYYY-MM-DD"));
-	 axios
-      .get('/api/purchaseentry/get/datewisepurchase/'+this.state.serchByDate)
-      .then((response)=>{
-        console.log("list===>",response.data);
-        /*this.setState({
-          
-          tableData : response.data,
-        });*/
-        var  tableData = response.data ;
-        console.log("tableData",tableData);
- 
-		/*return{  tableData: {
-						fullName        : 'Date',
-		        		city       		: "Product Code",
-		        		company 		: "Item Code",
-		        		role 			: "Product Name",
-						email        	: 'Opening Stock',
-						
-		                status        	: 'Stock Added Today',
-		                TotalStock      : 'Total Stock', 
-		                }  
-			}*/
-			var tableData = tableData.map((a, i) => {
-					return {
-						_id                  :a._id,
-						date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
-						ProductCode 		: a.ProductCode ? a.ProductCode : "" ,
-						ItemCode 			: a.ItemCode ? a.ItemCode : "" ,
-						productName 		: a.productName,
-						OpeningStock 		: a.OpeningStock ? a.OpeningStock : "" ,
-						StockAddedToday 	: "",
-						TotalStock 			: "" ,
-						
-					/*	purchaseStaff		:
-						purchaseLocation 	:
-						quantity 			:
-						amount 				:
-						Units 				:*/
+		var filterData = this.state.filterData;
+		filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
+		filterData.purchaseNumber = this.state.selectedPurchaseNum;
+		filterData.productName = this.state.selectedProductName;
+
+		console.log("Selector Value = ",this.state.filterData);
+
+		axios
+		.post('/api/purchaseentry/post/datewisepurchase/',filterData)
+		.then((response)=>{
+			console.log("list===>",response.data);
+			/*this.setState({
+			
+			tableData : response.data,
+			});*/
+			var  tableData = response.data ;
+			console.log("Get tableData",tableData);
+	
+			/*return{  tableData: {
+							fullName        : 'Date',
+							city       		: "Product Code",
+							company 		: "Item Code",
+							role 			: "Product Name",
+							email        	: 'Opening Stock',
+							
+							status        	: 'Stock Added Today',
+							TotalStock      : 'Total Stock', 
+							}  
+				}*/
+				var tableData = tableData.map((a, i) => {
+						return {
+							_id                  :a._id,
+							date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
+							PurchaseNumber 		: a.purchaseNumber ? a.purchaseNumber : "" ,
+							Details 			: a.Details ,
+							Supplier            : a.purchaseLocation,
+							PurchasedBy 		: a.purchaseStaff ? a.purchaseStaff : "" ,
+							productName 		: a.productName,
+							UnitRate 	        : a.unitRate ,
+							Quantity 			: a.quantity + a.unit,
+							TotalAmount         : a.amount,
+							
+						/*	purchaseStaff		:
+							purchaseLocation 	:
+							quantity 			:
+							amount 				:
+							Units 				:*/
+						}
+				});
+				var PoNumbersArray = [];
+				tableData.filter(function(item,index){
+					var i = PoNumbersArray.findIndex(x => x.PurchaseNumber == item.PurchaseNumber);
+					if(i <= -1){
+						PoNumbersArray.push(item.PurchaseNumber);
 					}
+					return null;
+				});
+				this.setState({ 
+				   tableData 		: tableData,  
+				   PoNumbersArray   : PoNumbersArray        
 				})
-			this.setState({
-             
-              tableData 		: tableData,          
-            })
-            })
-      .catch((error)=>{
-         console.log("error = ", error);              
-      }); 
+				console.log("PoNumbersArray",this.state.PoNumbersArray);
+				})
+		.catch((error)=>{
+			console.log("error = ", error);              
+		}); 
 		
     }
     getSearchText(searchText, startRange, limitRange){
 
-    }
+	}
+	getPurNumberList(){
+		axios.get("/api/purchaseentry/get/PurchaseNumbers")
+            .then((response) => {
+				var PurchaseNumberArray = [];
+                response.data.map((data, ind) => {
+					console.log("console.log()",data);
+                    PurchaseNumberArray.push(data)
+                });
+                this.setState({
+                    PurchaseNumberArray: PurchaseNumberArray,
+                    messageData: {}
+                })
+            })
+            .catch((error) => {
+                console.log('error', error);
+            })
+	}
     setunCheckedUser(value){
 		this.setState({
 			unCheckedUser : value,
@@ -164,7 +275,6 @@ export default class PurchaseManagement extends React.Component {
 		this.setState({
 			checkedUser : checkedUsersList,
 		})
-		console.log("checkedUser",this.state.checkedUser)
 	}
 	getRole(){
 		
@@ -184,7 +294,6 @@ export default class PurchaseManagement extends React.Component {
         [name]:value,
  
       },()=>{
-      	console.log("date",this.state.serchByDate);
 		this.getData();
 
       } );
@@ -192,15 +301,25 @@ export default class PurchaseManagement extends React.Component {
 
 	handleChange(event){
       event.preventDefault();
-
       // const datatype = event.target.getAttribute('data-text');
       const {name,value} = event.target;
 
       this.setState({ 
         [name]:value,
- 
-      } );
-    }
+	  },()=>{
+		this.getData();
+	   });
+	}
+	filterChange(event){
+	  event.preventDefault();
+      const {name,value} = event.target;
+
+      this.setState({ 
+        [name]:value,
+	  },()=>{
+		this.getData();
+	   });
+	}
     handleProduct(event){
     	var valproduct = event.currentTarget.value;
     	console.log("valproduct",valproduct);
@@ -216,7 +335,6 @@ export default class PurchaseManagement extends React.Component {
      getproducts(){
         axios.get('/api/products/get/list')
 		.then((response) => {
-            console.log('productArray---', response.data)
             /*for(var i=0; i<response.data.length; i++){
             	var proname=response.data[i].productName;
             	// console.log("proname---",proname);
@@ -242,41 +360,39 @@ export default class PurchaseManagement extends React.Component {
       	"quantity" 			: this.state.quantity,
       	"productName" 		: this.state.product,
       	"unit" 				: this.state.Units,
-      	"unitRate" 	    : this.state.unitRate,
+      	"unitRate" 	        : this.state.unitRate,
 		"purchaseNumber"    : this.state.purchaseNumber,
 		"Details" 			: this.state.Details,
        
       };
-      console.log("formValues1",formValues1);
-      axios
-			.post('/api/purchaseentry/post',formValues1)
-		  	.then(function (response) {
-		    // handle success
-		    	console.log("data in block========",response.data);
-		    	swal("Thank you. Your Product addeed successfully.");
-		    	 // window.location.reload();
-		  	})
-		  	.catch(function (error) {
-		    // handle error
-		    	console.log(error);
-		  	});
-		  	this.setState({
-				 amount          : "",         	
-		         purchaseDate    : "", 		
-		      	 purchaseStaff   : "", 	
-		      	 purchaseLocation: "",  
-		      	 quantity        : "", 			
-		      	 product         : "", 		
-		      	 Units           : "",
-		      	 unitRate    : "",
-			     purchaseNumber  : "",
-				 Details 		 :"",	
-      	 })		
+	  console.log("formValues1",formValues1);
+	  if ($('#addNewPurchaseOrder').valid()) {
+		axios
+		.post('/api/purchaseentry/post',formValues1)
+		  .then((response) => {
+		// handle success
+			console.log("data in block========",response.data);
+			swal("Thank you. Your Product addeed successfully.");
+			this.getData();
+		  })
+		  .catch(function (error) {
+		// handle error
+			console.log(error);
+		  });
+		  this.setState({
+			amount          : "",     
+			product         : "",    	
+			quantity        : "", 			
+			product         : "", 		
+			Units           : "",
+			unitRate    : "",
+	       },()=>{
+	      });  
+	  }
 	}
 	update(event){
         event.preventDefault();
         var formValues = {
-            
              "amount"         	: this.state.amount ,
 	        "purchaseDate" 		: this.state.purchaseDate,
 	      	"purchaseStaff" 	: this.state.purchaseStaff,
@@ -300,24 +416,18 @@ export default class PurchaseManagement extends React.Component {
 			      	"purchaseStaff" 	: "",
 			      	"purchaseLocation"  : "",
 			      	"quantity" 			: "",
-			      	"productName" 		: "",
+			      	"product" 		: "",
 			      	"unit" 				: "",
                     "unitRate"      : "",
-				     "purchaseNumber"   : "",
-					 "Details" 		    :"",	
-                     editId             : ""
+				    "purchaseNumber"   : "",
+					"Details" 		    :"",	
+                    editId             : ""
                 })
             })
             .catch((error)=>{
                 console.log('error', error);
             })
       /*  }*/
-	}
-	
-	AddProduct(e){
-		e.preventDefault();
-		var obj = {};
-		
 	}
 
 
@@ -330,7 +440,7 @@ export default class PurchaseManagement extends React.Component {
                             <h4 className="">Purchase Entry</h4>
                         </div>
 						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20">
+							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20" id="addNewPurchaseOrder">
 							 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 								<div className="row">
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
@@ -352,7 +462,7 @@ export default class PurchaseManagement extends React.Component {
 									</div>
 								  </div>
 								 </div>	
-								 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding"> 
+								 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding mtop20"> 
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Purchase No</label>
 										<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
@@ -366,14 +476,7 @@ export default class PurchaseManagement extends React.Component {
 										<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
 									</div>
 								 </div>
-								 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
-								    {this.state.editId ?
-                                    <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
-                                    :
-                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
-                                   }
-									
-								</div>
+								 
 						         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12  NOpadding">
 {/*
                                        <div className="form-margin col-lg-6 col-md-6 col-sm-12 col-xs-12" >
@@ -394,7 +497,7 @@ export default class PurchaseManagement extends React.Component {
                                                 </div>
 */}
 										
-										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25 ">
 											<label >Select Product</label>
 											{/*<input type="text" className="form-control" id="email"/>*/}
 											<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
@@ -417,7 +520,7 @@ export default class PurchaseManagement extends React.Component {
 										 <div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
 					                       <div className="">
 					                        <label className="control-label statelabel locationlabel" >Unit Rate</label>
-					                          <div className="input-group inputBox-main  new_inputbx " >
+					                          <div className="input-group inputBox-main  new_inputbx unitRateDiv" >
 						                           <div className="input-group-addon inputIcon">
 						                           <i class="fa fa-rupee"></i>
 						                         </div> 
@@ -431,7 +534,7 @@ export default class PurchaseManagement extends React.Component {
 									</div>*/}
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Quantity</label>
-										<div className="">
+										<div className="quantityDiv">
 											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity"/>
 											<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
 												<option selected={true} disabled={true}>-- Select --</option>
@@ -445,7 +548,7 @@ export default class PurchaseManagement extends React.Component {
 									 <div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
 				                       <div className="">
 				                        <label className="control-label statelabel locationlabel" >Amount</label>
-				                          <div className="input-group inputBox-main  new_inputbx " >
+				                          <div className="input-group inputBox-main  new_inputbx amountDiv" >
 					                           <div className="input-group-addon inputIcon">
 					                           <i class="fa fa-rupee"></i>
 					                         </div> 
@@ -455,23 +558,54 @@ export default class PurchaseManagement extends React.Component {
                    					</div>
 								</div>	
 								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
-								    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.AddProduct.bind(this)}>Add</button>
-								    {/* {this.state.editId ?
+								    {this.state.editId ?
                                     <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
                                     :
-                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit1</button>
+                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
                                    }
-									 */}
+									
 								</div>
 							</form>
 						</div>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
-						  <div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
-							<div className="col-lg-4 col-md-4"><label>Search By Date:</label></div>
-							<div className="col-lg- col-md-6">
+						  <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+							<label>Purchase Date:</label>
+							{/* <div className="form-group"> */}
 							 <input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.serchByDate} name="serchByDate" refs="serchByDate" onChange={this.handleChangeDate.bind(this)} id="serchByDate"/>
-                            </div>
-						</div>
+                            {/* </div> */}
+						  </div>
+						  <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+							<label>Purchase Number:</label>
+							<select className="form-control allPoNumbers" aria-describedby="basic-addon1" name="selectedPurchaseNum" id="selectedPoNum" ref="selectedPoNum" value={this.state.selectedPurchaseNum} onChange={this.filterChange.bind(this)}>
+							   <option disabled="">Select Purchase Number</option>
+								{
+									this.state.PurchaseNumberArray && this.state.PurchaseNumberArray.length > 0 ?
+										this.state.PurchaseNumberArray.map((data, i)=>{
+											return(
+												<option>{data}</option>
+											);
+										})
+									:
+									null
+								}
+							</select>
+						  </div>
+						  <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+							<label>Product Name:</label>
+							<select className="form-control allProducts" aria-describedby="basic-addon1" name="selectedProductName" id="SelectProduct" ref="SelectProduct" value={this.state.selectedProductName} onChange={this.filterChange.bind(this)}>
+							<option disabled="">Select Product</option>
+							{
+								this.state.productArray && this.state.productArray.length > 0 ?
+									this.state.productArray.map((data, i)=>{
+										return(
+											<option>{data.productName}</option>
+										);
+									})
+								:
+								null
+                            }
+							</select>
+						  </div>
 						</div>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<IAssureTable
