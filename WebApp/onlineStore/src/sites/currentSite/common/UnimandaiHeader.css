@@ -91,7 +91,7 @@
     margin-top: 14px;
 }
 .megamenuWrapper:hover{
-    background-color: transparent !important;
+    /* background-color: transparent !important; */
 }
 ul.main-nav > li:hover {
     background-color: #fff !important;
@@ -142,10 +142,10 @@ ul.main-nav > li:hover {
 }
 /* right box */
 .box-right .cart {
-    margin-left: 15px;
+    /* margin-left: 15px;
     padding-left: 15px;
     margin-top: 0px;
-    position: relative;
+    position: relative; */
 }
 .icon-cart .icon {
     display: inline-block;
@@ -162,8 +162,8 @@ ul.main-nav > li:hover {
     line-height: 18px;
     text-align: center;
     position: absolute;
-    bottom: 30px;
-    right: -26px;
+    bottom: 55px;
+    right: -27px;
     font-family: "Montserrat";
     border-radius: 50%;
     background: #80b435;
