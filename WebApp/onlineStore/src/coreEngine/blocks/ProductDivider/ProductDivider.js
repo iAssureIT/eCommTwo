@@ -31,7 +31,7 @@ export default class ProductDivider extends Component {
 							<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6" key={index}>
 				                <a href={"/section/"+ data.section.replace(/\s+/g, '-').toLowerCase() +'/'+data.section_ID} >
 				                <div className="block">
-				                    <a className="image" href={"/section/"+data.sectionUrl+'/'+data.section_ID} target="_blank" rel="noopener noreferrer"> 
+				                    <a className="image divimgprod" href={"/section/"+data.sectionUrl+'/'+data.section_ID} target="_blank" rel="noopener noreferrer"> 
 										{data.categoryImage
 										?
 										<img src={data.categoryImage} alt="home banner" className="divImage"/>

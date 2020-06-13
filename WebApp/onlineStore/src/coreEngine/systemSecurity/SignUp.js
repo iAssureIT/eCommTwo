@@ -137,24 +137,29 @@ class SignUp extends Component {
 				mobNumber: (this.state.mobNumber).replace("-", ""),
 				pincode: this.state.pincode,
 				email: this.state.signupEmail,
+				username: this.state.signupEmail,
 				pwd: this.state.signupPassword,
 				role: 'user',
 				status: 'active',
 				"emailSubject": "Email Verification",
 				"emailContent": "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 			}
-			console.log("Auth:",auth);
+			
 			// document.getElementById("signUpBtn").innerHTML = 'Please Wait...';
 			document.getElementById("signUpBtn").innerHTML = 
 			this.setState({ btnLoading: true });
 			var passwordVar = this.refs.signupPassword.value;
 			var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
 			if (passwordVar === signupConfirmPasswordVar) {
+				console.log("Before post Auth:==>",auth)
 				return (passwordVar.length >= 6) ?
+				
 					(true,
 						// document.getElementById("signUpBtn").innerHTML = 'Sign Up',
+						
 						axios.post('/api/auth/post/signup/user/otp', auth)
 							.then((response) => {
+								
 								if (response.data.message === 'USER_CREATED') {
 									console.log("user created:", response.data);
 									var auth = {

@@ -210,11 +210,14 @@ exports.user_signup_user = (req, res, next) => {
 	}	
 };
 exports.user_signup_user_otp = (req, res, next) => {
+	console.log("req.body.email==>",req.body);
 	var username = "EMAIL";
 	if(req.body.username){
+		console.log("req.body.email==>",req.body.username);	
 		if(req.body.username === "EMAIL"){
 			username = "EMAIL";
 		}else if(req.body.username === "MOBILE"){
+			console.log("req.body.MOBILE==>",req.body.username);
 			username = "MOBILE";
 		}
 	}
@@ -262,7 +265,7 @@ exports.user_signup_user_otp = (req, res, next) => {
 															email: emailId.toLowerCase(),
 															companyID: req.body.companyID,
 															companyName: req.body.companyName,
-															mobile: mobNumber,
+															mobile: req.body.mobNumber,
 															createdAt: new Date(),
 															otpEmail: emailOTP,
 															status: req.body.status ? req.body.status : "Inactive",
@@ -276,32 +279,37 @@ exports.user_signup_user_otp = (req, res, next) => {
 													user.save()
 														.then(result => {
 															if (result) {
-																request({
-																	"method": "POST",
-																	"url": "http://localhost:" + globalVariable.port + "/send-email",
-																	"body": {
-																		email: req.body.email,
-																		subject: req.body.emailSubject,
-																		text: req.body.emailContent + " Your OTP is " + emailOTP,
-																	},
-																	"json": true,
-																	"headers": {
-																		"User-Agent": "Test Agent"
-																	}
-																})
-																.then(source => {
-																	res.status(200).json({ message: "USER_CREATED", ID: result._id })
-																})
-																.catch(err => {
-																	console.log(err);
-																	res.status(500).json({
-																		message: "Failed to Send Email",
-																		error: err
-																	});
-																});
+																res.status(200).json({ message: "USER_CREATED", ID: result._id })
 															}else {
 																res.status(200).json({ message: "USER_NOT_CREATED" })
 															}
+															// if (result) {
+															// 	request({
+															// 		"method": "POST",
+															// 		"url": "http://localhost:" + globalVariable.port + "/send-email",
+															// 		"body": {
+															// 			email: req.body.email,
+															// 			subject: req.body.emailSubject,
+															// 			text: req.body.emailContent + " Your OTP is " + emailOTP,
+															// 		},
+															// 		"json": true,
+															// 		"headers": {
+															// 			"User-Agent": "Test Agent"
+															// 		}
+															// 	})
+															// 	.then(source => {
+															// 		res.status(200).json({ message: "USER_CREATED", ID: result._id })
+															// 	})
+															// 	.catch(err => {
+															// 		console.log(err);
+															// 		res.status(500).json({
+															// 			message: "Failed to Send Email",
+															// 			error: err
+															// 		});
+															// 	});
+															// }else {
+															// 	res.status(200).json({ message: "USER_NOT_CREATED" })
+															// }
 														})
 														.catch(err => {
 															console.log(err);
@@ -338,6 +346,7 @@ exports.user_signup_user_otp = (req, res, next) => {
 			res.status(200).json({ message: "Email, pwd and role are mandatory" });
 		}
 	}else if(username==="MOBILE"){
+		console.log("req.body.MOBILE==>",req.body.username);
 		if(req.body.mobNumber && req.body.pwd && req.body.role) {
 			var mobNumber = req.body.mobNumber;
 			var userRole = (req.body.role).toLowerCase();
@@ -380,7 +389,6 @@ exports.user_signup_user_otp = (req, res, next) => {
 															fullName: req.body.firstname + ' ' + req.body.lastname,
 															email: req.body.email,
 															mobile: req.body.mobNumber,
-															companyID: req.body.companyID,
 															companyName: req.body.companyName,
 															createdAt: new Date(),
 															otpMobile: mobileOTP,

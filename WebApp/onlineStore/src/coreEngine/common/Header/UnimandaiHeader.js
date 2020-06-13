@@ -331,6 +331,7 @@ componentWillMount() {
 loginPage(event){
     event.preventDefault();
     localStorage.setItem('previousUrl' ,'/');
+    this.props.history.push("/cart");
 }
 
   submitQuery() {
