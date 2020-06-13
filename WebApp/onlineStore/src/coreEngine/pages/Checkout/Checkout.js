@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
+import $, { post } from 'jquery';
 import axios from 'axios';
 import jQuery from 'jquery';
 import {ntc} from '../../ntc/ntc.js';
@@ -260,7 +260,7 @@ class Checkout extends Component {
         var user_ID = localStorage.getItem('user_ID');
         axios.get("/api/ecommusers/" + user_ID)
             .then((response) => {
-                // console.log('res', response.data.profile);
+                console.log('res', response.data.deliveryAddress);
                 this.setState({
                     "deliveryAddress": response.data.deliveryAddress,
                     "username" : response.data.profile.fullName,
@@ -572,7 +572,7 @@ class Checkout extends Component {
               }, 6000);
         }else{
             if (this.state.deliveryAddress && this.state.deliveryAddress.length > 0) {
-                console.log("Inside delivery address available");
+                // console.log("Inside delivery address available");
                 var deliveryAddress = this.state.deliveryAddress.filter((a, i) => {
                     return a._id === checkoutAddess
                 })
@@ -592,11 +592,13 @@ class Checkout extends Component {
                     "state": this.state.state,
                     "countryCode": this.state.countryCode,
                     "country": this.country,
+                    "latitude" : this.state.latitude,
+                    "longitude": this.state.longitude,
             
                 }
                 
             }else{
-                console.log("inside else new address");
+                // console.log("inside else new address");
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
                     "name": this.state.username,
@@ -612,7 +614,9 @@ class Checkout extends Component {
                     "countryCode": this.state.countryCode,
                     "country": this.state.country,
                     "mobileNumber": this.state.mobileNumber,
-                    "addType": this.state.addType
+                    "addType": this.state.addType,
+                    "latitude" : this.state.latitude,
+                    "longitude": this.state.longitude,
                 }
                 
                 if ($('#checkout').valid() && this.state.pincodeExists) {
@@ -689,6 +693,7 @@ class Checkout extends Component {
                         deliveryAddress : this.props.recentCartData[0].deliveryAddress,
                         paymentMethod   : this.props.recentCartData[0].paymentMethod
                     }
+                    console.log("Order Data:---",orderData);
                     axios.post('/api/orders/post', orderData)
                     .then((result) => {
                         this.props.fetchCartData();
@@ -709,6 +714,7 @@ class Checkout extends Component {
                         this.props.history.push('/payment/' + result.data.order_ID);
                     })
                     .catch((error) => {
+                        console.log("return to checkout");
                         console.log(error);
                     })
                 })
@@ -735,12 +741,14 @@ class Checkout extends Component {
             "state": this.refs.modalstate.value,
             "country": this.refs.modalcountry.value,
             "mobileNumber": this.refs.modalmobileNumber.value,
-            "addType": this.refs.modaladdType.value
+            "addType"     : this.refs.modaladdType.value,
+            "latititude"  : this.state.latititude,
+            "longitude"   : this.state.longitude,
         }
         console.log("addressValues:",addressValues);
         if ($('#modalAddressForm').valid()) {
 
-            axios.patch('/api/ecommusers/patch/address', addressValues)
+            axios.patch('/api/ecommusers/patch/address', post)
                 .then((response) => {
                     this.setState({
                       messageData : {
@@ -833,20 +841,21 @@ class Checkout extends Component {
         geocodeByAddress(address)
         .then((results) =>{
             if(results){
-                console.log("result===",results);
+                console.log("result ===",results);
+                // console.log("result ===",results);
             for (var i = 0; i < results[0].address_components.length; i++) {
                 for (var b = 0; b < results[0].address_components[i].types.length; b++) {
                     switch (results[0].address_components[i].types[b]) {
                         case 'sublocality_level_1':
                             var area = results[0].address_components[i].long_name;
-                            console.log("area===",area);
+                            // console.log("area===",area);
                             break;
                         case 'sublocality_level_2':
                             area = results[0].address_components[i].long_name;
                             break;
                         case 'locality':
                             var city = results[0].address_components[i].long_name;
-                            console.log("area===",city);
+                            // console.log("area===",city);
                             break;
                         case 'administrative_area_level_1':
                             var state = results[0].address_components[i].long_name;
@@ -878,23 +887,21 @@ class Checkout extends Component {
                 stateCode  :stateCode,
                 countryCode:countryCode
             }) 
-            console.log("setstate:", this.state.area);
+            // console.log("setstate:", this.state.latLng);
             }  
           
-        })
-        
+        })        
         .catch(error => console.error('Error', error));
-    
-          geocodeByAddress(address)
-          .then(results => getLatLng(results[0]))
-          .then(latLng => this.setState({'latLng': latLng}))
-          .catch(error => console.error('Error', error));
-        
+
+        geocodeByAddress(address)
+        .then(results => getLatLng(results[0]))
+        .then(({ lat, lng }) =>{            
+            this.setState({'latitude' : lat});
+            this.setState({'longitude' : lng});
+            console.log('Successfully got latitude and longitude', { lat, lng });
+        });           
           this.setState({ addressLine1 : address});
-      }; //end google api
-    
-    
-    
+      }; //end google api   
 
 
     camelCase(str) {
@@ -1220,7 +1227,7 @@ class Checkout extends Component {
     }
 }
 const mapStateToProps = (state)=>{
-    return {
+    return {      
       recentCartData :  state.recentCartData
     }
   }

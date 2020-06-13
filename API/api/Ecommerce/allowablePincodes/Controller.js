@@ -7,7 +7,7 @@ exports.add_allowablePincodes = (req, res, next) => {
     for (let franchiseID in allowablePincodeObj) { 
         if (allowablePincodeObj.hasOwnProperty(franchiseID)) { 
             var pincodes = allowablePincodeObj[franchiseID].pincodes; 
-            console.log("pincodes----",pincodes); 
+            // console.log("pincodes----",pincodes); 
             Allowablepincode.find({"franchiseID":franchiseID})
             .exec()
             .then(data =>{                

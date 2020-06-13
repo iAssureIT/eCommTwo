@@ -149,7 +149,7 @@ class AllowablePincodes extends Component {
                                                                             <td>                                                              
                                                                                 {/* <input type="text" id="pincodes" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincodes}  ref="pincodes" name="pincodes" onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.." required/> */}
                                                                                 <input type="text" id="pincodes" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                                                 ref="pincodes" name="pincodes" defaultValue={this.state.allowablePincodeList.length>0 ? this.state.allowablePincodeList[index].allowablePincodes:null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
+                                                                                 ref="pincodes" name="pincodes" defaultValue={Array.isArray(this.state.allowablePincodeList.length>0) ? Array.isArray(this.state.allowablePincodeList[index].allowablePincodes):null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
                                                                             </td>                                                                
                                                                         </tr> 
                                                                     );

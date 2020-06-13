@@ -162,11 +162,11 @@ class Address extends Component {
     edit(deliveryAddressID){
         var user_ID = localStorage.getItem("user_ID");
         // var deliveryAddressID = this.props.match.params.deliveryAddressID;
-        console.log('deliveryAddressID', deliveryAddressID);
+        // console.log('deliveryAddressID', deliveryAddressID);
         axios.get('/api/ecommusers/'+user_ID)
         .then((response)=>{            
             var deliveryAddress = response.data.deliveryAddress.filter((a)=>{return a._id === deliveryAddressID});
-            console.log("deliveryAddress:====" ,response.data.deliveryAddress);
+            // console.log("deliveryAddress:====" ,response.data.deliveryAddress);
 
             // this.getStates(deliveryAddress[0].countryCode);            
             // this.getDistrict(deliveryAddress[0].stateCode,deliveryAddress[0].countryCode)
@@ -185,6 +185,9 @@ class Address extends Component {
                 "modalcountry"         : deliveryAddress[0].country,
                 "modalmobileNumber"    : deliveryAddress[0].mobileNumber,
                 "modaladdType"         : deliveryAddress[0].addType,
+                "latitude"             : this.state.latitude,
+                "longitude"            : this.state.longitude,
+                
             })
         })
         .catch((error)=>{
@@ -192,7 +195,7 @@ class Address extends Component {
         });
     }
     componentWillReceiveProps(nextProps){
-        this.edit(nextProps.addressId);
+        // this.edit(nextProps.addressId);
     }
     handleChange(event) {
         this.setState({
@@ -238,6 +241,7 @@ class Address extends Component {
     handleSelect = address => {    
         geocodeByAddress(address)
          .then((results) =>{
+            //  console.log("Google API Address=====",results);
           for (var i = 0; i < results[0].address_components.length; i++) {
               for (var b = 0; b < results[0].address_components[i].types.length; b++) {
                   switch (results[0].address_components[i].types[b]) {
@@ -284,12 +288,16 @@ class Address extends Component {
         })
         .catch(error => console.error('Error', error));
     
-          geocodeByAddress(address)
-          .then(results => getLatLng(results[0]))
-          .then(latLng => this.setState({'latLng': latLng}))
-          .catch(error => console.error('Error', error));
-        
-          this.setState({ addressLine1 : address});
+        geocodeByAddress(address)
+        .then(results => getLatLng(results[0]))
+        .then(({ lat, lng }) =>{            
+            this.setState({'latitude' : lat});
+            this.setState({'longitude' : lng});
+            console.log('Successfully got latitude and longitude', { lat, lng });
+        });  
+
+        this.setState({ addressLine1 : address});
+        console.log("LatLong:",this.state.latLng);
       }; //end google api
    
 
@@ -363,13 +371,15 @@ class Address extends Component {
             "country"         : this.state.modalcountry,
             "mobileNumber"    : this.state.modalmobileNumber,
             "addType"         : this.state.modaladdType,
+            "latitude" : this.state.latitude,
+            "longitude": this.state.longitude,
         }
         if(deliveryAddressID){
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
-                console.log('if form deliveryAddressID', formValues);
+                // console.log('if form deliveryAddressID', formValues);
                 axios.patch('/api/ecommusers/updateuseraddress', formValues)
                 .then((response)=>{
-                    console.log("response after update:",response.data.message);
+                    // console.log("response after update:",response.data.message);
                 this.setState({
                   messageData : {
                     "type" : "outpage",
@@ -405,7 +415,7 @@ class Address extends Component {
                 console.log('else form deliveryAddressID', formValues);
                 axios.patch('/api/ecommusers/patch/address', formValues)
                 .then((response)=>{
-                    console.log(response.data.message);
+                    // console.log(response.data.message);
                 this.setState({
                   messageData : {
                     "type" : "outpage",
@@ -476,7 +486,7 @@ class Address extends Component {
         $("#modalAddressForm").validate().resetForm();
     }
     render() {  
-        console.log("On address Page===");     
+        // console.log("On address Page===");     
         return (
             <div>
             <Message messageData={this.state.messageData} />   

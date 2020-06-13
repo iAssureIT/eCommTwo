@@ -14,11 +14,10 @@ const initialState = {
 	searchCriteria: [],
 	categoryDetails:[]
 }
-
-const reducer = (state = initialState,action) => {
+const reducer = (state = initialState,action) =>{
 	const newState = {...state}; 
 	if(action.type === "CART_COUNT_INITIALLY"){
-		newState.cartCount 		= action.cartCount;
+		newState.cartCount 	= action.cartCount;
 	}
 	if(action.type === "CART_DATA"){
 		newState.cartData 		= action.cartData;
