@@ -84,6 +84,7 @@ import AllowablePincodes from './storeAdmin/allowablePincodes/AllowablePincodes.
 //=============== Purchase Management =================
 
 import PurchaseManagement  from './storeAdmin/PurchaseManagement/PurchaseManagement.js';
+import RawMaterialStockReport from './storeAdmin/PurchaseManagement/RawMaterialStockReport.js';
 import FinishedGoods       from './storeAdmin/PurchaseManagement/FinishedGoods.js';
 
 //=============== Purchase Management =================
@@ -254,6 +255,9 @@ class Layout extends Component  {
                           {/*purchase-management*/}
 
                           <Route path="/purchase-management"                              exact strict component={ PurchaseManagement } />
+                          <Route path="/raw-material-stock-report"                        exact strict component={ RawMaterialStockReport } />
+
+                          
                           <Route path="/purchase-management/:purchaseId"                  exact strict component = { PurchaseManagement }  />
                           <Route path="/finished-goods"                                   exact strict component={FinishedGoods} />
 

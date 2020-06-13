@@ -148,7 +148,7 @@ class AdminOrdersList extends Component{
     
     render(){
       const data = this.state.data;
-
+      console.log("Dattta",data);
       const options = {
        
         print: false, 
@@ -366,8 +366,6 @@ class AdminOrdersList extends Component{
                             data={data}
                             columns={columns}
                             />
-
-                          
                             {
                               /*<div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                    

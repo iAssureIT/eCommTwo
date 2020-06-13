@@ -31,7 +31,7 @@ export default class AllOrders extends Component{
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
                   var userFullName = response.data[i].userFullName;
-                  var totalQuantity = response.data[i].totalQuantity;
+                  var totalQuantity = response.data[i].cartQuantity;
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
                   var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");

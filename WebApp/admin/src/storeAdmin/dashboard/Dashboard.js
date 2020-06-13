@@ -506,7 +506,7 @@ export default class Dashboard extends Component{
   }
   getBarChart(currentDate, chartId){
       var ctx3 = document.getElementById(chartId);
-      return;
+       return;
       // axios.get("/api/orders/get/totalOrdersByPeriod/"+currentDate)
       // .then((response)=>{
       //     console.log('response.data',response.data.length)
@@ -622,7 +622,6 @@ export default class Dashboard extends Component{
   }   
  
   render(){
-    
     return(
       <div className="col-lg-12">
         <div className="row">

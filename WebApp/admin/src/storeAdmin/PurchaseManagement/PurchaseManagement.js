@@ -60,7 +60,8 @@ export default class PurchaseManagement extends React.Component {
 					selectedPurchaseNum :'Select Purchase Number',
 					selectedProductName : 'Select Product',
 					filterData : {},
-					PurchaseNumberArray:[]
+					PurchaseNumberArray:[],
+					totalPoAmount : 0
 			      	
       };
 	}
@@ -235,12 +236,18 @@ export default class PurchaseManagement extends React.Component {
 					}
 					return null;
 				});
+
+				let totalAmount = tableData.reduce(function(prev, current) {
+					console.log("current supply",current);
+						return prev + +current.TotalAmount
+				}, 0);
+
 				this.setState({ 
 				   tableData 		: tableData,  
-				   PoNumbersArray   : PoNumbersArray        
-				})
-				console.log("PoNumbersArray",this.state.PoNumbersArray);
-				})
+				   PoNumbersArray   : PoNumbersArray,
+				   totalPoAmount      : totalAmount        
+				}) 
+			})
 		.catch((error)=>{
 			console.log("error = ", error);              
 		}); 
@@ -322,7 +329,7 @@ export default class PurchaseManagement extends React.Component {
 	}
     handleProduct(event){
     	var valproduct = event.currentTarget.value;
-    	console.log("valproduct",valproduct);
+    	console.log("valproduct event",event);
 		this.setState({product : valproduct});
 
     }
@@ -615,8 +622,16 @@ export default class PurchaseManagement extends React.Component {
                                     tableData={this.state.tableData}
                                     getData={this.getData.bind(this)}
                                     tableObjects={this.state.tableObjects}
-								/>			
-							</div>
+								/>
+						</div>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25" style={{textAlignLast: "end"}}>
+								<div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12">
+									<label>Total</label>
+								</div>
+								<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+									<label>{this.state.totalPoAmount}</label>
+								</div>
+						</div>		
 					</div>
 				</div>
 			</div>

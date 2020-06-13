@@ -280,6 +280,9 @@ class TemplateManagement extends Component {
             console.log('error', error);
         });
     }
+    goBack(event){
+      window.history.go(-1); return false;
+    }
     
     render() {
         
@@ -291,9 +294,10 @@ class TemplateManagement extends Component {
             <Message messageData={this.state.messageData} />
                 <div className="row">
                     <div className="addNewProductWrap col-lg-12 col-md-12 col-sm-12 col-xs-12 add-new-productCol">
-                      <div className="box">
+                      <div className="">
                           <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                              <h4 className="NOpadding-right">Product Bulk Upload Template</h4>
+                              <h4 className="NOpadding-right" style={{display: "inline-block"}}>Product Bulk Upload Template</h4>
+                              <button class=" btn pull-right backButton" onClick={this.goBack.bind(this)} style={{margin: "1px"}}>Back</button>
                           </div>
 
                           <form className="newTemplateForm" id="addTemplate">

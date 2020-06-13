@@ -202,6 +202,12 @@ export default class Leftsidebar extends Component{
                       </a>
                     </li>
                     <li>
+                      <a href="/raw-material-stock-report">
+                        <i className="fa fa-circle-o" /> 
+                        <span className="sidebarMenuSubText">Raw Material Stock Report</span>
+                      </a>
+                    </li>
+                    <li>
                       <a href="/finished-goods">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Finished Goods Inward</span>
