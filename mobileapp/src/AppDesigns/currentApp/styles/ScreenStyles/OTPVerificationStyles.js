@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions,Platform } from 'react-native';
-import { colors } from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 const window = Dimensions.get('window');
@@ -19,6 +19,13 @@ export default StyleSheet.create({
         top:6,
         paddingLeft:2,
     },
+    otpvopacity:{
+        width: '100%', backgroundColor:'#fff',borderColor:"#ccc",shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 8,
+      },
     button:{
         width:'100%',
         backgroundColor: colors.button,
@@ -29,6 +36,18 @@ export default StyleSheet.create({
     },
     marginTB:{
         marginVertical: 10,
+    },
+    otpvimgvw:{
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'center' 
+    },
+    otpvimglogo:{
+        width: '50%',height:80 
+    },
+    otpvtitle:{
+        fontSize: 25, color:"#80c21c", fontFamily: 'Montserrat-SemiBold',textAlign:'center' 
+    },
+    otpvsubtitle:{
+        fontSize: 17, fontFamily: 'Montserrat-Regular' 
     },
     buttonText:{
         color: colors.buttonText,

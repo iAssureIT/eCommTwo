@@ -16,23 +16,12 @@ import {
   Keyboard
 
 } from 'react-native';
-
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Drawer from 'react-native-drawer';
-import { TextField } from 'react-native-material-textfield';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
-import SideMenu from 'react-native-side-menu';
-import StarRating from 'react-native-star-rating';
 
-import Menu from '../../ScreenComponents/Menu/Menu.js';
-import HeaderBar4 from '../../ScreenComponents/HeaderBar4/HeaderBar4.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
-import Notification from '../../ScreenComponents/Notification/Notification.js'
-import styles from './styles.js';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/ConfirmOrderStyles.js';
+import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
-const window = Dimensions.get('window');
-
+import axios from "axios";
 export default class ConfirmOrderComponent extends React.Component{
   constructor(props){
     super(props);
@@ -48,6 +37,7 @@ export default class ConfirmOrderComponent extends React.Component{
   updateMenuState(isOpen) {
     this.setState({ isOpen });
   }
+  
 
   displayValidationError = (errorField) =>{
     let error = null;
@@ -87,52 +77,43 @@ export default class ConfirmOrderComponent extends React.Component{
     }else{
       return (
     
-            <View style={{flex:1,backgroundColor:'#f1f1f1'}}>
-            	
+            <View style={styles.superparent}>
               		<View  style={styles.formWrapper}>
-               			<View style={{ backgroundColor:'#fff',paddingHorizontal:10,paddingVertical:15,}}>
-                      <Text style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#333'}}>Women Red Solid Fit and Flare Dress</Text>
-                      <View style={{flexDirection:'row',flex:0.5,marginTop:15}}>
-                        <View style={{flex:0.3}}>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#666',paddingVertical:5}}>Color</Text>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#666',paddingVertical:5}}>Size</Text>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#666',paddingVertical:5}}>Quantity</Text>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#666',paddingVertical:5}}>Seller</Text>
-                          <Text style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#666',paddingVertical:5}}>Price</Text> 
+               			<View style={styles.parent}>
+                      <Text style={styles.confirmorder}>Women Red Solid Fit and Flare Dress</Text>
+                      <View style={styles.ordervw}>
+                        <View style={styles.flx3}>
+                          <Text  style={styles.titletxt}>Quantity</Text>
+                          <Text style={styles.titletxt}>Price</Text> 
                         </View>
-                        <View style={{flex:0.3}}>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#333',paddingVertical:5}}>Red</Text>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#333',paddingVertical:5}}> M </Text>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#333',paddingVertical:5}}> 2 </Text>
-                          <Text  style={{fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#333',paddingVertical:5}}> Kuki </Text>
-                         <View style={{flexDirection:'row',marginRight:10}}>
+                        <View style={styles.flx3}>
+                          <Text  style={styles.ordertxt}> 2 </Text>
+                         <View style={styles.icnvw}>
                             <Icon
                             name="rupee"
                             type="font-awesome"
                             size={15}
                             color="#c10000"
-                            iconStyle={{marginTop:5,marginRight:5,}}
+                            iconStyle={styles.icn}
                             />
-                            <Text style={{fontSize:12,fontFamily:"Montserrat-SemiBold",color:'#c10000'}}>3,140</Text>
+                            <Text style={styles.rsprice}>3,140</Text>
                         </View>
                         </View>
-                        <View style={{flex:0.4,backgroundColor:'#f1f1f1',borderWidth:1,borderColor:'#f1f1f1',height:150,}}>
+                        <View style={styles.imgvw}>
                            <Image
-                            style={{width: "100%",height:150}}
+                            style={styles.imgstyle}
                             source= {require("../../AppDesigns/currentApp/images/15.png")}
                           />
                         </View>
                       </View>
-                    <View style={{backgroundColor:'#f1f1f1',borderWidth:1,borderColor:'#f1f1f1',height:45,marginTop:'5%'}}>
-                      <Text style={{textAlign:'center',marginTop:10,fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#333'}}>Delivery by, Mon Sep 1</Text>
+                    <View style={styles.deleveryvw}>
+                      <Text style={styles.deleverydate}>Delivery by, Mon Sep 1</Text>
                     </View>
                     <View>
                     </View>
                     </View>
                   </View>
                 </View>
-           
-        
       );  
     }
   }

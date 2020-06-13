@@ -1,6 +1,6 @@
 import {StyleSheet, Dimensions,Platform} from 'react-native';
 const window = Dimensions.get('window');
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 
 export default StyleSheet.create({
   container: {

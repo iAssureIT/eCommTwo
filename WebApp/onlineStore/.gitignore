@@ -2,14 +2,16 @@ API/node_modules
 API/nodemon.js
 
 MobileApp/node_modules
+MobileApp/AppDesigns/currentApp
 
+WebApp/franchise/node_modules
 WebApp/admin/node_modules
 WebApp/ba/node_modules
 WebApp/vendor/node_modules
 WebApp/onlineStore/node_modules
 
+WebApp/franchise/.env
 WebApp/admin/.env
 WebApp/vendor/.env
 WebApp/ba/.env
 WebApp/onlineStore/.env
-

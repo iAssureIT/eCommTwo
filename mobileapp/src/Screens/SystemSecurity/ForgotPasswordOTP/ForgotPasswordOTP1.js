@@ -20,8 +20,8 @@ import { ifIphoneX }                from 'react-native-iphone-x-helper';
 import { KeyboardAwareScrollView }  from 'react-native-keyboard-aware-scroll-view';
 
 // import styles                       from './styles.js';
-import styles                       from '../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordOTPStyles.js';
-import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordOTPStyles.js';
+import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import RootForgotPasswordOTP        from './RootForgotPasswordOTP.js';
 
 const window = Dimensions.get('window');
@@ -41,18 +41,18 @@ export default class ForgotPasswordOTP1 extends ValidationComponent {
                shadowOpacity: 0.8,
                shadowRadius: 2,
                elevation: 8,}}>
-               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center',marginTop:-63}}>
+               {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center',marginTop:-63}}>
                     <Image
                     resizeMode="contain"
                     source={require("../../../AppDesigns/currentApp/images/Background_2.png")}
                     style={{ width: '50%' }}
                     />
-               </View>
+               </View> */}
                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <Image
                     resizeMode="contain"
-                    source={require("../../../AppDesigns/currentApp/images/GangaExpress_logo.png")}
-                    style={{ width: '50%' }}
+                    source={require("../../../AppDesigns/currentApp/images/Logo.png")}
+                    style={{ width: '50%',height:80 }}
                     />
                </View>
             <RootForgotPasswordOTP navigation={navigate} />

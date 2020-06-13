@@ -19,8 +19,8 @@ import { Divider, Button, Icon }    from 'react-native-elements';
 import ValidationComponent          from "react-native-form-validator";
 import axios                        from "axios";
 import { KeyboardAwareScrollView }  from 'react-native-keyboard-aware-scroll-view';
-import styles                       from '../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordStyles.js';
-import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordStyles.js';
+import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Modal                        from "../../Modal/OpenModal.js";
 import { Fumi }                     from 'react-native-textinput-effects';
 import FontAwesomeIcon              from 'react-native-vector-icons/FontAwesome';
@@ -149,8 +149,8 @@ class RootForgotPassword extends ValidationComponent {
     return (
         <View>
           <View style={{ width: '100%' }}>
-            <View style={styles.textTitleWrapper}><Text style={{ fontSize: 25, fontFamily: 'Montserrat-Regular',textAlign:'center'}}>Forgot Password</Text></View>
-            <View style={{ paddingHorizontal: 30 }}><Text style={{ fontSize: 17, fontFamily: 'Montserrat-Regular',paddingVertical:15 }}>Please enter email id</Text></View>
+            <View style={styles.textTitleWrapper}><Text style={styles.fptitle}>Forgot Password</Text></View>
+            <View style={{ paddingHorizontal: 30 }}><Text style={styles.fpsubtitle}>Please enter email id</Text></View>
             <View style={styles.formWrapper}>
               {/*<View style={[styles.formInputView, styles.marginBottom30]}>
                  <Fumi
@@ -181,7 +181,7 @@ class RootForgotPassword extends ValidationComponent {
                   iconSize={22}
                   iconWidth={40}
                   inputPadding={16}
-                  style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                  style={styles.fpemail}
                 />
                 {this.displayValidationError('emailError')}
               </View>

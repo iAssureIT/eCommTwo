@@ -17,15 +17,9 @@ import {
   AsyncStorage
 } from 'react-native';
 import { Button, Icon }       from "react-native-elements";
-import CheckBox               from 'react-native-check-box'
 import ValidationComponent    from "react-native-form-validator";
-import axios                  from "axios";
-import styles                 from './styles.js';
-import { colors, sizes }      from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import styles                 from '../../AppDesigns/currentApp/styles/ScreenStyles/ModelStyles.js';
 import Modal                  from "react-native-modal";
-import { Fumi }               from 'react-native-textinput-effects';
-import FontAwesomeIcon        from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect }            from 'react-redux';
 
 const window = Dimensions.get('window');
@@ -57,42 +51,42 @@ class OpenModal extends ValidationComponent {
             onBackdropPress={() => this.props.closeModal(false,"","")}
             coverScreen={true}
             hideModalContentWhileAnimating={true}
-            style={{ paddingHorizontal: '5%', zIndex: 999 }}
+            style={styles.modvw}
             animationOutTiming={500}>
-            <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
+            <View style={styles.modparent}>
               {this.props.messageType === "success" ?
-                <View style={{ justifyContent: 'center', backgroundColor: "#34be34", width: 50, height: 50, borderRadius: 25, overflow: 'hidden' }}>
+                <View style={styles.modicn}>
                   <Icon size={28} name='check' type='fontAwesome5' color='#fff' style={{}} />
                 </View>
                 :
                 this.props.messageType === "warning" ?
-                <View style={{ justifyContent: 'center', backgroundColor: "#ec971f", width: 50, height: 50, borderRadius: 25, overflow: 'hidden' }}>
+                <View style={styles.icnmod}>
                   <Icon size={28} name='exclamation' type='font-awesome' color='#fff' style={{}} />
                 </View>
                 :
                 this.props.messageType === "error" ?
-                <View style={{ justifyContent: 'center', backgroundColor: "#FAD162", width: 50, height: 50, borderRadius: 25, overflow: 'hidden' }}>
+                <View style={styles.icnmodel}>
                   <Icon size={28} name='close' type='font-awesome' color='#fff' style={{}} />
                 </View>
                 :
                 null
               }  
-              <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
+              <Text style={styles.modmsghead}>
                 {this.props.messageHead}
               </Text>
               {this.props.messagesSubHead!==""?
-                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 10 }}>
+                <Text style={styles.modsubhead}>
                   {this.props.messagesSubHead}
                 </Text>
                 :
                 null
               }
-              <View style={{borderBottomRightRadius:500,marginTop:15,flexDirection:'row'}}>
+              <View style={styles.modbtn}>
                 <Button
                   onPress         = {()=>this.props.closeModal(false,"","")}
                   titleStyle      = {styles.buttonText}
                   title           = "OK"
-                  buttonStyle     = {{width:'100%',height:45,alignItems:'center',justifyContent:'center',borderRadius:50}}
+                  buttonStyle     = {styles.modbtnstyle}
                   containerStyle  = {styles.buttonContainer}
                 />
               </View>

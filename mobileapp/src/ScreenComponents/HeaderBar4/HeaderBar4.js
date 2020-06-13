@@ -10,7 +10,7 @@ import { Header, Icon ,SearchBar  } from 'react-native-elements';
 import ValidationComponent from "react-native-form-validator";
 // import styles from "./styles.js";
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/HeaderBar4Styles.js';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Search from 'react-native-search-box';
 
 

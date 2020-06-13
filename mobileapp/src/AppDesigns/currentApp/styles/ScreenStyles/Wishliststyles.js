@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 const window = Dimensions.get('window');
 
 export default StyleSheet.create({
@@ -38,14 +38,15 @@ export default StyleSheet.create({
     paddingVertical: 10,
   },
   prodtitle: {
-    fontSize: 12, fontFamily: "Montserrat-SemiBold", color: '#333'
+    fontSize: 12, fontFamily: "Montserrat-SemiBold", color: '#333',textAlign:'center',
   },
   prodname: {
     flex: 1, fontSize: 13, flexWrap: "wrap", fontFamily: "Montserrat-Regular", color: '#666', paddingVertical: 5
   },
   rs: {
     flexDirection: "row", 
-    marginTop: 3
+    marginTop: 3,
+    justifyContent:"center",
   },
   rsicn: {
     marginTop: 5, 
@@ -54,6 +55,7 @@ export default StyleSheet.create({
   rsprice: {
     textDecorationLine: 'line-through', 
     fontSize: 12, 
+    alignItems:'center',
     fontFamily: "Montserrat-SemiBold", 
     marginLeft: 10
   },
@@ -105,13 +107,13 @@ export default StyleSheet.create({
   },
   button: {
     marginRight: 10,
-    backgroundColor: colors.buttonORANGE,
+    backgroundColor: colors.buttonGreen,
     height: 35,
 
   },
   buttonText: {
     color: colors.buttonText,
-    fontFamily: "Montserrat-Regular",
+    fontFamily: "Montserrat-SemiBold",
     fontSize: 11,
 
   },

@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions,Platform} from 'react-native';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 
 const window = Dimensions.get('window');
 
@@ -14,8 +14,8 @@ export default StyleSheet.create({
        ...Platform.select({
       ios:{
             position: 'absolute',
-            right: 0,
-            top: -8,
+            right: 4,
+            top: -15,
             borderRadius: 29,
             width: 15,
             height: 15,
@@ -29,8 +29,8 @@ export default StyleSheet.create({
       },
       android : {
             position: 'absolute',
-            right: 0,
-            top: -4,
+            right: -4,
+            top: -10,
             borderRadius: 9,
             width: 18,
             height: 18,
@@ -49,7 +49,23 @@ export default StyleSheet.create({
     backgroundColor: '#f7ac57',
     margin:0
   },
-
+  notificationbell: {
+    flexDirection:'row',justifyContent:'center',
+    alignItems:'center',marginTop:6,
+    alignSelf:'center',marginRight:20
+  },
+  flxdir: {
+    flexDirection:'row'
+  },
+  iconOuterWrapper:{
+    flex:0.5,backgroundColor:'#fff',color:'#fff',
+  },
+  iconOuterWrapper2:{
+    flex:0.5,backgroundColor:'#fff',color:'#fff',
+  },
+  footerTitle:{
+    textAlign:'center',fontFamily:"Montserrat-SemiBold",fontSize:12,color:'#fff',
+  },
   title:{
     color: '#fff',
     fontFamily:"Montserrat-SemiBold",
@@ -95,7 +111,7 @@ export default StyleSheet.create({
     height:30,
     borderTopWidth:0,
     borderBottomWidth:0,
-    backgroundColor:'transparent',
+    backgroundColor:'#80c21c',
   },
   searchInputContainer:{
     backgroundColor:'#fff',
@@ -115,7 +131,7 @@ export default StyleSheet.create({
   },
   searchInput:{
     fontSize:13,
-    color:'#ccc',
+    // color:'#ccc',
     fontFamily:"Montserrat-Regular",
 
   },

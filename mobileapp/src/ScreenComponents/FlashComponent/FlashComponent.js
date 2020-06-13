@@ -14,10 +14,9 @@ import {
 } from 'react-native';
 // import styles from './styles.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/FlashComponentStyles.js';
-import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import ValidationComponent from "react-native-form-validator";
-import Loading from '../../layouts/Loading/Loading.js';
-import axios                      from 'axios';
+// import Loading from '../../../AppDesigns/currentApp/styles/ScreenComponentStyles/LoadingStyles.js';
 
 const window = Dimensions.get('window');
 

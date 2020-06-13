@@ -17,6 +17,7 @@ class SignUp extends Component {
 		super();
 		this.state = {
 			checkUserExists: 0,
+			btnLoading: false,
 			loggedIn: false,
 			auth: {
 				firstname: '',
@@ -40,216 +41,210 @@ class SignUp extends Component {
 		}
 		this.handleChange = this.handleChange.bind(this);
 	}
-	componentDidMount(){
+	componentDidMount() {
 		var projectName = process.env.REACT_APP_PROJECT_NAME;
-		console.log("process.env.REACT_APP_PROJECT_NAME=========:",process.env.REACT_APP_PROJECT_NAME);
-		
-		
+		console.log("process.env.REACT_APP_PROJECT_NAME=========:", process.env.REACT_APP_PROJECT_NAME);
+
+
 
 	}
 	componentWillMount() {
 
 	}
 	validation() {
-        $.validator.addMethod("regxfirstname", function (value, element, regexpr) {
-            return regexpr.test(value);
-        }, "Name should only contain letters.");
-        $.validator.addMethod("regxEmail", function (value, element, regexpr) {
-            return regexpr.test(value);
+		$.validator.addMethod("regxfirstname", function (value, element, regexpr) {
+			return regexpr.test(value);
+		}, "Name should only contain letters.");
+		$.validator.addMethod("regxEmail", function (value, element, regexpr) {
+			return regexpr.test(value);
 		}, "Please enter a valid email address.");
 		$.validator.addMethod("regxpincode", function (value, element, regexpr) {
-            return regexpr.test(value);
-        }, "Please enter valid pincode.");
-		
-        jQuery.validator.setDefaults({
-            debug: true,
-            success: "valid"
-        });
+			return regexpr.test(value);
+		}, "Please enter valid pincode.");
 
-        $("#signUpUser").validate({
-            rules: {
-                firstname: {
-                    required: true,
-                    regxfirstname : /^[A-Za-z]*$/,
+		jQuery.validator.setDefaults({
+			debug: true,
+			success: "valid"
+		});
+
+		$("#signUpUser").validate({
+			rules: {
+				firstname: {
+					required: true,
+					regxfirstname: /^[A-Za-z]*$/,
 				},
 				lastname: {
-                    required: true,
-                    regxfirstname : /^[A-Za-z]*$/,
-                },
-                signupEmail: {
+					required: true,
+					regxfirstname: /^[A-Za-z]*$/,
+				},
+				signupEmail: {
 					required: true,
 					regxEmail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
-                },
-                signupPassword: {
-                    required: true,
+				},
+				signupPassword: {
+					required: true,
 				},
 				signupConfirmPassword: {
 					required: true,
-					equalTo : "#signupPassword"
+					equalTo: "#signupPassword"
 				},
 				idacceptcondition: {
 					required: true,
 				},
-				pincode : {
-					required : true,
-					regxpincode : /^[1-9][0-9]{5}$/,
+				pincode: {
+					required: true,
+					regxpincode: /^[1-9][0-9]{5}$/,
 				}
 
 
 			},
-			messages:{
-				signupConfirmPassword:"Password do not match"
+			messages: {
+				signupConfirmPassword: "Password do not match"
 			},
-            errorPlacement: function (error, element) {
-                if (element.attr("name") === "firstname") {
-                    error.insertAfter("#firstname");
+			errorPlacement: function (error, element) {
+				if (element.attr("name") === "firstname") {
+					error.insertAfter("#firstname");
 				}
 				if (element.attr("name") === "lastname") {
-                    error.insertAfter("#lastname");
-                }
-                if (element.attr("name") === "signupEmail") {
-                    error.insertAfter("#signupEmail");
+					error.insertAfter("#lastname");
+				}
+				if (element.attr("name") === "signupEmail") {
+					error.insertAfter("#signupEmail");
 				}
 				if (element.attr("name") === "pincode") {
 					error.insertAfter("#pincode");
 				}
-                if (element.attr("name") === "signupPassword") {
-                    error.insertAfter("#signupPassword");
+				if (element.attr("name") === "signupPassword") {
+					error.insertAfter("#signupPassword");
 				}
 				if (element.attr("name") === "signupConfirmPassword") {
-                    error.insertAfter("#signupConfirmPassword");
-                }
-                if (element.attr("name") === "idacceptcondition") {
-                    error.insertAfter("#idacceptcondition");
+					error.insertAfter("#signupConfirmPassword");
 				}
-			
-            }
-        });
-    }
+				if (element.attr("name") === "idacceptcondition") {
+					error.insertAfter("#idacceptcondition");
+				}
+
+			}
+		});
+	}
 
 	usersignup(event) {
 		event.preventDefault();
-		if($("#signUpUser").valid()){
+		if ($("#signUpUser").valid()) {
 			var auth = {
-				firstname		: this.state.firstname,
-				lastname		: this.state.lastname,
-				mobNumber		: (this.state.mobNumber).replace("-", ""),
-				pincode         : this.state.pincode,
-				email			: this.state.signupEmail,
-				pwd				: this.state.signupPassword,
-				role			: 'user',
-				status			: 'active',
-				"emailSubject"	: "Email Verification", 
-				"emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+				firstname: this.state.firstname,
+				lastname: this.state.lastname,
+				mobNumber: (this.state.mobNumber).replace("-", ""),
+				pincode: this.state.pincode,
+				email: this.state.signupEmail,
+				pwd: this.state.signupPassword,
+				role: 'user',
+				status: 'active',
+				"emailSubject": "Email Verification",
+				"emailContent": "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 			}
-			// console.log("Auth:",auth);
-			document.getElementById("signUpBtn").innerHTML = 'Please Wait...';
-
+			console.log("Auth:",auth);
+			// document.getElementById("signUpBtn").innerHTML = 'Please Wait...';
+			document.getElementById("signUpBtn").innerHTML = 
+			this.setState({ btnLoading: true });
 			var passwordVar = this.refs.signupPassword.value;
 			var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
-				// console.log("passwordVar:",passwordVar);
-				if (passwordVar === signupConfirmPasswordVar) {
-					return (passwordVar.length >= 6) ?
-						(true,
-							document.getElementById("signUpBtn").innerHTML = 'Sign Up',
-							axios.post('/api/auth/post/signup/user/otp', auth)
+			if (passwordVar === signupConfirmPasswordVar) {
+				return (passwordVar.length >= 6) ?
+					(true,
+						// document.getElementById("signUpBtn").innerHTML = 'Sign Up',
+						axios.post('/api/auth/post/signup/user/otp', auth)
 							.then((response) => {
-								if(response.data.message === 'USER_CREATED'){
-									console.log("user created:",response.data);									
+								if (response.data.message === 'USER_CREATED') {
+									console.log("user created:", response.data);
 									var auth = {
 										email: this.state.signupEmail,
 										password: this.state.signupPassword,
 										role: "user"
-									}	
-									console.log("Auth:", auth);								  
+									}
+									console.log("Auth:", auth);
 									axios.post('/api/auth/post/login', auth)
-									.then((response) => {
-										if(response){
-											var  userDetails = {
-												firstname : response.data.userDetails.firstname, 
-												lastname  : response.data.userDetails.lastname, 
-												email     : response.data.userDetails.email, 
-												mobile    : response.data.userDetails.mobile,
-												pincode   : response.data.userDetails.pincode, 										
-												user_id   : response.data.userDetails.user_id,
-												roles     : response.data.userDetails.roles,
-												token     : response.data.userDetails.token, 
-                                            }
-											// console.log("userDetails:", userDetails);	
-											var previousUrl = localStorage.getItem('previousUrl');
-											if(previousUrl !== null){											console.log("previousUrl=====",previousUrl);
-											if(previousUrl.includes('com')){
-												var previousUrl_split     = previousUrl.split('com');
-												
-											}else{
-												var port = window.location.port;
-												console.log("Port======",port);
-												var previousUrl_split     = previousUrl.split(port);
-											}
-											// console.log("previousUrl=====",previousUrl);
-											// console.log("previousUrl[0]=====",previousUrl_split[0]);
-											// console.log("previousUrl[1]=====",previousUrl_split[1]);							  
-											swal('Congratulations! You have been successfully Login, Now you can place your order.');
-											// localStorage.setItem('previousUrl' ,'signup');
-											localStorage.setItem("pincode", response.data.userDetails.pincode);
-											localStorage.setItem("token", response.data.token);
-											localStorage.setItem("user_ID", response.data.ID);
-											localStorage.setItem("roles", response.data.roles);
-											localStorage.setItem('userDetails', JSON.stringify(userDetails));
-											// console.log("token:",response.data.token);
-											if(previousUrl === "/"){
-												this.props.history.push("/");
-											}else{
-												// this.props.history.push("/");
-												this.props.history.push(previousUrl_split[1]);
-											}
-											}else{
-												localStorage.setItem("pincode", response.data.userDetails.pincode);
-												localStorage.setItem("token", response.data.token);
-												localStorage.setItem("user_ID", response.data.ID);
-												localStorage.setItem("roles", response.data.roles);
-												localStorage.setItem('userDetails', JSON.stringify(userDetails));
-												this.props.history.push("/");
-												swal('Congratulations! You have been successfully Login, Now you can place your order.');
-											}										
-										}
+										.then((response) => {
+											this.setState({ btnLoading: false });
+											if (response) {
+												var userDetails = {
+													firstname	: response.data.userDetails.firstname,
+													lastname	: response.data.userDetails.lastname,
+													email		: response.data.userDetails.email,
+													mobile		: response.data.userDetails.mobile,
+													pincode		: response.data.userDetails.pincode,
+													user_id		: response.data.userDetails.user_id,
+													roles		: response.data.userDetails.roles,
+													token		: response.data.userDetails.token,
+												}
+												var previousUrl = localStorage.getItem('previousUrl');
+												if (previousUrl !== null) {
+													// console.log("previousUrl=====", previousUrl);
+													if (previousUrl.includes('com')) {
+														var previousUrl_split = previousUrl.split('com');
 
-									})
-									.catch((error) => {
-										console.log("Error:",error);
-									})	
+													} else {
+														var port = window.location.port;
+														// console.log("Port======", port);
+														var previousUrl_split = previousUrl.split(port);
+													}
+													swal('Congratulations! You have been successfully Login, Now you can place your order.');
+													localStorage.setItem("pincode", response.data.userDetails.pincode);
+													localStorage.setItem("token", response.data.token);
+													localStorage.setItem("user_ID", response.data.ID);
+													localStorage.setItem("roles", response.data.roles);
+													localStorage.setItem('userDetails', JSON.stringify(userDetails));
+													// console.log("token:",response.data.token);
+													if (previousUrl === "/") {
+														this.props.history.push("/");
+													} else {
+														// this.props.history.push("/");
+														this.props.history.push(previousUrl_split[1]);
+													}
+												} else {
+													localStorage.setItem("pincode", response.data.userDetails.pincode);
+													localStorage.setItem("token", response.data.token);
+													localStorage.setItem("user_ID", response.data.ID);
+													localStorage.setItem("roles", response.data.roles);
+													localStorage.setItem('userDetails', JSON.stringify(userDetails));
+													this.props.history.push("/");
+													swal('Congratulations! You have been successfully Login, Now you can place your order.');
+												}
+											}
+
+										})
+										.catch((error) => {
+											console.log("Error:", error);
+										})
 									this.setState({
-									loggedIn: true
-									},()=>{
-									// this.props.history.push('/')
-									// window.location.reload();
+										loggedIn: true
 									})
-									
-								}else{
+
+								} else {
 									swal(response.data.message);
-								}	
+								}
 							})
 							.catch((error) => {
-								console.log("Signup Error :",error);
+								console.log("Signup Error :", error);
 							})
-						)
-						:
-						(
-							document.getElementById("signUpBtn").innerHTML = 'Sign Up',
-							
-							swal("Password should be at least 6 Characters Long, Please try again or create an Account.")
-							
-						)
+					)
+					:
+					(
+						document.getElementById("signUpBtn").innerHTML = 'Sign Up',
+
+						swal("Password should be at least 6 Characters Long, Please try again or create an Account.")
+
+					)
 
 
-				} else {
-					document.getElementById("signUpBtn").innerHTML = 'Sign Up';
-					
-					swal("Passwords does not match, Please Try Again.");
-				}
+			} else {
+				// document.getElementById("signUpBtn").innerHTML = 'Sign Up';
+				this.setState({ btnLoading: false });
+				swal("Passwords does not match, Please Try Again.");
+			}
 		}
 
-	}   Closepagealert(event) {
+	} Closepagealert(event) {
 		event.preventDefault();
 		$(".toast-error").html('');
 		$(".toast-success").html('');
@@ -310,87 +305,103 @@ class SignUp extends Component {
 	}
 	//working
 	showSignUpPass() {
-	    $('.showPwd').toggleClass('showPwd1');
-	    $('.hidePwd').toggleClass('hidePwd1');
-	    return $('#signupPassword').attr('type', 'text');
+		$('.showPwd').toggleClass('showPwd1');
+		$('.hidePwd').toggleClass('hidePwd1');
+		return $('#signupPassword').attr('type', 'text');
 	}
 	hideSignUpPass() {
-	    $('.showPwd').toggleClass('showPwd1');
-	    $('.hidePwd').toggleClass('hidePwd1');
-	    return $('#signupPassword').attr('type', 'password');
+		$('.showPwd').toggleClass('showPwd1');
+		$('.hidePwd').toggleClass('hidePwd1');
+		return $('#signupPassword').attr('type', 'password');
 	}
 
 	render() {
-		
+
 		//set dynamic background image
 		var projectName = process.env.REACT_APP_PROJECT_NAME;
 		// console.log("process.env.REACT_APP_PROJECT_NAME=========:",process.env.REACT_APP_PROJECT_NAME);
-		if(projectName === "4_UniMandai"){
-			$(".LoginWrapper").css("background-image", "url("+"/images/unimandai/signInBackground.png"+")");
-		}else if(projectName === "2_AnasHandicraft"){
-			$(".LoginWrapper").css("background-image", "url("+"/images/background.png"+")");
+		if (projectName === "4_UniMandai") {
+			$(".LoginWrapper").css("background-image", "url(" + "/images/unimandai/signInBackground.png" + ")");
+		} else if (projectName === "2_AnasHandicraft") {
+			$(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
 		}
 		return (
-			<div style={{'height': window.innerHeight+'px', 'width': window.innerWidth+'px'}} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+			<div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
 				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7  col-sm-12 col-xs-12 formShadow">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
 							<h3>Sign Up</h3>
 						</div>
 						<form id="signUpUser">
-							<div className="form-group textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12">
 								<label>First Name</label><label className="astricsign">*</label>
 								<input type="text" maxLength="25" className="form-control" id="firstname" ref="firstname" name="firstname" placeholder="" onChange={this.handleChange} data-text="firstNameV" />
+								{this.state.formerrors.firstNameV  && (
+				                        <span className="text-danger">{this.state.formerrors.firstNameV}</span> 
+				                      )}
 							</div>
-							<div className="form-group textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12">
 								<label>Last Name</label><label className="astricsign">*</label>
 								<input type="text" maxLength="25" className="form-control" id="lastname" ref="lastname" name="lastname" placeholder="" onChange={this.handleChange} data-text="lastNameV" />
+								{this.state.formerrors.lastNameV  && (
+									<span className="text-danger">{this.state.formerrors.lastNameV}</span> 
+								)}
 							</div>
-							<div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group frmhgt textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Email ID</label><label className="astricsign">*</label>
 								<input type="email" className="form-control" id="signupEmail" ref="signupEmail" name="signupEmail" placeholder="" onChange={this.handleChange} data-text="emailIDV" />
 								<label className="checkUserExistsError">User already exists!!!</label>
-								
+								{this.state.formerrors.emailIDV  && (
+									<span className="text-danger">{this.state.formerrors.emailIDV}</span> 
+								)}
 							</div>
-							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Mobile Number</label><label className="astricsign">*</label>
-								
+
 								<PhoneInput
 									country={'in'}
-									value={this.state.mobNumber} 
+									value={this.state.mobNumber}
 									name="mobNumber"
 									inputProps={{
-									name: 'mobNumber',
-									required: true
+										name: 'mobNumber',
+										required: true
 									}}
-									onChange={mobNumber=>{this.setState({mobNumber})}}
+									onChange={mobNumber => { this.setState({ mobNumber }) }}
 								/>
 							</div>
-							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Pincode</label><label className="astricsign">*</label>
 								<input minLength="6" maxLength="6" type="number" className="form-control" id="pincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
-							</div>					
-							
-							
-							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
+							</div>
+
+
+							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Password</label><label className="astricsign">*</label>
 								<input minLength="6" type="password" className="form-control" id="signupPassword" ref="signupPassword" placeholder="" name="signupPassword" onChange={this.handleChange} />
 								<div className="showHideSignDiv">
-				                    <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignUpPass.bind(this)}></i>
-				                    <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignUpPass.bind(this)}></i>
-				                </div> 
+									<i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignUpPass.bind(this)}></i>
+									<i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignUpPass.bind(this)}></i>
+								</div>
 							</div>
-							<div className="form-group textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
+							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Confirm Password</label><label className="astricsign">*</label>
 								<input minLength="6" type="password" className="form-control" id="signupConfirmPassword" ref="signupConfirmPassword" placeholder="" name="signupConfirmPassword" />
-								{/* <div className="showHideSignDiv">
-				                    <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignUpPass.bind(this)}></i>
-				                    <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignUpPass.bind(this)}></i>
-				                </div> */}
 							</div>
-							<div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt15">
+							{/* <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt15">
 								<button id="signUpBtn" onClick={this.usersignup.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni">Sign Up</button>
-							</div>
+							</div> */}
+							{
+								this.state.btnLoading
+									?
+									<div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight btn loginBtn_uni has-spinner active">
+										Processing...
+                      					<span className="spinner"><i className="fa fa-refresh fa-spin"></i></span>
+									</div>
+									:
+									<div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt15">
+									<button id="signUpBtn" onClick={this.usersignup.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni">Sign Up</button>
+								</div>
+							}
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center loginforgotpass mt25">
 								<label>Already have an account?</label> &nbsp; <a href='/login' className="">Sign In <b>&#8702;</b></a>
 							</div>

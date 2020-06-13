@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions,Platform } from 'react-native';
-import {colors} from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 const window = Dimensions.get('window');
 
 export default StyleSheet.create({
@@ -10,7 +10,6 @@ export default StyleSheet.create({
     width: window.width,
     justifyContent:"center"
   },
-
   formContainer:{
     width:'100%',
     paddingHorizontal:15
@@ -18,6 +17,25 @@ export default StyleSheet.create({
   formInputView: {
     width:'100%',
     paddingHorizontal:15,
+  },
+  signupopacity: {
+    width: '100%', backgroundColor:'#fff',marginTop:80,borderColor:"#ccc",shadowColor: '#000',
+                   shadowOffset: { width: 0, height: 2 },
+                   shadowOpacity: 0.8,
+                   shadowRadius: 2,
+                   elevation: 8,
+  },
+  signuplogoimg:{
+    width: '50%',height:80
+  },
+  signuplogovw:{
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center' 
+  },
+  signuptitle:{
+    fontSize: 25, color:"#80c21c", fontFamily: 'Montserrat-SemiBold',textAlign:'center',paddingVertical:10 
+  },
+  signupemail:{
+    borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular',
   },
   headertitle:{
      fontSize: 20,

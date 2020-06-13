@@ -13,9 +13,9 @@ import {
 import { Button, Icon }       from "react-native-elements";
 import { TextField }          from "react-native-material-textfield";
 import ValidationComponent    from "react-native-form-validator";
-import axios                  from "axios";
-import styles                       from '../../AppDesigns/currentApp/styles/ScreenStyles/ResetPasswordStyles.js';
-import {colors,sizes}         from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import axios                      from 'axios';
+import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/ResetPasswordStyles.js';
+import {colors,sizes}         from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Modal                  from "../../Modal/OpenModal.js";
 import { Fumi }               from 'react-native-textinput-effects';
 import FontAwesomeIcon        from 'react-native-vector-icons/FontAwesome';
@@ -192,8 +192,8 @@ render(){
   const { navigation } = this.props;
   return (
     <View>
-      <View style={styles.textTitleWrapper}><Text style={{ fontSize: 25, fontFamily: 'Montserrat-Regular',textAlign:'center' }}>Reset Password</Text></View>
-      <View style={styles.textTitleWrapper}><Text style={{fontSize:17,fontFamily:'Montserrat-Regular'}}>Please enter your new password</Text></View>
+      <View style={styles.textTitleWrapper}><Text style={styles.resettitle}>Reset Password</Text></View>
+      <View style={styles.textTitleWrapper}><Text style={styles.resetsubtitle}>Please enter your new password</Text></View>
       <View style={styles.formWrapper}>
         <View style={[styles.formInputView,styles.marginBottom20]}>
           <Fumi
@@ -209,7 +209,7 @@ render(){
             iconSize        = {22}
             iconWidth       = {40}
             inputPadding    = {16}
-            style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+            style={styles.resetpwd}
           />
         <View style={[styles.eyeWrapper,{position:'absolute',left:'80%',top:22}]}>
           <TouchableOpacity onPress={this.handleShowPassword}>
@@ -234,7 +234,7 @@ render(){
             iconSize        = {22}
             iconWidth       = {40}
             inputPadding    = {16}
-            style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+            style={styles.resetpwd}
           />
         <View style={[styles.eyeWrapper,{position:'absolute',left:'80%',top:22}]}>
           <TouchableOpacity onPress={this.handleShowConfirmPassword}>

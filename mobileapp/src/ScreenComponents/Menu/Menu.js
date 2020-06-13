@@ -14,12 +14,10 @@ import {
   PermissionsAndroid,
   Platform
 } from "react-native";
-import { Icon, Avatar } from 'react-native-elements';
+import { Icon, Avatar }         from 'react-native-elements';
 import axios                    from "axios";
 import AsyncStorage             from '@react-native-community/async-storage';
-
-import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/MenuStyles.js';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import styles                   from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/MenuStyles.js';
 
 export default  class Menu extends React.Component {
   constructor(props){
@@ -51,32 +49,17 @@ componentDidMount(){
     })
 }
 
-  logout=()=>{
-      AsyncStorage.removeItem('user_id');
-      AsyncStorage.removeItem('token');
-      // this.props.navigation.closeDrawer();
-      this.props.navigation.navigate('Login');
-  };
-
-  // showUser(){
-  //   var name  = "";
-  //   AsyncStorage.multiGet(['token','user_id','userName'])
-  //     .then((data)=>{
-  //       console.log('user',data)
-  //       token = data[0][1]
-  //       user_id = data[1][1]
-  //       userName = data[2][1]
-  //       this.setState({fullName:userName})
-
-  //     })
-  //   return this.state.fullName
-  // }
+logout=()=>{
+  AsyncStorage.removeItem('user_id');
+  AsyncStorage.removeItem('token');
+  this.props.navigate('Login');
+};
   render(){
-
     return (
       <ScrollView contentContainerStyle={[styles.container]} scrollsToTop={false}>
-        <View style={{flexDirection:'row',paddingHorizontal:25,marginTop:25,}}>
-          <View style={{flex:0.5,}}> 
+      <ImageBackground source={require("../../AppDesigns/currentApp/images/Background.png")} style={styles.container} resizeMode="cover" >
+        {/* <View style={{flexDirection:'row',paddingHorizontal:25,marginTop:25,}}>
+          <View style={{flex:1,}}> 
             <TouchableOpacity onPress={this.editProfileImage}>
               <Avatar
                 overlayContainerStyle={{}}
@@ -84,16 +67,29 @@ componentDidMount(){
                 height={90}
                 rounded
                 source={require('../../AppDesigns/currentApp/images/34.png')}                 
-                activeOpacity={0.7}
+                // activeOpacity={0.7}
               />
             </TouchableOpacity> 
               </View> 
-               <View style={{flex:0.5,}}> 
+               <View style={{flex:1,}}> 
                 <Text style={{fontSize:15,fontFamily:"Montserrat-SemiBold",marginTop:15}}>{this.state.firstName} {this.state.lastName}</Text>
               </View> 
-          </View>
+          </View> */}
+          	<View style={{flexDirection:"row",height:100,margin:40,paddingTop:30,borderBottomWidth:1}}>
+            <Avatar
+            style={{borderWidth:1, borderColor:"#999"}}
+                overlayContainerStyle={{}}
+                width={90}
+                height={90}
+                rounded
+                source={require('../../AppDesigns/currentApp/images/user.jpg')}                 
+                // activeOpacity={0.7}
+              />
+		     		<View style={{paddingTop:40,paddingLeft:4}}>
+		     			<Text style={{fontSize:18,color: "#333"}}>Hi, {this.state.firstName}</Text>
+		     		</View>	
+		        </View>
           <View style={styles.menuWrapper}>
-       
             <TouchableOpacity onPress={()=> this.props.navigate('AccountDashboard')}>
               <View style={styles.menu}>
                 <Icon 
@@ -104,7 +100,7 @@ componentDidMount(){
                   containerStyle={styles.iconContainer}
                 />
                 <Text style={styles.menuText}>
-                  Account Dashboard
+                  My Account
                 </Text>
               </View>
             </TouchableOpacity>
@@ -118,7 +114,7 @@ componentDidMount(){
                   containerStyle={styles.iconContainer}
                 />
                 <Text style={styles.menuText}>
-                  Address Book
+                  My Addresses 
                 </Text>
               </View>
             </TouchableOpacity>
@@ -165,7 +161,7 @@ componentDidMount(){
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>this.props.navigate('Login')}>
+            <TouchableOpacity onPress={()=>this.logout()}>
               <View style={styles.menu}>
                 <Icon 
                   size={23} 
@@ -181,6 +177,7 @@ componentDidMount(){
             </TouchableOpacity>
 
           </View>
+          </ImageBackground>
       </ScrollView>
     );
   }

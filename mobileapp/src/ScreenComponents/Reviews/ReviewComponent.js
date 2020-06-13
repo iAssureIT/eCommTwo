@@ -14,9 +14,9 @@ import {
 } from 'react-native';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/ReviewComponentsStyles';
-import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import ValidationComponent from "react-native-form-validator";
-import Loading from '../../layouts/Loading/Loading.js';
+// import Loading from '../../../AppDesigns/currentApp/styles/ScreenComponentStyles/LoadingStyles.js';
 
 const window = Dimensions.get('window');
 

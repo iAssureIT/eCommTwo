@@ -12,7 +12,6 @@ function getRandomInt(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-
 exports.user_signup_user = (req, res, next) => {
 	var username = "EMAIL";
 	if(req.body.username){
@@ -26,7 +25,6 @@ exports.user_signup_user = (req, res, next) => {
 		if(req.body.email && req.body.pwd && req.body.role){
 			var emailId = req.body.email;
 			var role_lower = (req.body.role).toLowerCase();
-			console.log("role ", role_lower);
 			if (role_lower && emailId) {
 				Role.findOne({ role: role_lower })
 					.exec()
@@ -118,6 +116,7 @@ exports.user_signup_user = (req, res, next) => {
 	}else if(username==="MOBILE"){
 		if(req.body.mobNumber && req.body.pwd && req.body.role) {
 			var mobNumber = req.body.mobNumber;
+			console.log("role ", req.body.mobNumber);
 			var role_lower = (req.body.role).toLowerCase();
 			if (role_lower && mobNumber) {
 				Role.findOne({ role: role_lower })
@@ -155,7 +154,7 @@ exports.user_signup_user = (req, res, next) => {
 														lastname: req.body.lastname,
 														fullName: req.body.firstname + ' ' + req.body.lastname,
 														email: req.body.email,
-														mobile: mobNumber,
+														mobile: req.body.mobNumber,
 														companyID: req.body.companyID,
 														companyName: req.body.companyName,
 														createdAt: new Date(),

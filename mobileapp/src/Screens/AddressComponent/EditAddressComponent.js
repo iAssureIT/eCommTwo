@@ -23,14 +23,15 @@ import { TextField } from 'react-native-material-textfield';
 import { Header, Button, Icon, SearchBar,CheckBox } from "react-native-elements";
 import SideMenu from 'react-native-side-menu';
 import StarRating from 'react-native-star-rating';
-
-import Menu from '../../layouts/Menu/Menu.js';
-import HeaderBar5 from '../../layouts/HeaderBar5/HeaderBar5.js';
-import Footer from '../../layouts/Footer/Footer.js';
-import Notification from '../../layouts/Notification/Notification.js'
+import axios from "axios";
+import Menu from '../../ScreenComponents/Menu/Menu.js';
+import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/UniFooter.js';
+import Notification from '../../ScreenComponents/Notification/Notification.js'
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Addressstyles.js';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
-import Loading from '../../layouts/Loading/Loading.js';
+import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
+import Loading from '../../ScreenComponents/Loading/Loading.js';
 const window = Dimensions.get('window');
 
 export default class EditAddressComponent extends React.Component{

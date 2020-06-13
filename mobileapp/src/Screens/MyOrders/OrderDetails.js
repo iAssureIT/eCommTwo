@@ -22,13 +22,14 @@ import { TextField } from 'react-native-material-textfield';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
 import SideMenu from 'react-native-side-menu';
 import StepIndicator from 'react-native-step-indicator';
-import Menu from '../../layouts/Menu/Menu.js';
-import HeaderBar5 from '../../layouts/HeaderBar5/HeaderBar5.js';
-import Footer from '../../layouts/Footer/Footer.js';
-import Notification from '../../layouts/Notification/Notification.js'
+import Menu from '../../ScreenComponents/Menu/Menu.js';
+import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
+import Notification from '../../ScreenComponents/Notification/Notification.js'
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/MyOrdersstyles.js';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
-import Loading from '../../layouts/Loading/Loading.js';
+import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
+import Loading from '../../ScreenComponents/Loading/Loading.js';
 const window = Dimensions.get('window');
 
 export default class OrderDetails extends React.Component{
@@ -306,6 +307,6 @@ export default class OrderDetails extends React.Component{
     }
   }
 }
-
+ 
 
 

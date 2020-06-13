@@ -1,3 +1,25 @@
+.spinner {
+  display: inline-block;
+  opacity: 0;
+  max-width: 0;
+  -webkit-transition: opacity 0.25s, max-width 0.45s;
+  -moz-transition: opacity 0.25s, max-width 0.45s;
+  -o-transition: opacity 0.25s, max-width 0.45s;
+  transition: opacity 0.25s, max-width 0.45s;
+  /* Duration fixed since we animate additional hidden width */
+}
+
+.has-spinner.active {
+  cursor: progress;
+}
+
+.has-spinner.active .spinner {
+  opacity: 1;
+  max-width: 50px;
+}
+
+
+
 /******************Login css***********************/
 .bw{
   background-color: #f0f;
@@ -72,7 +94,17 @@
   text-decoration: underline;
   color: #555;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 16px;
+}
+.btnfrgt {
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 1;
+  transition: 0.3s;
 }
 .loginforgotpass a:hover{
   text-decoration: underline;
@@ -199,6 +231,9 @@
   }
   .formShadow{
     margin-top: -50px;
+  }
+  .frmhgt{
+    height:70px;
   }
   .innloginwrap h4{
     text-transform: capitalize;

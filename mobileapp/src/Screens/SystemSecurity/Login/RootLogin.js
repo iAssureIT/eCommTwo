@@ -11,18 +11,16 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-
 import AsyncStorage                 from '@react-native-community/async-storage';
 import Modal                        from "react-native-modal";
 import ValidationComponent          from "react-native-form-validator";
 import { Button, Icon }             from "react-native-elements";
 import axios                        from "axios";
-import styles                       from '../../AppDesigns/currentApp/styles/ScreenStyles/LoginStyles.js';
-import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/LoginStyles.js';
+import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import { Fumi }                     from 'react-native-textinput-effects';
 import FontAwesomeIcon              from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons       from 'react-native-vector-icons/MaterialCommunityIcons';
-
 const window = Dimensions.get('window');
 
 export default class RootLogIn extends ValidationComponent {
@@ -75,55 +73,12 @@ export default class RootLogIn extends ValidationComponent {
 
     return valid;
   };
-
-  // login = () => {
-  //   let { email, password } = this.state;
-  //   email = email.toLowerCase();
-  //   // console.log('email',email,password)
-  //   var loginValues = { email: email, password: password,role:'user'  }
-  //   // console.log('this.validInput',this.validInput())
-  //   console.log('loginValues',loginValues)
-
-  //   if(this.validInput()) {
-  //     // console.log("Inside")
-  //     this.setState({ btnLoading: true })
-      
-  //     axios.post('/api/auth/post/login', loginValues)
-  //       .then(response => {
-  //         console.log('response Login',response.data)
-  //         if (response.data.message == 'Auth successful') {
-  //           this.setState({ btnLoading: false })
-  //           AsyncStorage.multiSet([
-  //             ['user_id', response.data.ID],
-  //             ['token', response.data.token],
-  //           ])
-  //           this.props.navigation('Dashboard')
-            
-  //         } else {
-  //           Alert.alert("", "User Not found")
-  //           this.setState({ btnLoading: false })
-  //         }
-  //       })
-  //       .catch(error => {
-
-  //         if (error.response.status == 401) {
-  //           this.setState({ incorrectPwModal: true, btnLoading: false })
-  //         }
-
-  //       })
-  //   } else {
-  //     console.log('error')
-  //     this.setState({ btnLoading: false })
-  //   }
-  // }
-
   login = () => {
     let { email, password } = this.state;
     email = email.toLowerCase();
-    var loginValues = { email: email, password: password, role:'user' }
+    var loginValues = {email:email, password: password, role:'user' }
     if (this.validInput()) {
-      
-      this.setState({ btnLoading: true })
+      this.setState({btnLoading: true})
       axios.post('/api/auth/post/login', loginValues)
         .then(response => {
           console.log('response Login',response.data)
@@ -208,8 +163,7 @@ export default class RootLogIn extends ValidationComponent {
     const { navigate } = this.props.navigation;
     return (
         <React.Fragment>
-         
-            <View style={styles.textTitleWrapper}><Text style={{ fontSize: 25, fontFamily: 'Montserrat-Regular',textAlign:'center' }}>Sign In</Text></View>
+            <View style={styles.textTitleWrapper}><Text style={styles.logintitle}>Sign In</Text></View>
               <View style={styles.formWrapper}>
                 <View style={[styles.formInputView, styles.marginBottom20]}>
                   <Fumi
@@ -224,11 +178,10 @@ export default class RootLogIn extends ValidationComponent {
                     iconSize={20}
                     iconWidth={40}
                     inputPadding={16}
-                    style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                    style={styles.loginemail}
                   />
                 {this.displayValidationError('emailError')}
                 </View>
-
                 <View style={[styles.formInputView, styles.marginBottom20]}>
                   <Fumi
                     label={'Password'}
@@ -243,9 +196,8 @@ export default class RootLogIn extends ValidationComponent {
                     iconSize={22}
                     iconWidth={40}
                     inputPadding={16}
-                    style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                    style={styles.loginemail}
                   />
-                  
                   <View style={[styles.eyeWrapper, {position:'absolute',left:'80%',top:22}]}>
                     <TouchableOpacity onPress={this.handleShowPassword}>
                       <Icon name={this.state.showPassword ? "eye-with-line" : "eye"} type="entypo" size={22} color="#aaa" style={{}} />

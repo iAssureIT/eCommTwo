@@ -13,10 +13,10 @@ import {
   Alert
 } from 'react-native';
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/BannerComponentStyles.js';
-import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import ValidationComponent from "react-native-form-validator";
 import Carousel from 'react-native-banner-carousel';
-import Loading from '../../layouts/Loading/Loading.js';
+// import Loading from '../../../AppDesigns/currentApp/styles/ScreenComponentStyles/LoadingStyles.js';
 
 const BannerWidth = Dimensions.get('window').width;
 const BannerHeight = 230;

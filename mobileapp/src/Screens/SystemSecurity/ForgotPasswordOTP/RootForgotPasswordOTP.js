@@ -17,9 +17,9 @@ import { Button, Icon } from "react-native-elements";
 import ValidationComponent from "react-native-form-validator";
 import axios from "axios";
 import Modal from "../../Modal/OpenModal.js";
-import styles                       from '../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordOTPStyles.js';
-import { colors, sizes } from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
-import Loading from '../../../layouts/Loading/Loading.js';
+import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordOTPStyles.js';
+import { colors, sizes } from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
+import Loading from '../../../AppDesigns/currentApp/styles/ScreenComponentStyles/LoadingStyles.js';
 import { connect }        from 'react-redux';
 
 const window = Dimensions.get('window');
@@ -159,7 +159,7 @@ class RootOTPVerification extends ValidationComponent {
         return (
             <View>
                 <View style={{ width: '100%',}}>
-                    <View style={styles.textTitleWrapper}><Text style={{ fontSize: 25, fontFamily: 'Montserrat-Regular',textAlign:'center' }}>OTP Verification</Text></View>
+                    <View style={styles.textTitleWrapper}><Text style={{ fontSize: 25, color:"#80c21c", fontFamily: 'Montserrat-SemiBold',textAlign:'center' }}>OTP Verification</Text></View>
                     <View style={styles.textTitleWrapper}><Text style={{ fontSize: 17, fontFamily: 'Montserrat-Regular' }}>Please Enter Verification Code</Text></View>
 
                     <View style={styles.formWrapper}>

@@ -3,19 +3,16 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Alert,
+  AsyncStorage,
   Image
 } from "react-native";
 import {  Icon ,SearchBar  } from 'react-native-elements';
 import ValidationComponent from "react-native-form-validator";
-// import styles from "./styles.js";
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/FooterStyles.js';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
-import Search from 'react-native-search-box';
 import axios                      from 'axios';
-
-
-export default  class Footer extends ValidationComponent {
+import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
+import { withNavigation }                   from 'react-navigation';
+class Footer extends ValidationComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,16 +36,17 @@ export default  class Footer extends ValidationComponent {
 
 
   componentDidMount(){
-     // const user_ID    = this.props.navigation.getParam('user_ID','No user_ID');
+    AsyncStorage.multiGet(['user_id','token'])
+    .then((data)=>{
+     userId = data[0][1],
       this.setState({
-       // user_ID    : user_ID,
-       
-        },()=>{ 
-          // this.focusListener = this.props.navigation.addListener('didFocus', () => {
-          this.getCartCount();
-      /*})*/
-    })
-    
+        userId : userId,
+      },()=>{
+        console.log('userId',this.state.userId)
+      })
+  })
+    this.getCartCount();
+      
   }
 
   getCartCount(){
@@ -80,24 +78,39 @@ export default  class Footer extends ValidationComponent {
 
   componentWillUnmount() {
   }
+  HomeNavigate() {
+      this.props.navigation.navigate('Dashboard');
+  }
+  cart() {
+      this.props.navigation.navigate('CartComponent',{user_ID:this.state.userId});
+  }
+  wishlist() {
+      this.props.navigation.navigate('WishlistComponent',{user_ID:this.state.userId});
+  }
 
   _goBack = () => {
     this.props.goBack();
   };
 
   render() {
+    var { navigation } = this.props;
     return (
      <View>
           <View  style={styles.footer}>
                <View style={{flexDirection:'row',flex:1}}>
+               {/* this.props.navigation('') */}
+               
                     <View style={styles.iconOuterWrapper}>
+                      <TouchableOpacity onPress={() => this.HomeNavigate()} >  
+                      {/* <TouchableOpacity onPress={()=> this.props.navigation.navigate('Dashboard')} > */}
                          <Icon name="home" type="feather" size={25}  color="#666"/>   
                          <Text style={styles.footerTitle}>Home</Text>
+                      </TouchableOpacity>
                     </View>
-
+                
                     <View>
                      <View style={styles.Wrapper}>
-                          <TouchableOpacity >
+                          <TouchableOpacity onPress={()=> this.cart()}>
                                <View style={styles.outerWrapper}>
                                     <Icon name="shopping-cart" type="feather" size={20}  color="#fff"/>
                                </View>
@@ -106,8 +119,10 @@ export default  class Footer extends ValidationComponent {
                     </View>
 
                     <View style={styles.iconOuterWrapper2}>
-                         <Icon name="bookmark-o" type="font-awesome" size={20}  color="#666"/>
-                         <Text style={styles.footerTitle}>Wishlist</Text>
+                        <TouchableOpacity onPress={()=> this.wishlist()}>
+                          <Icon name="heart-o" type="font-awesome" size={20}  color="#666"/>
+                          <Text style={styles.footerTitle}>Wishlist</Text>
+                        </TouchableOpacity>
                     </View>
                </View>
           </View>
@@ -116,3 +131,4 @@ export default  class Footer extends ValidationComponent {
     );
   }
 }
+export default  withNavigation(Footer);

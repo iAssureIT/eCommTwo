@@ -1,9 +1,8 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { colors } from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 const window = Dimensions.get('window');
 
 export default StyleSheet.create({
-
     container:{
     backgroundColor: '#fff',
     minHeight:'100%',
@@ -17,6 +16,28 @@ export default StyleSheet.create({
         fontSize: 22,
         color: '#333',
         fontFamily: "Montserrat-Bold",
+    },
+    fpimgvw: {
+      flexDirection: 'row', alignItems: 'center', justifyContent: 'center' 
+    },
+    fpimglogo: {
+      width: '50%'
+    },
+    fptitle: {
+      fontSize: 25, fontFamily: 'Montserrat-SemiBold',textAlign:'center'
+    },
+    fpsubtitle: {
+      fontSize: 17, fontFamily: 'Montserrat-Regular',paddingVertical:15 
+    },
+    fpemail: {
+      borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'
+    },
+    fpopacity: {
+      width: '100%', backgroundColor:'#fff',marginTop:80,borderColor:"#ccc",shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      elevation: 8,
     },
     inputText: {
         borderWidth: 1,

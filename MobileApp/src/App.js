@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import HomeStack from "./config/routes.js";
 import AuthStack  from "./config/routes.js";
 import settings from "./config/settings.js";
+import Footer from "../src/ScreenComponents/Footer/UniFooter.js";
 import SplashScreen from 'react-native-splash-screen';
 // import axios                from './config/axios.js';
 import {
@@ -13,9 +14,8 @@ import {
   Alert
 } from 'react-native';
 import { createAppContainer } from 'react-navigation';
-
 const HomeStackContainer = createAppContainer(HomeStack);
-// const AuthStackContainer = createAppContainer(AuthStack);
+const AuthStackContainer = createAppContainer(AuthStack);
 
 export default class App extends Component {
   constructor(props) {
@@ -31,6 +31,7 @@ export default class App extends Component {
   render() {
     return (
       <HomeStackContainer />
+      
     );
   }
 }

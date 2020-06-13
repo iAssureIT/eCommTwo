@@ -114,7 +114,7 @@ class ResetPassword extends Component {
                         this.state.showMessage === false ? 
                         <div>
                             <form id="resetPassword">
-                            <div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div className="form-group textAlignLeft frmhgt col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <label>New Password </label><label className="astricsign">*</label>
                                 <input type="password" id="newPassword" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" ref="newPassword" name="newPassword" />
                                 <div className="showHideSignDiv">
@@ -124,7 +124,7 @@ class ResetPassword extends Component {
                                 <br/>
                                 <div  id="newPasswordmsg"></div>
                             </div>
-                            <div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                            <div className="form-group frmhgt textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12" >
                                 <label>Confirm Password</label><label className="astricsign">*</label>
                                 <input type="password" id="confirmPassword" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" ref="confirmPassword" name="confirmPassword" />
                                 <div className="showHideSignDiv">

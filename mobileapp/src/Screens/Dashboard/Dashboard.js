@@ -25,16 +25,17 @@ import BannerComponent from '../../ScreenComponents/BannerComponent/BannerCompon
 import MenuCarouselSection from '../../ScreenComponents/Section/MenuCarouselSection.js';
 import FeatureProductComponent from'../../ScreenComponents/FeatureProductComponent/FeatureProductComponent.js';
 import FlashComponent from'../../ScreenComponents/FlashComponent/FlashComponent.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 // import styles from './Dashboardstyles.js';
-import styles from '../../AppDesigns/currentApp/Dashboardstyles.js';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Dashboardstyles.js';
+import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Drawer from 'react-native-drawer';
 import { TextField } from 'react-native-material-textfield';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
-import axios                      from 'axios';
+import axios from "axios";
 
 const window = Dimensions.get('window');
 
@@ -156,16 +157,17 @@ export default class Dashboard extends React.Component{
       );
     }else{
       return (
+        
         <Drawer
-          ref={(ref) => this._drawer = ref}
-          content={
-            <Notification 
-              navigate          = {this.props.navigation.navigate} 
-              updateCount       = {()=>this.updateCount.bind(this)}  
-              closeControlPanel = {()=>this.closeControlPanel.bind(this)} 
-            />
-          }
-          side="right"
+          // ref={(ref) => this._drawer = ref}
+          // content={
+          //   <Notification 
+          //     navigate          = {this.props.navigation.navigate} 
+          //     updateCount       = {()=>this.updateCount.bind(this)}  
+          //     closeControlPanel = {()=>this.closeControlPanel.bind(this)} 
+          //   />
+          // }
+          // side="left"
           >
           <SideMenu disableGestures={true} openMenuOffset={300} menu={menu} isOpen={this.state.isOpen}  onChange={isOpen => this.updateMenuState(isOpen)} >
             <HeaderBar2 
@@ -195,7 +197,8 @@ export default class Dashboard extends React.Component{
             <Footer/>
 
             </View>
-          </SideMenu>
+            {/* </React.Fragment> */}
+           </SideMenu>
         </Drawer>
       );  
     }

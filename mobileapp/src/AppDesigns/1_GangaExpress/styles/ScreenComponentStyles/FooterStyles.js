@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions,Platform } from 'react-native';
-import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 const window = Dimensions.get('window');

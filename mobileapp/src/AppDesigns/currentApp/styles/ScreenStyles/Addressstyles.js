@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions,Platform } from 'react-native';
-import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import {colors} from '../CommonStyles.js';
 const window = Dimensions.get('window');
 
 export default StyleSheet.create({
@@ -53,6 +53,28 @@ export default StyleSheet.create({
   },
   button1:{
     backgroundColor: colors.button1,
+    height: 45,
+    width:"100%",
+  },
+  buttonGreen:{
+    backgroundColor: colors.buttonGreen,
+    height: 45,
+    width:"100%",
+  },
+  buttonContainer2:{
+    ...Platform.select({
+      ios:{
+        justifyContent:'center',
+    
+      },
+      android : {
+        alignItems:'center',
+        
+      }
+    })
+  },
+  buttondis:{
+    backgroundColor: "#ccc",
     height: 45,
     width:"100%",
   },
@@ -157,7 +179,7 @@ export default StyleSheet.create({
   },
   buttonTextEDIT:{
     color: colors.buttonText,
-    fontFamily:"Montserrat-Regular",
+    fontFamily:"Montserrat-SemiBold",
     textTransform: 'uppercase',
     fontSize:13
 
@@ -232,6 +254,9 @@ export default StyleSheet.create({
   addsuperparent:{
     flex:1,backgroundColor:'#f1f1f1'
   },
+  flxdir1:{
+    flex:1,flexDirection: "row"
+  },
   addparent:{
     backgroundColor:'#fff',paddingVertical:20,paddingHorizontal:15,
   },
@@ -269,16 +294,44 @@ export default StyleSheet.create({
     paddingHorizontal:15
   },
   padhr18:{
-    paddingHorizontal:18
+    paddingHorizontal:22
+  },
+  orderpadhr18:{
+    paddingHorizontal:10
   },
   addcmpbtn:{
-    flex:0.5,paddingHorizontal:0
+    flex:1,marginBottom:5,
+  },
+  continuebtn:{
+    flex:1,marginBottom:50,
   },
   addcmpchkbx:{
-    backgroundColor:'#fff',marginTop:0,marginBottom:15
+    backgroundColor:'#fff',marginTop:0,marginBottom:15,
+    // flex:0.8,
+  },
+  addcmporder:{
+    backgroundColor:'#fff',marginTop:10,marginBottom:15,
+  },
+  flx8:{
+    flex:0.8,
+  },
+  proddeletes:{
+    alignItems: "flex-end",
+    marginTop:14,
+    paddingRight: 5,
+    // backgroundColor: "red"
+  },
+  chkvw:{
+    flex:0.1,
+  },
+  nameofcontact:{
+    flex:0.9,
   },
   addchkbx:{
-    flexDirection:'row',paddingHorizontal:5,paddingVertical:15
+    flexDirection:'row',paddingHorizontal:2,paddingVertical:2,
+  },
+  orderaddchkbx:{
+    flexDirection:'row',paddingHorizontal:2,paddingVertical:2,
   },
   chkbox:{
     fontSize:15,fontFamily:"Montserrat-Regular",color:'#666'
@@ -287,13 +340,14 @@ export default StyleSheet.create({
     flexDirection:'row'
   },
   addname:{
-    flex:0.7,fontSize:13,fontFamily:"Montserrat-SemiBold",marginTop:15
+    fontSize:13,fontFamily:"Montserrat-SemiBold",marginTop:15,
+    flex:0.7,alignItems:"flex-start",marginLeft:15,
   },
   address:{
-    fontSize:12,fontFamily:"Montserrat-Regular",color:'#666'
+    fontSize:13,fontFamily:"Montserrat-Regular",color:'#666'
   },
   mobflx:{
-    flexDirection:'row',marginTop:15
+    flexDirection:'row',marginTop:8,marginBottom:18
   },
   addoffice:{
     flex:0.3,alignItems:'flex-end',

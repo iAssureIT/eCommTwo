@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect }        from 'react-redux';
-import { BrowserRouter, Route, Switch,Link,location } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { BrowserRouter, Route, Switch, Link, location } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
@@ -15,18 +15,21 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
+      btnLoading: false,
       loggedIn: false,
       auth: {
         email: '',
         pwd: '',
       },
+      formerrors: {
+				emailIDV: "",
+			},
       messageData: {
         "type": "",
       }
     }
   }
   componentDidMount() {
-
     $.validator.addMethod("regxemail", function (value, element, regexpr) {
       return regexpr.test(value);
     }, "Please enter a valid email address.");
@@ -39,7 +42,7 @@ class Login extends Component {
       rules: {
         loginusername: {
           required: true,
-          regxemail : /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
+          regxemail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
         },
         loginpassword: {
           required: true
@@ -49,11 +52,14 @@ class Login extends Component {
         if (element.attr("name") === "loginusername") {
           error.insertAfter("#loginusername");
         }
-        if (element.attr("name") === "loginpassword"){
+        if (element.attr("name") === "loginpassword") {
           error.insertAfter("#loginpassword");
         }
       }
     });
+  }
+  componentWillReceiveProps(nextprops) {
+
   }
   userlogin(event) {
     event.preventDefault();
@@ -63,83 +69,82 @@ class Login extends Component {
       role: "user"
     }
     if ($("#login").valid()) {
-      document.getElementById("logInBtn").value = 'Please Wait...';
+      // document.getElementById("logInBtn").value = 'Please Wait...';
+      document.getElementById("logInBtn").value =
+        this.setState({ btnLoading: true });
       axios.post('/api/auth/post/login', auth)
-      .then((response) => {
-        // console.log("response",response)
-          // this.props.setGlobalUser(response.data.userDetails);
+        .then((response) => {
           if (response.data.ID) {
-            var  userDetails = {
-              firstName : response.data.userDetails.firstName, 
-              lastName  : response.data.userDetails.lastName, 
-              email     : response.data.userDetails.email, 
-              phone     : response.data.userDetails.phone, 
-              pincode   : response.data.userDetails.pincode,
-              // city      : response.data.userDetails.city,
-              // companyID : parseInt(response.data.userDetails.companyID),
-              // locationID: response.data.userDetails.locationID,
-              user_id   : response.data.userDetails.user_id,
-              roles     : response.data.userDetails.roles,
-              token     : response.data.userDetails.token, 
+            this.setState({ btnLoading: false });
+            var userDetails = {
+              firstName: response.data.userDetails.firstName,
+              lastName: response.data.userDetails.lastName,
+              email: response.data.userDetails.email,
+              phone: response.data.userDetails.phone,
+              pincode: response.data.userDetails.pincode,
+              user_id: response.data.userDetails.user_id,
+              roles: response.data.userDetails.roles,
+              token: response.data.userDetails.token,
             }
             document.getElementById("logInBtn").value = 'Sign In';
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user_ID", response.data.ID);
             localStorage.setItem("roles", response.data.roles);
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
-            
+
             this.setState({
               loggedIn: true
-            },()=>{
+            }, () => {
               this.props.history.push('/')
               window.location.reload();
             })
-          }else if(response.data.message === "USER_BLOCK"){
+          } else if (response.data.message === "USER_BLOCK") {
             swal({
-              text : "You are blocked by admin. Please contact Admin."
+              text: "You are blocked by admin. Please contact Admin."
             });
             document.getElementById("logInBtn").value = 'Sign In';
-          }else if(response.data.message === "NOT_REGISTER"){
+          } else if (response.data.message === "NOT_REGISTER") {
             swal({
-              text : "This Email ID is not registered. Please try again."
+              text: "This Email ID is not registered. Please try again."
             });
             document.getElementById("logInBtn").value = 'Sign In';
-          }else if(response.data.message === "INVALID_PASSWORD"){
+          } else if (response.data.message === "INVALID_PASSWORD") {
             swal({
-              text : "You have entered wrong password. Please try again."
+              text: "You have entered wrong password. Please try again."
             });
             document.getElementById("logInBtn").value = 'Sign In';
-          }else if(response.data.message === "USER_UNVERIFIED"){
+          } else if (response.data.message === "USER_UNVERIFIED") {
             swal({
-              text : "You have not verified your account. Please verify your account."
+              text: "You have not verified your account. Please verify your account."
             })
-            .then((value)=>{
-              var emailText = {
-                "emailSubject"	: "Email Verification", 
-                "emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
-              }
-              axios.patch('/api/auth/patch/setsendemailotpusingEmail/'+this.refs.loginusername.value, emailText)
-              .then((response)=>{
-                swal("We send you a Verification Code to your registered email. Please verify your account.");
-                this.props.history.push("/confirm-otp/" + response.data.userID);
-              })
-              .catch((error)=>{
-                swal(" Failed to sent OTP");
-              })    
-            });
+              .then((value) => {
+                var emailText = {
+                  "emailSubject": "Email Verification",
+                  "emailContent": "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+                }
+                axios.patch('/api/auth/patch/setsendemailotpusingEmail/' + this.refs.loginusername.value, emailText)
+                  .then((response) => {
+                    swal("We send you a Verification Code to your registered email. Please verify your account.");
+                    this.props.history.push("/confirm-otp/" + response.data.userID);
+                  })
+                  .catch((error) => {
+                    swal(" Failed to sent OTP");
+                  })
+              });
             document.getElementById("logInBtn").value = 'Sign In';
 
           }
-      })
-      .catch((error) => {
-        console.log("error",error);
-         swal({
-              text : "Please enter valid Email ID and Password"
-            })
-        document.getElementById("logInBtn").value = 'Sign In';
-        if (localStorage !== null) {
-        }
-      });
+        })
+        .catch((error) => {
+          console.log("error", error);
+          swal({
+            text: "Please enter valid Email ID and Password"
+          })
+          this.setState({ btnLoading: false });
+          // document.getElementById("logInBtn").value = 'Sign In';
+          // if (localStorage !== null) {
+          // }
+        });
     }
   }
   showSignPass() {
@@ -165,15 +170,15 @@ class Login extends Component {
   }
   render() {
     //set dynamic background image
-		var projectName = process.env.REACT_APP_PROJECT_NAME;
-    if(projectName === "4_UniMandai"){
-			$(".LoginWrapper").css("background-image", "url("+"/images/unimandai/Background_3.png"+")");
-		}else if(projectName === "2_AnasHandicraft"){
-			$(".LoginWrapper").css("background-image", "url("+"/images/background.png"+")");
-    } 
-    
+    var projectName = process.env.REACT_APP_PROJECT_NAME;
+    if (projectName === "4_UniMandai") {
+      $(".LoginWrapper").css("background-image", "url(" + "/images/unimandai/Background_3.png" + ")");
+    } else if (projectName === "2_AnasHandicraft") {
+      $(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
+    }
+
     return (
-      <div style={{'height': window.innerHeight+'px', 'width': window.innerWidth+'px'}} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+      <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
         </div>
         {/* <div className="pull-right loginLeafimg">
@@ -185,21 +190,21 @@ class Login extends Component {
                 <h3>Sign In</h3>
               </div>
               <form id="login" onSubmit={this.userlogin.bind(this)}>
-                <div className="form-group textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt25">
+                <div className="form-group frmhgt textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt25">
                   <label>Email ID</label><label className="astricsign">*</label>
                   <input type="email" className="form-control" ref="loginusername" id="loginusername" name="loginusername" placeholder="Email ID" required />
-                  {/* <label id="loginusername-error" class="error" for="loginusername" style={{'display' : 'block'}}></label> */}
+                  <span className="text-danger">{this.state.formerrors.emailIDV}</span> 
                 </div>
 
-                <div className="textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb25">
+                <div className="textAlignLeft frmhgt col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb25">
                   <label>Password</label><label className="astricsign">*</label>
                   <input type="password" className="form-control" ref="loginpassword" name="loginpassword" id="loginpassword" placeholder="Password" required />
                   <div className="showHideSignDiv">
                     <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
                     <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
-                  </div>                 
+                  </div>
                 </div>
-                 {
+                {/* {
                   process.env.REACT_APP_PROJECT_NAME === '2_AnasHandicrafts' ?
                 
                 <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
@@ -209,11 +214,24 @@ class Login extends Component {
                  <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight">
                   <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
                 </div>
-                
+                } */}
+
+                {
+                  this.state.btnLoading
+                  ?
+                    <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight btn loginBtn_uni has-spinner active">
+                      Processing...
+                      <span className="spinner"><i className="fa fa-refresh fa-spin"></i></span>
+                    </div>
+                  :
+                    <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight">
+                      <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
+                    </div>
                 }
+
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
-                  <div className="textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10">
+                    <div className="textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10">
                       <div className="row loginforgotpass">
                         <a href='/forgotpassword' className="">Forgot Password?</a>
                       </div>

@@ -23,14 +23,15 @@ import { TextField } from 'react-native-material-textfield';
 import { Header, Button, Icon, SearchBar,CheckBox } from "react-native-elements";
 import SideMenu from 'react-native-side-menu';
 import StarRating from 'react-native-star-rating';
-
+import axios from "axios";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 // import styles from './AccountDashboardstyles.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/AccountDashboardstyles';
-import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import { colors, sizes } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
 import ConfirmOrderComponent from '../ConfirmOrderComponent/ConfirmOrderComponent.js';
 const window = Dimensions.get('window');

@@ -5,22 +5,14 @@ import {
   ScrollView,
   Text,
   View,
-  BackHandler,
-  Dimensions,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  ImageBackground,
-  Image,
-  TextInput,
-  Alert,
-  Linking,
 } from 'react-native';
 import { Button, Icon }       from "react-native-elements";
 import CheckBox               from 'react-native-check-box'
 import ValidationComponent    from "react-native-form-validator";
-import axios                  from "axios";
-import styles                       from '../../AppDesigns/currentApp/styles/ScreenStyles/SignupStyles.js';
-import { colors, sizes }      from '../../../AppDesigns/currentApp/styles/CommonStyles.js.js';
+import axios                  from 'axios';
+import styles                 from '../../../AppDesigns/currentApp/styles/ScreenStyles/SignupStyles.js';
+import { colors, sizes }      from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Modal                  from "../../Modal/OpenModal.js";
 import { Fumi }               from 'react-native-textinput-effects';
 import FontAwesomeIcon        from 'react-native-vector-icons/FontAwesome';
@@ -28,7 +20,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { connect }            from 'react-redux';
 import AsyncStorage           from '@react-native-community/async-storage';
 
-const window = Dimensions.get('window');
 
 class RootSignup extends ValidationComponent {
   constructor(props) {
@@ -39,12 +30,14 @@ class RootSignup extends ValidationComponent {
       firstName: '',
       lastName: '',
       mobileNumber: '',
+      pincode: '',
       email: '',
       password: '',
       confirmPassword: '',
       firstNameError: [],
       lastNameError: [],
       mobileNumberError: [],
+      pincodeError: [],
       emailError: [],
       passwordError: [],
       confirmPasswordError: [],
@@ -77,6 +70,7 @@ class RootSignup extends ValidationComponent {
       lastName,
       email,
       mobileNumber,
+      pincode,
       password,
       confirmPassword,
     } = this.state;
@@ -97,9 +91,13 @@ class RootSignup extends ValidationComponent {
       mobileNumber: {
         required: true,
         mobileNo: true,
-        // numbers: true, 
         minlength: 9,
         maxlength: 10
+      },
+      pincode: {
+        required: true,
+        minlength: 6,
+        maxlength: 6
       },
       password: {
         required: true,
@@ -130,6 +128,13 @@ class RootSignup extends ValidationComponent {
       valid = false;
     } else {
       this.setState({ mobileNumberError: "" });
+      valid = true;
+    }
+    if (this.isFieldInError("pincode")) {
+      this.setState({ pincodeError: this.getErrorsInField("pincode") });
+      valid = false;
+    } else {
+      this.setState({ pincodeError: "" });
       valid = true;
     }
     if (this.isFieldInError("email")) {
@@ -169,11 +174,7 @@ class RootSignup extends ValidationComponent {
     if (this.state.passwordMatch != 'matched') {
       valid = false;
     }
-    // console.log((!this.isFieldInError("password")), (!this.isFieldInError("confirmPassword")),(!this.isFieldInError("email")), (!this.isFieldInError("mobileNumber") ) , (!this.isFieldInError("firstName")) , (!this.isFieldInError("lastName")) , (this.state.isChecked) , (this.state.passwordMatch=='matched') );
-
-    // return valid;
     return ((!this.isFieldInError("password")) && (!this.isFieldInError("confirmPassword")) && (!this.isFieldInError("email")) && (!this.isFieldInError("mobileNumber")) && (!this.isFieldInError("firstName")) && (!this.isFieldInError("lastName")) && (this.state.isChecked) && (this.state.passwordMatch == 'matched'));
-    // return !this.isFieldInError("email");
   };
 
   validInputField = (stateName, stateErr) => {
@@ -182,6 +183,7 @@ class RootSignup extends ValidationComponent {
       lastName,
       email,
       mobileNumber,
+      pincode,
       password,
       confirmPassword,
     } = this.state;
@@ -204,28 +206,24 @@ class RootSignup extends ValidationComponent {
   };
 
   handleSubmit = () => {
-    // console.log("this.isFormValid()===>",this.validInput());
     if (this.validInput()) {
-      // if(this.isFieldInError(this.state.email)|| this.isFieldInError(this.state.mobileNumber) || this.isFieldInError(this.state.firstName) || this.isFieldInError(this.state.lastName) ){ 
       let {
         firstName,
         lastName,
         mobileNumber,
+        pincode,
         email,
         password
       } = this.state;
       var emailId = email.toLowerCase();
-      // console.log(mobileNumber)
       var mobileNo = '+91' + mobileNumber.split(' ')[1].split('-').join('')
-      // console.log(mobileNo)
       var roles = 'user';
-      // let emailOTP    = Math.floor(100000 + Math.random() * 900000);
       let mobileOTP = Math.floor(1000 + Math.random() * 9000);
-      // console.log("roles = ",roles);
       var formValues = {
         firstname:firstName,
         lastname:lastName,
         mobNumber: mobileNo,
+        pincode: pincode,
         email:email,
         pwd: password,
         role:'user',
@@ -248,9 +246,7 @@ class RootSignup extends ValidationComponent {
             this.props.openModal(true,messageHead,messagesSubHead,"success");
             AsyncStorage.multiSet([
               ['user_id_signup', response.data.ID],
-           
             ])
-            // this.props.setUserID(response.data.ID);
             this.props.navigation('OTPVerification');
           }else{
             var messageHead = response.data.message;
@@ -272,7 +268,6 @@ class RootSignup extends ValidationComponent {
 
   checkboxClick = () => {
     let isChecked = !this.state.isChecked;
-
     this.setState({ isChecked }, () => {
       if (isChecked) {
         this.setState({
@@ -326,12 +321,7 @@ class RootSignup extends ValidationComponent {
       value = value.substr(3);
     }
     let x = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-    // let x = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-    console.log("x value = ", x);
-    // let y = !x[2] ? x[1] : x[1]+'-'+x[2];
     let y = x.input ? (!x[2] && !x[3]) ? '+91 ' + x[1] : (!x[3] ? '+91 ' + x[1] + '-' + x[2] : '+91 ' + x[1] + '-' + x[2] + '-' + x[3]) : '';
-    // let y = '+1 '+x[1]+'-'+x[2]+'-'+x[3];
-    // console.log("y value = ",y)
     this.setState({
       mobileNumber: y,
     });
@@ -355,7 +345,7 @@ class RootSignup extends ValidationComponent {
     return (
         <React.Fragment>
           <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
-            <Text style={{ fontSize: 25, fontFamily: 'Montserrat-Regular',textAlign:'center',paddingVertical:10 }}>Sign Up</Text>
+            <Text style={styles.signuptitle}>Sign Up</Text>
               <View style={[styles.formInputView, styles.marginBottom20]}>
                 <Fumi
                   label={'First Name'}
@@ -369,7 +359,7 @@ class RootSignup extends ValidationComponent {
                   iconWidth={40}
                   inputPadding={16}
                   containerStyle={{height:20}}
-                  style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                  style={styles.signupemail}
                 />
                 {this.displayValidationError('firstNameError')}
               </View>
@@ -386,7 +376,7 @@ class RootSignup extends ValidationComponent {
                   iconSize={20}
                   iconWidth={40}
                   inputPadding={16}
-                  style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                  style={styles.signupemail}
                   containerStyle={{height:20}}
                 />
                 {this.displayValidationError('lastNameError')}
@@ -405,9 +395,27 @@ class RootSignup extends ValidationComponent {
                   iconWidth={40}
                   inputPadding={16}
                   containerStyle={{height:20}}
-                  style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                  style={styles.signupemail}
                 />
                 {this.displayValidationError('mobileNumberError')}
+              </View>
+
+              <View style={[styles.formInputView, styles.marginBottom20]}>
+                <Fumi
+                  label={'Pincode'}
+                  onChangeText={(pincode) => { this.setState({ pincode }, () => { this.validInputField('pincode', 'pincodeError'); })}}
+                  value={this.state.pincode}
+                  keyboardType="numeric"
+                  iconClass={FontAwesomeIcon}
+                  iconName={'phone-square'}
+                  iconColor={colors.inputText}
+                  iconSize={20}
+                  iconWidth={40}
+                  inputPadding={16}
+                  containerStyle={{height:20}}
+                  style={styles.signupemail}
+                />
+                {this.displayValidationError('pincodeError')}
               </View>
 
               <View style={[styles.formInputView, styles.marginBottom20]}>
@@ -424,7 +432,7 @@ class RootSignup extends ValidationComponent {
                   iconWidth={40}
                   inputPadding={16}
                   containerStyle={{height:20}}
-                  style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular',height:20}}
+                  style={styles.signupemail}
                 />
                 {this.displayValidationError('emailError')}
               </View>
@@ -444,7 +452,7 @@ class RootSignup extends ValidationComponent {
                   iconWidth={40}
                   inputPadding={16}
                   containerStyle={{height:20}}
-                  style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                  style={styles.signupemail}
                 />
                 <View style={[styles.eyeWrapper, { position: 'absolute', left: '80%', top: 22 }]}>
                   <TouchableOpacity onPress={this.handleShowPassword}>
@@ -469,7 +477,7 @@ class RootSignup extends ValidationComponent {
                   iconWidth={40}
                   inputPadding={16}
                   containerStyle={{height:20}}
-                  style={{borderWidth:1,borderColor:"#ccc",fontFamily: 'Montserrat-Regular'}}
+                  style={styles.signupemail}
                 />
                 <View style={[styles.eyeWrapper, { position: 'absolute', left: '80%', top: 22 }]}>
                   <TouchableOpacity onPress={this.handleShowConfirmPassword}>
