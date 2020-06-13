@@ -991,12 +991,14 @@ class LocationDetails extends Component {
 
     geocodeByAddress(address)
      .then((results) =>{ 
+		console.log("googleapi result ===",results);
       for (var i = 0; i < results[0].address_components.length; i++) {
           for (var b = 0; b < results[0].address_components[i].types.length; b++) {
               switch (results[0].address_components[i].types[b]) {
                   case 'sublocality_level_1':
                       var area = results[0].address_components[i].long_name;
-                      break;
+					 console.log("area =",area); 
+					  break;
                   case 'sublocality_level_2':
                       area = results[0].address_components[i].long_name;
                       break;
@@ -1037,14 +1039,17 @@ class LocationDetails extends Component {
        
         })
      
-      .catch(error => console.error('Error', error));
+	  .catch(error => console.error('Error', error));
+	  
+	  geocodeByAddress(address)
+        .then(results => getLatLng(results[0]))
+        .then(({ lat, lng }) =>{            
+            this.setState({'latitude' : lat});
+            this.setState({'longitude' : lng});
+            console.log('Successfully got latitude and longitude', { lat, lng });
+        });           
+          this.setState({ addressLine1 : address});
 
-      geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => this.setState({'latLng': latLng}))
-      .catch(error => console.error('Error', error));
-     
-      this.setState({ addressLine1 : address});
   };
 
   hideModal(event){

@@ -815,7 +815,7 @@ getFilteredProducts(selector){
 									return(
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 											<li>
-												<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this,'category')} style={{fontWeight:"100!important"}}>{data.category}</a>
+												<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this,'category')} style={{fontWeight:"100!important"}}>{data.category.toUpperCase()}</a>
 												<ul>
 													{
 														data.subCategory.map((subcat,subind)=>{
@@ -874,7 +874,7 @@ getFilteredProducts(selector){
 						         <select onChange={ this.onSelectedItemsChange.bind(this,"size")}>
 						          {this.state.sizes ? 
 							      	this.state.sizes.map((data,index)=>{
-							      		return(<option value={data}>{data}</option>);
+							      		return(<option value={data.toUpperCase()}>{data}</option>);
 							      	  })
 							      	: ''}
 							      	</select>
@@ -1070,7 +1070,7 @@ getFilteredProducts(selector){
 									    			value1.map((attrvalue, ind)=>{
 									    				//console.log('attrvalue', attrvalue.attributeValue);
 									    				return(<div class="checkbox">
-																  <label><input type="checkbox" name={key} className="attributes" value={attrvalue.attributeValue} onClick={this.onSelectedItemsChange.bind(this,'attributes')} />{ attrvalue.attributeValue}</label>
+																  <label><input type="checkbox" name={key} className="attributes" value={attrvalue.attributeValue.toUpperCase()} onClick={this.onSelectedItemsChange.bind(this,'attributes')} />{ attrvalue.attributeValue}</label>
 																</div>
 															);
 

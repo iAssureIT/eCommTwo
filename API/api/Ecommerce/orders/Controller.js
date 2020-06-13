@@ -60,6 +60,7 @@ exports.insert_orders = (req,res,next)=>{
                       if(matchedFranchise.length > 1){
                         var minDisFranchise;
                         var smDis = -1;
+                        var distanceList = [];
                         for(var franchiseObjects of matchedFranchise){
                             // Entitymaster.findOne(_id : franchiseObjects.franchiseID).exec();
                             EntityMaster.findOne({_id : franchiseObjects.franchiseID})
@@ -73,6 +74,7 @@ exports.insert_orders = (req,res,next)=>{
                                 //                         "longitude"   : longitude
                                 //                       });  
                                 var distance = distance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddres.longitude,'K');
+                                // distanceList.push(distance);
                                 if(smDis == -1){
                                   smDis = distance;
                                   minDisFranchise = franchiseObjects;

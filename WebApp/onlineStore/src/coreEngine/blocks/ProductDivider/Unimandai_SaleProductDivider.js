@@ -21,7 +21,9 @@ export default class SaleProductDivider extends Component {
             <div className="col-md-7 ">
                 <div className="flatSaleBlock"><span><img src="/images/icon-shipping-5.png" className="imageposition"/></span>BIG SALE TODAY <span className="OffBlock"></span> </div>
                 <div className="col-lg-8 offerText special-content">GET 30% OFF YOUR ORDER OF $100 OR MORE...</div>
-                <button className="col-lg-3 col-lg-offset-5 viewdetails">SHOP NOW</button> 
+                {/* <button className="col-lg-3 col-lg-offset-5 viewdetails">SHOP NOW</button>  */}
+                <a href="/"><div className="col-lg-3 col-lg-offset-5 btn viewdetails" title="">SHOP NOW</div></a>
+
             </div>
           </div>  
         </div>

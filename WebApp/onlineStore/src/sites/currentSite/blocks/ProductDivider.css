@@ -342,9 +342,11 @@ ul.tabs.tabs-title li {
 }
 .mainproductblock{
     width: 20%;
-
 }
 .flatsale{
     background-color: #ffffff ! important;
 
+}
+.viewdetails{
+    border-radius: 0px;
 }
