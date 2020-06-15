@@ -9,12 +9,39 @@ class WebsiteModel extends Component {
     constructor(props) {        
         super(props);
         this.state = {
-            "editId" : "",
+            "editId"           : "",
             "askPincodeToUser" : "",
+            "preferences"       : "",
         };
         
     }
     componentDidMount() {
+        axios.get("/api/adminpreference/get")
+        .then(preferences =>{
+            if(preferences){
+                console.log("preferences value:",preferences);
+                var askpincodeToUser = preferences.data[0].askPincodeToUser;
+               if(preferences.websiteModel === "FranchiseModel"){
+                   this.state ={
+                       'franchise' : 'checked',
+                   }
+               }else if(preferences.websiteModel === "FranchiseModel"){
+
+               }else{
+                   
+               }
+              
+               
+                this .state = {
+                    "preferences" : preferences,
+                }
+                console.log("this.state.preferences:",this.state.preferences);
+            
+            }
+        })
+        .catch(error=>{
+            console.log("Error in preferences = ", error);
+        })
     }  
     
     componentWillReceiveProps(nextProps) {

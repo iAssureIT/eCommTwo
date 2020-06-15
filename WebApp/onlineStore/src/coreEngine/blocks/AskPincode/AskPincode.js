@@ -44,7 +44,7 @@ export default class AskPincode extends Component {
                                 $('.DeliveryStatusMsg').show();    
                                 $('.pincodeChild').hide();                         
                                 localStorage.setItem("DeliveryStatus","Allowable");
-                                localStorage.setItem("pincodeFlag","false");
+                                localStorage.setItem("pincodeFlag","true");
                                 
                                 //  console.log("delivery allow", localStorage.getItem('status'));
                             }else{
@@ -57,7 +57,7 @@ export default class AskPincode extends Component {
                                 $('.pincodeChild').hide();
                                 
                                 localStorage.setItem("DeliveryStatus","NotAllowable");
-                                console.log("delivery not allow", localStorage.getItem('DeliveryStatus'));
+                                // console.log("delivery not allow", localStorage.getItem('DeliveryStatus'));
                             
                             }
                         }
@@ -77,11 +77,15 @@ export default class AskPincode extends Component {
     //         [name]: event.target.value
     //     }); 
     //   }
+    closeModal(event){
+        event.preventDefault();
+        localStorage.setItem('pincodeFlag',"false");
+    }
 
       checkDelivery(event){
         event.preventDefault();
         var userPincode =  $('.pinocodeInput').val();
-        console.log("userPincode===",userPincode);
+        // console.log("userPincode===",userPincode);
         //create object to store userPincode data into cookie
         localStorage.setItem("pincode",userPincode);
         localStorage.setItem('deliveryStatusMsg',"true");
@@ -124,15 +128,14 @@ export default class AskPincode extends Component {
 		return (
             
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12 mb50">
-				{localStorage.getItem('pincode') === null || localStorage.getItem('status') === "NotAllow" || localStorage.getItem('DeliveryStatus') === "Allowable"
-                ?
-                //    localStorage.getItem('pincodeFlag') === null
-                //     ?
+				{/* {localStorage.getItem('pincode') === null || localStorage.getItem('status') === "NotAllow" || localStorage.getItem('DeliveryStatus') === "Allowable" */}
+                { (localStorage.getItem('pincode') === null) || (localStorage.getItem('pincode') !== null && localStorage.getItem('status') === "NotAllow") || (localStorage.getItem('DeliveryStatus') === "Allowable" && localStorage.getItem('pincodeFlag')==="true" )
+                ?                
                     <div id="myModal" className="modal in">
                         <div className="modal-dialog">
                             <div className="modal-content pincodemodal">                            
                                 <div className="modal-body">   
-                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>                       
+                                <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.closeModal.bind(this)}>&times;</button>                       
                                     <form>                                    
                                         <div className="col-lg-12 col-md-12 addPincode">
                                             <div id="pincode" className="Pincode_div">                                                

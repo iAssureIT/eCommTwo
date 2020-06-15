@@ -402,8 +402,7 @@ loginPage(event){
                             ?    
                                 <li className="dropdown">
                                     <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
-                                    <ul className="col-lg-4 dropdown-menu list-menu">
-                                        
+                                    <ul className="col-lg-3 dropdown-menu list-menu">                                        
                                         <li className="col-lg-12 NOpadding">
                                             <a href="/">
                                             <div className="row">

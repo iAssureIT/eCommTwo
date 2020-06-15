@@ -55,16 +55,19 @@ exports.insert_orders = (req,res,next)=>{
                             console.log("matchedFranchise ===",matchedFranchise);                            
                         } 
                     }//end for loop  
-                    console.log("matchedFranchise ===",matchedFranchise);                             
+                                                 
                     if(matchedFranchise){
+                      console.log("matchedFranchise length ===",matchedFranchise.length);
                       if(matchedFranchise.length > 1){
                         var minDisFranchise;
                         var smDis = -1;
                         var distanceList = [];
                         for(var franchiseObjects of matchedFranchise){
+                            console.log("franchiseObjects.franchiseID:",franchiseObjects.franchiseID);
                             // Entitymaster.findOne(_id : franchiseObjects.franchiseID).exec();
                             EntityMaster.findOne({_id : franchiseObjects.franchiseID})
                             .then(franchiseData =>{
+                              if(franchiseData){
                                 var Flatitude  = franchiseData.locations[0].latitude;
                                 var Flongitude = franchiseData.locations[0].longitude;
                                 console.log("franchiseData===",franchiseData.location[0].latitude );
@@ -81,10 +84,12 @@ exports.insert_orders = (req,res,next)=>{
                                 }else if(distance < smDis){
                                   smDis = distance;
                                   minDisFranchise = franchiseObjects;
+                                  console.log("franchiseObjects:",franchiseObjects);
                                 }
-                            })                            
+                              }
+                            })                           
                           }
-
+                          console.log("minDisFranchise ID=",minDisFranchise);
                           var allocatedToFranchise = minDisFranchise.franchiseID;
                       }else{
                         // console.log("Min franchise Object======",matchedFranchise[0].franchiseID);                        
