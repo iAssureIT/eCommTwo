@@ -296,7 +296,7 @@ export default class PurchaseManagement extends React.Component {
       // console.log("datVal",dateVal);
       // const datatype = event.target.getAttribute('data-text');
       const {name,value} = event.target;
-
+		
       this.setState({ 
         [name]:value,
  
@@ -358,7 +358,7 @@ export default class PurchaseManagement extends React.Component {
     }
     Submit(event){
     event.preventDefault();
-
+	var productDatalist = $(".productDatalist").find("option[value='" + this.state.product + "']");
     const formValues1 = {
         "amount"         	: this.state.amount ,
         "purchaseDate" 		: this.state.purchaseDate,
@@ -374,27 +374,34 @@ export default class PurchaseManagement extends React.Component {
       };
 	  console.log("formValues1",formValues1);
 	  if ($('#addNewPurchaseOrder').valid()) {
-		axios
-		.post('/api/purchaseentry/post',formValues1)
-		  .then((response) => {
-		// handle success
-			console.log("data in block========",response.data);
-			swal("Thank you. Your Product addeed successfully.");
-			this.getData();
-		  })
-		  .catch(function (error) {
-		// handle error
-			console.log(error);
-		  });
-		  this.setState({
-			amount          : "",     
-			product         : "",    	
-			quantity        : "", 			
-			product         : "", 		
-			Units           : "",
-			unitRate    : "",
-	       },()=>{
-	      });  
+		if((productDatalist != null && productDatalist.length > 0)) {
+			 axios
+			.post('/api/purchaseentry/post',formValues1)
+			.then((response) => {
+			// handle success
+				console.log("data in block========",response.data);
+				swal("Thank you. Your Product addeed successfully.");
+				this.getData();
+			})
+			.catch(function (error) {
+			// handle error
+				console.log(error);
+			});
+			this.setState({
+				amount          : "",     
+				product         : "",    	
+				quantity        : "", 			
+				product         : "", 		
+				Units           : "",
+				unitRate    : "",
+			},()=>{
+			});  
+		}else{
+			swal("Please select product from list.");
+			this.setState({
+				product:''
+			})
+		}
 	  }
 	}
 	update(event){
@@ -411,7 +418,7 @@ export default class PurchaseManagement extends React.Component {
 			"purchaseNumber"    : this.state.purchaseNumber,
 			"Details" 			: this.state.Details,
         }
-        /*if($("#taxMaster").valid()){*/
+		if($("#addNewPurchaseOrder").valid()){
             axios.patch('/api/purchaseentry/patch/'+this.state.editId,formValues)
             .then((response)=>{
                 this.props.history.push('/purchase-management');
@@ -434,7 +441,7 @@ export default class PurchaseManagement extends React.Component {
             .catch((error)=>{
                 console.log('error', error);
             })
-      /*  }*/
+       }
 	}
 
 
@@ -510,8 +517,7 @@ export default class PurchaseManagement extends React.Component {
 											<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
 		    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
 											
-											  <datalist id="product" name="product" >
-											    <option value="Broccoli"/>
+											  <datalist id="product" name="product" class="productDatalist">
 											    {
                                                     this.state.productArray && this.state.productArray.length > 0 ?
                                                         this.state.productArray.map((data, i)=>{

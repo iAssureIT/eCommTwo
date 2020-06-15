@@ -158,6 +158,10 @@ class TemplateManagement extends Component {
                       .then((response)=>{
                         //this.fileInput.value = '';
                        // this.fileInput.value = "";
+                       console.log("response",response);
+                       swal({
+                        title:response.data.message, 
+                      });
                         this.setState({
                             finalData: [],
                             section : "Select Section",

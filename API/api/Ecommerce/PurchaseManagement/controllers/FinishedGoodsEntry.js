@@ -66,7 +66,7 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
             { _id:req.params.purchaseID},  
             {
                 $set:{
-                    Date                     : req.body.purchaseDate,
+                    Date                      : req.body.Date,
                     ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/
                     productName               : req.body.productName,
                     PackageWeight             : req.body.PackageWeight,

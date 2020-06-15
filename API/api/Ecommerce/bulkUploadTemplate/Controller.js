@@ -20,7 +20,7 @@ exports.addBulkUploadTemplate = (req,res,next)=>{
         			// console.log(updata)
         			if (updata.nModified) {
 	        			res.status(200).json({
-		                    "message": "Template is saved successfully."
+		                    "message": "Template is updated successfully."
 		                });
         			}
         		})
