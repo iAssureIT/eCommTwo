@@ -414,7 +414,7 @@ class EcommerceProductCarousel extends Component {
                                             }
                                           </div></a>
                                           {/* <div className="product-reviews-summary">
-                                            <div className="col-lg-3 col-md-3 product-reviews-summary ratebox">4.4 &nbsp;<i class="fa fa-star"></i></div>
+                                            <div className="col-lg-3 col-md-3 product-reviews-summary ratebox">4.4 &nbsp;<i className="fa fa-star"></i></div>
                                           </div> */}
                                           <div >
                                           </div>
@@ -451,7 +451,7 @@ class EcommerceProductCarousel extends Component {
                   <div className="modal-dialog modal-lg dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <img src="/images/Icon.png" alt="" />
+                        <img src="../../../sites/currentSite/images/Icon.png" alt="" />
                         <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                         <h4 className="modal-title modalheadingcont"> </h4>
                       </div>

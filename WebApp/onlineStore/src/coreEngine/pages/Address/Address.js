@@ -6,12 +6,6 @@ import Message from '../../blocks/Message/Message.js';
 import 'jquery-validation';
 import "../../../sites/currentSite/pages/Address.css";
 import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/js/modal.js';
-// import 'bootstrap/js/collapse.js';
-
-// import Sidebar from '../../common/Sidebar/Sidebar.js';
-// import _ from 'underscore';
 
 class Address extends Component {
     constructor(props) {
@@ -20,8 +14,7 @@ class Address extends Component {
             stateArray:[],
             pincodeExists:true,
             deliveryAddress: [],
-
-
+            addressLine1 : "",
         }
         this.camelCase = this.camelCase.bind(this)
     }
@@ -376,7 +369,7 @@ class Address extends Component {
         }
         if(deliveryAddressID){
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
-                // console.log('if form deliveryAddressID', formValues);
+                console.log('if form deliveryAddressID', formValues);
                 axios.patch('/api/ecommusers/updateuseraddress', formValues)
                 .then((response)=>{
                     // console.log("response after update:",response.data.message);
@@ -514,7 +507,7 @@ class Address extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                         <div className="modal-header checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <img src="/images/Icon.png" />
+                            <img src="../../../sites/currentSite/images/Icon.png" />
                             <button type="button" className="close modalclosebut" onClick={this.cancel.bind(this)} data-dismiss="modal">&times;</button>
                             <h4 className="modal-title modalheadingcont">ADDRESS</h4>
                         </div>
@@ -522,12 +515,12 @@ class Address extends Component {
                             <form id="modalAddressForm">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                     <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
-                                    <input type="text" maxlength="40" ref="modalname" name="modalname" id="modalname" value={this.state.modalname} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                    <input type="text" maxLength="40" ref="modalname" name="modalname" id="modalname" value={this.state.modalname} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Mobile Number <span className="required">*</span></label>
-                                        <input maxlength="10" placeholder="Eg. 9876543210" type="text" ref="modalmobileNumber" name="modalmobileNumber" id="modalmobileNumber" value={this.state.modalmobileNumber} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                        <input maxLength="10" placeholder="Eg. 9876543210" type="text" ref="modalmobileNumber" name="modalmobileNumber" id="modalmobileNumber" value={this.state.modalmobileNumber} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                         {/* <span className="col-lg-2 col-md-2 col-sm-1 col-xs-1  orderConfirmation fa fa-question-circle-o NOpadding" title="For delivery questions."></span> */}
                                     </div>
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
@@ -640,7 +633,7 @@ class Address extends Component {
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
-                                        <input type="text" minLength="6" maxlength="6" ref="modalPincode" name="modalPincode" id="modalPincode" value={this.state.modalPincode}  onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                        <input type="text" minLength="6" maxLength="6" ref="modalPincode" name="modalPincode" id="modalPincode" value={this.state.modalPincode}  onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                         {this.state.pincodeExists ? null : <label className="error" style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}
                                     </div>
                                     {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">

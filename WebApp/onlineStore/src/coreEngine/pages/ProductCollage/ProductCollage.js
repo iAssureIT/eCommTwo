@@ -1057,7 +1057,7 @@ class ProductCollage extends Component {
 																		{value1 && value1.length > 0 ?
 																			value1.map((attrvalue, ind) => {
 																				//console.log('attrvalue', attrvalue.attributeValue);
-																				return (<div class="checkbox">
+																				return (<div className="checkbox">
 																					<label><input type="checkbox" name={key} className="attributes" value={attrvalue.attributeValue.toUpperCase()} onClick={this.onSelectedItemsChange.bind(this, 'attributes')} />{attrvalue.attributeValue}</label>
 																				</div>
 																				);
@@ -1163,7 +1163,7 @@ class ProductCollage extends Component {
 					    </div>
 										</div>
 									</div>
-									: <div className="text-center"><img src="/images/noproducts.jpeg" alt="" /></div>
+									: <div className="text-center"><img src="../../../sites/currentSite/images/noproducts.jpeg" alt="" /></div>
 						}
 					</div>
 

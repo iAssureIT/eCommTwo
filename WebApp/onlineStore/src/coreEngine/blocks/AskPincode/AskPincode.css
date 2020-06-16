@@ -50,7 +50,7 @@
 .pincodemodal {
     height: 240px;
     /* border-radius: 10px !important; */
-    background: url(/images/unimandai/modalBackground.png);
+    background: url(/images/modalBackground.png);
     background-position: bottom;
     background-repeat: no-repeat;
     margin-top: 170px !important;

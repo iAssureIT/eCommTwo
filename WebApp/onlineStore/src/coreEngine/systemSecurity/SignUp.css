@@ -52,7 +52,7 @@
   left: 3px;
 }
 .LoginWrapper{
-  background-image: url("/images/unimandai/signInBackground.png");
+  background-image: url("/images/signInBackground.png");
   border-radius: 5px;
   background-size: 100% 100%;
   display: table-cell;
@@ -242,7 +242,7 @@
   .loginLeafimg{
     height: 245px;
     width: 220px;
-    background-image: url("/images/unimandai/Leaf_1.png");
+    background-image: url("/images/Leaf_1.png");
     z-index: 100;
     background-position: center;
     position: relative;

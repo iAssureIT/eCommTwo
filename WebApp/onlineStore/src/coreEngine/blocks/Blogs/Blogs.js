@@ -5,13 +5,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';
 import React from 'react';
-// import "../../../sites/currentSite/blocks/Blogs.css";
+
 import "../../../sites/4_UniMandai/blocks/Blogs.css";
 
+import title_lastest_from from "../../../sites/currentSite/images/title-lastest-from.png";
+import one 		from "../../../sites/currentSite/images/1.jpg";
+import two 		from "../../../sites/currentSite/images/2.jpg";
+import three 	from "../../../sites/currentSite/images/3.jpg";
 
 export default class OurCources extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props);;
 		this.state = {
 
 			responsive:{
@@ -32,25 +36,19 @@ export default class OurCources extends React.Component {
 								blogDate:"DEC 17,2016",
 								blogTitle:"Learn On Organic Farms",
 								blogPara:"Post by :FreshFood",
-								bloggerImg:"/images/1.jpg",
-								// smallimg:"img/icon1.png"
-								
+								bloggerImg:one,
 							},
 							{
 								blogDate:"DEC 17,2016",
 								blogTitle:"What is organic farming?",
 								blogPara:"Post by :FreshFood",
-								bloggerImg:"/images/2.jpg",
-								// smallimg:"img/icon2.png"
-								
+								bloggerImg:two,
 							},
 							{
 								blogDate:"DEC 17,2016",
 								blogTitle:"Advantages of Organic Meat",
 								blogPara:"Post by :FreshFood",
-								bloggerImg:"/images/3.jpg",
-								// smallimg:"img/icon3.png"
-								
+								bloggerImg:three,
 							},
 
 						  ]				  
@@ -65,7 +63,7 @@ export default class OurCources extends React.Component {
 				<div className="container col-lg-12 col-md-12 hidden-xs hidden-sm ocWrap">
 					<div className="mtop65">
 						 <div className="col-lg-12 ">
-							<img src="/images/title-lastest-from.png" className="col-lg-offset-6 blogTopImg"/>
+							<img src={title_lastest_from} className="col-lg-offset-6 blogTopImg"/>
 					
 						   </div>
 						   

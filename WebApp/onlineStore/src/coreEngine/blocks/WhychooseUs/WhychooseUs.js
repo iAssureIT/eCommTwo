@@ -1,73 +1,62 @@
 import React from 'react';
+
 import '../../../sites/4_UniMandai/blocks/WhychooseUs.css';
+import icon_choose_1 	from '../../../sites/currentSite/images/icon-choose-1.png';
+import icon_choose_2 	from '../../../sites/currentSite/images/icon-choose-2.png';
+import icon_choose_3 	from '../../../sites/currentSite/images/icon-choose-3.png';
+import icon_choose_4 	from '../../../sites/currentSite/images/icon-choose-4.png';
+import icon_choose_5 	from '../../../sites/currentSite/images/icon-choose-5.png';
+import icon_choose_6 	from '../../../sites/currentSite/images/icon-choose-6.png';
+import images_choose 	from "../../../sites/currentSite/images/images-choose.jpg";
+import one 						from '../../../sites/currentSite/images/1.jpg';
 
 export default class OurCources extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-
 			"OurCources"		: [
+								{
+									blogDate:"DEC 17,2016",
+									blogTitle:"100% Organic",
+									blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor.",
+									bloggerImg:one,
+									blogsubimg:icon_choose_1,
+								},
+								{
+									blogDate:"DEC 17,2016",
+									blogTitle:"Family healthy",
+									blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+									blogsubimg:icon_choose_2,
+								},
+								{
+									blogDate:"DEC 17,2016",
+									blogTitle:"Always Fresh",
+									blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+									blogsubimg:icon_choose_3,
+								},
+						],
+
+		    "OurCourcesmaster" : [
 							{
 								blogDate:"DEC 17,2016",
 								blogTitle:"100% Organic",
 								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor.",
-								bloggerImg:"/images/1.jpg",
-								blogsubimg:"/images/icon-choose-1.png",
-								// smallimg:"img/icon1.png"
-								
+								bloggerImg:one,
+								blogsubimg:icon_choose_4,
 							},
 							{
 								blogDate:"DEC 17,2016",
 								blogTitle:"Family healthy",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",
-								
-								blogsubimg:"/images/icon-choose-2.png",
-								// smallimg:"img/icon2.png"
-								
+								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+								blogsubimg:icon_choose_5,
 							},
 							{
 								blogDate:"DEC 17,2016",
 								blogTitle:"Always Fresh",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",
-								
-								blogsubimg:"/images/icon-choose-3.png",
-								// smallimg:"img/icon3.png"
-								
+								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+								blogsubimg:icon_choose_6,
 							},
-
-						  ],
-
-		    "OurCourcesmaster"		: [
-							{
-								blogDate:"DEC 17,2016",
-								blogTitle:"100% Organic",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor.",
-								bloggerImg:"/images/1.jpg",
-								blogsubimg:"/images/icon-choose-4.png",
-								// smallimg:"img/icon1.png"
-								
-							},
-							{
-								blogDate:"DEC 17,2016",
-								blogTitle:"Family healthy",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",
-								
-								blogsubimg:"/images/icon-choose-5.png",
-								// smallimg:"img/icon2.png"
-								
-							},
-							{
-								blogDate:"DEC 17,2016",
-								blogTitle:"Always Fresh",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",
-								
-								blogsubimg:"/images/icon-choose-6.png",
-								// smallimg:"img/icon3.png"
-								
-							},
-
-
-						  ]				  
+						]				  
 	};
 	}
 
@@ -108,7 +97,7 @@ export default class OurCources extends React.Component {
 		                		}
 		                	</div>
 		                		<div className="col-lg-4">
-		                		 <img src="/images/images-choose.jpg"/>
+		                		 <img src={images_choose}/>
 		                		</div>
                             <div className="col-lg-offset-1 col-lg-3 courceblockDiv1 movemasterdiv">
                            {/*  <div className=" col-md-2"></div>*/}

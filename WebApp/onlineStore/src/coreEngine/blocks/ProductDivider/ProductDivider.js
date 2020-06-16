@@ -36,7 +36,7 @@ export default class ProductDivider extends Component {
 										?
 										<img src={data.categoryImage} alt="home banner" className="divImage"/>
 										:
-										<img src="/images/notavailable.jpg" alt="home banner" className="divImage"/>
+										<img src="../../../sites/currentSite/images/notavailable.jpg" alt="home banner" className="divImage"/>
 										}
 									</a>
 									<div className=" figcaption1">

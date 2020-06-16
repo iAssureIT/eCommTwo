@@ -319,7 +319,7 @@ class ProductViewEcommerceBestSellers extends Component {
               <div className="modal-dialog modal-lg dialog">
                 <div className="modal-content">  
                 <div className="modal-header">
-                  <img src="/images/Icon.png" />
+                  <img src="../../../sites/currentSite/images/Icon.png" />
                   <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                   <h4 className="modal-title"></h4>
                 </div>                 

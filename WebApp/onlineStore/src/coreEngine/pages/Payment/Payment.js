@@ -56,7 +56,7 @@ class Payment extends Component {
             <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | OrderID -  {this.state.orderData.orderID}</p>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <strong class="box-title">
+                <strong className="box-title">
                   <span>Shipping Address</span>
                 </strong>
                 <div className="box-content">
@@ -69,7 +69,7 @@ class Payment extends Component {
                 </div>
               </div>
               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                <strong class="box-title">
+                <strong className="box-title">
                   <span>Payment Method</span>
                 </strong>
                 <div className="box-content">
@@ -79,7 +79,7 @@ class Payment extends Component {
                 </div>
               </div>
               <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                <strong class="box-title">
+                <strong className="box-title">
                   <span>Order Summary</span>
                 </strong>
                 <div className="box-content">

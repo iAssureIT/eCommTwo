@@ -417,7 +417,7 @@ class SearchProductCollage extends Component {
             <div className="modal-dialog modal-lg">
               <div className="modal-content">
                 <div className="modal-header">
-                  <img src="/images/Icon.png" alt="Icon" />
+                  <img src="../../../sites/currentSite/images/Icon.png" alt="Icon" />
                   <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                 </div>
                 <div className="modal-body">

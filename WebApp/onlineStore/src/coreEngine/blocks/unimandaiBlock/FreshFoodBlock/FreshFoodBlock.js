@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 // import './FreshFoodBlock.css';
 
 import "../../../../sites/currentSite/blocks/FreshFoodBlock.css";
+import freshFoodImg1   from "../../../../sites/currentSite/images/freshFoodImg1.jpg";
+import bgBorderCenter  from "../../../../sites/currentSite/images/bg-border-center.png";
+import icon_shipping_1 from "../../../../sites/currentSite/images/icon-shipping-1.png";
+import icon_shipping_2 from "../../../../sites/currentSite/images/icon-shipping-2.png";
+import icon_shipping_3 from "../../../../sites/currentSite/images/icon-shipping-3.png";
+import icon_shipping_4 from "../../../../sites/currentSite/images/icon-shipping-4.png";
 
 class FreshFoodBlock extends Component{
     constructor(props){
@@ -13,7 +19,7 @@ class FreshFoodBlock extends Component{
             <div className="container container-ver2 freshFood">
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <img className="img-responsive hidden-table" src="images/unimandai/freshFoodImg1.jpg" alt="banner"/>            
+                        <img className="img-responsive hidden-table" src={freshFoodImg1} alt="banner"/>            
                     </div>
                     
                     <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -24,64 +30,40 @@ class FreshFoodBlock extends Component{
 
                         <div className="align-center border-choose">
                             <div className="images">
-                                <img src="/images/unimandai/bg-border-center.png" alt="icon" />
+                                <img src={bgBorderCenter} alt="icon" />
                             </div>
                         </div>
 
                         <div className="shippingBlock">
                             <div className="col-md-3 col-sm-3 col-xs-6">
                                 <div className="border">
-                                    <img src="/images/icon-shipping-1.png" alt="images"/>
+                                    <img src={icon_shipping_1} alt="images"/>
                                     <h3>Free Shipping</h3>
                                     <p>ON ORDER OVER $500</p>
                                 </div>
                             </div>
                             <div className="col-md-3 col-sm-3 col-xs-6">
                                 <div className="border">
-                                    <img src="/images/icon-shipping-2.png" alt="images"/>
+                                    <img src={icon_shipping_2} alt="images"/>
                                     <h3>Support</h3>
                                     <p>LIFE TIME SUPPORT 24/7</p>
                                 </div>
                             </div>
                             <div className="col-md-3 col-sm-3 col-xs-6">
                                 <div className="border">
-                                    <img src="/images/icon-shipping-3.png" alt="images"/>
+                                    <img src={icon_shipping_3} alt="images"/>
                                     <h3>Help Partner</h3>
                                     <p>HELP ALL ASPECTS</p>
                                 </div>
                             </div>
                             <div className="col-md-3 col-sm-3 col-xs-6">
                                 <div className="border">
-                                    <img src="/images/icon-shipping-4.png" alt="images"/>
+                                    <img src={icon_shipping_4} alt="images"/>
                                     <h3>Contact With Us</h3>
                                     <p>+07 (0) 7782 9137</p>
                                 </div>
                             </div>
                         </div>
-                        {/* <div className=" secondSection">
-                            <div class="col-md-3 col-sm-3 col-xs-6 shippingBox">
-                                <img src="/images/icon-shipping-1.png" alt="images" className="Shippingimage"/>
-                                <h4 className="text-center"><b>FREE SHIPPING</b></h4>
-                                <p className="text-center onOrder">ON ORDER OVER $500</p>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-6 shippingBox">
-                                <img src="/images/icon-shipping-2.png" alt="images" className="Shippingimage"/>
-                                <h4 className="text-center"><b>SUPPORT</b></h4>
-                                <p className="text-center onOrder">LIFE TIME SUPPORT 24/7</p>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-6 shippingBox">
-                                <img src="/images/icon-shipping-3.png" alt="images" className="Shippingimage"/>
-                                <h4 className="text-center"><b>HELP PARTNER</b></h4>
-                                <p className="text-center onOrder">HELP ALL ASPECTS</p>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-6 shippingBox1">
-                                <img src="/images/icon-shipping-4.png" alt="images" className="Shippingimage"/>
-                                <h4 className="text-center"><b>CONTACT WITH US</b></h4>
-                                <p className="text-center onOrder">+07 (0) 7782 9137</p>
-                            </div>
-						</div> */}
-
-
                     </div>
                 </div>
             </div>

@@ -19,7 +19,7 @@ export default class Banner extends Component {
 							<div className="row">
 								<Carousel showArrows={true} onChange={onChange} onClickItem={onClickItem} onClickThumb={onClickThumb}>
 					                <div>
-					                    <img src="/images/Banner_1.jpg" />
+					                    <img src="../../../sites/currentSite/images/Banner_1.jpg" />
 					                    <p className="legend">Legend 1</p>
 					                </div>
 					                <div>

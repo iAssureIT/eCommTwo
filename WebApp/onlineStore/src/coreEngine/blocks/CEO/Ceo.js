@@ -87,19 +87,19 @@ export default class Ceo extends React.Component {
 		     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cutom_indicator"id="cutom_indicator1"> 
                <ol className="carousel-indicators custom_carousel-indicators col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			      <li data-target="#myCarousel" data-slide-to="0" className=" slider_image1" >
-			        {/*<img src="/images/about2.jpg" className="slideimg" alt="Los Angeles"  />*/}
+			        {/*<img src="../../../sites/currentSite/images/about2.jpg" className="slideimg" alt="Los Angeles"  />*/}
 			      </li>
 			      <li data-target="#myCarousel" data-slide-to="1" className=" slider_image2">
-	{/*		        <img src="/images/about3.jpg" className="slideimg" alt="Chicago"  />*/}
+	{/*		        <img src="../../../sites/currentSite/images/about3.jpg" className="slideimg" alt="Chicago"  />*/}
 			      </li>
 			      <li data-target="#myCarousel" data-slide-to="2" className="active slider_image3">
-			        {/*<img src="/images/about4.jpg" className="slideimg" alt="New york"  />*/}
+			        {/*<img src="../../../sites/currentSite/images/about4.jpg" className="slideimg" alt="New york"  />*/}
 			      </li>
 			       <li data-target="#myCarousel" data-slide-to="3" className=" slider_image4">
-			       {/* <img src="/images/about5.jpg" className="slideimg" alt="New york"  />*/}
+			       {/* <img src="../../../sites/currentSite/images/about5.jpg" className="slideimg" alt="New york"  />*/}
 			      </li>
 			      <li data-target="#myCarousel" data-slide-to="4" className=" slider_image5">
-			       {/* <img src="/images/about5.jpg" className="slideimg" alt="New york"  />*/}
+			       {/* <img src="../../../sites/currentSite/images/about5.jpg" className="slideimg" alt="New york"  />*/}
 			      </li>
 		      </ol>
              </div>
@@ -130,26 +130,26 @@ export default class Ceo extends React.Component {
                 dotData={true}
 			>
 			 <div className="items">
-		    	<img className="img img-responsive banner1upImg" src="/images/brand-1.png" alt="banner"  />
+		    	<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/brand-1.png" alt="banner"  />
 		    </div>
 		    <div className="items">
 		    	
 		    	<div className=" ">
-		    	<img className="img img-responsive banner1upImg" src="/images/brand-2.png" alt="banner"  />
+		    	<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/brand-2.png" alt="banner"  />
 		    		
 		    	</div>
 		    </div>
 		    <div className="items">
-		    	<img className="img img-responsive banner1upImg" src="/images/brand-3.png" alt="banner"  />
+		    	<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/brand-3.png" alt="banner"  />
 		    </div>
 		     <div className="items">
-		    	<img className="img img-responsive banner1upImg" src="/images/brand-4.png" alt="banner"  />
+		    	<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/brand-4.png" alt="banner"  />
 		    </div>
 		     <div className="items">
-		    	<img className="img img-responsive banner1upImg" src="/images/brand-5.png" alt="banner"  />
+		    	<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/brand-5.png" alt="banner"  />
 		    </div>
 		     <div className="items">
-		    	<img className="img img-responsive banner1upImg" src="/images/brand-6.png" alt="banner"  />
+		    	<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/brand-6.png" alt="banner"  />
 		    </div>
 		{/*	  <div className="container container-ver2" id="slickblock">
             <div className="brand-content owl-carousel owl-loaded owl-drag">    
@@ -158,81 +158,81 @@ export default class Ceo extends React.Component {
                     <div className="owl-item cloned" style={{width: "195px"}}>
                       <div className="items col-lg-2" id="bottom_slick">
                         <a href="#" title="brand">
-                          <img className="img-responsive" src="/images/brand-1.png" alt="Brand"/>
+                          <img className="img-responsive" src="../../../sites/currentSite/images/brand-1.png" alt="Brand"/>
                         </a>
                       </div>
                     </div>
                   <div className="owl-item cloned" style={{width: "195px"}}>
                     <div className="items">
                         <a href="#" title="brand">
-                        <img className="img-responsive" src="/images/brand-2.png" alt="Brand"/>
+                        <img className="img-responsive" src="../../../sites/currentSite/images/brand-2.png" alt="Brand"/>
                         </a>
                      </div>
                     </div>
                     <div className="owl-item cloned" style={{width: "195px"}}>
                      <div className="items">
                         <a href="#" title="brand">
-                        <img className="img-responsive" src="/images/brand-3.png" alt="Brand"/></a>
+                        <img className="img-responsive" src="../../../sites/currentSite/images/brand-3.png" alt="Brand"/></a>
                      </div>
                    </div>
                    <div className="owl-item cloned" style={{width: "195px"}}>
                     <div className="items">
                         <a href="#" title="brand">
-                        <img className="img-responsive" src="/images/brand-4.png" alt="Brand"/></a>
+                        <img className="img-responsive" src="../../../sites/currentSite/images/brand-4.png" alt="Brand"/></a>
                      </div>
                     </div>
                     <div className="owl-item cloned" style={{width: "195px"}}>
                      <div className="items">
                         <a href="#" title="brand">
-                        <img className="img-responsive" src="/images/brand-5.png" alt="Brand"/></a>
+                        <img className="img-responsive" src="../../../sites/currentSite/images/brand-5.png" alt="Brand"/></a>
                     </div>
                     </div>
                     <div className="owl-item cloned" style={{width: "195px"}}>
                      <div className="items">
                         <a href="#" title="brand">
-                         <img className="img-responsive" src="/images/brand-6.png" alt="Brand"/></a>
+                         <img className="img-responsive" src="../../../sites/currentSite/images/brand-6.png" alt="Brand"/></a>
                     </div>
                     </div>
                     
                     <div className="owl-item cloned" style={{width: "195px"}}>
                     <div className="items">
                         <a href="#" title="brand">
-                        <img className="img-responsive" src="/images/brand-1.png" alt="Brand"/>
+                        <img className="img-responsive" src="../../../sites/currentSite/images/brand-1.png" alt="Brand"/>
                         </a>
                     </div>
                     </div>
                     <div className="owl-item cloned" style={{width: "195px"}}>
                     <div className="items">
                         <a href="#" title="brand">
-                        <img className="img-responsive" src="/images/brand-2.png" alt="Brand"/>
+                        <img className="img-responsive" src="../../../sites/currentSite/images/brand-2.png" alt="Brand"/>
                         </a>
                     </div>
                     </div>
                     <div className="owl-item cloned" style={{width: "195px"}}>
                     <div className="items">
                         <a href="#" title="brand">
-                        <img className="img-responsive" src="/images/brand-3.png" alt="Brand"/>
+                        <img className="img-responsive" src="../../../sites/currentSite/images/brand-3.png" alt="Brand"/>
                         </a>
                     </div>
                     </div>
                         <div className="owl-item cloned" style={{width: "195px"}}>
                         <div className="items">
                             <a href="#" title="brand">
-                            <img className="img-responsive" src="/images/brand-4.png" alt="Brand"/>
+                            <img className="img-responsive" src="../../../sites/currentSite/images/brand-4.png" alt="Brand"/>
                             </a>
                         </div>
                         </div>
                         <div className="owl-item cloned" style={{width: "195px"}}>
                         <div className="items">
                             <a href="#" title="brand">
-                            <img className="img-responsive" src="/images/brand-5.png" alt="Brand"/>
+                            <img className="img-responsive" src="../../../sites/currentSite/images/brand-5.png" alt="Brand"/>
                             </a>
                         </div>
                         </div>
                         <div className="owl-item cloned" style={{width: "195px"}}>
                         <div className="items">
                             <a href="#" title="brand">
-                            <img className="img-responsive" src="/images/brand-6.png" alt="Brand"/>
+                            <img className="img-responsive" src="../../../sites/currentSite/images/brand-6.png" alt="Brand"/>
                             </a>
                         </div>
                         </div>

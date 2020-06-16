@@ -90,7 +90,7 @@ export default class Aboutusclient extends Component {
 		                    <div className="col-lg-2">
 			                    <div className="">
 			                    	<div className="aboutusclientcontainer">
-									  <img src="/images/brand1.jpg" alt="Avatar" className="image2" />
+									  <img src="../../../sites/currentSite/images/brand1.jpg" alt="Avatar" className="image2" />
 									  <div className="overlay">
 									  </div>
 									</div>
@@ -99,7 +99,7 @@ export default class Aboutusclient extends Component {
 		                    <div className="col-lg-2">
 			                    <div className="">
 			                    	<div className="aboutusclientcontainer">
-									  <img src="/images/brand2.jpg" alt="Avatar" className="image2" />
+									  <img src="../../../sites/currentSite/images/brand2.jpg" alt="Avatar" className="image2" />
 									  <div className="overlay">
 									  </div>
 									</div>
@@ -108,7 +108,7 @@ export default class Aboutusclient extends Component {
 		                    <div className="col-lg-2">
 			                    <div className="">
 			                    	<div className="aboutusclientcontainer">
-									  <img src="/images/brand3.jpg" alt="Avatar" className="image2" />
+									  <img src="../../../sites/currentSite/images/brand3.jpg" alt="Avatar" className="image2" />
 									  <div className="overlay">
 									  </div>
 									</div>
@@ -117,7 +117,7 @@ export default class Aboutusclient extends Component {
 		                    <div className="col-lg-2">
 			                    <div className="">
 			                    	<div className="aboutusclientcontainer">
-									  <img src="/images/brand4.jpg" alt="Avatar" className="image2" />
+									  <img src="../../../sites/currentSite/images/brand4.jpg" alt="Avatar" className="image2" />
 									  <div className="overlay">
 									  </div>
 									</div>
@@ -126,7 +126,7 @@ export default class Aboutusclient extends Component {
 		                    <div className="col-lg-2">
 			                    <div className="">
 			                    	<div className="aboutusclientcontainer">
-									  <img src="/images/brand5.jpg" alt="Avatar" className="image2" />
+									  <img src="../../../sites/currentSite/images/brand5.jpg" alt="Avatar" className="image2" />
 									  <div className="overlay">
 									  </div>
 									</div>
@@ -135,7 +135,7 @@ export default class Aboutusclient extends Component {
 		                    <div className="col-lg-2">
 			                    <div className="">
 			                    	<div className="aboutusclientcontainer">
-									  <img src="/images/brand6.jpg" alt="Avatar" className="image2" />
+									  <img src="../../../sites/currentSite/images/brand6.jpg" alt="Avatar" className="image2" />
 									  <div className="overlay">
 									  </div>
 									</div>

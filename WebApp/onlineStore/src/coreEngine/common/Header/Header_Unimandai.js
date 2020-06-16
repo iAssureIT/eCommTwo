@@ -403,7 +403,7 @@ componentWillMount() {
                               <div className="modal-content col-lg-8 col-lg-offset-2">
                                 <div className="row">
                                   <div className="modal-header">
-                                    <img src="/images/Icon.png" />
+                                    <img src="../../../sites/currentSite/images/Icon.png" />
                                     <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                                     <h4 className="modal-title modalheadingcont">CUSTOMER CARE</h4>
                                   </div>
@@ -451,7 +451,7 @@ componentWillMount() {
                     <div className="col-lg-12">
                       <div className="row">
                         <div className="col-lg-7">
-                         {/*<img className="usericon" src="/images/icon-user-header.png"/>My Account*/}
+                         {/*<img className="usericon" src="../../../sites/currentSite/images/icon-user-header.png"/>My Account*/}
                          {
 
                             user_ID ?
@@ -501,7 +501,7 @@ componentWillMount() {
                           }
                         </div>
                         <div className="col-lg-7 ">
-                         <img className="usericon" src="/images/icon-phone-header.png"/><span className="contactNo"><b>070-7782-9137</b></span>
+                         <img className="usericon" src="../../../sites/currentSite/images/icon-phone-header.png"/><span className="contactNo"><b>070-7782-9137</b></span>
                         </div>
                         <div className="col-lg-7">
                           
@@ -515,7 +515,7 @@ componentWillMount() {
                   <div className="row">
                     <div className="col-lg-8">
                       <div className="row">
-                       <img src="/images/unimanda1Logo.png"/>
+                       <img src="../../../sites/currentSite/images/unimanda1Logo.png"/>
                       </div>
                     </div>
                   </div>

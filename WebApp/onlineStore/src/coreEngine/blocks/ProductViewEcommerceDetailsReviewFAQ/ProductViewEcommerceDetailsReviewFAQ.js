@@ -82,7 +82,7 @@ export default class ProductViewEcommerceDetailsReviewFAQ extends Component {
                                 
                               </div>
                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 textAlignLeft NOpadding">
-                                {/* <img src="/images/userImage.png"/> */}
+                                {/* <img src="../../../sites/currentSite/images/userImage.png"/> */}
                                 By<b><span> {data.customerName} </span></b>
                                 
                               </div>

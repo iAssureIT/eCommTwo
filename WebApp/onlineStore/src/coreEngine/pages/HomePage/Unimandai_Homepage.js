@@ -73,7 +73,7 @@ class HomePage extends Component {
       
       axios.get("/api/products/get/listbytype/"+productType1)
             .then((response)=>{
-              // console.log('featuredProducts' , response.data)
+              console.log('featuredProducts = ' , response.data)
               this.setState({
                 featuredproductsloading:false,
                 featuredProducts : response.data
@@ -88,6 +88,7 @@ class HomePage extends Component {
       var productType2 = 'exclusive';
       axios.get("/api/products/get/listbytype/"+productType2)
             .then((response)=>{
+              console.log('exclusiveProductsData = ' , response.data)
 
               this.setState({
                 exclusiveprloading:false,
@@ -175,73 +176,63 @@ class HomePage extends Component {
       <div className="container-fluid uniHomepageWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="row">         
-            {/* {localStorage.getItem("preferences") === "true"
-              ?          
-              
-                <AskPincode />
-               
+            {localStorage.getItem("preferences") === "true"
+              ?
+                <AskPincode />               
               :
                 null
-            } */}
-            
-            <AskPincode />
+            }
             <EcommerceBanner_Unimandai/>
             <HomePageBanner2 />
             <FreshFoodBlock />
-
           </div>
-            <div className="homeRow">
-            { /*new product */}
-            {
-              this.state.exclusiveprloading ?  
-              <Loader type="carouselloader" productLoaderNo = {4}/>      
-              : 
-              (this.state.exclusiveProducts.length > 0 ? 
-                <EcommerceProductCarousel title={'FLASH SALE'} newProducts={this.state.exclusiveProducts}
-                 type={'exclusive'} categories={this.state.categories} 
-                 getWishData={this.getWishData.bind(this)} wishList={this.state.wishList}
-                 changeProductCateWise={this.changeProductCateWise.bind(this)}/>
-                :
-                null
-              )
-            }
-            {/* {
-              this.state.bestsellerloading ?  
-              <Loader type="carouselloader" productLoaderNo = {4}/>      
-              :
-              ( this.state.bestSellerProducts.length  > 0 ? 
-                <Ecommercenewproductcaro   title={'BEST SELLERS'} newProducts={this.state.bestSellerProducts} type={'bestSeller'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>
-                :
-                null
-                )
-            } */}
-            
-          {/*-----------------shop by category block---------------------*/}
+          <div className="homeRow">
+            {/*-----------------shop by category block---------------------*/}
             <ProductDivider categories={this.state.categories} />
-            
-            {/* {
-              this.state.newproductloading ?  
-              <Loader type="carouselloader" productLoaderNo = {4}/>      
-              :
-              (this.state.newProducts.length >0 ? 
-              <Ecommercenewproductcaro title={'NEW PRODUCTS'} newProducts={this.state.newProducts} type={'newProducts'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>                
-              :
-              null )
-            } */}
-            
+          </div>
+
+          <div className="homeRow">
             {
               this.state.featuredproductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
               :
               (this.state.featuredProducts.length > 0 ? 
-                <Ecommercenewproductcaro  title={'FEATURE PRODUCTS'} newProducts={this.state.featuredProducts} type={'featured'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories} changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                <Ecommercenewproductcaro  
+                    title={'FEATURE PRODUCTS'} 
+                    newProducts={this.state.featuredProducts} 
+                    type={'featured'} 
+                    getWishData={this.getWishData.bind(this)} 
+                    wishList={this.state.wishList} 
+                    categories={this.state.categories} 
+                    changeProductCateWise={this.changeProductCateWise.bind(this)}/>
                 : null
               )
             }
-            
           </div>
+
         </div>
+
+
         <Unimandai_SaleProductDivider />
+        <div className="homeRow">
+          {
+            this.state.exclusiveprloading ?  
+            <Loader type="carouselloader" productLoaderNo = {4}/>      
+            : 
+            (this.state.exclusiveProducts.length > 0 ? 
+              <EcommerceProductCarousel 
+                  title={'EXCLUSIVE PRODUCTS'} 
+                  newProducts={this.state.exclusiveProducts}
+                  type={'exclusive'} 
+                  categories={this.state.categories} 
+                  getWishData={this.getWishData.bind(this)} 
+                  wishList={this.state.wishList}
+                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
+              :
+              null
+            )
+          }
+        </div>
 
          <WhychooseUs/>
 

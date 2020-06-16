@@ -78,63 +78,60 @@ class Routes extends Component{
       }
     render(){ 
     if(process.env.REACT_APP_PROJECT_NAME === '4_UniMandai'){  
-    if(this.state.loggedIn ===true ){
-        const WebLayout = () => (
-          <div className="skin-blue fixed sidebar-mini">    
-            <Route path="/" exact strict component={ Unimandai_Homepage } /> 
-            <Route path="/login"                    exact strict component={ Unimandai_Homepage } />
-            <Route path="/signup"                   exact strict component={ Unimandai_Homepage } />
-            <Route path="/forgotpassword"           exact strict component={ Unimandai_Homepage } />
-            <Route path="/resetpassword/:user_ID"   exact strict component={ Unimandai_Homepage } /> 
-            <Route path="/verify-account"           exact strict component={ VerifyAccount } />
-            <Route path="/confirm-otp/:user_ID"     exact strict component={ Unimandai_Homepage } /> 
-            <Route path="/cart"                     exact strict component={ Cart } />
-            <Route path="/checkout"                 exact strict component={ Checkout } />
-            <Route path="/my-orders"                exact strict component={ MyOrders } />
-            <Route path="/my-ordersUni"             exact strict component={ MyOrders_Unimandai } />
-            <Route path="/view-order/:order_ID"     exact strict component={ ViewOrder } />
-            <Route path="/shipment-tracking"        exact strict component={ ShipmentTracking } />
-            <Route path="/productdetails/:productID"             exact strict component={ ProductDetailsEcommerce } />
-            <Route path="/productdetails/:productURL/:productID"             exact strict component={ ProductDetailsEcommerce } />
-            <Route path="/searchProducts"           exact strict component={ SearchProduct } />
-            <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />
-            <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
-            <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
-            <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />
-            
-            <Route path="/profile"              exact strict component={ Edituser } />
-            <Route path="/payment/:order_ID"            exact strict component={ Payment } />
-            <Route path="/wishlist"            exact strict component={ Wishlist } />
-            <Route path="/wishlistuni"            exact strict component={ wishlist_unimandai } />
-            <Route path="/productreview"            exact strict component={ Productreview } />
-            <Route path="/account"            exact strict component={ Account } />
-            <Route path="/edit"            exact strict component={ EditAccount } />
-            <Route path="/address-book"            exact strict component={ AddressBook } />
-            {/* <Route path="/address/:deliveryAddressID"            exact strict component={ Address } /> */}
-            {/* <Route path="/address"            exact strict component={ Address } /> */}
-            <Route path="/returnpolicy"            exact strict component={ ReturnPolicy } />
-            <Route path="/privacypolicy"             exact strict component={PrivacyPolicy}  />
-            <Route path="/about-us"             exact strict component={Aboutuspage}  />
-            <Route path="/sitemap" exact strict component={SiteMap}  />
-            <Route path="/contact-us" exact strict component={ContactPage}  />
-          </div>
-        );
-        return (
-        <div>
-          <Router>
-            <UnimandaiHeader />
-            <Switch>
-              <Route path="/" component={ WebLayout } />
-            </Switch>
-            <Footer_Unimandai />
-          </Router>
-        </div>
-        );
-    }  
+        if(this.state.loggedIn ===true ){
+            const WebLayout = () => (
+              <div className="skin-blue fixed sidebar-mini">    
+                <Route path="/" exact strict component={ Unimandai_Homepage } /> 
+                <Route path="/login"                    exact strict component={ Unimandai_Homepage } />
+                <Route path="/signup"                   exact strict component={ Unimandai_Homepage } />
+                <Route path="/forgotpassword"           exact strict component={ Unimandai_Homepage } />
+                <Route path="/resetpassword/:user_ID"   exact strict component={ Unimandai_Homepage } /> 
+                <Route path="/verify-account"           exact strict component={ VerifyAccount } />
+                <Route path="/confirm-otp/:user_ID"     exact strict component={ Unimandai_Homepage } /> 
+                <Route path="/cart"                     exact strict component={ Cart } />
+                <Route path="/checkout"                 exact strict component={ Checkout } />
+                <Route path="/my-orders"                exact strict component={ MyOrders } />
+                <Route path="/my-ordersUni"             exact strict component={ MyOrders_Unimandai } />
+                <Route path="/view-order/:order_ID"     exact strict component={ ViewOrder } />
+                <Route path="/shipment-tracking"        exact strict component={ ShipmentTracking } />
+                <Route path="/productdetails/:productID"             exact strict component={ ProductDetailsEcommerce } />
+                <Route path="/productdetails/:productURL/:productID"             exact strict component={ ProductDetailsEcommerce } />
+                <Route path="/searchProducts"           exact strict component={ SearchProduct } />
+                <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />
+                <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
+                <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
+                <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />
+                
+                <Route path="/profile"              exact strict component={ Edituser } />
+                <Route path="/payment/:order_ID"            exact strict component={ Payment } />
+                <Route path="/wishlist"            exact strict component={ Wishlist } />
+                <Route path="/wishlistuni"            exact strict component={ wishlist_unimandai } />
+                <Route path="/productreview"            exact strict component={ Productreview } />
+                <Route path="/account"            exact strict component={ Account } />
+                <Route path="/edit"            exact strict component={ EditAccount } />
+                <Route path="/address-book"            exact strict component={ AddressBook } />
+                {/* <Route path="/address/:deliveryAddressID"            exact strict component={ Address } /> */}
+                {/* <Route path="/address"            exact strict component={ Address } /> */}
+                <Route path="/returnpolicy"            exact strict component={ ReturnPolicy } />
+                <Route path="/privacypolicy"             exact strict component={PrivacyPolicy}  />
+                <Route path="/about-us"             exact strict component={Aboutuspage}  />
+                <Route path="/sitemap" exact strict component={SiteMap}  />
+                <Route path="/contact-us" exact strict component={ContactPage}  />
+              </div>
+            );
+            return (
+            <div>
+              <Router>
+                <UnimandaiHeader />
+                <Switch>
+                  <Route path="/" component={ WebLayout } />
+                </Switch>
+                <Footer_Unimandai />
+              </Router>
+            </div>
+            );
+        }  
     else{
-        //const weburls = new Array('cart','checkout','my-orders','view-order','shipment-tracking','profile',);
-
-
         const WebLayout = () => (
           <div className="skin-blue fixed sidebar-mini">    
             <Route path="/" exact strict component={ Unimandai_Homepage } /> 

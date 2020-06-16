@@ -42,7 +42,8 @@ class Checkout extends Component {
             comment: false,
             giftOption: false,
             deliveryAddress: [],
-            pincodeExists:true
+            pincodeExists:true,
+            addressLine1 : ""
         }
         // this.getCartData();
         // this.getCompanyDetails();
@@ -262,10 +263,10 @@ class Checkout extends Component {
             .then((response) => {
                 console.log('res', response.data.deliveryAddress);
                 this.setState({
-                    "deliveryAddress": response.data.deliveryAddress,
-                    "username" : response.data.profile.fullName,
-                    "mobileNumber" : response.data.profile.mobile,
-                    "email" : response.data.profile.emailId
+                    "deliveryAddress"   : response.data.deliveryAddress,
+                    "username"          : response.data.profile.fullName,
+                    "mobileNumber"      : response.data.profile.mobile,
+                    "email"             : response.data.profile.emailId
                 });
             })
             .catch((error) => {
@@ -543,8 +544,9 @@ class Checkout extends Component {
             giftOption: this.state.giftOption === true ? false : true
         })
     }
-     placeOrder(event) {
+    placeOrder(event) {
         event.preventDefault();
+
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
         var checkoutAddess = $("input[name='checkoutAddess']:checked").val();
@@ -558,10 +560,10 @@ class Checkout extends Component {
         if(soldProducts.length > 0){
             this.setState({
                 messageData : {
-                  "type" : "outpage",
-                  "icon" : "fa fa-exclamation-circle",
+                  "type"    : "outpage",
+                  "icon"    : "fa fa-exclamation-circle",
                   "message" : "&nbsp; Please remove sold out products from cart to proceed to checkout.",
-                  "class": "warning",
+                  "class"   : "warning",
                   "autoDismiss" : true
                 }
               })
@@ -574,33 +576,32 @@ class Checkout extends Component {
             if (this.state.deliveryAddress && this.state.deliveryAddress.length > 0) {
                 // console.log("Inside delivery address available");
                 var deliveryAddress = this.state.deliveryAddress.filter((a, i) => {
-                    return a._id === checkoutAddess
-                })
+                                                                    return a._id === checkoutAddess
+                                                                })
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
-                    "name": deliveryAddress.length > 0 ? deliveryAddress[0].name : "",
-                    "email": deliveryAddress.length > 0 ? deliveryAddress[0].email : "",
-                    "mobileNumber": deliveryAddress.length > 0 ? deliveryAddress[0].mobile : "",
-                    "addType": deliveryAddress.length > 0 ? deliveryAddress[0].addType : "",
-                    "addressLine1": deliveryAddress.length > 0 ? deliveryAddress[0].addressLine1 : "",
-                    "addressLine2": deliveryAddress.length > 0 ? deliveryAddress[0].addressLine2 : "",
-                    "pincode": deliveryAddress.length > 0 ? deliveryAddress[0].pincode : "",
-                    "area": this.state.area,
-                    "city": this.state.city,
-                    "district" : this.state.district,
-                    "stateCode": this.state.stateCode,
-                    "state": this.state.state,
-                    "countryCode": this.state.countryCode,
-                    "country": this.country,
-                    "latitude" : this.state.latitude,
-                    "longitude": this.state.longitude,
-            
+                    "name"          : deliveryAddress.length > 0 ? deliveryAddress[0].name      : "",
+                    "email"         : deliveryAddress.length > 0 ? deliveryAddress[0].email     : "",
+                    "mobileNumber"  : deliveryAddress.length > 0 ? deliveryAddress[0].mobile    : "",
+                    "addType"       : deliveryAddress.length > 0 ? deliveryAddress[0].addType   : "",
+                    "addressLine1"  : deliveryAddress.length > 0 ? deliveryAddress[0].addressLine1 : "",
+                    "addressLine2"  : deliveryAddress.length > 0 ? deliveryAddress[0].addressLine2 : "",
+                    "pincode"       : deliveryAddress.length > 0 ? deliveryAddress[0].pincode   : "",
+                    "area"          : this.state.area,
+                    "city"          : this.state.city,
+                    "district"      : this.state.district,
+                    "stateCode"     : this.state.stateCode,
+                    "state"         : this.state.state,
+                    "countryCode"   : this.state.countryCode,
+                    "country"       : this.country,
+                    "latitude"      : this.state.latitude,
+                    "longitude"     : this.state.longitude,
                 }
                 
             }else{
                 // console.log("inside else new address");
                 addressValues = {
-                    "user_ID": localStorage.getItem('user_ID'),
+                    "user_ID"   : localStorage.getItem('user_ID'),
                     "name": this.state.username,
                     "email": this.state.email,
                     "addressLine1": this.state.addressLine1,
@@ -626,13 +627,13 @@ class Checkout extends Component {
                     .then((response) => {
                         $('.fullpageloader').hide();
                         this.setState({
-                        messageData : {
-                            "type" : "outpage",
-                            "icon" : "fa fa-check-circle",
-                            "message" : "&nbsp; "+response.data.message,
-                            "class": "success",
-                            "autoDismiss" : true
-                        }
+                            messageData : {
+                                "type" : "outpage",
+                                "icon" : "fa fa-check-circle",
+                                "message" : "&nbsp; "+response.data.message,
+                                "class": "success",
+                                "autoDismiss" : true
+                            }
                         })
                         setTimeout(() => {
                             this.setState({
@@ -652,6 +653,7 @@ class Checkout extends Component {
             // console.log('pls');
             axios.patch('/api/carts/payment', formValues)
             .then((response) => {
+
             })
             .catch((error) => {
                 console.log('error', error);
@@ -683,6 +685,7 @@ class Checkout extends Component {
                             "vendor_ID"         : a.productDetail.vendor_ID
                         }
                     })
+                    console.log("this.props.recentCartData[0].deliveryAddress = ",this.props.recentCartData[0].deliveryAddress,);
                     var orderData = {
                         user_ID         : localStorage.getItem('user_ID'),
                         cartItems       : cartItems,
@@ -711,7 +714,7 @@ class Checkout extends Component {
                                 messageData   : {},
                             })
                         }, 3000);
-                        this.props.history.push('/payment/' + result.data.order_ID);
+                        // this.props.history.push('/payment/' + result.data.order_ID);
                     })
                     .catch((error) => {
                         console.log("return to checkout");
@@ -728,6 +731,7 @@ class Checkout extends Component {
     }
     saveModalAddress(event) {
         event.preventDefault();
+
         this.modalvalidation();
         var addressValues = {
             "user_ID": localStorage.getItem('user_ID'),
@@ -976,7 +980,7 @@ class Checkout extends Component {
 
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
-                                                <input type="text" maxlength="50" ref="username" name="username" id="username" value={this.state.username} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                <input type="text" maxLength="50" ref="username" name="username" id="username" value={this.state.username} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Mobile Number <span className="required">*</span></label>
@@ -1192,7 +1196,7 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                                     <div className="modal-header checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <img src="/images/Icon.png" />
+                                                        <img src="../../../sites/currentSite/images/Icon.png" />
                                                         <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                                                         <h4 className="modal-title modalheadingcont">TERMS AND CONDITIONS</h4>
                                                     </div>

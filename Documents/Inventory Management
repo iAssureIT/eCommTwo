@@ -10,14 +10,13 @@ Admin Side
 
 6) Distribution to Franchise    				(TBD)  => 
 7) Delivery Challan 										(TBD)  => 
-8) Warehouse Master 										(Done) => UI+API+Integration - Karuna (Single Field Master)
+
 
 
 Reports 
-1) Warehousewise Stock Report 	(TBD)  => UI+API+Integration - Karuna
-2) Productwise Stock History 		(TBD)  => UI+API+Integration - Karuna
-3) Franchisewise Stock History 	(TBD)  => UI+API+Integration - Karuna
-4) Reorder Level Report 				(TBD)  => UI+API+Integration - Karuna
+1) Productwise Stock History 		(TBD)  => UI+API+Integration - Karuna
+2) Franchisewise Stock History 	(TBD)  => UI+API+Integration - Karuna
+3) Reorder Level Report 				(TBD)  => UI+API+Integration - Karuna
 
 
 
@@ -104,4 +103,30 @@ Warehouse | Current  | Purchase |   Total  | Reorder |Category|  Sub   |
 	  W1    | 2000 Kg  |  10 Rs   | Rs20,000 |  750 Kg |   xxx  |  xxx   |
 					|          | 			    |          |          |          |         |        |        |
 --------------------------------------------------------------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============
+New features
+Warehouse Master 										(Done) => UI+API+Integration - Karuna (Single Field Master)
+
+
+Reports 
+1) Warehousewise Stock Report 	(TBD)  => UI+API+Integration - Karuna
+
 

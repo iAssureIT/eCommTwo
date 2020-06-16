@@ -82,7 +82,7 @@ export default class ProducthomeDetailsReviewFAQ extends Component {
                                   })
                                 }                        </div>    
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <img src="/images/userImage.png"/>
+                            <img src="../../../sites/currentSite/images/userImage.png"/>
                             <p>by {data.customerName}</p>
                             <p>{moment(data.createdAt).format('DD-MM-YYYY')}</p>
                         </div>    

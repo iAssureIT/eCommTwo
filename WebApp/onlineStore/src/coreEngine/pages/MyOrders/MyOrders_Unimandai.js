@@ -555,7 +555,7 @@ export default class MyOrders extends Component {
                     })
                     :
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 textAlignCenter">
-                      <img src="/images/emptyorder.png" alt="" />
+                      <img src="../../../sites/currentSite/images/emptyorder.png" alt="" />
                     </div>
                 }
 
@@ -566,7 +566,7 @@ export default class MyOrders extends Component {
                   <div className="modal-dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <img src="/images/Icon.png" alt="" />
+                        <img src="../../../sites/currentSite/images/Icon.png" alt="" />
                         <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                         <h4 className="modal-title modalheadingcont">RETURN PRODUCT</h4>
                       </div>
@@ -636,7 +636,7 @@ export default class MyOrders extends Component {
                   <div className="modal-dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <img src="/images/Icon.png" alt="" />
+                        <img src="../../../sites/currentSite/images/Icon.png" alt="" />
                         <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                         <h4 className="modalTitle modalheadingcont">CANCEL ORDER</h4>
                       </div>
@@ -663,7 +663,7 @@ export default class MyOrders extends Component {
                   <div className="modal-dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <img src="/images/Icon.png" alt="" />
+                        <img src="../../../sites/currentSite/images/Icon.png" alt="" />
                         <button type="button" className="close modalclosebut" onClick={this.closeModal.bind(this)} data-dismiss="modal">&times;</button>
                         <h4 className="modal-title modalheadingcont">PRODUCT REVIEW</h4>
                       </div>

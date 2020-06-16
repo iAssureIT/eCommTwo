@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import "../../../../sites/currentSite/blocks/HomePageBanner2.css";
 
+import HomePageBanner2_1 from "../../../../sites/currentSite/images/HomePageBanner2-1.jpg"
+import HomePageBanner2_2 from "../../../../sites/currentSite/images/HomePageBanner2-2.jpg"
+import HomePageBanner2_3 from "../../../../sites/currentSite/images/HomePageBanner2-3.jpg"
+
 class HomePageBanner2 extends Component{
     constructor(props){
         super(props);
@@ -12,17 +16,17 @@ class HomePageBanner2 extends Component{
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <a className="hover-images" href="/" >
-                            <img className="img-responsive zoomImg" src="/images/unimandai/HomePageBanner2-1.jpg" alt="banner" />
+                            <img className="img-responsive zoomImg" src={HomePageBanner2_1} alt="banner" />
                         </a>                        
                     </div>
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <a className="hover-images" href="/">
-                            <img className="img-responsive zoomImg" src="/images/unimandai/HomePageBanner2-2.jpg" alt="banner" />
+                            <img className="img-responsive zoomImg" src={HomePageBanner2_2} alt="banner" />
                         </a>                        
                     </div>
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <a className="hover-images" href="/">
-                            <img className="img-responsive zoomImg" src="/images/unimandai/HomePageBanner2-3.jpg" alt="banner" />
+                            <img className="img-responsive zoomImg" src={HomePageBanner2_3} alt="banner" />
                         </a>                        
                     </div>
                 </div>

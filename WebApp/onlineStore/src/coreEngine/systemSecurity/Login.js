@@ -172,7 +172,7 @@ class Login extends Component {
     //set dynamic background image
     var projectName = process.env.REACT_APP_PROJECT_NAME;
     if (projectName === "4_UniMandai") {
-      $(".LoginWrapper").css("background-image", "url(" + "/images/unimandai/Background_3.png" + ")");
+      $(".LoginWrapper").css("background-image", "url(" + "/images/Background_3.png" + ")");
     } else if (projectName === "2_AnasHandicraft") {
       $(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
     }

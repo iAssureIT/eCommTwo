@@ -326,7 +326,7 @@ class SignUp extends Component {
 		var projectName = process.env.REACT_APP_PROJECT_NAME;
 		// console.log("process.env.REACT_APP_PROJECT_NAME=========:",process.env.REACT_APP_PROJECT_NAME);
 		if (projectName === "4_UniMandai") {
-			$(".LoginWrapper").css("background-image", "url(" + "/images/unimandai/signInBackground.png" + ")");
+			$(".LoginWrapper").css("background-image", "url(" + "/images/signInBackground.png" + ")");
 		} else if (projectName === "2_AnasHandicraft") {
 			$(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
 		}
@@ -415,7 +415,7 @@ class SignUp extends Component {
 							<div className="modal-dialog">
 								<div className="modal-content">
 									<div className="modal-header">
-										<img src="/images/Icon.png" />
+										<img src="../../../sites/currentSite/images/Icon.png" />
 										<button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
 										<h2 className="modaltext modalheadingcont">TERMS AND CONDITIONS</h2>
 									</div>

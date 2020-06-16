@@ -1,0 +1,58 @@
+Preferences
+---------------
+
+1) When data choice is submitted, show Success / failure messaged. 
+2) When I revisit this page, I should see my earlier choices
+
+
+
+Order Distribution Logic for Franchise
+-------------------------------------------
+
+
+1) Inside API, when order is submitted, in that controller...
+ add this logic
+
+		a) Check in preferences about Website Model. 
+		b) If Website Model == "Franchise Model",
+				Add new field in Order details. 
+
+				allocatedToFranchise : franchise_id
+				
+				how to find franchise_id
+
+				i) Check Pincode of Order... 
+				ii) Check this pincode in "Allowable Pincode List"
+				iii) Find which franchise has this pincode allowed.
+				iv) When return value is single franchise_id, then use this value
+				v) If return value is more than one, then find the Lat/Long of each franchise. 
+					You will already have the Lat/Long of Order.
+					Find distance between delivery-location & franchise-location
+					Use https://www.geodatasource.com/developers/javascript 
+
+					D1
+					D2 
+					D3
+
+					Find Min of Array. 
+					Then allocate franchise_id for lowest Distance
+
+
+2) When you are logged in as a Franchise
+	Login Page => User Details store in localstorage.
+	You have companyID in UserDetails.
+
+	Find all Orders allocated to this Franchise.
+	api/order/get/:companyID
+
+	When loggedin as Admin, companyID = 1, in that case show all possible order. 
+	if(companyID === 1){
+		var selector = {}
+	}else{
+		var selector = {companyID : req.body.companyID}
+	}
+
+	Order.find(selector)
+
+
+	

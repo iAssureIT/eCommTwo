@@ -397,7 +397,7 @@ componentWillMount() {
                               <div className="modal-content col-lg-8 col-lg-offset-2">
                                 <div className="row">
                                   <div className="modal-header">
-                                    <img src="/images/Icon.png" />
+                                    <img src="../../../sites/currentSite/images/Icon.png" />
                                     <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
                                     <h4 className="modal-title modalheadingcont">CUSTOMER CARE</h4>
                                   </div>
@@ -444,7 +444,7 @@ componentWillMount() {
                   <div className="row">
                     <div className="col-lg-8">
                       <div className="row">
-                        <a href="/"><img src="/images/anasLogo.png" alt="Logo Picture " /></a>
+                        <a href="/"><img src="../../../sites/currentSite/images/anasLogo.png" alt="Logo Picture " /></a>
                       </div>
                     </div>
                   </div>

@@ -232,7 +232,7 @@ class Productreview extends Component {
                                   <div className="modal-dialog">
                                     <div className="modal-content">
                                       <div className="modal-header">
-                                        <img src="/images/Icon.png" alt=""/>
+                                        <img src="../../../sites/currentSite/images/Icon.png" alt=""/>
                                         <button type="button" className="close modalclosebut" onClick={this.closeModal.bind(this)} data-dismiss="modal">&times;</button>
                                         <h4 className="modal-title modalheadingcont">PRODUCT REVIEW</h4>
                                       </div>

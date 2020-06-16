@@ -19,7 +19,7 @@ export default class Aboutusmultistore extends Component {
 					<div className="col-lg-10 col-lg-offset-1 mt50">
 						<div className="col-lg-4">
 						  <div className="col-lg-12">
-						  	<i class="fa fa-inbox multiicon" aria-hidden="true"></i>
+						  	<i className="fa fa-inbox multiicon" aria-hidden="true"></i>
 						  </div>
 						  <div className="col-lg-12">
 						  <h3><b>35 Million+</b></h3>
@@ -28,7 +28,7 @@ export default class Aboutusmultistore extends Component {
 						</div>
 						<div className="col-lg-4">
 						  <div className="col-lg-12">
-						  	<i class="fa fa-shopping-cart multiicon" aria-hidden="true"></i>
+						  	<i className="fa fa-shopping-cart multiicon" aria-hidden="true"></i>
 						  </div>
 						  <div className="col-lg-12">
 						  <h3><b>250,000</b></h3>
@@ -37,7 +37,7 @@ export default class Aboutusmultistore extends Component {
 						</div>
 						<div className="col-lg-4">
 						  <div className="col-lg-12">
-						  	<i class="fa fa-globe multiicon" aria-hidden="true"></i>
+						  	<i className="fa fa-globe multiicon" aria-hidden="true"></i>
 						  </div>
 						  <div className="col-lg-12">
 						  <h3><b>6000+</b></h3>

@@ -157,7 +157,7 @@ class ShipmentTracking extends Component {
               <div>
                 <h5 className="col-lg-12 textAlignCenter"><b>There is no order to track</b></h5>
                 <div className="col-lg-12 textAlignCenter">
-                  <img src="/images/emptyorder.png" alt="ProductImage" />
+                  <img src="../../../sites/currentSite/images/emptyorder.png" alt="ProductImage" />
                 </div>
                 <p className="col-lg-12 textAlignCenter emptyCartMsg">Looks like you haven't placed anything to your orders yet.</p>
               </div>

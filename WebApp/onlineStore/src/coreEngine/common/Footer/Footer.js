@@ -114,7 +114,7 @@ export default class Footer extends Component {
                     <div className="row">
                         <div className="col-md-12 col-lg-12 col-sm-12 col-xs-12 logo-nb"> 
                             <a href="/" title="">
-                                <img src="/images/anasLogo.png" alt="" />
+                                <img src="../../../sites/currentSite/images/anasLogo.png" alt="" />
                             </a>
                         </div>
                         <div className="col-md-3 col-lg-3 col-sm-3 col-xs-6"> 

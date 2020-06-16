@@ -8,6 +8,12 @@ import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getCartData, searchProductAction} from '../../actions/index';
 import $                          from "jquery";
+
+
+import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
+import iconUserHeader from "../../../sites/currentSite/images/icon-user-header.png";
+import logoUnimandai from "../../../sites/currentSite/images/logoUnimandai.png";
+// import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 
 // import './Header.css';
@@ -394,14 +400,14 @@ loginPage(event){
                 <div className="container headerContainer">
                     <div className="inner-topbar box">
                         <div className="float-left">
-                            <p><img src="/images/unimandai/icon-phone-header.png.png" alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
+                            <p><img src={iconPhoneHeader} alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
                         </div>
                         <div className="float-right align-right">
                             <div className="hover-menu">
                             {user_ID 
                             ?    
                                 <li className="dropdown">
-                                    <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                    <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
                                     <ul className="col-lg-3 dropdown-menu list-menu">                                        
                                         <li className="col-lg-12 NOpadding">
                                             <a href="/">
@@ -434,7 +440,7 @@ loginPage(event){
                             :
 
                             <li className="dropdown">
-                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
                                 {/* <ul className="col-lg-3 dropdown-menu logout-list-menu">
                                     <li><a href="/login" title="Login">LOGIN</a></li>
                                     <li><a href="/signup" title="Resgister">REGISTER</a></li>
@@ -464,11 +470,10 @@ loginPage(event){
                 <div className="col-lg-2 col-md-2 col-sm-2 header-top">
                     <div className="contaner">
                         <div className="box col-lg-12 col-md-12 col-sm-12">
-                            <p className="icon-menu-mobile"><i class="fa fa-bars"></i></p>
+                            <p className="icon-menu-mobile"><i className="fa fa-bars"></i></p>
                             <div className="logo col-lg-12 col-md-12 col-sm-12">
                                 <a href="/" title="Unimandai logo">
-                                {/* <img src="/images/unimandai/logoUnimandai.png" alt="images" className="col-lg-12 uniLogo"/> */}
-                                    <img src="/images/unimandai/logoUnimandai.png" alt="images" className="col-lg-12"/>
+                                    <img src={logoUnimandai} alt="images" className="col-lg-12"/>
                                 </a>
                             </div>
                         </div>
@@ -485,13 +490,13 @@ loginPage(event){
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
                     <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
-                        <i class="icon"></i>                        
+                        <i className="icon"></i>                        
                     </div>
                    {/* Search modal */}
                     <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
                         <div className="modal-dialog modal-lg">
                             <div className="modal-content popup-search">
-                                <button type="button" className="close" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                <button type="button" className="close" data-dismiss="modal"><i className="fa fa-times" aria-hidden="true"></i></button>
                                 <div className="modal-body search-modal-body">
                                     <div className="input-group">
                                         <input type="text" className="form-control control-search" placeholder="Search and hit enter..."/>
