@@ -776,6 +776,7 @@ exports.list_productby_type = (req,res,next)=>{
         Products.find(selector)       
         .exec()
         .then(data=>{
+            
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -785,11 +786,12 @@ exports.list_productby_type = (req,res,next)=>{
             });
         });
     }
-    else if(productType == 'newProduct'){
-        selector={'newProduct':true,  "status": "Publish"};
+    else if(productType == 'discounted'){
+        selector={'discountPercent': { $gt:0 } ,  "status": "Publish"};
         Products.find(selector)       
         .exec()
         .then(data=>{
+            console.log('discounted ===>>>', data);
             res.status(200).json(data);
         })
         .catch(err =>{

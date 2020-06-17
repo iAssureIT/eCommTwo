@@ -1,8 +1,9 @@
-import React, { Component }       from 'react';
+import React, { Component }         from 'react';
 // import { connect }                from 'react-redux';
-import $                          from 'jquery';
+import $                            from 'jquery';
 import EcommerceProductCarousel     from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
 import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
+import EcommerceDiscountedProducts  from "../../blocks/ProductCarouselEcommerce/EcommerceDiscountedProducts.js";
 import EcommerceBanner_Unimandai    from "../../blocks/Banner/EcommerceBanner_Unimandai.js";
 import ProductDivider               from "../../blocks/ProductDivider/ProductDivider.js";
 import Unimandai_SaleProductDivider from "../../blocks/ProductDivider/Unimandai_SaleProductDivider.js";
@@ -20,11 +21,11 @@ class HomePage extends Component {
     super(props);
       this.state = {
         featuredProducts        : [],
+        discountedProducts      : [],
         exclusiveProducts       : [],
         categories              : [],
         exclusiveprloading      : true,
-        bestsellerloading       : true,
-        newproductloading       : true,
+        discountedProductsloading   : true,
         featuredproductsloading : true,
         askPincodeToUser        : "",
         userPincode             : "",
@@ -55,7 +56,7 @@ class HomePage extends Component {
      
       this.featuredProductData();
       this.exclusiveProductsData();
-      // this.newProductsData();
+      this.discountedproductsData();
       // this.bestSellerData();
       this.getCategories();
       this.getWishData();       
@@ -99,33 +100,18 @@ class HomePage extends Component {
                 // console.log('error', error);
             })
     }
-    newProductsData(){
-      var productType3 = 'newProduct';
+    discountedproductsData(){
+      var productType3 = 'discounted';
+      console.log('productType3==>', productType3);
       axios.get("/api/products/get/listbytype/"+productType3)
             .then((response)=>{
-
+              console.log('response==>', response.data);
               this.setState({
-                newproductloading:false,
-                newProducts : response.data
+                discountedProductsloading:false,
+                discountedProducts : response.data
               })
             })
-            .catch((error)=>{
-                // console.log('error', error);
-            })    
-    }
-    bestSellerData(){
-      var productType4 = 'bestSeller';
-      axios.get("/api/products/get/listbytype/"+productType4)
-            .then((response)=>{
-              // console.log("Bestseller data => ", response.data);
-              this.setState({
-                bestsellerloading  : false,
-                bestSellerProducts : response.data
-              })
-            })
-            .catch((error)=>{
-                // console.log('error', error);
-            })    
+            .catch((error)=>{})    
     }
     getCategories(){
       axios.get("/api/category/get/list")
@@ -157,8 +143,8 @@ class HomePage extends Component {
       .then((response)=>{
         this.featuredProductData();
         this.exclusiveProductsData();
-        this.newProductsData();
-        this.bestSellerData();
+        this.discountedproductsData();
+        // this.bestSellerData();
         this.setState({
           wishList : response.data
         },()=>{
@@ -169,10 +155,7 @@ class HomePage extends Component {
       })
     }
   render() {
-       
-    var projectName=process.env.REACT_APP_PROJECT_NAME;
     return (
-
       <div className="container-fluid uniHomepageWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="row">         
@@ -187,7 +170,25 @@ class HomePage extends Component {
             <FreshFoodBlock />
           </div>
           <div className="homeRow">
-            {/*-----------------shop by category block---------------------*/}
+            {
+              this.state.discountedProductsloading ?  
+              <Loader type="carouselloader" productLoaderNo = {4}/>      
+              :
+              (this.state.discountedProducts.length > 0 ? 
+                <EcommerceDiscountedProducts  
+                    title={'Discounted PRODUCTS'} 
+                    newProducts={this.state.discountedProducts} 
+                    type={'featured'} 
+                    getWishData={this.getWishData.bind(this)} 
+                    wishList={this.state.wishList} 
+                    categories={this.state.categories} 
+                    changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                : null
+              )
+            }
+          </div>
+           {/*-----------------shop by category block---------------------*/}
+          <div className="homeRow">
             <ProductDivider categories={this.state.categories} />
           </div>
 
