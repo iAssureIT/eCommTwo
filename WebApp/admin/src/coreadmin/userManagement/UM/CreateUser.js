@@ -471,6 +471,7 @@ class CreateUser extends Component {
             }
           }
         }
+        console.log("state===>>>>", state)
         this.setState({ states: state })
       })
       .catch(error => console.error('Error', error));
@@ -481,6 +482,7 @@ class CreateUser extends Component {
     var array = {
       cityName: address,
     }
+    console.log("address===>>>>", address)
     this.setState({ 
       cityName: address ? address.split(",")[0] : "", 
       tripArray: array });

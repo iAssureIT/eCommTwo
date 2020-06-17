@@ -18,7 +18,7 @@ class EmployeeMaster extends Component {
         window.scrollTo(0, 0);
     }
     componentWillReceiveProps(nextProps) {
-    
+
     }
     render() {
         return (

@@ -21,7 +21,7 @@ class BulkProductImageUpload extends Component{
   getData(){
     axios.get('/api/products/get/list')
     .then((response)=>{
-        console.log('response', response.data)
+        console.log('/api/products/get/list response = ', response.data)
         this.setState({
           allshopproductimages : response.data
         })
@@ -47,7 +47,6 @@ class BulkProductImageUpload extends Component{
                 if (file) {
                     var fileName  = file.name; 
                     var itemCode = file.name.split('-')[0];
-                    console.log('file',fileName, itemCode);
                     var ext = fileName.split('.').pop();  
                     if(ext==="jpg" || ext==="png" || ext==="jpeg" || ext==="JPG" || ext==="PNG" || ext==="JPEG"){
                         if (file) {
@@ -61,7 +60,7 @@ class BulkProductImageUpload extends Component{
                             swal("Images not uploaded");  
                         }//file
                     }else{ 
-                        swal("Allowed images formats are (jpg,png,jpeg)");   
+                        swal("Your "+fileName+" image has format of "+ext+". Allowed images formats are (jpg,png,jpeg)");
                     }//file types
                 }//file
             }//for 
@@ -69,61 +68,47 @@ class BulkProductImageUpload extends Component{
             if(i >= event.currentTarget.files.length){
                 this.setState({
                     productImage : productImage
-                },()=>{
-                  console.log('productImage', this.state.productImage)
                 });  
                 
                 const main = async ()=>{
                     var config = await getConfig();
-                    console.log("2.config:",config);
                     if(config){                    
-                    var s3urlArray = [];
-                    var imageLength = 100;
-                    console.log('imageLength',imageLength);
-                    var z = 0;
-                    for (var i = 0; i<productImage.length; i++) {
-                      console.log("3. inside for loop");
-                      var s3url = await s3upload(productImage[i].fileInfo, config, this);
-                      var x = i + 1;
-                      var progressLength = (x/productImage.length) * 100;
-                      console.log('progressLength', progressLength, z);
-                      this.setState({
-                        progressLength : progressLength
-                      })
-                      console.log('s3url', s3url);
-                      s3urlArray.push({
-                        productImage : s3url,
-                        itemCode : productImage[i].itemCode
-                      });
-                    }
-                    console.log('progressLength', progressLength, imageLength);
-                    const formValues = {
-                        "product_ID"        : "fhfgf",
-                        "productImage"      : s3urlArray,
-                        "status"            : "New"
-                    };
-                    
-                    // console.log("1 formValues = ",formValues);
-                    return Promise.resolve(formValues);
+                      var s3urlArray = [];
+                      var imageLength = 100;
+                      var z = 0;
+                      for (var i = 0; i<productImage.length; i++) {
+                        var s3url = await s3upload(productImage[i].fileInfo, config, this);
+                        var x = i + 1;
+                        var progressLength = (x/productImage.length) * 100;
+                        this.setState({
+                          progressLength : parseInt(progressLength)
+                        })
+                        s3urlArray.push({
+                          productImage : s3url,
+                          itemCode : productImage[i].itemCode
+                        });
+                      }
+                      const formValues = {
+                          "product_ID"        : "",
+                          "productImage"      : s3urlArray,
+                          "status"            : "New"
+                      };
+                      return Promise.resolve(formValues);
                   }
                 }
                 main().then(formValues=>{
-                  console.log('formValues.productImage', formValues);
                   var newImages = this.state.productImageArray;
                   newImages.push(formValues.productImage);
                   this.setState({
                       productImageArray : _.flatten(newImages)
-                  },()=>{
-                      console.log('form', this.state.productImageArray);
                   })
               });
+
                 function s3upload(image,configuration){
-                    console.log("4. Config:",configuration);
                     return new Promise(function(resolve,reject){
                         S3FileUpload
                            .uploadFile(image,configuration)
                            .then((Data)=>{
-                                console.log("5.Data = ",Data);
                                 resolve(Data.location);
                            })
                            .catch((error)=>{
@@ -131,19 +116,19 @@ class BulkProductImageUpload extends Component{
                            })
                     })
                 }   
+
                 function getConfig(){
                     return new Promise(function(resolve,reject){                      
                         axios
-                           .get('/api/projectSettings/get/one/S3')
+                           .get('/api/projectSettings/get/S3')
                            .then((response)=>{
-                                console.log("1.project setting res = ",response.data);
                                 if(response.data){
                                   const config = {
-                                    bucketName      : response.data[0].bucket,
+                                    bucketName      : response.data.bucket,
                                     dirName         : process.env.ENVIRONMENT,
-                                    region          : response.data[0].region,
-                                    accessKeyId     : response.data[0].key,
-                                    secretAccessKey : response.data[0].secret,
+                                    region          : response.data.region,
+                                    accessKeyId     : response.data.key,
+                                    secretAccessKey : response.data.secret,
                                   }
                                   resolve(config);                               
                                 }
@@ -167,10 +152,9 @@ class BulkProductImageUpload extends Component{
         productImage  : this.state.productImageArray[i].productImage,
         itemCode      : this.state.productImageArray[i].itemCode
       }
-      console.log('formvalue', formValue);
       axios.patch('/api/products/patch/bulkimages/', formValue)
       .then((response)=>{
-        console.log('res', response);
+        console.log('/api/products/patch/bulkimages/ res', response.data);
         this.getData();
         swal(response.data.message);
         $(':input').val('');
@@ -191,7 +175,6 @@ class BulkProductImageUpload extends Component{
       product_ID    : id,
       imageLik      : image
     }
-    console.log('id', id, image);
 
     swal({
           title: "Are you sure you want to delete this image?",
@@ -207,7 +190,6 @@ class BulkProductImageUpload extends Component{
                 axios.patch('/api/products/remove/image', formValues)
                 .then((res)=>{
                   this.getData();
-                  console.log('res', res);
                 })
                 .catch((error)=>{
                   console.log('errro', error);
@@ -319,7 +301,7 @@ class BulkProductImageUpload extends Component{
                               <tbody>
                                 {  
                                   this.state.allshopproductimages.map((data,index)=>{
-                                    {console.log("data.productImage = ",data.productImage)}
+                                    
                                     return(
                                       <tr key ={index}>
                                         <td> {index+1}     </td>
@@ -333,6 +315,7 @@ class BulkProductImageUpload extends Component{
                                                 data.productImage.map((imgdata,index)=>{
                                                   return(
                                                     <div className="col-lg-3 deleteImgBlkUpldCol-lg-3" key={index}>
+                                                      imgdata
                                                       <i className="fa fa-times deleteImgBlkUpld" aria-hidden="true" data-image={imgdata} data-productid={data._id}   onClick={this.deleteproductImages.bind(this)}></i>
                                                       <img src={imgdata} className="img-thumbnail"/>
                                                     </div>

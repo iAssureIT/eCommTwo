@@ -30,3 +30,15 @@
 .categoryimg{
     margin-top: 40px ! important;
 }
+.fieldTab{
+    white-space: nowrap;
+    padding: 10px 8px !important;
+}
+.oneFieldTable .table-responsive{
+    overflow-x: hidden !important;
+}
+.oneFielsModal{
+  background-color: var(--white-background) !important;
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+}

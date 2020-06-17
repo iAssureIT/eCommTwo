@@ -26,6 +26,7 @@ exports.insertBooking = (req,res,next)=>{
             contractId                  : req.body.contractId,
             bookingId                   : bookingId,
             tripType                    : req.body.tripType,
+            pickupFrom                  : req.body.pickupFrom,
             from                        : req.body.from,
             to                          : req.body.to,
             pickupDate                  : req.body.pickupDate,
@@ -880,6 +881,7 @@ exports.updateBooking = (req, res, next)=>{
                             "packageId"               : req.body.packageId,
                             "contractId"              : req.body.contractId,
                             "tripType"                : req.body.tripType,
+                            "pickupFrom"              : req.body.pickupFrom,
                             "from"                    : req.body.from,
                             "to"                      : req.body.to,
                             "pickupDate"              : req.body.pickupDate,
@@ -908,7 +910,6 @@ exports.updateBooking = (req, res, next)=>{
                             "purposeOfTravel"             : req.body.purposeOfTravel,
                             "purposeOfTravelOther"             : req.body.purposeOfTravelOther,
                             "reasonForSelectingVehicle"   : req.body.reasonForSelectingVehicle,
-                            "status"                      : req.body.status,
                             "statusValue"                 : req.body.statusValue,
                         }
             }
@@ -921,7 +922,8 @@ exports.updateBooking = (req, res, next)=>{
                 {
                     $push:  { 'updateLog' : [{  updatedAt      : new Date(),
                                                 updatedBy      : req.body.updatedBy
-                                            }]
+                                            }],
+                             'status': req.body.status,
                             }
                 } )
                 .exec()
@@ -967,7 +969,7 @@ exports.filterBookings = (req,res,next)=>{
         selector["$and"].push({'createdAt':{$gte : new Date(req.body.yearStart), $lt : new Date(req.body.yearEnd) }})
     }
     if (req.body.filteredStatus && req.body.filteredStatus != 'All') {
-        selector["$and"].push({ statusValue : { $regex : req.body.filteredStatus, $options: "i"} })
+        selector["$and"].push({ statusValue : req.body.filteredStatus })
     }
     if (req.body.filteredStatus == 'All' && req.body.filteredMonth == 'All'){
         selector["$and"].push({'createdAt':{$gte : new Date(req.body.yearStart), $lt : new Date(req.body.yearEnd) }})
@@ -1380,11 +1382,11 @@ exports.singleBookingForVendor = (req, res, next)=>{
     .populate('packageId')
     .populate('vehicleCategoryId')
     .populate('employeeId')
-    .populate('vehicleCategoryId')
     .populate('vehicleID')
     .then(data=>{
         main();
         async function main(){
+            try{
             var returnData = data[0];
             var driverInfo = returnData.status.filter((elem)=>{return elem.value==="Trip Allocated To Driver"});
             console.log("driverInfo",driverInfo);
@@ -1408,6 +1410,7 @@ exports.singleBookingForVendor = (req, res, next)=>{
                 "bookingId"           : returnData.bookingId,
                 "status"              : returnData.status,
                 "statusValue"         : returnData.statusValue,
+                "tripType"            : returnData.tripType,
                 "from"                : returnData.from,
                 "to"                  : returnData.to,
                 "pickupDate"          : returnData.pickupDate,
@@ -1416,13 +1419,20 @@ exports.singleBookingForVendor = (req, res, next)=>{
                 "returnTime"          : returnData.returnTime,
                 "intermediateStops"   : returnData.intermediateStops,
                 "specialInstruction"  : returnData.specialInstruction,
+                "purposeOfTravel"     : returnData.purposeOfTravel,
+                "purposeOfTravelOther": returnData.purposeOfTravelOther,
+                "createdAt"           : returnData.createdAt,
+                "managerID"           : returnData.managerID1,
                 "tripExpenses"        : returnData.tripExpenses,
+                "estimatedCost"        : returnData.estimatedCost,
                 "packageType"         : returnData.packageTypeId.packageType,
                 "packageName"         : returnData.packageId.packageName,
                 "firstName"           : returnData.employeeId.firstName,
                 "middleName"          : returnData.employeeId.middleName,
                 "lastName"            : returnData.employeeId.lastName,
                 "contactNo"           : returnData.employeeId.contactNo,
+                "employeeID"           : returnData.employeeId.employeeId,
+                "profilePhoto"           : returnData.employeeId.profilePhoto,
                 "vehicleCategory"     : returnData.vehicleCategoryId.category,
                 "vehicleBrand"        : returnData.vehicleID ? returnData.vehicleID.brand : null ,
                 "vehicleModel"        : returnData.vehicleID ? returnData.vehicleID.model : null ,
@@ -1432,6 +1442,10 @@ exports.singleBookingForVendor = (req, res, next)=>{
                 'driverDetails'       : driverDetails,
                 'remark'              : remark,
             });
+            }
+            catch(err) {
+                console.log(err)
+              }
          }   
     })
     .catch(err =>{
@@ -1531,8 +1545,11 @@ exports.managerDetail_ByID = (req, res, next)=>{
                 employeeId  : "",
                 contactNo   : "",
             };
+            var DateVar = ""
             if( managerInfo && managerInfo.length > 0){
                 managerDetails = await getManagerDetails(managerInfo[managerInfo.length-1].statusBy);
+                DateVar = (managerInfo[managerInfo.length-1].statusAt);
+
             }
             res.status(200).json({
                 "bookingId"           : returnData.bookingId,
@@ -1544,6 +1561,8 @@ exports.managerDetail_ByID = (req, res, next)=>{
                 "returnTime"          : returnData.returnTime,
                 "intermediateStops"   : returnData.intermediateStops,
                 "specialInstruction"  : returnData.specialInstruction,
+                "purposeOfTravel"     : returnData.purposeOfTravel,
+                "purposeOfTravelOther"  : returnData.purposeOfTravelOther,
                 "employeeId"          : returnData.employeeId.employeeId,
                 "corporateId"         : returnData.corporateId,
                 "firstName"           : returnData.employeeId.firstName,
@@ -1552,6 +1571,7 @@ exports.managerDetail_ByID = (req, res, next)=>{
                 "employeeID"            : returnData.employeeId.userId,
                 "contactNo"           : returnData.employeeId.contactNo,
                 'managerDetails'      : managerDetails,
+                "Date"                : DateVar
             });
          }   
     })

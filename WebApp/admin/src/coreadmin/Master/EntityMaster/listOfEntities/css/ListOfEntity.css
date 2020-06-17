@@ -42,7 +42,7 @@
     cursor: pointer;
 }
 .scrollbar{
-	height: auto;
+	height: 800px;
     overflow-y: scroll;
     margin-left: 22px;
     padding: 0;
@@ -275,4 +275,15 @@
     background-repeat: no-repeat;
     height: 4em;
     padding: 0
+}
+
+.btnactive{
+	background:#0275ce !important;
+	color:#fff;
+}
+.viewBtn{
+	background: #ddd
+}
+.customTab{
+	padding:10px 10px 10px 0px;
 }

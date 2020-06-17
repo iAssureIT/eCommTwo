@@ -52,12 +52,19 @@ class PersonList extends Component {
 	}
 
 	componentDidMount() {
+		var role = [];
+		role.push(localStorage.getItem("roles"));
+		this.setState({
+			roles : role
+		})
+		console.log("roles",this.state.roles,localStorage.getItem("roles"))
 		$("#filterallalphab").css("color", "#fff");
 		$("#filterallalphab").css("background", "#0275ce");
 		this.getpersons();
 		this.getStates('IN');
 		this.getDesignation();
 		this.getDepartment();
+		this.getCompany();
 
 	}
 	componentWillReceiveProps(nextProps,prevProps) {
@@ -83,7 +90,6 @@ class PersonList extends Component {
 	            response.data.map((data, ind) => {
 	                departmentArray.push({ id: data._id, department: data.department })
 	            });
-
 	            this.setState({ departmentArray: departmentArray })
 			})
 			.catch((error) => {
@@ -117,6 +123,30 @@ class PersonList extends Component {
 			.catch((error) => {
 			})
 	}
+	getCompany()
+	{
+		 if (this.state.pathname == "employee") {
+	      var entity = "corporate"
+	    } else if (this.state.pathname == "driver") {
+	      var entity = "vendor"
+	    } else {
+	      var entity = "corporate"
+	    }
+
+	    axios.get('/api/entitymaster/get/' + entity)
+	      .then((response) => {
+	      	var entityArray = [];
+	            response.data.map((data, ind) => {
+	                entityArray.push({ id: data._id, companyName: data.companyName })
+	            });
+	            this.setState({ entityArray: entityArray })
+	            console.log("entityArray",this.state.entityArray)
+	      })
+	      .catch((error) => {
+
+	      })
+
+	}
 	
 	camelCase(str) {
 		return str
@@ -126,17 +156,28 @@ class PersonList extends Component {
 			.join(' ');
 	}
 	getpersons() {
-		var formvalues = { type : this.state.type}
+		var getcompanyID = localStorage.getItem("companyID")
+
+		var formvalues = { 
+			type : this.state.type,
+		}
 		axios.post("/api/personmaster/get/list",formvalues)
 		.then((response) => {
 	        var tableData=response.data.filter((data,i)=>{
                 return data.status!=='deleted-Active' && data.status!=='deleted-Inactive'
 			});
-			this.setState({
-				personList   : tableData,
-				personCount  : tableData.length
-			})
-			console.log("Hi",tableData[0]._id)
+			if (this.state.roles.indexOf("admin") == -1)
+			{
+				this.setState({
+					personList   : tableData.filter(person=>person.companyID == getcompanyID),
+					personCount  : tableData.length
+				})
+			}else{
+				this.setState({
+					personList   : tableData,
+					personCount  : tableData.length
+				})
+			}
 			document.getElementById(tableData[0]._id).classList.add("selectedSupplier")
 			this.setState({ id: tableData[0]._id, showDetails : true });
 		})
@@ -160,67 +201,51 @@ class PersonList extends Component {
 
 	handleChangeFilter(event){
 		if (event.value) {
-	        var currentSelection = event.element.getAttribute("id");
+			var currentSelection = event.element.getAttribute("id");
 	        var selector = this.state.selector;
-	        selector.type = this.state.type;
-
+			selector.type = this.state.type;
 	        if (currentSelection === 'designationChange') {
 	            selector.designations = event.value;
 	        }
 	        if (currentSelection === 'departmentChange') {
 	            selector.departments = event.value;
-	        }
-	        
-	        // selector.startRange = this.state.startRange
-	        // selector.limitRange = this.state.limitRange
-
+			}
+			if (currentSelection === 'companyChange') {
+	            selector.company_Id = event.value;
+	            console.log("event",event)
+			}
 	        this.setState({	selector: selector },()=>{
 				this.getFilteredProducts(this.state.selector);
-			})
-	        
+			})       
 		}
     }
-
-
 	ShowForm(event) {
 		var data = $(event.currentTarget).attr('id');
 		this.setState({ id: data });
-
 		$('.commonSup').show()
 		$('.selected').removeClass('selectedSupplier');
-		$(event.currentTarget).addClass('selectedSupplier');
-
+		$(event.currentTarget).addClass('selectedSupplier');	
 	}
-
 	shortByAlpha(event) {
 		event.preventDefault();
-
 		for (var key in document.querySelectorAll('.alphab')) {
 			$($('.alphab')[key]).css('background', '#ddd');
 			$($('.alphab')[key]).css('color', '#000');
 		}
-
 		event.target.style.background = '#0275ce';
 		event.target.style.color = '#fff';
-
 		var selector=this.state.selector;
 		if ($(event.target).attr('value') === 'All') {
-			/*delete selector.initial;
-			this.setState({	selector: selector,showDetails:true},()=>{
-				this.getFilteredProducts(this.state.selector);
-			})*/
 			this.getpersons();
 		} else {
 			selector.initial = event.currentTarget.value; 
-			this.setState({	selector: selector },()=>{
-				this.getFilteredProducts(this.state.selector);
+			this.setState({	selector: selector,showDetails : true },()=>{
+				this.getFilteredProducts(selector);
 			})
 		}
 		$('.commonSup').hide();
 	}
-
 	searchPerson(event) {
-		 
 		for (var key in document.querySelectorAll('.alphab')) {
 			$($('.alphab')[key]).css('background', '#ddd');
 			$($('.alphab')[key]).css('color', '#000');
@@ -228,10 +253,10 @@ class PersonList extends Component {
  
 		$("#filterallalphab").css("color", "#fff");
 		$("#filterallalphab").css("background", "#0275ce");
-		if(this.state.pathname !== "guest"){
+		/*if(this.state.pathname !== "guest"){
 		this.dropDownListObject.value = null;
 		this.dropDownDepartmentListObject.value = null;
-		}
+		}*/
 		this.setState({
 			'selector' : {},
 			'initial': 'All',
@@ -256,7 +281,6 @@ class PersonList extends Component {
 			.catch((error) => {
 			})
 		}else{
-			console.log("empty")
 			this.getpersons();
 		}
 	}
@@ -277,7 +301,7 @@ class PersonList extends Component {
 			$($('.alphab')[key]).css('background', '#ddd');
 			$($('.alphab')[key]).css('color', '#000');
 		}
-		document.getElementById("filterallalphab").style.background = '#000';
+		document.getElementById("filterallalphab").style.background = '#367ea8';
 		document.getElementById("filterallalphab").style.color = '#fff';
 
 		this.getpersons();
@@ -300,28 +324,28 @@ class PersonList extends Component {
 		})
 	}
 	getFilteredProducts(selector){ 
-		
 		selector.type = this.state.type;
-
+		console.log("selector",selector)
+		if(selector.company_Id.length>0)
+		{
 		axios.post("/api/personmaster/get/filterPersons", selector)
 			.then((response) => {
 				var tableData=response.data.filter((data,i)=>{
-	                return data.status!=='deleted-Active' && data.status!=='deleted-Inactive'
+					return data.status!=='deleted-Active' && data.status!=='deleted-Inactive'
 				});
 				this.setState({
-					personList   : tableData
-				},()=>{
-					if(this.state.personList.length >0){
-
-					 document.getElementById(this.state.personList[0]._id).classList.add("selectedSupplier")
-					 this.setState({ id: this.state.personList[0]._id, showDetails : true });
-
-					}
-
+					personList   : tableData,
+					personCount  : tableData.length
 				})
+				document.getElementById(tableData[0]._id).classList.add("selectedSupplier")
+				this.setState({ id: tableData[0]._id, showDetails : true });
+			
 			})
 			.catch((error) => {
 			})
+		}else{
+			this.getpersons();
+		}
 	}
 	editBasicform(event){
     	this.props.history.push("/"+this.state.type+'/basic-details/'+event.currentTarget.getAttribute('data-id'))
@@ -353,17 +377,6 @@ class PersonList extends Component {
     restoreDriver(event){
     	event.preventDefault();
 		var driverID = event.currentTarget.getAttribute('data-id')
-    	// axios.get("/api/personmaster/get/one/"+driverID)
-     //    .then((response)=>{
-     //    	// console.log("response",response);
-     //      this.setState({
-     //          "personID" : response.data.userId,
-     //      },()=>{
-     //      	// console.log("this.state.personI",this.state.personID)
-     //      });
-     //    })
-     //    .catch((error)=>{
-     //    })
       	var details={
 			driverID    : driverID,
             updatedBy   : localStorage.getItem("user_ID")
@@ -384,42 +397,28 @@ class PersonList extends Component {
 	                    text : "Failed to restore.",
 	                  });
            		}
-           		/* axios.delete("/api/users/delete/"+this.state.personID)
-			        .then((response)=>{
-			          console.log("response",response);
-			        })
-			        .catch((error)=>{
-			        	console.log("error",error);
-			        })*/
+           		
             })
             .catch((error)=>{
             })
     }
     confirmDelete(event){
     	event.preventDefault();
-    	// var deleteID = event.target.id
     	axios.get("/api/personmaster/get/one/"+this.state.deleteID)
         .then((response)=>{
           this.setState({
               "personID" : response.data.userId,
           },()=>{
-          });
-
-        })
-        .catch((error)=>{
-        })
-       
-      	axios.delete("/api/personmaster/delete/"+this.state.deleteID)
+      		axios.delete("/api/personmaster/delete/"+this.state.deleteID)
             .then((response)=>{
               	$('#deleteModal').hide();  
               	this.deletedDriver(); 
-           //  	axios.delete("/api/users/delete/"+this.state.personID)
-			        // .then((response)=>{
-			        //   console.log("response",response);
-			        // })
-			        // .catch((error)=>{
-			        // 	console.log("error",error);
-			        // })
+            	axios.delete("/api/users/delete/"+this.state.personID)
+			        .then((response)=>{
+			        })
+			        .catch((error)=>{
+			        	console.log("error",error);
+			        })
            		if (response.data) {
            			swal({
 	                    title : " ",
@@ -431,13 +430,16 @@ class PersonList extends Component {
 	                    text  : "Failed to delete.",
 	                  });
            		}
-
               	this.getpersons();
               	this.hideForm();
-
             })
             .catch((error)=>{
             })
+          });
+
+        })
+        .catch((error)=>{
+        })
     }
     closeModal(event){
     	event.preventDefault();
@@ -450,6 +452,7 @@ class PersonList extends Component {
 	render() {
 		const designationfields: object = { text: 'designation', value: 'designation' };
 		const departmentfields: object = { text: 'department', value: 'department' };
+		const companyfields: object = { text: 'companyName', value: 'id' };
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div className="row">
@@ -466,9 +469,11 @@ class PersonList extends Component {
 												<span className="col-lg-5 col-lg-offset-1 sentanceCase addButtonList" onClick={this.redirectTo.bind(this)}>
 													<i  className="fa fa-plus-circle"></i>&nbsp;&nbsp;{"Add "+this.state.pathname} 
 												</span>
-												<span className="col-lg-5  col-lg-offset-1 sentanceCase addButtonList" data-toggle="modal" data-target="#DeletedDriversModal"  onClick={this.deletedDriver.bind(this)}>
-													<i  className="fa fa-minus-circle"></i>&nbsp;&nbsp;{"Deleted "+this.state.pathname} 
-												</span>
+
+												<button type="button" className="btn col-lg-5  col-lg-offset-1 col-sm-12 col-xs-12 sentanceCase addButtonList deleteemplist" data-toggle="modal" data-target="#DeletedDriversModal"  onClick={this.deletedDriver.bind(this)}><i  className="fa fa-minus-circle"></i>&nbsp;&nbsp;<b>{"Deleted "+this.state.pathname+"s"}</b> </button>
+												{/* <span className="col-lg-5  col-lg-offset-1 sentanceCase addButtonList" data-toggle="modal" data-target="#DeletedDriversModal"  onClick={this.deletedDriver.bind(this)}>
+													<i  className="fa fa-minus-circle"></i>&nbsp;&nbsp;{"Deleted "+this.state.pathname+} 
+												</span>  */}
 												<div className="modal" id="deleteModal" role="dialog">
 											        <div className="adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											            <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
@@ -495,7 +500,8 @@ class PersonList extends Component {
 				                                    <div className="modal-dialog modal-lg " role="document">
 				                                        <div className="modal-content UMmodalContent ummodallftmg ummodalmfdrt  ">
 				                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				                                                <h4 className="CreateTempModal col-lg-11 col-md-11 col-sm-11 col-xs-11 textAlignLeft" id="exampleModalLabel"><b>Deleted Drivers</b></h4>
+																{/* <h4 className="CreateTempModal col-lg-11 col-md-11 col-sm-11 col-xs-11 textAlignLeft" id="exampleModalLabel"><b>Deleted Drivers</b></h4> */}
+																
 				                                                <div className="adminCloseCircleDiv pull-right  col-lg-1 col-md-1 col-sm-1 col-xs-1 NOpadding-left NOpadding-right">
 				                                                    <button type="button" className="adminCloseButton" data-dismiss="modal" aria-label="Close">
 				                                                        <span aria-hidden="true">&times;</span>
@@ -504,7 +510,7 @@ class PersonList extends Component {
 				                                            </div>
 				                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				                                              	
-																{this.state.deletedDriversData !== "-" ?
+																{this.state.deletedDriversData != "-" ?
 																	<div className="table-responsive topmr40 col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																		<table className="table iAssureITtable-bordered table-striped table-hover">
 																			<thead className="tempTableHeader">
@@ -512,7 +518,7 @@ class PersonList extends Component {
 																					<th className="umDynamicHeader srpadd textAlignCenter"> Sr No. </th>
 																					<th className="umDynamicHeader srpadd textAlignCenter"> Driver Name </th>
 																					<th className="umDynamicHeader srpadd textAlignCenter"> Status </th>
-																					<th className="umDynamicHeader srpadd textAlignCenter"> License Validity</th>
+																					{/* <th className="umDynamicHeader srpadd textAlignCenter"> License Validity</th> */}
 																					<th className="umDynamicHeader srpadd textAlignCenter"> Deleted On </th>
 																					<th className="umDynamicHeader srpadd textAlignCenter"> Action </th>
 																				</tr>
@@ -532,7 +538,7 @@ class PersonList extends Component {
 																									</div>
 																								</td>
 																								<td className="textAlignCenter">{data.status}</td>
-																								<td className="textAlignCenter">{moment(data.drivingLicense.effectiveTo).format("DD/MM/YYYY")}</td>
+																								{/* <td className="textAlignCenter">{moment(data.drivingLicense.effectiveTo).format("DD/MM/YYYY")}</td> */}
 																								<td className="textAlignCenter">{ statusLength > 0  ? moment(data.statusLog[statusLength-1].updatedAt).format("DD/MM/YYYY") : "-"}</td>
 																								<td className="textAlignCenter">
 																									<span>
@@ -553,7 +559,6 @@ class PersonList extends Component {
 																	:
 																	<div className="centernote col-lg-12"> No data available </div>
 																}
-											
 				                                            </div>
 				                                        </div>
 				                                    </div>
@@ -567,8 +572,9 @@ class PersonList extends Component {
 												</div>
 												<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
 
-													<button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 sentanceCase addButtonList deleteemplist" data-toggle="modal" data-target="#DeletedUsersModal"><i  className="fa fa-minus-circle"></i>&nbsp;&nbsp;<b>{"Deleted " +this.state.pathname}</b> </button>
+													<button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 sentanceCase addButtonList deleteemplist" data-toggle="modal" data-target="#DeletedUsersModal"><i  className="fa fa-minus-circle"></i>&nbsp;&nbsp;<b>{"Deleted "+this.state.pathname+"s"}</b> </button>
 														<Deletedemployees
+															getpersons ={this.getpersons.bind(this)}
 															tableData={this.state.tableData}
 														/>
 												</div>
@@ -594,36 +600,6 @@ class PersonList extends Component {
 								<div className="contenta col-lg-12 col-md-12 col-sm-12 col-xs-12 pdcls nopadding">
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 										
-											{
-											/*<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
-												<select className="form-control resetinp selheight Statesdata" ref="states" name="stateCode" value={this.state.stateCode} 
-												onChange={this.onSelectedItemsChange.bind(this,'state')}>
-													<option selected={true} disabled>Select State</option>
-													{this.state.statesArray.length>0 &&
-														this.state.statesArray.map((Statedata, index) => {
-															return (
-																<option key={index} value={Statedata.stateCode}>{this.camelCase(Statedata.stateName)}</option>
-															);
-														}
-														)
-													}
-												</select>
-											</div>
-											<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
-												<select className="form-control resetinp districtsdata" ref="district" name="district" value={this.state.district}
-												onChange={this.onSelectedItemsChange.bind(this,'district')}>
-													<option selected={true} disabled>Select District</option>
-													{this.state.districtArray && this.state.districtArray.length > 0 &&
-														this.state.districtArray.map((districtdata, index) => {
-															return (
-																<option key={index} value={districtdata.districtName}>{this.camelCase(districtdata.districtName)}</option>
-															);
-														}
-														)
-													}
-												</select>
-											</div> */}
-									
 									</div>
 									{
 										this.state.type === "employee" ?  
@@ -635,15 +611,20 @@ class PersonList extends Component {
 											
 											<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Department</label>
-												<MultiSelectComponent id="departmentChange" ref={(scope) => { this.dropDownDepartmentListObject = scope; }}  dataSource={this.state.departmentArray}
+												<MultiSelectComponent id="departmentChange" 
+													// ref={(scope)=>{this.dropDownDepartmentListObject=scope}}
+													dataSource={this.state.departmentArray}
 	                                                change={this.handleChangeFilter.bind(this)}
-	                                                fields={departmentfields} placeholder="Select Department" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
+													fields={departmentfields} placeholder="Select Department" 
+													mode="CheckBox" selectAllText="Select All" 
+													unSelectAllText="Unselect All" showSelectAll={true}>
 	                                                <Inject services={[CheckBoxSelection]} />
 	                                            </MultiSelectComponent>
 											</div>
 											<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Designation</label>
-												<MultiSelectComponent id="designationChange" ref={(scope) => { this.dropDownListObject = scope; }} 
+												<MultiSelectComponent id="designationChange" 
+													// ref={(scope) => { this.dropDownListObject = scope; }} 
 													dataSource={this.state.designationArray}
 	                                                change={this.handleChangeFilter.bind(this)} mode='mode' 
 	                                                fields={designationfields} placeholder="Select Designation" mode="CheckBox" 
@@ -652,6 +633,25 @@ class PersonList extends Component {
 	                                                <Inject services={[CheckBoxSelection]} />
 	                                            </MultiSelectComponent>
 											</div>
+											{
+												// this.state.roles.indexOf("admin") == -1 ?
+												<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
+													<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Company Name</label>
+													<MultiSelectComponent id="companyChange" 
+														// ref={(scope) => { this.dropDownListObject = scope; }} 
+														dataSource={this.state.entityArray}
+		                                                change={this.handleChangeFilter.bind(this)} mode='mode' 
+		                                                fields={companyfields} placeholder="Select Company" mode="CheckBox" 
+		                                                selectAllText="Select All" unSelectAllText="Unselect All" 
+		                                                showSelectAll={true}>
+		                                                <Inject services={[CheckBoxSelection]} />
+		                                            </MultiSelectComponent>
+												</div>
+												// :
+												// null
+											}
+											
+
 										</div> : null
 									}
 									{
@@ -659,15 +659,18 @@ class PersonList extends Component {
 										<div>
 									     <div className="col-lg-3 col-md-12 col-xs-12 col-sm-12 guestdiv">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left"></label>
-												<MultiSelectComponent id="departmentChange" ref={(scope) => { this.dropDownDepartmentListObject = scope; }}
+												<MultiSelectComponent id="departmentChange" 
+													ref={(scope) => { this.dropDownDepartmentListObject = scope; }}
 	                                                change={this.handleChangeFilter.bind(this)}
-	                                                fields={departmentfields}  mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
+													fields={departmentfields}  mode="CheckBox" 
+													selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
 	                                                <Inject services={[CheckBoxSelection]} />
 	                                            </MultiSelectComponent>
 											</div>
 											<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12 guestdiv">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left"></label>
-												<MultiSelectComponent id="designationChange" ref={(scope) => { this.dropDownListObject = scope; }} 
+												<MultiSelectComponent id="designationChange"
+													ref={(scope) => { this.dropDownListObject = scope; }} 
 	                                                change={this.handleChangeFilter.bind(this)} mode='mode' 
 	                                                fields={designationfields}  mode="CheckBox" 
 	                                                selectAllText="Select All" unSelectAllText="Unselect All" 
@@ -678,30 +681,6 @@ class PersonList extends Component {
 										</div>
 										: null
 									}
-									{/*
-										this.state.type=="guest" ?
-										<div>
-									    	<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12 guestdiv">
-												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left"></label>
-												<MultiSelectComponent id="departmentChange" ref={(scope) => { this.dropDownDepartmentListObject = scope; }}
-	                                                change={this.handleChangeFilter.bind(this)}
-	                                                fields={departmentfields}  mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
-	                                                <Inject services={[CheckBoxSelection]} />
-	                                            </MultiSelectComponent>
-											</div>
-											<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12 guestdiv">
-												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left"></label>
-												<MultiSelectComponent id="designationChange" ref={(scope) => { this.dropDownListObject = scope; }} 
-	                                                change={this.handleChangeFilter.bind(this)} mode='mode' 
-	                                                fields={designationfields}  mode="CheckBox" 
-	                                                selectAllText="Select All" unSelectAllText="Unselect All" 
-	                                                showSelectAll={true}>
-	                                                <Inject services={[CheckBoxSelection]} />
-	                                            </MultiSelectComponent>
-											</div>
-										</div>
-										: null
-									*/}
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 										<br/>
 											<button type="button" className="btn alphab"  id="filterallalphab" onClick={this.shortByAlpha.bind(this)} name="initial" value={this.state.initial} onChange={this.handleChange}>All</button>
@@ -737,18 +716,29 @@ class PersonList extends Component {
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrollbar" id="style-2">
 										<div className="borderlist12">
 											{
-												this.state.personList.map((data, index) => {
-													
+											this.state.personList.map((data, index) => {
 													return (
 														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 borderlist selected" key={index} onClick={this.ShowForm.bind(this)} name={index} data-child={data._id + '-' + index} id={data._id}>
 															<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 supplierLogoDiv">
 																<img src={data.profilePhoto? data.profilePhoto:"/images/noImagePreview.png"} className="employeeLogoImage"></img>
 															</div>
 															<div className="col-lg-8 col-md-10 col-sm-10 col-xs-10 listprofile">
-																<h5 className="titleprofile">{data.firstName +" "+ data.lastName + (data.employeeId ? " ("+data.employeeId+")":"")}</h5>
-															
-																<ul className="col-lg-9 col-md-9 col-sm-9 col-xs-9 listfont">
-																	<li><i className="fa fa-id-badge" aria-hidden="true"></i>&nbsp;{data.companyID ? data.companyID: " - "}</li>
+																<h5 className="titleprofile">{data.firstName +" "+ data.lastName + (data.employeeId ? " (EmpID:"+data.employeeId+")":"")}</h5>
+																<ul className="col-lg-12 col-md-12 col-sm-9 col-xs-9 listfont">	
+																{this.state.type=="employee"  ?
+																	data && data.department && data.department[0]?
+																		<li>{data.department[0].department+ ", " + data.designation[0].designation +", ("+data.type.replace(/^./, data.type[0].toUpperCase())+")"}</li>
+																	:
+																	null
+																:
+																null
+																}
+																{this.state.type=="driver || guest" ?
+																	<li>{data.type.replace(/^./, data.type[0].toUpperCase())}</li>
+																:
+																	null
+																}
+																	<li><i className="fa fa-id-badge" aria-hidden="true"></i>&nbsp;{data.companyID ? data.companyName + " (Company ID: "+data.companyID +" )": " - "}</li>
 																	<li><i className="fa fa-phone " aria-hidden="true"></i>&nbsp;{data.contactNo ? data.contactNo : " - "}</li>
 																	<li><i className="fa fa-envelope " aria-hidden="true"></i>&nbsp;{data.email ?data.email : " - "}</li>
 																</ul>
@@ -788,7 +778,6 @@ class PersonList extends Component {
 									</div>	
 									:
 									null
-
 								}
 								
 							</div>

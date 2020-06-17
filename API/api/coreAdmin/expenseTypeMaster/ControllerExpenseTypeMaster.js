@@ -19,8 +19,9 @@ exports.insertExpenseType = (req,res,next)=>{
             const expenseTypeMaster = new ExpenseTypeMaster({
                     _id           : new mongoose.Types.ObjectId(),
                     type          : req.body.type.toUpperCase(),
-                    CGSTRate      : req.body.CGSTRate,
-                    SGSTRate      : req.body.SGSTRate,
+                    GSTRate       : req.body.GSTRate,
+                    // CGSTRate      : req.body.GSTRate,
+                    // SGSTRate      : req.body.SGSTRate,
                     createdAt     : new Date(),
                 })
                 expenseTypeMaster.save()
@@ -49,6 +50,20 @@ var fetchAllData = async ()=>{
     });
 };
 
+exports.fetchExpenseTypeList = (req, res, next) => {
+    ExpenseTypeMaster.find({})
+        .sort({ createdAt: -1 })
+        .skip(req.body.startRange)
+        .limit(req.body.limitRange)
+        .exec()
+        .then(data => {
+            res.status(200).json(data);
+        })
+        .catch(err => {
+            res.status(500).json({ error: err });
+        });
+};
+
 exports.showAllData = (req,res,next)=>{
     ExpenseTypeMaster.find({})
     .sort({createdAt : -1})
@@ -73,6 +88,17 @@ exports.getSingleData = (req,res,next)=>{
     });
 };
 
+exports.fetchSingleExpenseType = (req, res, next) => {
+    ExpenseTypeMaster.findOne({ _id: req.params.fieldID })
+        .exec()
+        .then(data => {
+            res.status(200).json(data);
+        })
+        .catch(err => {
+            res.status(500).json({ error: err });
+        });
+};
+
 exports.getDataByType = (req,res,next)=>{
     console.log('------',req.params.type)
     ExpenseTypeMaster.find({type:req.params.type})
@@ -87,21 +113,25 @@ exports.getDataByType = (req,res,next)=>{
 };
 
 exports.updateExpenseType = (req,res,next)=>{
+    console.log("in Update Expense type = ", req.body);
     ExpenseTypeMaster.updateOne(
-        {  _id : req.body.Id},
+
+        { "_id" : req.body.id},
         {
             $set:{
                 "type"       : req.body.type.toUpperCase(),
-                "CGSTRate"   : req.body.CGSTRate,
-                "SGSTRate"   : req.body.SGSTRate,
+                "GSTRate"    : req.body.GSTRate,
+                // "CGSTRate"   : req.body.CGSTRate,
+                // "SGSTRate"   : req.body.SGSTRate,
             }
         }
         )
         .exec()
         .then(data=>{
+            console.log("in Update Expense type data = ", data);
             if(data.nModified == 1){
                 ExpenseTypeMaster.updateOne(
-                { _id:req.body.Id},
+                { _id:req.body.id},
                 {
                     $push:  { 'updateLog' : [{  updatedAt      : new Date(),
                                                 updatedBy      : req.body.updatedBy 

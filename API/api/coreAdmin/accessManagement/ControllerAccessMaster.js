@@ -2,7 +2,7 @@ const mongoose	= require("mongoose");
 
 const AccessMaster = require('./ModelAccessMaster');
 var request = require('request-promise');
-const gloabalVariable = require('../../nodemon.js');
+const gloabalVariable = require('../../../nodemon.js');
 var   ObjectId          = require('mongodb').ObjectID;
 
 exports.insertAccess = (req,res,next)=>{

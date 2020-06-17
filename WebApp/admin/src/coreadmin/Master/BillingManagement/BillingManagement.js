@@ -23,7 +23,8 @@ class BillingManagement extends Component {
     }
 
     componentDidMount() {
-      
+          axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+
     }
 
     changeTab = (data)=>{
@@ -42,74 +43,63 @@ class BillingManagement extends Component {
 
 
 
-    render() {
-        return (
-          <div>
-          <div className="content-wrapper">
-               <section className="content viewContent">
-                    <div className="row">
-                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                              <div className="bookingContentWrapper col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                                   <div className="">
-                                        <div className="box-header with-border manageLocationTitle">
-                                             <h4 className="">Billing Management</h4>
-                                        </div>
-                                         
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                             <div className="reportWrapper col-lg-12 nopadding">
-                                                  <div className="nav-center col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
-                                                       <ul className="nav nav-pills nav_pills">
-                                                            <li className="active col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <a href="#GenerateBills" data-toggle="tab" className="TabName" onClick={()=>this.changeTab('GenerateBills')} >
-                                                                  Generate Bills
-                                                                </a>
-                                                            </li>
-                                                            <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <a href="#UnpaidBills" data-toggle="tab" className="TabName" onClick={()=>this.changeTab('UnpaidBills')}>
-                                                                  Unpaid Bills
-                                                                </a>
-                                                            </li>
-                                                            <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <a href="#PaidBills" data-toggle="tab" className="TabName"  onClick={()=>this.changeTab('PaidBills')} >
-                                                                  Paid Bills
-                                                                </a>
-                                                            </li>
-                                                            <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <a href="#CancelledBills" data-toggle="tab" className="TabName" onClick={()=>this.changeTab('CancelledBills')} >
-                                                                  Cancelled Bills
-                                                                </a>
-                                                            </li>
-                                          
-                                                       </ul>
-                                                  </div>
-                                                    <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div className="tab-pane active" id="GenerateBills">
-                                                          <GenerateBill />
-                                                        </div>
-                                                        <div className="tab-pane" id="UnpaidBills">
-                                                          <UnpaidBills />
-                                                        </div>
-                                                        <div className="tab-pane" id="PaidBills">
-                                                          <PaidBills />
-                                                        </div>
-                                                        <div className="tab-pane" id="CancelledBills">
-                                                          <CancelledBills />
-                                                        </div>
-                                                    </div>
-                                                    
-                                             </div>
-                                        </div>
-                                    
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </section>
+  render() {
+    return (
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
+        <section className="content">   
+          <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div className="box-header with-border manageLocationTitle">
+                 <h4 className="">Billing Management</h4>
+            </div>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                 <div className="reportWrapper col-lg-12 nopadding">
+                      <div className="nav-center col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
+                           <ul className="nav nav-pills nav_pills">
+                                <li className="active col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <a href="#GenerateBills" data-toggle="tab" className="TabName" onClick={()=>this.changeTab('GenerateBills')} >
+                                      Generate Bills
+                                    </a>
+                                </li>
+                                <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <a href="#UnpaidBills" data-toggle="tab" className="TabName" onClick={()=>this.changeTab('UnpaidBills')}>
+                                      Unpaid Bills
+                                    </a>
+                                </li>
+                                <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <a href="#PaidBills" data-toggle="tab" className="TabName"  onClick={()=>this.changeTab('PaidBills')} >
+                                      Paid Bills
+                                    </a>
+                                </li>
+                                <li className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <a href="#CancelledBills" data-toggle="tab" className="TabName" onClick={()=>this.changeTab('CancelledBills')} >
+                                      Cancelled Bills
+                                    </a>
+                                </li>
+              
+                           </ul>
+                      </div>
+                        <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div className="tab-pane active" id="GenerateBills">
+                              <GenerateBill />
+                            </div>
+                            <div className="tab-pane" id="UnpaidBills">
+                              <UnpaidBills />
+                            </div>
+                            <div className="tab-pane" id="PaidBills">
+                              <PaidBills />
+                            </div>
+                            <div className="tab-pane" id="CancelledBills">
+                              <CancelledBills />
+                            </div>
+                        </div>
+                        
+                 </div>
+            </div>
           </div>
+         </section>
       </div>
-
-        );
-    }
+    );
+  }
 }
 export default BillingManagement;
 

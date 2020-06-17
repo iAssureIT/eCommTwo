@@ -53,12 +53,7 @@ class ProductCollage extends Component {
 		})
 
 		var selector = this.state.selector;
-		console.log("sectionId ===", this.props.match.params.sectionID);
-		console.log("categoryId ===", this.props.match.params.categoryID);
-
-
 		if (this.props.match.params.categoryID && this.props.match.params.subcategoryID) {
-			console.log("inside categoryId and subcategory", this.props.match.params.categoryID);
 			selector.category_ID = this.props.match.params.categoryID;
 			selector.subCategory_ID = this.props.match.params.subcategoryID;
 			this.setState({ selector: selector });
@@ -71,7 +66,6 @@ class ProductCollage extends Component {
 			this.getAttributesBySubcategory();
 		}
 		else if (this.props.match.params.categoryID) {
-			console.log("inside categoryId", this.props.match.params.categoryID);
 			selector.category_ID = this.props.match.params.categoryID;
 			this.setState({ selector: selector });
 			var catArray = [];
@@ -84,7 +78,6 @@ class ProductCollage extends Component {
 		}
 		else {
 			selector.section_ID = this.props.match.params.sectionID;
-			console.log("inside sectionId ===", this.props.match.params.categoryID);
 			this.setState({ selector: selector });
 			this.getBrands();
 			this.getSize();
@@ -108,7 +101,6 @@ class ProductCollage extends Component {
 	}
 	handleToggle(event) {
 		var currentIcon = $('.' + event.target.getAttribute('data-key') + "Icon").attr('class');
-		console.log(currentIcon)
 		if (currentIcon === "fa fa-plus-circle " + event.target.getAttribute('data-key') + "Icon") {
 			this.setState({ ['toggleIcon' + event.target.getAttribute('data-key')]: "fa fa-minus-circle " + event.target.getAttribute('data-key') + "Icon" }, () => { })
 		} else {
@@ -118,11 +110,10 @@ class ProductCollage extends Component {
 	getSectionDetails(sectionID) {
 		axios.get("/api/category/get/" + sectionID)
 			.then((response) => {
-				console.log('response.data==>', response.data);
+				console.log('/api/category/get/ response.data==>', response.data);
 				this.setState({
 					categoryDetails: response.data
 				})
-				console.log("Category Details ===>", this.state.categoryDetails);
 
 			})
 			.catch((error) => {
@@ -171,7 +162,6 @@ class ProductCollage extends Component {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				console.log("Products data========", products);
 				this.setState({
 					loading: false,
 					products: products
@@ -196,11 +186,10 @@ class ProductCollage extends Component {
 		}
 		axios.get("/api/products/get/listbycategory/" + categoryID)
 			.then((response) => {
-				console.log("products api response ==>>>>>>", response.data[0].category);
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				console.log("products api ==", products);
+
 
 				this.setState({
 					loading: false,
@@ -387,7 +376,6 @@ class ProductCollage extends Component {
 			selector.limit = "12";
 		}
 
-		console.log('selector', selector);
 		axios.post("/api/products/post/list/filterProducts/", selector)
 
 			.then((response) => {
@@ -399,14 +387,12 @@ class ProductCollage extends Component {
 	}
 	getFilteredProducts_uni(selector) {
 
-		//console.log('limitProducts',$('.limitProducts').val());
 		if ($('.limitProducts').val()) {
 			selector.limit = $('.limitProducts').val();
 		} else {
 			selector.limit = "50";
 		}
 
-		console.log('selector', selector);
 		axios.post("/api/products/post/list/filterProducts/", selector)
 
 			.then((response) => {
@@ -550,7 +536,6 @@ class ProductCollage extends Component {
 		axios.get("/api/products/get/listColor/" + this.props.match.params.sectionID)
 
 			.then((response) => {
-				console.log("responsecolor", response.length);
 				this.setState({
 					colors: response.data
 				})
@@ -643,7 +628,6 @@ class ProductCollage extends Component {
 			this.setState({
 				price: { min: Number(target.value), max: Number(this.state.price.max) }
 			}, () => {
-				console.log('target', Number(target.value))
 				if (Number(target.value) < this.state.minPriceLmt) {
 					this.setState({
 						price: { min: Number(this.state.minPriceLmt), max: Number(this.state.price.max) }

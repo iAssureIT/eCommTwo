@@ -109,14 +109,14 @@
     color: var(--bunting-color);
     text-decoration: none;
     cursor: pointer;
-    background-color: #ebebeb;
+    background-color: #ddd;
 }
 
 . .nav>li.disabled>.backcolor:focus {
     color: var(--bunting-color);
     text-decoration: none;
     /* cursor: not-allowed; */
-    background-color: #ebebeb;
+    background-color: #ddd;
 }
 
 .nav>li.disabled>.backcolor:active {
@@ -185,7 +185,7 @@
     width: 100%
 }
 .profileImageDivlogoStyle2 {
-    height: 14.9em;
+    height: 100% !important;
     padding: 0;
     width: 100%
 }
@@ -293,6 +293,7 @@
 .button1:hover {
     color: var(--white-color);
     box-shadow: 3px 5px 3px #ddd;
+    background: #666;
 }
 
 .button2 {
@@ -312,6 +313,7 @@
 .button2:hover {
     box-shadow: 3px 5px 3px #ddd;
     color: #000;
+    background: #eee;
 }
 .phoneIcon {
     margin-left: 1em
@@ -340,7 +342,8 @@
 }
 
 .button3:hover {
-    color: var(--white-color)!important
+    color: var(--white-color)!important;
+    background:#367ea8b5;
 }
 
 .boxul1 {
@@ -719,6 +722,10 @@
     border-radius: 23px;
     outline: 0;
     border: 1px solid #ddd
+}
+
+.button4:hover{
+    background: #ddd;
 }
 
 .pdclsOne {
@@ -1236,4 +1243,17 @@ select#gender option[value="others"] {
     position: absolute;
     background: #fff;
     box-shadow: 1px 1px 1px #ddd;
+    line-height: 1.6;
   }
+  
+.imgtab{
+    height: 4%;
+    width: 20%;
+}
+
+@media print { 
+    .imgtab {
+         max-width : 20%;
+         height : 4%;
+    }
+}

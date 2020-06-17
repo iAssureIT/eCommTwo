@@ -56,18 +56,17 @@ class DepartmentBulkUpload extends Component {
       "passportProof"    : [],
       "addressProof"     : [],
       "identityProof"    : [],
-      "verificationProof"  : [],
+      "verificationProof": [],
       "COI"              : [],
+
       fileDetailUrl      : "/api/departmentmaster/get/filedetails/",
       goodRecordsHeading :{
-        
-        department            : "Department",
-        
-    },
-    failedtableHeading   :{
-        department            : "Department",
-        failedRemark          :  "Failed Data Remark"
-    }
+        department       : "Department",
+      },
+      failedtableHeading   :{
+          department            : "Department",
+          failedRemark          :  "Failed Data Remark"
+      }
     };
 
     this.handleChange             = this.handleChange.bind(this);
@@ -96,13 +95,11 @@ class DepartmentBulkUpload extends Component {
         this.setState({
       pageUrl   : a[1],
       });
-
     this.setState({
       departmentID: this.props.match.params.fieldID
     }, () => {
       this.edit();
-    })
-    
+    }) 
   }
   componentWillUnmount() {
     $("script[src='/js/adminLte.js']").remove();
@@ -115,21 +112,21 @@ class DepartmentBulkUpload extends Component {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
-   getCompany() {
-        axios.get('/api/companysettings')
-            .then((response) => {
-                console.log('company', response.data)
-                this.setState({
-                    companyId : response.data._id,
-                    companyDetails: response.data,
-                    company: response.data.companyName,
-                    companyLocationArray: response.data.companyLocationsInfo
-                })
-            })
-            .catch((error) => {
+  getCompany() {
+      axios.get('/api/companysettings')
+          .then((response) => {
+              console.log('company', response.data)
+              this.setState({
+                  companyId : response.data._id,
+                  companyDetails: response.data,
+                  company: response.data.companyName,
+                  companyLocationArray: response.data.companyLocationsInfo
+              })
+          })
+          .catch((error) => {
 
-            })
-    }
+          })
+  }
   getUploadFileAttachPercentage() {
     var uploadProgressPercent = localStorage.getItem("uploadUserImageProgressPercent");
     if (uploadProgressPercent) {
@@ -262,7 +259,6 @@ class DepartmentBulkUpload extends Component {
     this.setState({
       [name]: event.target.value
     });
-
   }
   submitPerson(event) {
     event.preventDefault();
@@ -325,7 +321,7 @@ class DepartmentBulkUpload extends Component {
     
   }
   updatePerson(event){
- /* event.preventDefault();
+   /* event.preventDefault();
   if($('#BasicInfo').valid()  && this.state.pincodeExists){
     if(this.state.departmentID)
     {
@@ -759,7 +755,7 @@ class DepartmentBulkUpload extends Component {
       axios.get('/api/departmentmaster/get/one/' + personID)
         .then((response) => {
           console.log("response:=>",response)
-  this.setState({
+        this.setState({
             
             department      : response.data.department,
             createdBy       : localStorage.getItem("user_ID")
@@ -1058,7 +1054,7 @@ class DepartmentBulkUpload extends Component {
             }
         }
     }
-    deleteDocSingle(event){
+  deleteDocSingle(event){
     event.preventDefault();
         var name = event.target.getAttribute("name");
       

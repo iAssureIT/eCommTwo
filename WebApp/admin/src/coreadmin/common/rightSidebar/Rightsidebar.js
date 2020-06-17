@@ -26,7 +26,7 @@ export default class Rightsidebar extends Component{
                     </div>
                   </li>
                   <li className="sidebarMenuText">
-                    <a href="/org-settings/basic-details"title="Organization Settings" >
+                    <a href="/org-profile" title="Organization Settings" >
                       <i className="fa fa-building addCircle" />
                       Organization Settings
                     </a>
@@ -50,9 +50,15 @@ export default class Rightsidebar extends Component{
                       </a>
                   </li>
                   <li className="sidebarMenuText">
-                      <a href="/global-masters" title="Module Master">
+                      <a href="/global-masters" title="Global Master">
                         <i className="fa fa-th-large aquaColor"></i>  
                         <span className="sidebarMenuSubText">Global Masters </span>
+                      </a>
+                  </li>
+                  <li className="sidebarMenuText">
+                      <a href="/technicalMaster/tax-rate" title="Technical Masters">
+                        <i className="fa fa-th-large yellowColor"></i>  
+                        <span className="sidebarMenuSubText">Technical Masters </span>
                       </a>
                   </li>
                   <li>

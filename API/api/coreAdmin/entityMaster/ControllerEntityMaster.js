@@ -79,16 +79,18 @@ function getNextSequence() {
 }
 
 exports.listEntity = (req,res,next)=>{
-    EntityMaster.find({entityType:req.params.entityType}).sort({createdAt : -1})    
-        .exec()
-        .then(data=>{
-            res.status(200).json(data);
-        })
-        .catch(err =>{
-            res.status(500).json({
-                error: err
-            });
-        });
+    console.log("listEntity req.params = ",req.params);
+
+    EntityMaster.find({entityType:req.params.entityType})
+                .sort({createdAt : -1})    
+                .then(data=>{
+                    res.status(200).json(data);
+                })
+                .catch(err =>{
+                    res.status(500).json({
+                        error: err
+                    });
+                });
 };
 
 exports.countEntity = (req,res,next)=>{
@@ -714,6 +716,18 @@ exports.fetchEntities = (req, res, next)=>{
         .sort({createdAt : -1})
         .skip(req.body.startRange)
         .limit(req.body.limitRange)
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
+};
+exports.CompanyfromEntities = (req, res, next)=>{
+    EntityMaster.find({})
+        .sort({createdAt : -1})
+        .select("companyName")
         .exec()
         .then(data=>{
             res.status(200).json(data);

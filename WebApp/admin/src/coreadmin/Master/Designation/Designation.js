@@ -12,6 +12,8 @@ import CompanyBankDetails           from  '../../companysetting/Components/Compa
 import CompanyTaxDetails            from  '../../companysetting/Components/CompanyTaxDetails.js';
 import CompanyPaymentGateway        from  '../../companysetting/Components/CompanyPaymentGateway.js';
 import CompanySMSGateway            from  '../../companysetting/Components/CompanySMSGateway.js';
+import CompanyEmailGateway          from  '../../companysetting/Components/CompanyEmailGateway.js';
+import AmazonS3                     from  '../../companysetting/Components/AmazonS3.js';
 
 class Designation extends Component {
     constructor(props) {
@@ -77,76 +79,81 @@ class Designation extends Component {
 
     render() {
         return (
-            <div className="container-fluid">
-        <div className="row">
-          <div className="formWrapper">
-            <section className="content">
-              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
-                <div className="row">
-                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact NOpadding">
-                    <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right ">
-                        <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Global Masters</h4>
-                    </div>
-                  </div>     
-                  <div className="boxMinHeight boxMinHeighttab addMarginTop">
-                    <div  className="">
-                      <div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 noPadding"> 
-                          {
-                          this.state.profileCreated ?
-                          <ul className="nav nav-tabs tabs-left sideways">
-                           {/* 
-                           <li className="active  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft tablefthr lettersp" href="#companyInformation" data-toggle="tab">Company Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"  ><a className="tabLeft lettersp tablefthr" href="#CompanyLocation" data-toggle="tab">Location Details</a></li>
-                           */}
-                            <li className="  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyBankDetails" data-toggle="tab">Bank Details</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyTaxDetails" data-toggle="tab">Tax Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#CompanyPaymentGateway" data-toggle="tab">Payment Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#SMSGateway" data-toggle="tab">SMS Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#AmazonS3" data-toggle="tab">Amazon S3</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/location-type" >Location Types</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="/Department" >Department</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 active"><a className="tabLeft lettersp tablefthr" href="/designation" >Designation</a></li>
-                          </ul>
-                          :
-                          <ul className="nav nav-tabs tabs-left sideways">
-                            {/*
-                            <li className="active  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft tablefthr lettersp" href="#companyInformation">Company Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled"><a className="tabLeft lettersp tablefthr">Location Details</a></li>
-                            */}
-                            <li className="  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyBankDetails" data-toggle="tab">Bank Details</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled" ><a className="tabLeft lettersp tablefthr" >Tax Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled"><a className="tabLeft lettersp tablefthr">Payment Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#SMSGateway" data-toggle="tab">SMS Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#AmazonS3" data-toggle="tab">Amazon S3</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/location-type" >Location Types</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/Department">Department</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 active"><a className="tabLeft lettersp tablefthr" href="/designation">Designation</a></li>
-                          
-                          </ul>
-                        }
+          <div className="container-fluid">
+            <div className="row">
+              <div className="formWrapper">
+                <section className="content">
+                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact NOpadding">
+                        <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right ">
+                            <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Global Masters</h4>
+                        </div>
+                      </div>     
+                      <div className="boxMinHeight boxMinHeighttab addMarginTop">
+                        <div  className="">
+                          <div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 noPadding"> 
+                              {
+                              this.state.profileCreated ?
+                              <ul className="nav nav-tabs tabs-left sideways">
+                               {/* 
+                               <li className="active  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft tablefthr lettersp" href="#companyInformation" data-toggle="tab">Company Information</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"  ><a className="tabLeft lettersp tablefthr" href="#CompanyLocation" data-toggle="tab">Location Details</a></li>
+                               */}
+                                <li className="  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyBankDetails" data-toggle="tab">Bank Details</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#CompanyPaymentGateway" data-toggle="tab">Payment Gateway</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#SMSGateway" data-toggle="tab">SMS Gateway</a></li>
+                                
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#email" data-toggle="tab">Email Gateway</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#amazon" data-toggle="tab">Amazon S3</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/tax-name" >Tax Master</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/tax-rate" >Tax Rate Master</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/location-type" >Location Types</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="/Department" >Department</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 active"><a className="tabLeft lettersp tablefthr" href="/designation" >Designation</a></li>
+                              </ul>
+                              :
+                              <ul className="nav nav-tabs tabs-left sideways">
+                                {/*
+                                <li className="active  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft tablefthr lettersp" href="#companyInformation">Company Information</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled"><a className="tabLeft lettersp tablefthr">Location Details</a></li>
+                                */}
+                                <li className="  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyBankDetails" data-toggle="tab">Bank Details</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled" ><a className="tabLeft lettersp tablefthr" >Tax Information</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled"><a className="tabLeft lettersp tablefthr">Payment Gateway</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#SMSGateway" data-toggle="tab">SMS Gateway</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#email" data-toggle="tab">Email Gateway</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#amazon" data-toggle="tab">Amazon S3</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/location-type" >Location Types</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 "><a className="tabLeft lettersp tablefthr" href="/Department">Department</a></li>
+                                <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 active"><a className="tabLeft lettersp tablefthr" href="/designation">Designation</a></li>
+                              
+                              </ul>
+                            }
+                          </div>
+                          <div className="tab-content col-lg-9 col-md-9 col-xs-12 col-sm-12">
+                            <div className="tab-pane" id="CompanyBankDetails"> <CompanyBankDetails companyInfo={this.state.companyInfo}/> </div>                               
+                            <div className="tab-pane" id="CompanyTaxDetails"> <CompanyTaxDetails companyInfo={this.state.companyInfo}/> </div>
+                            <div className="tab-pane" id="CompanyPaymentGateway"> <CompanyPaymentGateway/> </div>                              
+                            <div className="tab-pane" id="SMSGateway"> <CompanySMSGateway /> </div> 
+                            <div className="tab-pane" id="email"> <CompanyEmailGateway /> </div>   
+                            <div className="tab-pane" id="amazon"> <AmazonS3 /> </div>  
+                            <div className="tab-pane active" id="">  
+                               <OneFieldForm fields={this.state.fields}
+                                  tableHeading={this.state.tableHeading}
+                                  tableObjects={this.state.tableObjects}
+                                  editId ={this.props.match.params.fieldID}
+                                  history={this.props.history} />
+                            </div>                            
+                          </div> 
+                        </div>
                       </div>
-                      <div className="tab-content col-lg-9 col-md-9 col-xs-12 col-sm-12">
-                        <div className="tab-pane" id="CompanyBankDetails"> <CompanyBankDetails companyInfo={this.state.companyInfo}/> </div>                               
-                        <div className="tab-pane" id="CompanyTaxDetails"> <CompanyTaxDetails companyInfo={this.state.companyInfo}/> </div>
-                        <div className="tab-pane" id="CompanyPaymentGateway"> <CompanyPaymentGateway/> </div>                              
-                        <div className="tab-pane" id="SMSGateway"> <CompanySMSGateway /> </div>  
-                        <div className="tab-pane active" id="">  
-                           <OneFieldForm fields={this.state.fields}
-                              tableHeading={this.state.tableHeading}
-                              tableObjects={this.state.tableObjects}
-                              editId ={this.props.match.params.fieldID}
-                              history={this.props.history} />
-                        </div>                            
-                      </div> 
                     </div>
                   </div>
-                </div>
+                </section>
               </div>
-            </section>
+            </div>
           </div>
-        </div>
-      </div>
-           
         );
     }
 }

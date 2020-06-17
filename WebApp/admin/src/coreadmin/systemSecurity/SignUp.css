@@ -183,3 +183,6 @@
   #logInBtn:focus{
     outline: none;
   }
+  .sampleTable{
+    margin-top: 3%
+  }

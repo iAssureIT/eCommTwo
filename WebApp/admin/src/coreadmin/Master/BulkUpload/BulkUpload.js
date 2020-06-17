@@ -18,7 +18,9 @@ class BulkUpload extends Component{
       tableObjects : {
           paginationApply : false,
           searchApply     : false
-      }
+      },
+      "startRange"   : 0,
+      "limitRange"   : 10000,
     }
     this.fileInput = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -37,7 +39,7 @@ class BulkUpload extends Component{
       }else{
         this.fileInput.value = '';
         swal({
-          title : "Invalid file format.",
+          title : " ",
           text: "Invalid file format."
         })
       }
@@ -123,7 +125,7 @@ class BulkUpload extends Component{
             totalRecords : totalrows,
             updateBadData : i > factor ? false : true
           }; 
-          console.log('formValue',formValues)
+          // console.log('formValue',formValues)
           // var formValues ={
           // "finaldata"     : chunkData,
           // "invalidData"   : invalidData,
@@ -131,17 +133,16 @@ class BulkUpload extends Component{
           // "excelData"     : excelChunkData,
           // "totalRecords"  : totalRecords
           // }
-          //console.log('formValues',formValues);
+          // console.log('this.props.url',this.props.url);
           await axios({
             method : 'post',
             url    : this.props.url,
             data   : formValues
           })
           .then((response)=> {
-            console.log('response',response.data)
+            console.log('responsebulk',response)
             if (response.data.completed) {
 
-              //console.log('endLmt',endLmt)
               
               var percentage = Math.round((endLmt*100/totalrows))
               if (percentage > 99 ) {
@@ -149,7 +150,8 @@ class BulkUpload extends Component{
                 
                 $('.fullpageloader').hide();
                 $('.filedetailsDiv').show();
-                this.props.getFileDetails(this.state.fileName) 
+                this.props.getFileDetails(this.state.fileName); 
+                this.props.getData(this.state.startRange, this.state.limitRange) 
               }
               this.setState({percentage:percentage},()=>{})
               chunkData = [];
@@ -184,7 +186,7 @@ class BulkUpload extends Component{
 
   }
   render() {
-  	 const SheetJSFT = [
+  	const SheetJSFT = [
       "xlsx",
       "xls",
       "csv"
@@ -258,7 +260,6 @@ class BulkUpload extends Component{
                       <br/>
                     </div>  
                     <div style={{overflowX: "auto"}}>
-
                     <IAssureTable 
                       tableHeading={this.props.failedtableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
@@ -307,6 +308,8 @@ class BulkUpload extends Component{
                   */}
                   Total {this.props.fileDetails.goodrecords.length} { this.props.fileDetails.totalRecords > 1 ? "records" : "record"} found from this file.
                   </h5>
+                      {console.log('this.props.goodRecordsHeading',this.props.goodRecordsHeading)}
+                      {console.log('this.props.goodRecordsTable',this.props.goodRecordsTable)}
                       <IAssureTable 
                       tableHeading={this.props.goodRecordsHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 

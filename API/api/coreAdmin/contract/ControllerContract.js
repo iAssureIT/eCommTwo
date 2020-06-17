@@ -167,11 +167,12 @@ exports.getContracts = (req, res, next)=>{
         }); 
 };
 exports.joincontract = (req, res, next)=>{
+  console.log("in join contract body = ", req.params.contractID);
     Contract.aggregate([
         { "$match" : {"_id": ObjectId(req.params.contractID)}},
         {
             $lookup: {
-               from: "companysettings",
+               from: "entitymasters",
                localField: "companyId",    
                foreignField: "_id",  
                as: "company"
@@ -195,6 +196,7 @@ exports.joincontract = (req, res, next)=>{
         .sort({createdAt : -1})
         .exec()
         .then(data=>{
+          console.log("Data ==> ", data);
             res.status(200).json(data);
         })
         .catch(err =>{

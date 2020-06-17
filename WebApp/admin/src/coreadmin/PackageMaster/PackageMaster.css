@@ -31,3 +31,32 @@
 .noRightPadding{
     padding-right: 0px !important;
 }
+
+/*Toggle Button*/
+
+#toggleWay{
+    width: 70%;
+    padding: 8px 18px;
+    border-radius: 15px;
+    background:#f1f1f2; 
+    transition: all .5s ease;    
+}
+.toggleon { 
+    border:1px outset;
+    /*color:#369;*/
+    /*background:#70b6de;*/
+    text-align: right;
+    border-left-width: 50px;
+    border-left-color: #70b6de !important;
+}
+.toggleoff {
+    border:1px outset;
+    /*color:#369;*/
+    text-align: left;
+    border-right-width: 50px;
+    border-right-color: #70b6de !important;
+}
+.leftInputIcon{
+    border-left: 1px solid #cccccc !important;
+    border-right: 0 !important;
+}

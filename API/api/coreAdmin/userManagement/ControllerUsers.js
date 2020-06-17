@@ -1,9 +1,9 @@
 const mongoose			= require("mongoose");
-const bcrypt				= require("bcrypt");
-const jwt						= require("jsonwebtoken");
-var ObjectID 				= require('mongodb').ObjectID;
-var request         = require('request-promise');
-const User 					= require('./ModelUsers.js');
+const bcrypt			= require("bcrypt");
+const jwt				= require("jsonwebtoken");
+var ObjectID 			= require('mongodb').ObjectID;
+var request         	= require('request-promise');
+const User 				= require('./ModelUsers.js');
 const globalVariable 	= require("../../../nodemon.js");
 
 function getRandomInt(min, max) {
@@ -11,6 +11,7 @@ function getRandomInt(min, max) {
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
 exports.user_signup_admin = (req,res,next)=>{
 	if(req.body.email && req.body.pwd){
 		User.find({emails:{$elemMatch:{address:req.body.email}}})
@@ -83,6 +84,7 @@ exports.user_signup_admin = (req,res,next)=>{
 		res.status(200).json({message:"Email and pwd are mandatory"});
 	}
 };
+
 exports.user_signup_user = (req,res,next)=>{
 	console.log("user_signup_user req.body = ", req.body);
 	if(req.body.role && req.body.email && req.body.pwd){
@@ -158,6 +160,7 @@ exports.user_signup_user = (req,res,next)=>{
 		res.status(200).json({message:"Email , pwd and Role are mandatory"});
 	}
 };
+
 exports.user_signup_user_email_otp = (req,res,next)=>{
 	if(req.body.role && req.body.email && req.body.pwd){
 		User.find({emails:{$elemMatch:{address:req.body.email}}})
@@ -267,6 +270,7 @@ exports.user_signup_user_email_otp = (req,res,next)=>{
 		res.status(200).json({message:"Email , pwd and Role are mandatory"});
 	}
 };
+
 exports.user_login = (req,res,next) =>{
 	console.log("Inside user_login");
 	User.findOne({emails:{$elemMatch:{address:req.body.email}}})
@@ -361,6 +365,7 @@ exports.user_login = (req,res,next) =>{
 			});
 		});
 };
+
 exports.admin_login = (req,res,next) =>{
 	User.findOne({
 					emails	: {$elemMatch:{address:req.body.email}},
@@ -457,6 +462,7 @@ exports.admin_login = (req,res,next) =>{
 			});
 		});
 };
+
 exports.user_update_name_mobile = (req,res,next)=>{
 	User.findOne({_id:req.params.ID})
 		.exec()
@@ -501,6 +507,7 @@ exports.user_update_name_mobile = (req,res,next)=>{
 			});
 		});
 };
+
 exports.user_update_status = (req,res,next)=>{
 	User.findOne({_id:req.params.ID})
 		.exec()
@@ -550,6 +557,7 @@ exports.user_update_status = (req,res,next)=>{
 			});
 		});
 };
+
 exports.user_update_delete_status = (req,res,next)=>{
 	console.log("req.body.user_id_tobedeleted==>",req.body.user_id_tobedeleted);
 	User.findOne({_id:req.body.user_id_tobedeleted})
@@ -666,6 +674,7 @@ exports.user_update_recover_status = (req,res,next)=>{
 			});
 		});
 };
+
 exports.user_update_many_status = (req,res,next)=>{
 	var userID = req.body.userID.map((a,i)=>ObjectID(a));
 	User.updateMany(
@@ -703,6 +712,7 @@ exports.user_update_many_status = (req,res,next)=>{
 		});
 	});
 };
+
 exports.user_update_role = (req,res,next)=>{
 	switch(req.params.action){
 		case 'assign' :
@@ -781,6 +791,7 @@ exports.user_update_role = (req,res,next)=>{
 			res.status(200).json({message:"INVALID_ACTION"})
 	}
 };
+
 exports.user_update_password_ID = (req,res,next)=>{
 	User.findOne({_id:req.params.ID})
 		.exec()
@@ -823,6 +834,7 @@ exports.user_update_password_ID = (req,res,next)=>{
 			});
 		});
 };
+
 exports.fetch_user_ID = (req,res,next)=>{
 	User.findOne({_id:req.params.ID})
 		.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.image profile.clientId createdAt services.resume.loginTokens statusLog")
@@ -862,6 +874,7 @@ exports.fetch_user_ID = (req,res,next)=>{
 			});
 		});
 };
+
 exports.post_list_deleted_users = (req,res,next)=>{
 	var companyID= parseInt(req.body.companyID);
 	console.log("req.body==>",req.body);
@@ -951,13 +964,6 @@ exports.post_list_users = (req,res,next)=>{
 					for(i = 0 ; i < data.length ; i++){
 						// console.log('data in post ==>',data[i]);
 						var loginTokenscount = data[i].services.resume.loginTokens.length;
-						// const TImeloginTokenscount = {};
-						// for(j= 0 ; j<data[i].services.resume.loginTokens.length; j++){
-						// 	const TImeloginTokenscount = data[i].services.resume.loginTokens[j].loginTimeStamp; 
-						// 	console.log('data in services.resume.loginTokens ==>',TImeloginTokenscount);
-						// }
-						// const TImeloginTokenscount = data[i].services.resume.loginTokens;
-						// var loginTokenscount = data[i].services.resume.loginTokens.length 
 						console.log('data in services.resume.loginTokens ==>',loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null );
 						var statuslogLength = data[i].statusLog.length
 						returnData.push({
@@ -1001,6 +1007,50 @@ exports.post_list_users = (req,res,next)=>{
 		});
 	}
 };
+
+exports.fetch_users_Companies = (req,res,next)=>{
+	
+	User.find({"profile.companyName":req.params.company})
+		.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.clientId createdAt services.resume.loginTokens")
+		.sort({createdAt : -1})
+        .skip(req.body.startRange)
+        .limit(req.body.limitRange)
+		.exec()
+		.then(data=>{
+			if(data){
+				var i = 0;
+				var returnData = [];
+				for(i = 0 ; i < data.length ; i++){
+					var loginTokenscount = data[i].services.resume.loginTokens.length 
+					returnData.push({
+										"_id"		: data[i]._id,
+										"firstname" : data[i].profile.firstname,
+										"lastname"	: data[i].profile.lastname,
+										"companyID"	: data[i].profile.companyID,
+										"companyName" : data[i].profile.companyName,
+										"email"		: data[i].profile.email, //Mandatory 
+										"mobNumber" : data[i].profile.mobile,
+										"role"      : data[i].roles, //Mandatory
+										"status"	: ((data[i].profile.status ==="active") && (data[i].profile.status !=="deleted"))  ? '<span class="label label-success statusLabel">'+data[i].profile.status+"</span>" : '<span class="label label-default statusLabel">'+data[i].profile.status+"</span>" , //Either "Active" or "Inactive"
+										"fullName"	: data[i].profile.fullName,
+										"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null ,
+									});
+					console.log("returnData==>",returnData);
+				}
+				if( i >= data.length){
+					res.status(200).json(returnData);
+				}
+			}else{
+				res.status(200).json({message:"USER_NOT_FOUND"});
+			}
+		})
+		.catch(err =>{
+			res.status(500).json({
+				error: err
+			});
+		});
+};
+
 exports.fetch_users_roles = (req,res,next)=>{
 	
 	User.find({roles:req.params.role})
@@ -1026,7 +1076,7 @@ exports.fetch_users_roles = (req,res,next)=>{
 										"role"      : data[i].roles, //Mandatory
 										"status"	: ((data[i].profile.status ==="active") && (data[i].profile.status !=="deleted"))  ? '<span class="label label-success statusLabel">'+data[i].profile.status+"</span>" : '<span class="label label-default statusLabel">'+data[i].profile.status+"</span>" , //Either "Active" or "Inactive"
 										"fullName"	: data[i].profile.fullName,
-										"lastLogin" : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
+										"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null ,
 									});
 					console.log("returnData==>",returnData);
 				}
@@ -1043,6 +1093,7 @@ exports.fetch_users_roles = (req,res,next)=>{
 			});
 		});
 };
+
 exports.fetch_users_status = (req,res,next)=>{
 	// User.find({"profile.status":req.params.status})
 	var companyID= parseInt(req.body.companyID);
@@ -1086,7 +1137,7 @@ exports.fetch_users_status = (req,res,next)=>{
 										// "status"	: ((data[i].profile.status ==="active") && (data[i].profile.status !=="deleted"))  ? '<span class="label label-success statusLabel">'+data[i].profile.status+"</span>" : '<span class="label label-default statusLabel">'+data[i].profile.status+"</span>" , //Either "Active" or "Inactive"
 										"status"	: data[i].profile.status, //Either "Active" or "Inactive"
 										"fullName"	: data[i].profile.fullName,
-										"lastLogin" : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
+										"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null ,
 									});
 				}
 				if( i >= data.length){
@@ -1146,12 +1197,12 @@ exports.fetch_users_status_roles = (req,res,next)=>{
 										// "status"	: ((data[i].profile.status ==="active") && (data[i].profile.status !=="deleted"))  ? '<span class="label label-success statusLabel">'+data[i].profile.status+"</span>" : '<span class="label label-default statusLabel">'+data[i].profile.status+"</span>" , //Either "Active" or "Inactive"
 										"status"	: data[i].profile.status, //Either "Active" or "Inactive"
 										"fullName"	: data[i].profile.fullName,
-										"lastLogin" : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
+										"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null ,
 									});
 				}
 				if( i >= data.length){
 					res.status(200).json(returnData);
-					console.log('returnData================	',returnData);
+					// console.log('returnData================	',returnData);
 				}
 			}else{
 				res.status(200).json({message:"USER_NOT_FOUND"});
@@ -1164,6 +1215,7 @@ exports.fetch_users_status_roles = (req,res,next)=>{
 		});
 	}
 };
+
 exports.delete_user_ID = (req,res,next)=>{
 	User.deleteOne({_id:req.params.ID})
 		.exec()
@@ -1181,6 +1233,7 @@ exports.delete_user_ID = (req,res,next)=>{
 			});
 		});
 };
+
 exports.check_EmailOTP = (req,res,next)=>{
 	User.find({_id : req.params.ID, "profile.optEmail" : req.params.emailotp})
 		.exec()
@@ -1217,6 +1270,7 @@ exports.check_EmailOTP = (req,res,next)=>{
 			});
 		});		
 };
+
 exports.update_email_otp = (req,res,next) =>{
 	var optEmail = getRandomInt(1000,9999);
 	User.updateOne(
@@ -1261,6 +1315,7 @@ exports.update_email_otp = (req,res,next) =>{
 					});
 				});
 };
+
 exports.update_email_otp_email = (req,res,next) =>{
 	var optEmail = getRandomInt(1000,9999);
 	User.updateOne(
@@ -1305,6 +1360,7 @@ exports.update_email_otp_email = (req,res,next) =>{
 					});
 				});
 };
+
 exports.change_password_email_verify = (req,res,next)=>{
 	User.findOne({username : req.body.emailId})
 		.exec()
@@ -1341,6 +1397,7 @@ exports.change_password_email_verify = (req,res,next)=>{
 				});
 			})
 };
+
 exports.search_text = (req, res, next)=>{
 	var companyID= parseInt(req.body.companyID);
 	console.log("req.body in search==>",req.body);
@@ -1394,7 +1451,7 @@ exports.search_text = (req, res, next)=>{
 									"role"      	: data[i].roles, //Mandatory
 									"status"		: data[i].profile.status, //Either "Active" or "Inactive"
 									"fullName"		: data[i].profile.fullName,
-									"lastLogin" 	: loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
+									"lastLogin"     : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null ,
 								});
 			}
 			if( i >= data.length){
@@ -1438,8 +1495,7 @@ exports.search_text_delete = (req, res, next)=>{
 			var i = 0;
 					var returnData = [];
 					for(i = 0 ; i < data.length ; i++){
-						var loginTokenscount = data[i].services.resume.loginTokens.length 
-						// console.log('data in services.resume.loginTokens ==>',data[i].services.resume.loginTokens);
+						var loginTokenscount = data[i].services.resume.loginTokens.length;
 						var statuslogLength = data[i].statusLog.length
 						returnData.push({
 							"_id"		      : data[i]._id,
@@ -1454,7 +1510,7 @@ exports.search_text_delete = (req, res, next)=>{
 							"fullName"	      : data[i].profile.fullName,
 							"createdAt"       : data[i].createdAt,
 							"clientId"	      : data[i].clientId,
-							"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : "-",
+							"lastLogin"       : loginTokenscount > 0 ? data[i].services.resume.loginTokens[loginTokenscount-1].loginTimeStamp : null ,
 							"statusupdatedAt" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedAt : "-",
 							"statusupdatedBy" : statuslogLength > 0 ? data[i].statusLog[statuslogLength-1].updatedBy : "-"
 
@@ -1548,6 +1604,7 @@ exports.fetch_email = (req,res,next)=>{
 			});
 		});
 };
+
 exports.getID = (req,res,next)=>{
 	User.findOne({username:req.params.id})
 		.exec()

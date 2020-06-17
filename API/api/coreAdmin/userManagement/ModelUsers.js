@@ -38,31 +38,13 @@ const userSchema = mongoose.Schema({
 						emailVerified			: Boolean,
 						mobileVerified			: Boolean,
 						status					: String,
+						department				: String,
+						designation				: String,
+						city					: String,
+						states					: String,
 						createdOn 				: String,
 					},
 	roles       : [String],
-	deliveryAddress : [
-		
-		{
-			"user_ID"      : String,
-			"name"         : String,
-			"email"        : String,
-			"addressLine1" : String,
-			"addressLine2" : String,
-			"pincode"      : String,
-			"district"     : String,
-			"city"         : String,
-			"stateCode"    : String,
-			"state"        : String,
-			"countryCode"  : String,
-			"country" 	   : String,
-			"mobileNumber" : String,
-			"addType"	   : String,
-			"latitude"     : Number,
-			"longitude"    : Number,
-		}	
-
-],
 	statusLog   : [
 	                {
 	                	status 				: String,

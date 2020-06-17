@@ -37,6 +37,8 @@ router.post('/post/singleLocation',entityMaster.singleLocation);
 
 router.post('/getAll',entityMaster.fetchEntities);
 
+router.get('/getAllcompany',entityMaster.CompanyfromEntities);
+
 router.post('/getAllLocation',entityMaster.fetchLocationEntities);
 
 router.patch('/patch/updateSingleLocation', entityMaster.updateSingleLocation);

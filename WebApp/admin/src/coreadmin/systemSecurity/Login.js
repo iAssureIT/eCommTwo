@@ -63,13 +63,11 @@ class Login extends Component {
       role: "admin"
     }
     if ($("#login").valid()) {
-      console.log("auth = ",auth);
-
       document.getElementById("logInBtn").value = 'Please Wait...';
-
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
         console.log("response",response)
+          this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
             var  userDetails = {
               firstName : response.data.userDetails.firstName, 
@@ -119,14 +117,14 @@ class Login extends Component {
                 "emailSubject"	: "Email Verification", 
                 "emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
               }
-              // axios.patch('/api/auth/patch/setsendemailotpusingEmail/'+this.refs.loginusername.value, emailText)
-              // .then((response)=>{
-              //   swal("We send you a Verification Code to your registered email. Please verify your account.");
-              //   this.props.history.push("/confirm-otp/" + response.data.userID);
-              // })
-              // .catch((error)=>{
-              //   swal(" Failed to sent OTP");
-              // })    
+              axios.patch('/api/auth/patch/setsendemailotpusingEmail/'+this.refs.loginusername.value, emailText)
+              .then((response)=>{
+                swal("We send you a Verification Code to your registered email. Please verify your account.");
+                this.props.history.push("/confirm-otp/" + response.data.userID);
+              })
+              .catch((error)=>{
+                swal(" Failed to sent OTP");
+              })    
             });
             document.getElementById("logInBtn").value = 'Sign In';
 
@@ -138,6 +136,8 @@ class Login extends Component {
               text : "Please enter valid Email ID and Password"
             })
         document.getElementById("logInBtn").value = 'Sign In';
+        if (localStorage !== null) {
+        }
       });
     }
   }
@@ -198,6 +198,28 @@ class Login extends Component {
                         <a href='/forgotpassword' className="">Forgot Password?</a>
                       </div>
                     </div>
+                    {process.env.REACT_APP_USERID ?
+                    <div className="col-lg-12 sampleTable">
+                    <div className="table-responsive col-lg-12 col-md-12">
+                      <table className="table table-bordered">
+                        <thead>
+                          <tr style={{"background":"#367EA8","color":"#fff"}}>
+                            <th>Email</th>
+                            <th>Password</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{process.env.REACT_APP_USERID}</td>
+                            <td>{process.env.REACT_APP_PWD}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+                    :
+                    null
+                    }
 
                     <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt10 textAlignRight">
                       {/* <div className="row loginforgotpass">
@@ -212,31 +234,32 @@ class Login extends Component {
           </div>
 
         </div>
+        
       </div>
     );
   }
 }
 
-// const mapStateToProps = (state)=>{
-//   console.log("state = ",state)
-//   return {
-//     userDetails   : state.userDetails,
-//   }
-// };
+const mapStateToProps = (state)=>{
+  console.log("state = ",state)
+  return {
+    userDetails   : state.userDetails,
+  }
+};
 
 
-// const mapDispatchToProps = (dispatch)=>{
-//   return {
-//       setGlobalUser  : (userDetails)=> dispatch({
-//                           type      : "SET_GLOBAL_USER",
-//                           userDetails : userDetails,
-//                         }),
-//   }
-// };
+const mapDispatchToProps = (dispatch)=>{
+  return {
+      setGlobalUser  : (userDetails)=> dispatch({
+                          type      : "SET_GLOBAL_USER",
+                          userDetails : userDetails,
+                        }),
+  }
+};
 
 
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
 

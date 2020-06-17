@@ -35,13 +35,12 @@ export default class Footer extends Component {
     }
 
     getCompanyDetails(){
-        axios.get("/api/companysettings/list")
+        axios.get("/api/entitymaster/get/one/companyName/1")
           .then((response)=>{ 
-            // console.log("companyData:" ,response.data[0]);
-              this.setState({
+            console.log("companyData:" ,response.data);
+            this.setState({
                 companyInfo   : response.data[0],
-                locationdata  : response.data[0].companyLocationsInfo,
-             
+                locationdata  : response.data[0].companyLocationsInfo,             
             },
                 ()=>{
               })

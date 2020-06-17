@@ -16,6 +16,7 @@
     height: 185px;
     width: 100%;
     background: #eee9;
+    /* background-image: url("../../../../public/images/carloader.gif") */
 }
 /* Transparent Overlay */
 .fullpageloader:before {

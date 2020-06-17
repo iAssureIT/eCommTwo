@@ -254,7 +254,6 @@ componentWillMount() {
     const userid = localStorage.getItem('user_ID');
     axios.get('/api/users/' + userid)
       .then((res) => {
-        // console.log('userdata res', res.data);
         if(res.data.profile){
           this.setState({
             userData : res.data.profile,
@@ -289,7 +288,6 @@ componentWillMount() {
       })
   }
    modalClickEvent(){
-    console.log("click event")
     $('#modalId').addclassName('in');
     $('#modalId').css('display','block');
     

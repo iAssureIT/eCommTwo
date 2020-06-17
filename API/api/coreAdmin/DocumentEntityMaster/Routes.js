@@ -2,7 +2,8 @@ const express 	= require("express");
 const router 	= express.Router();
 
 const DocumentEntityMaster = require('./Controller.js');
-console.log("=== Document Master ===")
+
+
 router.post('/post', DocumentEntityMaster.insertDocuments);
 
 router.post('/get/list', DocumentEntityMaster.fetchDocuments);

@@ -7,6 +7,7 @@ const bookingMasterSchema = mongoose.Schema({
     contractId                  : { type: mongoose.Schema.Types.ObjectId, ref: 'contracts' },
     bookingId                   : Number,
     tripType                    : String,
+    pickupFrom                  : String,
     from                        : {
                                         address     : String,
                                         area        : String,

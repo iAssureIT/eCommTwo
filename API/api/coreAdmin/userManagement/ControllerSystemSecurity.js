@@ -4,7 +4,7 @@ const jwt							= require("jsonwebtoken");
 var   ObjectID 				= require('mongodb').ObjectID;
 var   request         = require('request-promise');
 const User 						= require('./ModelUsers.js');
-const globalVariable 	= require("../../../nodemon.js");
+const globalVariable 	= require("../../nodemon.js");
 
 function getRandomInt(min, max) {
 	min = Math.ceil(min);

@@ -4,6 +4,8 @@ import axios from 'axios';
 import EntityDetails from './EntityDetails.jsx';
 import {withRouter}  from 'react-router-dom';
 
+import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
+
 import 'bootstrap/js/tab.js';
 import '../css/ListOfEntity.css';
 import '../css/ListOfEntityFilter.css';
@@ -12,7 +14,6 @@ import '../css/ListOfAllEntity.css';
 class ListOfEntities extends Component {
 	constructor(props) {
 		super(props);
-		console.log('this.props.entity : ',this.props.entity )
 		this.state = {
 			firstname: '',
 			supplierListOne: '',
@@ -30,9 +31,32 @@ class ListOfEntities extends Component {
 			selector:{},
 			stateCode : "Select State",
 			showDetails : false,
+			view : 'List',
 			district  : "Select District",
 			"pathname": window.location.pathname.split('/')[1],
-			entityType : this.props.entity 
+			entityType : this.props.entity ,
+			RecordsTable:[],
+			tableHeading:{
+	            companyName:"Company Name",
+	            companyID:"CompanyID#",
+	            groupName:"Group Name",
+	            companyEmail:"Company Email",
+	            companyPhone:"Company Contact",
+	            location:"Locations",
+	            contacts:"Contacts",
+	            actions:"Action"
+
+	          },
+	          tableObjects : {
+	          paginationApply : false,
+	          searchApply     : false,
+	          editUrl         : '/'+this.props.entity+'/basic-details',
+	          deleteMethod    : 'delete',
+        	  apiLink         : '/api/entitymaster/',
+	          downloadApply   : true
+	      },
+	      startRange        : 0,
+      limitRange        : 100000,
 		};
 		
 		this.handleChange = this.handleChange.bind(this);
@@ -50,7 +74,6 @@ class ListOfEntities extends Component {
 	}
 
 	componentDidMount() {
-		console.log("this.props",this.props);
 		this.getEntities();
 		this.getStates('IN');
 		this.setState({
@@ -59,12 +82,54 @@ class ListOfEntities extends Component {
 		//by default All flter button should be active  
 		$(".allBtn").css("color", "#fff");
 		$(".allBtn").css("background", "#0275ce");
+		// axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+
 	}
 
 	componentWillReceiveProps(nextProps){
 		this.setState({
 			entityType : nextProps.entity
 		})
+		this.getData();
+		this.getEntities();
+		this.getgridFilteredProducts();
+	}
+
+	getData(){
+		$(".alphab").css({"color": "#000","background":"#ddd"});
+		$(".allBtn").css("color", "#fff");
+		$(".allBtn").css("background", "#0275ce");
+		var formvalues = {
+			startRange : this.state.startRange,
+			limitRange : this.state.limitRange,
+			type : this.state.entityType
+		}
+		axios.post('/api/entitymaster/getAll',formvalues)
+		.then((response)=>{
+			var tableData = response.data.map((a, i)=>{
+				var locDetails = a.locations.map((l,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li>Address: "+l.addressLine1+"</li></ul>"
+				})
+				var contactData = a.contactPersons.map((c,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li>Email:"+c.email+"</li></ul>"
+				})
+	        return{
+	        	_id:a._id,
+	            companyName:a.companyName,
+	            companyID:a.companyID,
+	            groupName:a.groupName,
+	            companyEmail:a.companyEmail,
+	            companyPhone:a.companyPhone,
+	            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
+	            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
+	            action:""
+	        }
+	      })
+          this.setState({RecordsTable:tableData,initial: 'All'})
+			
+		})
+		.catch((error)=>{console.log('error: ',error)})
+
 	}
 
 	getStates(StateCode) {
@@ -104,7 +169,7 @@ class ListOfEntities extends Component {
 			.join(' ');
 	}
 	getEntities() {
-		console.log('this.state.entityType: ',this.state.entityType)
+		$(".lists").removeClass("selectedSupplier")
 		axios.get("/api/entitymaster/get/count/"+this.state.entityType)
 			.then((response) => {
 				this.setState({
@@ -117,15 +182,17 @@ class ListOfEntities extends Component {
 		axios.get("/api/entitymaster/get/"+this.state.entityType)
 
 			.then((response) => {
+				$(".alphab").css({"color": "#000","background":"#ddd"});
+				$(".allBtn").css("color", "#fff");
+				$(".allBtn").css("background", "#0275ce");
 				this.setState({
 					entityList   : response.data,
 					showDetails  : true,
+					initial : 'All'
 				},()=>{
 					if(this.state.entityList.length>0)
 					{
-					console.log("Reverse entityList :",this.state.entityList);
 					this.setState({ id: this.state.entityList[0]._id});
-					console.log("id",this.state.id,this.state.showDetails,this.state.entityList[0]._id)
 					document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")
 				}
 				})
@@ -162,6 +229,7 @@ class ListOfEntities extends Component {
 			delete selector.initial;
 			this.setState({	selector: selector },()=>{
 				this.getFilteredProducts(this.state.selector);
+				this.getgridFilteredProducts(this.state.selector);
 			})
 			
 		} else {
@@ -171,6 +239,7 @@ class ListOfEntities extends Component {
 
 			this.setState({	selector: selector },()=>{
 				this.getFilteredProducts(this.state.selector);
+				this.getgridFilteredProducts(this.state.selector);
 			})
 		}
 	}
@@ -190,6 +259,7 @@ class ListOfEntities extends Component {
 
 		this.setState({	selector: selector },()=>{
 			this.getFilteredProducts(this.state.selector);
+			this.getgridFilteredProducts(this.state.selector);
 		})
 		// this.setState({ 'searchByName': event.target.value });
 		// var pattern = new RegExp('^' + event.target.value, 'i');
@@ -209,6 +279,7 @@ class ListOfEntities extends Component {
 		this.setState({
 			'stateCode': 'Select State',
 			'district' : 'Select District',
+			'districtArray':[],
 			'selector' : {},
 			'initial': 'All',
 		})
@@ -225,6 +296,7 @@ class ListOfEntities extends Component {
 		selector = {}
 		this.setState({	selector: selector },()=>{
 			this.getFilteredProducts(this.state.selector);
+			this.getgridFilteredProducts(this.state.selector);
 		})
 	}
 
@@ -247,6 +319,7 @@ class ListOfEntities extends Component {
 		}
 		this.setState({	selector: selector },()=>{
 			this.getFilteredProducts(this.state.selector);
+			this.getgridFilteredProducts(this.state.selector);
 		})
 	}
 	getFilteredProducts(selector){
@@ -256,13 +329,49 @@ class ListOfEntities extends Component {
 		axios.post("/api/entitymaster/get/filterEntities", selector)
 			.then((response) => {
 				this.setState({
-					entityList   : response.data
-				})
-				if(this.state.entityList.length>0)
-				{
-				document.getElementById(response.data[0]._id).classList.add("selectedSupplier")
-				this.setState({ id: response.data[0]._id, showDetails : true });
+					entityList   : response.data,
+					showDetails  : true,
+				},()=>{
+					if(this.state.entityList.length>0)
+					{
+					this.setState({ id: this.state.entityList[0]._id});
+					if(this.state.view == 'List'){document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")}
 				}
+				})
+				
+			})
+			.catch((error) => {
+			})
+	}
+	getgridFilteredProducts(selector){
+		
+		selector.entityType = this.state.entityType;
+		selector.startRange = this.state.startRange;
+		selector.limitRange = this.state.limitRange;
+
+		axios.post("/api/entitymaster/get/gridfilterEntities", selector)
+			.then((response) => {
+				var tableData = response.data.map((a, i)=>{
+				var locDetails = a.locations.map((l,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li>Address: "+l.addressLine1+"</li></ul>"
+				})
+				var contactData = a.contactPersons.map((c,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li>Email:"+c.email+"</li></ul>"
+				})
+		        return{
+		        	_id:a._id,
+		            companyName:a.companyName,
+		            companyID:a.companyID,
+		            groupName:a.groupName,
+		            companyEmail:a.companyEmail,
+		            companyPhone:a.companyPhone,
+		            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
+		            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
+		            action:""
+		        }
+		      })
+	          this.setState({RecordsTable:tableData})
+				
 			})
 			.catch((error) => {
 			})
@@ -272,13 +381,18 @@ class ListOfEntities extends Component {
     }
     redirectTo(event)
     {
-    		console.log('this.state.entityType: ',this.state.entityType)
     	this.props.history.push("/"+this.state.entityType+"/basic-details")
+    }
+
+    showView(value,event){
+		$('.viewBtn').removeClass('btnactive');
+        $(event.target).addClass('btnactive');
+    	this.setState({
+    		view : value
+    	})
     }
     
 	render() {
-    		// console.log('this.state.entityType: ',this.state.entityType)
-		
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div className="row">
@@ -288,7 +402,7 @@ class ListOfEntities extends Component {
 								<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
 									<h4 className="weighttitle col-lg-5 col-md-11 col-xs-11 col-sm-11">{this.state.pathname ? this.state.pathname : "Entity"} List</h4>
 									<div className="col-lg-5 col-md-12 col-sm-12 col-xs-12 pull-right">
-										<span className="col-lg-6 col-lg-offset-5 sentanceCase addButtonList" onClick={this.redirectTo.bind(this)}><i  className="fa fa-plus-circle"></i>&nbsp;&nbsp;{"Add "+this.state.pathname} 
+										<span className="col-lg-6 col-lg-offset-6 sentanceCase addButtonList" onClick={this.redirectTo.bind(this)}><i  className="fa fa-plus-circle"></i>&nbsp;&nbsp;{"Add "+this.state.pathname} 
 										</span>
 									</div>
 								</div>
@@ -378,13 +492,33 @@ class ListOfEntities extends Component {
 											<button type="button" className="btn alphab" value="Z" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Z</button>
 									</div>
 								</div>
-								{this.state.entityList && this.state.entityList.length > 0 ?
+
+								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 customTab">
+									<div className="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right">
+										<i className="fa fa-th fa-lg btn viewBtn pull-right" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'Grid')} onChange={this.handleChange} aria-hidden="true"></i>&nbsp;&nbsp;
+										<i className="fa fa-th-list fa-lg btn pull-right viewBtn btnactive" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'List')} onChange={this.handleChange} aria-hidden="true"></i>
+									</div>
+								</div>
+
+								{this.state.view === 'Grid' ?
+								<div className="col-lg-12"> <IAssureTable 
+			                      tableHeading={this.state.tableHeading}
+			                      dataCount={this.state.entityCount}
+			                      tableData={this.state.RecordsTable}
+			                      tableObjects={this.state.tableObjects}
+			                      getData={this.getData.bind(this)}
+			                      id={"id"}
+			                      tableName={this.state.entityType}
+			                      />
+			                      </div>
+								 :
+								 this.state.entityList && this.state.entityList.length > 0 ?
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrollbar" id="style-2">
 										<div className="borderlist12">
 											{
 												this.state.entityList.map((data, index) => {
 													return (
-														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 borderlist selected" key={index} onClick={this.ShowForm.bind(this)} name={index} data-child={data._id + '-' + index} id={data._id}>
+														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 borderlist selected lists" key={index} onClick={this.ShowForm.bind(this)} name={index} data-child={data._id + '-' + index} id={data._id}>
 															<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 supplierLogoDiv">
 																<img alt="companyLogo" src={data.companyLogo.length > 0 ? data.companyLogo[0]:"/images/noImagePreview.png"} className="supplierLogoImage"></img>															
 															</div>
@@ -413,7 +547,7 @@ class ListOfEntities extends Component {
 										<h5>No Data Found</h5>
 									</div>
 								}
-								{ this.state.showDetails && this.state.entityList && this.state.entityList.length > 0?
+								{ this.state.view === 'List' && this.state.showDetails && this.state.entityList && this.state.entityList.length > 0?
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdcls suppliersOneProfile commonSup" id={this.state.id}>
 										<div id={this.state.id} className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
 											<EntityDetails name={this.state.index} id={this.state.id} 

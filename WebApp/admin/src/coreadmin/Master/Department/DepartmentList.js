@@ -807,7 +807,7 @@ class DepartmentMaster extends Component {
         lastname      : this.state.lastName,
         mobNumber     : this.state.contactNumber,
         email         : this.state.email,
-        pwd           : "fivebees123",
+        pwd           : "fivebees123123",
         role          : this.state.pathname,
         status        : 'active',
         "emailSubject"    : "Email Verification",

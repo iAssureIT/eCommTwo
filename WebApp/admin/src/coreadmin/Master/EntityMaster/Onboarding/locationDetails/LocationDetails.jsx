@@ -11,13 +11,15 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from "react-places-autocomplete";
+import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
+
 
 
 class LocationDetails extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			'locationType': '',
+			'locationType': "",
 			'addressLine1': "",
 			'addressLine2': "",
 			'country': "",
@@ -41,6 +43,7 @@ class LocationDetails extends Component {
 			'pincodeExists': true,
 			'openForm': false,
 			openFormIcon : false,
+			view : 'List',
 			'pathname': this.props.entity,
 			'entityID': this.props.match.params ? this.props.match.params.entityID : '',
 			'locationID': this.props.match.params ? this.props.match.params.locationID : '',
@@ -49,17 +52,38 @@ class LocationDetails extends Component {
                 title           : "Location Type",
                 attributeName   : "locationType"
             },
-            "tableHeading": {
-                locationType: "Location Type",
-                actions: 'Action',
-            },
-            "tableObjects": {
-                deleteMethod: 'delete',
-                apiLink: '/api/locationtypemaster/',
-                paginationApply: false,
-                searchApply: false,
-                editUrl: '/appCompany/location-details'
-            },
+            // "tableHeading": {
+            //     locationType: "Location Type",
+            //     actions: 'Action',
+            // },
+            // "tableObjects": {
+            //     deleteMethod: 'delete',
+            //     apiLink: '/api/locationtypemaster/',
+            //     paginationApply: false,
+            //     searchApply: false,
+            //     editUrl: '/appCompany/location-details'
+            // },
+            RecordsTable:[],
+			tableHeading:{
+	            locationType:"Location Type",
+	            address:"Address",
+	            GSTIN:"GSTIN",
+	            gstDoc:"GST Document",
+	            PAN:"PAN",
+	            panDoc:"PAN Document",
+	            // actions:"Action"
+	          },
+	          tableObjects : {
+	          paginationApply : false,
+	          searchApply     : false,
+	          editUrl         : '/' + this.props.entity + "/location-details/" + this.props.match.params.entityID,
+	          deleteMethod    : 'delete',
+        	  apiLink         : '/api/entitymaster/deleteLocation/' + this.props.entity ,
+	          downloadApply   : true
+	        },
+	        startRange        : 0,
+            limitRange        : 100000,
+		
             "editId": this.props.match.params ? this.props.match.params.fieldID : '',
             "IdToDelete" : "",
 
@@ -75,10 +99,61 @@ class LocationDetails extends Component {
 	componentDidMount() {
 		this.getLocationType();
 		this.locationDetails();
+		this.getData();
 		this.edit();
 		window.scrollTo(0, 0);
 		this.handleChange = this.handleChange.bind(this);
+		axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
+		this.setState({
+			'entityID': this.props.match.params ? this.props.match.params.entityID : '',
+			'locationID': this.props.match.params ? this.props.match.params.locationID : '',
+		})
+
 	}
+	componentWillReceiveProps(nextProps) {
+		this.edit();
+		this.getData();
+		this.setState({
+			'entityID': nextProps.match.params ? nextProps.match.params.entityID : '',
+			'locationID':nextProps.match.params ? nextProps.match.params.locationID : '',
+		})
+	}
+	getData(){
+		console.log('getData this.props.match.params.locationID: ',this.props.match.params.locationID)
+		this.setState({
+			'entityID': this.props.match.params ? this.props.match.params.entityID : '',
+			'locationID': this.props.match.params ? this.props.match.params.locationID : '',
+		})
+		var formvalues = {
+			startRange : this.state.startRange,
+			limitRange : this.state.limitRange,
+			entityID : this.props.match.params.entityID
+		}
+		
+		axios.post('/api/entitymaster/getAllLocation',formvalues)
+		.then((response)=>{
+			var data = response.data.locations.reverse()
+			var tableData = data.map((a, i)=>{
+				var gstimage = a.GSTDocument.map((image,i)=>{return '<img src='+image+' class="img-responsive imgtab logoStyle" />'})
+				var panimage = a.PANDocument.map((image,i)=>{return '<img src='+image+' class="img-responsive imgtab logoStyle" />'})
+	        return{
+	        	_id:a._id,
+	            locationType:a.locationType,
+	            address:a.addressLine1 ? a.addressLine1 : null +' '+a.addressLine2,
+	            GSTIN:a.GSTIN ? a.GSTIN : 'NIL',
+	            gstDoc:a.GSTDocument && a.GSTDocument.length > 0 ? gstimage:'No Image Found!',
+	            PAN:a.PAN ? a.PAN : 'NIL',
+	            panDoc:a.PANDocument && a.PANDocument.length > 0 ? panimage:'No Image Found!',
+	            // action:""
+	        }
+	      })
+          this.setState({RecordsTable:tableData})
+			
+		})
+		.catch((error)=>{console.log('error: ',error)})
+
+	}
+
 	openForm() {		
 		this.setState({
 			openForm: this.state.openForm === false ? true : false,
@@ -120,6 +195,9 @@ class LocationDetails extends Component {
 		$.validator.addMethod("regxarea", function (value, element, regexpr) {
 			return regexpr.test(value);
 		}, "Please enter valid area.");
+		jQuery.validator.addMethod("notEqual", function(value, element, param) {
+      return this.optional(element) || value != param;
+    }, "Please specify a different (non-default) value");
 		
 
 		jQuery.validator.setDefaults({
@@ -130,7 +208,7 @@ class LocationDetails extends Component {
 			rules: {
 				locationType: {
 					required: true,
-					// valueNotEquals:""
+					notEqual:""
 				},
 				addressLine1: {
 					required: true,
@@ -364,7 +442,7 @@ class LocationDetails extends Component {
 			$(".CancelButtonSwal").parents('.swal-button-container').addClass('postionSwalLeft');
 
 		} else {
-			if (entityID) {
+			if (entityID && entityID != undefined) {
 				this.props.history.push("/" +this.state.pathname+ "/basic-details/" + entityID);
 			} else {
 				this.props.history.push("/" +this.state.pathname+ "/basic-details");
@@ -469,28 +547,34 @@ class LocationDetails extends Component {
 			})
 				.then((value) => {
 					if (value) {
+						if(entityID === undefined){
+						this.props.history.push("/" + this.state.pathname + "/contact-details" );
+						}else{
 						this.props.history.push("/" + this.state.pathname + "/contact-details/" + entityID);
-
+						}
 					} else {
+						if(entityID === undefined){
+						this.props.history.push("/" + this.state.pathname + "/location-details" );
+						}else{
 						this.props.history.push("/" + this.state.pathname + "/location-details/" + entityID);
+						}
 					}
 				})
 			$(".OkButtonSwal").parents('.swal-button-container').addClass('postionSwalRight');
 			$(".CancelButtonSwal").parents('.swal-button-container').addClass('postionSwalLeft');
 
 		} else {
+			if(entityID === undefined){
+			this.props.history.push("/" + this.state.pathname + "/contact-details" );
+			}else{
 			this.props.history.push("/" + this.state.pathname + "/contact-details/" + entityID);
+			}
 		}
 	}
-	componentWillReceiveProps(props) {
-		this.edit();
-	}
+
 	edit() {
-
-		// this.setState({			
-		// 		openFormIcon : this.state.openFormIcon === false ? true : false
-		// });
-
+		console.log('this.props.match.params: ',this.props.match.params)
+		console.log('this.props.match.params.locationID: ',this.props.match.params.locationID)
 		var entityID = this.state.entityID;
 		var locationID = this.state.locationID;
 		if (locationID) {
@@ -538,7 +622,6 @@ class LocationDetails extends Component {
 	locationDetails() {
 		axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
 			.then((response) => {
-				console.log("location array:",response.data.locations);
 				this.setState({
 					locationarray: response.data.locations.reverse()
 				})
@@ -550,20 +633,16 @@ class LocationDetails extends Component {
 
 	deleteEntity(event){
 		event.preventDefault();
-		console.log("data-id",event.currentTarget.getAttribute('data-id'))
 		this.setState({IdToDelete: event.currentTarget.getAttribute('data-id')})
 		$('#deleteEntityModal').show();
     }
     confirmDelete(event){
     	event.preventDefault();
-    	console.log("confirm delete");
     	var entityID = this.props.match.params.entityID;
     	var locationID = this.state.IdToDelete;
-    	console.log("entity id:",entityID);
     	axios.delete('/api/entitymaster/deleteLocation/' + entityID + "/" + locationID)
             .then((response)=>{
            		if (response.data) {
-           			console.log("response aftr deletion:",response);           			
 					this.setState({
 						'openForm': false,
 						'locationID': "",
@@ -832,19 +911,19 @@ class LocationDetails extends Component {
 				function getConfig() {
 					return new Promise(function (resolve, reject) {
 						axios
-							.get('/api/projectsettings/get/S3')
-							.then((response) => {
-								const config = {
-									bucketName: response.data.bucket,
-									dirName: 'propertiesImages',
-									region: response.data.region,
-									accessKeyId: response.data.key,
-									secretAccessKey: response.data.secret,
-								}
-								resolve(config);
-							})
-							.catch(function (error) {
-							})
+			              .post('/api/projectsettings/getS3Details/S3')
+			              .then((response) => {
+			                const config = {
+			                  bucketName: response.data.bucket,
+			                  dirName: process.env.REACT_APP_ENVIRONMENT,
+			                  region: response.data.region,
+			                  accessKeyId: response.data.key,
+			                  secretAccessKey: response.data.secret,
+			                }
+			                resolve(config);
+			              })
+			              .catch(function (error) {
+			              })
 
 					})
 				}
@@ -922,19 +1001,19 @@ class LocationDetails extends Component {
 				function getConfig() {
 					return new Promise(function (resolve, reject) {
 						axios
-							.get('/api/projectsettings/get/S3')
-							.then((response) => {
-								const config = {
-									bucketName: response.data.bucket,
-									dirName: 'propertiesImages',
-									region: response.data.region,
-									accessKeyId: response.data.key,
-									secretAccessKey: response.data.secret,
-								}
-								resolve(config);
-							})
-							.catch(function (error) {
-							})
+			              .post('/api/projectsettings/getS3Details/S3')
+			              .then((response) => {
+			                const config = {
+			                  bucketName: response.data.bucket,
+			                  dirName: process.env.REACT_APP_ENVIRONMENT,
+			                  region: response.data.region,
+			                  accessKeyId: response.data.key,
+			                  secretAccessKey: response.data.secret,
+			                }
+			                resolve(config);
+			              })
+			              .catch(function (error) {
+			              })
 
 					})
 				}
@@ -991,14 +1070,12 @@ class LocationDetails extends Component {
 
     geocodeByAddress(address)
      .then((results) =>{ 
-		console.log("googleapi result ===",results);
       for (var i = 0; i < results[0].address_components.length; i++) {
           for (var b = 0; b < results[0].address_components[i].types.length; b++) {
               switch (results[0].address_components[i].types[b]) {
                   case 'sublocality_level_1':
                       var area = results[0].address_components[i].long_name;
-					 console.log("area =",area); 
-					  break;
+                      break;
                   case 'sublocality_level_2':
                       area = results[0].address_components[i].long_name;
                       break;
@@ -1039,17 +1116,14 @@ class LocationDetails extends Component {
        
         })
      
-	  .catch(error => console.error('Error', error));
-	  
-	  geocodeByAddress(address)
-        .then(results => getLatLng(results[0]))
-        .then(({ lat, lng }) =>{            
-            this.setState({'latitude' : lat});
-            this.setState({'longitude' : lng});
-            console.log('Successfully got latitude and longitude', { lat, lng });
-        });           
-          this.setState({ addressLine1 : address});
+      .catch(error => console.error('Error', error));
 
+      geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => this.setState({'latLng': latLng}))
+      .catch(error => console.error('Error', error));
+     
+      this.setState({ addressLine1 : address});
   };
 
   hideModal(event){
@@ -1061,14 +1135,25 @@ class LocationDetails extends Component {
     	$(".modal-backdrop").remove();
     	window.location.reload();
     }
+     showView(value,event){
+		$('.viewBtn').removeClass('btnactive');
+        $(event.target).addClass('btnactive');
+    	this.setState({
+    		view : value
+    	})
+    }
 
 	render() {
+		 const searchOptions = {
+      // types: ['(cities)'],
+      componentRestrictions: {country: "in"}
+     }
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div className="row">
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
 						<section className="content OrgSettingFormWrapper">
-							<div className="modal" id="addLocationType" role="dialog">
+							{/*<div className="modal" id="addLocationType" role="dialog">
                               <div className="adminModal adminModal-dialog marginTopModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div className="modal-content adminModal-content col-lg-8 col-lg-offset-2 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
                                   <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1090,7 +1175,7 @@ class LocationDetails extends Component {
                                 </div>
                                 </div>
                               </div>
-                            </div>
+                            </div>*/}
  
 							<div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
@@ -1160,7 +1245,7 @@ class LocationDetails extends Component {
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Location Type <sup className="astrick">*</sup></label>
 																		<div>
-																		<select className="form-control col-lg-11 col-md-12 col-sm-12 col-xs-12 errorinputText" value={this.state.locationType} ref="locationType" name="locationType" id="locationType" onChange={this.handleChange} required>
+																		<select className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 errorinputText" value={this.state.locationType} ref="locationType" name="locationType" id="locationType" onChange={this.handleChange} required>
 																			<option value="" disabled>--Select Location Type--</option>
 																			{
 																				this.state.locationTypeArry && this.state.locationTypeArry.length > 0 ?
@@ -1188,6 +1273,7 @@ class LocationDetails extends Component {
 								                                        value={this.state.addressLine1}
 								                                        onChange={this.handleChangePlaces}
 								                                        onSelect={this.handleSelect}
+								                                        searchOptions={searchOptions}
 								                                      >
 								                                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 								                                          <div>
@@ -1421,6 +1507,24 @@ class LocationDetails extends Component {
 											</form>
 										</div>
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<div className="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right">
+												<i className="fa fa-th fa-lg btn viewBtn" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'Grid')} onChange={this.handleChange} aria-hidden="true"></i>&nbsp;&nbsp;
+												<i className="fa fa-th-list fa-lg btn viewBtn btnactive" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'List')} onChange={this.handleChange} aria-hidden="true"></i>
+											</div>
+										</div>
+
+										{this.state.view === 'Grid' ?
+										 <IAssureTable 
+					                      tableHeading={this.state.tableHeading}
+					                      dataCount={this.state.entityCount}
+					                      tableData={this.state.RecordsTable}
+					                      tableObjects={this.state.tableObjects}
+					                      getData={this.getData.bind(this)}
+					                      id={"id"}
+					                      tableName={"Location"}
+					                      />
+										 :
+										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											{this.state.locationarray && this.state.locationarray.length > 0 ?
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 													<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12 foothd">
@@ -1489,7 +1593,7 @@ class LocationDetails extends Component {
 																								<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
 																									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom">
 																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos">
-																											<img src={"/images/no-image-1.png"} className="img-responsive logoStyle" />
+																											<img src={"/images/noImagePreview.png"} className="img-responsive logoStyle" />
 																										</div>
 																									</div>
 																								</div>
@@ -1532,7 +1636,7 @@ class LocationDetails extends Component {
 																								<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding-left">
 																									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom">
 																										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos">
-																											<img src={"/images/no-image-1.png"} className="img-responsive logoStyle" />
+																											<img src={"/images/noImagePreview.png"} className="img-responsive logoStyle" />
 																										</div>
 																									</div>
 																								</div>
@@ -1580,6 +1684,7 @@ class LocationDetails extends Component {
 												null
 											}
 										</div>
+									 }
 									</div>
 								</section>
 

@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const expensetypemasterSchema = mongoose.Schema({
     _id             : mongoose.Schema.Types.ObjectId,
     type            : String,
-    CGSTRate        : Number,
-    SGSTRate        : Number,
+    GSTRate        : Number,
+    // CGSTRate        : Number,
+    // SGSTRate        : Number,
     createdAt       : Date,
                                                  
 }); 

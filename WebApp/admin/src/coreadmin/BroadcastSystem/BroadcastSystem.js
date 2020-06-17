@@ -12,7 +12,7 @@ export default class BroadcastSystem extends React.Component {
 			<div className="pageContent">
 				<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 					<div className="boxhead text-center">
-						<h1>Five Bees Broadcast System</h1>
+						<h1>Broadcast System</h1>
 
 					</div>
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

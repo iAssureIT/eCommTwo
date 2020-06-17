@@ -202,7 +202,7 @@ class AccessManagement extends Component {
         console.log(this.state)
         const rolesfields: object = { text: 'role', value: 'role' };
         return (
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div className="">
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <section className="content">

@@ -1,0 +1,12 @@
+const mongoose = require('mongoose');
+
+const expensetypemasterSchema = mongoose.Schema({
+    _id             : mongoose.Schema.Types.ObjectId,
+    type            : String,
+    CGSTRate        : Number,
+    SGSTRate        : Number,
+    createdAt       : Date,
+                                                 
+}); 
+
+module.exports = mongoose.model('expensetypemaster',expensetypemasterSchema);

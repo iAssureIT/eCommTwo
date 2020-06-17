@@ -43,7 +43,6 @@ class ProductCollageView extends Component {
   getProductData(id, clr) {
     axios.get("/api/products/get/productcode/" + id)
       .then((response) => {
-        // console.log('getProductData', response.data);
         let mymap = new Map();
         var colorFilter = response.data.filter(x => x.color === clr);
         var unique = colorFilter.filter(el => {
@@ -61,7 +60,6 @@ class ProductCollageView extends Component {
           return true;
         });
 
-        // console.log('unique', unique);
         this.setState({
           relatedProductArray: unique,
           productSizeArray: unique,
@@ -193,7 +191,6 @@ class ProductCollageView extends Component {
           this.setState({
             ['relatedProductArray' + id]: unique
           })
-          // console.log('unique', unique);
           if (unique.length > 0) {
             if (unique.length === 1) {
               if (unique[0].size) {
@@ -306,7 +303,6 @@ class ProductCollageView extends Component {
     })
   }
   render(){
-    // console.log("render this.state.products===",this.state.products);
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
         <Message messageData={this.state.messageData} />

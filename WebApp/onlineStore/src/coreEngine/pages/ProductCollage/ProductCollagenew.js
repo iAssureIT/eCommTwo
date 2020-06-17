@@ -183,14 +183,9 @@ class ProductCollage extends Component {
 		
 	}
 	getFilteredProducts(selector){
-		console.log(selector);
+		// console.log(selector);
 	}
 	filterProducts(subcategoryID,selectedbrands,price,color,size){
-		console.log('masterproducts',this.state.masterproducts);
-		console.log('subcategoryID',subcategoryID);
-		console.log('selectedbrands',selectedbrands);
-		console.log('price',this.state.price);
-		
 		if (subcategoryID != '') {
 
 			var products = this.state.masterproducts.filter( (array_el)=>  {
@@ -263,7 +258,6 @@ class ProductCollage extends Component {
 		axios.get("/api/products/get/listColor/"+this.props.match.params.categoryID)
 
 	      	.then((response)=>{ 
-				console.log("color response: ",response);
 	          this.setState({
 	              colors : response.data
 	          })

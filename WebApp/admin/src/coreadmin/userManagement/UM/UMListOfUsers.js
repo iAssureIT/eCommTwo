@@ -5,6 +5,9 @@ import swal from 'sweetalert';
 import $ from 'jquery';
 import moment from 'moment';
 import CreateUser from './CreateUser.js';
+import Roles from '../Roles/Roles.js';
+import DeletedUsers from './DeletedUsers.js';
+// import Roles from '../Roles/Roles.js';
 import IAssureTableUM from '../../IAssureTableUM/IAssureTable.jsx';
 import UMDelRolRow from './UMDelRolRow.jsx';
 import UMAddRolRow from './UMAddRolRow.jsx';
@@ -23,7 +26,7 @@ class UMListOfUsers extends Component {
 			},
 			"tableHeading": {
 				fullName: 'User Details',
-				// companyDetails: 'Company Details',
+				companyDetails: 'Company Details',
 				status: 'Status',
 				roles: 'Role',
 				createdAt: 'Registered Since',
@@ -56,7 +59,7 @@ class UMListOfUsers extends Component {
 		const user_ID = localStorage.getItem("user_ID");
 		var userDetails = (localStorage.getItem('userDetails'));
 		var userData = JSON.parse(userDetails);
-		console.log("userData = ", userData);
+		// console.log("userData = ", userData);
 		const companyID = parseInt(userData.companyID);
 		this.setState({
 			user_ID: user_ID,
@@ -68,11 +71,61 @@ class UMListOfUsers extends Component {
 				"companyID": this.state.companyID
 			}
 			this.getData(data);
+			// console.log("In componentDidMount =>", data);
 			this.getRole();
 			this.getCompanies();
 		})
 
 	}
+
+	// getData(data) {
+
+	// 	if (data.companyID > 0) {
+	// 		$('.fullpageloader').hide()
+	// 		var data = {
+	// 			"startRange": this.state.startRange,
+	// 			"limitRange": this.state.limitRange,
+	// 			"companyID": this.state.companyID
+	// 		}
+	// 		console.log("1 data before post=>", data)
+	// 		axios.post('/api/users/post/list',data)
+	// 			.then((res) => {
+	// 				// console.log("res.data in getdata==>", res.data);
+	// 				if (res.data.message == "COMPANYID_NOT_AVAILABLE") {
+	// 					swal({
+	// 						title: '',
+	// 						text: "Company Id not found.",
+	// 					});
+	// 				} else {
+	// 					var tableData = res.data.filter((data, i) => {
+	// 						return (data.status !== 'deleted-active' && data.status !== 'deleted-blocked' && data.status !== 'deleted');
+	// 					});
+	// 					var tableData = tableData.map((a, i) => {
+	// 						// console.log('tableData A==>>>', a);
+	// 						return {
+	// 							_id: a._id,
+	// 							fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +
+	// 								'<p><i class="fa fa-envelope"></i> ' + a.email + '&nbsp  | &nbsp <i class="fs16 fa fa-mobile"></i> ' + a.mobNumber + '</p>',
+	// 							companyDetails: a.companyName == undefined || "" ?  "-"  :a.companyName + ' | ' + a.companyID,
+	// 							status: a.status === "active" ? '<span class="label label-success statusLabel">' + a.status + '</span>' : '<span class="label label-default statusLabel">' + a.status + "</span>",
+	// 							roles: a.role.map((b, j) => '  <span>' + b + ' </span>').toString(),
+	// 							createdAt: moment(a.createdAt).format("DD MMM YY") + '<br/>' + moment(a.createdAt).fromNow(true),
+	// 							// lastLogin: a.lastLogin !== "-" ? moment(a.lastLogin).format("llll") + '<br/>'  : "-",
+	// 							lastLogin: a.lastLogin !== "-" ? moment(a.lastLogin).format("llll") + '<br/> <a onClick={this.showUserDetails.bind(this)} title="Login Details" id={a._id} data-toggle="modal" data-target={#userDetails- + a._id}> User Login Details' : "-",
+	// 						}
+	// 					})
+	// 					this.setState({
+	// 						completeDataCount: res.data.length,
+	// 						tableData: tableData,
+	// 					})
+	// 				}
+	// 			})
+	// 			.catch((error) => {
+	// 			});
+	// 	} else {
+	// 		$('.fullpageloader').show();
+	// 	}
+	// }
 	getData(data) {
 		axios.post('/api/users/post/list', data)
 			.then((res) => {
@@ -92,17 +145,21 @@ class UMListOfUsers extends Component {
 							_id: a._id,
 							fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +
 								'<p><i class="fa fa-envelope"></i> ' + a.email + '&nbsp  | &nbsp <i class="fs16 fa fa-mobile"></i> ' + a.mobNumber + '</p>',
-							// companyDetails: a.companyName == undefined || "" ? "-" : a.companyName + ' | ' + a.companyID,
+							companyDetails: a.companyName == undefined || "" ? "-" : a.companyName + ' | ' + a.companyID,
 							status: a.status === "active" ? '<span class="label label-success statusLabel">' + a.status + '</span>' : '<span class="label label-default statusLabel">' + a.status + "</span>",
 							roles: a.role.map((b, j) => '  <span>' + b + ' </span>').toString(),
 							createdAt: moment(a.createdAt).format("DD MMM YY") + '<br/>' + moment(a.createdAt).fromNow(true),
 							lastLogin:
 								a.lastLogin === null
 									?
+									// "User Not Yet Login"
 									'<p class="btn" style="font-size:13px;" title="Login Details">User not logged in yet</p>'
 
 									:
 									moment(a.lastLogin).format("llll") + '<br/><div class="btn btn-link" data-toggle="modal"  onclick=window.showUserDetails("' + a._id + '") data-target=#userDetails-' + a._id + ' title="Login Details">User Login Details</div>'
+
+							// moment(a.lastLogin).format("llll") + '<br/><div class="btn btn-link" data-toggle="modal"  onclick=window.myfunc() data-target=#userDetails-'+a._id+
+							// ' title="Show Booking">User Login Details</div>': "-",
 						}
 
 					})
@@ -132,7 +189,7 @@ class UMListOfUsers extends Component {
 						// fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +'<p><i class="fa fa-envelope"></i> &nbsp ' + a.email + '&nbsp <br /> <i class="fs16 fa fa-mobile"></i> ' + a.mobNumber + '</p>',
 						fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +
 							'<p><i class="fa fa-envelope"></i> ' + a.email + '&nbsp  | &nbsp <i class="fs16 fa fa-mobile"></i> ' + a.mobNumber + '</p>',
-						// companyDetails: a.companyName + ' | ' + a.companyID,
+						companyDetails: a.companyName + ' | ' + a.companyID,
 						status: a.status === "active" ? '<span class="label label-success statusLabel">' + a.status + '</span>' : '<span class="label label-default statusLabel">' + a.status + "</span>",
 						roles: a.role.map((b, j) => '  <span>' + b + ' </span>').toString(),
 						createdAt: moment(a.createdAt).format("DD MMM YY") + '<br/>' + moment(a.createdAt).fromNow(true),
@@ -344,7 +401,7 @@ class UMListOfUsers extends Component {
 				axios
 					.patch('/api/users/patch/deletestatus', formValues)
 					.then((response) => {
-						console.log("response in delete status==>", response.data)
+						// console.log("response in delete status==>", response.data)
 						window.location.reload();
 						resolve(response);
 					})
@@ -358,14 +415,14 @@ class UMListOfUsers extends Component {
 				axios
 					.get('/api/users/get/' + selectedId)
 					.then((response) => {
-						console.log("response in delete user==>", response.data)
+						// console.log("response in delete user==>", response.data)
 						resolve(response);
 					})
 					.catch(function (error) { })
 			})
 		}
 		mainBlock().then(response => {
-			console.log('res', response);
+			// console.log('res', response);
 			if (response) {
 				this.setState({
 					blockswal: true,
@@ -393,12 +450,12 @@ class UMListOfUsers extends Component {
 			var count = 0
 			for (var i = 0; i < checkedUsersList.length; i++) {
 				var selectedId = checkedUsersList[i];
-				console.log("selectedId sss===>", selectedId);
+				// console.log("selectedId sss===>", selectedId);
 				var formValues = {
 					user_id_tobedeleted: selectedId,
 					username: username,
 				}
-				console.log("formValues in delete===>", formValues);
+				// console.log("formValues in delete===>", formValues);
 				var previousStatus = await getUserDetails(selectedId)
 				if (previousStatus.data.status === 'deleted') {
 					swal(" ", "Already Status is deleted");
@@ -465,7 +522,7 @@ class UMListOfUsers extends Component {
 		}
 		var changed = 0;
 		mainBlock().then(response => {
-			console.log('res', response);
+			// console.log('res', response);
 			if (response) {
 				this.setState({
 					checkedUser: [],
@@ -759,6 +816,116 @@ class UMListOfUsers extends Component {
 			}
 		}
 	}
+
+
+	// deleteStatusSelected(event) {
+	// 	console.log("===== Delete user ====")
+	// 	var count = 0
+	// 	var username = this.state.username;
+	// 	var user_ID = this.state.user_ID;
+	// 	var checkedUsersList = []
+	// 	if (this.state.allid) {
+	// 		checkedUsersList = this.state.allid
+	// 	} else {
+	// 		checkedUsersList.push(event.target.id)
+	// 	}
+
+	// 	mainBlock()
+	// 		.then(response => {
+	// 			if (response) {
+	// 				this.setState({
+	// 					blockswal: true,
+	// 					checkedUser: [],
+	// 					unCheckedUser: true
+	// 				}, () => {
+	// 					var data = {
+	// 						"startRange": this.props.startRange,
+	// 						"limitRange": this.props.limitRange,
+	// 						"companyID" : this.props.companyID
+	// 					}
+	// 					this.props.getData(data)
+	// 					checkedUsersList = [];
+	// 					if (this.state.blockswal === true) {
+	// 						swal(" ", "Account deleted successfully");
+	// 					}
+	// 				})
+	// 			}
+	// 		});
+
+	// 	async function mainBlock() {
+	// 		var count = 0;
+	// 		for (var i = 0; i < checkedUsersList.length; i++) {
+	// 			var selectedId = checkedUsersList[i];
+	// 			var formValues = {
+	// 				user_id_tobedeleted: selectedId,
+	// 				updatedBy: user_ID,
+	// 			}
+	// 			console.log("formvalues main block==>", formValues);
+	// 			var response = await updateStatus(formValues);
+	// 			if (response) {
+	// 				var user = await getUserDetails(selectedId);
+	// 				if (user) {
+	// 					var msgvariable = {
+	// 						'[User]': user.data.firstname + ' ' + user.data.lastname,
+	// 						'[user_email_id]': user.data.email
+	// 					}
+	// 					var inputObj = {
+	// 						to: user.data.email,
+	// 						templateName: 'User - Login Account Deleted',
+	// 						variables: msgvariable,
+	// 					}
+	// 					while ((checkedUsersList.length - 1) === i) {
+	// 						return Promise.resolve(true);
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+
+	// 	function updateStatus(formValues) {
+	// 		console.log('formValues updated status===>>>', formValues);
+	// 		return new Promise(function (resolve, reject) {
+	// 			axios
+	// 				.patch('/api/users/patch/deletestatus', formValues)
+	// 				.then((response) => {
+	// 					console.log('responseStatus', response);
+	// 					resolve(response);
+	// 					var data = {
+	// 						"startRange": this.props.startRange,
+	// 						"limitRange": this.props.limitRange,
+	// 						"companyID" : this.props.companyID
+	// 					}
+	// 					this.props.getData(data)
+	// 				})
+	// 				.catch(function (error) {
+	// 				})
+	// 		})
+	// 	}
+	// 	function getUserDetails(selectedId) {
+	// 		return new Promise(function (resolve, reject) {
+	// 			axios
+	// 				.get('/api/users/get/' + selectedId)
+	// 				.then((response) => {
+	// 					// console.log('responsegetUserDetails====>'.response.data);
+	// 					resolve(response);
+	// 				})
+	// 				.catch(function (error) {
+	// 				})
+	// 		})
+	// 	}
+	// 	function sendMail(inputObj) {
+	// 		return new Promise(function (resolve, reject) {
+	// 			axios
+	// 				.post('/api/masternotification/send-mail', inputObj)
+	// 				.then((response) => {
+	// 					// console.log('responsesend-mail'.response);
+	// 					resolve(response);
+	// 				})
+	// 				.catch(function (error) {
+	// 				})
+	// 		})
+	// 	}
+	// }
 	selectedCompnay(event) {
 		event.preventDefault();
 		var selectedValue = this.refs.companyDropdown.value;
@@ -786,11 +953,11 @@ class UMListOfUsers extends Component {
 				axios.post('/api/users/get/list/companies/' + keywordSelectedValue, data)
 					.then((res) => {
 						var tableData = res.data.filter((data, i) => {
-							console.log('tableData data.status==>>>', data.company);
+							// console.log('tableData data.status==>>>', data.company);
 							return (data.status !== '<span class="label label-default statusLabel">deleted-active</span>' && data.status !== '<span class="label label-default statusLabel">deleted-blocked</span>' && data.role !== ["admin"] && data.status !== '<span class="label label-default statusLabel">Deleted-Active</span>' && data.status !== '<span class="label label-default statusLabel">Deleted-Blocked</span>' && data.status !== 'deleted');
 						});
 						var tableData = tableData.map((a, i) => {
-							console.log('tableData A==>>>', a);
+							// console.log('tableData A==>>>', a);
 							return {
 								_id: a._id,
 								fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +
@@ -826,8 +993,8 @@ class UMListOfUsers extends Component {
 		var formValues = {
 			searchText: selectedValue,
 		}
-		console.log("this.refs.roleListDropdown.value=>", this.refs.roleListDropdown.value)
-		console.log("this.refs.blockActive.value=>", this.refs.blockActive.value)
+		// console.log("this.refs.roleListDropdown.value=>", this.refs.roleListDropdown.value)
+		// console.log("this.refs.blockActive.value=>", this.refs.blockActive.value)
 		if (this.refs.blockActive.value && (this.refs.roleListDropdown.value && this.refs.roleListDropdown.value != "-- Select --")) {
 			this.selectedStatuswithrole();
 		} else {
@@ -843,7 +1010,7 @@ class UMListOfUsers extends Component {
 					"limitRange": this.state.limitRange,
 					"companyID": this.state.companyID
 				}
-				console.log("data in status==>", data);
+				// console.log("data in status==>", data);
 				axios.post('/api/users/get/list/status/' + selectedValue, data)
 					.then(
 						(res) => {
@@ -851,7 +1018,7 @@ class UMListOfUsers extends Component {
 								return (data.status !== '<span class="label label-default statusLabel">deleted-active</span>' && data.status !== '<span class="label label-default statusLabel">deleted-blocked</span>' && data.status !== '<span class="label label-default statusLabel">Deleted-Active</span>' && data.status !== '<span class="label label-default statusLabel">Deleted-Blocked</span>' && data.status !== 'deleted');
 							});
 							var tableData = tableData.map((a, i) => {
-								console.log('tableData A==>>>', a);
+								// console.log('tableData A==>>>', a);
 								return {
 									_id: a._id,
 									fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +
@@ -903,11 +1070,11 @@ class UMListOfUsers extends Component {
 				.then(
 					(res) => {
 						var tableData = res.data.filter((data, i) => {
-							console.log('tableData data.status==>>>', data.status);
+							// console.log('tableData data.status==>>>', data.status);
 							return (data.status !== '<span class="label label-default statusLabel">deleted-active</span>' && data.status !== '<span class="label label-default statusLabel">deleted-blocked</span>' && data.status !== '<span class="label label-default statusLabel">Deleted-Active</span>' && data.status !== '<span class="label label-default statusLabel">Deleted-Blocked</span>' && data.status !== 'deleted');
 						});
 						var tableData = tableData.map((a, i) => {
-							console.log('tableData A==>>>', a);
+							// console.log('tableData A==>>>', a);
 							return {
 								_id: a._id,
 								fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +
@@ -938,7 +1105,7 @@ class UMListOfUsers extends Component {
 		}
 	}
 	confirmDel(event) {
-		console.log("delete===>>>");
+		// console.log("delete===>>>");
 		this.setState({
 			confirmDel: true,
 		})
@@ -961,7 +1128,7 @@ class UMListOfUsers extends Component {
 		}
 		axios.post('/api/roles/get/list', data)
 			.then((response) => {
-				console.log('response', response);
+				// console.log('response', response);
 				this.setState({
 					adminRolesListData: response.data
 				}, () => {
@@ -972,7 +1139,7 @@ class UMListOfUsers extends Component {
 	getCompanies() {
 		axios.get('/api/entitymaster/getAllcompany')
 			.then((response) => {
-				console.log('response =====>', response);
+				// console.log('response =====>', response);
 				this.setState({
 					compDetails: response.data
 				}, () => {
@@ -1061,10 +1228,11 @@ class UMListOfUsers extends Component {
 									</div>
 									<form className="newTemplateForm">
 										<div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 usrmgnhead">
-											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6" >
+											<div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6" >
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12  NOpadding-left text-left labelform">Select Action</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control mdb-select md-form" id="userListDropdownId" ref="userListDropdown" name="userListDropdown" onChange={this.adminUserActions.bind(this)}>
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="-" name="userListDDOption" disabled="disabled" selected="true">-- Select --</option>
+
 													<optgroup className="col-lg-12 col-md-12 col-sm-12 col-xs-12  optgrpunderline" label="Active, Block, Delete">
 														<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="block_selected" name="userListDDOption">Block Selected</option>
 														<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="active_selected" name="userListDDOption">Active Selected</option>
@@ -1084,7 +1252,7 @@ class UMListOfUsers extends Component {
 													</optgroup>
 												</select>
 											</div>
-											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
+											<div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Role</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="roleListDropdown" name="roleListDropdown" onChange={this.selectedRole.bind(this)} >
 													<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
@@ -1096,7 +1264,7 @@ class UMListOfUsers extends Component {
 													}
 												</select>
 											</div>
-											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
+											<div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Status</label>
 												<select className=" col-col-lg-12  col-md-12 col-sm-12 col-xs-12 noPadding  form-control " ref="blockActive" name="blockActive" onChange={this.selectedStatus.bind(this)}>
 													<option value="" disabled="disabled" selected="true">-- Select --</option>
@@ -1105,7 +1273,7 @@ class UMListOfUsers extends Component {
 													<option value="active">Active </option>
 												</select>
 											</div>
-											{/* <div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6">
+											<div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Company</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="companyDropdown" name="companyDropdown" onChange={this.selectedCompnay.bind(this)} >
 													<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
@@ -1113,7 +1281,6 @@ class UMListOfUsers extends Component {
 													{
 														this.state.compDetails && this.state.compDetails.length > 0 ?
 															this.state.compDetails.map((data, index) => {
-																console.log("data in table ==>",data);
 																return (
 																	<option key={index} value={data.companyName}>{data.companyName}</option>
 																);
@@ -1122,7 +1289,7 @@ class UMListOfUsers extends Component {
 															<option value='user'>User</option>
 													}
 												</select>
-											</div> */}
+											</div>
 										</div>
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<IAssureTableUM

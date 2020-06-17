@@ -1,486 +1,355 @@
-import React,{Component} from 'react';
-// import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import { render } from 'react-dom';
-import { BrowserRouter, Route, Switch,Link,location } from 'react-router-dom';
-
+import React,{Component}                              from 'react';
+import { render }                                     from 'react-dom';
+import $                                              from "jquery";
+import { BrowserRouter, Route, Switch,Link  } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-import $ from "jquery";
-
-// import Header from '../header/Header.js'
+import 'font-awesome/css/font-awesome.min.css'; 
 import './Leftsidebar.css';
+import './dashboard.css';
 
-export default class Leftsidebar extends Component{
-  
-  constructor(props) {
-   super(props);
-    this.state = {}
+
+export default class AdminDashboard extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      menuValues : {
+        vendorData             : false,
+        supplierData           : false,
+        corporateData          : false,
+        contractmanagement     : false,
+        masterData             : false
+      }
+    };
+    this.closeIcon   = 'fa-angle-left';
+    this.openIcon    = 'fa-angle-down';
+    this.activeMenu = this.activeMenu.bind(this)
+  }
+
+  componentDidMount(){
+    if (!$('body').hasClass('adminLte')) {
+      var adminLte = document.createElement("script");
+      adminLte.type="text/javascript";
+      adminLte.src = "/js/adminLte.js";
+      $("body").append(adminLte);
+    }
+      $("html,body").scrollTop(0);
+      var getCurrentUrl = window.location.pathname;
+      // console.log("getCurrentUrl",getCurrentUrl);
+
+    $(".sidebar-menu .singleTreeview a").filter(function(a, b){
+      if($(this).attr('href') === getCurrentUrl){
+        // console.log("b",b);
+        // console.log($(this).attr('href') === getCurrentUrl);
+        $(b).addClass('active');
+        // console.log(b);
+      }
+    })
+     $(".sidebar-menu .treeview li a").filter(function(a, b){
+      if($(this).attr('href') === getCurrentUrl){
+        $(b).addClass('active');
+        $($($(b).parent()).parent()).parent().addClass('menu-open');
+        ($($(b).parent()).parent()).css("display", "block");
+        // $($($($($($($(b).parent()).parent()).children('menu-open')).children("pull-right-container")).children("i"))).addClass("fa-angle-down");
+      }
+    })
   }
    
-  componentDidMount(){
-     /*$(document).ready(function () {
-     $('#sidebarCollapse').on('click', function () {
-         $('#sidebar').toggleClass('active');
-     });
-  });*/
-  }   
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
 
-
-   eventclk(event){
+  activeMenu(event){
+    // console.log('event.currentTarget',event.currentTarget);
     event.preventDefault();
-    $(event.currentTarget).addClass('active');
-    $(event.currentTarget).siblings('li').removeClass('active');
-    // $(event.currentTarget).siblings('li').children('.treeview-menu').toggle();
+    var a =event.currentTarget
+    var pathname = event.currentTarget.getAttribute("data-id"); 
+    // console.log('pathname',pathname);
+    window.location = pathname
+    $(".sidebar-menu .treeview-menu li a").removeClass("active-submenu");
+    $(event.currentTarget).addClass("active-submenu");
+    // event.currentTarget.href = pathname;
+    // var currentEvent =  event.currentTarget
+    // var getCurrentUrl = window.location.pathname;
+    // localStorage.setItem("getCurrentUrl", pathname);
+    // localStorage.setItem("currentEvent",currentEvent);
+    // console.log("getCurrentUrl",getCurrentUrl);
+    // console.log("currentURL",localStorage.getItem("currentURL"));
+  }
 
+  openMenu = (key) => {
+    let {menuValues} = this.state;
+    Object.keys(menuValues).map((data) => {
+      menuValues[data] = (data==key) ? !menuValues[key] :false;
+    });
+    this.setState({menuValues});
+    $('.singleTreeview').removeClass('active')
   }
 
   eventclk1(event){
-    event.preventDefault();
-    $(event.currentTarget).children('.treeview-menu').toggle();
-    $(event.currentTarget).addClass('active');
-    $(event.currentTarget).siblings('li').removeClass('active');
-    // $(event.currentTarget).siblings('li').children('.treeview-menu').toggle();
+    $(event.currentTarget).children(".menuContent").children(".rotate").toggleClass("down");
+    var currentEvent =  event.currentTarget
+    var getCurrentUrl = window.location.pathname;
+    // console.log("getCurrentUrl",getCurrentUrl);
+    localStorage.setItem("currentURL",getCurrentUrl)
+    localStorage.setItem("currentEvent",currentEvent)
+    /*
+    var x = document.getElementById(targetId);
+    var targetId = $(event.currentTarget).children('.activeClass').attr("id");
+    var getValue = x.getAttribute('aria-expanded');
+    $('.activeClass').removeClass('in');
+    $(event.currentTarget).children('.activeClass').addClass('in')
+    */
+  } 
 
-  }  
+  clickDashboard(event){
+    $('.treeview').not(event.currentTarget).removeClass('menu-open')
+    $('.treeview-menu').css({'display':'none'})
+    $(event.currentTarget).addClass('active')
 
-  clickLiTree(event){
-    event.preventDefault();
-    $(event.target).parent().addClass('activeLi');
-    var checkli = $(event.target).parent().siblings('li').removeClass('activeLi');
   }
 
-  clickTree(event){
-      event.preventDefault();
-      console.log('$(event.currentTarget)',$(event.currentTarget));
-      $(event.currentTarget).addClass('activetree');
-      $(event.currentTarget).siblings('li').removeClass('activetree');
-      $(event.currentTarget).siblings('li').removeClass('menu-open');
-      $(event.currentTarget).siblings('li').children('.treeview-menu').css('display','none');
-      $(event.currentTarget).siblings('li').children('.treeview-menu').children().removeClass('activeLi');
-  }   
-
   render(){
-    // console.log('screen height',  window.screen.height );  
-    var sidebarHeight = window.screen.height - 225;
+    let {dashboard,vendorData,supplierData,corporateData,contractmanagement,masterData} = this.state.menuValues;
+
     return(
-      <div>
-        <aside className="leftsidebar">
-          <div className="wrapper">
-            <nav id="sidebar">
-              {/*<div className="sidebar-header">
-                <h4 className="text-center"><b><img className="slidlogo1" src="/images/anasLogo.png"/></b></h4>
-                <strong><img className="slidlogo" src="/images/furniture-logo1.jpg"/></strong>
-              </div>*/}
+      <aside className="main-sidebar control-sidebar sidebarWrapper scrollBox">
+        <section className="sidebar noPadLR sidebar-menu-wrapper">
+          <ul className="sidebar-menu" data-widget="tree">
 
-              <div className="sidebar-header">
-                <h4 className="text-center"><b><label  className="headerImage">UniMandai Admin</label></b></h4>
-                <strong><img className="slidlogo" src="/images/furniture-logo1.jpg"/></strong>
-              </div>
-              <ul className="list-unstyled components abc" style={{height:  sidebarHeight+"px"}} >
-                <li className="active sidebarMenuText add">
-                  <a href="/dashboard">
-                    <i className="fa fa-dashboard"></i>
-                    Dashboard
-                  </a>
-                </li>
-                
-                <li className="sidebarMenuText">
-                  <a href="#Plan" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-pie-chart" />
-                    Product Management
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="Plan">
-                      <li>
-                        <a href="/add-product">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add Product</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/product-upload">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Product Bulk Upload</span>
-                        </a>
-                      </li>  
-                      <li>
-                        <a href="/product-list">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Product List</span>
-                        </a>
-                      </li>  
-                      <li>
-                        <a href="/file-wise-product-list">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">File Wise Product List</span>
-                        </a>
-                      </li>   
-                      <li>
-                        <a href="/product-image-bulk-upload">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Image Bulk Upload</span>
-                        </a>
-                      </li>   
-                      
-                  </ul>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="#Shipment" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-map-marker" />
-                    Order Management
-                     <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="Shipment">
-                    <li>
-                      <a href="/allorders">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">All Orders</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/new-orders-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">New Order List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/verified-orders-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Verified Order List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/packed-orders-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Packed Order List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/inspected-orders-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Inspected Order List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/approved-orders-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Approved Order List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/dispatched-orders-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Dispatched Order List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/delivery-initiated-orders">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Delivery Initiated Orders</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/delivered-orders-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Delivered Order List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/returned-products">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Returned Products</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li> 
-                 <li className="sidebarMenuText">
-                  <a href="#baData1" data-toggle="collapse" aria-expanded="false">
-                    <i className="glyphicon glyphicon-briefcase" />
-                    Inventory Management
-                     <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="baData1">
-                    <li>
-                      <a href="/purchase-management">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Raw Material Inward</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/raw-material-stock-report">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Raw Material Stock Report</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/finished-goods">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Finished Goods Inward</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/franchise-shopping-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Finished Goods Ourward</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="/admin-shopping-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Consolidate Purchase Orders</span>
-                      </a>
-                    </li>
-
-
-                    <li>
-                      <a href="/franchise-shopping-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Franchise Shopping List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/franchise-order-summary">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Franchise Order Summary</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/franchise-allowable-pincode">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Allowable Pincode</span>
-                      </a>
-                    </li>                    
-                  </ul>
-                </li>
-                <li className="sidebarMenuText add">
-                  <a href="/distribution">
-                    <i className="fa fa-industry"></i>
-                    Distribution Management
-                  </a>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="#baData" data-toggle="collapse" aria-expanded="false">
-                    <i className="glyphicon glyphicon-briefcase" />
-                    Business Associates
-                     <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="baData">
-                    <li>
-                      <a href="/addNewBA">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Add Business Associate</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/ba-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Business Associates List</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li className="active sidebarMenuText add">
-                  <a href="/vendor/list">
-                    <i className="fa fa-industry"></i>
-                    Vendor Master
-                  </a>
-                </li>
-
-                <li className="active sidebarMenuText add">
-                  <a href="/franchise/list">
-                    <i className="fa fa-industry"></i>
-                    Franchise Master
-                  </a>
-                </li>
-
-                {/*<li className="sidebarMenuText">
-                  <a href="#vendors" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-industry" />
-                    Vendor Management
-                     <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="vendors">
-                    <li>
-                      <a href="/vendor/basic-details">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Add Vendor</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/vendor/list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Vendor List</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>*/}
-
-                {/*<li className="sidebarMenuText">
-                  <a href="#franchise" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-industry" />
-                    Franchise Management
-                     <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="franchise">
-                    <li>
-                      <a href="/franchise/list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Franchise Master</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/franchise-allowable-pincode">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Allowable Pincode</span>
-                      </a>
-                    </li>                    
-                  </ul>
-                </li>*/}
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/dashboard"  title="Dashboard" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-dashboard" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Dashboard</span>
+              </a>
+            </li>
 
 
 
-
-
-{/*                <li className="sidebarMenuText">
-                  <a href="/">
-                    <i className="fa fa-percent"></i>
-                    Discount Management
-                  </a>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="/">
-                    <i className="fa fa-star"></i>
-                    Product Rating System
-                  </a>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="/">
-                    <i className="fa fa-copyright"></i>
-                    Content Management
-                  </a>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="/">
-                    <i className="fa fa-file"></i>
-                    Agreement Management
-                  </a>
-                </li>*/}
-                
-                <li className="sidebarMenuText">
-                  <a href="#Report" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-line-chart" />
-                    Reports
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="Report">
-                    <li>
-                      <a href="/report">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Sales Report</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/category-wise-reports">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Category Wise Sales Report</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="#productreview" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    Product Review
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="productreview">
-                    <li>
-                      <a href="/productreview">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Product Review</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="sidebarMenuText">
-                  <a href="#MasterData" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-university" />
-                    Master Data
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="MasterData">                    
-                    <li>
-                      <a href="/taxname">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Tax Master</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/taxrate">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Tax Rate Master</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/vendor-category">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Vendor Category</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/vendor-location-type">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Vendor Location Type</span>
-                      </a>
-                    </li>
-                    <li>
-                        <a href="/category-management">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Category Master</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/section-management">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Section Master</span>
-                        </a>
-                      </li>
-                      <li>
-                      <a href="/warehouse">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Warehouse Master</span>
-                      </a>
-                    </li>   
-                  </ul>
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("contractmanagement")} title="Contract Management">
+                <i className="fa fa-file" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle">Product Management</span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(contractmanagement?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/add-product" data-id="/add-product" onClick={this.activeMenu.bind(this)} title="Add New Product">
+                    <i className="fa fa-circle-o dashr" />Add New Product
+                  </a> 
                 </li>  
-                <li className="sidebarMenuText">
-                  <a href="#CmsData" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-university" />
-                    CMS
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="CmsData">
-                    <li>
-                      <a href="/viewpage1">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Create Page</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/viewblock1">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Create Block</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/static-block-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Static Blocks</span>
-                      </a>
-                    </li>
-                     
-                  </ul>
-                </li>         
+                <li className="noPadLR"> 
+                  <a href="/product-upload" data-id="/product-upload" title="Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Product Bulk Upload
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/product-list" data-id="/product-list" title="Product List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Product List
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/file-wise-product-list" data-id="/file-wise-product-list" title="Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />File Wise Product List
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/product-image-bulk-upload" data-id="/product-image-bulk-upload" title="Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Image Bulk Upload
+                  </a> 
+                </li>  
               </ul>
-            </nav>
-          </div>
-        </aside>
-      </div>
+            </li>
+
+
+
+
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("contractmanagement")} title="Contract Management">
+                <i className="fa fa-file" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle">Order Management</span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(contractmanagement?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/allorders" data-id="/allorders" onClick={this.activeMenu.bind(this)} title="All Orders">
+                    <i className="fa fa-circle-o dashr" />All Orders
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/new-orders-list" data-id="/new-orders-list" title="New Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />New Order List
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/verified-orders-list" data-id="/verified-orders-list" title="Verified Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Verified Order List
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/packed-orders-list" data-id="/packed-orders-list" title="Packed Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Packed Order List
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/inspected-orders-list" data-id="/inspected-orders-list" title="Inspected Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Inspected Order List
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/approved-orders-list" data-id="/approved-orders-list" title="Approved Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Approved Order List
+                  </a> 
+                </li>  
+
+                <li className="noPadLR"> 
+                  <a href="/dispatched-orders-list" data-id="/dispatched-orders-list" title="Dispatched Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Dispatched Order List
+                  </a> 
+                </li>  
+
+              </ul>
+            </li>
+
+
+
+
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("corporateData")} title="Corporate Master">
+                <i className="fa fa-users" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle">Inventory Management </span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(corporateData?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/purchase-management" data-id="/purchase-management" title="Raw Material Inward" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Raw Material Inward
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/raw-material-stock-report" data-id="/raw-material-stock-report" title="Raw Material Stock Report" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Raw Material Stock Report
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/finished-goods" data-id="/finished-goods" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Finished Goods Inward
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/franchise-shopping-list" data-id="/franchise-shopping-list" title="Franchise Purchase Order" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Franchise Purchase Order
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/admin-shopping-list" data-id="/admin-shopping-list" title="Consolidate Purchase Orders" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Consolidate Purchase Orders
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/franchise-order-summary" data-id="/franchise-order-summary" title="Franchise Order Summary" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Franchise Order Summary
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/franchise-allowable-pincode" data-id="/franchise-allowable-pincode" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Allowable Pincode
+                  </a> 
+                </li>  
+              </ul>
+            </li>
+
+
+
+
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
+                <i className="fa fa-book" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle">Business Associates</span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(vendorData?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/addNewBA" data-id="/addNewBA" title="Add Business Associate" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Add Business Associate
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/ba-list" data-id="/ba-list" title="Business Associates List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Business Associates List
+                  </a> 
+                </li>    
+              </ul>
+            </li>
+
+
+
+
+
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
+                <i className="fa fa-book" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle">Reports</span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(vendorData?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/report" data-id="/report" title="Sales Report" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Sales Report
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/ba-list" data-id="/ba-list" title="Category Wise Sales Report" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Category Wise Sales Report
+                  </a> 
+                </li>    
+              </ul>
+            </li>
+
+
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/project-master-data" title="Master Data" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-th-large" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Master Data</span>
+              </a>
+            </li>
+
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/vendor/list" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-money" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Vendor Master</span>
+              </a>
+            </li>
+
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/franchise/list" title="Franchise Master" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-money" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Franchise Master</span>
+              </a>
+            </li>
+
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/distribution" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-money" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Distribution Management</span>
+              </a>
+            </li>
+
+
+          </ul>
+        </section>
+      </aside>
     );
   }
 }

@@ -13,7 +13,7 @@ class BookingRequired extends React.Component {
             pathname : props && props.pathname ? props.pathname : '',
             'preApprovedAmount'      : props && props.editData != null ? props.editData.preApprovedAmount :0,
             'preApprovedRides' : props && props.editData != null ? props.editData.preApprovedRides : 0,
-            'preApprovedKilometers' : props && props.editData != null ? props.editData.preApprovedKilometers : 0,
+            'preApprovedKilometer' : props && props.editData != null ? props.editData.preApprovedKilometer : 0,
             'approvingAuthorityId1'     : props && props.editData != null ? props.editData.approvingAuthorityId1 :'',
             'approvingAuthorityId2'     : props && props.editData != null ? props.editData.approvingAuthorityId2 :'',
             'approvingAuthorityId3'     : props && props.editData != null ? props.editData.approvingAuthorityId3 :'',
@@ -43,7 +43,7 @@ class BookingRequired extends React.Component {
             [name] : event.target.value
         }, () => {
             var data = {
-                'preApprovedKilometers'     : this.state.preApprovedKilometers,
+                'preApprovedKilometer'     : this.state.preApprovedKilometer,
                 'preApprovedAmount'         : this.state.preApprovedAmount,
                 'preApprovedRides'          : this.state.preApprovedRides,
                 'approvingAuthorityId1'     : this.state.approvingAuthorityId1,
@@ -77,7 +77,7 @@ class BookingRequired extends React.Component {
             bookingApprovalRequired : val
         }, () => {
             var data = {
-                'preApprovedKilometers'     : this.state.preApprovedKilometers,
+                'preApprovedKilometer'     : this.state.preApprovedKilometer,
                 'preApprovedAmount'         : this.state.preApprovedAmount,
                 'preApprovedRides'          : this.state.preApprovedRides,
                 'approvingAuthorityId1'     : this.state.approvingAuthorityId1,
@@ -158,33 +158,27 @@ class BookingRequired extends React.Component {
             {
                 this.state.bookingApprovalRequired === "Yes" ? 
                     <div >
-                        <div className="col-lg-12 col-md-12">                        
-                        <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Pre Approved Parameters<i className="astrick">*</i></label>
-                        </div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                        
+                       
                         <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
                             <div className="col-md-12">
-                              <div className="input-group" id="preApprovedAmount">
-                                  <span className="input-group-addon transparent">Amount(&#8377;)</span>
-                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Amount" min="0" pattern="/^[0-9]+(,[0-9]+)*$/" value={this.state.preApprovedAmount} ref="preApprovedAmount" name="preApprovedAmount" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)} />
-                              </div>
+                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Pre Approved Amount(&#8377;)<i className="astrick">*</i></label>
+                                <input type="number" min="0" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Amount" min="0" pattern="/^[0-9]+(,[0-9]+)*$/" value={this.state.preApprovedAmount} ref="preApprovedAmount" name="preApprovedAmount" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)} />
                             </div>
                         </div>
                         <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
                             <div className="col-md-12">
-                              <div className="input-group" id="preApprovedRides">
-                                  <span className="input-group-addon transparent">Rides</span>
-                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Rides" min="0" value={this.state.preApprovedRides} ref="preApprovedRides" name="preApprovedRides" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)}  />
-                              </div>
+                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Pre Approved Rides<i className="astrick">*</i></label>
+                                <input type="number" min="0" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Rides" min="0" value={this.state.preApprovedRides} ref="preApprovedRides" name="preApprovedRides" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)}  />
                             </div>
                         </div>
                         <div className="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding">
                             <div className="col-md-12">
-                              <div className="input-group" id="preApprovedKilometers">
-                                  <span className="input-group-addon transparent">Kilometer</span>
-                                  <input type="number" className="form-control left-border-none col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Kilometer" min="0" value={this.state.preApprovedKilometers} ref="preApprovedKilometers" name="preApprovedKilometers" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)}  />
-                              </div>
+                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Pre Approved Kilometers<i className="astrick">*</i></label>
+                                  <input type="number" min="0" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" placeholder="Enter Kilometer" min="0" value={this.state.preApprovedKilometer} ref="preApprovedKilometer" name="preApprovedKilometer" onKeyDown={this.keyPressNumber.bind(this)}  onChange={this.handleChange.bind(this)}  />
                             </div>
                         </div>
+                         </div>
                     </div>
                     
                 :

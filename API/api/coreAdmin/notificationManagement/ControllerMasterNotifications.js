@@ -207,162 +207,99 @@ exports.filterTemplate = (req,res,next)=>{
 
 
 exports.send_notifications = (req, res, next) => {
-    // Masternotifications.find({event: req.body.event,status:'active'})
-    // .sort({createdAt:1})
-    // .exec()
-    // .then(data=>{
+    Masternotifications.find({event: req.body.event,status:'active'})
+    .sort({createdAt:1})
+    .exec()
+    .then(data=>{
         main();
         async function main(){
             
-            var returnData = ["admin","manager","employee","corporateadmin","vendoradmin"]
+            var returnData = data
             if(returnData && returnData.length > 0){
                 for(var i=0 ; i< returnData.length ; i++){
-                    var role = returnData[i];
+                    var role = returnData[i].role;
                     var company = req.body.company;
-                    var templateName = req.body.event;
+                    var templateName = returnData[i].event;
+                    var mode = returnData[i].templateType;
                     console.log('========================================================')
                     console.log('role=>',role)
 
-
-                    switch(role){
-                        case 'admin':
-                                    var userData = await getAdminUserId();
-                                    break;
-                        case 'manager':
-                                    var userData = await getManagerData(req.body.toUserId)
-                                    break;
-                        case 'employee':
-                                    var userData = await getProfileByUserId(req.body.toUserId);
-                                    break;
-                        case 'corporateadmin':
-                                    var userData = await getCorporateAdminData(req.body.toUserId);
-                                    break;
-                        case 'vendoradmin':
-                                    var userData = await getVendorAdminUserId(req.body.company);
-                                    break;
+                    if(role == 'admin'){
+                        console.log('admin==>',mode,role,templateName,company)
+                        var userData = await getAdminUserData();
+                        await callTemplates(mode,userData,role,templateName,company,req.body.variables)
+                    }else if(req.body.toUser_id){
+                         console.log('self==>',mode,role,templateName,company)
+                        var userData = await getSelfUserData(req.body.toUser_id);
+                        await callTemplates(mode,userData,role,templateName,company,req.body.variables)
+                    }else if(req.body.intendedUser_id){
+                         console.log('manager==>',mode,role,templateName,company)
+                        var userData = await getIntendedUserData(req.body.intendedUser_id);
+                        await callTemplates(mode,userData,role,templateName,company,req.body.variables)
+                    }else if(req.body.intendedUserRole && req.body.company_id){
+                         console.log('corporate==>',mode,role,templateName,company)
+                        var userData = await getOtherAdminData(req.body.intendedUserRole,req.body.company_id);
+                        await callTemplates(mode,userData,role,templateName,company,req.body.variables)
+                    }else{
+                        console.log('No data found')
                     }
 
-                   
-                     // //==============  SEND EMAIL ================
-                    // if(mode === 'Email'){
-                        console.log('1')
-                        var toEmail = userData.email;
-                        const emailDetails = await getTemplateDetailsEmail(company,templateName,role,req.body.variables);
-                        const sendMail = await sendEmail(toEmail,emailDetails.subject,emailDetails.content)
-                        
-                    // } // mode == 'Email'
-
-                      // //==============  SEND INAPP ================
-                    // if(mode === 'Notification'){
-                        console.log('2')
-                        var toUserId = userData.id;
-                        const notificationDetails = await getTemplateDetailsInApp(company,templateName,role,req.body.variables); 
-                        const sendNotification = await sendInAppNotification(toUserId,userData.email,req.body.event,notificationDetails)
-                       
-                    // }//mode == 'Notification'
-
-                       // //==============  SEND SMS ================
-                    // if(mode === 'SMS'){
-                        console.log('................3.................')
-                        var toMobile = userData.mobile;
-                        const SMSDetails = await getTemplateDetailsSMS(company,templateName,role,req.body.variables);
-                        var text = SMSDetails.content.replace(/<[^>]+>/g, '');
-                        const SMS = await sendSMS(toMobile,text); 
-                        
-                    // }// mode == 'SMS'
+                    console.log('***************************************************')
 
                 }//i
             }//returnData
         }
-    // })
-    // .catch(err =>{
-    //     res.status(500).json({ error: err });
-    // });
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
     
 }
 
-function getProfileByUserId(toUserId) {
+function callTemplates(mode,userData,role,templateName,company,variables){
+    sub();
+        async function sub(){
+             // //==============  SEND EMAIL ================
+            if(mode === 'Email'){
+                console.log('1')
+                var toEmail = userData.email;
+                const emailDetails = await getTemplateDetailsEmail(company,templateName,role,variables);
+                const sendMail = await sendEmail(toEmail,emailDetails.subject,emailDetails.content)
+                
+            } // mode == 'Email'
+
+              // //==============  SEND INAPP ================
+            if(mode === 'Notification'){
+                console.log('2')
+                var toUserId = userData.id;
+                const notificationDetails = await getTemplateDetailsInApp(company,templateName,role,variables); 
+                const sendNotification = await sendInAppNotification(toUserId,userData.email,templateName,notificationDetails)
+               
+            }//mode == 'Notification'
+
+               // //==============  SEND SMS ================
+            if(mode === 'SMS'){
+                console.log('................3.................')
+                var toMobile = userData.mobile;
+                const SMSDetails = await getTemplateDetailsSMS(company,templateName,role,variables);
+                var text = SMSDetails.content.replace(/<[^>]+>/g, '');
+                const SMS = await sendSMS(toMobile,text); 
+                
+            }// mode == 'SMS'
+        }
+}
+
+function getAdminUserData() {
     return new Promise(function (resolve, reject) {
         User
-            .findOne({ "_id": toUserId })
+            .findOne({"roles":"admin"})
             .exec()
             .then(data => {
+                if(data && data.profile){
                 resolve({email:data.profile.email,
                         id: data._id,
                         mobile: data.profile.mobile
                 });
-            })
-            .catch(err => {
-                console.log(err);
-                reject({
-                    error: err
-                });
-            });
-
-    });
-}
-
-function getManagerData(toUserId) {
-    return new Promise(function (resolve, reject) {
-        PersonMaster.findOne({'userId':toUserId})
-        .exec()
-        .then(data=>{
-            if(data.approvingAuthorityId1){
-                PersonMaster.findOne({'employeeId':data.approvingAuthorityId1})
-                .exec()
-                .then(res=>{
-                    User
-                    .findOne({ "_id": res.userId })
-                    .exec()
-                    .then(data => {
-                        resolve({email:data.profile.email,
-                                id: data._id,
-                                mobile: data.profile.mobile
-                        });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        reject({
-                            error: err
-                        });
-                    });
-                })
-                .catch(err=>{
-                    console.log('error: ',err)
-                })
-            }
-            
-        })
-        .catch(error=>{
-            reject({error:error})
-        })
-        
-
-    });
-}
-
-function getCorporateAdminData(toUserId){
-    return new Promise(function (resolve, reject) {
-        User
-            .findOne({ "_id": toUserId })
-            .exec()
-            .then(data => {
-                if(data.profile && data.profile.companyID){
-                    User
-                    .findOne({ "profile.companyID": data.profile.companyID, "roles":"corporateadmin"})
-                    .exec()
-                    .then(data => {
-                        resolve({email:data.profile.email,
-                                id: data._id,
-                                mobile: data.profile.mobile
-                        });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        reject({
-                            error: err
-                        });
-                    });
                 }
             })
             .catch(err => {
@@ -375,10 +312,10 @@ function getCorporateAdminData(toUserId){
     });
 }
 
-function getAdminUserId() {
+function getSelfUserData(toUserId) {
     return new Promise(function (resolve, reject) {
         User
-            .findOne({"roles":"admin"})
+            .findOne({ "_id": toUserId })
             .exec()
             .then(data => {
                 resolve({email:data.profile.email,
@@ -396,19 +333,21 @@ function getAdminUserId() {
     });
 }
 
-function getVendorAdminUserId(company){
+function getIntendedUserData(toUserId) {
     return new Promise(function (resolve, reject) {
-        EntityMaster.findOne({'_id':company})
+        PersonMaster.findOne({'_id':toUserId})
         .exec()
-        .then(result => {
-            User
-            .findOne({"roles":"vendoradmin","profile.companyID":result.companyID})
+        .then(result=>{
+         User
+            .findOne({ "_id": result.userId })
             .exec()
             .then(data => {
+                if(data && data.profile){
                 resolve({email:data.profile.email,
                         id: data._id,
                         mobile: data.profile.mobile
                 });
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -418,11 +357,47 @@ function getVendorAdminUserId(company){
             });
         })
         .catch(err =>{
+            console.log('personMaster error: ',err)
+        })
+
+    });
+}
+
+
+function getOtherAdminData(role,company_id){
+    return new Promise(function (resolve, reject) {
+        EntityMaster.findOne({'_id':company_id})
+        .exec()
+        .then(result => {
+        
+            if(result.companyID){
+                User
+                .findOne({ "profile.companyID": result.companyID, "roles":role})
+                .exec()
+                .then(data => {
+                    if(data && data.profile){
+                    resolve({email:data.profile.email,
+                            id: data._id,
+                            mobile: data.profile.mobile
+                    });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject({
+                        error: err
+                    });
+                });
+            }
+            
+        })
+        .catch(err =>{
             console.log('entityMaster error: ',err)
         })
 
     });
 }
+
 
 function sendSMS(MobileNumber,text){
     console.log('=====INSIDE SMS======',MobileNumber,text)

@@ -25,11 +25,9 @@ class DeletedUsers extends Component {
         fullName        : 'User Details',
         status          : 'Status',
         roles           : 'Role',
-        employeeId      : 'employeeId',
+        employeeId      : 'Employee ID',
         createdAt       : 'Registered Since',
-        // lastLogin       : "Last Login",
         deletedOn       : "Deleted On",
-        // deletedBy       : "Deleted By",
         actions         : 'Action',
       },
       "tableObjects"    : {
@@ -52,24 +50,19 @@ class DeletedUsers extends Component {
     });
   }
   componentDidMount() {
-    var data = {
-      "startRange"        : parseInt(this.state.startRange),
-      "limitRange"        : parseInt(this.state.limitRange), 
-    }    
-    // this.props.getuserData(this.state.startRange, this.state.limitRange)
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData();
     this.setState({
       tableData     : this.props.tableData ,          
     })
   }
   componentWillReceiveProps(nextprops) {
     
-    this.getData(this.state.startRange, this.state.limitRange);
+    this.getData();
     this.setState({
       tableData     : nextprops.tableData ,          
     })
   }
-  getData(startRange, limitRange){    
+  getData(){    
     var formvalues = { type : "employee"}
     		axios.post("/api/personmaster/get/list",formvalues)
     		.then((response) => {
@@ -79,19 +72,15 @@ class DeletedUsers extends Component {
                     return data
             });
         var tableData = tableData.map((a, i)=>{
-          console.log('deleteres a===>',a);
           return {
             _id             : a._id,
-            // fullName        : '<p>' +'<b>'+ a.firstName +'&nbsp'+ a.lastName +'</b>' +'&nbsp &nbsp &nbsp &nbsp &nbsp '  +'<medium>'+a.companyName +'&nbsp | &nbsp'+a.companyID +'</medium>' + '</div></p>'+ '</p>' + '<p><i class="fa fa-envelope"></i> ' + a.email +'&nbsp  | &nbsp <i class="fs16 fa fa-mobile"></i> ' + a.mobNumber  ,
             fullName: '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left"><b>' +  a.firstName +'&nbsp'+ a.lastName + '</b></div><div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right"><medium>' + a.companyName + ' | ' + a.companyID + '</medium></div>' +
 							        '<p><i class="fa fa-envelope"></i> ' + a.email + '&nbsp  | &nbsp <i class="fs16 fa fa-mobile"></i> ' + a.mobNumber + '</p>',
             status          : a.status,
             roles           : a.type.toString(),
             employeeId      : a.employeeId,
             createdAt       : moment(a.createdAt).format("DD-MMM-YY LT"),
-            // lastLogin       : a.lastLogin !=="-" ? moment(a.lastLogin).format("DD-MMM-YY LT") : "-",
             deletedOn       : a.statusupdatedAt !=="-" ? moment(a.statusupdatedAt).format("DD-MMM-YY LT") : "-",
-            // deletedBy       : a.statusupdatedBy,
           }
         })
         this.setState({
@@ -150,7 +139,7 @@ class DeletedUsers extends Component {
             <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <DeletedEmplist
                 getData={this.getData.bind(this)} 
-                // getuserData={this.getData.bind(this)} 
+                getpersons={this.props.getpersons.bind(this)} 
                 tableHeading={this.state.tableHeading} 
                 tableData={this.state.tableData} 
                 DeletedUsersTable = {true}

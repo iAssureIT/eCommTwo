@@ -14,7 +14,7 @@ class Facility extends Component {
         super(props);
         this.state = {
             "fields" : {
-                placeholder          : "Enter facility..",
+                placeholder          : "Add facility & press 'Enter' Key.",
                 title                : "Module",
                 secondtitle          : "Facility",
                 attributeName        : "facility",

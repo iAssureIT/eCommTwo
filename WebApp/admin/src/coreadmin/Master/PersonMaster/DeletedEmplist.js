@@ -859,114 +859,6 @@ class IAssureTableUM extends Component {
 			}
 		})
 	}
-	// restoreUser(event) {
-	// 	event.preventDefault();
-	// 	var count = 0
-	// 	var username = this.state.username;
-	// 	var user_ID = this.state.user_ID;
-	// 	if (this.state.allid) {
-	// 		var checkedUsersList = this.state.allid
-	// 	} else {
-	// 		var checkedUsersList = []
-	// 		var selectedId = event.target.id;
-
-	// 		checkedUsersList.push(selectedId)
-	// 	}
-	// 	for (var i = 0; i < checkedUsersList.length; i++) {
-	// 		var selectedId = checkedUsersList[i];
-	// 		console.log('selectedId in restore=>',selectedId);
-	// 		var formValues = {
-	// 			personID_toberecover: selectedId,
-	// 			updatedBy:user_ID,
-	// 		}
-	// 	}
-	// 	function updateStatus(formValues) {
-	// 		return new Promise(function (resolve, reject) {
-	// 			axios
-	// 				.patch('/api/personmaster/patch/restorestatus',formValues)
-	// 				.then((response) => {
-	// 					console.log("response in resotre==>",response.data);
-	// 					resolve(response);
-	// 				})
-	// 				.catch(function (error) {
-	// 				})
-	// 		})
-	// 	}
-	// 	function getUserDetails(selectedId) {
-	// 		return new Promise(function (resolve, reject) {
-	// 			axios
-	// 				.get('/api/users/get/' + selectedId)
-	// 				.then((response) => {
-	// 					resolve(response);
-	// 				})
-	// 				.catch(function (error) {
-	// 				})
-	// 		})
-	// 	}
-	// 	function sendMail(inputObj) {
-	// 		return new Promise(function (resolve, reject) {
-	// 			axios
-	// 				.post('/api/masternotification/send-mail', inputObj)
-	// 				.then((response) => {
-	// 					resolve(response);
-	// 				})
-	// 				.catch(function (error) {
-	// 				})
-	// 		})
-	// 	}
-	// 	mainActive().then(response => {
-	// 		if (response) {
-	// 			this.setState({
-	// 				activeswal: true,
-	// 				checkedUser: [],
-	// 				unCheckedUser: true
-	// 			}, () => {
-	// 				this.props.getData(this.state.startRange, this.state.limitRange)
-	// 				checkedUsersList = [];
-	// 				if (this.state.activeswal === true) {
-	// 					swal(" ", "Account activated successfully").then((success) => {
-	// 						if (success) {
-	// 						//  window.location.reload();
-	// 						}
-	// 						});
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// 	async function mainActive() {
-	// 		var count = 0
-	// 		for (var i = 0; i < checkedUsersList.length; i++) {
-	// 			var selectedId = checkedUsersList[i];
-	// 			var formValues = {
-	// 				user_id_toberecover: selectedId,
-	// 				updatedBy:user_ID,
-	// 			}
-
-	// 			var response = await updateStatus(formValues)
-	// 			if (response) {
-	// 				var user = await getUserDetails(selectedId)
-	// 				if (user) {
-	// 					var currentUrl = window.location.hostname
-	// 					var url = currentUrl === 'localhost' ? 'http://localhost:3001/' : currentUrl === 'qalmiscentre.iassureit.com' ? 'http://qalmiscentre.iassureit.com/' : 'http://uatlmiscenter.iassureit.com/'
-	// 					var msgvariable = {
-	// 						'[User]': user.data.firstname + ' ' + user.data.lastname,
-	// 						'[user_email_id]': user.data.email,
-	// 						'[center_application_URL]': url
-	// 					}
-	// 					var inputObj = {
-	// 						to: user.data.email,
-	// 						templateName: 'User - Login Account Activation',
-	// 						variables: msgvariable,
-	// 					}
-	// 					while ((checkedUsersList.length - 1) === i) {
-	// 						return Promise.resolve(true);
-	// 					}
-
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 	restoreUser(event) {
 		event.preventDefault();
 		var count = 0
@@ -993,6 +885,7 @@ class IAssureTableUM extends Component {
 					if (this.state.activeswal === true) {
 						swal(" ", "Account activated successfully").then((success) => {
 							if (success) {
+								this.props.getpersons();
 								//  window.location.reload();
 							}
 						});
@@ -1370,7 +1263,7 @@ class IAssureTableUM extends Component {
 																				</div>
 																				<div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																					{
-																						this.state.logDetails !== "-" ?
+																						this.state.logDetails != "-" ?
 																							<div className="table-responsive topmr40 col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																								<table className="table iAssureITtable-bordered table-striped table-hover">
 																									<thead className="tempTableHeader">

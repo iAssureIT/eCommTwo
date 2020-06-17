@@ -171,10 +171,10 @@
   .tabs-left>li.active>a:focus {
     border-bottom-color: #ddd;
     border-right-color: transparent;
-    background: var(--waikawagrey-background) !important;
+    background: var(--blue-background) !important;
     color: #fff !important;
     border:none;
-    border-radius:0px;
+    border-radius:2px;
     margin:0px;
     margin-bottom: 2%;
   }
@@ -189,7 +189,7 @@
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     
-    border-left: 10px solid var(--waikawagrey-background);
+    border-left: 10px solid var(--blue-background);
     display: block;
     width: 0;
   }

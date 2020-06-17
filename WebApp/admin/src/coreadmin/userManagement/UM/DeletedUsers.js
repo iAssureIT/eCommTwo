@@ -59,6 +59,9 @@ class UMListOfUsers extends Component {
 		const target = event.target;
 		const name = target.name;
 	}
+	backtoum() {
+		this.props.history.push("/umlistofusers")
+	}
 	componentDidMount() {
 		const user_ID = localStorage.getItem("user_ID");
 		var userDetails = (localStorage.getItem('userDetails'));
@@ -177,9 +180,17 @@ class UMListOfUsers extends Component {
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
 								<div className="row">
 									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-										<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
+										<div className="col-lg-10 col-md-10 col-xs-12 col-sm-12 contactdeilsmg pageHeader">
 											Deleted Users
                 						</div>
+										<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 " id="rolemodalcl">
+												<button type="button" className="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 addexamform userbtn clickforhideshow"
+													onClick={this.backtoum.bind(this)}
+													>
+													<i className="fa fa-undo" aria-hidden="true"></i>
+													<b>&nbsp;&nbsp; Back To UM List</b>
+												</button>
+											</div>
 										<hr className="hr-head container-fluid row" />
 									</div>
 									<form className="newTemplateForm">

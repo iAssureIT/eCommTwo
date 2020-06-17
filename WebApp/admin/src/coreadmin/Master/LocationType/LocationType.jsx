@@ -1,24 +1,19 @@
 import React, { Component }     from 'react';
 import OneFieldForm             from '../OneFieldForm/OneFieldForm.js';
-import _                        from 'underscore';
+
 import 'bootstrap/js/tab.js';
 import './LocationType.css'
-import CompanyBankDetails           from  '../../companysetting/Components/CompanyBankDetails.js';
-import CompanyTaxDetails            from  '../../companysetting/Components/CompanyTaxDetails.js';
-import CompanyPaymentGateway        from  '../../companysetting/Components/CompanyPaymentGateway.js';
-import CompanySMSGateway            from  '../../companysetting/Components/CompanySMSGateway.js';
-
 import axios from 'axios';
 
-class VendorLocationType extends Component {
+class LocationType extends Component {
     constructor(props) {
         super(props);
         this.state = {
             companyInfo              : [],
-      profileCreated            : false,
+            profileCreated            : false,
             "locationType": "",
             "fields" : {
-                placeholder     : "Enter location type..",
+                placeholder     : "Add location type & press 'Enter' Key.",
                 title           : "Location Type",
                 attributeName   : "locationType"
             },
@@ -31,122 +26,84 @@ class VendorLocationType extends Component {
                 apiLink: '/api/locationtypemaster/',
                 paginationApply: false,
                 searchApply: false,
-                editUrl: '/location-type'
+                editUrl: '/global-masters'
             },
             "startRange": 0,
             "limitRange": 10,
-            "editId": this.props.match.params ? this.props.match.params.fieldID : ''
+            "editId": '',
 
         };
     }
     componentDidMount() {
-        var editId = this.props.match.params.fieldID;
-       
-        this.setState({
-            editId: editId
-        })
-        var editId = this.props.match.params.fieldID;
-        window.scrollTo(0, 0);
-        axios.get('/api/companysettings/')
-        .then( (res)=>{   
-          this.setState({profileCreated:true, companyInfo: res.data}) 
-        })
-        .catch((error)=>{
-        });
+        // console.log("locationtype this.props.editId = ",this.props);
+        // var editId = this.props.match 
+        //              ? this.props.match.params.editId
+        //              : this.props.editId 
+        //                   ? this.props.editId 
+        //                   : "" ;
+
+        // if(editId && editId !== 'undefined'){
+        //   this.setState({
+        //       editId: editId
+        //   }, ()=>{
+        //       // console.log("this.state.editId = ",this.state.editId);
+        //   });
+        // }
+        // window.scrollTo(0, 0);
+        // axios.get('/api/companysettings/')
+        // .then( (res)=>{   
+        //   this.setState({profileCreated:true, companyInfo: res.data}) 
+        // })
+        // .catch((error)=>{
+        // });
     }
 
-    handler(){
-    axios.get('/api/companysettings/')
-    .then( (res)=>{   
-      this.setState({profileCreated:true, companyInfo: res.data}) 
-    })
-    .catch((error)=>{
-    });
-  }
+    // handler(){
+    //   axios.get('/api/companysettings/')
+    //   .then( (res)=>{   
+    //     this.setState({profileCreated:true, companyInfo: res.data}) 
+    //   })
+    //   .catch((error)=>{
+    //   });
+    // }
 
-     componentWillReceiveProps(nextProps) {
-        var editId = nextProps.match.params.fieldID;
-        if (nextProps.match.params.fieldID) {
-            this.setState({
-                editId: editId
-            })
-        }
-    }
+    //  componentWillReceiveProps(nextProps) {
+    //     var editId = nextProps.match.params.fieldID;
+    //     if (nextProps.match.params.fieldID) {
+    //         this.setState({
+    //             editId: editId
+    //         })
+    //     }
+    // }
 
-    render() {
-        return (
-            <div className="container-fluid">
-        <div className="row">
-          <div className="formWrapper">
-            <section className="content">
-              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
-                <div className="row">
-                  <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact NOpadding">
-                    <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right ">
-                        <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Global Masters</h4>
-                    </div>
-                  </div>     
-                  <div className="boxMinHeight boxMinHeighttab addMarginTop">
-                    <div  className="">
-                      <div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 noPadding"> 
-                          {
-                          this.state.profileCreated ?
-                          <ul className="nav nav-tabs tabs-left sideways">
-                           {/* 
-                           <li className="active  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft tablefthr lettersp" href="#companyInformation" data-toggle="tab">Company Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"  ><a className="tabLeft lettersp tablefthr" href="#CompanyLocation" data-toggle="tab">Location Details</a></li>
-                           */}
-                            <li className="  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyBankDetails" data-toggle="tab">Bank Details</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyTaxDetails" data-toggle="tab">Tax Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#CompanyPaymentGateway" data-toggle="tab">Payment Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#SMSGateway" data-toggle="tab">SMS Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#AmazonS3" data-toggle="tab">Amazon S3</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 active"><a className="tabLeft lettersp tablefthr" href="/location-type" >Location Types</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="/department" >Department</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="/designation" >Designation</a></li>
-                          </ul>
-                          :
-                          <ul className="nav nav-tabs tabs-left sideways">
-                            {/*
-                            <li className="active  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft tablefthr lettersp" href="#companyInformation">Company Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled"><a className="tabLeft lettersp tablefthr">Location Details</a></li>
-                            */}
-                            <li className="  col-lg-12 col-md-12 col-xs-12 col-sm-12" ><a className="tabLeft lettersp tablefthr" href="#CompanyBankDetails" data-toggle="tab">Bank Details</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled" ><a className="tabLeft lettersp tablefthr" >Tax Information</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 disabled"><a className="tabLeft lettersp tablefthr">Payment Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#SMSGateway" data-toggle="tab">SMS Gateway</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#AmazonS3" data-toggle="tab">Amazon S3</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12 active"><a className="tabLeft lettersp tablefthr" href="/location-type" >Location Types</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="/department" >Department</a></li>
-                            <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="/designation" >Designation</a></li>
-                          
-                          </ul>
-                        }
-                      </div>
-                      <div className="tab-content col-lg-9 col-md-9 col-xs-12 col-sm-12">
-                        <div className="tab-pane" id="CompanyBankDetails"> <CompanyBankDetails companyInfo={this.state.companyInfo}/> </div>                               
-                        <div className="tab-pane" id="CompanyTaxDetails"> <CompanyTaxDetails companyInfo={this.state.companyInfo}/> </div>
-                        <div className="tab-pane" id="CompanyPaymentGateway"> <CompanyPaymentGateway/> </div>                              
-                        <div className="tab-pane" id="SMSGateway"> <CompanySMSGateway /> </div>  
-                        <div className="tab-pane active" id="">  
-                           <OneFieldForm fields={this.state.fields}
-                              tableHeading={this.state.tableHeading}
-                              tableObjects={this.state.tableObjects}
-                              editId ={this.props.match.params.fieldID}
-                              history={this.props.history} /> 
-                        </div>                            
-                      </div> 
-                    </div>
-                  </div>
-                </div>
+  // componentDidUpdate(prevProps) {
+  //   if(this.props.editId !== this.state.editId){
+  //     this.setState({editId : this.props.editId},
+  //                   ()=>{
+  //                     //console.log("global componentDidUpdate editId = ",this.state.editId);
+  //                   });
+  //   }
+  // }
+
+
+  render() {
+    return (
+      <div className="container-fluid">
+        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 companyDisplayForm">
+              <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                  <OneFieldForm 
+                      fields={this.state.fields}
+                      tableHeading={this.state.tableHeading}
+                      tableObjects={this.state.tableObjects}
+                      editId = {this.props.editId}
+                      masterFieldForm = {true}
+                      history={this.props.history} 
+                  /> 
               </div>
-            </section>
-          </div>
         </div>
       </div>
-
-        );
-    }
+    );
+  }
 }
-export default VendorLocationType;
+export default LocationType;
 

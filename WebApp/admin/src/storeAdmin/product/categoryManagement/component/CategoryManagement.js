@@ -462,15 +462,15 @@ class CategoryManagement extends Component{
                   return new Promise(function(resolve,reject){
                       axios
                           // .get('/api/projectSettings/get/one/s3')
-                          .get('/api/projectSettings/get/one/S3')
+                          .get('/api/projectSettings/get/S3')
                           .then((response)=>{
                             console.log("s3 response :",response.data);
                               const config = {
-                                  bucketName      : response.data[0].bucket,
+                                  bucketName      : response.data.bucket,
                                   dirName         : process.env.ENVIRONMENT,
-                                  region          : response.data[0].region,
-                                  accessKeyId     : response.data[0].key,
-                                  secretAccessKey : response.data[0].secret,
+                                  region          : response.data.region,
+                                  accessKeyId     : response.data.key,
+                                  secretAccessKey : response.data.secret,
                               }
                               resolve(config);                           
                           })

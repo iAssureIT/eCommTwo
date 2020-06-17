@@ -1,332 +1,245 @@
 import React,{Component}                              from 'react';
 import { render }                                     from 'react-dom';
 import $                                              from "jquery";
-import { BrowserRouter, Route, Switch,Link,location } from 'react-router-dom';
+import { BrowserRouter, Route, Switch,Link  } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css'; 
 import './Leftsidebar.css';
+import './dashboard.css';
 
-export default class Leftsidebar extends Component{
-  
-  constructor(props) {
-   super(props);
-    this.state = {}
+
+export default class AdminDashboard extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      menuValues : {
+        vendorData             : false,
+        supplierData           : false,
+        corporateData          : false,
+        contractmanagement     : false,
+        masterData             : false
+      }
+    };
+    this.closeIcon   = 'fa-angle-left';
+    this.openIcon    = 'fa-angle-down';
+    this.activeMenu = this.activeMenu.bind(this)
   }
+
   componentDidMount(){
-  /* Highlight current li*/
+    if (!$('body').hasClass('adminLte')) {
+      var adminLte = document.createElement("script");
+      adminLte.type="text/javascript";
+      adminLte.src = "/js/adminLte.js";
+      $("body").append(adminLte);
+    }
+      $("html,body").scrollTop(0);
+      var getCurrentUrl = window.location.pathname;
+      // console.log("getCurrentUrl",getCurrentUrl);
 
-     $(document).ready(function () {
-      $('.activeClass li').on('click', function() {
-        $('.activeClass li').removeClass('activeOne');
-        $(this).addClass('activeOne');
-      });
+    $(".sidebar-menu .singleTreeview a").filter(function(a, b){
+      if($(this).attr('href') === getCurrentUrl){
+        // console.log("b",b);
+        // console.log($(this).attr('href') === getCurrentUrl);
+        $(b).addClass('active');
+        // console.log(b);
+      }
+    })
+     $(".sidebar-menu .treeview li a").filter(function(a, b){
+      if($(this).attr('href') === getCurrentUrl){
+        $(b).addClass('active');
+        $($($(b).parent()).parent()).parent().addClass('menu-open');
+        ($($(b).parent()).parent()).css("display", "block");
+        // $($($($($($($(b).parent()).parent()).children('menu-open')).children("pull-right-container")).children("i"))).addClass("fa-angle-down");
+      }
+    })
+  }
+   
+  componentWillUnmount(){
+      $("script[src='/js/adminLte.js']").remove();
+      $("link[href='/css/dashboard.css']").remove();
+  }
+
+  activeMenu(event){
+    // console.log('event.currentTarget',event.currentTarget);
+    event.preventDefault();
+    var a =event.currentTarget
+    var pathname = event.currentTarget.getAttribute("data-id"); 
+    // console.log('pathname',pathname);
+    window.location = pathname
+    $(".sidebar-menu .treeview-menu li a").removeClass("active-submenu");
+    $(event.currentTarget).addClass("active-submenu");
+    // event.currentTarget.href = pathname;
+    // var currentEvent =  event.currentTarget
+    // var getCurrentUrl = window.location.pathname;
+    // localStorage.setItem("getCurrentUrl", pathname);
+    // localStorage.setItem("currentEvent",currentEvent);
+    // console.log("getCurrentUrl",getCurrentUrl);
+    // console.log("currentURL",localStorage.getItem("currentURL"));
+  }
+
+  openMenu = (key) => {
+    let {menuValues} = this.state;
+    Object.keys(menuValues).map((data) => {
+      menuValues[data] = (data==key) ? !menuValues[key] :false;
     });
-     var getURL = localStorage.getItem("currentURL");
-     var getEvent = localStorage.getItem("currentEvent");
-     //console.log("getURL",getURL);
-     //console.log("getEvent",getEvent);
-     // var x = document.getElementById("sidebar");
+    this.setState({menuValues});
+    $('.singleTreeview').removeClass('active')
+  }
 
-     // var y = x.getElementsByTagName("a");
-     // var xxxxxx=x.getAttribute("href");
-     var x = document.querySelectorAll("a[href]");
-
-     // if(getURL === )
-     // {
-
-     // }
-  }    
-  Addclass(event){
-    $("pull-right-container").children('i').css({"transform": "rotate(-90deg)"});
-  }   
   eventclk1(event){
     $(event.currentTarget).children(".menuContent").children(".rotate").toggleClass("down");
     var currentEvent =  event.currentTarget
     var getCurrentUrl = window.location.pathname;
-    //console.log("getCurrentUrl",getCurrentUrl);
+    // console.log("getCurrentUrl",getCurrentUrl);
     localStorage.setItem("currentURL",getCurrentUrl)
     localStorage.setItem("currentEvent",currentEvent)
-    /*var x = document.getElementById(targetId);
+    /*
+    var x = document.getElementById(targetId);
     var targetId = $(event.currentTarget).children('.activeClass').attr("id");
     var getValue = x.getAttribute('aria-expanded');
     $('.activeClass').removeClass('in');
-    $(event.currentTarget).children('.activeClass').addClass('in')*/
+    $(event.currentTarget).children('.activeClass').addClass('in')
+    */
   } 
+
+  clickDashboard(event){
+    $('.treeview').not(event.currentTarget).removeClass('menu-open')
+    $('.treeview-menu').css({'display':'none'})
+    $(event.currentTarget).addClass('active')
+
+  }
+
   render(){
-    var sidebarHeight = window.screen.height - 180;
+    let {dashboard,vendorData,supplierData,corporateData,contractmanagement,masterData} = this.state.menuValues;
 
-
-    var roles = localStorage.getItem("roles").split(',');
-  
     return(
-      <Route>
-      <div>
-        <aside className="leftsidebar">
-          <div className="wrapper">
-            <nav id="sidebar">
-              <div className="sidebar-header textAlignCenter">
-                <label  className="headerImage">Five Bees</label>
-                <img className="sidebarLogoName shortlogo strong" src="/images/logof.jpeg"/>
-              </div>
-              <ul className="list-unstyled components scrollBox" style={{height:  sidebarHeight+"px"}}>
-                <li className=" sidebarMenuText" >
-                  <a href="/dashboard" title="Dashboard">
-                    <i className="fa fa-dashboard"></i>
-                    <span className="iconTitle">Dashboard</span>
-                  </a>
-                </li>
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="/All_Bookings" title="All Booking">
-                    <i className="fa fa-ticket" aria-hidden="true"></i>
-                     <span className="iconTitle">All Booking</span>
-                  </a>
-                </li>
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="/BillingManagement" title="Billing Management">
-                    <i className="fa fa-money" aria-hidden="true"></i>
-                     <span className="iconTitle">Billing Management</span>
-                  </a>
-                </li>
-                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="/coming_soon" title="Reporting System ">
-                    <i className="fa fa-database" />
-                     <span className="iconTitle">Reporting System</span>
-                    <i className="leftarrow rotate fa fa-angle-left  pull-right" id="ReportingSystem"></i>
-                  </a>
-                  </li>
-                  <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="#Contract" data-toggle="collapse" className="menuContent"  aria-expanded="false" title=" Contract Management ">
-                    <i className="fa fa-file" />
-                     <span className="iconTitle">Contract Management</span>
-                    <i className="leftarrow rotate fa fa-angle-left  pull-right" id="ContractManagement"></i>
-                  </a>
-                  <ul className="collapse list-unstyled activeClass" id="Contract">
-                    <li>
-                      <a href="/contract-management" title="Make Contract">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Make Contract </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/contract-list" title="Contract List">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Contract List</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="#EntityMappings" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Vendor Mapping">
-                    <i className="fa fa-link" />
-                     <span className="iconTitle">Vendor Mapping</span>
-                    <i className="leftarrow rotate fa fa-angle-left  pull-right" id="Entitys"></i>
-                  </a>
-                  <ul className="collapse list-unstyled activeClass" id="EntityMappings">
-                    <li>
-                      <a href="/entity-mapping" title="Map Corporate and Vendor">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Map Corporate and Vendor</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a  href="/mapping-list" title="Mapped List">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Mapped List</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
+      <aside className="main-sidebar control-sidebar sidebarWrapper scrollBox">
+        <section className="sidebar noPadLR sidebar-menu-wrapper">
+          <ul className="sidebar-menu" data-widget="tree">
 
-                <li className="sidebarMenuText" onClick={this.eventclk1.bind(this)}>
-                  <a  href="#Corporate" data-toggle="collapse" aria-expanded="false" className="menuContent" title="Corporate Master">
-                    <i className="fa fa-user" />
-                    <span className="iconTitle">Corporate</span>
-                    <i className="leftarrow rotate fa fa-angle-left  pull-right"  id="CorporateMaster"></i> 
-                  </a>
-                  <ul className="collapse   list-unstyled activeClass" id="Corporate">
-                    <li>
-                      <a href="/corporate/list" title="Corporate List">
-                        <i className="fa fa-circle-o" />
-
-                        <span className="sidebarMenuSubText">Corporate Master</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/employee/lists" title="Employee List">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Employee Master</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/guest/lists" title="Guest List">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Guest Master</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li> 
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="#Vendor" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Vendor Master">
-                    <i className="fa fa-book" />
-                      <span className="iconTitle">Vendors</span>
-                    <i className="leftarrow rotate fa fa-angle-left  pull-right"  id="VendorMaster"></i>
-                  </a>
-                  <ul className="collapse   list-unstyled activeClass" id="Vendor">
-                    <li>
-                      <a href="/vendor/list" title="Vendor List">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Vendor Master</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/supplier/list" title="Supplier List">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Supplier Master</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/vehicle-list" title="Vehicle List">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Vehicle Master</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/driver/lists" title="Driver List">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Driver Master</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                 <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="#MasterData" data-toggle="collapse" className="menuContent" aria-expanded="false" title="Master Data">
-                    <i className="fa fa-address-book" />
-                      <span className="iconTitle">Master Data</span>
-                    <i className="leftarrow rotate fa fa-angle-left  pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled activeClass" id="MasterData">
-                  {
-                    roles.indexOf('superAdmin') !== -1 ?
-
-                    <li>
-                      <a href="/umroleslist" title="Roles Master">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Roles Master</span>
-                      </a>
-                    </li> : null
-                  }
-                    <li>
-                      <a href="/category" title="Vehicle Category">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Vehicle Category </span>
-                      </a>
-                    </li> 
-                     <li>
-                      <a href="/fuel-type" title="Fuel Type">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Fuel Type </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/purposeOfTravel" title="Purpose of Travel">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Purpose of Travel </span>
-                      </a>
-                    </li>
-                     
-                     <li>
-                      <a href="/documententitymaster" title="Documents Entity">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Documents Entity </span>
-                      </a>
-                    </li>
-                    
-                     <li>
-                      <a href="/documentlistmaster" title="Documents Required For">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Documents List Master </span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="/brand" title="Vehicle Brand">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Vehicle Brand</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/model" title="Vehicle Model">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Vehicle Model</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/package-type" title="Package Type">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Package Type</span>
-                      </a>
-                    </li>
-                    <li className=" ">
-                      <a href="/package-master" title="Package Master">
-                        <i className="fa fa-circle-o" />
-                        <span className="iconTitle">Package Master</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/designation-mapping" title="Designation Mapping">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Designation Mapping</span>
-                      </a>
-                    </li> 
-                    <li>
-                      <a href="/expenseType" title="Expense Type Master">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Expense Type Master</span>
-                      </a>
-                    </li> 
-                    
- 
-                  </ul>
-                </li>
-                <li className="sidebarMenuText"  onClick={this.eventclk1.bind(this)}>
-                  <a href="#BulkUpload" data-toggle="collapse" className="menuContent"  aria-expanded="false" title="Bulk Upload">
-                    <i className="fa fa-upload" />
-                     <span className="iconTitle">Bulk Upload</span>
-                    <i className="leftarrow rotate fa fa-angle-left  pull-right" id="Entitys1"></i>
-                  </a>
-                  <ul className="collapse list-unstyled activeClass" id="BulkUpload">
-                   <li>
-                      <a href="/Departments" title="Map Corporate and Vendor">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Department</span>
-                      </a>
-                     </li>
-                    <li>
-                      <a href="/Designations" title="Map Corporate and Vendor">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Designations</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/vehiclebrand" title="Map Corporate and Vendor">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Vehicle Brand</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/vehiclemodel" title="Map Corporate and Vendor">
-                        <i className="fa fa-circle-o" />
-                        <span className="sidebarMenuSubText">Vehicle Model</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/dashboard"  title="Dashboard" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-dashboard" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Dashboard</span>
+              </a>
+            </li>
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/All_Bookings"  title="All Booking" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-ticket" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">All Bookings</span>
+              </a>
+            </li>
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/changeRequest"  title="All Booking" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-ticket" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Change Request</span>
+              </a>
+            </li>
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/BillingManagement" title="Billing Management" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-money" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Billing Management</span>
+              </a>
+            </li>
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/coming_soon" title="Reporting System" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-database" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Reporting System</span>
+              </a>
+            </li>
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("contractmanagement")} title="Contract Management">
+                <i className="fa fa-file" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle">Contract Management</span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(contractmanagement?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/contract-management" data-id="/contract-management" onClick={this.activeMenu.bind(this)} title="Make Contract">
+                    <i className="fa fa-circle-o dashr" />Make Contract
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/contract-list" data-id="/contract-list" title="Contract List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Contract List
+                  </a> 
+                </li>  
               </ul>
-            </nav>
-          </div>
-        </aside>
-      </div>
-      </Route>
+            </li>
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("corporateData")} title="Corporate Master">
+                <i className="fa fa-users" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle"> Corporate </span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(corporateData?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/corporate/list" data-id="/corporate/list" title="Corporate List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Corporate Master
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/employee/lists" data-id="/employee/lists" title="Employee List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Employee Master
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/guest/lists" data-id="/guest/lists" title="Guest List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Guest Master
+                  </a> 
+                </li>  
+              </ul>
+            </li>
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
+                <i className="fa fa-book" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle"> Vendors </span>
+                <span className="pull-right-container">
+                  <i className={"fa pull-right menu-icon-toggle "+(vendorData?this.openIcon:this.closeIcon)} />
+                </span>
+              </a>
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/vendor/list" data-id="/vendor/list" title="Vendor List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Vendor Master
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/mapping-list" data-id="/mapping-list" title="Mapped List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Vendor Mapping
+                  </a> 
+                </li>    
+                <li className="noPadLR"> 
+                  <a href="/supplier/list" data-id="/supplier/list" title="Supplier List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Supplier Master
+                  </a> 
+                </li>     
+                <li className="noPadLR"> 
+                  <a href="/vehicle-list" data-id="/vehicle-list" title="Vehicle List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Vehicle Master
+                  </a> 
+                </li>    
+                <li className="noPadLR"> 
+                  <a href="/driver/lists" data-id="/driver/lists" title="Driver List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Driver Master
+                  </a> 
+                </li>  
+              </ul>
+            </li>
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/project-master-data" title="Master Data" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-th-large" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Master Data</span>
+              </a>
+            </li>
+          </ul>
+        </section>
+      </aside>
     );
   }
 }

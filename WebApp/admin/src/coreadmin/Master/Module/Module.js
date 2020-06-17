@@ -29,7 +29,7 @@ class Module extends Component{
       "startRange"    : 0,
       "limitRange"    : 10,
       "fields" : {
-        placeholder   : "Enter module name..",
+        placeholder   : "Add module name  & press 'Enter' Key.",
         title         : "Module",
         attributeName : "moduleName"
       }
