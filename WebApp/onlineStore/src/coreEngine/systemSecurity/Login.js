@@ -9,6 +9,7 @@ import axios from 'axios';
 import jQuery from 'jquery';
 import 'jquery-validation';
 import swal from 'sweetalert';
+import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 
 class Login extends Component {
 
@@ -171,14 +172,15 @@ class Login extends Component {
   render() {
     //set dynamic background image
     var projectName = process.env.REACT_APP_PROJECT_NAME;
-    if (projectName === "4_UniMandai") {
-      $(".LoginWrapper").css("background-image", "url(" + "/images/Background_3.png" + ")");
-    } else if (projectName === "2_AnasHandicraft") {
-      $(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
-    }
+
+    // if (projectName === "4_UniMandai") {
+    //   $(".LoginWrapper").css("background-image", "url(" + "/images/Background_3.png" + ")");
+    // } else if (projectName === "2_AnasHandicraft") {
+    //   $(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
+    // }
 
     return (
-      <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+      <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
         </div>
         {/* <div className="pull-right loginLeafimg">

@@ -12,4 +12,5 @@ router.delete('/delete/:type', projectsettingController.delete_projectsettings);
 
 router.patch('/S3', projectsettingController.insertS3Data);
 
+
 module.exports = router;

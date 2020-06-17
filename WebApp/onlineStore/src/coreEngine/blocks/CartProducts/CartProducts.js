@@ -9,6 +9,7 @@ import { getCartData } from '../../actions/index';
 import Loader from "../../common/loader/Loader.js";
 import Message from '../Message/Message.js';
 import {ntc} from '../../ntc/ntc.js';
+import emptyCartImg from '../../../sites/currentSite/images/emptycart.png';
 class CartProducts extends Component{
     constructor(props) {
         super(props);
@@ -289,7 +290,10 @@ class CartProducts extends Component{
                                                         <td className="nowrap">
                                                         {
                                                             data.productDetail.availableQuantity > 0 ?
-                                                                <span id="productPrize" className={"cartProductPrize fa fa-inr"}>&nbsp;{data.productDetail.discountedPrice}</span>
+                                                                <div >
+                                                                    <span id="productPrize" className={"cartProductPrize fa fa-inr"}>&nbsp;{data.productDetail.discountedPrice}</span><br />
+                                                                    <span className ="productUnit" id={data.productDetail._id}>Per &nbsp;{data.productDetail.unit}</span>
+                                                                </div>
                                                             :
                                                             <span>-</span>
                                                         }
@@ -301,15 +305,15 @@ class CartProducts extends Component{
                                                                 <div className="quantityWrapper">
                                                                     <span className="minusQuantity fa fa-minus" id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} onClick={this.cartquantitydecrease.bind(this)}></span>&nbsp;
                                                                     <span className="inputQuantity">{this.state['quantityAdded|'+data._id] ? this.state['quantityAdded|'+data._id] : data.quantity}</span>&nbsp;
-                                                                    <span className="plusQuantity fa fa-plus" productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity}  onClick={this.cartquantityincrease.bind(this)}></span><br/>
-                                                                    <span className ="productUnit" id={data.productDetail._id}>Per &nbsp;{data.productDetail.unit}</span>
+                                                                    <span className="plusQuantity fa fa-plus" productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity}  onClick={this.cartquantityincrease.bind(this)}></span><br/>                                                                    
+                                                                    {/* <span className ="productUnit" id={data.productDetail._id}>{data.productDetail.unit}</span> */}
                                                                 </div>
                                                                 :
                                                                 <span className="sold textAlignCenter">SOLD OUT</span>
                                                             }
                                                         </td>
                                                         <td>
-                                                        <span className="productSize">&nbsp;{data.size}</span>
+                                                             <span className="productSize">&nbsp;{data.productDetail.size} &nbsp; {data.productDetail.unit}</span>
                                                         </td>
                                                         <td className="nowrap">
                                                         {
@@ -372,7 +376,7 @@ class CartProducts extends Component{
                         </div>
                         : 
                         <div className="col-lg-12 textAlignCenter">
-                          <img src="../../../sites/currentSite/images/emptycart.png" alt="" />
+                          <img src={emptyCartImg} alt="" />
                         </div>   
                     }
                     

@@ -24,6 +24,8 @@ const cartSchema = mongoose.Schema({
         "countryCode"     : String,
         "country"         : String,
         "addType"         : String,
+        "latitude"        : Number,
+        "longitude"       : Number,
     },
     paymentMethod         : String,
     createdBy             : String,

@@ -8,7 +8,8 @@ import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getCartData, searchProductAction} from '../../actions/index';
 import $                          from "jquery";
-
+import cartImg                    from "../../../sites/currentSite/images/icon-cart.png";
+import searchModalImg             from "../../../sites/currentSite/images/icon-search.png";
 
 import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
 import iconUserHeader from "../../../sites/currentSite/images/icon-user-header.png";
@@ -429,33 +430,29 @@ loginPage(event){
                                                 </div>
                                             </div>
                                             </a>
-                                        </li>
-                                  
-                                  <li className="col-lg-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
-                                  <li className="col-lg-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
-                                  <li className="col-lg-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
-                                  <li className="col-lg-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
+                                        </li>                                  
+                                        <li className="col-lg-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
+                                        <li className="col-lg-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
+                                        <li className="col-lg-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
+                                        <li className="col-lg-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
                                     </ul>
                                 </li>
                             :
-
-                            <li className="dropdown">
-                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
-                                {/* <ul className="col-lg-3 dropdown-menu logout-list-menu">
-                                    <li><a href="/login" title="Login">LOGIN</a></li>
-                                    <li><a href="/signup" title="Resgister">REGISTER</a></li>
-                                </ul> */}
-
-                                <ul className="dropdown-menu logout-list-menu">
-                                  <li className="col-lg-12 col-md-12 col-sm-12">
-                                    <div className="welcomeTxt">Welcome</div>
-                                    <p>To access account and manage orders</p>
-                                    <div className="borderTop"></div>
-                                    <span className=" pull-left signInOutBtn"><a href="/login"><b> SIGN IN</b> </a></span>
-                                    <span className=" pull-right signInOutBtn"><a href="/signup"><b>SIGN UP</b></a></span>
-                                  </li>
-                                </ul>
-                            </li>
+                              <li className="dropdown">
+                                  <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span>
+                              </li>
+                            // <li className="dropdown">
+                            //     <a className="acc" href="login" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>                           
+                            //     <ul className="dropdown-menu logout-list-menu">
+                            //       <li className="col-lg-12 col-md-12 col-sm-12">
+                            //         <div className="welcomeTxt">Welcome</div>
+                            //         <p>To access account and manage orders</p>
+                            //         <div className="borderTop"></div>
+                            //         <span className=" pull-left signInOutBtn"><a href="/login"><b> SIGN IN</b> </a></span>
+                            //         <span className=" pull-right signInOutBtn"><a href="/signup"><b>SIGN UP</b></a></span>
+                            //       </li>
+                            //     </ul>
+                            // </li>
 
                             }
                             </div>
@@ -490,7 +487,7 @@ loginPage(event){
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
                     <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
-                        <i className="icon"></i>                        
+                    <img src={searchModalImg} className="search"></img>                      
                     </div>
                    {/* Search modal */}
                     <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
@@ -509,8 +506,8 @@ loginPage(event){
                     </div>
 
                     <div className="col-lg-5 col-md-5 col-sm-5 dropdown cart hover-menu ">                        
-                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart" onClick={this.loginPage.bind(this)}>
-                            <i className="icon"></i>
+                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart">
+                            <img src={cartImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>                            
                             <span className="cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                             </span>

@@ -10,6 +10,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './SignUp.css';
 import swal from 'sweetalert';
 import axios from 'axios';
+import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 
 class SignUp extends Component {
 
@@ -325,13 +326,13 @@ class SignUp extends Component {
 		//set dynamic background image
 		var projectName = process.env.REACT_APP_PROJECT_NAME;
 		// console.log("process.env.REACT_APP_PROJECT_NAME=========:",process.env.REACT_APP_PROJECT_NAME);
-		if (projectName === "4_UniMandai") {
-			$(".LoginWrapper").css("background-image", "url(" + "/images/signInBackground.png" + ")");
-		} else if (projectName === "2_AnasHandicraft") {
-			$(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
-		}
+		// if (projectName === "4_UniMandai") {
+		// 	$(".LoginWrapper").css("background-image", "url(" + "/images/signInBackground.png" + ")");
+		// } else if (projectName === "2_AnasHandicraft") {
+		// 	$(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
+		// }
 		return (
-			<div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+			<div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
 				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7  col-sm-12 col-xs-12 formShadow">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">

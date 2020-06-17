@@ -11,7 +11,7 @@ export function getCartData() {
     if (userid) {
       return axios.get("/api/carts/get/cartproductlist/"+userid)
         .then((response)=>{
-            console.log("cart response.data===",response.data);
+            console.log("redux action cart response.data===",response.data);
         		dispatch(fetchcartdata(response.data));
         })
         .catch((error)=>{

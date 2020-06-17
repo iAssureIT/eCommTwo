@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import SmallBanner          from '../../blocks/SmallBanner/SmallBanner.js';
+import CartProducts         from '../../blocks/CartProducts/CartProducts.js';
+import topBannerImg         from '../../../sites/currentSite/images/cartBanner.png';
+import "../../../sites/currentSite/pages/Cart.css";
+
+
 // import $                    from 'jquery';
 // import axios                from 'axios';
-import SmallBanner               from '../../blocks/SmallBanner/SmallBanner.js';
-import CartProducts         from '../../blocks/CartProducts/CartProducts.js';
 // import GiftOption           from '../../blocks/GiftOption/GiftOption.js';
 // import Discount             from '../../blocks/Discount/Discount.js';
 // import EstimateShipping     from '../../blocks/EstimateShipping/EstimateShipping.js';
-import "../../../sites/currentSite/pages/Cart.css";
 
 class Cart extends Component{
     constructor(props) {
@@ -15,7 +18,7 @@ class Cart extends Component{
             bannerData : {
                 title : "MY SHOPPING CART",
                 breadcrumb : 'My Shopping Cart',
-                backgroungImage : '/images/sofa.jpg',
+                backgroungImage : topBannerImg,
             }
         }
     } 

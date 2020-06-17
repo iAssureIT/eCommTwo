@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {getCartData} from '../../actions/index';
 import "../../../sites/currentSite/pages/Checkout.css";
+import checkoutBanner from  "../../../sites/currentSite/images/checkout.png";
 
 import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
   
@@ -36,7 +37,7 @@ class Checkout extends Component {
             bannerData: {
                 title: "CHECKOUT",
                 breadcrumb: 'Checkout',
-                backgroungImage: '/images/checkout.png',
+                backgroungImage: checkoutBanner,
             },
             discountCode: false,
             comment: false,
@@ -45,13 +46,13 @@ class Checkout extends Component {
             pincodeExists:true,
             addressLine1 : ""
         }
-        // this.getCartData();
+        this.getCartData();
         // this.getCompanyDetails();
         this.getUserAddress();
         this.camelCase = this.camelCase.bind(this)
     }
     componentDidMount() {
-        // this.getCartData();
+        this.getCartData();
         // this.getCompanyDetails();
         this.getUserAddress();
         this.validation();
@@ -266,7 +267,7 @@ class Checkout extends Component {
                     "deliveryAddress"   : response.data.deliveryAddress,
                     "username"          : response.data.profile.fullName,
                     "mobileNumber"      : response.data.profile.mobile,
-                    "email"             : response.data.profile.emailId
+                    "email"             : response.data.profile.email
                 });
             })
             .catch((error) => {
@@ -661,6 +662,7 @@ class Checkout extends Component {
             if ($('#checkout').valid() && this.state.pincodeExists) {
                 axios.patch('/api/carts/address', addressValues)
                 .then(async (response) => {
+                    console.log("Response After inserting address to cart===",response);
                     await this.props.fetchCartData();
                     var cartItems = this.props.recentCartData[0].cartItems.map((a, i)=>{
                         return{
@@ -714,7 +716,7 @@ class Checkout extends Component {
                                 messageData   : {},
                             })
                         }, 3000);
-                        // this.props.history.push('/payment/' + result.data.order_ID);
+                        this.props.history.push('/payment/' + result.data.order_ID);
                     })
                     .catch((error) => {
                         console.log("return to checkout");
@@ -1133,21 +1135,22 @@ class Checkout extends Component {
                                                                             <span className="cartDiscountPercent">({data.productDetail.discountPercent}%)</span>
                                                                         </div>
                                                                         :
-                                                                        <span className="price"><i className="fa fa-inr"></i>{data.productDetail.originalPrice}</span>
+                                                                        <span className="price"><i className="fa fa-inr"></i> &nbsp;{data.productDetail.originalPrice}</span>
                                                                     }
                                                                     <div>
                                                                     {data.productDetail.color ?<span className="cartColor">Color : <span style={{backgroundColor : data.productDetail.color, padding: '0px 5px'}}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span>: null}
-                                                                        {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size}</span>: null}
+                                                                {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp; {data.productDetail.unit}</span>: null}
                                                                     </div>
                                                                 </td>
                                                                 <td className="textAlignRight">
                                                                 {
                                                                     data.productDetail.availableQuantity > 0 ?
-                                                                    <span className="productPrize textAlignRight"><i className={"fa fa-" + data.productDetail.currency}></i> &nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
+                                                                    // <span className="productPrize textAlignRight"><i className={"fa fa-" + data.productDetail.currency}></i> &nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
+                                                                    <span className="productPrize textAlignRight"><i className="fa fa-inr"></i>&nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
                                                                     :
                                                                     <span>-</span>
                                                                 }
-                                                                    </td>
+                                                                </td>
                                                                 <td className="textAlignRight">
                                                                 {
                                                                 data.productDetail.availableQuantity > 0 ?
@@ -1159,7 +1162,10 @@ class Checkout extends Component {
                                                                 <td className="textAlignRight">
                                                                 {
                                                                     data.productDetail.availableQuantity > 0 ?
-                                                                    <span className="productPrize textAlignRight"><i className={"fa fa-" + data.productDetail.currency}></i> &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
+                                                                    <span className="productPrize textAlignRight">
+                                                                        <i className="fa fa-inr"></i>
+                                                                        {/* {data.productDetail.currency} */}
+                                                                        &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
                                                                     :
                                                                     <span>-</span>
                                                                 }

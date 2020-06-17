@@ -162,8 +162,8 @@ ul.main-nav > li:hover {
     line-height: 18px;
     text-align: center;
     position: absolute;
-    bottom: 55px;
-    right: -27px;
+    bottom: 22%;
+    right: -24px;
     font-family: "Montserrat";
     border-radius: 50%;
     background: #80b435;
@@ -174,17 +174,26 @@ ul.main-nav > li:hover {
     padding-right: 15px;
     /* margin-left: 50px; */
 }
-.box-right .search i.icon {
-    display: inline-block;
-    margin-top: 5px;
-    width: 20px;
-    height: 20px;
-    background: url(/images/unimandai/icon-search.png) no-repeat;
+.box-right .search{
     cursor: pointer;
+    margin-top: 2px;
 }
 .userinfotext{
     margin-bottom: -20px !important;
     margin-top: 15px !important;
+}
+.loginButton{
+    text-decoration:none !important;
+    font-style: "Roboto Slab";
+    font-size: 16px !important;
+    font-weight:300 !important;
+    color: #333 !important;
+    line-height: 30px;
+    /* font: 400 12px/40px "Roboto"; */
+    transition : 0.2s ease;
+}
+.loginButton:hover{
+    color: #80b435 !important;
 }
 .hover-menu .acc{
     text-decoration: none !important;
@@ -269,10 +278,11 @@ ul.main-nav > li:hover {
 .logout-list-menu .signInOutBtn{
     margin: 20px 15px !important;   
 }
-.cart-dropdown-menu{
-    left : -315px !important;
-    margin: -2px !important;
+.cart-dropdown-menu {
+    left: -286px !important;
+    margin: -11px !important;
     min-width: 400px !important;
+
 }
 .cartdropaction:hover{
     color: #80b435 !important;

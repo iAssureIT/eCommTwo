@@ -40,7 +40,7 @@ export default class AskPincode extends Component {
                                 // this.setState({
                                 //     DeliveryStatus : "Allowable",
                                 // })
-                                $('.DeliveryStatusMsg').text("Your saved Pincode is "+pincode +". Delivery is possible in this area. Continue Your Shopping!")
+                                $('.DeliveryStatusMsg').text("Congratulations!! Your saved Pincode is "+pincode +". Now delivery is possible in your area. Continue Your Shopping!")
                                 $('.DeliveryStatusMsg').show();    
                                 $('.pincodeChild').hide();                         
                                 localStorage.setItem("DeliveryStatus","Allowable");
@@ -86,7 +86,7 @@ export default class AskPincode extends Component {
         event.preventDefault();
         var userPincode =  $('.pinocodeInput').val();
         // console.log("userPincode===",userPincode);
-        //create object to store userPincode data into cookie
+        //create object to store userPincode data into localStorage
         localStorage.setItem("pincode",userPincode);
         localStorage.setItem('deliveryStatusMsg',"true");
         axios.get("/api/allowablepincode/checkpincode/"+userPincode)
@@ -98,7 +98,7 @@ export default class AskPincode extends Component {
                         // 	AllowDeliveryMsg  : "We can deliver in your area of Pincode " +this.state.pincode +" . Continue Your Shopping!",					
                         // }); 
                       
-                        $('.AllowDeliveryMsg').text("We can deliver in your area of Pincode " +userPincode +" . Continue Your Shopping!")
+                        $('.AllowDeliveryMsg').text("Great!! We can deliver in your area of Pincode " +userPincode +" . Continue Your Shopping!")
                         $('.AllowDeliveryMsg').show();    
                         $('.NotAllowDeliveryMsg').hide();                         
                         localStorage.setItem("status","Allow");
@@ -125,6 +125,7 @@ export default class AskPincode extends Component {
       }
       
   render() {
+    $(".modal-backdrop").hide();
 		return (
             
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12 mb50">

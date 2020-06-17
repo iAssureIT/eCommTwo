@@ -73,7 +73,7 @@ class HomePage extends Component {
       
       axios.get("/api/products/get/listbytype/"+productType1)
             .then((response)=>{
-              console.log('featuredProducts = ' , response.data)
+              // console.log('featuredProducts = ' , response.data)
               this.setState({
                 featuredproductsloading:false,
                 featuredProducts : response.data

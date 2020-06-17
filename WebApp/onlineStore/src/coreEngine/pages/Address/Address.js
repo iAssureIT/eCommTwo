@@ -6,7 +6,7 @@ import Message from '../../blocks/Message/Message.js';
 import 'jquery-validation';
 import "../../../sites/currentSite/pages/Address.css";
 import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
-
+import ModaalHeaderImg from '../../../sites/currentSite/images/unimandaiLogo.jpeg';
 class Address extends Component {
     constructor(props) {
         super(props);
@@ -260,6 +260,7 @@ class Address extends Component {
                           break;
                       case 'postal_code':
                          var pincode = results[0].address_components[i].long_name;
+                         console.log("Pincode:",pincode);
                           break;
                       default :
                       break;
@@ -289,8 +290,7 @@ class Address extends Component {
             console.log('Successfully got latitude and longitude', { lat, lng });
         });  
 
-        this.setState({ addressLine1 : address});
-        console.log("LatLong:",this.state.latLng);
+        this.setState({ addressLine1 : address});        
       }; //end google api
    
 
@@ -348,24 +348,24 @@ class Address extends Component {
         var deliveryAddressID = this.props.addressId;
         console.log("deliveryAddressID :",deliveryAddressID);
         var formValues = {
-            "user_ID"         : id,
+            "user_ID"           : id,
             "deliveryAddressID" : deliveryAddressID,
-            "name"            : this.state.modalname,
-            "email"           : this.state.modalemail,
-            "addressLine1"    : this.state.addressLine1,
-            "addressLine2"    : this.state.modaladdressLine2,  
-            "pincode"         : this.state.modalpincode,
-            "district"        : this.state.modaldistrict,
-            "city"            : this.state.modalcity,
-            "area"            : this.state.modalarea,
-            "stateCode"       : this.state.modalstateCode,
-            "state"           : this.state.modalstate,
-            "countryCode"     : this.state.modalcountryCode,
-            "country"         : this.state.modalcountry,
-            "mobileNumber"    : this.state.modalmobileNumber,
-            "addType"         : this.state.modaladdType,
-            "latitude" : this.state.latitude,
-            "longitude": this.state.longitude,
+            "name"              : this.state.modalname,
+            "email"             : this.state.modalemail,
+            "addressLine1"      : this.state.addressLine1,
+            "addressLine2"      : this.state.modaladdressLine2,  
+            "pincode"           : this.state.modalpincode,
+            "district"          : this.state.modaldistrict,
+            "city"              : this.state.modalcity,
+            "area"              : this.state.modalarea,
+            "stateCode"         : this.state.modalstateCode,
+            "state"             : this.state.modalstate,
+            "countryCode"       : this.state.modalcountryCode,
+            "country"           : this.state.modalcountry,
+            "mobileNumber"      : this.state.modalmobileNumber,
+            "addType"           : this.state.modaladdType,
+            "latitude"          : this.state.latitude,
+            "longitude"         : this.state.longitude,
         }
         if(deliveryAddressID){
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
@@ -507,7 +507,8 @@ class Address extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                     <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                         <div className="modal-header checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <img src="../../../sites/currentSite/images/Icon.png" />
+                            {/* <img src="../../../sites/currentSite/images/Icon.png" /> */}
+                            <img src={ModaalHeaderImg} />
                             <button type="button" className="close modalclosebut" onClick={this.cancel.bind(this)} data-dismiss="modal">&times;</button>
                             <h4 className="modal-title modalheadingcont">ADDRESS</h4>
                         </div>
