@@ -4,9 +4,11 @@
 }
 
 .headerContainer {
-    border-bottom: 1px solid #cdcdcd;
     height: 36px;
     border-radius: 3px;
+    margin-top: 15px !important;
+    padding-bottom: 15px !important;
+    border-bottom: 1px solid #cdcdcd;
 }
 .float-left {
     float: left;
@@ -19,12 +21,14 @@
     font: 300 13px/20px "Roboto Slab";
     color: #231f20;
     margin-top: 4px;
+    margin-bottom: 10px;
 }
 #topbar .float-left p {
     display: block;
     font: 300 13px/20px "Roboto Slab";
     text-align: left;
-    margin: 3px 0px;
+    margin: 3px 10px;
+    margin-bottom: 10px;
 }
 .align-right {
     text-align: right;
@@ -40,6 +44,7 @@
 #topbar .float-right .hover-menu {
     display: inline-block;
     padding-left: 10px;
+    padding-bottom: 10px;
     margin-left: 10px;
     position: relative;
 }
@@ -336,18 +341,18 @@ ul.main-nav > li:hover {
 }
 button.button_search {
     background: #333;
-    font: 700 16px/43px "Roboto Condensed";
+    /* font: 700 16px/43px "Roboto Condensed"; */
     color: #fff;
     text-transform: uppercase;
-    text-align: center;
-    width: 130px;
+    /* text-align: center; */
+    /* width: 130px; */
     border: solid 1px #333;
-    padding: 0px;
+    padding: 5px;
     border: none;
     position: absolute;
     right: 1px;
     top: 0px;
-    height: 46px;
+    height: 34px;
     transition: all 0.4s ease 0s;
     z-index: 99;
 }

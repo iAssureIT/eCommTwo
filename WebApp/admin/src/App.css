@@ -551,7 +551,7 @@ margin-right: 12px;
     background: transparent;
   }
   .adminModal-body {
-    padding-top: 70px;
+    /* padding-top: 70px; */
     padding-bottom: 70px;
     background: #fff;
   }

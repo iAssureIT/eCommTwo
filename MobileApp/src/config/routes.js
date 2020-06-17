@@ -3,43 +3,45 @@ import { createDrawerNavigator }  from 'react-navigation-drawer';
 import { createStackNavigator }   from 'react-navigation-stack';
 import { createAppContainer }     from '@react-navigation/native';
 import { Animated, Easing } from 'react-native';
+import axios                      from 'axios';
+import AuthLoadingScreen from '../ScreenComponents/AuthLoadingScreen/AuthLoadingScreen.js';
 
-import AuthLoadingScreen from '../layouts/AuthLoadingScreen/AuthLoadingScreen.js';
-
-import Menu from '../layouts/Menu/Menu.js';
+import Menu from '../ScreenComponents/Menu/Menu.js';
 
 
 
-// import Home                       from '../components/Home.js';
-// import Dashboard                  from '../components/Dashboard/Dashboard.js';
-// import Menu                       from '../components/Menu/Menu.js';
-// import AuthLoadingScreen          from '../layouts/AuthLoading/AuthLoadingScreen.js'; 
+// import Home                       from '../Screens/Home.js';
+// import Dashboard                  from '../Screens/Dashboard/Dashboard.js';
+// import Menu                       from '../Screens/Menu/Menu.js';
+// import AuthLoadingScreen          from '../ScreenComponents/AuthLoading/AuthLoadingScreen.js'; 
 
 
 /*----SystemSecurity -----*/
-import Login                      from '../components/SystemSecurity/Login/Login1.js';
-import ForgotPassword             from '../components/SystemSecurity/ForgotPassword/ForgotPassword1.js';
-import ResetPassword              from '../components/SystemSecurity/ResetPassword/ResetPassword1.js';
-import Signup                     from '../components/SystemSecurity/Signup/Signup1.js';
-import OTPVerification            from '../components/SystemSecurity/OTPVerification/OTPVerification.js';
-import ForgotPasswordOTP          from '../components/SystemSecurity/ForgotPasswordOTP/ForgotPasswordOTP1.js';
+import Login                      from '../Screens/SystemSecurity/Login/Login1.js';
+import ForgotPassword             from '../Screens/SystemSecurity/ForgotPassword/ForgotPassword1.js';
+import ResetPassword              from '../Screens/SystemSecurity/ResetPassword/ResetPassword1.js';
+import Signup                     from '../Screens/SystemSecurity/Signup/Signup1.js';
+import OTPVerification            from '../Screens/SystemSecurity/OTPVerification/OTPVerification.js';
+import ForgotPasswordOTP          from '../Screens/SystemSecurity/ForgotPasswordOTP/ForgotPasswordOTP1.js';
 
 
-import Dashboard from '../components/Dashboard/Dashboard.js';
-import CategoriesComponent from'../components/CategoriesComponent/CategoriesComponent.js';
-import SubCategoriesComp from'../components/CategoriesComponent/SubCategoriesComp.js';
-import SubCatCompView from'../components/CategoriesComponent/SubCatCompView.js';
-import CartComponent from '../components/CartComponent/CartComponent.js';
-import ConfirmOrderComponent from '../components/ConfirmOrderComponent/ConfirmOrderComponent.js';
-import AddressDefaultComp from '../components/AddressComponent/AddressDefaultComp.js';
-import AddressComponent from '../components/AddressComponent/AddressComponent.js';
-import AddressMenu from'../components/AddressComponent/AddressMenu.js';
-import WishlistComponent from'../components/WishlistComponent/WishlistComponent.js';
-import MyOrder from '../components/MyOrders/MyOrder.js';
-import OrderDetails from '../components/MyOrders/OrderDetails.js';
-import AccountDashboard from '../components/AccountDashboard/AccountDashboard.js';
-import AccountInformation from'../components/AccountDashboard/AccountInformation.js';
-import MyProductReview from'../components/MyProductReview/MyProductReview.js';
+import Dashboard from '../Screens/Dashboard/Dashboard.js';
+import CategoriesComponent from'../Screens/CategoriesComponent/CategoriesComponent.js';
+import SubCategoriesComp from'../Screens/CategoriesComponent/SubCategoriesComp.js';
+import SubCatCompView from'../Screens/CategoriesComponent/SubCatCompView.js';
+import CartComponent from '../Screens/CartComponent/CartComponent.js';
+import ConfirmOrderComponent from '../Screens/ConfirmOrderComponent/ConfirmOrderComponent.js';
+import AddressDefaultComp from '../Screens/AddressComponent/AddressDefaultComp.js';
+import AddressComponent from '../Screens/AddressComponent/AddressComponent.js';
+import AddressMenu from'../Screens/AddressComponent/AddressMenu.js';
+import WishlistComponent from'../Screens/WishlistComponent/WishlistComponent.js';
+import MyOrder from '../Screens/MyOrders/MyOrder.js';
+import OrderDetails from '../Screens/MyOrders/OrderDetails.js';
+import AccountDashboard from '../Screens/AccountDashboard/AccountDashboard.js';
+import AccountInformation from'../Screens/AccountDashboard/AccountInformation.js';
+import MyProductReview from'../Screens/MyProductReview/MyProductReview.js';
+import OrderSummary from'../Screens/OrderSummary/OrderSummary.js';
+import PaymentMethod from '../Screens/PaymentMethod/PaymentMethod.js';
 
 let SlideFromRight = (index, position, width)=>{
   const translateX = position.interpolate({
@@ -181,73 +183,127 @@ MyProductReview:{
      header: null,
     }
 }, 
+OrderSummary:{
+   screen:OrderSummary,
+    navigationOptions:{
+     header: null,
+    }
+}, 
+PaymentMethod:{
+   screen:PaymentMethod,
+    navigationOptions:{
+     header: null,
+    }
+}, 
    
 },{
   transitionConfig: TransitionConfiguration
 });
 
 const AuthStack = createStackNavigator({
+
+
   Login: {
     screen: Login,
+    headerMode : "none",
     navigationOptions: {
-       header: null,
-      headerBackTitleVisible:false,
+      header:null,
     }
   },
-   Signup: {
-    screen: Signup,
+  ResetPassword: {
+    screen: ResetPassword,
     navigationOptions: {
-       header: null,
+      header:null,
+      // headerShown: false
     }
   },
-   OTPVerification: {
+
+  OTPVerification: {
     screen: OTPVerification,
     navigationOptions: {
-      header: null,
+      header:null,
+      // headerShown: false
     }
   },
-   ForgotPassword: {
+
+  ForgotPassword: {
     screen: ForgotPassword,
     navigationOptions: {
-       header: null,
+      header:null,
+      // headerShown: false
     }
   },
   ForgotPasswordOTP: {
     screen: ForgotPasswordOTP,
     navigationOptions: {
-       header: null,
+      header:null,
+      // headerShown: false
     }
   },
-  
-   ResetPassword: {
-    screen: ResetPassword,
+  Signup: {
+    screen: Signup,
     navigationOptions: {
-      header: null,
+      header:null,
+      
+      // headerShown: false
+    }
+  },
+  OTPVerification: {
+    screen: OTPVerification,
+    navigationOptions: {
+      header:null,
+      // headerShown: false
     }
   },
 
 });
 
+// const drawer = createDrawerNavigator({
+//   Home : {
+//     screen: HomeStack
+//   }
+// },{
+//     drawerLockMode: 'locked-closed',
+//     contentComponent: Menu,
+//     drawerPosition: 'right'
+// });
+
+
+// export default createAppContainer(createSwitchNavigator(
+//   {
+//     AuthLoading : AuthLoadingScreen,
+//     App         : drawer,
+//     Auth        : AuthStack,
+//   },
+//   {
+//     initialRouteName: 'AuthLoading',
+//     unmountInactiveRoutes: true,
+//   }
+// ));
+
+
 const drawer = createDrawerNavigator({
-  Home : {
+  Home: {
     screen: HomeStack
   }
-},{
+}, {
     drawerLockMode: 'locked-closed',
     contentComponent: Menu,
     drawerPosition: 'right'
-});
+  });
 
 
+
+
+// export default HomeStack;
 export default createAppContainer(createSwitchNavigator(
   {
-    AuthLoading : AuthLoadingScreen,
-    App         : drawer,
-    Auth        : AuthStack,
+    AuthLoading: AuthLoadingScreen,
+    App: drawer,
+    Auth: AuthStack,
   },
   {
-    initialRouteName: 'AuthLoading',
     unmountInactiveRoutes: true,
+    initialRouteName: 'AuthLoading',
   }
 ));
-

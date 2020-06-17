@@ -7,6 +7,7 @@ import jQuery from 'jquery';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 import './IAssureTable.css';
+import './print.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 var sum = 0;
@@ -69,14 +70,14 @@ class IAssureTable extends Component {
 	componentDidMount() {
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("token");
 		$("html,body").scrollTop(0);
-		console.log("props",this.props);
+		
 		const center_ID = localStorage.getItem("center_ID");
 		const centerName = localStorage.getItem("centerName");
 		this.setState({
 			center_ID: center_ID,
 			centerName: centerName,
 		}, () => {
-			// this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
+			this.props.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
 		});
 
 		this.setState({
@@ -86,6 +87,7 @@ class IAssureTable extends Component {
 			dataCount: this.props.dataCount,
 			id: this.props.id,
 		});
+		$("#table-to-xls").attr('title', 'Download Table');
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
@@ -96,6 +98,7 @@ class IAssureTable extends Component {
 		}, () => {
 			this.paginationFunction();
 		})
+		$("#table-to-xls").attr('title', 'Download Table');
 	}
 	componentWillUnmount() {
 		$("script[src='/js/adminSide.js']").remove();
@@ -106,14 +109,11 @@ class IAssureTable extends Component {
 		$("html,body").scrollTop(0);
 		var tableObjects = this.props.tableObjects;
 		var id = event.target.id;
-		console.log("id:",id);
-		console.log("tableObjects.editUrl:",tableObjects.editUrl);		
 		this.props.history.push(tableObjects.editUrl + "/" + id);
 	}
 	delete(e) {
 		e.preventDefault();
 		var tableObjects = this.props.tableObjects;
-		console.log("this.props.tableObjects");
 		let id = (e.target.id).replace(".", "/");
 		axios({
 			method: tableObjects.deleteMethod,
@@ -122,7 +122,8 @@ class IAssureTable extends Component {
 			this.props.getData(this.state.startRange, this.state.limitRange);
 			this.props.history.push(tableObjects.editUrl);
 			swal({
-				text: "Record deleted sucessfully",
+				title : " ",
+				text  : "Record deleted successfully",
 			});
 		}).catch((error) => {
 		});
@@ -520,16 +521,18 @@ class IAssureTable extends Component {
 	}
 	printTable(event) {
 		// event.preventDefault();
-
+		$('#ActionContent').hide();
+		$('.modal').hide();
 		var DocumentContainer = document.getElementById('section-to-print');
-
-		var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
+		var WindowObject = window.open('', 'PrintWindow', 'height=500,width=600');
 		WindowObject.document.write(DocumentContainer.innerHTML);
 		WindowObject.document.close();
 		WindowObject.focus();
 		WindowObject.print();
 		WindowObject.close();
 	}
+
+	
 	render() {
 		return (
 			<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
@@ -548,15 +551,13 @@ class IAssureTable extends Component {
 				}
 				{this.state.tableObjects.downloadApply === true ?
 					this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 ?
-
 						<React.Fragment>
-
 							<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
 								<button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
 								<ReactHTMLTableToExcel
 									id="table-to-xls"
 									className="download-table-xls-button fa fa-download tableicons pull-right"
-									table={this.state.id}
+									table={"Download-"+this.state.id}
 									sheet="tablexls"
 									filename={this.state.tableName}
 									buttonText="" />
@@ -587,8 +588,6 @@ class IAssureTable extends Component {
 						null
 				}
 
-
-
 				<div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding marginTop8">
 					<div className="table-responsive" id="section-to-print">
 						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
@@ -611,7 +610,7 @@ class IAssureTable extends Component {
 											([key, value], i) => {
 												if (key === 'actions') {
 													return (
-														<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
+														<th key={i} className="umDynamicHeader srpadd text-center" id="ActionContent">{value}</th>
 													);
 												} else {
 													return (
@@ -666,16 +665,15 @@ class IAssureTable extends Component {
 														)
 													}
 													{this.state.tableHeading && this.state.tableHeading.actions ?
-														<td className="textAlignCenter">
+														<td className="textAlignCenter" id="ActionContent">
 															<span>
 																{this.props.tableObjects.editUrl ?
 																	<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i> : null}&nbsp; &nbsp;
-																	{this.props.editId && this.props.editId === value._id ? 
-																	null : <i className={"fa fa-trash redFont " + value._id} id={value._id + '-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")}></i>}
+																	{this.props.editId && this.props.editId === value._id ? null : <i className={"fa fa-trash redFont " + value._id} id={value._id + '-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")}></i>}
 															</span>
-															<div className="modal myModal" id={"showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
-																<div className=" adminModal adminModal-dialog col-lg-8 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
-																	<div className="modal-content adminModal-content col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 abc noPadding">
+															<div className="modal" id={"showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")} role="dialog">
+																<div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																	<div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 																		<div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																			<div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
 																				<button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-" + (value._id).replace(/[^a-zA-Z]/g, "")}>&times;</button>
@@ -757,6 +755,94 @@ class IAssureTable extends Component {
 						}
 
 					</div>
+
+				{/*Export To Excel*/}
+					<div className="table-responsive" id="HideTable">
+						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={"Download-"+this.state.id}>
+							<thead className="tempTableHeader fixedHeader">
+								<tr className="tempTableHeader">
+									{this.state.twoLevelHeader.apply === true ?
+										this.state.twoLevelHeader.firstHeaderData.map((data, index) => {
+											return (
+												<th key={index} colSpan={data.mergedColoums} className="umDynamicHeader srpadd textAlignCenter">{data.heading}</th>
+											);
+										})
+										:
+										null
+									}
+								</tr>
+								<tr className="">
+									<th className="umDynamicHeader srpadd text-center">Sr. No.</th>
+									{this.state.tableHeading ?
+										Object.entries(this.state.tableHeading).map(
+											([key, value], i) => {
+												if (key === 'actions') {
+													return (
+														null
+													);
+												} else {
+													return (
+														<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+													);
+												}
+
+											}
+										)
+										:
+										<th className="umDynamicHeader srpadd textAlignLeft"></th>
+									}
+								</tr>
+							</thead>
+							<tbody className="scrollContent">
+								{this.state.tableData && this.state.tableData.length > 0 ?
+									this.state.tableData.map(
+										(value, i) => {
+											return (
+												<tr key={i} className="">
+													<td className="textAlignCenter">{this.state.startRange + 1 + i}</td>
+													{
+														Object.entries(value).map(
+															([key, value1], i) => {
+																if ($.type(value1) === 'string') {
+																	var regex = new RegExp(/(<([^>]+)>)/ig);
+																	var value2 = value1 ? value1.replace(regex, '') : '';
+																	var aN = value2.replace(this.state.reA, "");
+																	if (aN && $.type(aN) === 'string') {
+																		var textAlign = 'textAlignLeft noWrapText'
+																	} else {
+																		var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
+																		if (bN) {
+																			var textAlign = 'textAlignRight';
+																		} else {
+																			var textAlign = 'textAlignLeft noWrapText';
+																		}
+																	}
+																} else {
+																	var textAlign = 'textAlignRight';
+																}
+																var found = Object.keys(this.state.tableHeading).filter((k) => {
+																	return k === key;
+																});
+																if (found.length > 0) {
+																	if (key !== 'id') {
+																		return (<td className={textAlign} key={i}><div className={textAlign} dangerouslySetInnerHTML={{ __html: value1 }}></div></td>);
+																	}
+																}
+
+															}
+														)
+													}
+													
+												</tr>
+											);
+										}
+									)
+									:
+									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length + 1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>
+								}
+							</tbody>
+						</table>
+						</div>
 				</div>
 			</div>
 		);

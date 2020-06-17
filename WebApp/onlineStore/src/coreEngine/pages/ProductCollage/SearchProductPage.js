@@ -151,11 +151,11 @@ class SearchProduct extends Component {
 	}
 	
 	clearAll(event){
-	  // this.props.clearAllinput(
-	  // 				{
-   //                    "searchstr" :  "",  
-   //                    "catArray"  :  []
-   //                  },[]); 
+	  this.props.clearAllinput(
+	  				{
+                      "searchstr" :  "",  
+                      "catArray"  :  []
+                    },[]); 
 	}
   	render() {
   		var breadcrumb = _.unique(this.props.searchResult, "category_ID");
@@ -183,12 +183,7 @@ class SearchProduct extends Component {
 				</div>		
               <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
               		<div className="forSearchDiv">
-              			{/*<h5 className="showingby">NOW SHOWING BY</h5>*/}
-              			{
-              				/*<span><a href="#" onClick={this.clearAll.bind(this)}>Clear All </a></span>*/
-              			}
               		</div>
-              		
               		<br/>
  					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nb-brand">
 					<div className="Featured-Brands-tittle">Featured Brands</div>

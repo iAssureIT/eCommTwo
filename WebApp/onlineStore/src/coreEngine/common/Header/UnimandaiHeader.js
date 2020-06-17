@@ -8,6 +8,7 @@ import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getCartData, searchProductAction} from '../../actions/index';
 import $                          from "jquery";
+<<<<<<< Updated upstream
 import cartImg                    from "../../../sites/currentSite/images/icon-cart.png";
 import searchModalImg             from "../../../sites/currentSite/images/icon-search.png";
 
@@ -15,6 +16,9 @@ import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header
 import iconUserHeader from "../../../sites/currentSite/images/icon-user-header.png";
 import logoUnimandai from "../../../sites/currentSite/images/logoUnimandai.png";
 // import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
+=======
+// import Searchcomponent                          from "./Search.js";
+>>>>>>> Stashed changes
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 
 // import './Header.css';
@@ -178,37 +182,37 @@ componentWillMount() {
     
   }
   searchProducts() {
-    if (this.state.catArray.length > 0) {
+    // if (this.state.catArray.length > 0) {
+    //   var searchstr = $('.headersearch').val()
+    //   var formValues = {
+    //     "searchstr": searchstr,
+    //     "catArray": this.state.catArray,
+    //     "loading": true,
+    //   }
+    // console.log("formValues in search ==>",formValues);
+    //   if (searchstr !== '') {
+    //     localStorage.setItem("searchstr", searchstr);
+    //   }
+    //   this.props.searchProductFun(formValues, this.state.searchResult)
 
-      var searchstr = $('.headersearch').val()
-      var formValues = {
-        "searchstr": searchstr,
-        "catArray": this.state.catArray,
-        "loading": true,
-      }
+    //   //this.props.searchProduct();
 
-      if (searchstr !== '') {
-        localStorage.setItem("searchstr", searchstr);
-      }
-      this.props.searchProductFun(formValues, this.state.searchResult)
+    //   axios.post("/api/products/post/searchINCategory", formValues)
+    //     .then((response) => {
+    //       console.log("response after in search ==>",response.data);
+    //       this.setState({ searchResult: response.data }, () => {
+    //         formValues.loading = false;
+    //         this.props.searchProductFun(formValues, this.state.searchResult);
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       // console.log('error', error);
+    //     })
 
-      //this.props.searchProduct();
-
-      axios.post("/api/products/post/searchINCategory", formValues)
-        .then((response) => {
-          this.setState({ searchResult: response.data }, () => {
-            formValues.loading = false;
-            this.props.searchProductFun(formValues, this.state.searchResult);
-          });
-        })
-        .catch((error) => {
-          // console.log('error', error);
-        })
-
-      this.props.history.push("/searchProducts");
-    }
+    //   this.props.history.push("/searchProducts");
+    // }
     if (this.state.catArray.length === 0 && $('.headersearch').val() !== '') {
-      // var searchstr = $('.headersearch').val();
+      var searchstr = this.refs.tableSearch.value.trim();
       var formValues = {
         "searchstr": searchstr,
         "loading": true
@@ -221,10 +225,7 @@ componentWillMount() {
             this.props.searchProductFun(formValues, this.state.searchResult);
           });
         })
-        .catch((error) => {
-          // console.log('error', error);
-        })
-
+        .catch((error) => {})
       this.props.history.push("/searchProducts");
     }
 
@@ -387,22 +388,24 @@ loginPage(event){
       })
   }
   render() {
-    // console.log('recentCartData', this.props.recentCartData.length);
-    // console.log('recentCartData item====', this.props.recentCartData);
-    
     const user_ID = localStorage.getItem("user_ID");
-    // console.log("user_ID:",user_ID);
     return (
       <div className="homecontentwrapper">
         <Message messageData={this.state.messageData} />
         <header className="col-lg-12 headerflow">            
           <div className="row">
-            <div id="topbar" className="">
+            <div id="topbar" className="topheadbar">
                 <div className="container headerContainer">
                     <div className="inner-topbar box">
                         <div className="float-left">
                             <p><img src={iconPhoneHeader} alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
                         </div>
+                         <div className="col-lg-8 col-md-8 NOpadding">
+                              <div className="col-lg-12 col-md-12">
+                                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
+						                      <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
+                              </div> 
+                          </div>
                         <div className="float-right align-right">
                             <div className="hover-menu">
                             {user_ID 
@@ -438,6 +441,7 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
+<<<<<<< Updated upstream
                               <li className="dropdown">
                                   <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span>
                               </li>
@@ -453,6 +457,21 @@ loginPage(event){
                             //       </li>
                             //     </ul>
                             // </li>
+=======
+
+                            <li className="dropdown">
+                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                <ul className="dropdown-menu logout-list-menu">
+                                  <li className="col-lg-12 col-md-12 col-sm-12">
+                                    <div className="welcomeTxt">Welcome</div>
+                                    <p>To access account and manage orders</p>
+                                    <div className="borderTop"></div>
+                                    <span className=" pull-left signInOutBtn"><a href="/login"><b> SIGN IN</b> </a></span>
+                                    <span className=" pull-right signInOutBtn"><a href="/signup"><b>SIGN UP</b></a></span>
+                                  </li>
+                                </ul>
+                            </li>
+>>>>>>> Stashed changes
 
                             }
                             </div>
@@ -486,11 +505,17 @@ loginPage(event){
 
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
+<<<<<<< Updated upstream
                     <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
                     <img src={searchModalImg} className="search"></img>                      
                     </div>
+=======
+                    {/* <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
+                        <i class="icon"></i>                        
+                    </div> */}
+>>>>>>> Stashed changes
                    {/* Search modal */}
-                    <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
+                    {/* <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
                         <div className="modal-dialog modal-lg">
                             <div className="modal-content popup-search">
                                 <button type="button" className="close" data-dismiss="modal"><i className="fa fa-times" aria-hidden="true"></i></button>
@@ -503,7 +528,7 @@ loginPage(event){
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="col-lg-5 col-md-5 col-sm-5 dropdown cart hover-menu ">                        
                         <a href={user_ID ? "/cart" : "/login"} className="icon-cart">

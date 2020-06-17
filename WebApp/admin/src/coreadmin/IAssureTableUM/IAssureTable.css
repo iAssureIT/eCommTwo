@@ -11,15 +11,17 @@
     border: none;
     color: var(--white-color);
     /* padding: 4px 4px; */
-    text-align: center;
+    /* text-align: center; */
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
     border-radius: 4px;
     outline: 0;
-    /* letter-spacing: 1px; */
-    background: var(--blue-background);
-    font-size: 12px;
+    /* background-color: brown; */
+    font-size: 11px;
+}
+.tbmgtp{
+  margin-top: 20px;
 }
 
 .uMDetailContainer input {

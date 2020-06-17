@@ -1264,6 +1264,9 @@ exports.list_productby_subcategory = (req,res,next)=>{
 
 
 exports.search_product = (req,res,next)=>{
+    console.log("req body in search ==>",req.body);
+    console.log("req params in search ==>",req.params);
+
     Products.find(
             {
                 "$and" : [
@@ -1433,7 +1436,7 @@ exports.searchINCategory = (req,res,next)=>{
                 {"shortDescription" : {'$regex' : req.body.searchstr , $options: "i"} }, 
                 {"featureList.feature" : {'$regex' : req.body.searchstr , $options: "i"} },
                 {"attributes.attributeName" : {'$regex' : req.params.searchstr , $options: "i"} },
-                    {"attributes.attributeValue" : {'$regex' : req.params.searchstr , $options: "i"} }  
+                {"attributes.attributeValue" : {'$regex' : req.params.searchstr , $options: "i"} }  
             ]
         }, 
         { "$or": [{"status":"Publish"}] }
