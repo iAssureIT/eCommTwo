@@ -8,7 +8,6 @@ import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getCartData, searchProductAction} from '../../actions/index';
 import $                          from "jquery";
-<<<<<<< Updated upstream
 import cartImg                    from "../../../sites/currentSite/images/icon-cart.png";
 import searchModalImg             from "../../../sites/currentSite/images/icon-search.png";
 
@@ -16,9 +15,7 @@ import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header
 import iconUserHeader from "../../../sites/currentSite/images/icon-user-header.png";
 import logoUnimandai from "../../../sites/currentSite/images/logoUnimandai.png";
 // import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
-=======
-// import Searchcomponent                          from "./Search.js";
->>>>>>> Stashed changes
+
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 
 // import './Header.css';
@@ -441,7 +438,6 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
-<<<<<<< Updated upstream
                               <li className="dropdown">
                                   <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span>
                               </li>
@@ -457,21 +453,7 @@ loginPage(event){
                             //       </li>
                             //     </ul>
                             // </li>
-=======
 
-                            <li className="dropdown">
-                                <a className="acc" href="login" title="My Account" area-hidden ="true"><img src="/images/unimandai/icon-user-header.png" alt="icon"/>&nbsp;MY ACCOUNT</a>
-                                <ul className="dropdown-menu logout-list-menu">
-                                  <li className="col-lg-12 col-md-12 col-sm-12">
-                                    <div className="welcomeTxt">Welcome</div>
-                                    <p>To access account and manage orders</p>
-                                    <div className="borderTop"></div>
-                                    <span className=" pull-left signInOutBtn"><a href="/login"><b> SIGN IN</b> </a></span>
-                                    <span className=" pull-right signInOutBtn"><a href="/signup"><b>SIGN UP</b></a></span>
-                                  </li>
-                                </ul>
-                            </li>
->>>>>>> Stashed changes
 
                             }
                             </div>
@@ -505,15 +487,10 @@ loginPage(event){
 
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
-<<<<<<< Updated upstream
                     <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
                     <img src={searchModalImg} className="search"></img>                      
                     </div>
-=======
-                    {/* <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
-                        <i class="icon"></i>                        
-                    </div> */}
->>>>>>> Stashed changes
+
                    {/* Search modal */}
                     {/* <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
                         <div className="modal-dialog modal-lg">
