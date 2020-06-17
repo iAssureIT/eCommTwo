@@ -12,17 +12,28 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                     "message": "PurchaseEntry already exists."
                 });
             }else{*/
+                console.log("body",req.body);
                 const finishedGoods = new FinishedGoodsEntry({
                     _id                       : new mongoose.Types.ObjectId(),                    
                     Date                      : req.body.Date,
-                    ItemCode                    : req.body.ItemCode,/*itemID from productMaster*/
+                    ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/      
+                    ProductCode               : req.body.ProductCode,
                     productName               : req.body.productName,
-                    PackageWeight             : req.body.PackageWeight,
+                    CurrentStock              : req.body.CurrentStock,
+                    OutwardStock              : req.body.OutwardStock,
+                    OutwardUnit               : req.body.OutwardUnit,
+                    Weight                    : req.body.Weight,
+                    WeightPerUnit             : req.body.WeightPerUnit,
                     Quantity                  : req.body.Quantity,
-                    Unit                      : req.body.Unit,
+                    InwardStock               : req.body.InwardStock,
+                    InwardUnit                : req.body.InwardUnit,
+                    Scrap                     : req.body.Scrap,
+                    ScrapUnit                 : req.body.ScrapUnit,
+                    PaidBy                    : req.body.PaidBy,
                     createdBy                 : req.body.createdBy,
-                    createdAt                 : new Date()
+                    createdAt                 : new Date(),
                 });
+                console.log("finishedGoodsfinishedGoods",finishedGoods);
                 finishedGoods.save()
                 .then(data=>{
                     res.status(200).json({
@@ -67,11 +78,20 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
             {
                 $set:{
                     Date                      : req.body.Date,
-                    ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/
+                    ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/      
+                    ProductCode               : req.body.ProductCode,
                     productName               : req.body.productName,
-                    PackageWeight             : req.body.PackageWeight,
+                    CurrentStock              : req.body.CurrentStock,
+                    OutwardStock              : req.body.OutwardStock,
+                    OutwardUnit               : req.body.OutwardUnit,
+                    Weight                    : req.body.Weight,
+                    WeightPerUnit             : req.body.WeightPerUnit,
                     Quantity                  : req.body.Quantity,
-                    Unit                      : req.body.Unit,
+                    InwardStock               : req.body.InwardStock,
+                    InwardUnit                : req.body.InwardUnit,
+                    Scrap                     : req.body.Scrap,
+                    ScrapUnit                 : req.body.ScrapUnit,
+                    PaidBy                    : req.body.PaidBy,
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
                 }
@@ -123,6 +143,25 @@ exports.delete_FinishedGoodsEntry = (req,res,next)=>{
         });
     });
 };
+
+exports.get_total_outward = (req,res,next) => {
+    FinishedGoodsEntry.aggregate([
+       {"$match": { "ItemCode": req.params.itemcode}},
+       {"$group": {"_id": null,"TotalOutward": { "$sum": "$Quantity"},"TotalScrap" : { "$sum": "$Scrap"}}
+    }])
+     .then(data=>{
+       res.status(200).json(data[0]);   
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }); 
+
+}
+
 
 /*exports.list_category = (req,res,next)=>{
     Category.find({"section_ID":req.params.section_ID})

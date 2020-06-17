@@ -12,23 +12,27 @@ export default class FinishedGoods extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
-			      	
-			      	
-			      	Date         : '',
-			      	ItemCode       : '',
-			      	productName  : '',
-			      	PackageWeight: '',
-			      	Quantity     : '',
-			      	Unit         : 'Kg',
+			      	Date                : '',
+			      	ItemCode            : '',
+			      	productName         : '',
+			      	PackageWeight	    : '',
+			      	Quantity            : '',
+					Unit                : 'Kg',
+					finishedGoodsUnit   : 'Kg',
+					outwardUnit         : 'Kg',
+					wtPerUnit           : 'Kg',
+					scrapUnit           : 'Kg',
 			      	"twoLevelHeader"    : {
 						            apply  : false,
 						           },
 		             "tableHeading"     : {
 		                Date            : "Date",
-		        		productName     : "Product Code – Item Code-Product Name",
-		        		ItemCode 	    : "ItemCode",
-		        		PackageWeight  	: "Package Weight",
-		        		Quantity        : "Quantity",
+		        		productName     : "Product Name – Product Code - Item Code",
+						InwardStock  	: "Inward",
+						OutwardStock    : "Outward",
+						Quantity        : "Quantity",
+						Weight          : "Weight",
+						Scrap           : "Scrap",
 						actions        	: 'Action',
 					},
 					"tableObjects" 		: {
@@ -42,13 +46,20 @@ export default class FinishedGoods extends React.Component {
 		            "limitRange"        : 10, 
 					"editId"                    : this.props.match.params ? this.props.match.params.finishedGoodId : '',
 					"productArray"      : [],
-					"itemCodeArray"     : []
+					"itemCodeArray"     : [],
+					"outwardFromRaw"    : '',
+					"weight"            : '',
+					"weightforFG"       :  0,
+					"totalInward"       : 0,
+					"totalOutward"      : 0,
+					"currentStock"      : 0,
+					"totalScrap"        : 0
+
       };
 	}
     
 	componentDidMount(){
 		var editId = this.props.match.params.purchaseId;
-        console.log('ven', editId);
 		this.getData();
 		this.getproducts();
 		jQuery.validator.setDefaults({
@@ -76,6 +87,15 @@ export default class FinishedGoods extends React.Component {
 			  Quantity:{
 				required:true
 			  },
+			  outwardFromRaw:{
+				required:true 
+			  },
+			  weight:{
+				required:true 
+			  },
+			  paidBy:{
+				required:true 
+			  }
 			},
 			errorPlacement: function (error, element) {
 			  if (element.attr("name") === "Date") {
@@ -96,6 +116,15 @@ export default class FinishedGoods extends React.Component {
 			  if (element.attr("name") === "Quantity") {
 				error.insertAfter("#Quantity");
 			  }
+			  if (element.attr("name") === "outwardFromRaw") {
+				error.insertAfter(".outwardRawMatDiv");
+			  }
+			  if (element.attr("name") === "weight") {
+				error.insertAfter(".WeightPerUnitDiv");
+			  }
+			  if (element.attr("name") === "paidBy") {
+				error.insertAfter("#paidBy");
+			  }
 			}
 		});
 
@@ -114,20 +143,24 @@ export default class FinishedGoods extends React.Component {
 		var itemCodeArray = [];
         axios.get('/api/finishedGoodsEntry/get/one/'+id)
         .then((response)=>{
-			console.log('res', response);
-			this.state.productArray.filter(function(item,index){
-				if(item.productName == response.data.productName){
-				  itemCodeArray.push(item.itemCode);
-				}
-			});
             this.setState({
-					"Date"         : response.data.Date ,
-					"itemCodeArray": itemCodeArray,
-			      	"ItemCode"     : response.data.ItemCode,
-			      	"productName"  : response.data.productName,
-			      	"PackageWeight": response.data.PackageWeight,
-			      	"Quantity"     : response.data.Quantity,
-					"Unit"         : response.data.Unit,
+					"Date"         		: response.data.Date ,
+			      	"ItemCode"     		: response.data.ItemCode,
+			      	"productName"  		: response.data.productName,
+			      	"PackageWeight"		: response.data.PackageWeight,
+			      	"Quantity"     		: response.data.Quantity,
+					"Unit"         		: response.data.Unit,
+					"currentStock"      : response.data.CurrentStock,
+					"outwardFromRaw"     : response.data.OutwardStock,
+					"outwardUnit"       : response.data.OutwardUnit,
+					"weight"            : response.data.Weight,
+					"wtPerUnit"         : response.data.WeightPerUnit,
+					"Quantity" 			: response.data.Quantity,
+					"weightforFG"       : response.data.InwardStock,
+					"finishedGoodsUnit" : response.data.InwardStock,
+					"scrap"             : response.data.Scrap,
+					"scrapUnit" 		: response.data.ScrapUnit,
+					"paidBy"            : response.data.PaidBy
             });
             
         })
@@ -139,42 +172,19 @@ export default class FinishedGoods extends React.Component {
 	 axios
       .get('/api/finishedGoodsEntry/get/list')
       .then((response)=>{
-        console.log("list===>",response.data);
-        /*this.setState({
-          
-          tableData : response.data,
-        });*/
         var  tableData = response.data ;
         console.log("tableData",tableData);
- 
-		/*return{  tableData: {
-						fullName        : 'Date',
-		        		city       		: "Product Code",
-		        		company 		: "Item Code",
-		        		role 			: "Product Name",
-						email        	: 'Opening Stock',
-						
-		                status        	: 'Stock Added Today',
-		                TotalStock      : 'Total Stock', 
-		                }  
-			}*/
 			var tableData = tableData.map((a, i) => {
 					return {
  
 						_id                  : a._id,
 						Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
-						productName 	     : a.productName ? a.productName : "" ,
-						ItemCode 		     : a.ItemCode ? a.ItemCode : "" ,
-						PackageWeight 		 : a.PackageWeight + a.Unit, 
-						Quantity 		     : a.Quantity ? a.Quantity : "" ,
-						Unit 	             : a.Unit,
-						// TotalStock 			: "" ,
-						
-					/*	purchaseStaff		:
-						purchaseLocation 	:
-						Quantity 			:
-						amount 				:
-						Units 				:*/
+						productName 	     : a.productName ? a.productName +' - '+ a.ProductCode +' - '+ a.ItemCode: "" ,
+						InwardStock          : a.InwardStock ? a.InwardStock + a.InwardUnit : 0,
+						OutwardStock         : a.OutwardStock ? a.OutwardStock + a.OutwardUnit : 0,
+						Quantity             : a.Quantity ? a.Quantity : 0,
+						Weight               : a.Weight ? a.Weight + a.WeightPerUnit : 0,
+						Scrap                : a.Scrap ? a.Scrap + a.ScrapUnit : 0 
 					}
 				})
 			this.setState({
@@ -210,25 +220,120 @@ export default class FinishedGoods extends React.Component {
 	}
 	handleChange(event){
       event.preventDefault();
-	  var itemCodeArray = [];
-      // const datatype = event.target.getAttribute('data-text');
 	  const {name,value} = event.target;
-	  if(name == "productName"){
-		  this.state.productArray.filter(function(item,index){
-			  if(item.productName == value){
-				itemCodeArray.push(item.itemCode);
-			  }
-		  });
-		  this.setState({
-			itemCodeArray : itemCodeArray,
-			ItemCode:''
-		  })
-	  }
+	  this.setState({ 
+		[name]:value,
+      },()=>{
+	  });
+	  //this.calculateTotalWeight();
+	}
 
-      this.setState({ 
-        [name]:value,
-      } );
-    }
+	onProductChange(event){
+	  var itemCode;
+	  var productCode;
+	  var TotalWeight;
+	  const {name,value} = event.target;
+	  this.setState({ 
+		[name]:value,
+		currentStock:0
+      },()=>{
+	  });
+		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
+		$(".productDatalist option").filter(function(index,item){
+		  if(item.value == event.target.value){
+			itemCode =$(item).data('itemcode');
+			productCode =$(item).data('productcode');
+		  }
+	  });
+
+	  this.setState({ 
+		"ItemCode":itemCode,
+		"ProductCode":productCode 
+	  },()=>{
+		  this.getTotalInward();
+		  this.getTotalOutward();
+	  });
+	}
+
+	onOutwardRawMaterialChange(event){
+	  const {name,value} = event.target;
+	  var currentStock = this.state.currentStock;
+	  if(value <= currentStock){
+		this.setState({ 
+			[name]:value,
+		  },()=>{
+		  });
+	  }else{
+		swal("Outward should be less than current stock.");
+		this.setState({ 
+			outwardFromRaw:0,
+		  },()=>{
+		});
+	  }
+	  
+	}
+
+	
+	getTotalInward(){
+		axios.get('/api/purchaseentry/get/TotalInward/'+this.state.ItemCode)
+		    .then(response => {
+				this.setState({
+					totalInward : response.data.TotalInward ? response.data.TotalInward : 0
+				},()=>{
+					this.getCurrentStock();
+				});
+			})
+		   .catch(error=>{
+			    console.log("error in getTotalInward = ", error);
+		   });
+	}
+
+	getTotalOutward(){
+		axios.get('/api/finishedGoodsEntry/get/TotalOutward/'+this.state.ItemCode)
+		    .then(response => {
+				this.setState({
+					totalOutward : response.data.TotalOutward ? response.data.TotalOutward : 0,
+					totalScrap   : response.data.TotalScrap  ? response.data.TotalScrap  : 0
+				},()=>{
+					console.log("totalFinishedGoodsOutward",this.state.totalOutward);
+					this.getCurrentStock();
+				});
+			})
+		    .catch(error=>{
+			    console.log("error in getTotalOutward = ", error);
+		    });
+	}
+
+	getCurrentStock(){
+		var scrapStock = this.state.totalScrap;
+		var currentStock = this.state.totalInward - this.state.totalOutward;
+		console.log("currentStock",this.state.TotalInward, this.state.TotalOutward);
+		this.setState({
+			currentStock:currentStock - this.state.totalScrap
+		});
+	}
+	
+	calculateTotalWeight(event){
+		var weightforFG;
+		const {name,value} = event.target;
+		this.setState({ 
+			[name]:value,
+			finishedGoodsUnit : this.state.wtPerUnit
+		  },()=>{
+			weightforFG = this.state.Quantity * this.state.weight;
+		});
+
+		
+
+		this.setState(() => {
+			const val = this.state.Quantity * this.state.weight
+			return {
+				weightforFG: val,
+				finishedGoodsUnit: this.state.wtPerUnit
+			}
+		})
+	}
+
 
     handleProduct(event){
     	var valproduct = event.currentTarget.value;
@@ -245,23 +350,29 @@ export default class FinishedGoods extends React.Component {
     }
     Submit(event){
 		event.preventDefault();
-
-		var productDatalist = $(".productDatalist").find("option[value='" + this.state.productName + "']");
-		var itemcodeDatalist = $(".datalistItemCode").find("option[value='" + this.state.ItemCode + "']");
-	
+		var productDatalist = $(".productDatalist").find("option[value='" + this.state.productName + "']");	
 		const formValues1 = {
 			// "amount"         	: this.state.amount ,
 			"Date" 		        : this.state.Date,
-			"ItemCode" 	        : this.state.ItemCode,
-			"PackageWeight"     : this.state.PackageWeight,
-			"Quantity" 			: this.state.Quantity,
 			"productName" 	    : this.state.productName,
-			"Unit" 		     	: this.state.Unit,
-		
+			"ItemCode" 	        : this.state.ItemCode,
+			"ProductCode"       : this.state.ProductCode,
+			"CurrentStock"      : this.state.currentStock,
+			"OutwardStock"      : this.state.outwardFromRaw,
+			"OutwardUnit"       : this.state.outwardUnit,
+			"Weight"            : this.state.weight,
+			"WeightPerUnit"     : this.state.wtPerUnit,
+			"Quantity" 			: this.state.Quantity,
+			"InwardStock"       : this.state.weightforFG,
+			"InwardUnit"        : this.state.finishedGoodsUnit,
+			"Scrap"             : this.state.scrap,
+			"ScrapUnit" 		: this.state.scrapUnit,
+			"PaidBy"            : this.state.paidBy
+		  
 		};
 
 	  if ($('#finishedGoodsInwardForm').valid()) {
-		if((productDatalist != null && productDatalist.length > 0) && (itemcodeDatalist != null && itemcodeDatalist.length > 0 )){
+		if(productDatalist != null && productDatalist.length > 0){
 			axios
 				.post('/api/finishedGoodsEntry/post',formValues1)
 				.then((response)=>{
@@ -276,12 +387,19 @@ export default class FinishedGoods extends React.Component {
 					console.log(error);
 				});
 				this.setState({
-					"date" 		        : '',
+					"Date" 		        : '',
 					"ItemCode" 	        : '',
-					"PackageWeight"        : '',
+					"PackageWeight"     : '',
 					"Quantity" 			: '',
-					"productName" 	        : '',
+					"productName" 	    : '',
 					"Unit" 		     	: 'Kg',
+					"weight"            : '',
+					"currentStock"      : 0,
+					"outwardFromRaw"    : '',
+					"weightforFG"       : 0,
+					"scrap"             : 0,
+					"paidBy"            : ''
+ 
 			})
 		}else{
 			swal("Please select product and item code from list.");
@@ -295,12 +413,21 @@ export default class FinishedGoods extends React.Component {
 	update(event){
         event.preventDefault();
         var formValues = {
-           "Date" 		        : this.state.Date,
-      	   "ItemCode" 	        : this.state.ItemCode,
-      	   "PackageWeight"      : this.state.PackageWeight,
-      	   "Quantity" 			: this.state.Quantity,
-      	   "productName" 	    : this.state.productName,
-      	   "Unit" 		     	: this.state.Unit,
+			 "Date" 		        : this.state.Date,
+			 "productName" 	        : this.state.productName,
+			 "ItemCode" 	        : this.state.ItemCode,
+			 "ProductCode"          : this.state.ProductCode,
+			 "CurrentStock"         : this.state.currentStock,
+			 "OutwardStock"         : this.state.outwardFromRaw,
+			 "OutwardUnit"          : this.state.outwardUnit,
+			 "Weight"               : this.state.weight,
+			 "WeightPerUnit"        : this.state.wtPerUnit,
+			 "Quantity" 			: this.state.Quantity,
+			 "InwardStock"          : this.state.weightforFG,
+			 "InwardUnit"           : this.state.finishedGoodsUnit,
+			 "Scrap"                : this.state.scrap,
+			 "ScrapUnit" 		    : this.state.scrapUnit,
+			 "PaidBy"               : this.state.paidBy
         }
 		if ($('#finishedGoodsInwardForm').valid()) {
             axios.patch('/api/finishedGoodsEntry/update/'+this.state.editId,formValues)
@@ -309,13 +436,21 @@ export default class FinishedGoods extends React.Component {
                 swal(response.data.message);
                 this.getData(this.state.startRange, this.state.limitRange);
                 this.setState({
-                    "date" 		            : '',
-	      	         "ItemCode" 	        : '',
-	      			 "PackageWeight"        : '',
-	      			 "Quantity" 			: '',
-	      			 "productName" 	        : '',
-					 "Unit" 		     	: 'Kg',
-					 "editId"               : ''
+					"date" 		        : '',
+					"ItemCode" 	        : '',
+					"PackageWeight"     : '',
+					"Quantity" 			: '',
+					"productName" 	    : '',
+					"outwardUnit" 		: 'Kg',
+					"wtPerUnit" 		: 'Kg',
+					"finishedGoodsUnit" : 'Kg',
+					'scrapUnit'         : 'Kg',
+					"currentStock"      : 0,
+					"outwardFromRaw"    : '',
+					"weightforFG"       : 0,
+					"scrap"             : 0,
+					"paidBy"            : '',
+					"editId"            : ''
 					
                 })
             })
@@ -352,21 +487,17 @@ export default class FinishedGoods extends React.Component {
 										<label >Date</label>
 										<input type="Date"  className="form-control"  value={ this.state.Date} name="Date" refs="Date" onChange={this.handleChange.bind(this)} id="Date"/>
 									</div>
-									
-								</div>
-								<div className="row">
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
 										<label >Select Product</label>
 										{/*<input type="text" className="form-control" id="email"/>*/}
-										<input list="productName" type="text" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" />
+										<input list="productName" type="text" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.onProductChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" />
 	    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
-
-										  <datalist id="productName" name="productName" class="productDatalist">
+										  <datalist id="productName" name="productName" className="productDatalist">
 										  {
 												this.state.productArray && this.state.productArray.length > 0 ?
 													this.state.productArray.map((data, i)=>{
 														return(
-															<option value={data.productName}>{data.productName}</option>
+															<option value={data.productName} data-productCode={data.productCode} data-itemCode={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
 														);
 													})
 												:
@@ -374,30 +505,17 @@ export default class FinishedGoods extends React.Component {
                                           }
 										  </datalist>
 									</div>
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Select Item Code</label>
-										{/*<input type="text" className="form-control" id="email"/>*/}
-										<input list="ItemCode" type="text" refs="ItemCode" className="form-control"    placeholder="Enter Item Code" value={this.state.ItemCode}  onChange={this.handleChange.bind(this)}  onBlur={this.handleItemCode.bind(this)} name="ItemCode"  id="selectItemCode"/>
-	    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
-										
-										  <datalist id="ItemCode" name="ItemCode" class="datalistItemCode">
-										  {
-												this.state.itemCodeArray && this.state.itemCodeArray.length > 0 ?
-													this.state.itemCodeArray.map((data, i)=>{
-														return(
-															<option value={data}>{data}</option>
-														);
-													})
-												:
-												null
-                                           }
-										  </datalist>
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+									    <label>Current Stock</label>
+										<input type="text"  className="form-control"  value={ this.state.currentStock} name="currentStock" id="currentStock" readOnly/>
 									</div>
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Package Weight</label>
-										<div className="PackageWeightDiv">
-											<input type="number" placeholder="Enter Quantity " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.PackageWeight} name="PackageWeight" refs="PackageWeight" onChange={this.handleChange.bind(this)} id="PackageWeight"/>
-											<select id="Unit"  name="Unit" value={this.state.Unit} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
+								</div>
+								<div className="row mtop25">
+								<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+										<label >Outward From Raw Material</label>
+										<div className="outwardRawMatDiv">
+											<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.outwardFromRaw} name="outwardFromRaw" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
+											<select id="outwardUnit"  name="outwardUnit" value={this.state.outwardUnit} refs="outwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
 											  	<option selected={true} disabled={true}>-- Select --</option>
 											  	<option value="Kg">Kg</option>
 											  	<option value="Ltr">Ltr</option>
@@ -407,8 +525,53 @@ export default class FinishedGoods extends React.Component {
 										</div>
 									</div>
 									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Quantity</label>
-										<input type="number" placeholder="12345678" className="form-control" value={ this.state.Quantity} name="Quantity" refs="Quantity" onChange={this.handleChange.bind(this)} id="Quantity"/>
+										<label>Weight Per Unit</label>
+										<div className="WeightPerUnitDiv">
+											<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.weight} name="weight" refs="weight" onChange={this.handleChange.bind(this)} id="weight" onBlur={this.calculateTotalWeight.bind(this)}/>
+											<select id="wtPerUnit"  name="wtPerUnit" value={this.state.wtPerUnit} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" onBlur={this.calculateTotalWeight.bind(this)}>
+											  	<option selected={true} disabled={true}>-- Select --</option>
+											  	<option value="Kg">Kg</option>
+											  	<option value="Ltr">Ltr</option>
+											  	<option value="gram">gram</option>
+											  	<option value="Nos">Nos</option>
+											</select>
+										</div>
+									</div>
+									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+										<label >Total Quantity</label>
+										<input type="number" placeholder="12345678" className="form-control" value={ this.state.Quantity} name="Quantity" refs="Quantity" onChange={this.handleChange.bind(this)} id="Quantity" onBlur={this.calculateTotalWeight.bind(this)}/>
+									</div>
+									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+										<label>Total Weight For finished Goods</label>
+										<div className="WtForFgDiv">
+											<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.weightforFG} name="weightforFG" refs="wtforFG" onChange={this.handleChange.bind(this)} id="weightforFG" min="0" readOnly/>
+											<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
+											  	<option selected={true} disabled={true}>-- Select --</option>
+											  	<option value="Kg">Kg</option>
+											  	<option value="Ltr">Ltr</option>
+											  	<option value="gram">gram</option>
+											  	<option value="Nos">Nos</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div className="row mtop25">
+								   <div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+										<label>Scrap material</label>
+										<div className="scrapMaterialDiv">
+											<input type="number" placeholder="Enter Scrap" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrap} name="scrap" refs="scrap" onChange={this.handleChange.bind(this)} id="scrap"/>
+											<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
+											  	<option selected={true} disabled={true}>-- Select --</option>
+											  	<option value="Kg">Kg</option>
+											  	<option value="Ltr">Ltr</option>
+											  	<option value="gram">gram</option>
+											  	<option value="Nos">Nos</option>
+											</select>
+										</div>
+									</div>
+								    <div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+										<label >Paid By</label>
+										<input type="text" placeholder="Enter staff" className="form-control" value={ this.state.paidBy} name="paidBy" refs="paidBy" onChange={this.handleChange.bind(this)} id="paidBy"/>
 									</div>
 								</div>
 								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">

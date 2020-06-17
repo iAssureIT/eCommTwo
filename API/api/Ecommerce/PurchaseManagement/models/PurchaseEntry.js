@@ -7,6 +7,7 @@ const PurchaseEntrySchema = mongoose.Schema({
     purchaseLocation          : String,
     productId                 : String,/*_id from productMaster*/
     itemId                    : String,/*itemID from productMaster*/
+    itemCode                  : String,
     productName               : String,
     quantity                  : Number,
     unit                      : String,

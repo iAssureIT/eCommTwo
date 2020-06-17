@@ -19,6 +19,7 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                     purchaseLocation          : req.body.purchaseLocation,
                     /*productId                 : req.body.productId,
                     itemId                    : req.body.itemId,*/
+                    itemCode                  : req.body.ItemCode,
                     productName               : req.body.productName,
                     quantity                  : req.body.quantity,
                     unit                      : req.body.unit,
@@ -196,6 +197,44 @@ exports.get_purchase_numbers = (req,res,next)=>{
             error: err
         });
     }); 
+}
+
+exports.get_total_inward = (req,res,next) => {
+    PurchaseEntry.aggregate([
+       {"$match": { "itemCode": req.params.itemcode}},
+       {"$group": {"_id": null,"TotalInward": { "$sum": "$quantity"}}
+    }])
+     .then(data=>{
+       res.status(200).json(data[0]);   
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }); 
+
+
+ //       { $group: { _id : null, total: { $sum: "$quantity" }}},
+
+
+
+      // PurchaseEntry.find({"itemCode":req.params.itemcode})
+      //   .exec()
+      //   .then(data=>{
+      //       if(data){
+      //           res.status(200).json(data);   
+      //       }else{
+      //           res.status(404).json('PAGE_NOT_FOUND');
+      //       }
+      //   })
+      //   .catch(err =>{
+      //       console.log(err);
+      //       res.status(500).json({
+      //           error: err
+      //       });
+      //   });
 }
 
 /*exports.list_category = (req,res,next)=>{

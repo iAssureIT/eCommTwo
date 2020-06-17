@@ -61,7 +61,8 @@ export default class PurchaseManagement extends React.Component {
 					selectedProductName : 'Select Product',
 					filterData : {},
 					PurchaseNumberArray:[],
-					totalPoAmount : 0
+					totalPoAmount : 0,
+					ItemCode   : ''
 			      	
       };
 	}
@@ -293,24 +294,37 @@ export default class PurchaseManagement extends React.Component {
 	handleChangeDate(event){
       event.preventDefault();
       var dateVal = event.target.id;
-      // console.log("datVal",dateVal);
-      // const datatype = event.target.getAttribute('data-text');
-      const {name,value} = event.target;
-		
+	  const {name,value} = event.target;
       this.setState({ 
         [name]:value,
  
       },()=>{
 		this.getData();
 
-      } );
+      });
     }
 
 	handleChange(event){
       event.preventDefault();
       // const datatype = event.target.getAttribute('data-text');
-      const {name,value} = event.target;
+	  const {name,value} = event.target;
+	  var itemCode;
 
+	  if(name == "product"){
+		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
+		$(".productDatalist option").filter(function(index,item){
+			console.log("filter",$(item).data('itemcode'));
+			if(item.value == event.target.value){
+			itemCode =$(item).data('itemcode');
+			}
+		});
+
+		this.setState({ 
+		"ItemCode":itemCode,
+		},()=>{
+		});
+     }
+	
       this.setState({ 
         [name]:value,
 	  },()=>{
@@ -365,7 +379,8 @@ export default class PurchaseManagement extends React.Component {
       	"purchaseStaff" 	: this.state.purchaseStaff,
       	"purchaseLocation"  : this.state.purchaseLocation,
       	"quantity" 			: this.state.quantity,
-      	"productName" 		: this.state.product,
+		"productName" 		: this.state.product,
+		"ItemCode"          : this.state.ItemCode,
       	"unit" 				: this.state.Units,
       	"unitRate" 	        : this.state.unitRate,
 		"purchaseNumber"    : this.state.purchaseNumber,
@@ -391,7 +406,8 @@ export default class PurchaseManagement extends React.Component {
 				amount          : "",     
 				product         : "",    	
 				quantity        : "", 			
-				product         : "", 		
+				product         : "", 
+				ItemCode        : "",		
 				Units           : "",
 				unitRate    : "",
 			},()=>{
@@ -412,7 +428,8 @@ export default class PurchaseManagement extends React.Component {
 	      	"purchaseStaff" 	: this.state.purchaseStaff,
 	      	"purchaseLocation"  : this.state.purchaseLocation,
 	      	"quantity" 			: this.state.quantity,
-	      	"productName" 		: this.state.product,
+			"productName" 		: this.state.product,
+			"ItemCode"          : this.state.ItemCode,
 	      	"unit" 				: this.state.Units,
 	      	"unitRate" 	        : this.state.unitRate,
 			"purchaseNumber"    : this.state.purchaseNumber,
@@ -430,12 +447,13 @@ export default class PurchaseManagement extends React.Component {
 			      	"purchaseStaff" 	: "",
 			      	"purchaseLocation"  : "",
 			      	"quantity" 			: "",
-			      	"product" 		: "",
+					"product" 		    : "",
+					"ItemCode"          : "",
 			      	"unit" 				: "",
-                    "unitRate"      : "",
-				    "purchaseNumber"   : "",
+                    "unitRate"          : "",
+				    "purchaseNumber"    : "",
 					"Details" 		    :"",	
-                    editId             : ""
+                    editId              : ""
                 })
             })
             .catch((error)=>{
@@ -517,12 +535,13 @@ export default class PurchaseManagement extends React.Component {
 											<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
 		    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
 											
-											  <datalist id="product" name="product" class="productDatalist">
+											  <datalist id="product" name="product" className="productDatalist">
 											    {
                                                     this.state.productArray && this.state.productArray.length > 0 ?
                                                         this.state.productArray.map((data, i)=>{
+															console.log("data",data);
                                                             return(
-                                                                <option>{data.productName}</option>
+                                                                <option value={data.productName} data-itemCode={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
                                                             );
                                                         })
                                                     :

@@ -13,6 +13,9 @@ router.patch('/update/:purchaseID'    , FinishedGoodsEntryController.update_Fini
 
 router.delete('/delete/:purchaseID',FinishedGoodsEntryController.delete_FinishedGoodsEntry);
 
+router.get('/get/TotalOutward/:itemcode'       , FinishedGoodsEntryController.get_total_outward);
+
+
 
 /*
 router.get('/get/list/:section_ID',PurchaseEntryController.list_category);

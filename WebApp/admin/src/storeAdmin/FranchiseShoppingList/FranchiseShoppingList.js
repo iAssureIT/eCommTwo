@@ -15,7 +15,7 @@ export default class FranchiseShoppingList extends React.Component {
 		    productList 	: [],
             currentStock 	: [],	
          	prodStockOrder : [],	      
-	        selectedSection : "",	
+	        selectedSection : "All Sections",	
 	        date : ""	,
 	        editId : "",
 	        user_ID : ""
@@ -176,9 +176,7 @@ export default class FranchiseShoppingList extends React.Component {
 	}
 	Update(event){
 		event.preventDefault();
-
    	    const formValues1 = {
-   	    	
 	        purchaseorder_id    	  : this.state.editId, 
 	        orderItems                : this.state.prodStockOrder,
 	        orderDate				  : moment(new Date()).format("YYYY-MM-DD"),
@@ -225,6 +223,16 @@ export default class FranchiseShoppingList extends React.Component {
 		this.setState({selectedSection : selectedValue});
 	}
 
+	onChageOrderDate(event){
+		var date = event.target.value;
+		this.setState({
+			date : date,
+		},()=>{
+				console.log("date = ",this.state.date);
+			});
+
+	}
+
 	render() {
 		// console.log("productList render = ",this.state.productList);
 
@@ -239,13 +247,13 @@ export default class FranchiseShoppingList extends React.Component {
 								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12 pull-right">
 								    <label className=" ">Order Date :</label>
 								    <div className="col-lg-8 col-md-9 col-sm-12 col-xs-12  pull-right nopadding">
-								      <input className=" " id="theDate" type="date" value={this.state.date}/>
+								      <input className=" " id="theDate" type="date" onChange={this.onChageOrderDate.bind(this)} value={this.state.date} min={moment(new Date()).format("YYYY-MM-DD")}/>
 								    </div>
 								</div>
 							
 								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12"> 
 									<label>Select Section : </label>
-									<select defaultValue="Vegetables" className="col-lg-8 col-md-9 col-sm-12 col-xs-12 pull-right" onChange={this.handleSelectChange.bind(this)}>
+									<select defaultValue="All Sections" className="col-lg-8 col-md-9 col-sm-12 col-xs-12 pull-right" onChange={this.handleSelectChange.bind(this)}>
 										<option> All Sections </option>
 										<option> Fruits </option>
 										<option> Vegetables </option>
@@ -271,7 +279,7 @@ export default class FranchiseShoppingList extends React.Component {
 									    	Array.isArray(this.state.prodStockOrder) && this.state.prodStockOrder.length > 0
 									    	? 
 									    		this.state.prodStockOrder.map((result, index)=>{
-													// console.log('result', result);
+													console.log('result', result);
 													return( 
 													this.state.selectedSection ?
 														result.section === this.state.selectedSection ? 
@@ -306,7 +314,38 @@ export default class FranchiseShoppingList extends React.Component {
 													        </td>													       
 													      </tr>
 														:
-															null
+														this.state.selectedSection === "All Sections" ?
+														<tr key={index}>
+													        	<td>{result.productCode}</td>
+													        	<td>{result.itemCode}</td>
+													        	<td>{result.productName}</td>
+													        	<td>{result.currentStock}</td>
+													        	<td>
+													        	<div class="form-group">
+								                           			<div className="input-group">
+														        		<input type="number" className="form-control width90" 
+														        				 name={"orderedItems"+"-"+index} 
+														        				 id={result.productCode+"-"+result.itemCode} 
+														        				 value={result.orderQty} 
+														        				 onChange={this.setOrderQty.bind(this)}
+														        		/>
+														        		<div className="input-group-addon">
+																		  	<select id={"Units"+"-"+index} name={"Units"+"-"+index} 
+																		  			  value={result.unit} refs="Units" 
+																		  			  onChange={this.setUnit.bind(this)}  
+																		  			  className="input-group-addon width66h">
+																				<option selected={true}> Units</option>
+																			  	<option value="Kg"> Kg 		</option>
+																			  	<option value="Gm"> Gm 		</option>
+																			  	<option value="Ltr">Ltr 	</option>
+																			  	<option value="Num">Number </option>
+																			</select>
+																	  	</div>
+																	</div>
+																</div>
+													        </td>													       
+													      </tr>
+														:null
 													:
 													<tr key={index}>
 													        	<td>{result.productCode}</td>
