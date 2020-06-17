@@ -5,6 +5,7 @@ import jQuery                 from 'jquery';
 import $                      from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../../sites/currentSite/blocks/AskPincode.css';
+import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
 
 
 export default class AskPincode extends Component {
@@ -126,15 +127,13 @@ export default class AskPincode extends Component {
       
   render() {
     $(".modal-backdrop").hide();
-		return (
-            
+		return (            
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12 mb50">
-				{/* {localStorage.getItem('pincode') === null || localStorage.getItem('status') === "NotAllow" || localStorage.getItem('DeliveryStatus') === "Allowable" */}
                 { (localStorage.getItem('pincode') === null) || (localStorage.getItem('pincode') !== null && localStorage.getItem('status') === "NotAllow") || (localStorage.getItem('DeliveryStatus') === "Allowable" && localStorage.getItem('pincodeFlag')==="true" )
                 ?                
                     <div id="myModal" className="modal in">
                         <div className="modal-dialog">
-                            <div className="modal-content pincodemodal">                            
+                            <div className="modal-content pincodemodal" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
                                 <div className="modal-body">   
                                 <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.closeModal.bind(this)}>&times;</button>                       
                                     <form>                                    

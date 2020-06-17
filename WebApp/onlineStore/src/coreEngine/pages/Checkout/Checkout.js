@@ -262,7 +262,7 @@ class Checkout extends Component {
         var user_ID = localStorage.getItem('user_ID');
         axios.get("/api/ecommusers/" + user_ID)
             .then((response) => {
-                console.log('res', response.data.deliveryAddress);
+                console.log('userData res', response.data.deliveryAddress);
                 this.setState({
                     "deliveryAddress"   : response.data.deliveryAddress,
                     "username"          : response.data.profile.fullName,
@@ -1182,7 +1182,10 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Cart Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Discount:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">- <i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].discount) : "0.00"}</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Discount:</span>
+                                        <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">
+                                             {this.props.recentCartData.discount > 0 ? <span> <i className={"fa fa-inr"}></i> parseInt({this.props.recentCartData[0].discount})</span> : "0.00"}
+                                        </span>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Order Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Delivery Charges:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
                                     

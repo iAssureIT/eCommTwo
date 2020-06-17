@@ -256,7 +256,7 @@ componentWillMount() {
     const userid = localStorage.getItem('user_ID');
     axios.get('/api/users/' + userid)
       .then((res) => {
-        console.log('userdata res', res.data);
+        // console.log('userdata res', res.data);
         if(res.data.profile){
           this.setState({
             userData : res.data.profile,

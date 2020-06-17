@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import './FreshFoodBlock.css';
 
 import "../../../../sites/currentSite/blocks/FreshFoodBlock.css";
 import freshFoodImg1   from "../../../../sites/currentSite/images/freshFoodImg1.jpg";
@@ -8,6 +7,7 @@ import icon_shipping_1 from "../../../../sites/currentSite/images/icon-shipping-
 import icon_shipping_2 from "../../../../sites/currentSite/images/icon-shipping-2.png";
 import icon_shipping_3 from "../../../../sites/currentSite/images/icon-shipping-3.png";
 import icon_shipping_4 from "../../../../sites/currentSite/images/icon-shipping-4.png";
+import bgBorderChoose  from "../../../../sites/currentSite/images/bg-border-choose.png";
 
 class FreshFoodBlock extends Component{
     constructor(props){
@@ -28,7 +28,8 @@ class FreshFoodBlock extends Component{
                             <p>The fact of the matter is that you really know something's organic when you find bugs! they obviously wouldn't&nbsp;have made it that far in a non-organic growing environment, so better than any certification or seal on a package,&nbsp;the presence of creatures let you know the plant was healthy and</p>
                         </div>   
 
-                        <div className="align-center border-choose">
+                        <div className="align-center border-choose" style={{background: "url("+bgBorderChoose +")"}}>
+
                             <div className="images">
                                 <img src={bgBorderCenter} alt="icon" />
                             </div>

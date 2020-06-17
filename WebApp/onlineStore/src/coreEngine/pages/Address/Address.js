@@ -188,7 +188,7 @@ class Address extends Component {
         });
     }
     componentWillReceiveProps(nextProps){
-        // this.edit(nextProps.addressId);
+        this.edit(nextProps.addressId);
     }
     handleChange(event) {
         this.setState({

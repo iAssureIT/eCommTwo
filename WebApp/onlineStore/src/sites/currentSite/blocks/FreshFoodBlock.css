@@ -19,7 +19,9 @@
     margin: 0 auto;
 }
 .freshFood  .border-choose {
-    background: url("/images/unimandai/bg-border-choose.png") repeat-x scroll center;
+    /* background: url("/images/unimandai/bg-border-choose.png") repeat-x scroll center; */
+    background-repeat: no-repeat;
+    height: 6px;
     margin: auto;
     max-width: 480px;
     text-align: center;
@@ -30,6 +32,7 @@
     width: 70px;
     text-align: center;
     background: #fff;
+    margin-top: -10px;
 }
 .freshFood{
     background: #fff !important;

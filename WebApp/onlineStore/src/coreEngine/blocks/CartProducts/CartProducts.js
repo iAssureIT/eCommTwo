@@ -350,7 +350,7 @@ class CartProducts extends Component{
                                                     
                                                     <tr>
                                                         <td>Discount</td>
-                                                        <td className="textAlignRight saving">&nbsp;- <i className={"fa fa-inr"}></i> {this.props.recentCartData[0].discount} </td>
+                                                        <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >0 ?<span> - <i className={"fa fa-inr"}></i></span> : null} {this.props.recentCartData[0].discount} </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Order Total</td>
