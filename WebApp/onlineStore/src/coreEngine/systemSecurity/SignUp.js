@@ -47,7 +47,6 @@ class SignUp extends Component {
 		console.log("process.env.REACT_APP_PROJECT_NAME=========:", process.env.REACT_APP_PROJECT_NAME);
 
 
-
 	}
 	componentWillMount() {
 
@@ -194,20 +193,21 @@ class SignUp extends Component {
 														// console.log("Port======", port);
 														var previousUrl_split = previousUrl.split(port);
 													}
-													swal('Congratulations! You have been successfully Login, Now you can place your order.');
+																										
 													localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
 													localStorage.setItem("roles", response.data.roles);
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
-													// console.log("token:",response.data.token);
+													swal('Congratulations! You have been successfully Login, Now you can place your order.');
+													window.location.reload();
+													
 													if (previousUrl === "/") {
 														this.props.history.push("/");
-													} else {
-														// this.props.history.push("/");
+													} else {														
 														this.props.history.push(previousUrl_split[1]);
 													}
-												} else {
+												} else {													
 													localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
@@ -215,6 +215,7 @@ class SignUp extends Component {
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
 													this.props.history.push("/");
 													swal('Congratulations! You have been successfully Login, Now you can place your order.');
+													window.location.reload();
 												}
 											}
 

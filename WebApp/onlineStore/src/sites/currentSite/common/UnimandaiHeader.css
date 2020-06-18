@@ -210,7 +210,7 @@ ul.main-nav > li:hover {
     z-index: 1000;
     display: none;
     float: left;
-    min-width: 160px;
+    min-width: 200px;
     padding: 0px 0px !important;
     /* margin: 2px 0 0; */
     font-size: 14px;

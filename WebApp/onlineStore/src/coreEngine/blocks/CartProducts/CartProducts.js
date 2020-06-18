@@ -280,7 +280,7 @@ class CartProducts extends Component{
                                                                 }
                                                                 <div>
                                                                     {data.productDetail.color ? <span className="cartColor">Color : <span style={{backgroundColor : data.productDetail.color, padding: '0px 5px'}}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span> : null}
-                                                                    {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size}</span>: null}
+                                                                    {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp;{data.productDetail.unit}</span>: null}
                                                                 </div>
                                                                     <button productid={data.productDetail._id} id={data._id} onClick={this.moveWishlist.bind(this)} className="btn moveWish">Move to Wishlist</button>
                                                                 </td>
@@ -350,7 +350,7 @@ class CartProducts extends Component{
                                                     
                                                     <tr>
                                                         <td>Discount</td>
-                                                        <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >0 ?<span> - <i className={"fa fa-inr"}></i></span> : null} {this.props.recentCartData[0].discount} </td>
+                                                        <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >0 ?<span> - <i className={"fa fa-inr"}></i></span> : null} 0.00</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Order Total</td>

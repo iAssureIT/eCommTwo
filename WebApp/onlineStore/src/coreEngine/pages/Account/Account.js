@@ -6,6 +6,7 @@ import SmallBanner          from '../../blocks/SmallBanner/SmallBanner.js';
 import Sidebar              from '../../common/Sidebar/Sidebar.js';
 import Loader               from "../../common/loader/Loader.js";
 import "../../../sites/currentSite/pages/Account.css";
+import AccImg from '../../../sites/currentSite/images/my_account.png';
 
 class Account extends Component{
     constructor(props) {
@@ -14,7 +15,7 @@ class Account extends Component{
             bannerData : {
                 title : "ACCOUNT DASHBOARD",
                 breadcrumb : 'Account Dashboard',
-                backgroungImage : '/images/my_account.png',
+                backgroungImage : AccImg,
             },
         }
     }

@@ -660,6 +660,7 @@ class Checkout extends Component {
                 console.log('error', error);
             })
             if ($('#checkout').valid() && this.state.pincodeExists) {
+
                 axios.patch('/api/carts/address', addressValues)
                 .then(async (response) => {
                     console.log("Response After inserting address to cart===",response);
@@ -733,7 +734,6 @@ class Checkout extends Component {
     }
     saveModalAddress(event) {
         event.preventDefault();
-
         this.modalvalidation();
         var addressValues = {
             "user_ID": localStorage.getItem('user_ID'),
@@ -751,7 +751,8 @@ class Checkout extends Component {
             "latititude"  : this.state.latititude,
             "longitude"   : this.state.longitude,
         }
-        console.log("addressValues:",addressValues);
+        console.log("modal addressValues:",addressValues);
+    
         if ($('#modalAddressForm').valid()) {
 
             axios.patch('/api/ecommusers/patch/address', post)
