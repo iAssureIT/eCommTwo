@@ -158,13 +158,14 @@ class HomePage extends Component {
     return (
       <div className="container-fluid uniHomepageWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div className="row">         
-            {localStorage.getItem("preferences") === "true"
+          <div className="row">    
+          <AskPincode />       
+            {/* {localStorage.getItem("preferences") === "true"
               ?
                 <AskPincode />               
               :
                 null
-            }
+            } */}
             <EcommerceBanner_Unimandai/>
             <HomePageBanner2 />
             <FreshFoodBlock />
