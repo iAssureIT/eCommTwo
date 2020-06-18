@@ -25,10 +25,10 @@ export default class RawMaterialStockReport extends React.Component {
 						            apply  : false,
 						           },
 		             "tableHeading"     : {
-		                date            : 'Date',
+						Date            : 'Date',
+						ItemCode 		: "Item Code",
 		        		ProductCode     : "Product Code",
-		        		ItemCode 		: "Item Code",
-		        		productName     : "Product Name",
+		        		ProductName     : "Product Name",
 						OpeningStock    : 'Opening Stock',
 		                StockAddedToday : 'Stock Added Today',
 		                TotalStock      : 'Total Stock',
@@ -100,57 +100,49 @@ export default class RawMaterialStockReport extends React.Component {
         });
     }
 	getData(startRange, limitRange){ 
-		var dateToSearch=this.state.serchByDate;
-		console.log("dateToSearch", moment(dateToSearch).format("YYYY-MM-DD"));
-	 axios
-      .get('/api/purchaseentry/get/datewisepurchase/'+this.state.serchByDate)
-      .then((response)=>{
-        console.log("list===>",response.data);
-        /*this.setState({
-          
-          tableData : response.data,
-        });*/
-        var  tableData = response.data ;
-        console.log("tableData",tableData);
- 
-		/*return{  tableData: {
-						fullName        : 'Date',
-		        		city       		: "Product Code",
-		        		company 		: "Item Code",
-		        		role 			: "Product Name",
-						email        	: 'Opening Stock',
-						
-		                status        	: 'Stock Added Today',
-		                TotalStock      : 'Total Stock', 
-		                }  
-			}*/
-			var tableData = tableData.map((a, i) => {
-					return {
-						_id                  :a._id,
-						date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
-						ProductCode 		: a.ProductCode ? a.ProductCode : "" ,
-						ItemCode 			: a.ItemCode ? a.ItemCode : "" ,
-						productName 		: a.productName,
-						OpeningStock 		: a.OpeningStock ? a.OpeningStock : "" ,
-						StockAddedToday 	: "",
-						TotalStock 			: "" ,
-						
-					/*	purchaseStaff		:
-						purchaseLocation 	:
-						quantity 			:
-						amount 				:
-						Units 				:*/
-					}
-				})
-			this.setState({
-             
-              tableData 		: tableData,          
-            })
-            })
-      .catch((error)=>{
-         console.log("error = ", error);              
-      }); 
-		
+	var dateToSearch=this.state.serchByDate;
+	var filterData = {};
+	filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
+	// axios
+	// .post('/api/purchaseentry/post/datewisepurchase/',filterData)
+	// .then((response)=>{
+	// 	console.log("list===>",response.data);
+	// 	var  tableData = response.data ;
+	// 		var tableData = tableData.map((a, i) => {
+	// 				return {
+	// 					_id                  :a._id,
+	// 					Date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
+	// 					ItemCode 		    : a.itemCode ? a.itemCode : "" ,
+	// 					ProductCode 		: a.productCode ,
+	// 					ProductName 		: a.productName,
+	// 					OpeningStock        : a.openingStock ? a.openingStock : "",
+	// 					StockAddedToday     : a.quantity ? a.quantity : "",
+	// 					TotalStock 	        : a.quantity ? a.quantity : "",
+	// 				}
+	// 		});
+	
+	// 		let totalAmount = tableData.reduce(function(prev, current) {
+	// 			console.log("current supply",current);
+	// 				// return prev + +current.TotalAmount
+	// 		}, 0);
+
+	// 		this.setState({ 
+	// 		   tableData 		: tableData,  
+	// 		}) 
+	// 	})
+	// .catch((error)=>{
+	// 	console.log("error = ", error);              
+	// }); 
+
+	axios
+	.get('/api/purchaseentry/get/get_report/',filterData)
+    .then((response)=>{
+		console.log("res",response)
+	})
+	.catch((error)=>{
+			console.log("error = ", error);              
+		});
+	
     }
     getSearchText(searchText, startRange, limitRange){
 

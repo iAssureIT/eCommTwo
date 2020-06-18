@@ -112,28 +112,34 @@ exports.update_PurchaseEntry = (req,res,next)=>{
 exports.get_datewise_purchaceEntry = (req, res, next)=>{
     console.log("req body = ",req.body);
     const purchaseDate = req.body.purchaseDate;
-    console.log("purchaseDate",purchaseDate);
-    /*const monyr     = monthyear.split("-");
-    const year      = monyr[0];;
-    const month     = monyr[1];
-
-    const numberOfDaysInMonth = new Date(year,month,0).getDate();
-    const startDate = year+"-"+month+"-"+"01";
-    console.log("startDate--",startDate);
-    const endDate   = year+"-"+month+"-"+numberOfDaysInMonth;
-    console.log("endDate--",endDate);*/
     var selector = {};
-    if(req.body.purchaseNumber != "Select Purchase Number" && req.body.productName != "Select Product"){
+
+    // if(typeof(req.body.purchaseNumber)  != "undefined" && typeof(req.body.productName) != "undefined"){
+    //     if(req.body.purchaseNumber != "Select Purchase Number" &&  req.body.productName != "Select Product"){
+    //         selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
+    //     }else{
+    //         if(req.body.purchaseNumber != "Select Purchase Number"){
+    //             selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber};
+    //         }else if(req.body.productName != "Select Product"){
+    //             selector ={"purchaseDate":req.body.purchaseDate,"productName":req.body.productName};
+    //         }
+    //     }
+    // }else{
+    //     selector ={"purchaseDate":req.body.purchaseDate};
+    // }
+
+    if(typeof(req.body.purchaseNumber) != "undefined" && typeof(req.body.productName) != "undefined"){
         selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
     }else{
-        if(req.body.purchaseNumber != "Select Purchase Number"){
+        if(typeof(req.body.purchaseNumber) != "undefined"){
             selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber};
-        }else if(req.body.productName != "Select Product"){
+        }else if(typeof(req.body.productName) != "undefined"){
             selector ={"purchaseDate":req.body.purchaseDate,"productName":req.body.productName};
         }else{
             selector ={"purchaseDate":req.body.purchaseDate};
         }
     }
+
     PurchaseEntry.find(selector)
     .then(data=>{
        console.log("data----=",data);
@@ -214,6 +220,8 @@ exports.get_total_inward = (req,res,next) => {
             error: err
         });
     }); 
+
+
 
 
  //       { $group: { _id : null, total: { $sum: "$quantity" }}},

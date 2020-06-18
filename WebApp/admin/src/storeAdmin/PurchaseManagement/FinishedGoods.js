@@ -62,6 +62,15 @@ export default class FinishedGoods extends React.Component {
 		var editId = this.props.match.params.purchaseId;
 		this.getData();
 		this.getproducts();
+		$.validator.addMethod("validDate", function(value, element) {
+			return !isNaN((new Date(value)).getTime());
+			//return this.optional(element) || moment(value,"MM/DD/YYYY").isValid();
+		}, "Please enter a valid date in the format MM/DD/YYYY");
+
+		$.validator.addMethod("noSpace", function(value, element) { 
+			return value == '' || value.trim().length != 0;
+		}, "No space please and don't leave it empty");
+
 		jQuery.validator.setDefaults({
 			debug: true,
 			success: "valid"
@@ -74,27 +83,35 @@ export default class FinishedGoods extends React.Component {
 			  },
 			  productName: {
 				required: true,
+				noSpace:true
 			  },
 			  ItemCode: {
-				required: true,				
+				required: true,	
+				noSpace:true			
 			  },
 			  PackageWeight: {
 				required: true,
+				noSpace:true
 			  },
 			  Unit:{
 				required: true,
+				noSpace:true
 			  },
 			  Quantity:{
-				required:true
+				required:true,
+				noSpace:true
 			  },
 			  outwardFromRaw:{
-				required:true 
+				required:true,
+				noSpace:true
 			  },
 			  weight:{
-				required:true 
+				required:true,
+				noSpace:true
 			  },
 			  paidBy:{
-				required:true 
+				required:true ,
+				noSpace:true
 			  }
 			},
 			errorPlacement: function (error, element) {

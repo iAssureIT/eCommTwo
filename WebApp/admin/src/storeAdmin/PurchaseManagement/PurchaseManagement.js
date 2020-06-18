@@ -76,39 +76,58 @@ export default class PurchaseManagement extends React.Component {
         console.log('ven', editId);
 		this.getData();
 		this.getPurNumberList();
+
+		$.validator.addMethod("noSpace", function(value, element) { 
+			return value == '' || value.trim().length != 0;
+		  }, "No space please and don't leave it empty");
+
+		$.validator.addMethod("validDate", function(value, element) {
+			return !isNaN((new Date(value)).getTime());
+			//return this.optional(element) || moment(value,"MM/DD/YYYY").isValid();
+		}, "Please enter a valid date in the format MM/DD/YYYY");
+
 		jQuery.validator.setDefaults({
 			debug: true,
 			success: "valid"
-		  });
+		});
 	  
 		  $("#addNewPurchaseOrder").validate({
 			rules: {
 			  purchaseDate: {
 				required: true,
+				validDate:true
 			  },
 			  purchaseLocation: {
 				required: true,
+				noSpace: true
 			  },
 			  purchaseNumber: {
-				required: true,				
+				required: true,	
+				noSpace: true			
 			  },
 			  Details: {
 				required: true,
+				noSpace: true
 			  },
 			  purchaseStaff:{
 				required: true,
+				noSpace: true
 			  },
 			  product:{
-				  required:true
+				  required:true,
+				  noSpace: true
 			  },
 			  unitRate:{
-				  required:true
+				  required:true,
+				  noSpace: true
 			  },
 			  quantity:{
-				  required:true
+				  required:true,
+				  noSpace: true
 			  },
 			  amount:{
-				  required:true
+				  required:true,
+				  noSpace: true
 			  }
 
 			},
@@ -181,34 +200,23 @@ export default class PurchaseManagement extends React.Component {
 		var dateToSearch=this.state.serchByDate;
 		console.log("dateToSearch", moment(dateToSearch).format("YYYY-MM-DD"));
 		var filterData = this.state.filterData;
+		if(this.state.selectedPurchaseNum != "Select Purchase Number"){
+			filterData.purchaseNumber = this.state.selectedPurchaseNum;
+		}
+
+		if(this.state.selectedProductName != "Select Product"){
+			filterData.productName = this.state.selectedProductName;
+		}
+
 		filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
-		filterData.purchaseNumber = this.state.selectedPurchaseNum;
-		filterData.productName = this.state.selectedProductName;
 
 		console.log("Selector Value = ",this.state.filterData);
-
 		axios
 		.post('/api/purchaseentry/post/datewisepurchase/',filterData)
 		.then((response)=>{
 			console.log("list===>",response.data);
-			/*this.setState({
-			
-			tableData : response.data,
-			});*/
 			var  tableData = response.data ;
 			console.log("Get tableData",tableData);
-	
-			/*return{  tableData: {
-							fullName        : 'Date',
-							city       		: "Product Code",
-							company 		: "Item Code",
-							role 			: "Product Name",
-							email        	: 'Opening Stock',
-							
-							status        	: 'Stock Added Today',
-							TotalStock      : 'Total Stock', 
-							}  
-				}*/
 				var tableData = tableData.map((a, i) => {
 						return {
 							_id                  :a._id,
@@ -479,7 +487,7 @@ export default class PurchaseManagement extends React.Component {
 										<label >Purchase Date</label>
 										<input type="Date"  className="form-control"  value={ this.state.purchaseDate} name="purchaseDate" refs="purchaseDate" onChange={this.handleChange.bind(this)} id="purchaseDate"/>
 									</div>
-									<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Supplier</label>
 										<input list="purchaseLocation" type="text" refs="purchaseLocation" className="form-control"    placeholder="Select Supplier" value={this.state.purchaseLocation}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct1.bind(this)} name="purchaseLocation" />
 	    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
@@ -556,7 +564,7 @@ export default class PurchaseManagement extends React.Component {
 						                           <div className="input-group-addon inputIcon">
 						                           <i class="fa fa-rupee"></i>
 						                         </div> 
-						                         <input type="number" placeholder="1234" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate"/>
+						                         <input type="number" placeholder="1234" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1"/>
 					                         </div>     
 					                      </div>  
                    					     </div>
@@ -567,7 +575,7 @@ export default class PurchaseManagement extends React.Component {
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Quantity</label>
 										<div className="quantityDiv">
-											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity"/>
+											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1"/>
 											<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
 												<option selected={true} disabled={true}>-- Select --</option>
 											  	<option value="Kg">Kg</option>
@@ -584,7 +592,7 @@ export default class PurchaseManagement extends React.Component {
 					                           <div className="input-group-addon inputIcon">
 					                           <i class="fa fa-rupee"></i>
 					                         </div> 
-					                         <input type="number" placeholder="12345678" className="form-control new_inputbx1" value={ this.state.amount} name="amount" refs="amount" onChange={this.handleChange.bind(this)} id="amount"/>
+					                         <input type="number" placeholder="12345678" className="form-control new_inputbx1" value={ this.state.amount} name="amount" refs="amount" onChange={this.handleChange.bind(this)} id="amount" min="1"/>
 				                         </div>     
 				                       </div>  
                    					</div>

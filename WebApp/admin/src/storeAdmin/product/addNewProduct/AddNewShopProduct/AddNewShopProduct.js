@@ -114,12 +114,13 @@ class AddNewShopProduct extends Component {
     }, "No space please and don't leave it empty");
     jQuery.validator.setDefaults({
       debug: true,
-      success: "valid"
+      success: "valid",
     });
 
     $("#addNewShopProduct").validate({
-      rules: {
+      ignore: [],         
 
+      rules: {
         section: {
           required: true,
           regxsection: "Select Section"
@@ -183,6 +184,12 @@ class AddNewShopProduct extends Component {
           required: true,
           valueNotEquals: "-Select-"
         },
+        editor1: {
+          required: function() 
+          {
+            //  CKEDITOR.instances.editor1.updateElement();
+          }
+          }
       },
       errorPlacement: function (error, element) {
         if (element.attr("name") === "category") {
@@ -234,6 +241,13 @@ class AddNewShopProduct extends Component {
         if (element.attr("name") === "status") {
           error.insertAfter("#status");
         }
+
+        if (element.attr("name") == "editor1") 
+        {
+         error.insertBefore("textarea#editor1");
+         } else {
+         error.insertBefore(element);
+         }
       }
     });
     this.getSectionData();
