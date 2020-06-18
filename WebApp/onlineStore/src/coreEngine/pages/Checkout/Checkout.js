@@ -600,7 +600,7 @@ class Checkout extends Component {
                 }
                 
             }else{
-                // console.log("inside else new address");
+                console.log("inside else new address");
                 addressValues = {
                     "user_ID"   : localStorage.getItem('user_ID'),
                     "name": this.state.username,
@@ -963,7 +963,8 @@ class Checkout extends Component {
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <input type="radio" value={data._id} name="checkoutAddess" required /> &nbsp;
-                                                            <span className="checkoutADDCss"><b>{data.name}</b> <br/>{data.addressLine2}, {data.addressLine1}, 
+                                                            <span className="checkoutADDCss"><b>{data.name}</b> <br/>
+                                                            {data.addressLine2}, {data.addressLine1}, 
                                                             Pincode - {data.pincode}. <br/>
                                                             Email: {data.email} <br/>Mobile: {data.mobileNumber} <br/><br/></span> 
                                                         </div>

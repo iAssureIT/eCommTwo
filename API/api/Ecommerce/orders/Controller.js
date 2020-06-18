@@ -32,7 +32,7 @@ exports.insert_orders = (req,res,next)=>{
   .exec()
   .then(data=>{
     console.log("Inside user find",data);
-    var adminPreference = Adminpreference.findOne();
+    // var adminPreference = Adminpreference.findOne();
     // console.log("adminPreference data====",adminPreference.body);
     Adminpreference.findOne()
     .then(preferenceData =>{

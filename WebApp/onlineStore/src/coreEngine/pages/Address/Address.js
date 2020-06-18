@@ -367,6 +367,7 @@ class Address extends Component {
             "latitude"          : this.state.latitude,
             "longitude"         : this.state.longitude,
         }
+        console.log("formValues:",formValues);
         if(deliveryAddressID){
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
                 console.log('if form deliveryAddressID', formValues);
