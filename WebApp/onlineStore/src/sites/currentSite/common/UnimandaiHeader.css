@@ -203,10 +203,10 @@ ul.main-nav > li:hover {
 .hover-menu .acc{
     text-decoration: none !important;
 }
-.list-menu{
+.list-menu {
     position: absolute;
     top: 100%;
-    left: 700px !important;
+    /* left: 700px !important; */
     z-index: 1000;
     display: none;
     float: left;
@@ -215,7 +215,7 @@ ul.main-nav > li:hover {
     /* margin: 2px 0 0; */
     font-size: 14px;
     text-align: left;
-    margin-top: 34px !important;
+    margin-top: -6px !important;
     list-style: none;
     background-color: #fff;
     background-clip: padding-box;
@@ -364,4 +364,7 @@ button.button_search {
 .uniHomepageWrapper{
     padding-left: 0px;
     padding-right: 0px;
+}
+.searchBox{
+    margin-top: -7px;
 }

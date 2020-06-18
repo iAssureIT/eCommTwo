@@ -396,17 +396,17 @@ loginPage(event){
                             <p><img src={iconPhoneHeader} alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
                         </div>
                          <div className="col-lg-8 col-md-8 NOpadding">
-                              <div className="col-lg-12 col-md-12">
+                              <div className="col-lg-12 col-md-12 searchBox">
                                   <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
 						                      <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
                               </div> 
                           </div>
-                        <div className="float-right align-right">
+                        <div className="col-lg-2 float-right">
                             <div className="hover-menu">
                             {user_ID 
                             ?    
                                 <li className="dropdown">
-                                    <a className="acc" href="/account" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                    <a className="acc" href="/account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
                                     <ul className="col-lg-3 dropdown-menu list-menu">                                        
                                         <li className="col-lg-12 NOpadding">
                                             <a href="/">
