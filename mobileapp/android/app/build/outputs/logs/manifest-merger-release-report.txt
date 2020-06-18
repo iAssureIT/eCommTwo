@@ -1,0 +1,269 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+MERGED from [:react-native-config] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-config/android/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-11:12
+MERGED from [:@react-native-community_async-storage] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/@react-native-community/async-storage/android/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-vector-icons] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-11:12
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-17:12
+MERGED from [:react-native-geolocation-service] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-geolocation-service/android/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-gesture-handler] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-11:12
+MERGED from [:react-native-reanimated] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-reanimated/android/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-11:12
+MERGED from [:react-native-splash-screen] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-splash-screen/android/build/intermediates/library_manifest/release/AndroidManifest.xml:2:1-14:12
+MERGED from [com.facebook.react:react-native:0.61.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a56022d909a61ef8e066299b06a2dbcb/AndroidManifest.xml:2:1-13:12
+MERGED from [androidx.appcompat:appcompat:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02] /Users/omkar/.gradle/caches/transforms-2/files-2.1/25742fc1826ebbba6a7bbee462036259/AndroidManifest.xml:17:1-24:12
+MERGED from [org.webkit:android-jsc:r245459] /Users/omkar/.gradle/caches/transforms-2/files-2.1/12e00bc8cfa2bc939b62e72f4ee36f92/AndroidManifest.xml:2:1-11:12
+MERGED from [com.facebook.fresco:fresco:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a5d07096ea9f2c9f1a36bcdc4e45ecd8/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/63083762de20f36604e3e867397d75ae/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:drawee:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/3c7e28c48b7969a54fbb99c396ccc91c/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:nativeimagefilters:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bc07cc97b3d1b2048083caf00ec2a79b/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:imagepipeline:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7429ad936c35174248cb29add5beba55/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:nativeimagetranscoder:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0b7ef7611c46ea29f6cc6aab1cdda8fc/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.fresco:imagepipeline-base:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/d2d10bff1db6d79ae626bc7cf7954006/AndroidManifest.xml:2:1-9:12
+MERGED from [com.facebook.soloader:soloader:0.6.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6bc4b0b97228889417deb4f016bcf1e/AndroidManifest.xml:2:1-13:12
+MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/af34591743e8cdb809c69ea16cb41ac5/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:17:1-29:12
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0524b1fe567da2de32db6f0891c5a4da/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2665d084edba05e90a1ad9bb1e49dc3e/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.fragment:fragment:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/412c23a716b409040d82d0ef0b4e3e72/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/9419d7883cab27cead189d8f81315b46/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/804fec32c5346fcf4cd922ed3d5215e6/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.1.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bcc145625cf8a0d68788738f958791b9/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/e2e145d47d97133a408f0abc36713ea9/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/45f5c8d3570a1407e045c08448703d8f/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.0.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6ec2a8ce7411173e1a5c88eafc1777c/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/71ea735e1773f17666cd3373bcf684b4/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/80c4f07f479a4d42286f80340ea68bc9/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.customview:customview:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/3f430140319b9c9f45e2be2ba573c42e/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6abf82cce1eaa56780eb55f68a31bfb/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/94af3f333a8036e2f1e467a2f1f74838/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/fdd44034ffe1c65f02abfec6b7e96721/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bed7c5faf034afca93d01c2fca053523/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/fbb831156f4c3f8db26e00965e1a1d89/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2e7fbbf4f938a817a23a8b5efd552d68/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.0.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/4ee6f375da57e398e576542e05467518/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8e67ccf156687763f7b4db136a897ebe/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b622965615e45d01be8240fd6d07d3df/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/34b4dc0ecd02fb103bc5f98a7278d4b1/AndroidManifest.xml:17:1-22:12
+MERGED from [com.facebook.fresco:fbcore:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8ccd16b5822dfd9bece322cee8937083/AndroidManifest.xml:2:1-9:12
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+	package
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:2:3-29
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:1-29:12
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:4:1-63
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:11:5-67
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:11:5-67
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:4:18-60
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:5:1-77
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:5:18-74
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:6:1-75
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:6:18-72
+application
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:7:5-27:19
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:13:5-15:19
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:13:5-15:19
+MERGED from [:react-native-splash-screen] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-splash-screen/android/build/intermediates/library_manifest/release/AndroidManifest.xml:11:5-12:19
+MERGED from [:react-native-splash-screen] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-splash-screen/android/build/intermediates/library_manifest/release/AndroidManifest.xml:11:5-12:19
+MERGED from [com.facebook.react:react-native:0.61.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a56022d909a61ef8e066299b06a2dbcb/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.react:react-native:0.61.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a56022d909a61ef8e066299b06a2dbcb/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.soloader:soloader:0.6.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6bc4b0b97228889417deb4f016bcf1e/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.soloader:soloader:0.6.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6bc4b0b97228889417deb4f016bcf1e/AndroidManifest.xml:11:5-20
+MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/af34591743e8cdb809c69ea16cb41ac5/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/af34591743e8cdb809c69ea16cb41ac5/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0524b1fe567da2de32db6f0891c5a4da/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0524b1fe567da2de32db6f0891c5a4da/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2665d084edba05e90a1ad9bb1e49dc3e/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2665d084edba05e90a1ad9bb1e49dc3e/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.core:core:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6abf82cce1eaa56780eb55f68a31bfb/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6abf82cce1eaa56780eb55f68a31bfb/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bed7c5faf034afca93d01c2fca053523/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bed7c5faf034afca93d01c2fca053523/AndroidManifest.xml:24:5-25:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6abf82cce1eaa56780eb55f68a31bfb/AndroidManifest.xml:24:18-86
+	android:label
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:10:7-39
+	android:roundIcon
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:12:7-52
+	android:icon
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:11:7-41
+	android:allowBackup
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:13:7-34
+	android:theme
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:14:7-38
+	android:usesCleartextTraffic
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:8:6-41
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:9:7-38
+activity#com.gangaexpress.MainActivity
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:16:7-25:18
+	android:label
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:18:9-41
+	android:windowSoftInputMode
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:20:9-51
+	android:configChanges
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:19:9-79
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:17:9-37
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:21:9-24:25
+action#android.intent.action.MAIN
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:22:13-65
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:22:21-62
+category#android.intent.category.LAUNCHER
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:23:13-73
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:23:23-70
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:26:7-84
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:14:9-86
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:14:9-86
+	android:name
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml:26:17-81
+uses-sdk
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+MERGED from [:react-native-config] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-config/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-config] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-config/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:@react-native-community_async-storage] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/@react-native-community/async-storage/android/build/intermediates/library_manifest/release/AndroidManifest.xml:5:5-7:41
+MERGED from [:@react-native-community_async-storage] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/@react-native-community/async-storage/android/build/intermediates/library_manifest/release/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-vector-icons] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-vector-icons] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-geolocation-service] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-geolocation-service/android/build/intermediates/library_manifest/release/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-geolocation-service] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-geolocation-service/android/build/intermediates/library_manifest/release/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-gesture-handler] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-gesture-handler] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-reanimated] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-reanimated/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-reanimated] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-reanimated/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-splash-screen] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-splash-screen/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-splash-screen] /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/node_modules/react-native-splash-screen/android/build/intermediates/library_manifest/release/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.61.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a56022d909a61ef8e066299b06a2dbcb/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.61.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a56022d909a61ef8e066299b06a2dbcb/AndroidManifest.xml:7:5-9:41
+MERGED from [androidx.appcompat:appcompat:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02] /Users/omkar/.gradle/caches/transforms-2/files-2.1/25742fc1826ebbba6a7bbee462036259/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02] /Users/omkar/.gradle/caches/transforms-2/files-2.1/25742fc1826ebbba6a7bbee462036259/AndroidManifest.xml:20:5-22:41
+MERGED from [org.webkit:android-jsc:r245459] /Users/omkar/.gradle/caches/transforms-2/files-2.1/12e00bc8cfa2bc939b62e72f4ee36f92/AndroidManifest.xml:7:5-9:41
+MERGED from [org.webkit:android-jsc:r245459] /Users/omkar/.gradle/caches/transforms-2/files-2.1/12e00bc8cfa2bc939b62e72f4ee36f92/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:fresco:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a5d07096ea9f2c9f1a36bcdc4e45ecd8/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a5d07096ea9f2c9f1a36bcdc4e45ecd8/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/63083762de20f36604e3e867397d75ae/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/63083762de20f36604e3e867397d75ae/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/3c7e28c48b7969a54fbb99c396ccc91c/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/3c7e28c48b7969a54fbb99c396ccc91c/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:nativeimagefilters:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bc07cc97b3d1b2048083caf00ec2a79b/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:nativeimagefilters:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bc07cc97b3d1b2048083caf00ec2a79b/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7429ad936c35174248cb29add5beba55/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7429ad936c35174248cb29add5beba55/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:nativeimagetranscoder:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0b7ef7611c46ea29f6cc6aab1cdda8fc/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:nativeimagetranscoder:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0b7ef7611c46ea29f6cc6aab1cdda8fc/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/d2d10bff1db6d79ae626bc7cf7954006/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/d2d10bff1db6d79ae626bc7cf7954006/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.6.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6bc4b0b97228889417deb4f016bcf1e/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.soloader:soloader:0.6.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6bc4b0b97228889417deb4f016bcf1e/AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/af34591743e8cdb809c69ea16cb41ac5/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-location:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/af34591743e8cdb809c69ea16cb41ac5/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0524b1fe567da2de32db6f0891c5a4da/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-places-placereport:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/0524b1fe567da2de32db6f0891c5a4da/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2665d084edba05e90a1ad9bb1e49dc3e/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2665d084edba05e90a1ad9bb1e49dc3e/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/412c23a716b409040d82d0ef0b4e3e72/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/412c23a716b409040d82d0ef0b4e3e72/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/9419d7883cab27cead189d8f81315b46/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/9419d7883cab27cead189d8f81315b46/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/804fec32c5346fcf4cd922ed3d5215e6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/804fec32c5346fcf4cd922ed3d5215e6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.1.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bcc145625cf8a0d68788738f958791b9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.1.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bcc145625cf8a0d68788738f958791b9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/e2e145d47d97133a408f0abc36713ea9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/e2e145d47d97133a408f0abc36713ea9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/45f5c8d3570a1407e045c08448703d8f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/45f5c8d3570a1407e045c08448703d8f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.0.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6ec2a8ce7411173e1a5c88eafc1777c/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.0.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6ec2a8ce7411173e1a5c88eafc1777c/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/71ea735e1773f17666cd3373bcf684b4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/71ea735e1773f17666cd3373bcf684b4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/80c4f07f479a4d42286f80340ea68bc9/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/80c4f07f479a4d42286f80340ea68bc9/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/3f430140319b9c9f45e2be2ba573c42e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/3f430140319b9c9f45e2be2ba573c42e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6abf82cce1eaa56780eb55f68a31bfb/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b6abf82cce1eaa56780eb55f68a31bfb/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/94af3f333a8036e2f1e467a2f1f74838/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/94af3f333a8036e2f1e467a2f1f74838/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/fdd44034ffe1c65f02abfec6b7e96721/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/fdd44034ffe1c65f02abfec6b7e96721/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bed7c5faf034afca93d01c2fca053523/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/bed7c5faf034afca93d01c2fca053523/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/fbb831156f4c3f8db26e00965e1a1d89/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/fbb831156f4c3f8db26e00965e1a1d89/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2e7fbbf4f938a817a23a8b5efd552d68/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/2e7fbbf4f938a817a23a8b5efd552d68/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.0.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/4ee6f375da57e398e576542e05467518/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0-rc01] /Users/omkar/.gradle/caches/transforms-2/files-2.1/4ee6f375da57e398e576542e05467518/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8e67ccf156687763f7b4db136a897ebe/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8e67ccf156687763f7b4db136a897ebe/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b622965615e45d01be8240fd6d07d3df/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b622965615e45d01be8240fd6d07d3df/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/34b4dc0ecd02fb103bc5f98a7278d4b1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/34b4dc0ecd02fb103bc5f98a7278d4b1/AndroidManifest.xml:20:5-44
+MERGED from [com.facebook.fresco:fbcore:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8ccd16b5822dfd9bece322cee8937083/AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8ccd16b5822dfd9bece322cee8937083/AndroidManifest.xml:5:5-7:41
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/src/main/AndroidManifest.xml
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:23:9-26:75
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:25:13-37
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:26:13-72
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/a20bf69fdc55c15463e64344ba100cc6/AndroidManifest.xml:24:13-79
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:23:9-25:69
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:25:13-66
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:24:13-58

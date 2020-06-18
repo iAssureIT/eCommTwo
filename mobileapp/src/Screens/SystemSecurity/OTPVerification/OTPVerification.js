@@ -16,6 +16,7 @@ import RootOTPVerification from './RootOTPVerification.js';
 import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/OTPVerificationStyles.js';
 import { colors, sizes }   from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import axios                      from 'axios';
+const window = Dimensions.get('window');
 
 export default class OTPVerification extends Component {
   render() {

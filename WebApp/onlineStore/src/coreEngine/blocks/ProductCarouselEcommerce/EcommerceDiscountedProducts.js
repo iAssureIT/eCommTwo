@@ -220,7 +220,7 @@ class EcommerceDiscountedProducts extends Component {
     })
   }
   componentWillReceiveProps(nextProps) {
-    // console.log('newProducts componentWillReceiveProps', nextProps.newProducts);
+    console.log('newProducts componentWillReceiveProps', nextProps.newProducts);
     this.setState({
       newProducts: nextProps.newProducts,
       type: nextProps.type
@@ -330,7 +330,8 @@ class EcommerceDiscountedProducts extends Component {
                     autoplayHoverPause={true}
                   >
                     {
-                      this.state.newProducts && this.state.newProducts.length > 0 ?
+                      this.state.newProducts && this.state.newProducts.length > 0 
+                       ?
                         this.state.newProducts.map((data, index) => {
                           var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                           if(x && x.length > 0){
@@ -340,12 +341,16 @@ class EcommerceDiscountedProducts extends Component {
                             var wishClass = '-o';
                             var tooltipMsg = 'Add To wishlist';
                           }
+                       
                           return (
-                            <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
+                            <div>
+                            {/* {
+                            data.productImage.length > 0 ? */}
+                            <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>                            
                               <a >
                                 <div className="">
-                                  <div className="card">
-                                    <div className="item-top">
+                               
+                                  <div className="card"><div className="item-top">
                                       <div className="productImg">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>
                                         {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null} 
@@ -389,7 +394,7 @@ class EcommerceDiscountedProducts extends Component {
                                                 <div className="col-lg-12 col-md-12 NOpadding">
                                                   
                                                   <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
-                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> 
+                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} /{data.unit}</span> 
                                                 </div>
                                                 :
                                                 <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
@@ -413,12 +418,16 @@ class EcommerceDiscountedProducts extends Component {
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> 
                                 </div>
                               </a>
                             </div>
+                            {/* :
+                            null
+                            } */}
+                            </div>
                           );
-                        
+                         
                         })
                         : ''
                     }

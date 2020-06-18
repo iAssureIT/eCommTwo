@@ -17,6 +17,10 @@ import com.gangaexpress.R;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 // react-native-code-push
 import com.microsoft.codepush.react.CodePush;
+// react-native-config
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+// react-native-geolocation-service
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 // react-native-reanimated
@@ -60,6 +64,8 @@ public class PackageList {
       new MainReactPackage(),
       new AsyncStoragePackage(),
       new CodePush(getResources().getString(R.string.CodePushDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
+      new ReactNativeConfigPackage(),
+      new RNFusedLocationPackage(),
       new RNGestureHandlerPackage(),
       new ReanimatedPackage(),
       new SplashScreenReactPackage(),

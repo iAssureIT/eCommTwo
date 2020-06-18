@@ -210,20 +210,25 @@ componentWillMount() {
     // }
     if (this.state.catArray.length === 0 && $('.headersearch').val() !== '') {
       var searchstr = this.refs.tableSearch.value.trim();
-      var formValues = {
-        "searchstr": searchstr,
-        "loading": true
+      if(searchstr){
+        var formValues = {
+          "searchstr": searchstr,
+          "loading": true
+        }
+        this.props.searchProductFun(formValues, this.state.searchResult);
+        axios.get("/api/products/get/search/" + searchstr)
+          .then((response) => {
+            formValues.loading = false;
+            this.setState({ searchResult: response.data }, () => {
+              this.props.searchProductFun(formValues, this.state.searchResult);
+            });
+          })
+          .catch((error) => {})
+        this.props.history.push("/searchProducts");
+      }else{
+        this.props.history.push("/");
       }
-      this.props.searchProductFun(formValues, this.state.searchResult);
-      axios.get("/api/products/get/search/" + searchstr)
-        .then((response) => {
-          formValues.loading = false;
-          this.setState({ searchResult: response.data }, () => {
-            this.props.searchProductFun(formValues, this.state.searchResult);
-          });
-        })
-        .catch((error) => {})
-      this.props.history.push("/searchProducts");
+      
     }
 
   }

@@ -16,9 +16,6 @@ import {
   Keyboard,
   AsyncStorage
 } from 'react-native';
-// import RadioButton from 'react-native-radio-button';
-// import RadioForm from 'react-native-simple-radio-button';
-// import {RadioGroup, RadioButton} from 'react-native-custom-radio-button'
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Drawer from 'react-native-drawer';
@@ -29,14 +26,14 @@ import StarRating from 'react-native-star-rating';
 import axios from "axios";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
-import Footer from '../../ScreenComponents/Footer/Footer1.js';
+import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 // import styles from './Addressstyles.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Addressstyles.js';
 import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
 import ConfirmOrderComponent from '../ConfirmOrderComponent/ConfirmOrderComponent.js';
+const window = Dimensions.get('window');
 
 export default class AddressDefaultComp extends React.Component{
   constructor(props){
@@ -46,8 +43,6 @@ export default class AddressDefaultComp extends React.Component{
       	isOpen: false,
         starCount: 2.5,
         isSelected: "",
-        isSelected:false,
-        isChecked: false,
   	  
     };
   }
@@ -175,12 +170,9 @@ componentWillReceiveProps(){
     ]);
   };
   selectedaddress(id,adddata){
-    let isChecked = !this.state.isChecked;
-    this.setState({ isChecked })
     console.log("id = ",id);
     console.log("adddata = ",adddata);
     this.setState({
-      // isChecked: true,
       addressid   : id,
       adddata : adddata,
     });
@@ -195,7 +187,18 @@ componentWillReceiveProps(){
       );
     }else{
       return (
-        <React.Fragment>
+        <Drawer
+          	ref={(ref) => this._drawer = ref}
+          	content={
+	            <Notification 
+	              	navigate          = {this.props.navigation.navigate} 
+	              	updateCount       = {()=>this.updateCount.bind(this)}  
+	              	closeControlPanel = {()=>this.closeControlPanel.bind(this)} 
+	            />
+          	}
+          	side="right"
+          	>
+          	<SideMenu disableGestures={true} openMenuOffset={300} menu={menu} isOpen={this.state.isOpen}  onChange={isOpen => this.updateMenuState(isOpen)} >
             <HeaderBar5
                 goBack={goBack}
                 headerTitle={ 'Delivery Address'}
@@ -225,28 +228,14 @@ componentWillReceiveProps(){
                     <View key={i} style={styles.addcmpchkbx}>
                         <View style={styles.addchkbx}>
                         <View style={styles.chkvw}>
-                          {/* <CheckBox
+                          <CheckBox
                               onPress={()=>this.selectedaddress(item._id,item)}
                               checkedIcon='dot-circle-o'
                               uncheckedIcon='circle-o'
                               checked={this.state.checked}
+                              textStyle={styles.chkbox}
                               containerStyle={{borderWidth:0}}
-                            />  */}
-                                <CheckBox
-                                  style={{ flex: 1, padding: 0 }}
-                                  checkBoxColor={"red"}
-                                  // onClick={this.checkboxClick}
-                                  isChecked={this.state.isChecked}
-                                  onPress={()=>this.selectedaddress(item._id,item)}
-                                />
-                            {/* <RadioButton
-                              animation={'bounceIn'}
-                              isSelected={false}
-                              outerColor ={"#80c21c"}
-                              innerColor ={"#80c21c"}
-                              onPress={()=>this.selectedaddress(item._id,item)}
-                            />  */}
-                          
+                            />
                           </View>
                           <View style={styles.nameofcontact}>
                             <Text style={styles.addname}> {item.name}</Text>
@@ -273,7 +262,7 @@ componentWillReceiveProps(){
                           </View>
                         </View>
                         <View style={styles.padhr18}>
-                          <Text style={styles.address}>{item.addressLine1}</Text> 
+                          <Text style={styles.address}> {item.addressLine1}</Text> 
                           <View style={styles.mobflx}>
                             <Text style={styles.mobileno}>Mobile:</Text>
                             <Text style={styles.mobilenum}>{item.mobileNumber}</Text>
@@ -290,7 +279,7 @@ componentWillReceiveProps(){
                       </View>
                     </View>
                   }
-                    <View style={styles.continuebtn}>
+                    <View style={styles.addcmpbtn}>
                     {
                     this.state.addressid  ?
                     <TouchableOpacity >
@@ -305,6 +294,7 @@ componentWillReceiveProps(){
                     :
                     <TouchableOpacity >
                       <Button
+                      // onPress={()=>this.props.navigation.navigate('OrderSummary',{adddata:this.state.adddata,user_id:this.state.user_id})}
                       title={"CONTINUE"}
                       buttonStyle={styles.buttondis}
                       containerStyle={styles.buttonContainer1}
@@ -317,7 +307,8 @@ componentWillReceiveProps(){
             	</ScrollView>
             	<Footer/>
             </View>
-          </React.Fragment>
+          </SideMenu>
+        </Drawer>
       );  
     }
   }

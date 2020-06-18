@@ -26,8 +26,7 @@ import StarRating from 'react-native-star-rating';
 import axios from "axios";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
-import Footer from '../../ScreenComponents/Footer/Footer1.js';
+import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 // import styles from './AccountDashboardstyles.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/AccountDashboardstyles';

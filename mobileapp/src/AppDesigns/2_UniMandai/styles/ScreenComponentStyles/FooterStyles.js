@@ -25,15 +25,13 @@ export default StyleSheet.create({
     borderTopRightRadius:25,
   },
   outerWrapper:{
-   borderWidth:1,borderColor:'#80c21c',
-   backgroundColor:'#80c21c',padding:10,
-   borderRadius:50,
+   borderWidth:1,borderColor:'#80c21c',backgroundColor:'#80c21c',padding:10,borderRadius:50,
   },
   Wrapper:{
     justifyContent:'center',backgroundColor:"#80c21c",alignSelf:"center",position:"absolute",zIndex:100,bottom:25,borderWidth:10,borderColor: '#DCDCDC',borderRadius:100,padding:5,
   },
   footerTitle:{
-    textAlign:'center',fontFamily:"Montserrat-SemiBold",fontSize:12
+    textAlign:'center',fontFamily:"Montserrat-Regular",fontSize:10
   },
   iconOuterWrapper:{
     flex:0.5,backgroundColor:'#fff',borderTopLeftRadius:25,padding:10

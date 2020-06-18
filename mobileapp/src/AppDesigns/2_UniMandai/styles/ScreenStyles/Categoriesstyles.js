@@ -59,15 +59,12 @@ export default StyleSheet.create({
   },
   buttonText1:{
     color: colors.buttonText,
-    fontFamily:"Montserrat-SemiBold",
+    fontFamily:"Montserrat-Regular",
     textTransform: 'uppercase',
     fontSize:13
   },
-  yesmodalbtn:{
-    marginTop : 15,
-  },
   addsuperparent:{
-    flex:1,backgroundColor:'#fff'
+    flex:1,backgroundColor:'#f1f1f1'
   },
   category:{
     color:'#333',textAlign:'center',marginTop:8,fontSize:13,fontFamily:"Montserrat-SemiBold",flexWrap: 'wrap'
@@ -75,33 +72,20 @@ export default StyleSheet.create({
   catimg:{
     height:80,borderRadius:5,width: 120
   },
- 
-  peroff:{
-    backgroundColor:'#666',position:'absolute',
-    bottom:"5%",borderWidth:1,padding:3,
-    borderColor:'#666',
-    borderRadius:5,color:'#fff',
-    marginLeft:10,
+  subcatimg:{
+    height:200,width:160,
   },
-  wishlisthrt:{
-    position:'absolute',
-    bottom:"5%",
-    top: 10,left:140
-    // borderWidth:1,padding:3,
-    // borderColor:'#666',
-    // borderRadius:5,color:'#fff',
-    
+  peroff:{
+    backgroundColor:'#666',position:'absolute',bottom:"5%",borderWidth:1,padding:3,borderColor:'#666',borderRadius:5,color:'#fff',marginLeft:10,backgroundColor:'#666',position:'absolute',bottom:"5%",borderWidth:1,padding:3,borderColor:'#666',borderRadius:5,color:'#fff',marginLeft:10
   },
   width160:{
-    width:180,
-    padding : 5,
-
+    width:160
   },
   proddets:{
     width:'100%',flexDirection:'row',flexWrap:'wrap',marginBottom:'15%'
   },
   nameprod:{
-    fontSize:15,fontFamily:"Montserrat-SemiBold",color:'#666'
+    fontSize:12,fontFamily:"Montserrat-SemiBold",color:'#333'
   },
   urlprod:{
     flex:1,fontSize:13,flexWrap: "wrap",fontFamily:"Montserrat-Regular",color:'#666',paddingVertical:5
@@ -110,18 +94,10 @@ export default StyleSheet.create({
     flexDirection:"row",marginTop:3
   },
   padvert10:{
-    paddingVertical:20,
-    // backgroundColor:'#fff',
-  },
-  heartwish:{
-    alignItems : "flex-end"
-    // backgroundColor:'#fff',
+    paddingVertical:10
   },
   proddisperoff:{
-    // backgroundColor:'red',
-    width:25,height:25,borderRadius:25,overflow:'hidden',
-    // alignItems: 'flex-end'
-
+    justifyContent:'center',width:25,height:25,borderRadius:25,overflow:'hidden'
   },
   subcat:{
     backgroundColor:'#fff',paddingHorizontal:15,marginBottom:'30%',marginTop:20
@@ -152,32 +128,6 @@ export default StyleSheet.create({
   },
   prodqty:{
     fontSize:13,fontFamily:"Montserrat-SemiBold",color:'#fff',marginTop:0,
-  },
-  protxt:{
-   marginTop:10,alignItems : "center",
-  },
-  prdet:{
-   marginTop:5,alignItems : "center",
-   marginBottom : 10,
-  },
-  addtocartbtn:{
-   marginBottom : 20,
-  },
-  cancelbtn:{
-    flexDirection:'row',paddingRight:10,
-    marginBottom: 20,
-
-  },
-  wishbtn:{
-    flex:0.6,
-  },
-  buttonGreen:{
-    backgroundColor: colors.buttonGreen,
-    height: 45,
-    width:"100%",
-  },
-  ordervwbtn:{
-    flex:0.4,
   },
   rupeeicn:{
     marginTop:5,marginRight:3
@@ -215,12 +165,6 @@ export default StyleSheet.create({
   mgtp3:{
     marginTop:3
   },
-  buttonGreen:{
-    backgroundColor: colors.buttonGreen,
-    height: 25,
-    marginLeft:15,
-    width:"80%",
-  },
   mgrt10:{
     marginRight:10
   },
@@ -246,27 +190,13 @@ export default StyleSheet.create({
     textDecorationLine: 'line-through',fontSize:12,fontFamily:"Montserrat-Regular",
   },
   ogprice:{
-    fontSize:16,fontFamily:"Montserrat-SemiBold",marginLeft:2,color:'#333',alignItems:'center',
+    fontSize:12,fontFamily:"Montserrat-SemiBold",marginLeft:10,color:'#333'
   },
   disprice:{
     textDecorationLine:'line-through',fontSize:12,fontFamily:"Montserrat-Regular",color:'#666',marginLeft:10
   },
   subimg:{
-    backgroundColor:"#fff",
-    width:180,
-    borderWidth:1,borderColor:'#ccc',
-    flexDirection:'row',
-  },
-  flx:{
-   flex : 1,
-  },
-  flx5:{
-   flex : 0.5,
-   borderWidth:1,borderColor:'#ccc',
-  },
-  subcatimg:{
-    height:150,width:160,
-    borderWidth:1,borderBottomColor:'#ccc',
+    backgroundColor:"#f1f1f1",width:160,borderWidth:1,borderColor:'#f1f1f1',flexDirection:'row',
   },
   noprod:{
     alignItems:'center',marginTop:'10%'

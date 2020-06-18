@@ -17,10 +17,15 @@ import {
 
 } from 'react-native';
 
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import Drawer from 'react-native-drawer';
+import { TextField } from 'react-native-material-textfield';
+import { Header, Button, Icon, SearchBar } from "react-native-elements";
+import SideMenu from 'react-native-side-menu';
+
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar3 from '../../ScreenComponents/HeaderBar3/HeaderBar3.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
-import Footer from '../../ScreenComponents/Footer/Footer1.js';
+import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 // import SubCategoryMenu from './SubCategoryMenu.js';
 // import styles from './Categoriesstyles.js';
@@ -47,6 +52,8 @@ export default class CategoriesComponent extends React.Component{
 
     };
   }
+
+
   componentDidMount(){
      const section_id = this.props.navigation.getParam('section_id','No section_id');
       // console.log("section_id Category--------------> ", section_id);
@@ -153,7 +160,18 @@ export default class CategoriesComponent extends React.Component{
       );
     }else{
       return (
-        <React.Fragment>
+        <Drawer
+          	ref={(ref) => this._drawer = ref}
+          	content={
+	            <Notification 
+	              	navigate          = {this.props.navigation.navigate} 
+	              	updateCount       = {()=>this.updateCount.bind(this)}  
+	              	closeControlPanel = {()=>this.closeControlPanel.bind(this)} 
+	            />
+          	}
+          	side="right"
+          	>
+          	<SideMenu disableGestures={true} openMenuOffset={300} menu={menu} isOpen={this.state.isOpen}  onChange={isOpen => this.updateMenuState(isOpen)} >
             <HeaderBar3 
                 goBack ={goBack}
             	  navigate={navigate}
@@ -217,7 +235,8 @@ export default class CategoriesComponent extends React.Component{
               </ScrollView>
               <Footer/>
             </View>
-          </React.Fragment>
+          </SideMenu>
+        </Drawer>
       );  
     }
   }

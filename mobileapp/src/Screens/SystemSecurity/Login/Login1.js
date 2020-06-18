@@ -21,7 +21,7 @@ export default class Login1 extends Component {
     const { navigate } = this.props.navigation;
     const { navigation } = this.props;
     return (
-      <View style={{backgroundColor : "red"}}>
+      <React.Fragment>
         <ImageBackground source={require("../../../AppDesigns/currentApp/images/Background.png")} style={styles.container} resizeMode="cover" >
           <View style={{paddingHorizontal:20}}>
               <View style={styles.loginopacity}>
@@ -43,7 +43,7 @@ export default class Login1 extends Component {
               </View>
             </View>
           </ImageBackground>
-      </View>
+      </React.Fragment>
     );
   }
 }

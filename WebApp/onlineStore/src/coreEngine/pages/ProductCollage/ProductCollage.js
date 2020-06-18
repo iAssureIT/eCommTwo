@@ -784,26 +784,36 @@ class ProductCollage extends Component {
 											<a className="test" tabindex="-2" href="/">CATEGORY<span className="caret"></span></a>
 											<ul className="dropdown-menu">
 												{
-													this.state.categoryDetails.length > 0 ?
+													this.state.categoryDetails.length > 1 ?
 														this.state.categoryDetails.map((data, index) => {
 															return (
-																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
-																	<li>
-																		<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
-																		<ul>
-																			{
-																				data.subCategory.map((subcat, subind) => {
-																					return (
-																						<li>
-																							<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
-																						</li>
-																					);
-																				})
-																			}
-
-																		</ul>
-																	</li>
-																</div>
+																
+																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
+																		<li>
+																			<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
+																			<ul>
+																				{
+																					data.subCategory.map((subcat, subind) => {
+																						return (
+																							<div>
+																	{
+																		subcat.subCategoryTitle > 1 ?
+																							<li>
+																								<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
+																							</li>
+																								: 
+																								null
+																								}
+																							</div>
+																						);
+																					})
+																				}
+	
+																			</ul>
+																		</li>
+																	</div>
+																
+		
 															);
 														})
 														:

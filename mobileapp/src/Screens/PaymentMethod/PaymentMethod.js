@@ -4,6 +4,7 @@ import {
   ScrollView,
   Text,
   View,
+  Modal,
   TouchableOpacity,
   Image,
   Alert,
@@ -11,11 +12,9 @@ import {
 import Drawer from 'react-native-drawer';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
 import SideMenu from 'react-native-side-menu';
-import Modal from "react-native-modal";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
-import Footer from '../../ScreenComponents/Footer/Footer1.js';
+import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js';
 import axios from 'axios';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/PaymentMethodStyles.js';
@@ -151,16 +150,15 @@ export default class PaymentMethod extends React.Component {
     console.log("orderData==>", orderData);
     axios.post('/api/orders/post', orderData)
       .then((result) => {
-        // console.log("a item for Result==>", result.data);
-        // Alert.alert(
-        //   "Your order is confirmed.Thank you for shopping with us.",
-        //   "",
-        //   [
-        //     { text: "OK", onPress: () => console.log("OK Pressed") }
-        //   ],
-        //   { cancelable: false }
-        // );
-        this.setState({ paymentmod: true });
+        console.log("a item for Result==>", result.data);
+        Alert.alert(
+          "Your order is confirmed.Thank you for shopping with us.",
+          "",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ],
+          { cancelable: false }
+        );
         this.props.navigation.navigate('Dashboard')
       })
       .catch((error) => {
@@ -245,34 +243,7 @@ export default class PaymentMethod extends React.Component {
                   </View>
                 </View>
               </View>
-              <Modal isVisible={this.state.paymentmod}
-                onBackdropPress={() => this.setState({ paymentmod: false })}
-                coverScreen={true}
-                hideModalContentWhileAnimating={true}
-                style={{ paddingHorizontal: '5%', zIndex: 999 }}
-                animationOutTiming={500}>
-                <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
-                  <View style={{ justifyContent: 'center', }}>
-                    <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
-                  </View>
-                  <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
-                    Your order is confirmed.Thank you for shopping with us.
-                  </Text>
-                  <View style={styles.yesmodalbtn}>
-                    <View style={styles.ordervwbtn}>
-                      <TouchableOpacity>
-                        <Button
-                          onPress={() => this.setState({ paymentmod: false })}
-                          titleStyle={styles.buttonText1}
-                          title="OK"
-                          buttonStyle={styles.buttonGreen}
-                          containerStyle={styles.buttonContainer2}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </Modal>
+
             </ScrollView>
             <Footer />
           </View>

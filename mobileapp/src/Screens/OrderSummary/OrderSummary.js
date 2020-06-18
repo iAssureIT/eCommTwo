@@ -22,12 +22,11 @@ import Drawer from 'react-native-drawer';
 import { TextField } from 'react-native-material-textfield';
 import { Header, Button, Icon, SearchBar, CheckBox } from "react-native-elements";
 import SideMenu from 'react-native-side-menu';
-import Modal from "react-native-modal";
+import StarRating from 'react-native-star-rating';
 import axios from "axios";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
-import Footer from '../../ScreenComponents/Footer/Footer1.js';
+import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 // import styles from './Addressstyles.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/OrderSummaryStyles.js';
@@ -149,6 +148,16 @@ export default class OrderSummary extends React.Component {
     ]);
   };
 
+  deleteCompetitor(id) {
+    console.log("id = ", id);
+    Meteor.call('deleteCompetitor', id, (err, res) => {
+      if (err) {
+
+      } else {
+        Alert.alert('', 'Competitor has been deleted');
+      }
+    });
+  }
   render() {
     const { navigate, goBack } = this.props.navigation;
     const menu = <Menu navigate={navigate} isOpen={this.state.isOpen} />;
@@ -160,172 +169,164 @@ export default class OrderSummary extends React.Component {
     } else {
       return (
         <React.Fragment>
-          <HeaderBar5
-            goBack={goBack}
-            headerTitle={'Order Summary'}
-            navigate={navigate}
-            toggle={() => this.toggle.bind(this)}
-            openControlPanel={() => this.openControlPanel.bind(this)}
-          />
-          <View style={styles.addsuperparent}>
-            <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" >
-              <View style={styles.padhr15}>
-                <View style={styles.addcmporder}>
-                  <View style={styles.orderaddchkbx}>
-                    <Text style={styles.addname}>{this.state.adddataname} </Text>
-                    <Text style={styles.addoffice}> {this.state.adddataaddType} </Text>
-                  </View>
-                  <View style={styles.orderpadhr18}>
-                    <Text style={styles.address}> {this.state.adddataaddressLine1}</Text>
-                    <View style={styles.mobflx}>
-                      <Text style={styles.mobileno}>Mobile:</Text>
-                      <Text style={styles.mobilenum}>{this.state.adddatamobileNumber}</Text>
+            <HeaderBar5
+              goBack={goBack}
+              headerTitle={'Order Summary'}
+              navigate={navigate}
+              toggle={() => this.toggle.bind(this)}
+              openControlPanel={() => this.openControlPanel.bind(this)}
+            />
+            <View style={styles.addsuperparent}>
+              <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" >
+                <View style={styles.padhr15}>
+                  <View style={styles.addcmporder}>
+                    <View style={styles.orderaddchkbx}>
+                      <Text style={styles.addname}>{this.state.adddataname} </Text>
+                      <Text style={styles.addoffice}> {this.state.adddataaddType} </Text>
                     </View>
-                    <View style={styles.confirmbtn}>
-                      <TouchableOpacity >
-                        <Button
-                          onPress={() => this.props.navigation.navigate('AddressDefaultComp', this.state.user_ID)}
-                          title={"Change or Add Address"}
-                          buttonStyle={styles.button1}
-                          containerStyle={styles.buttonContainer1}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.formWrapper}>
-                  <View style={styles.cartdetails}>
-                    {
-                      this.state.cartData && this.state.cartData.length > 0 ?
-                        this.state.cartData.map((item, i) => {
-                          return (
-                            <View key={i} style={styles.proddetails}>
-                              <View style={styles.flxdir}>
-                                <View style={styles.flxpd}>
-                                  <Image
-                                    style={styles.imgwdht}
-                                    source={{ uri: item.productDetail.productImage[0] }}
-                                  />
-                                </View>
-                                <View style={styles.flxmg}>
-                                  <Text style={styles.productname}>{item.productDetail.productName}</Text>
-                                  <View style={styles.productdets}>
-                                    <Icon
-                                      name="rupee"
-                                      type="font-awesome"
-                                      size={11}
-                                      color="#666"
-                                      iconStyle={styles.iconstyle}
-                                    />
-                                    <Text style={styles.proddetprice}>{item.productDetail.discountedPrice}</Text>
-                                  </View>
-                                </View>
-                              </View>
-                            </View>
-                          )
-                        })
-                        :
-                        <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
-                          <Image
-                            source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
-                          />
-                        </View>
-                    }
-                    <Text style={styles.totaldata}>Pricing Details </Text>
-                    <View style={styles.totaldetails}>
-                      <View style={styles.flxdata}>
-                        <View style={styles.flx7}>
-                          <Text style={styles.totaldata}>Total ({this.state.subtotalitems} Item(s)) </Text>
-                        </View>
-                        <View style={styles.flx3}>
-                          <View style={styles.endrow}>
-                            <Icon
-                              name="rupee"
-                              type="font-awesome"
-                              size={15}
-                              color="#666"
-                              iconStyle={styles.iconstyle}
-                            />
-                            <Text style={styles.totalpriceincart}>&nbsp;&nbsp;{this.state.totaloriginalprice}</Text>
-                          </View>
-                        </View>
+                    <View style={styles.orderpadhr18}>
+                      <Text style={styles.address}> {this.state.adddataaddressLine1}</Text>
+                      <View style={styles.mobflx}>
+                        <Text style={styles.mobileno}>Mobile:</Text>
+                        <Text style={styles.mobilenum}>{this.state.adddatamobileNumber}</Text>
                       </View>
-                      <View style={styles.orderbrdr}>
-                        <View style={styles.flx7}>
-                          <Text style={styles.totaldata}>Delivary </Text>
-                        </View>
-                        <View style={styles.flx3}>
-                          <View style={styles.endrow}>
-                            <Text style={styles.free}>&nbsp;&nbsp;Free</Text>
-                          </View>
-                        </View>
-                      </View>
-                      <View style={styles.amountpay}>
-                        <View style={styles.flx7}>
-                          <Text style={styles.totaldata}>Amount Payable </Text>
-                        </View>
-                        <View style={styles.flx3}>
-                          <View style={styles.endrow}>
-                            <Icon
-                              name="rupee"
-                              type="font-awesome"
-                              size={15}
-                              color="#666"
-                              iconStyle={styles.iconstyle}
-                            />
-                            <Text style={styles.totalpriceincart}>&nbsp;&nbsp;{this.state.totaloriginalprice}</Text>
-                          </View>
-                        </View>
-                      </View>
-                      <View style={styles.margTp20}>
+                      <View style={styles.confirmbtn}>
                         <TouchableOpacity >
                           <Button
-                            onPress={() => this.props.navigation.navigate('PaymentMethod', { cartdata: this.state.cartData, adddata: this.state.adddata, userID: this.state.user_ID })}
-                            title={"PROCEED TO BUY"}
+                            onPress={() => this.props.navigation.navigate('AddressDefaultComp', this.state.user_ID)}
+                            title={"Change or Add Address"}
                             buttonStyle={styles.button1}
-                            containerStyle={styles.buttonContainer1}
+                              containerStyle={styles.buttonContainer1}
                           />
                         </TouchableOpacity>
                       </View>
-                      <View style={{ flex: 1, marginBottom: 30 }}>
+                    </View>
+                  </View>
+                  <View style={styles.formWrapper}>
+                    <View style={styles.cartdetails}>
+                      {
+                        this.state.cartData && this.state.cartData.length > 0 ?
+                          this.state.cartData.map((item, i) => {
+                            return (
+                              <View key={i} style={styles.proddetails}>
+                                <View style={styles.flxdir}>
+                                  <View style={styles.flxpd}>
+                                    <Image
+                                      style={styles.imgwdht}
+                                      source={{ uri: item.productDetail.productImage[0] }}
+                                    />
+                                  </View>
+                                  <View style={styles.flxmg}>
+                                    <Text style={styles.productname}>{item.productDetail.productName}</Text>
+                                    <View style={styles.productdets}>
+                                      <Icon
+                                        name="rupee"
+                                        type="font-awesome"
+                                        size={11}
+                                        color="#666"
+                                        iconStyle={styles.iconstyle}
+                                      />
+                                      <Text style={styles.proddetprice}>{item.productDetail.discountedPrice}</Text>
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>
+                            )
+                          })
+                          :
+                          <View style={{ flex:1,alignItems: 'center', marginTop: '10%' }}>
+                          <Image
+                            source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
+                            />
+                        </View>
+                      }
+                      <Text style={styles.totaldata}>Pricing Details </Text>
+                      <View style={styles.totaldetails}>
+                        <View style={styles.flxdata}>
+                          <View style={styles.flx7}>
+                            <Text style={styles.totaldata}>Total ({this.state.subtotalitems} Item(s)) </Text>
+                          </View>
+                          <View style={styles.flx3}>
+                            <View style={styles.endrow}>
+                              <Icon
+                                name="rupee"
+                                type="font-awesome"
+                                size={15}
+                                color="#666"
+                                iconStyle={styles.iconstyle}
+                              />
+                              <Text style={styles.totalpriceincart}>&nbsp;&nbsp;{this.state.totaloriginalprice}</Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={styles.orderbrdr}>
+                          <View style={styles.flx7}>
+                            <Text style={styles.totaldata}>Delivary </Text>
+                          </View>
+                          <View style={styles.flx3}>
+                            <View style={styles.endrow}>
+                              <Text style={styles.free}>&nbsp;&nbsp;Free</Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={styles.amountpay}>
+                          <View style={styles.flx7}>
+                            <Text style={styles.totaldata}>Amount Payable </Text>
+                          </View>
+                          <View style={styles.flx3}>
+                            <View style={styles.endrow}>
+                              <Icon
+                                name="rupee"
+                                type="font-awesome"
+                                size={15}
+                                color="#666"
+                                iconStyle={styles.iconstyle}
+                              />
+                              <Text style={styles.totalpriceincart}>&nbsp;&nbsp;{this.state.totaloriginalprice}</Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={styles.margTp20}>
+                          <TouchableOpacity >
+                            <Button
+                              onPress={() => this.props.navigation.navigate('PaymentMethod',{cartdata:this.state.cartData,adddata:this.state.adddata,userID:this.state.user_ID})}
+                              title={"PROCEED TO BUY"}
+                              buttonStyle={styles.button1}
+                              containerStyle={styles.buttonContainer1}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                        <View style={{flex:1,marginBottom:30}}>
                         <Text style={styles.securetxt}>Safe & Secure Payments | 100% Authentic Products</Text>
+                      </View>
                       </View>
                     </View>
                   </View>
                 </View>
-              </View>
-              <Modal isVisible={this.state.removewishlistmodal}
-                onBackdropPress={() => this.setState({ removewishlistmodal: false })}
+                {/* <Modal isVisible={this.state.otheremp}
+                onBackdropPress={() => this.setState({ otheremp: false })}
                 coverScreen={true}
                 hideModalContentWhileAnimating={true}
                 style={{ paddingHorizontal: '5%', zIndex: 999 }}
                 animationOutTiming={500}>
                 <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
-                  <View style={{ justifyContent: 'center', }}>
-                    <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
-                  </View>
-                  <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
-                    Product is removed from wishlist.
-                </Text>
-                  <View style={styles.yesmodalbtn}>
-                    <View style={styles.ordervwbtn}>
-                      <TouchableOpacity>
-                        <Button
-                          onPress={() => this.setState({ removewishlistmodal: false })}
-                          titleStyle={styles.buttonText1}
-                          title="OK"
-                          buttonStyle={styles.buttonGreen}
-                          containerStyle={styles.buttonContainer2}
-                        />
+                  <View style={{ width: '100%', marginTop: 15, paddingHorizontal: '10%' }}>
+                    <View>
+                      <TouchableOpacity onPress={() => this.closeok()} >
+                        <View style={{ flex: 1, }}>
+                          <Text style={styles.selectPlan}>
+                            OK
+                        </Text>
+                        </View>
                       </TouchableOpacity>
                     </View>
                   </View>
                 </View>
-              </Modal>
-            </ScrollView>
-            <Footer />
-          </View>
-        </React.Fragment>
+              </Modal> */}
+              </ScrollView>
+              <Footer />
+            </View>
+          </React.Fragment>
       );
     }
   }

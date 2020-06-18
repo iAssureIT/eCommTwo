@@ -18,8 +18,7 @@ import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar3 from '../../ScreenComponents/HeaderBar3/HeaderBar3.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
-import Footer from '../../ScreenComponents/Footer/Footer1.js';
+import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Categoriesstyles.js';
 import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
@@ -96,7 +95,7 @@ export default class SubCategoriesComp extends React.Component {
     this.setState({ isOpen });
   }
   addtocart(productid) {
-    // console.log("productid addCart =========>", productid);
+    console.log("productid addCart =========>", productid);
     const formValues = {
       "user_ID": this.state.userId,
       "product_ID": productid,
@@ -384,6 +383,7 @@ export default class SubCategoriesComp extends React.Component {
               animationOutTiming={500}>
               <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
                 <View style={{ justifyContent: 'center', }}>
+                  {/* <Icon size={30} name='check' type='fontAwesome5' color='#fff' style={{}} /> */}
                   <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
                 </View>
                 <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
