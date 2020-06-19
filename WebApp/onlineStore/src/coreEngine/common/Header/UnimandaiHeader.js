@@ -490,9 +490,9 @@ loginPage(event){
 
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
-                    <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
-                    <img src={searchModalImg} className="search"></img>                      
-                    </div>
+                    {/* <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
+                      <img src={searchModalImg} className="search"></img>                      
+                    </div> */}
 
                    {/* Search modal */}
                     {/* <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">

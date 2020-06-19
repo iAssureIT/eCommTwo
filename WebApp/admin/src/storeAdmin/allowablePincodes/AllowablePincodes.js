@@ -29,11 +29,11 @@ class AllowablePincodes extends Component {
         axios.get("/api/allowablepincode/get")
 			.then((response) => {
 				if(response){
-					// console.log("allowable pincodes list:",response);
+					console.log("allowable pincodes list:",response);
 					this.setState({
 						allowablePincodeList  : response.data,												
                     });
-                    console.log("list=======",this.state.allowablePincodeList);
+                    console.log("get allowablePincodeList list=======",this.state.allowablePincodeList);
                 }
             })			
 			.catch((error) => {
@@ -47,14 +47,14 @@ class AllowablePincodes extends Component {
 
 			.then((response) => {
 				if(response){
-                    console.log("franchise list:",response);
+                    console.log("get franchise list response:",response);
                     this.getAllowablePincode();
 					this.setState({
 						franchiseList  : response.data,						
 						
                     });
                     var finalList = [];
-                    console.log("list length:",this.state.franchiseList.length);
+                    console.log("franchise list length:",this.state.franchiseList.length);
                     for(let i=0;i<this.state.franchiseList.length;i++){
                         console.log("inside for loop");
                         finalList[i] = {
@@ -64,7 +64,7 @@ class AllowablePincodes extends Component {
                             "PincodesID"        : this.state.allowablePincodeList[i]._id
                         }
                     }
-                    console.log("finalList:" ,finalList);
+                    console.log("final finalList:" ,finalList);
                 }
             })            			
 			.catch((error) => {
@@ -143,11 +143,10 @@ class AllowablePincodes extends Component {
                                                                             <td>{index +1}</td>
                                                                             <td>
                                                                                 {data.companyName},<br/>
-                                                                                {data.locations[0].locationType !== undefined ? data.locations[0].locationType : null},&nbsp;{data.locations[0].addressLine1 !== undefined ? data.locations[0].addressLine1 : null},<br/>
+                                                                                {data.locations[0] ? data.locations[0].locationType : null},&nbsp;{data.locations[0] ? data.locations[0].addressLine1 : null},<br/>
                                                                                 {data.locations.state}
                                                                             </td>
-                                                                            <td>                                                              
-                                                                                {/* <input type="text" id="pincodes" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincodes}  ref="pincodes" name="pincodes" onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.." required/> */}
+                                                                            <td> 
                                                                                 <input type="text" id="pincodes" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
                                                                                  ref="pincodes" name="pincodes" defaultValue={Array.isArray(this.state.allowablePincodeList.length>0) ? Array.isArray(this.state.allowablePincodeList[index].allowablePincodes):null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
                                                                             </td>                                                                

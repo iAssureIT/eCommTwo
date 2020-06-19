@@ -597,8 +597,7 @@ class Checkout extends Component {
                     "country"       : this.country,
                     "latitude"      : this.state.latitude,
                     "longitude"     : this.state.longitude,
-                }
-                
+                }                
             }else{
                 console.log("inside else new address");
                 addressValues = {

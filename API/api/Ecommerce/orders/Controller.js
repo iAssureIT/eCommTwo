@@ -8,7 +8,7 @@ const ReturnedProducts      = require('../returnedProducts/Model');
 const Products              = require('../products/Model');
 const Adminpreference       = require('../adminPreference/Model');
 const Allowablepincode      = require('../allowablePincodes/Model');
-const EntityMaster          = require('../../coreAdmin/entityMaster/ModelEntityMaster.js');
+const Entitymaster          = require('../../coreAdmin/entityMaster/ModelEntityMaster.js');
 var   request               = require('request-promise');  
 const gloabalVariable 	    = require('../../../nodemon');
 const moment                = require('moment-timezone');
@@ -31,9 +31,7 @@ exports.insert_orders = (req,res,next)=>{
   User.findOne({"_id":req.body.user_ID})
   .exec()
   .then(data=>{
-    console.log("Inside user find",data);
-    // var adminPreference = Adminpreference.findOne();
-    // console.log("adminPreference data====",adminPreference.body);
+    console.log("Inside user find",data);    
     Adminpreference.findOne()
     .then(preferenceData =>{
         if(preferenceData.websiteModel === "FranchiseModel"){
@@ -63,20 +61,18 @@ exports.insert_orders = (req,res,next)=>{
                         var smDis = -1;
                         var distanceList = [];
                         for(var franchiseObjects of matchedFranchise){
-                            console.log("franchiseObjects.franchiseID:",franchiseObjects.franchiseID);
-                            // Entitymaster.findOne(_id : franchiseObjects.franchiseID).exec();
-                            EntityMaster.findOne({_id : franchiseObjects.franchiseID})
+                            console.log("franchiseObjects.franchiseID:",franchiseObjects.franchiseID);                           
+                            Entitymaster.findOne({_id : franchiseObjects.franchiseID})
                             .then(franchiseData =>{
+                              console.log("Franchise data:=======",franchiseData);
                               if(franchiseData){
                                 var Flatitude  = franchiseData.locations[0].latitude;
                                 var Flongitude = franchiseData.locations[0].longitude;
-                                console.log("franchiseData===",franchiseData.location[0].latitude );
-                                // matchedFranchise.push({
-                                //                         "franchiseID" :franchiseID,
-                                //                         "latitude"    : latitude,
-                                //                         "longitude"   : longitude
-                                //                       });  
-                                var distance = distance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddres.longitude,'K');
+                                console.log("franchiseData===",franchiseData.locations[0].latitude );                                
+                                var lat = 18.6241996;
+                                var lng = 73.8602152; 
+                                // var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddres.longitude,'K');
+                                var distance = findDistance(Flatitude,Flongitude,lat,lng,'K');
                                 // distanceList.push(distance);
                                 if(smDis == -1){
                                   smDis = distance;
@@ -84,12 +80,12 @@ exports.insert_orders = (req,res,next)=>{
                                 }else if(distance < smDis){
                                   smDis = distance;
                                   minDisFranchise = franchiseObjects;
-                                  console.log("franchiseObjects:",franchiseObjects);
+                                  console.log("minDisFranchise Obj ====:",franchiseObjects);
                                 }
                               }
                             })                           
                           }
-                          console.log("minDisFranchise ID=",minDisFranchise);
+                          console.log("minDisFranchise ID=",minDisFranchise.franchiseID);
                           var allocatedToFranchise = minDisFranchise.franchiseID;
                       }else{
                         // console.log("Min franchise Object======",matchedFranchise[0].franchiseID);                        
@@ -570,7 +566,8 @@ exports.insert_orders = (req,res,next)=>{
       });
   });
 
-  function distance(lat1, lon1, lat2, lon2, unit) {
+  function findDistance(lat1, lon1, lat2, lon2, unit) {
+    console.log("inside findDistance");
     if ((lat1 == lat2) && (lon1 == lon2)) {
       return 0;
     }
@@ -588,6 +585,7 @@ exports.insert_orders = (req,res,next)=>{
       dist = dist * 60 * 1.1515;
       if (unit=="K") { dist = dist * 1.609344 }
       if (unit=="N") { dist = dist * 0.8684 }
+      console.log("distance========",dist);
       return dist;
     }
   }
