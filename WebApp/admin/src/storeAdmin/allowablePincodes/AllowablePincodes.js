@@ -17,23 +17,27 @@ class AllowablePincodes extends Component {
         
     }
     componentDidMount() {
+        // this.getEntityList();
+        // this.getAllowablePincode();
+
+    }  
+    componentWillMount() {
         this.getEntityList();
         this.getAllowablePincode();
 
-    }  
-    
-    componentWillReceiveProps(nextProps) {
-        
     }
+    
     getAllowablePincode(){
         axios.get("/api/allowablepincode/get")
 			.then((response) => {
 				if(response){
-					console.log("allowable pincodes list:",response);
+					console.log("allowable pincodes list:",response.data.length);
 					this.setState({
 						allowablePincodeList  : response.data,												
                     });
-                    console.log("get allowablePincodeList list=======",this.state.allowablePincodeList);
+                    // this.state.allowablePincodeList.reverse();
+                    console.log("get allowablePincodeList list=======",this.state.allowablePincodeList);      
+                    console.log("get allowablePincodeList list=======",this.state.allowablePincodeList.length);              
                 }
             })			
 			.catch((error) => {
@@ -50,24 +54,41 @@ class AllowablePincodes extends Component {
                     console.log("get franchise list response:",response);
                     this.getAllowablePincode();
 					this.setState({
-						franchiseList  : response.data,						
+						franchiseList  : response.data,	
 						
                     });
+                    // this.state.franchiseList.reverse();
                     var finalList = [];
                     console.log("franchise list length:",this.state.franchiseList.length);
-                    for(let i=0;i<this.state.franchiseList.length;i++){
-                        console.log("inside for loop");
-                        finalList[i] = {
-                            "franchiseID"       : this.state.franchiseList[i]._id,
-                            "companyID"         : this.state.franchiseList[i].companyID,
-                            "allowablePincodes" : this.state.allowablePincodeList[i].allowablePincodes,
-                            "PincodesID"        : this.state.allowablePincodeList[i]._id
+                    if(this.state.franchiseList){
+                        for(let i=0;i<this.state.franchiseList.length;i++){
+                            console.log("inside for i loop");
+                            // console.log("pincodelist==========",this.state.allowablePincodeList[i].allowablePincodes);
+                            if(this.state.allowablePincodeList){
+                                for(let k=0;k<this.state.allowablePincodeList.length;k++){
+                                    console.log("allowable FID:",this.state.allowablePincodeList[k].franchiseID);
+                                    console.log("Franchise FID:",this.state.franchiseList[i]._id);
+                                    if(this.state.franchiseList[i]._id === this.state.allowablePincodeList[k].franchiseID){
+                                        console.log("Inside for k loop");
+                                        finalList[i] = {
+                                            "franchiseID"       : this.state.franchiseList[i]._id,
+                                            "companyID"         : this.state.franchiseList[i].companyID,
+                                            "allowablePincodes" : this.state.allowablePincodeList[k].allowablePincodes ? this.state.allowablePincodeList[k].allowablePincodes:"",
+                                            "PincodesID"        : this.state.allowablePincodeList[k]._id ? this.state.allowablePincodeList[k]._id : "",   
+                                        }
+                                        break;
+                                    // }
+                                    }
+                                }                                
+                            }
+                            
                         }
-                    }
-                    console.log("final finalList:" ,finalList);
+                        console.log("final finalList:" ,finalList);
+                    }                    
                 }
             })            			
 			.catch((error) => {
+                console.log("error:",error);
 			})
     }
     handleChange(event) {
@@ -109,6 +130,7 @@ class AllowablePincodes extends Component {
     }
         
     render() {
+        console.log("Array.isArray(this.state.allowablePincodeList)-===",Array.isArray(this.state.allowablePincodeList));
         return (
             <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
                 <div className="row">
@@ -136,7 +158,7 @@ class AllowablePincodes extends Component {
 
                                                         </thead>
                                                         <tbody>                                                              
-                                                            {Array.isArray(this.state.franchiseList && this.state.allowablePincodeList) &&
+                                                            {Array.isArray(this.state.franchiseList) && Array.isArray(this.state.allowablePincodeList) &&
                                                                 this.state.franchiseList.map((data, index) => {
                                                                     return (
                                                                         <tr className ="pincodesRow">
@@ -147,9 +169,9 @@ class AllowablePincodes extends Component {
                                                                                 {data.locations.state}
                                                                             </td>
                                                                             <td> 
-                                                                                <input type="text" id="pincodes" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                                                 ref="pincodes" name="pincodes" defaultValue={Array.isArray(this.state.allowablePincodeList.length>0) ? Array.isArray(this.state.allowablePincodeList[index].allowablePincodes):null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
-                                                                            </td>                                                                
+                                                                                <input type="text" index id="pincodes-" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                                                 ref="pincodes" name="pincodes" defaultValue={this.state.allowablePincodeList.length>0 ? this.state.allowablePincodeList[index]? this.state.allowablePincodeList[index].allowablePincodes : null :null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
+                                                                            </td>                                                               
                                                                         </tr> 
                                                                     );
                                                                 }
