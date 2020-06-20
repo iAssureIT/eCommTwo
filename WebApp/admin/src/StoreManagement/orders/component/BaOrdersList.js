@@ -175,7 +175,7 @@ class AdminOrdersList extends Component{
                 //$('#dispatchDetails'+id).modal('hide');
                 
                     swal({
-                        title: 'Order is dispatched Successflly',
+                        title: 'Order is dispatched Successfully',
                         showConfirmButton: false
                     });
                     this.getOrders();

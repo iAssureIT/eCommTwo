@@ -15,7 +15,7 @@ class viewOrder extends Component{
                 companyInfo:[]
                 // "notificationData" :Meteor.subscribe("notificationTemplate"),
             };
-        } else{
+        }else{
             this.state = {
                 "orderData":[],
                 companyInfo:[]
@@ -77,7 +77,7 @@ class viewOrder extends Component{
           <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
             <br/>
             <br/>
-            <div className="backtoMyOrdersDiv">
+              <div className="backtoMyOrdersDiv">
                 <a href="/allorders" className="backtoMyOrders"><i class="fa fa-chevron-circle-left"></i> Back to Orders</a>
               </div>
               <h4 className="table-caption">Order Details</h4>

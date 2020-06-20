@@ -91,6 +91,7 @@ import FinishedGoods       from './storeAdmin/PurchaseManagement/FinishedGoods.j
 //=============== Purchase Management =================
 
 import Distribution       from './storeAdmin/DistributionManagement/DistributionManagement.js';
+import FranchiseDeliveryChallan    from './storeAdmin/DistributionManagement/FranchiseDeliveryChallan.js';
 
 import AdminShoppingList  from './storeAdmin/adminShoppingList/AdminShoppingList.js';
 
@@ -259,9 +260,11 @@ class Layout extends Component  {
                                                     <Route path="/raw-material-stock-report"                        exact strict component={ RawMaterialStockReport } />
                                                     <Route path="/purchase-management/:purchaseId"                  exact strict component = { PurchaseManagement }  />
                                                     <Route path="/finished-goods"                                   exact strict component={FinishedGoods} />
-                                                    <Route path="/finished-goods/:finishedGoodId"                    exact strict component={FinishedGoods} />
-                                                    <Route path="/distribution"                                    exact strict component={ Distribution } />
-                                                    <Route path="/distributiont/:purchaseId"                         exact strict component = { Distribution }  />
+                                                    <Route path="/finished-goods/:finishedGoodId"                   exact strict component={FinishedGoods} />
+                                                    <Route path="/distribution"                                     exact strict component={ Distribution } />
+                                                    <Route path="/distributiont/:purchaseId"                        exact strict component = { Distribution }  />
+                                                    <Route path="/franchise_delivery_challan/:distributionId"       exact strict component = { FranchiseDeliveryChallan }  />
+
                                                     {/* Admin shopping List AdminShoppingList*/}
                                                     <Route path="/admin-shopping-list"                              exact strict component={AdminShoppingList} />
                                                   </Switch>

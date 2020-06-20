@@ -83,6 +83,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	const PurchaseEntry       			= require("./api/Ecommerce/PurchaseManagement/routes/PurchaseEntry");
 	const FinishedGoodsEntry   			= require("./api/Ecommerce/PurchaseManagement/routes/FinishedGoodsEntry");
 	const FranchisePORoutes				= require("./api/Ecommerce/Franchise/franchisePurOrder/Routes.js");
+	const FranchiseGoods       			= require("./api/Ecommerce/distributionManagement/Routes.js");
 
 
 	const AdminPORoutes					= require("./api/Ecommerce/adminShoppingList/Routes.js");
@@ -130,6 +131,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	app.use("/api/purchaseentry", PurchaseEntry);
 	app.use("/api/finishedGoodsEntry", FinishedGoodsEntry);
 	app.use("/api/franchisepo", FranchisePORoutes);
+	app.use("/api/franchisegoods", FranchiseGoods);
 
 	app.use("/api/warehousemaster",WareHouseRoutes);
 

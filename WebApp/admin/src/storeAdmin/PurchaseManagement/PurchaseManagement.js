@@ -484,11 +484,11 @@ export default class PurchaseManagement extends React.Component {
 							 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 								<div className="row">
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Purchase Date</label>
+										<label >Purchase Date <i className="redFont">*</i></label>
 										<input type="Date"  className="form-control"  value={ this.state.purchaseDate} name="purchaseDate" refs="purchaseDate" onChange={this.handleChange.bind(this)} id="purchaseDate"/>
 									</div>
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Supplier</label>
+										<label >Supplier <i className="redFont">*</i></label>
 										<input list="purchaseLocation" type="text" refs="purchaseLocation" className="form-control"    placeholder="Select Supplier" value={this.state.purchaseLocation}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct1.bind(this)} name="purchaseLocation" />
 	    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
 										
@@ -504,15 +504,15 @@ export default class PurchaseManagement extends React.Component {
 								 </div>	
 								 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding mtop20"> 
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Purchase No</label>
+										<label >Purchase No <i className="redFont">*</i></label>
 										<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
 									</div>
 									<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
-										<label >Details</label>
+										<label >Details <i className="redFont">*</i></label>
 										<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
 									</div>
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Purchased By(Staff Name)</label>
+										<label >Purchased By(Staff Name) <i className="redFont">*</i></label>
 										<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
 									</div>
 								 </div>
@@ -538,7 +538,7 @@ export default class PurchaseManagement extends React.Component {
 */}
 										
 										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25 ">
-											<label >Select Product</label>
+											<label >Select Product <i className="redFont">*</i></label>
 											{/*<input type="text" className="form-control" id="email"/>*/}
 											<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
 		    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
@@ -559,7 +559,7 @@ export default class PurchaseManagement extends React.Component {
 										</div>
 										 <div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
 					                       <div className="">
-					                        <label className="control-label statelabel locationlabel" >Unit Rate</label>
+					                        <label className="control-label statelabel locationlabel" >Unit Rate <i className="redFont">*</i></label>
 					                          <div className="input-group inputBox-main  new_inputbx unitRateDiv" >
 						                           <div className="input-group-addon inputIcon">
 						                           <i class="fa fa-rupee"></i>
@@ -573,7 +573,7 @@ export default class PurchaseManagement extends React.Component {
 										<input type="number" placeholder="1234" className="form-control" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate"/>
 									</div>*/}
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Quantity</label>
+										<label >Quantity <i className="redFont">*</i></label>
 										<div className="quantityDiv">
 											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1"/>
 											<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
@@ -587,7 +587,7 @@ export default class PurchaseManagement extends React.Component {
 									</div>
 									 <div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
 				                       <div className="">
-				                        <label className="control-label statelabel locationlabel" >Amount</label>
+				                        <label className="control-label statelabel locationlabel" >Amount <i className="redFont">*</i></label>
 				                          <div className="input-group inputBox-main  new_inputbx amountDiv" >
 					                           <div className="input-group-addon inputIcon">
 					                           <i class="fa fa-rupee"></i>

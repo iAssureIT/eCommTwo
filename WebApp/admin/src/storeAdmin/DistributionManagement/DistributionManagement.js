@@ -10,7 +10,7 @@ export default class DistributionManagement extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
-					currentDate           : moment(new Date()).format("YYYY-MM-DD"),
+					currentDate           : '',
 					selectedFranchise  : 'Select Franchise',
 					DistributionData :[],
 					FranchiseData :[],
@@ -59,7 +59,6 @@ export default class DistributionManagement extends React.Component {
 					var franchisePurOrdersdata = franchisePurOrders.data;
 					for (var i = 0; i < franchisePurOrdersdata.length; i++) {
 						for (var j = 0; j < franchisePurOrdersdata[i].orderItems.length; j++) {
-							console.log(franchisePurOrdersdata[i].orderItems[j]);
 							franchisePurOrdersdata[i].orderItems[j].franchiseId = franchisePurOrdersdata[i].franchise_id;
 							franchisePurOrdersdata[i].orderItems[j].supply = 0;
 							DistributionData.push(franchisePurOrders.data[i].orderItems[j]);
@@ -69,31 +68,25 @@ export default class DistributionManagement extends React.Component {
 					this.setState({
 						"DistributionData" : DistributionData,
 						"FranchiseData" : FranchiseData
-					})
-					this.getFooterTotal();
-					console.log("DistributionData",DistributionData);
+					},()=>{
+						this.getFooterTotal();
+					 });
 			})
 			.catch(error=>{
 				console.log("error in getCurrentStock = ", error);
 			})
-
 	}
 
 	getFooterTotal(){
 		var franchise = this.state.selectedFranchise;
-		console.log('franchise',this.state);
 		let demand = this.state.DistributionData.reduce((prev, current) => {
-			console.log("current franchiseId",current.franchiseId,franchise);
 			if (current.franchiseId === franchise) {
-				console.log("current demand",current.orderQty);
 			  return prev + +current.orderQty;
 			}
 			return prev;
 		  }, 0); 
 
 	    let supply = this.state.DistributionData.reduce(function(prev, current) {
-			console.log("current supply",current.supply);
-
 			if (current.franchiseId === franchise) {
 				return prev + +current.supply
 			}
@@ -131,8 +124,9 @@ export default class DistributionManagement extends React.Component {
 	
 	  this.setState({
 		"totalSupply":supply
-	  });
-	   this.getFooterTotal();
+	  },()=>{
+		this.getFooterTotal();
+	 });
 	  
     }
 
@@ -144,29 +138,32 @@ export default class DistributionManagement extends React.Component {
 			var obj = {};
 			if(this.state.DistributionData[i].supply){
 				obj.productCode 	= this.state.DistributionData[i].productCode;
-				obj.itemCode 			= this.state.DistributionData[i].itemCode;
+				obj.itemCode 		= this.state.DistributionData[i].itemCode;
 				obj.productName 	= this.state.DistributionData[i].productName;
-				obj.currentStock 			= this.state.DistributionData[i].currentStock;
-				obj.orderQty 			= this.state.DistributionData[i].orderQty;
-				obj.suppliedQty 			= this.state.DistributionData[i].supply;
+				obj.currentStock 	= this.state.DistributionData[i].currentStock;
+				obj.orderQty 		= this.state.DistributionData[i].orderQty;
+				obj.suppliedQty 	= this.state.DistributionData[i].supply;
 				orderArray.push(obj);
 			}
     		
     	}
     	var formValues = {
-			orderDate 	: this.state.currentDate,
-			franchiseId : this.state.selectedFranchise,
-    		orderItems	: orderArray,
-    		createdBy 	: this.state.user_id,
+			distributionDate 	: this.state.currentDate,
+			deliveryChallanNo   : "DC"+Math.floor(100000 + Math.random() * 900000),
+			franchiseId         : this.state.selectedFranchise,
+			createdBy 	        : this.state.user_id,
+			totalDemand         : this.state.totalDemand,
+			totalSupply         : this.state.totalSupply,
+    		orderItems	        : orderArray,
+    		
     	};
-
-    	console.log("formValues = ",formValues);
-      /*console.log("formValues1",formValues1);
-      axios
-			.post('/api/finishedGoodsEntry/post',formValues1)
+        axios
+			.post('/api/franchisegoods/post',formValues)
 		  	.then(function (response) {
 		    // handle success
-		    	console.log("data in block========",response.data);
+				console.log("data in block========",response.data);
+				var franchiseGoodsId = response.data.franchiseGoodsId;
+				window.location.href = "/franchise_delivery_challan/"+response.data.franchiseGoodsId; 
 		    	swal("Thank you. Your Data addeed successfully.");
 		    	 // window.location.reload();
 		  	})
@@ -181,7 +178,7 @@ export default class DistributionManagement extends React.Component {
       			 "Quantity" 			: '',
       			 "productName" 	        : '',
       			 "Unit" 		     	: '',
-      	 })	*/
+      	 })	
 	}
 
     previousDate(event){
@@ -191,7 +188,6 @@ export default class DistributionManagement extends React.Component {
             this.getFooterTotal();
 		});
 		this.getAllfrachiseData();
-		console.log("currentDate",this.state.currentDate);
       }
     nextDate(event){
         event.preventDefault();
@@ -204,11 +200,12 @@ export default class DistributionManagement extends React.Component {
 	  
 	handleSelectChange(event){
 		var selectedValue = event.target.value;
-		this.setState({"selectedFranchise" : event.target.value},()=>{
-			console.log("selectedFranchise",this.state.selectedFranchise);
+		this.setState(
+			{"selectedFranchise" : event.target.value},
+		()=>{
+			this.getFooterTotal();
 		});
 		
-		this.getFooterTotal();
 	}
 	 
 	 onReset(event){
@@ -225,7 +222,8 @@ export default class DistributionManagement extends React.Component {
 		
 		this.setState({
 			"totalSupply":supply
-		});
+		},()=>{
+		 });
 	 }
 
 	 autoDistribute(event){
@@ -252,17 +250,18 @@ export default class DistributionManagement extends React.Component {
 		this.setState({
 			"totalSupply":supply,
 			"DistributionData" : DistributionData
-		});
+		},()=>{
+			this.getFooterTotal();
+		 });
 
-		this.getFooterTotal();
 	 }
 
 	 onChageDate(e){
-		console.log("EEE",e.target.value);
 		this.setState({
 			currentDate : e.target.value
-		});
-		this.getAllfrachiseData();
+		},()=>{
+			this.getAllfrachiseData();
+		 });
 	 }
 
 
@@ -280,7 +279,7 @@ export default class DistributionManagement extends React.Component {
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                                         <button className="btn btn-primary autoDistributebtn mt" onClick={this.autoDistribute.bind(this)}>Auto Distribute</button>
 									</div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-4 col-md-3 col-xs-12 col-sm-12">
                                         <label >Ordered Date</label>
                                         <div class="input-group">
                                             <span onClick={this.previousDate.bind(this)} class="commonReportArrowPoiner input-group-addon" id="basic-addon1">
@@ -295,7 +294,7 @@ export default class DistributionManagement extends React.Component {
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12"> 
 										<label>Select Franchise : </label>
 										<select value={this.state.selectedFranchise} className="col-lg-12 col-md-9 col-sm-12 col-xs-12 pull-right form-control" onChange={this.handleSelectChange.bind(this)}>
-										    <option  defaultValue="">Select Franchise</option>
+										    <option defaultValue="">Select Franchise</option>
 											{
 											Array.isArray(this.state.FranchiseData) && this.state.FranchiseData.length > 0
 									    	? 
@@ -306,7 +305,7 @@ export default class DistributionManagement extends React.Component {
 											}
 										</select>
 								    </div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-2 col-md-3 col-xs-12 col-sm-12">
 										<input type="reset" value="Reset" className="btn btn-default mt pull-right" onClick={this.onReset.bind(this)}/>
 									</div>
 								</div>
@@ -331,7 +330,6 @@ export default class DistributionManagement extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
-													console.log('resulttttt',result.franchiseId,this.state.selectedFranchise);
 													return( 
 													    result.franchiseId === this.state.selectedFranchise  ? 
 																<tr key={index}>
