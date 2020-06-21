@@ -103,6 +103,8 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	app.use("/api/roles",rolesRoutes);
 	app.use("/api/projectSettings",projectSettingsurl);
 	app.use("/api/companysettings",companySettingRoutes);
+	app.use("/api/taxsettings",taxSetting);
+
 	app.use("/api/masternotifications",notificationRoutes);
 	app.use("/api/locationtypemaster",locationTypeMasterRoutes);
 	

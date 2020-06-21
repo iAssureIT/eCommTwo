@@ -39,14 +39,18 @@ class ViewOrder extends Component {
             })
         this.getCompanyDetails();    
     }
-    getCompanyDetails() {
-        
-        axios.get("/api/companysettings/list")
-            .then((response) => {
-
+    getCompanyDetails() {        
+        // axios.get("/api/companysettings/list")
+        axios.get("/api/taxsettings/get/list")    
+        .then((response) => {
+            if(response){
+              console.log("taxsettings response:",response);
                 this.setState({
-                    companyInfo: response.data[0]
+                    companyInfo: response.data
                 })
+                console.log("tax state:",this.state.companyInfo);
+                console.log("tax data:",this.state.companyInfo.taxDetails[0].taxRate);
+            }
             })
             .catch((error) => {
                 console.log('error', error);
@@ -106,7 +110,8 @@ class ViewOrder extends Component {
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}> 0</i></span> </div>
                 </div>
                 <div>
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>GST ({ this.state.companyInfo.taxSettings && this.state.companyInfo.taxSettings[0].taxRating} %):  </span></div>
+                  {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>GST ({ this.state.companyInfo? this.state.companyInfo.taxSettings && this.state.companyInfo.taxSettings[0].taxRating:null} %):  </span></div> */}
+                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>GST ({ this.state.companyInfo? this.state.companyInfo.taxName && this.state.companyInfo.taxDetails[0].taxRate:null} %):  </span></div>
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
                   <span><i className={"fa fa-"+this.state.orderData.currency}> { (this.state.orderData.cartTotal*18)/100 } </i></span> 
                   </div>

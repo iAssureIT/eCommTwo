@@ -24,7 +24,6 @@ class AllowablePincodes extends Component {
     componentWillMount() {
         this.getEntityList();
         this.getAllowablePincode();
-
     }
     
     getAllowablePincode(){
@@ -167,11 +166,25 @@ class AllowablePincodes extends Component {
                                                                                 {data.companyName},<br/>
                                                                                 {data.locations[0] ? data.locations[0].locationType : null},&nbsp;{data.locations[0] ? data.locations[0].addressLine1 : null},<br/>
                                                                                 {data.locations.state}
-                                                                            </td>
-                                                                            <td> 
-                                                                                <input type="text" index id="pincodes-" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                                                                 ref="pincodes" name="pincodes" defaultValue={this.state.allowablePincodeList.length>0 ? this.state.allowablePincodeList[index]? this.state.allowablePincodeList[index].allowablePincodes : null :null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
-                                                                            </td>                                                               
+                                                                            </td> 
+                                                                            <td>
+                                                                                    <input type="text" index id="pincodes-" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                                                    ref="pincodes" name="pincodes" defaultValue={this.state.allowablePincodeList.length>0 ? this.state.allowablePincodeList[index]? this.state.allowablePincodeList[index].allowablePincodes : null :null}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/>
+                                                                            </td>                                                                            
+                                                                        {/* <td> 
+                                                                        {  this.state.allowablePincodeList.map((AllowableData, aIndex) => {
+                                                                                return (    
+                                                                                    data._id === AllowableData.franchiseID
+                                                                                     ?                                                                          
+                                                                                        <input type="text" index id="pincodes-" data-cid={data.companyID} data-fid={data._id} className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                                                        ref="pincodes" name="pincodes" defaultValue={AllowableData.allowablePincodes}  onChange={this.handleChange.bind(this)} placeholder="Enter allowable pincodes.."/> 
+                                                                                    : 
+                                                                                    null
+                                                                                                                                                                  
+                                                                                );
+                                                                            })
+                                                                        }
+                                                                        </td> */}
                                                                         </tr> 
                                                                     );
                                                                 }

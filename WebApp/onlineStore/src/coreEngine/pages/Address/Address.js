@@ -649,6 +649,8 @@ class Address extends Component {
                                         <select id="modaladdType" name="modaladdType" ref="modaladdType" value={this.state.modaladdType} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
                                             <option value="Home">Home (All day delivery) </option>
                                             <option value="Office">Office/Commercial (10 AM - 5 PM Delivery)</option>
+                                            <option value="Office">Relative (All day delivery)</option>
+                                            <option value="Office">Friend (All day delivery)</option>
                                         </select>
                                     </div>
                                 </div>
