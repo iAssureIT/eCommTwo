@@ -53,7 +53,9 @@ export default class FinishedGoods extends React.Component {
 					"totalInward"       : 0,
 					"totalOutward"      : 0,
 					"currentStock"      : 0,
-					"totalScrap"        : 0
+					"totalScrap"        : 0,
+					"scrap"             : 0,
+					"errorMsg"          : ''
 
       };
 	}
@@ -190,18 +192,17 @@ export default class FinishedGoods extends React.Component {
       .get('/api/finishedGoodsEntry/get/list')
       .then((response)=>{
         var  tableData = response.data ;
-        console.log("tableData",tableData);
 			var tableData = tableData.map((a, i) => {
 					return {
  
 						_id                  : a._id,
 						Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
 						productName 	     : a.productName ? a.productName +' - '+ a.ProductCode +' - '+ a.ItemCode: "" ,
-						InwardStock          : a.InwardStock ? a.InwardStock + a.InwardUnit : 0,
-						OutwardStock         : a.OutwardStock ? a.OutwardStock + a.OutwardUnit : 0,
+						InwardStock          : a.InwardStock ? a.InwardStock +' '+ a.InwardUnit : 0,
+						OutwardStock         : a.OutwardStock ? a.OutwardStock +' '+ a.OutwardUnit : 0,
 						Quantity             : a.Quantity ? a.Quantity : 0,
-						Weight               : a.Weight ? a.Weight + a.WeightPerUnit : 0,
-						Scrap                : a.Scrap ? a.Scrap + a.ScrapUnit : 0 
+						Weight               : a.Weight ? a.Weight +' '+ a.WeightPerUnit : 0,
+						Scrap                : a.Scrap ? a.Scrap +' '+ a.ScrapUnit : 0 
 					}
 				})
 			this.setState({
@@ -240,8 +241,11 @@ export default class FinishedGoods extends React.Component {
 	  const {name,value} = event.target;
 	  this.setState({ 
 		[name]:value,
+		weightforFG : this.state.Quantity * this.state.weight
       },()=>{
+		  this.checkValidInward()
 	  });
+	  
 	  //this.calculateTotalWeight();
 	}
 
@@ -312,7 +316,6 @@ export default class FinishedGoods extends React.Component {
 					totalOutward : response.data.TotalOutward ? response.data.TotalOutward : 0,
 					totalScrap   : response.data.TotalScrap  ? response.data.TotalScrap  : 0
 				},()=>{
-					console.log("totalFinishedGoodsOutward",this.state.totalOutward);
 					this.getCurrentStock();
 				});
 			})
@@ -324,7 +327,6 @@ export default class FinishedGoods extends React.Component {
 	getCurrentStock(){
 		var scrapStock = this.state.totalScrap;
 		var currentStock = this.state.totalInward - this.state.totalOutward;
-		console.log("currentStock",this.state.TotalInward, this.state.TotalOutward);
 		this.setState({
 			currentStock:currentStock - this.state.totalScrap
 		});
@@ -335,12 +337,10 @@ export default class FinishedGoods extends React.Component {
 		const {name,value} = event.target;
 		this.setState({ 
 			[name]:value,
-			finishedGoodsUnit : this.state.wtPerUnit
+			finishedGoodsUnit : this.state.wtPerUnit,
 		  },()=>{
 			weightforFG = this.state.Quantity * this.state.weight;
-		});
-
-		
+	     });
 
 		this.setState(() => {
 			const val = this.state.Quantity * this.state.weight
@@ -348,25 +348,42 @@ export default class FinishedGoods extends React.Component {
 				weightforFG: val,
 				finishedGoodsUnit: this.state.wtPerUnit
 			}
-		})
+		},()=>{
+	    });
+		
 	}
 
-
+	checkValidInward(){
+		var TotalFcInward = Number(this.state.Quantity * this.state.weight) + Number(this.state.scrap);
+		var TotalOutward = this.state.outwardFromRaw;
+		if(Number(TotalFcInward) > Number(TotalOutward)){
+			this.setState({
+				errorMsg : "Total Quantity and scrap material should be equal to or less than outward raw material"
+			},()=>{
+	
+			});
+		}else{
+			this.setState({
+				errorMsg : ""
+			},()=>{
+	
+			});
+		}
+	}
     handleProduct(event){
     	var valproduct = event.currentTarget.value;
-    	console.log("valproduct",valproduct);
 		this.setState({product : valproduct});
 
     }
 
     handleItemCode(event){
     	var valproduct = event.currentTarget.value;
-    	console.log("valproduct",valproduct);
 		this.setState({ItemCode : valproduct});
 
     }
     Submit(event){
 		event.preventDefault();
+		this.checkValidInward();
 		var productDatalist = $(".productDatalist").find("option[value='" + this.state.productName + "']");	
 		const formValues1 = {
 			// "amount"         	: this.state.amount ,
@@ -387,37 +404,42 @@ export default class FinishedGoods extends React.Component {
 			"PaidBy"            : this.state.paidBy
 		  
 		};
+		
 
 	  if ($('#finishedGoodsInwardForm').valid()) {
 		if(productDatalist != null && productDatalist.length > 0){
-			axios
-				.post('/api/finishedGoodsEntry/post',formValues1)
-				.then((response)=>{
-				// handle success
-					console.log("data in block========",response.data);
-					swal("Thank you. Your Data addeed successfully.");
-					//window.location.reload();
-					this.getData();
+			if(this.state.errorMsg === ""){
+				axios
+					.post('/api/finishedGoodsEntry/post',formValues1)
+					.then((response)=>{
+					// handle success
+						console.log("data in block========",response.data);
+						swal("Thank you. Your Data addeed successfully.");
+						//window.location.reload();
+						this.getData();
+					})
+					.catch(function (error) {
+					// handle error
+						console.log(error);
+					});
+					this.setState({
+						"Date" 		        : '',
+						"ItemCode" 	        : '',
+						"PackageWeight"     : '',
+						"Quantity" 			: '',
+						"productName" 	    : '',
+						"Unit" 		     	: 'Kg',
+						"weight"            : '',
+						"currentStock"      : 0,
+						"outwardFromRaw"    : '',
+						"weightforFG"       : 0,
+						"scrap"             : 0,
+						"paidBy"            : '',
+						"errorMsg"          : ''
 				})
-				.catch(function (error) {
-				// handle error
-					console.log(error);
-				});
-				this.setState({
-					"Date" 		        : '',
-					"ItemCode" 	        : '',
-					"PackageWeight"     : '',
-					"Quantity" 			: '',
-					"productName" 	    : '',
-					"Unit" 		     	: 'Kg',
-					"weight"            : '',
-					"currentStock"      : 0,
-					"outwardFromRaw"    : '',
-					"weightforFG"       : 0,
-					"scrap"             : 0,
-					"paidBy"            : ''
- 
-			})
+			}else{
+				swal(this.state.errorMsg);
+			}
 		}else{
 			swal("Please select product and item code from list.");
 			this.setState({
@@ -428,7 +450,8 @@ export default class FinishedGoods extends React.Component {
 	 }
 	}
 	update(event){
-        event.preventDefault();
+		event.preventDefault();
+		this.checkValidInward();
         var formValues = {
 			 "Date" 		        : this.state.Date,
 			 "productName" 	        : this.state.productName,
@@ -447,33 +470,37 @@ export default class FinishedGoods extends React.Component {
 			 "PaidBy"               : this.state.paidBy
         }
 		if ($('#finishedGoodsInwardForm').valid()) {
-            axios.patch('/api/finishedGoodsEntry/update/'+this.state.editId,formValues)
-			.then((response)=>{
-                this.props.history.push('/finished-goods');
-                swal(response.data.message);
-                this.getData(this.state.startRange, this.state.limitRange);
-                this.setState({
-					"date" 		        : '',
-					"ItemCode" 	        : '',
-					"PackageWeight"     : '',
-					"Quantity" 			: '',
-					"productName" 	    : '',
-					"outwardUnit" 		: 'Kg',
-					"wtPerUnit" 		: 'Kg',
-					"finishedGoodsUnit" : 'Kg',
-					'scrapUnit'         : 'Kg',
-					"currentStock"      : 0,
-					"outwardFromRaw"    : '',
-					"weightforFG"       : 0,
-					"scrap"             : 0,
-					"paidBy"            : '',
-					"editId"            : ''
-					
-                })
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })
+			if(this.state.errorMsg === ""){
+				axios.patch('/api/finishedGoodsEntry/update/'+this.state.editId,formValues)
+				.then((response)=>{
+					this.props.history.push('/finished-goods');
+					swal(response.data.message);
+					this.getData(this.state.startRange, this.state.limitRange);
+					this.setState({
+						"date" 		        : '',
+						"ItemCode" 	        : '',
+						"PackageWeight"     : '',
+						"Quantity" 			: '',
+						"productName" 	    : '',
+						"outwardUnit" 		: 'Kg',
+						"wtPerUnit" 		: 'Kg',
+						"finishedGoodsUnit" : 'Kg',
+						'scrapUnit'         : 'Kg',
+						"currentStock"      : 0,
+						"outwardFromRaw"    : '',
+						"weightforFG"       : 0,
+						"scrap"             : 0,
+						"paidBy"            : '',
+						"editId"            : ''
+						
+					})
+				})
+				.catch((error)=>{
+					console.log('error', error);
+				})
+			}else{
+				swal(this.state.errorMsg);
+			}
        }
 	}
 	
@@ -576,7 +603,7 @@ export default class FinishedGoods extends React.Component {
 								   <div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 										<label>Scrap material</label>
 										<div className="scrapMaterialDiv">
-											<input type="number" placeholder="Enter Scrap" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrap} name="scrap" refs="scrap" onChange={this.handleChange.bind(this)} id="scrap" min="0"/>
+											<input type="number" placeholder="Enter Scrap" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrap} name="scrap" refs="scrap" onChange={this.handleChange.bind(this)} id="scrap" min="0" onBlur={this.calculateTotalWeight.bind(this)}/>
 											<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
 											  	<option selected={true} disabled={true}>-- Select --</option>
 											  	<option value="Kg">Kg</option>
@@ -587,7 +614,7 @@ export default class FinishedGoods extends React.Component {
 										</div>
 									</div>
 								    <div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Paid By <i className="redFont">*</i></label>
+										<label >Entered By <i className="redFont">*</i></label>
 										<input type="text" placeholder="Enter staff" className="form-control" value={ this.state.paidBy} name="paidBy" refs="paidBy" onChange={this.handleChange.bind(this)} id="paidBy"/>
 									</div>
 								</div>

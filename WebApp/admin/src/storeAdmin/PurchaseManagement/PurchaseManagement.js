@@ -73,7 +73,6 @@ export default class PurchaseManagement extends React.Component {
 		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
 		
 		var editId = this.props.match.params.purchaseId;
-        console.log('ven', editId);
 		this.getData();
 		this.getPurNumberList();
 
@@ -176,7 +175,6 @@ export default class PurchaseManagement extends React.Component {
          $("#addNewPurchaseOrder").validate().resetForm();
         axios.get('/api/purchaseentry/get/one/'+id)
         .then((response)=>{
-            console.log('res', response);
             this.setState({
                 "amount"         	: response.data.amount ,
 		        "purchaseDate" 		: moment(response.data.purchaseDate).format("YYYY-MM-DD"),
@@ -189,7 +187,6 @@ export default class PurchaseManagement extends React.Component {
 		      	"product" 		    : response.data.productName,
 		      	"Units" 			: response.data.unit,
 			});
-			console.log('res state', this.state.Units);
             
         })
         .catch((error)=>{
@@ -198,7 +195,6 @@ export default class PurchaseManagement extends React.Component {
     }
 	getData(startRange, limitRange){ 
 		var dateToSearch=this.state.serchByDate;
-		console.log("dateToSearch", moment(dateToSearch).format("YYYY-MM-DD"));
 		var filterData = this.state.filterData;
 		if(this.state.selectedPurchaseNum != "Select Purchase Number"){
 			filterData.purchaseNumber = this.state.selectedPurchaseNum;
@@ -209,14 +205,10 @@ export default class PurchaseManagement extends React.Component {
 		}
 
 		filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
-
-		console.log("Selector Value = ",this.state.filterData);
 		axios
 		.post('/api/purchaseentry/post/datewisepurchase/',filterData)
 		.then((response)=>{
-			console.log("list===>",response.data);
 			var  tableData = response.data ;
-			console.log("Get tableData",tableData);
 				var tableData = tableData.map((a, i) => {
 						return {
 							_id                  :a._id,
@@ -227,17 +219,12 @@ export default class PurchaseManagement extends React.Component {
 							PurchasedBy 		: a.purchaseStaff ? a.purchaseStaff : "" ,
 							productName 		: a.productName,
 							UnitRate 	        : a.unitRate ,
-							Quantity 			: a.quantity + a.unit,
+							Quantity 			: a.quantity +' '+ a.unit,
 							TotalAmount         : a.amount,
-							
-						/*	purchaseStaff		:
-							purchaseLocation 	:
-							quantity 			:
-							amount 				:
-							Units 				:*/
 						}
 				});
 				var PoNumbersArray = [];
+				console.log("list===>",tableData);
 				tableData.filter(function(item,index){
 					var i = PoNumbersArray.findIndex(x => x.PurchaseNumber == item.PurchaseNumber);
 					if(i <= -1){
@@ -247,7 +234,6 @@ export default class PurchaseManagement extends React.Component {
 				});
 
 				let totalAmount = tableData.reduce(function(prev, current) {
-					console.log("current supply",current);
 						return prev + +current.TotalAmount
 				}, 0);
 
@@ -255,7 +241,9 @@ export default class PurchaseManagement extends React.Component {
 				   tableData 		: tableData,  
 				   PoNumbersArray   : PoNumbersArray,
 				   totalPoAmount      : totalAmount        
-				}) 
+				},()=>{
+					this.getPurNumberList();
+				});
 			})
 		.catch((error)=>{
 			console.log("error = ", error);              
@@ -270,7 +258,6 @@ export default class PurchaseManagement extends React.Component {
             .then((response) => {
 				var PurchaseNumberArray = [];
                 response.data.map((data, ind) => {
-					console.log("console.log()",data);
                     PurchaseNumberArray.push(data)
                 });
                 this.setState({
@@ -321,7 +308,6 @@ export default class PurchaseManagement extends React.Component {
 	  if(name == "product"){
 		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
 		$(".productDatalist option").filter(function(index,item){
-			console.log("filter",$(item).data('itemcode'));
 			if(item.value == event.target.value){
 			itemCode =$(item).data('itemcode');
 			}
@@ -351,17 +337,26 @@ export default class PurchaseManagement extends React.Component {
 	}
     handleProduct(event){
     	var valproduct = event.currentTarget.value;
-    	console.log("valproduct event",event);
 		this.setState({product : valproduct});
 
     }
     handleProduct1(event){
     	var valpurchaseLocation = event.currentTarget.value;
-    	console.log("valpurchaseLocation",valpurchaseLocation);
 		this.setState({purchaseLocation : valpurchaseLocation});
 
-    }
-     getproducts(){
+	}
+	
+	calculateAmount(event){
+		var Amount;
+		const {name,value} = event.target;
+		this.setState({ 
+			[name]:value,
+			amount: this.state.unitRate * this.state.quantity
+		  },()=>{
+		  });
+	};
+	
+	getproducts(){
         axios.get('/api/products/get/list')
 		.then((response) => {
             /*for(var i=0; i<response.data.length; i++){
@@ -395,16 +390,14 @@ export default class PurchaseManagement extends React.Component {
 		"Details" 			: this.state.Details,
        
       };
-	  console.log("formValues1",formValues1);
+
 	  if ($('#addNewPurchaseOrder').valid()) {
 		if((productDatalist != null && productDatalist.length > 0)) {
 			 axios
 			.post('/api/purchaseentry/post',formValues1)
 			.then((response) => {
 			// handle success
-				console.log("data in block========",response.data);
 				swal("Thank you. Your Product addeed successfully.");
-				this.getData();
 			})
 			.catch(function (error) {
 			// handle error
@@ -416,9 +409,10 @@ export default class PurchaseManagement extends React.Component {
 				quantity        : "", 			
 				product         : "", 
 				ItemCode        : "",		
-				Units           : "",
+				Units           : "Kg",
 				unitRate    : "",
 			},()=>{
+				this.getData();
 			});  
 		}else{
 			swal("Please select product from list.");
@@ -457,11 +451,11 @@ export default class PurchaseManagement extends React.Component {
 			      	"quantity" 			: "",
 					"product" 		    : "",
 					"ItemCode"          : "",
-			      	"unit" 				: "",
+			      	"unit" 				: "Kg",
                     "unitRate"          : "",
 				    "purchaseNumber"    : "",
 					"Details" 		    :"",	
-                    editId              : ""
+                    "editId"              : ""
                 })
             })
             .catch((error)=>{
@@ -547,7 +541,6 @@ export default class PurchaseManagement extends React.Component {
 											    {
                                                     this.state.productArray && this.state.productArray.length > 0 ?
                                                         this.state.productArray.map((data, i)=>{
-															console.log("data",data);
                                                             return(
                                                                 <option value={data.productName} data-itemCode={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
                                                             );
@@ -564,7 +557,7 @@ export default class PurchaseManagement extends React.Component {
 						                           <div className="input-group-addon inputIcon">
 						                           <i class="fa fa-rupee"></i>
 						                         </div> 
-						                         <input type="number" placeholder="1234" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1"/>
+						                         <input type="number" placeholder="1234" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)}/>
 					                         </div>     
 					                      </div>  
                    					     </div>
@@ -575,12 +568,12 @@ export default class PurchaseManagement extends React.Component {
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label >Quantity <i className="redFont">*</i></label>
 										<div className="quantityDiv">
-											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1"/>
+											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
 											<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
 												<option selected={true} disabled={true}>-- Select --</option>
 											  	<option value="Kg">Kg</option>
 											  	<option value="Ltr">Ltr</option>
-											  	<option value="gram">gram</option>
+											  	<option value="gram">Gm</option>
 											  	<option value="Nos">Nos</option>
 											</select>
 										</div>
@@ -662,7 +655,7 @@ export default class PurchaseManagement extends React.Component {
 									<label>Total</label>
 								</div>
 								<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-									<label>{this.state.totalPoAmount}</label>
+									<label><i class="fa fa-rupee"></i> {this.state.totalPoAmount}</label>
 								</div>
 						</div>		
 					</div>

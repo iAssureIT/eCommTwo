@@ -28,8 +28,10 @@ export default class DistributionManagement extends React.Component {
 		this.setState({
 			currentDate:currentDate,
 			user_id : userDetails.user_id,
-		});
-		this.getAllfrachiseData();
+		},()=>{
+			this.getAllfrachiseData();
+			console.log("currentDate",this.state.currentDate);
+		 });
 	}
 	componentWillReceiveProps(nextProps) {
         // var editId = nextProps.match.params.finishedGoodId;
@@ -49,15 +51,18 @@ export default class DistributionManagement extends React.Component {
 					var DistributionData = [];
 					var FranchiseOrderedData = []; 
 					franchisePurOrders.data.filter(function(item,index){
-						var i = FranchiseData.findIndex(x => x.name == item.name);
+						console.log("franchisePurOrders.data",item.franchiseData[0].companyName);
+
+						var i = FranchiseData.findIndex(x => x.name == item.franchiseData[0].companyName);
 						if(i <= -1){
-							FranchiseData.push({franchiseId: item.franchise_id, franchiseName: item.franchise_id});
+							FranchiseData.push({franchiseId: item.franchise_id, franchiseName: item.franchiseData[0].companyName});
 						}
 						return null;
 					});
 
 					var franchisePurOrdersdata = franchisePurOrders.data;
 					for (var i = 0; i < franchisePurOrdersdata.length; i++) {
+
 						for (var j = 0; j < franchisePurOrdersdata[i].orderItems.length; j++) {
 							franchisePurOrdersdata[i].orderItems[j].franchiseId = franchisePurOrdersdata[i].franchise_id;
 							franchisePurOrdersdata[i].orderItems[j].supply = 0;

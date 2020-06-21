@@ -150,7 +150,7 @@ export default class FranchiseShoppingList extends React.Component {
     	// console.log("ProdArray2",ProdArray);
 
    	    const formValues1 = {
-   	    	franchise_id              : "5ece290be5fbb621463a9697", 
+   	    	franchise_id              : "5ee849f5b9d3a15848648c70", 
 	        companyID                 : "12345", 
 	        // orderNo                   : "1000", 
 	        orderDate                 : moment(new Date()).format("YYYY-MM-DD"), 
