@@ -26,7 +26,7 @@ exports.user_signup_user = (req, res, next) => {
 		if(req.body.email && req.body.pwd && req.body.role){
 			var emailId = req.body.email;
 			var role_lower = (req.body.role).toLowerCase();
-			console.log("role ", role_lower);
+			// console.log("role ", role_lower);
 			if (role_lower && emailId) {
 				Role.findOne({ role: role_lower })
 					.exec()
@@ -528,7 +528,7 @@ exports.check_userID_MobileOTP = (req, res, next) => {
 };
 
 exports.check_username_EmailOTP = (req, res, next) => {
-	console.log("req.parmas", req.params);
+	// console.log("req.parmas", req.params);
 	User.find({ username: req.params.username, "profile.otpEmail": req.params.emailotp })
 		.exec()
 		.then(data => {
@@ -573,6 +573,8 @@ exports.check_username_EmailOTP = (req, res, next) => {
 };
 
 exports.user_login_using_email = (req, res, next) => {
+	// console.log("user_login_using_email req.body = ",req.body);
+	
 	var emailId = (req.body.email).toLowerCase();
 	var role = (req.body.role).toLowerCase();
 	User.findOne({
@@ -582,10 +584,11 @@ exports.user_login_using_email = (req, res, next) => {
 	})
 		.exec()
 		.then(user => {
+			// console.log('user = ', user);
 			if (user) {
 				if ((user.profile.status).toLowerCase() == "active") {
 					var pwd = user.services.password.bcrypt;
-					console.log('pwd', pwd);
+					// console.log('pwd', pwd);
 					if (pwd) {
 						bcrypt.compare(req.body.password, pwd, (err, result) => {
 							if (err) {
@@ -617,7 +620,7 @@ exports.user_login_using_email = (req, res, next) => {
 								)
 									.exec()
 									.then(updateUser => {
-										console.log("updateUser ==>",updateUser)
+										// console.log("updateUser ==>",updateUser)
 										if (updateUser.nModified == 1) {
 											res.status(200).json({
 												message: 'Login Auth Successful',
@@ -876,7 +879,7 @@ exports.user_login_with_companyID = (req, res, next) => {
 							res.status(200).json({ message: "INVALID_PASSWORD" });
 						}
 					} else if ((user.profile.status).toLowerCase() == "blocked") {
-						console.log("user.USER_BLOCK IN ==>")
+						// console.log("user.USER_BLOCK IN ==>")
 						res.status(200).json({ message: "USER_BLOCK" });
 					} else if ((user.profile.status).toLowerCase() == "unverified") {
 						res.status(200).json({ message: "USER_UNVERIFIED" });
@@ -1214,7 +1217,7 @@ exports.set_send_emailotp_usingEmail = (req, res, next) => {
 	.then(user => {
 		if(user){
 		var optEmail = getRandomInt(1000, 9999);
-		console.log("optEmail", optEmail, req.body);
+		// console.log("optEmail", optEmail, req.body);
 		User.updateOne(
 			{ "profile.email": req.params.emailId },
 			{

@@ -1,0 +1,23 @@
+var userDetails = localStorage.getItems("userDetails");
+
+var companyID = userDetails.companyID;
+
+axios.get("/get/one/companyName/" + companyID);
+		.then(companyDetails => 
+			var appCompany_entity_id = companyDetails._id;
+		)
+
+
+product.vendor_ID = appCompany_entity_id;
+
+
+==============
+
+
+
+======================
+
+
+Product List
+
+	1) Make beautiful design as per adminLTE2

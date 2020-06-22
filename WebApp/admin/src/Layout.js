@@ -23,8 +23,8 @@ import Dashboard            from './storeAdmin/dashboard/Dashboard.js'
 //============== Product Management ==============//
 import AddNewShopProduct    from './storeAdmin/product/addNewProduct/AddNewShopProduct/AddNewShopProduct.js';
 import AddNewProductImages  from './storeAdmin/product/addNewProduct/AddNewProductImages/AddNewProductImages.js';
-import CategoryManagement   from './storeAdmin/product/categoryManagement/component/CategoryManagement.js';
-import SectionManagement    from './storeAdmin/product/sectionManagement/component/SectionManagement.js';
+// import CategoryManagement   from './storeAdmin/product/categoryManagement/component/CategoryManagement.js';
+// import SectionManagement    from './storeAdmin/product/sectionManagement/component/SectionManagement.js';
 
 import AddNewBulkProduct    from './StoreManagement/product/productBulkUpload/component/ProductBulkUpload.js';
 import TemplateManagement   from './StoreManagement/product/productBulkUpload/component/TemplateManagement.js';
@@ -99,6 +99,8 @@ import AdminShoppingList  from './storeAdmin/adminShoppingList/AdminShoppingList
 import FranchiseShoppingList from './storeAdmin/FranchiseShoppingList/FranchiseShoppingList.js';
 import FranchiseOrderSummary from './storeAdmin/FranchiseShoppingList/FranchiseOrderSummary.js';
 
+import MasterData            from "./storeAdmin/MasterData/MasterData.js";
+
 /*===================== CMS ========================*/
 
 
@@ -171,11 +173,11 @@ class Layout extends Component  {
                                                     <Route path="/add-product"                                      exact strict component={AddNewShopProduct} />
                                                     <Route path="/add-product/:productID"                           exact strict component={AddNewShopProduct} />
                                                     <Route path="/add-product/image/:productID"                     exact strict component={AddNewProductImages} />
-                                                    <Route path="/category-management"                              exact strict component={CategoryManagement} />
+{/*                                                    <Route path="/category-management"                              exact strict component={CategoryManagement} />
                                                     <Route path="/category-management/:categoryID"                  exact strict component={CategoryManagement} />
                                                     <Route path="/section-management"                               exact strict component={SectionManagement} />
                                                     <Route path="/section-management/:sectionID"                    exact strict component={SectionManagement} />
-                                                    <Route path="/product-upload"                                   exact strict component={AddNewBulkProduct} />
+*/}                                                 <Route path="/product-upload"                                   exact strict component={AddNewBulkProduct} />
                                                     <Route path="/template-management"                              exact strict component={TemplateManagement} />
                                                     <Route path="/template-management/:template_ID"                 exact strict component={TemplateManagement} />
                                                     <Route path="/product-list"                                     exact strict component={ProductList} />
@@ -267,6 +269,11 @@ class Layout extends Component  {
 
                                                     {/* Admin shopping List AdminShoppingList*/}
                                                     <Route path="/admin-shopping-list"                              exact strict component={AdminShoppingList} />
+
+                                                    {/* Master Data */}
+                                                    <Route path="/project-master-data"          render={(props)=><MasterData {...props}/> } exact />
+                                                    <Route path="/project-master-data/:editId"  render={(props)=><MasterData {...props}/> } exact />
+                                                    <Route path="/project-master-data/oneField/:oneFieldEditId" render={(props)=><MasterData {...props}/> } exact />
                                                   </Switch>
                                             </div>
                                         </div>

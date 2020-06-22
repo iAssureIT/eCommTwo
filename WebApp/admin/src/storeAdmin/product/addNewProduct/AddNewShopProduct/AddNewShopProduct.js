@@ -59,11 +59,43 @@ class AddNewShopProduct extends Component {
     });
   }
   componentDidMount() {
-    const user_ID = localStorage.getItem("user_ID");
-    // console.log("User ID = ", user_ID);
-    this.setState({
-      user_ID : user_ID
-    });
+    const userDetails = localStorage.getItem("userDetails");
+    const user_ID     = userDetails.user_id;
+    const companyID   = userDetails.companyID;
+
+
+    axios.get("/api/entityMasters/get/one/1")
+        .then(entity=>{
+          var appCompany_entity_id = entity._id;
+
+          axios.get("/api/adminPreference/get")
+              .then(preference =>{
+                console.log("preference = ",preference.data);
+                this.setState({
+                  userDetails           : userDetails,
+                  user_ID               : user_ID,
+                  appCompany_entity_id  : appCompany_entity_id,
+                  websiteModel          : preference.data[0].websiteModel,
+                });
+              })
+              .catch(error=>{
+                this.setState({
+                  userDetails           : userDetails,
+                  user_ID               : user_ID,
+                  appCompany_entity_id  : appCompany_entity_id,
+                });
+                console.log("Error in getting adminPreference = ", error);
+              }) 
+
+        })
+        .catch(error=>{
+          this.setState({
+            userDetails     : userDetails,
+            user_ID         : user_ID,
+          });
+          console.log("Error in getting appCompany_entity_id = ", error);
+        }) ;
+
 
     if (this.state.editId) {
       this.edit(this.state.editId);
@@ -398,32 +430,38 @@ class AddNewShopProduct extends Component {
         }
       }
     }
-    console.log("Vendor = ", this.refs.vendor.value);
+    if(this.state.websiteModel === "MarketPlace"){
+      var vendorName  = this.refs.vendor.value.split('|')[0];
+      var user_ID     = this.refs.vendor.value.split('|')[1];
+      var vendor_ID   = this.refs.vendor.value.split('|')[2];
+    }else{
+      var vendorName  = this.state.userDetails.firstName +" "+ this.state.userDetails.lastName;
+      var user_ID     = this.state.userDetails.user_id;
+      var vendor_ID   = this.state.appCompany_entity_id;
+    }
     var formValues = {
-      "vendor_ID": this.refs.vendor.value.split('|')[2],
-      "user_ID": this.refs.vendor.value.split('|')[1],
-      "vendorName": this.refs.vendor.value.split('|')[0],
-      "section": this.refs.section.value.split('|')[0],
-      "section_ID": this.refs.section.value.split('|')[1],
-      "category_ID": this.refs.category.value.split('|')[1],
-      "category": this.refs.category.value.split('|')[0],
+      "vendor_ID"   : vendor_ID,
+      "section"     : this.refs.section.value.split('|')[0],
+      "section_ID"  : this.refs.section.value.split('|')[1],
+      "category_ID" : this.refs.category.value.split('|')[1],
+      "category"    : this.refs.category.value.split('|')[0],
       "subCategory_ID": this.refs.subCategory.value.split('|')[1],
-      "subCategory": this.refs.subCategory.value.split('|')[0],
-      "brand": this.refs.brand.value,
-      "productCode": this.refs.productCode.value,
-      "itemCode": this.refs.itemCode.value,
-      "productName": this.refs.productName.value,
-      "productUrl": this.refs.productUrl.value,
-      "productDetails": this.state.productDetails,
+      "subCategory" : this.refs.subCategory.value.split('|')[0],
+      "brand"       : this.refs.brand.value,
+      "productCode" : this.refs.productCode.value,
+      "itemCode"    : this.refs.itemCode.value,
+      "productName" : this.refs.productName.value,
+      "productUrl"  : this.refs.productUrl.value,
+      "productDetails"  : this.state.productDetails,
       "shortDescription": this.refs.shortDescription.value,
-      "featureList": this.state.content,
-      "attributes": productDimentionArray,
-      "taxInclude" : this.state.taxInclude,
-      "taxRate" : this.state.taxRate,
+      "featureList" : this.state.content,
+      "attributes"  : productDimentionArray,
+      "taxInclude"  : this.state.taxInclude,
+      "taxRate"     : this.state.taxRate,
       "originalPrice": this.refs.originalPrice.value,
       "discountPercent": this.refs.discountPercent.value ? this.refs.discountPercent.value : "0",
       "discountedPrice": this.state.discountedPrice ? this.state.discountedPrice : this.state.originalPrice,
-      "availableQuantity": this.refs.availableQuantity.value,
+      // "availableQuantity": this.refs.availableQuantity.value,
       "unit": this.refs.unit.value,
       "size": this.refs.size.value,
       "color": this.state.color,
@@ -514,37 +552,37 @@ class AddNewShopProduct extends Component {
       }
     }
     var formValues = {
-      "vendor_ID": this.refs.vendor.value.split('|')[2],
-      "user_ID": this.refs.vendor.value.split('|')[1],
-      "vendorName": this.refs.vendor.value.split('|')[0],
-      "section": this.refs.section.value.split('|')[0],
-      "section_ID": this.refs.section.value.split('|')[1],
-      "product_ID": this.state.editId,
-      "category_ID": this.refs.category.value.split('|')[1],
-      "category": this.refs.category.value.split('|')[0],
-      "subCategory_ID": this.refs.subCategory.value.split('|')[1],
-      "subCategory": this.refs.subCategory.value.split('|')[0],
-      "brand": this.refs.brand.value,
-      "productCode": this.refs.productCode.value,
-      "itemCode": this.refs.itemCode.value,
-      "productName": this.refs.productName.value,
-      "productUrl": this.refs.productUrl.value,
-      "productDetails": this.state.productDetails,
-      "shortDescription": this.refs.shortDescription.value,
-      "featureList": this.state.content,
-      "attributes": productDimentionArray,
-      "taxInclude" : this.state.taxInclude,
-      "taxRate" : this.state.taxRate,
-      "originalPrice": this.state.originalPrice,
-      "discountPercent": this.state.discountPercent ? this.state.discountPercent : "0" ,
-      "size": this.refs.size.value,
-      "color": this.state.color,
-      "discountedPrice": this.state.discountedPrice ? this.state.discountedPrice : this.state.originalPrice,
-      "availableQuantity": this.refs.availableQuantity.value,
-      "currency": this.refs.currency.value,
-      "status": this.refs.status.value,
-      "featured": productFeatured,
-      "exclusive": productExclusive,
+      "vendor_ID"         : this.refs.vendor.value.split('|')[2],
+      "user_ID"           : this.refs.vendor.value.split('|')[1],
+      "vendorName"        : this.refs.vendor.value.split('|')[0],
+      "section"           : this.refs.section.value.split('|')[0],
+      "section_ID"        : this.refs.section.value.split('|')[1],
+      "product_ID"        : this.state.editId,
+      "category_ID"       : this.refs.category.value.split('|')[1],
+      "category"          : this.refs.category.value.split('|')[0],
+      "subCategory_ID"    : this.refs.subCategory.value.split('|')[1],
+      "subCategory"       : this.refs.subCategory.value.split('|')[0],
+      "brand"             : this.refs.brand.value,
+      "productCode"       : this.refs.productCode.value,
+      "itemCode"          : this.refs.itemCode.value,
+      "productName"       : this.refs.productName.value,
+      "productUrl"        : this.refs.productUrl.value,
+      "productDetails"    : this.state.productDetails,
+      "shortDescription"  : this.refs.shortDescription.value,
+      "featureList"       : this.state.content,
+      "attributes"        : productDimentionArray,
+      "taxInclude"        : this.state.taxInclude,
+      "taxRate"           : this.state.taxRate,
+      "originalPrice"     : this.state.originalPrice,
+      "discountPercent"   : this.state.discountPercent ? this.state.discountPercent : "0" ,
+      "size"              : this.refs.size.value,
+      "color"             : this.state.color,
+      "discountedPrice"   : this.state.discountedPrice ? this.state.discountedPrice : this.state.originalPrice,
+      // "availableQuantity" : this.refs.availableQuantity.value,
+      "currency"          : this.refs.currency.value,
+      "status"            : this.refs.status.value,
+      "featured"          : productFeatured,
+      "exclusive"         : productExclusive,
     }
     if ($('#addNewShopProduct').valid()) {
       if (this.state.discountPercentError === "") {
@@ -672,7 +710,7 @@ class AddNewShopProduct extends Component {
   }
   getVendorList() {
     // axios.get('/api/vendors/get/list')
-    axios.get("/api/entitymaster/get/Vendor")
+    axios.get("/api/entitymaster/get/vendor")
       .then((response) => {
         console.log('res getVendorList', response);
         this.setState({
@@ -680,7 +718,7 @@ class AddNewShopProduct extends Component {
         })
       })
       .catch((error) => {
-
+        console.log("Error in getVendorList() = ",error);
       })
   }
   onClickCkEditor(evt) {
@@ -725,6 +763,7 @@ class AddNewShopProduct extends Component {
     })
   }
   render() {
+    console.log("this.state.websiteModel = ",this.state.websiteModel);
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <section className="content">
@@ -737,26 +776,34 @@ class AddNewShopProduct extends Component {
                       <form className="newTemplateForm" id="addNewShopProduct">
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 marginTopp">
                           <div className="addNewProductWrap col-lg-12 col-md-12 col-sm-12 col-xs-12 add-new-productCol">
-                            <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 inputFields">
-                              <label>Vendor <i className="redFont">*</i></label>
-                              <select onChange={this.showRelevantSubCategories.bind(this)} value={this.state.vendor} name="vendor" className="form-control allProductCategories" aria-describedby="basic-addon1" id="vendor" ref="vendor">
-                                <option disabled selected defaultValue="">Select Vendor</option>
-                                {this.state.vendorArray && this.state.vendorArray.length > 0 ?
-                                  this.state.vendorArray.map((data, index) => {
-                                    return (
-                                      // <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({data.vendorID})</option>
-                                      <option key={index} value={data.companyName + '|' + this.state.user_ID + '|' + data._id}>{data.companyName} - ({"VendorID : "+data.companyID})</option>
-                                    );
-                                  })
-                                  :
-                                  <option disabled>{"No vendor added"}</option>
-                                }
-                              </select>
-                              {this.state.vendor ? null : <span>Please select a vendor to add a product</span>}
-                            </div>
+
+                            {this.state.websiteModel === 'MarketPlace' 
+                              ? 
+                                <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 inputFields">
+                                  <label>Vendor <i className="redFont">*</i></label>
+                                  <select onChange={this.showRelevantSubCategories.bind(this)} value={this.state.vendor} name="vendor" className="form-control allProductCategories" aria-describedby="basic-addon1" id="vendor" ref="vendor">
+                                    <option disabled selected defaultValue="">Select Vendor</option>
+                                    {this.state.vendorArray && this.state.vendorArray.length > 0 ?
+                                      this.state.vendorArray.map((data, index) => {
+                                        return (
+                                          // <option key={index} value={data.companyName + '|' + data.user_ID + '|' + data._id}>{data.companyName} - ({data.vendorID})</option>
+                                          <option key={index} value={data.companyName + '|' + this.state.user_ID + '|' + data._id}>{data.companyName} - ({"VendorID : "+data.companyID})</option>
+                                        );
+                                      })
+                                      :
+                                      <option disabled>{"No vendor added"}</option>
+                                    }
+                                  </select>
+                                  {this.state.vendor ? null : <span>Please select a vendor to add a product</span>}
+                                </div>
+                              :
+                                null
+                            }
+
                           </div>
                           {
-                            this.state.vendor ?
+                            ((this.state.websiteModel === "MarketPlace" && this.state.vendor) ||  this.state.websiteModel !== "MarketPlace")
+                            ?
                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                 <div className="addNewProductWrap col-lg-12 col-md-12 col-sm-12 col-xs-12 add-new-productCol">
 
@@ -836,11 +883,11 @@ class AddNewShopProduct extends Component {
                                     <input value={this.state.brand} name="brand" id="brand" type="text" className="form-control productBrandName" placeholder="Brand Name" aria-label="Brand" aria-describedby="basic-addon1" ref="brand" onChange={this.handleChange.bind(this)} />
                                   </div>
 
-                                  <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 paddingRightZeroo">
+                                  {/*<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 paddingRightZeroo">
                                     <label>Quantity <i className="redFont">*</i></label>
                                     <input onChange={this.handleChange.bind(this)} value={this.state.availableQuantity} id="availableQuantity" name="availableQuantity" type="number" className="form-control availableQuantityNew" placeholder="Quantity" aria-describedby="basic-addon1" ref="availableQuantity" />
-                                  </div>
-                                  <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 paddingLeftZeroo">
+                                  </div>*/}
+                                  <div className="col-lg-4 col-md-4 col-sm-12 <col-xs-12></col-xs-12>">
                                     <label>Unit <i className="redFont">*</i></label>
                                     <select className="form-control selectdropdown " ref="unit" id="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}>
                                       <option value="Single">Single</option>

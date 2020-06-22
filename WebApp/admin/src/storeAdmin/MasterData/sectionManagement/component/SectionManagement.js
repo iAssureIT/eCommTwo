@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
-import axios from 'axios';
-import ReactTable from "react-table";
-import swal from 'sweetalert';
-import _ from 'underscore';
-import S3FileUpload from 'react-s3';
-// import validator              from 'validator';
-import IAssureTable from '../../../../coreadmin/IAssureTable/IAssureTable.jsx';
+import $                    from 'jquery';
+import jQuery               from 'jquery';
+import axios                from 'axios';
+import ReactTable           from "react-table";
+import swal                 from 'sweetalert';
+import S3FileUpload         from 'react-s3';
+import IAssureTable         from '../../../../coreadmin/IAssureTable/IAssureTable.jsx';
 import 'jquery-validation';
 import 'bootstrap/js/tab.js';
 import '../css/SectionManagement.css';
@@ -28,11 +27,11 @@ class SectionManagement extends Component {
         apiLink: '/api/sections/',
         paginationApply: true,
         searchApply: false,
-        editUrl: '/section-management'
+        editUrl: '/project-master-data'
       },
       "startRange": 0,
       "limitRange": 10,
-      "editId": this.props.match.params ? this.props.match.params.sectionID : ''
+      "editId": this.props.editId ? this.props.editId : ''
     };
   }
   handleChange(event) {
@@ -42,19 +41,27 @@ class SectionManagement extends Component {
       [name]: event.target.value,
     });
   }
-  componentWillReceiveProps(nextProps) {
-    var editId = nextProps.match.params.sectionID;
-    if (nextProps.match.params.sectionID) {
-      this.setState({
-        editId: editId
-      })
-      this.edit(editId);
-    }
-  }
+
+  // componentWillReceiveProps(nextProps) {
+  //   var editId = nextProps.match.params.sectionID;
+  //   if (nextProps.match.params.sectionID) {
+  //     this.setState({
+  //       editId: editId
+  //     })
+  //     this.edit(editId);
+  //   }
+  // }
+
   componentDidMount() {
+    this.setState({
+      editId : this.props.editId,
+    },()=>{
+      console.log("this.state.editId = ",this.state.editId);
+    })
+
     window.scrollTo(0, 0);
-    if (this.state.editId) {
-      this.edit(this.state.editId);
+    if (this.props.editId) {
+      this.edit(this.props.editId);
     }
     
     $.validator.addMethod("regxA1", function (value, element, regexpr) {
@@ -88,10 +95,11 @@ class SectionManagement extends Component {
     this.getDataCount();
     this.getData(this.state.startRange, this.state.limitRange);
   }
+
   getDataCount() {
     axios.get('/api/sections/get/count')
       .then((response) => {
-        console.log('dataCount', response.data);
+        // console.log('dataCount', response.data);
         this.setState({
           dataCount: response.data.dataCount
         })
@@ -104,7 +112,7 @@ class SectionManagement extends Component {
   getData(startRange, limitRange) {
     axios.get('/api/sections/get/list-with-limits/' + startRange + '/' + limitRange)
       .then((response) => {
-        console.log('tableData', response.data);
+        console.log('tableData = ', response.data);
         this.setState({
           tableData: response.data
         })
@@ -144,9 +152,9 @@ class SectionManagement extends Component {
     event.preventDefault();
     if ($('#sectionManagement').valid()) {
       var formValues = {
-        "section": this.state.section,
+        "section"     : this.state.section,
         "sectionRank" : this.state.sectionRank,
-        "createdBy": localStorage.getItem("admin_ID")
+        "createdBy"   : localStorage.getItem("admin_ID")
       }
       axios.post('/api/sections/post', formValues)
         .then((response) => {
@@ -198,16 +206,12 @@ class SectionManagement extends Component {
   edit(id) {
     axios.get('/api/sections/get/one/' + id)
       .then((response) => {
-        console.log('edit', response.data);
+        console.log('edit = ', response.data);
         if (response.data) {
           this.setState({
             "section"     : response.data.section,
             "sectionRank" : response.data.sectionRank,
             "sectionUrl"  : response.data.sectionUrl
-          });
-        } else {
-          this.setState({
-
           });
         }
       })

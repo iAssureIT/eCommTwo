@@ -59,12 +59,28 @@ class ProductList extends Component {
     }
 
     componentDidMount() {
-        this.getCount();
-        this.getData(this.state.startRange, this.state.limitRange);
-        this.getVendorList();
-        this.getSectionData();
-        this.getCategoryData();
-        this.productCountByStatus();
+          axios.get("/api/adminPreference/get")
+              .then(preference =>{
+                console.log("preference = ",preference.data);
+                this.setState({
+                  websiteModel      : preference.data[0].websiteModel,
+                },()=>{
+                    if(this.state.websiteModel === "MarketPlace"){
+                        this.getVendorList();
+                    }
+                });
+              })
+              .catch(error=>{
+                console.log("Error in getting adminPreference = ", error);
+              }) 
+
+
+            this.getCount();
+            this.getData(this.state.startRange, this.state.limitRange);
+
+            this.getSectionData();
+            this.getCategoryData();
+            this.productCountByStatus();
         
     }  
     productCountByStatus(){
@@ -447,36 +463,37 @@ class ProductList extends Component {
                                                     <option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Delete">Delete selected products</option>
                                                 </select>
                                             </div>
-                                            <div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6 mt">
-                                                <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Vendor</label>
-                                                {/*<MultiSelectComponent id="vendorChange" dataSource={this.state.vendorArray}
-                                                    change={this.handleChangeFilter.bind(this)}
-                                                    fields={fields} placeholder="Select Vendor" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
-                                                    <Inject services={[CheckBoxSelection]} />
-                                                </MultiSelectComponent>*/}
-                                                {/*<select className="form-control selectRole" ref="filterDropdown" name="filterDropdown" id="vendorChange" onChange={this.getVendorList.bind(this)} style={{width:'200px'}} > */}
-                                                <select className="form-control selectRole" ref="filterDropdown" name="filterDropdown" id="vendorChange" style={{width:'200px'}} 
-                                                    onChange={this.handleChangeFilter.bind(this)}>
-                                                    <option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" disabled selected>-- Select --</option>  
-                                                    {
-                                                        this.state.vendorArray && this.state.vendorArray.length > 0 ?
-                                                            this.state.vendorArray.map((data, i)=>{
-                                                                return(                                                                    
-                                                                    <option key={i} comp_Id={data.id} value={data.id}>{data.vendor}</option>
-                                                                    // <option key={i} id={data.entityCode}>{data.entityCode}</option>
-                                                                );
-                                                            })
-                                                        :
-                                                        null
-                                                    }
-                                                   
-                                                </select>
-                                            </div>
+                                            
+                                            {this.state.preference === "MarketPlace" 
+                                             ? 
+                                                <div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6 mt">
+                                                    <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Vendor</label>
+                                                    <select className="form-control selectRole" ref="filterDropdown" name="filterDropdown" id="vendorChange" style={{width:'200px'}} 
+                                                        onChange={this.handleChangeFilter.bind(this)}>
+                                                        <option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" disabled selected>-- Select --</option>  
+                                                        {
+                                                            this.state.vendorArray && this.state.vendorArray.length > 0 ?
+                                                                this.state.vendorArray.map((data, i)=>{
+                                                                    return(                                                                    
+                                                                        <option key={i} comp_Id={data.id} value={data.id}>{data.vendor}</option>
+                                                                        // <option key={i} id={data.entityCode}>{data.entityCode}</option>
+                                                                    );
+                                                                })
+                                                            :
+                                                            null
+                                                        }
+                                                       
+                                                    </select>
+                                                </div>
+                                             :
+                                                null 
+                                            }
+
                                             <div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6 mt">
                                                 <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Section</label>
                                                 <MultiSelectComponent id="sectionChange" dataSource={this.state.sectionArray}
                                                     change={this.handleChangeFilter.bind(this)}
-                                                    fields={sectionfields} placeholder="Select Section" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
+                                                    fields={sectionfields} placeholder="You can select multiple Sections" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
                                                     <Inject services={[CheckBoxSelection]} />
                                                 </MultiSelectComponent>
                                             </div>
@@ -484,7 +501,7 @@ class ProductList extends Component {
                                                 <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Category</label>
                                                 <MultiSelectComponent id="categoryChange" dataSource={this.state.categoryArray}
                                                     change={this.handleChangeFilter.bind(this)}
-                                                    fields={categoryfields} placeholder="Select Category" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
+                                                    fields={categoryfields} placeholder="You can select multiple Categories" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
                                                     <Inject services={[CheckBoxSelection]} />
                                                 </MultiSelectComponent>
                                             </div>
@@ -492,7 +509,7 @@ class ProductList extends Component {
                                                 <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Status</label>
                                                 <MultiSelectComponent id="statusChange" dataSource={statusArray}
                                                     change={this.handleChangeFilter.bind(this)}
-                                                    fields={statusfields} placeholder="Select Status" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
+                                                    fields={statusfields} placeholder="You can select multiple Statuses" mode="CheckBox" selectAllText="Select All" unSelectAllText="Unselect All" showSelectAll={true}>
                                                     <Inject services={[CheckBoxSelection]} />
                                                 </MultiSelectComponent>
                                             </div>

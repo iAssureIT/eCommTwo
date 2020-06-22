@@ -1,8 +1,8 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
+import jQuery                 from 'jquery';
 import swal                   from 'sweetalert';
-import _                      from 'underscore';
 import S3FileUpload           from 'react-s3';
 import IAssureTable           from '../../../../coreadmin/IAssureTable/IAssureTable.jsx';
 import 'jquery-validation';
@@ -31,13 +31,13 @@ class CategoryManagement extends Component{
               apiLink                   : '/api/category',
               paginationApply           : true,
               searchApply               : true,
-              editUrl                   : '/category-management',
-              deleteUrl                 : '/category-management'
+              editUrl                   : '/project-master-data',
+              deleteUrl                 : '/project-master-data'
             },
             "sectionsList"              : [],
             "startRange"                : 0,
             "limitRange"                : 10,
-            "editId"                    : this.props.match.params ? this.props.match.params.categoryID : ''
+            "editId"                    : this.props.editId ? this.props.editId : ''
         };
     }
     handleChange(event){ 
@@ -54,18 +54,19 @@ class CategoryManagement extends Component{
           section     : event.target.value.split('|')[0],
           section_ID  : event.target.value.split('|')[1],
       },()=>{
-        console.log('sectionChange', this.state.section, this.state.section_ID);
+        // console.log('sectionChange', this.state.section, this.state.section_ID);
       });
     }
-    componentWillReceiveProps(nextProps) {
-        var editId = nextProps.match.params.categoryID;
-        if(nextProps.match.params.categoryID){
-          this.setState({
-            editId : editId
-          })
-          this.edit(editId);
-        }
-    }
+
+    // componentWillReceiveProps(nextProps) {
+    //     var editId = nextProps.match.params.categoryID;
+    //     if(nextProps.match.params.categoryID){
+    //       this.setState({
+    //         editId : editId
+    //       })
+    //       this.edit(editId);
+    //     }
+    // }
     componentDidMount(){
       window.scrollTo(0, 0);
       if(this.state.editId){      
@@ -121,7 +122,7 @@ class CategoryManagement extends Component{
     getDataCount(){
       axios.get('/api/category/get/count')
       .then((response)=>{
-        console.log('dataCount', response.data);
+        // console.log('dataCount', response.data);
         this.setState({
           dataCount : response.data.dataCount
         })
@@ -138,7 +139,7 @@ class CategoryManagement extends Component{
 
       axios.post('/api/category/get/list', data)
       .then((response)=>{
-        console.log('tableData', response.data);
+        // console.log('tableData', response.data);
         this.setState({
           tableData : response.data
         })
@@ -174,7 +175,7 @@ class CategoryManagement extends Component{
     getSectionData(){
       axios.get('/api/sections/get/list')
       .then((res)=>{
-        console.log('res', res.data);
+        // console.log('res', res.data);
         this.setState({
           sectionsList : res.data
         })
@@ -202,7 +203,7 @@ class CategoryManagement extends Component{
     }
     submitCategory(event){
       event.preventDefault();
-      console.log('bjgjbmbmb',$('#categoryManagement').valid());
+      // console.log('bjgjbmbmb',$('#categoryManagement').valid());
       if($('#categoryManagement').valid()){
         var addRowLength = this.state.subcatgArr.length;
         var categoryDimentionArray = [];
@@ -211,8 +212,8 @@ class CategoryManagement extends Component{
         axios.get('/api/category/get/count')
         .then((response)=>{
           var catCodeLength = response.data.dataCount;
-          console.log("catCodeLength",catCodeLength);
-          console.log("addRowLength",addRowLength);
+          // console.log("catCodeLength",catCodeLength);
+          // console.log("addRowLength",addRowLength);
           if(addRowLength){
             for(var i=0;i<addRowLength;i++){
               var obj = {
@@ -227,7 +228,7 @@ class CategoryManagement extends Component{
                 })
 
               }else{
-                console.log("subCategoryTitleErrora"+i, " subCategoryTitlea0Error");
+                // console.log("subCategoryTitleErrora"+i, " subCategoryTitlea0Error");
                 this.setState({
                   ["subCategoryTitleErrora"+i] : "This field is required.",
                   allowToSubmit: false
@@ -235,7 +236,7 @@ class CategoryManagement extends Component{
               }
             }
           }
-          console.log("categoryDimentionArray",categoryDimentionArray);
+          // console.log("categoryDimentionArray",categoryDimentionArray);
 
           
             var formValues = {
@@ -249,7 +250,7 @@ class CategoryManagement extends Component{
               "categoryRank"              : this.state.categoryRank,
             }
 
-            console.log("Formvalues = ", formValues);
+            // console.log("Formvalues = ", formValues);
 
             axios.post('/api/category/post', formValues)
             .then((response)=>{
@@ -288,7 +289,7 @@ class CategoryManagement extends Component{
     }
     updateCategory(event){
       event.preventDefault();
-      console.log('bjgjbmbmb',$('#categoryManagement').valid());
+      // console.log('bjgjbmbmb',$('#categoryManagement').valid());
       if($('#categoryManagement').valid()){
         var addRowLength = this.state.subcatgArr.length;
         var categoryDimentionArray = [];
@@ -305,7 +306,7 @@ class CategoryManagement extends Component{
           "categoryRank"              : this.state.categoryRank,
         }
 
-        console.log("formValues = ", formValues);
+        // console.log("formValues = ", formValues);
         axios.get('/api/category/get/count')
         .then((response)=>{
           var catCodeLength = response.data.dataCount;
@@ -322,7 +323,7 @@ class CategoryManagement extends Component{
                   allowToUpdate: true
                 })
               }else{
-                console.log("subCategoryTitleErrora"+i, " subCategoryTitlea0Error");
+                // console.log("subCategoryTitleErrora"+i, " subCategoryTitlea0Error");
                 this.setState({
                   ["subCategoryTitleErrora"+i] : "This field is required.",
                   allowToUpdate: false
@@ -332,7 +333,7 @@ class CategoryManagement extends Component{
           }
 
           // if(this.state.allowToUpdate === true){
-            console.log("In update");
+            // console.log("In update");
             axios.patch('/api/category/patch', formValues)
             .then((response)=>{
 
@@ -464,7 +465,7 @@ class CategoryManagement extends Component{
                           // .get('/api/projectSettings/get/one/s3')
                           .get('/api/projectSettings/get/S3')
                           .then((response)=>{
-                            console.log("s3 response :",response.data);
+                            // console.log("s3 response :",response.data);
                               const config = {
                                   bucketName      : response.data.bucket,
                                   dirName         : process.env.ENVIRONMENT,
@@ -613,7 +614,7 @@ class CategoryManagement extends Component{
                                           <label>Subcategories </label>
                                           {
                                               this.state.subcatgArr.map((dataRowArray, index)=>{
-                                                  console.log(dataRowArray, 'subCategoryTitle'+dataRowArray.subCategoryCode);
+                                                  // console.log(dataRowArray, 'subCategoryTitle'+dataRowArray.subCategoryCode);
                                                   return(
                                                       <div className="col-lg-12 col-md-12 NOpadding" key={index}>                                                                                  
                                                           <div className="col-lg-12 col-md-12 NOpadding newSubCatgArr">   

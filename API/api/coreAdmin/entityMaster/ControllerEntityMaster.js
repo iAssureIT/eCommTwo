@@ -84,6 +84,7 @@ exports.listEntity = (req,res,next)=>{
     EntityMaster.find({entityType:req.params.entityType})
                 .sort({createdAt : -1})    
                 .then(data=>{
+                    console.log("listEntity data = ",data);
                     res.status(200).json(data);
                 })
                 .catch(err =>{
