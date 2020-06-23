@@ -339,12 +339,12 @@ export default class AdminDashboard extends Component{
               </a>
             </li>
 
-            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+            {/* <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/franchise_distribution" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
                 <i className="fa fa-money" aria-hidden="true"></i>
                 <span className="sidebarMenuTitle">Franchise Distribution</span>
               </a>
-            </li>
+            </li> */}
 
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/distribution" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
