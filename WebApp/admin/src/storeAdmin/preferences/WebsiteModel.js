@@ -18,24 +18,36 @@ class WebsiteModel extends Component {
     componentWillMount() {
         axios.get("/api/adminpreference/get")
         .then(preferences =>{
-            if(preferences){
-                console.log("preferences value:",preferences);
+            if(preferences.data){
+                console.log("preferences value:",preferences.data[0].websiteModel);
                 var askpincodeToUser = preferences.data[0].askPincodeToUser;
-               if(preferences.websiteModel === "FranchiseModel"){
+                console.log("askpincodeToUser:",preferences.data[0].askPincodeToUser);
+               if(preferences.data[0].websiteModel === "FranchiseModel"){
                    this.state ={
                        'franchise' : 'checked',
                    }
-               }else if(preferences.websiteModel === "FranchiseModel"){
-
-               }else{
-                   
-               }
-              
+                   console.log("1.this.state.franchise:",this.state.franchise);
+               }else if(preferences.data[0].websiteModel === "MarketPlace"){                        
+                    this.state ={
+                        'marketplace': 'checked'
+                    }
+               }else if(preferences.data[0].websiteModel === "SingleOwner"){                        
+                    this.state ={
+                        'SingleOwner': 'checked'
+                    }
+                    console.log("3.this.state.SingleOwner:",this.state.SingleOwner);
+               }else if(preferences.data[0].askPincodeToUser === "true"){                        
+                    this.state ={
+                        'askPincodeYes': 'checked'
+                    }
+                    console.log("this.state.askPincodeYes:",this.state.askPincodeYes);
+                }else if(preferences.data[0].askPincodeToUser === "false"){                        
+                    this.state ={
+                        'askPincodeNo': 'checked'
+                    }
+                    console.log("this.state.askPincodeNo:",this.state.askPincodeNo);
+                }    
                
-                this .state = {
-                    "preferences" : preferences,
-                }
-                console.log("this.state.preferences:",this.state.preferences);
             
             }
         })
@@ -104,18 +116,35 @@ class WebsiteModel extends Component {
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Select Website Model <span><i className="astrick">*</i></span></div>
 
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
+                                                        {this.state.SingleOwner === 'checked' ?
+                                                        <input name="websiteModel" type="radio" value="SingleOwner" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                        checked onClick={this.handleChange.bind(this)} />
+                                                        :
                                                         <input name="websiteModel" type="radio" value="SingleOwner" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                         onClick={this.handleChange.bind(this)} />
+                                                        }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Single Owner website</span>
                                                     </div>
+
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
+                                                    {this.state.marketplace === 'checked' ?
+                                                        <input name="websiteModel" type="radio" value="MarketPlace" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                        checked onClick={this.handleChange.bind(this)} />
+                                                        :
                                                         <input name="websiteModel" type="radio" value="MarketPlace" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                         onClick={this.handleChange.bind(this)} />
+                                                    }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Multi vendor Marketplace</span>
                                                     </div>
+
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
+                                                    {this.state.franchise === 'checked' ?
                                                         <input name="websiteModel" type="radio" value="FranchiseModel" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                        onClick={this.handleChange.bind(this)} />
+                                                        checked onClick={this.handleChange.bind(this)} />
+                                                        :
+                                                        <input name="websiteModel" type="radio" value="FranchiseModel" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                        checked onClick={this.handleChange.bind(this)} />
+                                                    }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Franchise Model</span>
                                                     </div>
                                                 </div>
@@ -123,13 +152,24 @@ class WebsiteModel extends Component {
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Ask Pincode To User on Homepage Launch <span><i className="astrick">*</i></span></div>
 
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
-                                                        <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                        onClick={this.handleChange.bind(this)} />
+                                                        {this.state.askPincodeYes === "checked" ?
+                                                            <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            checked onClick={this.handleChange.bind(this)} />
+                                                        :
+                                                            <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            onClick={this.handleChange.bind(this)} />
+                                                        }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Yes</span>
                                                     </div>
+
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
-                                                        <input name="askPincodeToUser" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                        onClick={this.handleChange.bind(this)} />
+                                                        {this.state.askPincodeNo === "false"?
+                                                            <input name="askPincodeToUser" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            checked onClick={this.handleChange.bind(this)} />
+                                                        :
+                                                            <input name="askPincodeToUser" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            onClick={this.handleChange.bind(this)} />
+                                                        }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">No</span>
                                                     </div>
                                                 </div>
