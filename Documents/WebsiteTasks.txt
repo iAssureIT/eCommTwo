@@ -59,3 +59,21 @@
 - When logged in, store the entire user details in localstorage. 
 
 
+
+OnlineStore
+
+1. Remove search icon from Header
+2. After sign up - show welcome message
+3. Sign up button issue 
+4. product details - add rupees sign before product price
+5. Edit product excel sheet - product brand - blank
+6. address form -> add address types - home,office,relative,friend
+7. View Invoice not working
+8. Invoice -> Total- (NAN) error occure
+9. pincode modal - font bold
+
+
+admin
+
+1. Allowable pincode issue solved
+2. Preferences - edit Preferences not working

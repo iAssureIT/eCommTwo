@@ -159,29 +159,31 @@ class Address extends Component {
         axios.get('/api/ecommusers/'+user_ID)
         .then((response)=>{            
             var deliveryAddress = response.data.deliveryAddress.filter((a)=>{return a._id === deliveryAddressID});
-            // console.log("deliveryAddress:====" ,response.data.deliveryAddress);
+            console.log("deliveryAddress:====" ,response.data.deliveryAddress[0]);
 
             // this.getStates(deliveryAddress[0].countryCode);            
             // this.getDistrict(deliveryAddress[0].stateCode,deliveryAddress[0].countryCode)
-            this.setState({
-                "modalname"            : deliveryAddress[0].name,
-                "modalemail"           : deliveryAddress[0].email,
-                "addressLine1"         : deliveryAddress[0].addressLine1,
-                "modaladdressLine2"    : deliveryAddress[0].addressLine2,  
-                "modalPincode"         : deliveryAddress[0].pincode,
-                "modalarea"            : deliveryAddress[0].block,
-                "modaldistrict"        : deliveryAddress[0].district,
-                "modalcity"            : deliveryAddress[0].city,
-                "modalstateCode"       : deliveryAddress[0].stateCode,
-                "modalstate"           : deliveryAddress[0].state,
-                "modalcountryCode"     : deliveryAddress[0].countryCode,
-                "modalcountry"         : deliveryAddress[0].country,
-                "modalmobileNumber"    : deliveryAddress[0].mobileNumber,
-                "modaladdType"         : deliveryAddress[0].addType,
-                "latitude"             : this.state.latitude,
-                "longitude"            : this.state.longitude,
-                
-            })
+            if(deliveryAddress[0]){
+                this.setState({
+                    "modalname"            : deliveryAddress[0].name,
+                    "modalemail"           : deliveryAddress[0].email,
+                    "addressLine1"         : deliveryAddress[0].addressLine1,
+                    "modaladdressLine2"    : deliveryAddress[0].addressLine2,  
+                    "modalPincode"         : deliveryAddress[0].pincode,
+                    "modalarea"            : deliveryAddress[0].block,
+                    "modaldistrict"        : deliveryAddress[0].district,
+                    "modalcity"            : deliveryAddress[0].city,
+                    "modalstateCode"       : deliveryAddress[0].stateCode,
+                    "modalstate"           : deliveryAddress[0].state,
+                    "modalcountryCode"     : deliveryAddress[0].countryCode,
+                    "modalcountry"         : deliveryAddress[0].country,
+                    "modalmobileNumber"    : deliveryAddress[0].mobileNumber,
+                    "modaladdType"         : deliveryAddress[0].addType,
+                    "latitude"             : deliveryAddress[0].latitude,
+                    "longitude"            : deliveryAddress[0].longitude,
+                    
+                })
+            }
         })
         .catch((error)=>{
             console.log('error', error);

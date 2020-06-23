@@ -15,7 +15,7 @@ class WebsiteModel extends Component {
         };
         
     }
-    componentDidMount() {
+    componentWillMount() {
         axios.get("/api/adminpreference/get")
         .then(preferences =>{
             if(preferences){
