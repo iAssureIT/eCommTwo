@@ -1,6 +1,7 @@
 const mongoose	= require("mongoose");
 
 const PurchaseEntry = require('../models/PurchaseEntry');
+const EntityMaster = require('../../../coreAdmin/entityMaster/ModelEntityMaster');
 
 exports.insert_purchaseEntry = (req,res,next)=>{
 	/*PurchaseEntry.find({"purchaseStaff":req.body.purchaseEntry})
@@ -113,21 +114,6 @@ exports.get_datewise_purchaceEntry = (req, res, next)=>{
     console.log("req body = ",req.body);
     const purchaseDate = req.body.purchaseDate;
     var selector = {};
-
-    // if(typeof(req.body.purchaseNumber)  != "undefined" && typeof(req.body.productName) != "undefined"){
-    //     if(req.body.purchaseNumber != "Select Purchase Number" &&  req.body.productName != "Select Product"){
-    //         selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
-    //     }else{
-    //         if(req.body.purchaseNumber != "Select Purchase Number"){
-    //             selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber};
-    //         }else if(req.body.productName != "Select Product"){
-    //             selector ={"purchaseDate":req.body.purchaseDate,"productName":req.body.productName};
-    //         }
-    //     }
-    // }else{
-    //     selector ={"purchaseDate":req.body.purchaseDate};
-    // }
-
     if(typeof(req.body.purchaseNumber) != "undefined" && typeof(req.body.productName) != "undefined"){
         selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
     }else{

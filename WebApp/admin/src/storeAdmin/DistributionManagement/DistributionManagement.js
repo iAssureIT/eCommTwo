@@ -1,58 +1,99 @@
-import React, { version } from 'react';
+import React from 'react';
 import './PurchaseManagement.css';
+import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import swal from 'sweetalert';
 import axios from 'axios';
-import moment from 'moment';
-import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
+import jQuery from 'jquery';
 import $ from 'jquery';
+import moment from 'moment';
 
 export default class DistributionManagement extends React.Component {
+
 	constructor(props) {
 		super(props);
 		  this.state = {
-					currentDate           : '',
-					selectedFranchise  : 'Select Franchise',
-					DistributionData :[],
-					FranchiseData :[],
-					totalDemand:0,
-					totalSupply:0,
-					user_id:''
-
+			      	amount : '',
+                    purchaseDate : '',
+                    currentDate:'',
+			      	purchaseStaff : '',
+			      	purchaseLocation : '',
+			      	quantity : '',
+			      	unitRate : '',
+			      	Details:'',
+			      	purchaseNumber:'',
+			      	product : '',
+			      	Units : 'Kg',
+			      	serchByDate:moment(new Date()).format("YYYY-MM-DD"),
+			      	"twoLevelHeader"    : {
+						            apply  : false,
+						           },
+		             "tableHeading"     : {
+						date            : 'Purchase Date',
+						PurchaseNumber  : 'Purchase Number',
+						Details         : 'Details',
+						Supplier        : 'Supplier',
+						PurchasedBy     : 'Purchased By',
+						productName     : "Product Name",
+						UnitRate        : 'Unit Rate',
+						Quantity        : 'Quantity',
+						TotalAmount     : 'Total Amount',
+						actions        	: 'Action',
+					},
+					"tableObjects" 		: {
+						deleteMethod              : 'delete',
+		                apiLink                   : '/api/purchaseentry',
+		                paginationApply           : false,
+		                searchApply               : false,
+		                editUrl                   : '/purchase-management'
+					},
+		            "startRange"        : 0,
+		            "limitRange"        : 10, 
+		            "editId"                    : this.props.match.params ? this.props.match.params.purchaseId : '',
+		            blockActive			: "all",
+		            "listofRoles"	    : "",
+		            adminRolesListData  : [],
+		            checkedUser  : [],
+		            activeswal : false,
+		            blockswal : false,
+		            confirmDel : false,
+					tableData : "",
+					PoNumbersArray:[],
+					selectedPurchaseNum :'Select Purchase Number',
+					selectedProductName : 'Select Product',
+					filterData : {},
+					PurchaseNumberArray:[],
+					totalPoAmount : 0,
+					ItemCode   : ''
+			      	
       };
 	}
-    
+	
+
 	componentDidMount(){
-		var currentDate = moment().startOf('day').format("YYYY-MM-DD");
-		document.getElementsByClassName('date').value = moment().startOf('day').format("YYYY-MM-DD") ;
-		const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-		this.setState({
-			currentDate:currentDate,
-			user_id : userDetails.user_id,
-		},()=>{
-			this.getAllfrachiseData();
-			console.log("currentDate",this.state.currentDate);
-		 });
+		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
+		var editId = this.props.match.params.purchaseId;
+        this.getData();
+        this.getAllfrachiseData();
+		
 	}
 	componentWillReceiveProps(nextProps) {
-        // var editId = nextProps.match.params.finishedGoodId;
-        // if(nextProps.match.params.finishedGoodId){
-        //   this.setState({
-        //     editId : editId
-        //   })
-        //   this.edit(editId);
-        // }
-	}
+        var editId = nextProps.match.params.purchaseId;
+        if(nextProps.match.params.purchaseId){
+          this.setState({
+            editId : editId
+          })
+          this.edit(editId);
+        }
+    }
 
-	getAllfrachiseData(){
-		var dateOfOrder = moment(new Date(this.state.currentDate)).format("YYYY-MM-DD");
+    getAllfrachiseData(){
+		var dateOfOrder = moment(new Date(this.state.serchByDate)).format("YYYY-MM-DD");
 		 axios.get('/api/franchisepo/get/purchaseorderList/'+dateOfOrder)
           .then((franchisePurOrders) => {
 					var FranchiseData = [];
 					var DistributionData = [];
 					var FranchiseOrderedData = []; 
 					franchisePurOrders.data.filter(function(item,index){
-						console.log("franchisePurOrders.data",item.franchiseData[0].companyName);
-
 						var i = FranchiseData.findIndex(x => x.name == item.franchiseData[0].companyName);
 						if(i <= -1){
 							FranchiseData.push({franchiseId: item.franchise_id, franchiseName: item.franchiseData[0].companyName});
@@ -60,9 +101,12 @@ export default class DistributionManagement extends React.Component {
 						return null;
 					});
 
-					var franchisePurOrdersdata = franchisePurOrders.data;
-					for (var i = 0; i < franchisePurOrdersdata.length; i++) {
+                    var franchisePurOrdersdata = franchisePurOrders.data;
+                    console.log("franchisePurOrders.data",franchisePurOrders.data);
 
+					for (var i = 0; i < franchisePurOrdersdata.length; i++) {
+                        var orderDate = moment(franchisePurOrdersdata[i].orderDate).format("YYYY-MM-DD");
+                        franchisePurOrdersdata[i].orderDate = orderDate;
 						for (var j = 0; j < franchisePurOrdersdata[i].orderItems.length; j++) {
 							franchisePurOrdersdata[i].orderItems[j].franchiseId = franchisePurOrdersdata[i].franchise_id;
 							franchisePurOrdersdata[i].orderItems[j].supply = 0;
@@ -71,10 +115,10 @@ export default class DistributionManagement extends React.Component {
 					}
 
 					this.setState({
-						"DistributionData" : DistributionData,
+						"DistributionData" : franchisePurOrders.data,
 						"FranchiseData" : FranchiseData
 					},()=>{
-						this.getFooterTotal();
+						
 					 });
 			})
 			.catch(error=>{
@@ -82,192 +126,96 @@ export default class DistributionManagement extends React.Component {
 			})
 	}
 
-	getFooterTotal(){
-		var franchise = this.state.selectedFranchise;
-		let demand = this.state.DistributionData.reduce((prev, current) => {
-			if (current.franchiseId === franchise) {
-			  return prev + +current.orderQty;
-			}
-			return prev;
-		  }, 0); 
 
-	    let supply = this.state.DistributionData.reduce(function(prev, current) {
-			if (current.franchiseId === franchise) {
-				return prev + +current.supply
-			}
-			return prev;
-		}, 0); 
-		
-		this.setState({
-			"totalDemand":demand,
-			"totalSupply":supply
-		});
 
-	}
-   
-	handleChange(event){
-	  event.preventDefault();
-	  var franchise = this.state.selectedFranchise;
-	  var date = this.state.currentDate;
-	  var supplyValue = event.target.value;
-	  var index  	 = event.target.name.split("-")[1];
-	  var DistributionData = this.state.DistributionData; 
 	
-		  if(DistributionData[index].currentStock < supplyValue){
-			DistributionData[index].supply = DistributionData[index].currentStock;
-		  }else{
-			DistributionData[index].supply = supplyValue;
-		  }
-	
-	  this.setState({"DistributionData" : DistributionData});
-	  let supply = DistributionData.reduce(function(prev, current) {
-		if (current.franchiseId === franchise) {
-			return prev + +current.supply
+	getData(startRange, limitRange){ 
+		var dateToSearch=this.state.serchByDate;
+		var filterData = this.state.filterData;
+		if(this.state.selectedPurchaseNum != "Select Purchase Number"){
+			filterData.purchaseNumber = this.state.selectedPurchaseNum;
 		}
-		return prev;
-	  }, 0); 
-	
-	  this.setState({
-		"totalSupply":supply
-	  },()=>{
-		this.getFooterTotal();
-	 });
-	  
+
+		if(this.state.selectedProductName != "Select Product"){
+			filterData.productName = this.state.selectedProductName;
+		}
+
+		filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
+		axios
+		.post('/api/purchaseentry/post/datewisepurchase/',filterData)
+		.then((response)=>{
+			var  tableData = response.data ;
+				var tableData = tableData.map((a, i) => {
+						return {
+							_id                  :a._id,
+							date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
+							PurchaseNumber 		: a.purchaseNumber ? a.purchaseNumber : "" ,
+							Details 			: a.Details ,
+							Supplier            : a.purchaseLocation,
+							PurchasedBy 		: a.purchaseStaff ? a.purchaseStaff : "" ,
+							productName 		: a.productName,
+							UnitRate 	        : a.unitRate ,
+							Quantity 			: a.quantity +' '+ a.unit,
+							TotalAmount         : a.amount,
+						}
+				});
+				var PoNumbersArray = [];
+				console.log("list===>",tableData);
+				tableData.filter(function(item,index){
+					var i = PoNumbersArray.findIndex(x => x.PurchaseNumber == item.PurchaseNumber);
+					if(i <= -1){
+						PoNumbersArray.push(item.PurchaseNumber);
+					}
+					return null;
+				});
+
+				let totalAmount = tableData.reduce(function(prev, current) {
+						return prev + +current.TotalAmount
+				}, 0);
+
+				this.setState({ 
+				   tableData 		: tableData,  
+				   PoNumbersArray   : PoNumbersArray,
+				   totalPoAmount      : totalAmount        
+				},()=>{
+					
+				});
+			})
+		.catch((error)=>{
+			console.log("error = ", error);              
+		}); 
+		
+    }
+  
+	handleChangeDate(event){
+      event.preventDefault();
+      var dateVal = event.target.id;
+	  const {name,value} = event.target;
+      this.setState({ 
+        [name]:value,
+ 
+      },()=>{
+		this.getData();
+        this.getAllfrachiseData();
+      });
     }
 
-  
-    Submit(event){
-        event.preventDefault();
-        var orderArray = [];
-    	for (var i = 0; i < this.state.DistributionData.length; i++) {
-			var obj = {};
-			if(this.state.DistributionData[i].supply){
-				obj.productCode 	= this.state.DistributionData[i].productCode;
-				obj.itemCode 		= this.state.DistributionData[i].itemCode;
-				obj.productName 	= this.state.DistributionData[i].productName;
-				obj.currentStock 	= this.state.DistributionData[i].currentStock;
-				obj.orderQty 		= this.state.DistributionData[i].orderQty;
-				obj.suppliedQty 	= this.state.DistributionData[i].supply;
-				orderArray.push(obj);
-			}
-    		
-    	}
-    	var formValues = {
-			distributionDate 	: this.state.currentDate,
-			deliveryChallanNo   : "DC"+Math.floor(100000 + Math.random() * 900000),
-			franchiseId         : this.state.selectedFranchise,
-			createdBy 	        : this.state.user_id,
-			totalDemand         : this.state.totalDemand,
-			totalSupply         : this.state.totalSupply,
-    		orderItems	        : orderArray,
-    		
-    	};
-        axios
-			.post('/api/franchisegoods/post',formValues)
-		  	.then(function (response) {
-		    // handle success
-				console.log("data in block========",response.data);
-				var franchiseGoodsId = response.data.franchiseGoodsId;
-				window.location.href = "/franchise_delivery_challan/"+response.data.franchiseGoodsId; 
-		    	swal("Thank you. Your Data addeed successfully.");
-		    	 // window.location.reload();
-		  	})
-		  	.catch(function (error) {
-		    // handle error
-		    	console.log(error);
-		  	});
-		  	this.setState({
-				 "date" 		        : '',
-      	         "ItemCode" 	        : '',
-      			 "PackageWeight"        : '',
-      			 "Quantity" 			: '',
-      			 "productName" 	        : '',
-      			 "Unit" 		     	: '',
-      	 })	
-	}
-
-    previousDate(event){
-        event.preventDefault();
-		var selectedDate1 = $(".date").val();
-        this.setState({currentDate: moment(selectedDate1).subtract(1, "days").format("YYYY-MM-DD")}, () => {
-            this.getFooterTotal();
-		});
-		this.getAllfrachiseData();
-      }
-    nextDate(event){
-        event.preventDefault();
-        var selectedDate1 = $(".date").val();
-        this.setState({currentDate: moment(selectedDate1).add(1, "days").format("YYYY-MM-DD")}, () => {
-            this.getFooterTotal();
-		});
-		this.getAllfrachiseData();
-	}
-	  
-	handleSelectChange(event){
-		var selectedValue = event.target.value;
-		this.setState(
-			{"selectedFranchise" : event.target.value},
-		()=>{
-			this.getFooterTotal();
-		});
-		
-	}
-	 
-	 onReset(event){
+    edit(event){
 		event.preventDefault();
-		var DistributionData = this.state.DistributionData; 
-		DistributionData.map((result, index)=>{
-			DistributionData[index].supply = 0;
-		});
-		
-		this.setState({"DistributionData" : DistributionData});
-		let supply = this.state.DistributionData.reduce(function(prev, current) {
-			return 0;
-		  }, 0); 
-		
-		this.setState({
-			"totalSupply":supply
-		},()=>{
-		 });
-	 }
+		var id = event.target.id;
+		this.props.history.push("/franchise_distribution/"+id);
+	}
 
-	 autoDistribute(event){
-		event.preventDefault();
-		var DistributionData = this.state.DistributionData; 
-		var franchise = this.state.selectedFranchise;
-		var date = this.state.currentDate;
+    deletePO(){
 
-		DistributionData.map((result, index)=>{
-			if(result.currentStock >= result.orderQty){
-				DistributionData[index].supply = result.orderQty;
-			}else{
-				DistributionData[index].supply = result.currentStock;
-			}
-			
-		});
+    }
 
-		let supply = DistributionData.reduce(function(prev, current) {
-			if (current.franchiseId === franchise) {
-				return prev + +current.supply
-			}
-			return prev;
-		}, 0); 
-		this.setState({
-			"totalSupply":supply,
-			"DistributionData" : DistributionData
-		},()=>{
-			this.getFooterTotal();
-		 });
+    getViewData(event){
+        event.preventDefault();
+        var id = event.target.id;
+        this.props.history.push("/franchise_delivery_challan/"+id);
+    }
 
-	 }
-
-	 onChageDate(e){
-		this.setState({
-			currentDate : e.target.value
-		},()=>{
-			this.getAllfrachiseData();
-		 });
-	 }
 
 
 	render() {
@@ -278,102 +226,60 @@ export default class DistributionManagement extends React.Component {
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                             <h4 className="">Distribution Management</h4>
                         </div>
-                        <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20">
-								<div className="row">
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-                                        <button className="btn btn-primary autoDistributebtn mt" onClick={this.autoDistribute.bind(this)}>Auto Distribute</button>
-									</div>
-									<div className="form-group col-lg-4 col-md-3 col-xs-12 col-sm-12">
-                                        <label >Ordered Date</label>
-                                        <div class="input-group">
-                                            <span onClick={this.previousDate.bind(this)} class="commonReportArrowPoiner input-group-addon" id="basic-addon1">
-                                                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-                                            </span>
-                                            <input name="date" type="date" class="date form-control" defaultValue={this.state.currentDate}  onChange={this.onChageDate.bind(this)}/>
-                                            <span onClick={this.nextDate.bind(this)} class="commonReportArrowPoiner input-group-addon" id="basic-addon1">
-                                                   <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                                            </span>
-                                        </div>
-									</div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12"> 
-										<label>Select Franchise : </label>
-										<select value={this.state.selectedFranchise} className="col-lg-12 col-md-9 col-sm-12 col-xs-12 pull-right form-control" onChange={this.handleSelectChange.bind(this)}>
-										    <option defaultValue="">Select Franchise</option>
-											{
-											Array.isArray(this.state.FranchiseData) && this.state.FranchiseData.length > 0
-									    	? 
-									    		this.state.FranchiseData.map((result, index)=>{
-													return(  <option value={result.franchiseId}> {result.franchiseName} </option> );
-												})
-											: <option disabled>{"No franchise"}</option>
-											}
-										</select>
-								    </div>
-									<div className="form-group col-lg-2 col-md-3 col-xs-12 col-sm-12">
-										<input type="reset" value="Reset" className="btn btn-default mt pull-right" onClick={this.onReset.bind(this)}/>
-									</div>
-								</div>
-								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
-									<div className="table-responsive">          
-										<table className="table table-bordered table-striped table-hover">
-											<thead className="thead-light text-center bg-primary">
-												<tr>
-													<th rowspan="2">Product Name </th>
-													<th rowspan="2">Product Code </th>
-													<th rowspan="2">Item Code </th>
-													<th rowspan="2">Total Stock</th>
-													<th colspan="2">{this.state.selectedFranchise}</th>
-												</tr>
-												<tr>
-													<th>Demand </th>
-													<th>Supply</th>
-												</tr>
-											</thead>
-											<tbody>
-											{
-									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
-									    	? 
-									    		this.state.DistributionData.map((result, index)=>{
-													return( 
-													    result.franchiseId === this.state.selectedFranchise  ? 
-																<tr key={index}>
-																	<td>{result.productCode}</td>
-																	<td>{result.itemCode}</td>
-																	<td>{result.productName}</td>
-																	<td style={{fontWeight:'bold'}}>{result.currentStock} </td>
-																	<td style={{fontWeight:'bold'}}>{result.orderQty} </td>
-																	<td><input type="number"  name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0"/></td>															
-																</tr>
-															:
-																null
-													
-														)
-												})
-											:
-												null
-											  
-	                                        }
-											</tbody>
-											<tfoot style={{fontWeight:'bold'}}>
-												<tr>
-													<td colspan="4">Total</td>
-													<td>
-                                                      {this.state.totalDemand}
-													</td>
-													<td>{this.state.totalSupply}</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-									<div className="col-lg-12col-md-12 col-sm-12 cool-xs-12">
-                                       <button className="btn btn-primary col-lg-4 col-md-4 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
-                           </div> 
-								</div>
-                            </form>
-                        </div>
-			
-                       
+						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+						</div>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
+						  <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+							<label>Ordered Date:</label>
+							{/* <div className="form-group"> */}
+							 <input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.serchByDate} name="serchByDate" refs="serchByDate" onChange={this.handleChangeDate.bind(this)} id="serchByDate"/>
+                            {/* </div> */}
+						  </div>
+						</div>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div className="table-responsive">          
+								<table className="table table-bordered table-striped table-hover">
+									<thead className="thead-light text-center bg-primary">
+                                        <tr>
+                                            <th>Sr No.</th>
+                                            <th>Ordered Date</th>
+                                            <th>Franchise Name</th>
+                                            <th>Ordered Items </th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                       
+									</thead>
+								    <tbody>
+                                    {
+                                        Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
+                                        ? 
+                                            this.state.DistributionData.map((result, index)=>{
+                                                 console.log("result",result.orderItems.length);
+                                                return(
+                                                    <tr key={index}>
+														<td>{index + 1}</td>
+                                                        <td>{result.orderDate}</td>
+                                                        <td>{result.franchiseData[0].companyName}</td>
+                                                        <td style={{fontWeight:'bold'}}>{result.orderItems.length} </td>
+                                                        <td>status</td>
+                                                        <td>
+                                                            <span>
+																<i className="fa fa-pencil" title="Edit" id={result._id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp;
+													    		<i className="fa fa-trash redFont " id={result._id} onClick={this.deletePO.bind(this)}></i>&nbsp; &nbsp;
+													    		<i className="fa fa-eye" id={result._id} onClick={this.getViewData.bind(this)}></i>
+															</span>
+                                                        </td>
+													</tr>
+                                                )
+                                            })
+                                        : null
+                                    }
+                                    </tbody>
+                            </table>
+                            </div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -14,7 +14,7 @@ const PurchaseEntrySchema = mongoose.Schema({
     amount                    : Number,
     unitRate                  : Number,
     Details                   : String,
-    purchaseNumber            : Number,
+    purchaseNumber            : String,
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,
 });

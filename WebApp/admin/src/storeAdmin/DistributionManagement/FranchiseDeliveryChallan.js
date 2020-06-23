@@ -14,9 +14,10 @@ export default class DistributionManagement extends React.Component {
                     FranchiseId       : '',
                     DeliveryChallanNo : '',
 					DistributionDate  :'',
-					FranchiseData     :[],
-					totalDemand       :0,
-					totalSupply       :0,
+					FranchiseData     : [],
+					totalDemand       : 0,
+                    totalSupply       : 0,
+                    totalRemain       : 0,
 					user_id           :''
 
       };
@@ -36,6 +37,10 @@ export default class DistributionManagement extends React.Component {
                   var FranchiseOrderedData = []; 
                   if(franchiseData){
                     console.log("franchiseData",franchiseData);
+                    let remain = franchiseData.data.orderItems.reduce(function(prev, current) {
+                        return prev + +current.remainQty
+                    }, 0); 
+
                     this.setState({
                         "FranchiseData"     : franchiseData.data.orderItems,
                         "DeliveryChallanNo" : franchiseData.data.deliveryChallanNo,
@@ -43,13 +48,17 @@ export default class DistributionManagement extends React.Component {
                         "FranchiseId"       : franchiseData.data.franchiseId,
                         "totalDemand"       : franchiseData.data.totalDemand,
                         "totalSupply"       : franchiseData.data.totalSupply,
+                        "totalRemain"       : remain,
+                        
                     },()=>{
 
                     });
                   }
+
+                
           })
           .catch(error=>{
-              console.log("error in getCurrentStock = ", error);
+              console.log("error in franchise Challan = ", error);
           })
     }
 
@@ -81,12 +90,13 @@ export default class DistributionManagement extends React.Component {
 								<table className="table table-bordered table-striped table-hover">
 									<thead className="thead-light text-center bg-primary">
                                         <tr>
-                                            <th rowspan="2">Product Name </th>
-                                            <th rowspan="2">Product Code </th>
-                                            <th rowspan="2">Item Code </th>
+                                            <th rowSpan="2">Product Name </th>
+                                            <th rowSpan="2">Product Code </th>
+                                            <th rowSpan="2">Item Code </th>
                                             {/* <th rowspan="2">Total Stock</th> */}
                                             <th>Demand </th>
                                             <th>Supply</th>
+                                            <th>Remain</th>
                                         </tr>
                                        
 									</thead>
@@ -103,7 +113,8 @@ export default class DistributionManagement extends React.Component {
                                                         <td>{result.itemCode}</td>
                                                         {/* <td style={{fontWeight:'bold'}}>{result.currentStock} </td> */}
                                                         <td>{result.orderQty} </td>
-                                                        <td>{result.suppliedQty}</td>															
+                                                        <td>{result.suppliedQty}</td>
+                                                        <td>{result.remainQty}</td>															
 													</tr>
                                                 )
                                             })
@@ -112,9 +123,10 @@ export default class DistributionManagement extends React.Component {
                                     </tbody>
                                     <tfoot style={{fontWeight:'bold'}}>
                                         <tr>
-                                            <td colspan="3">Total</td>
+                                            <td colSpan="3">Total</td>
                                             <td>{this.state.totalDemand}</td>
                                             <td>{this.state.totalSupply}</td>
+                                            <td>{this.state.totalRemain}</td>
                                         </tr>
 									</tfoot>
                             </table>

@@ -1,5 +1,8 @@
-const mongoose      = require("mongoose");
-var   ObjectId      = require('mongodb').ObjectID;
+const mongoose       = require("mongoose");
+var   ObjectId       = require('mongodb').ObjectID;
+const EntityMaster   = require('../../../coreAdmin/entityMaster/ModelEntityMaster');
+const FranchiseGoods = require('../../distributionManagement/Model');
+
 
 const FranchisePO   = require('./Model');
 
@@ -216,23 +219,36 @@ exports.list_franchisePO = (req,res,next)=>{
 
 
 exports.list_allfranchisePO = (req,res,next)=>{
-   
-    var orderDate    = req.params.orderDate;
+   var orderDate    = req.params.orderDate;
+   FranchisePO.aggregate([
+        {$match : { orderDate : new Date(orderDate)}},
+        {$lookup: {from: "entitymasters",localField: "franchise_id",foreignField: "_id",as: "franchiseData"}},
+        //{$unwind: "$franchisegoods"},
+        //{$lookup: {from: "franchisegoods",localField: "_id",foreignField: "purchaseOrderId",as: "finishedGoodsData"}},
+   ])
+   .then(data=>{
 
-    FranchisePO
-        .find({
-               
-                orderDate : new Date(orderDate)
-            })       
-        .then(data=>{
-            res.status(200).json(data);
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+          error: err
         });
+   });
+    // FranchisePO
+    //     .find({
+    //             orderDate : new Date(orderDate)
+    //         })       
+    //     .then(data=>{
+    //         res.status(200).json(data);
+    //     })
+    //     .catch(err =>{
+    //         console.log(err);
+    //         res.status(500).json({
+    //             error: err
+    //         });
+    //     });
 };
 
 exports.allFrachisePOData = (req,res,next)=>{   
@@ -252,7 +268,10 @@ exports.allFrachisePOData = (req,res,next)=>{
 
 exports.one_franchisePO = (req,res,next)=>{
     var purchaseorder_id    = req.params.purchaseorder_id;
-
+   //  PurchaseEntry.aggregate([
+   //      {$match : {"_id":req.params.fetchId}},
+   //      {$lookup: {from: "entitymasters",localField: "franchise_id",foreignField: "_id",as: "franchiseData"}},
+   // ])
     FranchisePO
         .findOne({_id : purchaseorder_id})
         .then(data=>{

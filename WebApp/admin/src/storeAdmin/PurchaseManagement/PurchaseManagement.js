@@ -73,8 +73,12 @@ export default class PurchaseManagement extends React.Component {
 		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
 		
 		var editId = this.props.match.params.purchaseId;
+		var PurchaseNumber = "PO"+Math.floor(100000 + Math.random() * 900000);
 		this.getData();
-		this.getPurNumberList();
+
+		this.setState({
+			purchaseNumber : PurchaseNumber
+        });
 
 		$.validator.addMethod("noSpace", function(value, element) { 
 			return value == '' || value.trim().length != 0;
@@ -166,7 +170,7 @@ export default class PurchaseManagement extends React.Component {
         var editId = nextProps.match.params.purchaseId;
         if(nextProps.match.params.purchaseId){
           this.setState({
-            editId : editId
+			editId : editId,
           })
           this.edit(editId);
         }
@@ -294,7 +298,7 @@ export default class PurchaseManagement extends React.Component {
         [name]:value,
  
       },()=>{
-		this.getData();
+		//this.getData();
 
       });
     }
@@ -304,17 +308,21 @@ export default class PurchaseManagement extends React.Component {
       // const datatype = event.target.getAttribute('data-text');
 	  const {name,value} = event.target;
 	  var itemCode;
+	  var unit;
 
 	  if(name == "product"){
 		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
 		$(".productDatalist option").filter(function(index,item){
 			if(item.value == event.target.value){
 			itemCode =$(item).data('itemcode');
+			unit = $(item).data('unit');
 			}
 		});
 
+
 		this.setState({ 
 		"ItemCode":itemCode,
+		"Units":unit
 		},()=>{
 		});
      }
@@ -322,7 +330,7 @@ export default class PurchaseManagement extends React.Component {
       this.setState({ 
         [name]:value,
 	  },()=>{
-		this.getData();
+		//this.getData();
 	   });
 	}
 	filterChange(event){
@@ -341,7 +349,7 @@ export default class PurchaseManagement extends React.Component {
 
     }
     handleProduct1(event){
-    	var valpurchaseLocation = event.currentTarget.value;
+		var valpurchaseLocation = event.currentTarget.value;
 		this.setState({purchaseLocation : valpurchaseLocation});
 
 	}
@@ -364,7 +372,8 @@ export default class PurchaseManagement extends React.Component {
             	// console.log("proname---",proname);
             	var ProductsNames=proname.Split('<')[0];
             	console.log("ProductsNames",ProductsNames);
-            }*/
+			}*/
+		
 			this.setState({
 				productArray: response.data
 			})
@@ -425,7 +434,7 @@ export default class PurchaseManagement extends React.Component {
 	update(event){
         event.preventDefault();
         var formValues = {
-             "amount"         	: this.state.amount ,
+            "amount"         	: this.state.amount ,
 	        "purchaseDate" 		: this.state.purchaseDate,
 	      	"purchaseStaff" 	: this.state.purchaseStaff,
 	      	"purchaseLocation"  : this.state.purchaseLocation,
@@ -542,7 +551,7 @@ export default class PurchaseManagement extends React.Component {
                                                     this.state.productArray && this.state.productArray.length > 0 ?
                                                         this.state.productArray.map((data, i)=>{
                                                             return(
-                                                                <option value={data.productName} data-itemCode={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+                                                                <option value={data.productName} data-itemCode={data.itemCode} data-unit={data.unit}>{data.productName} - {data.productCode} - {data.itemCode}</option>
                                                             );
                                                         })
                                                     :

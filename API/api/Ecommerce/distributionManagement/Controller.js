@@ -9,6 +9,7 @@ exports.insert_franchise_goods = (req,res,next)=>{
                 distributionDate          : req.body.distributionDate,
                 deliveryChallanNo         : req.body.deliveryChallanNo,
                 franchiseId               : req.body.franchiseId,
+                purchaseOrderId           : req.body.purchaseOrderId,
                 totalDemand               : req.body.totalDemand,
                 totalSupply               : req.body.totalSupply,
                 orderItems                : req.body.orderItems,

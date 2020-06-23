@@ -28,8 +28,8 @@ export default class FinishedGoods extends React.Component {
 		             "tableHeading"     : {
 		                Date            : "Date",
 		        		productName     : "Product Name – Product Code - Item Code",
-						InwardStock  	: "Inward",
-						OutwardStock    : "Outward",
+						InwardStock  	: "Finished Goods",
+						OutwardStock    : "Raw Material",
 						Quantity        : "Quantity",
 						Weight          : "Weight",
 						Scrap           : "Scrap",
@@ -553,9 +553,7 @@ export default class FinishedGoods extends React.Component {
 									    <label>Current Stock</label>
 										<input type="text"  className="form-control"  value={ this.state.currentStock} name="currentStock" id="currentStock" readOnly/>
 									</div>
-								</div>
-								<div className="row mtop25">
-								<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 										<label >Outward From Raw Material <i className="redFont">*</i></label>
 										<div className="outwardRawMatDiv">
 											<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.outwardFromRaw} name="outwardFromRaw" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
@@ -568,8 +566,10 @@ export default class FinishedGoods extends React.Component {
 											</select>
 										</div>
 									</div>
+								</div>
+								<div className="row mtop25">
 									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label>Weight Per Unit <i className="redFont">*</i></label>
+										<label>Weight Per Finished Product Unit <i className="redFont">*</i></label>
 										<div className="WeightPerUnitDiv">
 											<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.weight} name="weight" refs="weight" onChange={this.handleChange.bind(this)} id="weight" onBlur={this.calculateTotalWeight.bind(this)} min="1"/>
 											<select id="wtPerUnit"  name="wtPerUnit" value={this.state.wtPerUnit} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" onBlur={this.calculateTotalWeight.bind(this)}>
@@ -582,7 +582,7 @@ export default class FinishedGoods extends React.Component {
 										</div>
 									</div>
 									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Total Quantity <i className="redFont">*</i></label>
+										<label >Total Finished Quantity  <i className="redFont">*</i></label>
 										<input type="number" placeholder="12345678" className="form-control" value={ this.state.Quantity} name="Quantity" refs="Quantity" onChange={this.handleChange.bind(this)} id="Quantity" onBlur={this.calculateTotalWeight.bind(this)} min="1"/>
 									</div>
 									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
@@ -598,10 +598,8 @@ export default class FinishedGoods extends React.Component {
 											</select>
 										</div>
 									</div>
-								</div>
-								<div className="row mtop25">
-								   <div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label>Scrap material</label>
+									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+										<label>Scrap Material</label>
 										<div className="scrapMaterialDiv">
 											<input type="number" placeholder="Enter Scrap" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrap} name="scrap" refs="scrap" onChange={this.handleChange.bind(this)} id="scrap" min="0" onBlur={this.calculateTotalWeight.bind(this)}/>
 											<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
@@ -613,12 +611,14 @@ export default class FinishedGoods extends React.Component {
 											</select>
 										</div>
 									</div>
+								</div>
+								<div className="row mtop25">
 								    <div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Entered By <i className="redFont">*</i></label>
+										<label >Finished By <i className="redFont">*</i></label>
 										<input type="text" placeholder="Enter staff" className="form-control" value={ this.state.paidBy} name="paidBy" refs="paidBy" onChange={this.handleChange.bind(this)} id="paidBy"/>
 									</div>
 								</div>
-								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
+								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
 									{this.state.editId ?
                                     <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
                                     :

@@ -5,6 +5,7 @@ const FranchiseGoodsSchema = mongoose.Schema({
     distributionDate          : Date,
     deliveryChallanNo         : String,
     franchiseId               : String,
+    purchaseOrderId           : String,
     totalDemand               : String,
     totalSupply               : String,
     orderItems                : Array,/*_id from productMaster*/
