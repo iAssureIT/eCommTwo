@@ -216,6 +216,7 @@ exports.count_category = (req,res,next)=>{
     });
 };
 exports.fetch_category = (req,res,next)=>{
+    console.log("insode fetch category");
     Category.findOne({_id : req.params.categoryID})
     .exec()
     .then(data=>{

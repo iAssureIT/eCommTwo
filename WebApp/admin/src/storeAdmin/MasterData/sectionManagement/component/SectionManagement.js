@@ -42,15 +42,15 @@ class SectionManagement extends Component {
     });
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   var editId = nextProps.match.params.sectionID;
-  //   if (nextProps.match.params.sectionID) {
-  //     this.setState({
-  //       editId: editId
-  //     })
-  //     this.edit(editId);
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    var editId = nextProps.editId;
+    if (editId) {
+      this.setState({
+        editId: editId
+      })
+      this.edit(editId);
+    }
+  }
 
   componentDidMount() {
     this.setState({
@@ -159,7 +159,7 @@ class SectionManagement extends Component {
       axios.post('/api/sections/post', formValues)
         .then((response) => {
           swal({
-            title: response.data.message,
+            text: response.data.message,
           });
           this.setState({
             "section": '',
@@ -179,7 +179,7 @@ class SectionManagement extends Component {
     event.preventDefault();
     if ($('#sectionManagement').valid()) {
       var formValues = {
-        "sectionID"   : this.props.match.params.sectionID,
+        "sectionID"   : this.state.editId,
         "section"     : this.state.section,
         "sectionRank" : this.state.sectionRank,
       }
@@ -187,7 +187,7 @@ class SectionManagement extends Component {
       axios.patch('/api/sections/patch', formValues)
         .then((response) => {
           swal({
-            title: response.data.message,
+            text: response.data.message,
           });
           this.getData(this.state.startRange, this.state.limitRange);
           this.setState({
@@ -253,27 +253,27 @@ class SectionManagement extends Component {
                   
                       <div className="col-lg-12 col-md-12 marginTopp NOpadding">
                       <form id="sectionManagement" className="">
-                          <div className="col-lg-5">
+                          <div className="col-lg-5 fieldWrapper">
                             <div className="col-lg-12">
                               <label>Section Title <i className="redFont">*</i></label>
                               <input value={this.state.section} name="section" id="section" onChange={this.createsectionUrl.bind(this)} type="text" className="form-control edit-catg-new" placeholder="Section Title" ref="section" />
                             </div>
                           </div>
-                          <div className="col-lg-5">
+                          <div className="col-lg-5 fieldWrapper">
                             <div className="col-lg-12">
                               <label>Section URL <i className="redFont">*</i></label>
                               <input disabled value={this.state.sectionUrl} onChange={this.handleChange.bind(this)} id="sectionUrl" name="sectionUrl" type="text" className="form-control sectionUrl" placeholder="Section URL" ref="sectionUrl" />
                             </div>                            
                           </div>
-                          <div className="col-lg-12">
+                          <div className="col-lg-12 fieldWrapper">
                             <div className="col-lg-10">
                                   <label>Section Rank <i className="redFont">*</i></label>                                                                    
                                   <input value={this.state.sectionRank} onChange={this.handleChange.bind(this)} id="sectionRank" name="sectionRank" type="number" className="form-control sectionRank" placeholder="Section Rank" ref="sectionRank"  />
                             </div>
                           </div>
                         
-                          <div className="col-lg-2">
-                            <div className="col-lg-12">
+                          <div className="col-lg-12">
+                            <div className="col-lg-4 btnWrapper pull-right">
                             <label>&nbsp;</label>
                               {
                                 this.state.editId ?

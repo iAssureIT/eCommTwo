@@ -3,7 +3,7 @@ import $                      from 'jquery';
 import jQuery                 from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
-import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
+import IAssureTable           from '../../../coreadmin/IAssureTable/IAssureTable.jsx';
 // import _                      from 'underscore';
 import 'bootstrap/js/tab.js';
 
@@ -25,7 +25,8 @@ class TaxName extends Component {
               },
               "startRange"                : 0,
               "limitRange"                : 10,
-              "editId"                    : this.props.match.params ? this.props.match.params.id : ''
+              "editId"                    : this.props.editId ? this.props.editId : ''
+            //   "editId"                    : this.props.match.params ? this.props.match.params.id : ''
         };
     }
     componentDidMount() {

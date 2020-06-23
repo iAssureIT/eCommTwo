@@ -11,7 +11,11 @@ class WebsiteModel extends Component {
         this.state = {
             "editId"           : "",
             "askPincodeToUser" : "",
-            "preferences"       : "",
+            "preferences"      : "",
+            "franchise"        : "",
+            "marketplace"      : "",
+            "SingleOwner"      : "",
+
         };
         
     }
@@ -23,16 +27,16 @@ class WebsiteModel extends Component {
                 var askpincodeToUser = preferences.data[0].askPincodeToUser;
                 console.log("askpincodeToUser:",preferences.data[0].askPincodeToUser);
                if(preferences.data[0].websiteModel === "FranchiseModel"){
-                   this.state ={
+                   this.setState = {
                        'franchise' : 'checked',
                    }
                    console.log("1.this.state.franchise:",this.state.franchise);
                }else if(preferences.data[0].websiteModel === "MarketPlace"){                        
-                    this.state ={
+                    this.setState ={
                         'marketplace': 'checked'
                     }
                }else if(preferences.data[0].websiteModel === "SingleOwner"){                        
-                    this.state ={
+                    this.setState ={
                         'SingleOwner': 'checked'
                     }
                     console.log("3.this.state.SingleOwner:",this.state.SingleOwner);
@@ -46,8 +50,7 @@ class WebsiteModel extends Component {
                         'askPincodeNo': 'checked'
                     }
                     console.log("this.state.askPincodeNo:",this.state.askPincodeNo);
-                }    
-               
+                }       
             
             }
         })
@@ -56,9 +59,6 @@ class WebsiteModel extends Component {
         })
     }  
     
-    componentWillReceiveProps(nextProps) {
-        
-    }
     handleChange(event) {
         // event.preventDefault();
         const target = event.target;
@@ -96,6 +96,7 @@ class WebsiteModel extends Component {
     }
         
     render() {
+        console.log("inside render");
         return (
             <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
                 <div className="row">
@@ -143,7 +144,7 @@ class WebsiteModel extends Component {
                                                         checked onClick={this.handleChange.bind(this)} />
                                                         :
                                                         <input name="websiteModel" type="radio" value="FranchiseModel" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                        checked onClick={this.handleChange.bind(this)} />
+                                                        onClick={this.handleChange.bind(this)} />
                                                     }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Franchise Model</span>
                                                     </div>

@@ -58,17 +58,23 @@ class CategoryManagement extends Component{
       });
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     var editId = nextProps.match.params.categoryID;
-    //     if(nextProps.match.params.categoryID){
-    //       this.setState({
-    //         editId : editId
-    //       })
-    //       this.edit(editId);
-    //     }
-    // }
+    componentWillReceiveProps(nextProps) {
+      console.log("Inside componentWillRecive props",nextProps);
+      // console.log("EditId:===",this.state.editId);
+      
+      if(nextProps){      
+        this.setState({
+           editId : nextProps.editId
+        })
+        this.edit(nextProps);
+      }
+    }
+    componentWillMount(){
+      console.log("Inside component will mount");
+    }
     componentDidMount(){
       window.scrollTo(0, 0);
+      console.log("editId:",this.props.editId);
       if(this.state.editId){      
         this.edit(this.state.editId);
       }
@@ -254,7 +260,6 @@ class CategoryManagement extends Component{
 
             axios.post('/api/category/post', formValues)
             .then((response)=>{
-
               swal({
                 text  : response.data.message,
               });
@@ -306,7 +311,7 @@ class CategoryManagement extends Component{
           "categoryRank"              : this.state.categoryRank,
         }
 
-        // console.log("formValues = ", formValues);
+        console.log("formValues = ", formValues);
         axios.get('/api/category/get/count')
         .then((response)=>{
           var catCodeLength = response.data.dataCount;
@@ -345,6 +350,7 @@ class CategoryManagement extends Component{
                 "section"                       : 'Select',
                 "category"                      : '',
                 "categoryUrl"                   : '',
+                "categoryRank"                  : '',
                 "addEditModeCategory"           : '',
                 "addEditModeSubCategory"        : '',
                 "categoryDescription"           : '',
@@ -365,7 +371,9 @@ class CategoryManagement extends Component{
       }
     }
     edit(id){
-      axios.get('/api/category/get/one/'+id)
+      var editId = id.editId; 
+      console.log("edit Id send to axios:",editId);
+      axios.get('/api/category/get/one/'+editId)
       .then((response)=>{
         console.log('record to be edit', response.data);
         if(response.data){
@@ -374,6 +382,7 @@ class CategoryManagement extends Component{
               "section_ID"                : response.data.section_ID,
               "category"                  : response.data.category,
               "categoryUrl"               : response.data.categoryUrl,
+              "categoryRank"              : response.data.categoryRank,
               "addEditModeCategory"       : response.data.category,
               "addEditModeSubCategory"    : response.data.subCategory,
               "subcatgArr"                : response.data.subCategory,
@@ -564,6 +573,7 @@ class CategoryManagement extends Component{
       })
     }
     render(){
+      console.log("Inside category render");
         return(
             <div className="container-fluid col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div className="row">
@@ -580,7 +590,7 @@ class CategoryManagement extends Component{
                               <div className="col-lg-12 col-md-12 marginTopp">
                                 <form id="categoryManagement" className="">
                                   <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12  NOpadding">
-                                      <div className="col-lg-12">
+                                      <div className="col-lg-12 fieldWrapper">
                                           <label>Section <i className="redFont">*</i></label>
                                           <select onChange={this.sectionChange.bind(this)} value={this.state.section+'|'+this.state.section_ID}  name="section" className="form-control allProductCategories" aria-describedby="basic-addon1" id="section" ref="section">
                                           <option value="Select Section">Select Section</option>
@@ -598,15 +608,15 @@ class CategoryManagement extends Component{
                                           </select>
                                       </div>
 
-                                      <div className="col-lg-12">
+                                      <div className="col-lg-12 fieldWrapper">
                                           <label>Category Title <i className="redFont">*</i></label>
                                           <input value={this.state.category} name="category" id="category" onChange={this.createCategoryUrl.bind(this)} type="text" className="form-control edit-catg-new" placeholder="Category Title" ref="category" />
                                       </div>
-                                      <div className="col-lg-8">
+                                      <div className="col-lg-6 fieldWrapper">
                                           <label>Category URL <i className="redFont">*</i></label>                                                                    
                                           <input disabled value={this.state.categoryUrl} onChange={this.handleChange.bind(this)} id="categoryUrl" name="categoryUrl" type="text" className="form-control categoryUrl" placeholder="Category URL" ref="categoryUrl"  />
                                       </div>
-                                      <div className="col-lg-4">
+                                      <div className="col-lg-6 fieldWrapper">
                                           <label>Category Rank <i className="redFont">*</i></label>                                                                    
                                           <input value={this.state.categoryRank} onChange={this.handleChange.bind(this)} id="categoryRank" name="categoryRank" type="number" className="form-control categoryRank" placeholder="Category Rank" ref="categoryRank"  />
                                       </div>
@@ -618,10 +628,10 @@ class CategoryManagement extends Component{
                                                   return(
                                                       <div className="col-lg-12 col-md-12 NOpadding" key={index}>                                                                                  
                                                           <div className="col-lg-12 col-md-12 NOpadding newSubCatgArr">   
-                                                              <div className="col-lg-11 col-md-11 NOpadding">             
+                                                              <div className="col-lg-10 col-md-11 NOpadding">             
                                                                   <input type="text" id={dataRowArray.subCategoryCode} value={this.state['subCategoryTitle'+dataRowArray.subCategoryCode]} name={"subCategoryTitle"+dataRowArray.subCategoryCode} onChange={this.handleSubCatChange.bind(this)} className={"form-control newSubCatg"+index} placeholder="Category Title" aria-label="Brand" aria-describedby="basic-addon1" ref={"newSubCatg"+index} />
                                                               </div>
-                                                              <div className="col-lg-1 col-md-1 deleteSubCategory fa fa-trash" id={dataRowArray.subCategoryCode} onClick={this.deleteSubCategory.bind(this)}>
+                                                              <div className="deleteSubCategory fa fa-trash" id={dataRowArray.subCategoryCode} onClick={this.deleteSubCategory.bind(this)}>
                                                               </div>
                                                           </div>
                                                           <div className="error" name={"subCategoryTitleError"+dataRowArray.subCategoryCode} id={"subCategoryTitle"+dataRowArray.subCategoryCode}>{this.state["subCategoryTitleError"+dataRowArray.subCategoryCode]}</div>
@@ -637,7 +647,7 @@ class CategoryManagement extends Component{
 
                                   </div>
                                   <div className="col-lg-6">
-                                      <div className="divideCatgRows">
+                                      <div className="divideCatgRows fieldWrapper ">
                                           <label>Category Short Description </label>                                                                    
                                           <input type="text" value={this.state.categoryDescription} onChange={this.handleChange.bind(this)} name="categoryDescription" id="categoryDescription" className="form-control categoryShortDesc" placeholder="Category Short Description" ref="categoryDescription" />
                                       </div>
@@ -656,7 +666,7 @@ class CategoryManagement extends Component{
                                         null
                                         :
                                         
-                                        <div className="divideCatgRows">
+                                        <div className="divideCatgRows categoryImgWrapper">
                                             <label>Category Image</label>                                                                    
                                             <input type="file" onChange={this.uploadImage.bind(this)} title="Click to Edit Photo" className="" accept=".jpg,.jpeg,.png" />
                                         </div>
@@ -687,9 +697,9 @@ class CategoryManagement extends Component{
 
                                                 {
                                                   this.state.editId ? 
-                                                  <button onClick={this.updateCategory.bind(this)} className="submitBtn btn categoryBtn col-lg-3 col-md-3 col-sm-12 col-xs-12 pull-right ">Update</button>
+                                                  <button onClick={this.updateCategory.bind(this)} className="submitBtn btn categoryBtn col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right ">Update</button>
                                                   :
-                                                  <button onClick={this.submitCategory.bind(this)} className="submitBtn btn categoryBtn col-lg-3 col-md-3 col-sm-12 col-xs-12 pull-right">Submit</button>
+                                                  <button onClick={this.submitCategory.bind(this)} className="submitBtn btn categoryBtn col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-right">Submit</button>
                                                 }
                                               </div>
                                           

@@ -166,6 +166,12 @@
 .btnSubmit{
     margin-top: 10px;
 }
-.sectionSubmit{
-    
+.sideways{
+    margin-top: 30px;
+}
+.btnWrapper{
+    margin-right: 120px;
+}
+.adminModal-content{
+    margin-top: 150px;
 }

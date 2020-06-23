@@ -3,7 +3,7 @@ import $                      from 'jquery';
 import jQuery                 from 'jquery';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
-import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
+import IAssureTable           from '../../../coreadmin/IAssureTable/IAssureTable.jsx';
 // import _                      from 'underscore';
 import moment from 'moment';
 import 'bootstrap/js/tab.js';
@@ -31,17 +31,20 @@ class TaxRate extends Component {
               "startRange"                : 0,
               "limitRange"                : 10,
               "effectiveFrom"             : moment(newDate).format('YYYY-MM-DD'),
-              "editId"                    : this.props.match.params ? this.props.match.params.id : ''
+              "editId"                    : this.props.editId ? this.props.editId : ''
+            //   "editId"                    : this.props.match.params ? this.props.match.params.id : ''
+            
+
         };
         
     }
     componentDidMount() {
         // this.getTaxData();
-        var editId = this.props.match.params.id;
+        var editId = this.props.editId;
         // console.log("split = ",editId.split(".")[1]);
         this.getData(this.state.startRange, this.state.limitRange);
         this.getTaxData();
-        if(this.props.match.params.id){
+        if(this.props.editId){
             this.edit(editId.split(".")[1]);
         }
         window.scrollTo(0, 0);
