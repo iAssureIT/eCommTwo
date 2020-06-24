@@ -62,8 +62,10 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	const ReturnedProductsRoutes    = require("./api/Ecommerce/returnedProducts/Routes"); 
 	const BulkUploadTemplate		= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
 	const adminPreference     	    = require("./api/Ecommerce/adminPreference/Routes");
+	const unitOfMeasurment          = require("./api/Ecommerce/unitOfMeasurement/RoutesUnitOfMeasurment");
 
-
+	//=========== Global master ===============
+	const departmentRoute           = require("./api/coreAdmin/departmentMaster/RoutesDepartmentMaster");
 	//=========== Entity master ===============
 	const entityRoutes			    = require("./api/coreAdmin/entityMaster/RoutesEntityMaster.js");
 	
@@ -127,6 +129,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	app.use("/api/sections", SectionRoutes);
 	app.use("/api/returnedProducts", ReturnedProductsRoutes);
 	app.use("/api/bulkUploadTemplate", BulkUploadTemplate);
+	app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
 
 
 	//=========== Franchisemaster ==============
@@ -141,7 +144,8 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	//=========== admin Shopping List ==============
 	app.use("/api/adminpo", AdminPORoutes);
 
-
+	//=========== global master ============	
+	app.use("/api/departmentmaster", departmentRoute);
 	//=========== Entitymaster ==============
 	app.use("/api/entitymaster", entityRoutes);
 	

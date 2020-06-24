@@ -1,6 +1,6 @@
 const mongoose	        = require("mongoose");
 const DepartmentMaster     = require('./ModelDepartmentMaster.js');
-const FailedRecords     = require('../failedRecords/ModelFailedRecords');
+// const FailedRecords     = require('../failedRecords/ModelFailedRecords');
 
 exports.insertDepartment = (req,res,next)=>{
     processData();

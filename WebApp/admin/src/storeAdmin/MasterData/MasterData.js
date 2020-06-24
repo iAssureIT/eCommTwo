@@ -82,8 +82,8 @@ import UnitOfMeasurment   from  './UnitOfMeasurment/UnitOfMeasurmentMaster.js';
                         <ul className="nav nav-tabs tabs-left sideways">
                           <li className="active col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#Section" data-toggle="tab">  Sections         </a></li>
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#Category" data-toggle="tab">        Categories       </a></li>
-                          <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#TaxName" data-toggle="tab">         Tax Name         </a></li>
-                          <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#TaxRate" data-toggle="tab">         Tax Rate         </a></li>
+                          {/* <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#TaxName" data-toggle="tab">         Tax Name         </a></li>
+                          <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#TaxRate" data-toggle="tab">         Tax Rate         </a></li> */}
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#UnitOfMeasurment" data-toggle="tab">Unit of Measurement </a></li>
 
                           
@@ -92,8 +92,8 @@ import UnitOfMeasurment   from  './UnitOfMeasurment/UnitOfMeasurmentMaster.js';
                       <div className="tab-content col-lg-9 col-md-9 col-xs-12 col-sm-12">   
                         <div className="tab-pane active" id="Section">  <Section           editId={this.state.editId}/>  </div>
                         <div className="tab-pane" id="Category">        <Category          editId={this.state.editId}/>  </div>
-                        <div className="tab-pane" id="TaxName">         <TaxName           editId={this.state.editId}/>  </div>
-                        <div className="tab-pane" id="TaxRate">         <TaxRate           editId={this.state.editId}/>  </div>
+                        {/* <div className="tab-pane" id="TaxName">         <TaxName           editId={this.state.editId}/>  </div>
+                        <div className="tab-pane" id="TaxRate">         <TaxRate           editId={this.state.editId}/>  </div> */}
                         <div className="tab-pane" id="UnitOfMeasurment"><UnitOfMeasurment  editId={this.state.editId}/>  </div>                        
                       </div> 
                     </div>

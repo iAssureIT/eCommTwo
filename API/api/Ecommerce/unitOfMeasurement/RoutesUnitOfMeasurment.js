@@ -1,28 +1,28 @@
 const express 	= require("express");
 const router 	= express.Router();
 
-const departmentMaster = require('./ControllerDepartmentMaster.js');
+const unitOfMeasurmentMaster = require('./ControllerUnitOfMeasurment.js');
 
-router.post('/post', departmentMaster.insertDepartment);
+router.post('/post', unitOfMeasurmentMaster.insertUnitOfMeasurment);
 
-router.post('/get/list', departmentMaster.fetchDepartments);
+router.post('/get/list', unitOfMeasurmentMaster.fetchUnitOfMeasurment);
 
-router.get('/get/list', departmentMaster.getAllDepartments);
+router.get('/get/list', unitOfMeasurmentMaster.getAllUnitOfMeasurment);
 
-router.get('/get/count', departmentMaster.countDepartments);
+router.get('/get/count', unitOfMeasurmentMaster.countUnitOfMeasurment);
 
-router.get('/get/one/:fieldID', departmentMaster.fetchSingleDepartment);
+router.get('/get/one/:fieldID', unitOfMeasurmentMaster.fetchSingleUnitOfMeasurment);
 
-router.get('/search/:str', departmentMaster.searchDepartment);
+router.get('/search/:str', unitOfMeasurmentMaster.searchUnitOfMeasurment);
 
-router.patch('/patch', departmentMaster.updateDepartment);
+router.patch('/patch', unitOfMeasurmentMaster.updateUnitOfMeasurment);
 
-router.post('/bulkUploadDepartment',departmentMaster.bulkUploadDepartment);
+// router.post('/bulkUploadDepartment',unitOfMeasurmentMaster.bulkUploadUnitOfMeasurment);
 
-router.post('/get/files', departmentMaster.fetch_file); 
+router.post('/get/files', unitOfMeasurmentMaster.fetch_file); 
 
-router.get('/get/filedetails/:fileName', departmentMaster.filedetails);
+router.get('/get/filedetails/:fileName', unitOfMeasurmentMaster.filedetails);
 
-router.delete('/delete/:fieldID', departmentMaster.deleteDepartment);
+router.delete('/delete/:fieldID', unitOfMeasurmentMaster.deleteUnitOfMeasurment);
 
 module.exports = router;

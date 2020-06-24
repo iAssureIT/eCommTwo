@@ -1,29 +1,29 @@
 const mongoose	        = require("mongoose");
-const DepartmentMaster     = require('./ModelUnitOfMeasurment.js');
-const FailedRecords     = require('../failedRecords/ModelFailedRecords');
+const UnitOfMeasurmentMaster     = require('./ModelUnitOfMeasurment.js');
+// const FailedRecords     = require('../../coreAdmin/failedRecords/ModelFailedRecords');
 
-exports.insertDepartment = (req,res,next)=>{
+exports.insertUnitOfMeasurment = (req,res,next)=>{
     processData();
     async function processData(){
-    var allDepartments = await fetchDepartments();
-    var department = allDepartments.filter((data)=>{
-        if (data.department.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
+    var allUnits = await fetchUnitOfMeasurment();
+    var unitofmeasurment = allUnits.filter((data)=>{
+        if (data.unitofmeasurment.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
             return data;
         }
         })    
 
-        if (department.length > 0) {
+        if (unitofmeasurment.length > 0) {
             res.status(200).json({ duplicated : true });
         }else{
-            const departmentMaster = new DepartmentMaster({
+            const unitOfMeasurmentMaster = new UnitOfMeasurmentMaster({
                                 _id                         : new mongoose.Types.ObjectId(),
                                 companyID                   : req.body.companyID,
-                                department                  : req.body.fieldValue,
+                                unitOfMeasurment            : req.body.fieldValue,
                                 createdBy                   : req.body.createdBy,
                                 type                        : req.body.type,
                                 createdAt                   : new Date()
                             })
-                            departmentMaster.save()
+                            unitOfMeasurmentMaster.save()
                             .then(data=>{
                                 res.status(200).json({ created : true, fieldID : data._id });
                             })
@@ -33,9 +33,9 @@ exports.insertDepartment = (req,res,next)=>{
         }
     }             
 };
-var fetchAllDepartments = async ()=>{
+var fetchAllUnitOfMeasurment = async ()=>{
     return new Promise(function(resolve,reject){ 
-    DepartmentMaster.find({})
+    UnitOfMeasurmentMaster.find({})
         .exec()
         .then(data=>{
             resolve( data );
@@ -45,9 +45,9 @@ var fetchAllDepartments = async ()=>{
         }); 
     });
 };
-var fetchDepartments = async ()=>{
+var fetchUnitOfMeasurment = async ()=>{
     return new Promise(function(resolve,reject){ 
-    DepartmentMaster.find({})
+    UnitOfMeasurmentMaster.find({})
         .exec()
         .then(data=>{
             resolve( data );
@@ -57,8 +57,10 @@ var fetchDepartments = async ()=>{
         }); 
     });
 };
-exports.countDepartments = (req, res, next)=>{
-    DepartmentMaster.find({}).count()
+
+
+exports.countUnitOfMeasurment = (req, res, next)=>{
+    UnitOfMeasurmentMaster.find({}).count()
         .exec()
         .then(data=>{
             res.status(200).json({ count : data });
@@ -69,8 +71,8 @@ exports.countDepartments = (req, res, next)=>{
 }; 
 
 
-exports.fetchDepartments = (req, res, next)=>{
-    DepartmentMaster.find({})
+exports.fetchUnitOfMeasurment = (req, res, next)=>{
+    UnitOfMeasurmentMaster.find({})
         .sort({createdAt : -1})
         .skip(req.body.startRange)
         .limit(req.body.limitRange)
@@ -83,8 +85,8 @@ exports.fetchDepartments = (req, res, next)=>{
         }); 
 };
 
-exports.getAllDepartments = (req, res, next)=>{
-    DepartmentMaster.find({})
+exports.getAllUnitOfMeasurment = (req, res, next)=>{
+    UnitOfMeasurmentMaster.find({})
         .sort({createdAt : -1})
         .exec()
         .then(data=>{
@@ -94,8 +96,8 @@ exports.getAllDepartments = (req, res, next)=>{
             res.status(500).json({ error: err });
         }); 
 };
-exports.fetchSingleDepartment = (req, res, next)=>{
-    DepartmentMaster.findOne({ _id: req.params.fieldID })
+exports.fetchSingleUnitOfMeasurment = (req, res, next)=>{
+    UnitOfMeasurmentMaster.findOne({ _id: req.params.fieldID })
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -105,8 +107,8 @@ exports.fetchSingleDepartment = (req, res, next)=>{
         }); 
 };
 
-exports.searchDepartment = (req, res, next)=>{
-    DepartmentMaster.find({ department : { $regex : req.params.str ,$options: "i" }  })
+exports.searchUnitOfMeasurment = (req, res, next)=>{
+    UnitOfMeasurmentMaster.find({ department : { $regex : req.params.str ,$options: "i" }  })
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -115,17 +117,17 @@ exports.searchDepartment = (req, res, next)=>{
             res.status(500).json({ error: err });
         }); 
 };
-exports.updateDepartment = (req, res, next)=>{
-    DepartmentMaster.updateOne(
+exports.updateUnitOfMeasurment = (req, res, next)=>{
+    UnitOfMeasurmentMaster.updateOne(
             { _id:req.body.fieldID },  
             {
-                $set:   {  'department'       : req.body.fieldValue  }
+                $set:   {  'unitOfMeasurment'       : req.body.fieldValue  }
             }
         )
         .exec()
         .then(data=>{
             if(data.nModified == 1){
-                DepartmentMaster.updateOne(
+                UnitOfMeasurmentMaster.updateOne(
                 { _id:req.body.fieldID},
                 {
                     $push:  { 'updateLog' : [{  updatedAt      : new Date(),
@@ -146,8 +148,8 @@ exports.updateDepartment = (req, res, next)=>{
             res.status(500).json({ error: err });
         });
 };
-exports.deleteDepartment = (req, res, next)=>{
-    DepartmentMaster.deleteOne({_id: req.params.fieldID})
+exports.deleteUnitOfMeasurment = (req, res, next)=>{
+    UnitOfMeasurmentMaster.deleteOne({_id: req.params.fieldID})
         .exec()
         .then(data=>{
             if(data.deletedCount === 1){
@@ -160,15 +162,15 @@ exports.deleteDepartment = (req, res, next)=>{
             res.status(500).json({ error: err });
         });            
 };
-function insertDepartment(department, createdBy){
+function insertUnitOfMeasurment(department, createdBy){
     return new Promise(function(resolve,reject){ 
-        const departmentMaster = new DepartmentMaster({
+        const unitOfMeasurmentMaster = new UnitOfMeasurmentMaster({
                         _id                         : new mongoose.Types.ObjectId(),
                         department                  : department,
                         createdBy                   : createdBy,
                         createdAt                   : new Date()
                     })
-                    departmentMaster.save()
+                    unitOfMeasurmentMaster.save()
                     .then(data=>{
                         resolve( data._id );
                     })
@@ -177,9 +179,9 @@ function insertDepartment(department, createdBy){
                     });
     });
 }
-var fetchAllDepartments = async (type)=>{
+var fetchAllUnitOfMeasurment = async (type)=>{
     return new Promise(function(resolve,reject){ 
-    DepartmentMaster.find()
+    UnitOfMeasurmentMaster.find()
         .sort({createdAt : -1})
         // .skip(req.body.startRange)
         // .limit(req.body.limitRange)
@@ -276,7 +278,7 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
 }
 
 
-exports.bulkUploadDepartment = (req, res, next)=>{
+exports.bulkUploadUnitOfMeasurment = (req, res, next)=>{
     // var departments = [{department:"mesh"},{department:"mesh1"},{department:"mesh2"}];
     var departments = req.body.data;
     console.log("departments",departments);
@@ -333,7 +335,7 @@ exports.bulkUploadDepartment = (req, res, next)=>{
             }
 
         }
-        DepartmentMaster.insertMany(validData)
+        UnitOfMeasurmentMaster.insertMany(validData)
         .then(data=>{
 
         })
@@ -356,7 +358,7 @@ exports.bulkUploadDepartment = (req, res, next)=>{
 };
 exports.fetch_file_count = (req,res,next)=>{
     //PersonMaster.find({"type" : req.params.type})
-    DepartmentMaster.find( { _id : "fileName" } )
+    UnitOfMeasurmentMaster.find( { _id : "fileName" } )
     .exec()
     .then(data=>{
         
@@ -370,7 +372,7 @@ exports.fetch_file_count = (req,res,next)=>{
     }); 
 };
 exports.fetch_file = (req,res,next)=>{ 
-    DepartmentMaster.find( { _id : "fileName"})
+    UnitOfMeasurmentMaster.find( { _id : "fileName"})
     .exec()
     .then(data=>{
         res.status(200).json(data.length);
@@ -387,7 +389,7 @@ exports.filedetails = (req,res,next)=>{
     console.log('req',req,'res',res);
     var finaldata = {};
     console.log(req.params.fileName)
-    DepartmentMaster.find( { fileName:req.params.fileName  }
+    UnitOfMeasurmentMaster.find( { fileName:req.params.fileName  }
     )
     .exec()
     .then(data=>{
@@ -455,7 +457,7 @@ exports.bulkUploadEmployee = (req, res, next)=>{
 
 };
 exports.fetch_file = (req,res,next)=>{ 
-    DepartmentMaster.aggregate([
+    UnitOfMeasurmentMaster.aggregate([
         { $match : { "type" : req.body.type } },
         { $group : { _id : "$fileName", count : {$sum: 1  } } }
         ])
@@ -474,8 +476,8 @@ exports.fetch_file = (req,res,next)=>{
 exports.filedetails = (req,res,next)=>{
     var finaldata = {};
     console.log(req.params.fileName)
-    // DepartmentMaster.find({ $match : { type: req.params.type, fileName:req.params.fileName } })
-    DepartmentMaster.find( { fileName:req.params.fileName  } )
+    // UnitOfMeasurmentMaster.find({ $match : { type: req.params.type, fileName:req.params.fileName } })
+    UnitOfMeasurmentMaster.find( { fileName:req.params.fileName  } )
     .exec()
     .then(data=>{
         //finaldata.push({goodrecords: data})

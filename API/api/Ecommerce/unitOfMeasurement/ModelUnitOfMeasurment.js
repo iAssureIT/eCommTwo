@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const departmentSchema = mongoose.Schema({
+const unitOfMeasurmentSchema = mongoose.Schema({
     _id                       : mongoose.Schema.Types.ObjectId,
-    department                : String,
+    unitOfMeasurment          : String,
     companyID                 : String,
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,
@@ -15,4 +15,4 @@ const departmentSchema = mongoose.Schema({
                                 ]
 });
 
-module.exports = mongoose.model('departmentmasters',departmentSchema);
+module.exports = mongoose.model('unitOfMeasurmentMasters',unitOfMeasurmentSchema);

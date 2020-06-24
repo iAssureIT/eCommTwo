@@ -26,7 +26,7 @@ class Department extends Component {
       },
       "tableObjects": {
           deleteMethod: 'delete',
-          apiLink: '/api/departmentmaster/',
+          apiLink: '/api/unitofmeasurmentmaster/',
           paginationApply: false,
           searchApply: false,
           editUrl: '/project-master-data'
@@ -34,7 +34,7 @@ class Department extends Component {
       "startRange": 0,
       "limitRange": 10,
       // "editId": this.props.match.params ? this.props.match.params.fieldID : '',
-      fileDetailUrl      : "/api/departmentmaster/get/filedetails/",
+      fileDetailUrl      : "/api/master/get/filedetails/",
       goodRecordsHeading :{
         department       : "Department",
       },
