@@ -139,3 +139,52 @@
 	  margin-top: 15px;
 	  /*border-right: 1px solid #eee;*/
   }
+  
+  .owl-nav{
+    position: absolute;
+ }
+.bannercaroBtn .owl-nav button.owl-prev{
+    display: block !important;
+    background: transparent !important;
+    border-radius: 0px !important;
+    margin-top: -190px !important;
+    margin-left: 0px;
+    width: 25px;
+    height: 32px;
+    color: #000;
+    text-align: center;
+    border: none !important;
+    font-size: 55px!important;
+    padding: 0 !important;
+    font: inherit;
+}
+.bannercaroBtn .owl-nav  button.owl-next{
+   display: block !important;
+    background: transparent !important;
+    border-radius: 0px !important;
+    margin-top: -190px;
+    margin-left: 1220px;
+    width: 25px;
+    height: 32px;
+    color: #000;
+    text-align: center;
+    border: none !important;
+    font-size: 55px!important;
+    padding: 0 !important;
+    font: inherit;
+}
+.bannercaroBtn .owl-theme .owl-nav{
+	margin-top: -160px !important;
+}
+.bannercaroBtn .owl-nav  button.owl-next:focus{
+    outline: none !important;
+}
+.customnNavButton .owl-nav  button.owl-prev:focus{
+    outline: none !important;
+}
+.bannercaroBtn .owl-nav  button.owl-next:hover{
+    color: #333 !important;
+}
+.bannercaroBtn .owl-nav button.owl-prev:hover{
+    color: #333 !important;
+}

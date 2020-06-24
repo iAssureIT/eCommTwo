@@ -443,6 +443,7 @@ loginPage(event){
                             :
                               <li className="dropdown">
                                   <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span>
+                                  {/* <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a>| &nbsp;<a href="/signup" className="loginButton" area-hidden ="true">Signup </a></span> */}
                               </li>
                             // <li className="dropdown">
                             //     <a className="acc" href="login" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>                           

@@ -1,6 +1,6 @@
 const mongoose	        = require("mongoose");
-const DepartmentMaster     = require('./ModelDepartmentMaster.js');
-// const FailedRecords     = require('../../failedRecords/ModelFailedRecords');
+const Unitofmeasurment     = require('./ModelUnitofmeasurment.js');
+// const FailedRecords     = require('../failedRecords/ModelFailedRecords');
 
 exports.insertDepartment = (req,res,next)=>{
     processData();
@@ -15,7 +15,7 @@ exports.insertDepartment = (req,res,next)=>{
         if (department.length > 0) {
             res.status(200).json({ duplicated : true });
         }else{
-            const departmentMaster = new DepartmentMaster({
+            const departmentMaster = new Unitofmeasurment({
                                 _id                         : new mongoose.Types.ObjectId(),
                                 companyID                   : req.body.companyID,
                                 department                  : req.body.fieldValue,
@@ -35,7 +35,7 @@ exports.insertDepartment = (req,res,next)=>{
 };
 var fetchAllDepartments = async ()=>{
     return new Promise(function(resolve,reject){ 
-    DepartmentMaster.find({})
+    Unitofmeasurment.find({})
         .exec()
         .then(data=>{
             resolve( data );
@@ -47,7 +47,7 @@ var fetchAllDepartments = async ()=>{
 };
 var fetchDepartments = async ()=>{
     return new Promise(function(resolve,reject){ 
-    DepartmentMaster.find({})
+    Unitofmeasurment.find({})
         .exec()
         .then(data=>{
             resolve( data );
@@ -58,7 +58,7 @@ var fetchDepartments = async ()=>{
     });
 };
 exports.countDepartments = (req, res, next)=>{
-    DepartmentMaster.find({}).count()
+    Unitofmeasurment.find({}).count()
         .exec()
         .then(data=>{
             res.status(200).json({ count : data });
@@ -70,7 +70,7 @@ exports.countDepartments = (req, res, next)=>{
 
 
 exports.fetchDepartments = (req, res, next)=>{
-    DepartmentMaster.find({})
+    Unitofmeasurment.find({})
         .sort({createdAt : -1})
         .skip(req.body.startRange)
         .limit(req.body.limitRange)
@@ -84,7 +84,7 @@ exports.fetchDepartments = (req, res, next)=>{
 };
 
 exports.getAllDepartments = (req, res, next)=>{
-    DepartmentMaster.find({})
+    Unitofmeasurment.find({})
         .sort({createdAt : -1})
         .exec()
         .then(data=>{
@@ -95,7 +95,7 @@ exports.getAllDepartments = (req, res, next)=>{
         }); 
 };
 exports.fetchSingleDepartment = (req, res, next)=>{
-    DepartmentMaster.findOne({ _id: req.params.fieldID })
+    Unitofmeasurment.findOne({ _id: req.params.fieldID })
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -106,7 +106,7 @@ exports.fetchSingleDepartment = (req, res, next)=>{
 };
 
 exports.searchDepartment = (req, res, next)=>{
-    DepartmentMaster.find({ department : { $regex : req.params.str ,$options: "i" }  })
+    Unitofmeasurment.find({ department : { $regex : req.params.str ,$options: "i" }  })
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -116,7 +116,7 @@ exports.searchDepartment = (req, res, next)=>{
         }); 
 };
 exports.updateDepartment = (req, res, next)=>{
-    DepartmentMaster.updateOne(
+    Unitofmeasurment.updateOne(
             { _id:req.body.fieldID },  
             {
                 $set:   {  'department'       : req.body.fieldValue  }
@@ -125,7 +125,7 @@ exports.updateDepartment = (req, res, next)=>{
         .exec()
         .then(data=>{
             if(data.nModified == 1){
-                DepartmentMaster.updateOne(
+                Unitofmeasurment.updateOne(
                 { _id:req.body.fieldID},
                 {
                     $push:  { 'updateLog' : [{  updatedAt      : new Date(),
@@ -147,7 +147,7 @@ exports.updateDepartment = (req, res, next)=>{
         });
 };
 exports.deleteDepartment = (req, res, next)=>{
-    DepartmentMaster.deleteOne({_id: req.params.fieldID})
+    Unitofmeasurment.deleteOne({_id: req.params.fieldID})
         .exec()
         .then(data=>{
             if(data.deletedCount === 1){
@@ -162,7 +162,7 @@ exports.deleteDepartment = (req, res, next)=>{
 };
 function insertDepartment(department, createdBy){
     return new Promise(function(resolve,reject){ 
-        const departmentMaster = new DepartmentMaster({
+        const departmentMaster = new Unitofmeasurment({
                         _id                         : new mongoose.Types.ObjectId(),
                         department                  : department,
                         createdBy                   : createdBy,
@@ -179,7 +179,7 @@ function insertDepartment(department, createdBy){
 }
 var fetchAllDepartments = async (type)=>{
     return new Promise(function(resolve,reject){ 
-    DepartmentMaster.find()
+    Unitofmeasurment.find()
         .sort({createdAt : -1})
         // .skip(req.body.startRange)
         // .limit(req.body.limitRange)
@@ -333,7 +333,7 @@ exports.bulkUploadDepartment = (req, res, next)=>{
             }
 
         }
-        DepartmentMaster.insertMany(validData)
+        Unitofmeasurment.insertMany(validData)
         .then(data=>{
 
         })
@@ -356,7 +356,7 @@ exports.bulkUploadDepartment = (req, res, next)=>{
 };
 exports.fetch_file_count = (req,res,next)=>{
     //PersonMaster.find({"type" : req.params.type})
-    DepartmentMaster.find( { _id : "fileName" } )
+    Unitofmeasurment.find( { _id : "fileName" } )
     .exec()
     .then(data=>{
         
@@ -370,7 +370,7 @@ exports.fetch_file_count = (req,res,next)=>{
     }); 
 };
 exports.fetch_file = (req,res,next)=>{ 
-    DepartmentMaster.find( { _id : "fileName"})
+    Unitofmeasurment.find( { _id : "fileName"})
     .exec()
     .then(data=>{
         res.status(200).json(data.length);
@@ -387,7 +387,7 @@ exports.filedetails = (req,res,next)=>{
     console.log('req',req,'res',res);
     var finaldata = {};
     console.log(req.params.fileName)
-    DepartmentMaster.find( { fileName:req.params.fileName  }
+    Unitofmeasurment.find( { fileName:req.params.fileName  }
     )
     .exec()
     .then(data=>{
@@ -455,7 +455,7 @@ exports.bulkUploadEmployee = (req, res, next)=>{
 
 };
 exports.fetch_file = (req,res,next)=>{ 
-    DepartmentMaster.aggregate([
+    Unitofmeasurment.aggregate([
         { $match : { "type" : req.body.type } },
         { $group : { _id : "$fileName", count : {$sum: 1  } } }
         ])
@@ -474,8 +474,8 @@ exports.fetch_file = (req,res,next)=>{
 exports.filedetails = (req,res,next)=>{
     var finaldata = {};
     console.log(req.params.fileName)
-    // DepartmentMaster.find({ $match : { type: req.params.type, fileName:req.params.fileName } })
-    DepartmentMaster.find( { fileName:req.params.fileName  } )
+    // Unitofmeasurment.find({ $match : { type: req.params.type, fileName:req.params.fileName } })
+    Unitofmeasurment.find( { fileName:req.params.fileName  } )
     .exec()
     .then(data=>{
         //finaldata.push({goodrecords: data})

@@ -798,14 +798,6 @@ ul.box-static-link li span {
     text-align: left;
     padding: 0 30px;
 }
-@media (min-width: 768px)
-.navbar-nav > li {
-    float: left;
-}
-@media (min-width: 1200px)
-.mega-menu ul.navbar-nav li.level1.dropdown a {
-    position: relative;
-}
 .mega-menu ul.navbar-nav li a {
     text-transform: uppercase;
     -webkit-transition: all 0.2s ease 0s;
@@ -992,7 +984,10 @@ li.level1.dropdown a {
 .swal-button {
   background-color: #80b435 !important;
 }
-
+.box .hover-menu a {
+  /* padding: 0px 0px !important; */
+  /* margin-bottom: 5px; */
+}
 /*.dropbtn {
   background-color: #4CAF50;
   color: white;

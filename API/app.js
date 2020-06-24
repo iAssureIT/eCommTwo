@@ -62,10 +62,13 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	const ReturnedProductsRoutes    = require("./api/Ecommerce/returnedProducts/Routes"); 
 	const BulkUploadTemplate		= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
 	const adminPreference     	    = require("./api/Ecommerce/adminPreference/Routes");
-	const unitOfMeasurment          = require("./api/Ecommerce/unitOfMeasurement/RoutesUnitOfMeasurment");
+	// const unitOfMeasurment       = require("./api/Ecommerce/unitOfMeasurement/RoutesUnitOfMeasurment");
+	const unitOfMeasurment          = require("./api/Ecommerce/departmentMaster/RoutesUnitofmeasurment");
 
 	//=========== Global master ===============
 	const departmentRoute           = require("./api/coreAdmin/departmentMaster/RoutesDepartmentMaster");
+	const taxmaster                 = require("./api/coreAdmin/taxNameMaster/RoutesTaxNameMaster");
+
 	//=========== Entity master ===============
 	const entityRoutes			    = require("./api/coreAdmin/entityMaster/RoutesEntityMaster.js");
 	
@@ -129,6 +132,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	app.use("/api/sections", SectionRoutes);
 	app.use("/api/returnedProducts", ReturnedProductsRoutes);
 	app.use("/api/bulkUploadTemplate", BulkUploadTemplate);
+	// app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
 	app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
 
 
@@ -146,6 +150,8 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 
 	//=========== global master ============	
 	app.use("/api/departmentmaster", departmentRoute);
+	app.use("api/globalmaster",taxmaster);
+
 	//=========== Entitymaster ==============
 	app.use("/api/entitymaster", entityRoutes);
 	

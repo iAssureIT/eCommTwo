@@ -340,7 +340,7 @@ class EcommerceProductCarousel extends Component {
                   <OwlCarousel
                     className="owl-theme customnNavButton"
                     margin={0}
-                    nav={true}
+                    nav={true} 
                     responsive={this.state.responsive}
                     autoplay={true}
                     autoplayHoverPause={true}

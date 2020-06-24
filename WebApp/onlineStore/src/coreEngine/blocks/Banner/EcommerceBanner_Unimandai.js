@@ -41,12 +41,15 @@ export default class EcommerceBanner extends Component {
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bannerContainerEcomm">
 							<div className="row">
 						 		<OwlCarousel
-									    className="owl-theme bannercaro"
+									    className="owl-theme bannercaro bannercaroBtn"
 									    loop
                             			responsive={this.state.responsive} 
-			                            autoplay={true}
+										autoplay={true}
+										// margin={0}
+										nav={true}
 			                            autoplayHoverPause={true}
-			                            dots={true}
+										// dots={true}
+										
 			                            dotData={true}
 									>
 									    <div className="item">

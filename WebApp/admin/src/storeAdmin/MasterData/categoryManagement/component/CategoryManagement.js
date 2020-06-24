@@ -69,12 +69,10 @@ class CategoryManagement extends Component{
         this.edit(nextProps);
       }
     }
-    componentWillMount(){
-      console.log("Inside component will mount");
-    }
+  
     componentDidMount(){
       window.scrollTo(0, 0);
-      console.log("editId:",this.props.editId);
+      // console.log("editId:",this.props.editId);
       if(this.state.editId){      
         this.edit(this.state.editId);
       }
@@ -375,7 +373,7 @@ class CategoryManagement extends Component{
       console.log("edit Id send to axios:",editId);
       axios.get('/api/category/get/one/'+editId)
       .then((response)=>{
-        console.log('record to be edit', response.data);
+        // console.log('record to be edit', response.data);
         if(response.data){
             this.setState({
               "section"                   : response.data.section,
@@ -445,7 +443,7 @@ class CategoryManagement extends Component{
               });
               async function main(){
                   var config = await getConfig();
-                  console.log("line 429 config = ",config);
+                  // console.log("line 429 config = ",config);
                   var s3url = await s3upload(categoryImage.fileInfo, config, this);
 
                   const formValues = {
@@ -573,7 +571,7 @@ class CategoryManagement extends Component{
       })
     }
     render(){
-      console.log("Inside category render");
+      
         return(
             <div className="container-fluid col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div className="row">

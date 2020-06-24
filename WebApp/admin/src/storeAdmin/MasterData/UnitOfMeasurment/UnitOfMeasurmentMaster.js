@@ -16,9 +16,9 @@ class Department extends Component {
       profileCreated            : false,
       "locationType": "",
       "fields" : {
-          placeholder     : "Enter Unit of Measurment..",
+          placeholder     : "Enter Unit Of Measurment..",
           title           : "Unit Of Measurment",
-          attributeName   : "unitofmeasurment"
+          attributeName   : "department"
       },
       "tableHeading": {
           department: "Unit Of Measurment",
@@ -34,7 +34,7 @@ class Department extends Component {
       "startRange": 0,
       "limitRange": 10,
       // "editId": this.props.match.params ? this.props.match.params.fieldID : '',
-      fileDetailUrl      : "/api/master/get/filedetails/",
+      fileDetailUrl      : "/api/unitofmeasurmentmaster/get/filedetails/",
       goodRecordsHeading :{
         department       : "Department",
       },

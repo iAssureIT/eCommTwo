@@ -81,22 +81,22 @@ export default class Footer extends Component {
             </div>
             <div className="col-sm-12 col-sm-3">
                 <div className="footer-top">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
-                   <p className="footertxt">Get It Touch</p>
-                <div className="social space-30">
-                    <ul className="no-icon-list socialicon col-lg-12">
-                      <li className="col-lg-2"><a href="#" target="_blank"><i className="col-lg-3 fa fa-twitter" aria-hidden="true"></i></a></li>
-                      <li className="col-lg-2"><a href="#" target="_blank"><i className="facebook col-lg-3 fa fa-facebook" aria-hidden="true"></i></a></li>
-                      <li className="col-lg-2"><a href="#" target="_blank" ><i className="col-lg-3 fa fa-linkedin" aria-hidden="true"></i></a></li>
-                      <li className="col-lg-2"><a href="#" target="_blank"><i className="col-lg-3 fa fa-whatsapp whatsupIcon" aria-hidden="true"></i></a></li>
-                    </ul>
-                </div>
-                </div>
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
-                   Payment Accept
-                </div>
-                <a href="#" title="paypal"><img src={paypal_footer} alt="images"/></a>
-             </div>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
+                        <p className="footertxt">Get In Touch</p>
+                        <div className="social space-30">
+                            <ul className="no-icon-list socialicon col-lg-12">
+                            <li className="col-lg-2"><a href="#" target="_blank" title="Twitter"><i className="col-lg-3 fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li className="col-lg-2"><a href="#" target="_blank" title="Facebook"><i className="facebook col-lg-3 fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <li className="col-lg-2"><a href="#" target="_blank" title="Instagram"><i className="col-lg-3 fa fa-instagram" aria-hidden="true"></i></a></li>
+                            <li className="col-lg-2"><a href="#" target="_blank" title="Whatsapp"><i className="col-lg-3 fa fa-whatsapp whatsupIcon" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
+                        Payment Accept
+                    </div>
+                    <div><img src={paypal_footer} alt="images"/></div>
+               </div>
             </div>
             <div className="col-sm-12 col-sm-3">
                 <div className="footer-top">
