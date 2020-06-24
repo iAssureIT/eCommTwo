@@ -27,7 +27,7 @@ class ProductList extends Component {
                 "originalPrice": 'Original Price',
                 "discountPercent": 'Discount Percent',
                 "discountedPrice": 'Discounted Price',
-                "availableQuantity": 'Available Quantity',
+                // "availableQuantity": 'Available Quantity',
             },
             tableObjects: {
                 paginationApply: true,
@@ -516,19 +516,25 @@ class ProductList extends Component {
                                         </div>
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <IAssureTable
-                                            tableHeading={this.state.tableHeading}
-                                            twoLevelHeader={this.state.twoLevelHeader}
-                                            dataCount={this.state.dataCount}
-                                            tableData={this.state.tableData}
-                                            getData={this.getData.bind(this)}
-                                            tableObjects={this.state.tableObjects}
-                                            selectedProducts={this.selectedProducts.bind(this)}
-                                            getSearchText={this.getSearchText.bind(this)}
-                                            setunCheckedProducts={this.setunCheckedProducts.bind(this)}
-                                            unCheckedProducts={this.state.unCheckedProducts}
-                                            saveProductImages={this.saveProductImages.bind(this)}
-                                        />
+                                        {
+                                            this.state.tableData 
+                                            ?
+                                                <IAssureTable
+                                                    tableHeading={this.state.tableHeading}
+                                                    twoLevelHeader={this.state.twoLevelHeader}
+                                                    dataCount={this.state.dataCount}
+                                                    tableData={this.state.tableData}
+                                                    getData={this.getData.bind(this)}
+                                                    tableObjects={this.state.tableObjects}
+                                                    selectedProducts={this.selectedProducts.bind(this)}
+                                                    getSearchText={this.getSearchText.bind(this)}
+                                                    setunCheckedProducts={this.setunCheckedProducts.bind(this)}
+                                                    unCheckedProducts={this.state.unCheckedProducts}
+                                                    saveProductImages={this.saveProductImages.bind(this)}
+                                                />
+                                            :
+                                                <div className="col-lg-6 col-lg-offset-3"> <img src="/images/data-loading.gif" /> </div>
+                                        }
                                     </div>
                                 </div>
                             </div>

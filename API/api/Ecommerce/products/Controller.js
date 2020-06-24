@@ -109,7 +109,6 @@ exports.bulkUploadProduct = (req,res,next)=>{
                             var insertProductObject = await insertProduct(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
                             console.log('insertProductObject',insertProductObject)
                             if (insertProductObject != 0) {
-
                                 Count++;
                             }else{
                                 DuplicateCount++;
@@ -137,9 +136,9 @@ exports.bulkUploadProduct = (req,res,next)=>{
             if (productData[k].brand == undefined) {
                 remark += "brand not found, ";
             }
-            if (productData[k].availableQuantity == undefined) {
-                remark += "product quantity not found, ";
-            }
+            // if (productData[k].availableQuantity == undefined) {
+            //     remark += "product quantity not found, ";
+            // }
             if (productData[k].originalPrice == undefined) {
                 remark += "product price not found, ";
             }
@@ -423,7 +422,7 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
     return new Promise(function(resolve,reject){ 
         productDuplicateControl();
         async function productDuplicateControl(){
-            var productPresent = await findProduct(data.itemCode,data.productName);
+            var productPresent = await findProduct(data.productCode, data.itemCode,data.productName);
             
             if (productPresent==0) {
                     const productObj = new Products({
@@ -452,7 +451,7 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
                         discountedPrice           : data.discountPercent == 0 ? (data.originalPrice ? data.originalPrice : 0) : data.discountedPrice,
                         offeredPrice              : data.offeredPrice ? data.offeredPrice : "",
                         actualPrice               : data.actualPrice ? data.actualPrice : "",
-                        availableQuantity         : data.availableQuantity ? data.availableQuantity : "",
+                        // availableQuantity         : data.availableQuantity ? data.availableQuantity : "",
                         status                    : "Draft",
                         offered                   : data.offered,
                         unit                      : data.unit ? data.unit : "",
@@ -486,16 +485,12 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
     })
 }
 
-function findProduct(itemCode, productName) {
+function findProduct(productCode, itemCode, productName) {
     return new Promise(function(resolve,reject){  
-    Products.findOne(
-                { "$or": 
-                    [
-                    /*{"productName"    : {'$regex' : '^' + productName , $options: "i"} },*/
-                    {"itemCode"       : itemCode },
-                    ]
-                })
-
+    Products.findOne({
+                        "productCode"    : productCode ,
+                        "itemCode"       : itemCode ,                        
+                    })
                 .exec()
                 .then(productObject=>{
                     if(productObject){

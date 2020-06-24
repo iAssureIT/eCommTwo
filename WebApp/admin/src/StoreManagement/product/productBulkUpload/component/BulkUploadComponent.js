@@ -136,6 +136,9 @@ constructor(props) {
     }
   }
   
+  getData(){
+    return true;
+  }
 
   handleFile(file) {
             
@@ -466,7 +469,7 @@ constructor(props) {
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.failedRecordsCount}
                       tableData={this.state.failedRecordsTable}
-                      //getData={this.getData.bind(this)}
+                      getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
                       />
 
@@ -577,7 +580,7 @@ constructor(props) {
                       twoLevelHeader={this.state.twoLevelHeader} 
                       dataCount={this.state.goodDataCount}
                       tableData={this.state.tableData}
-                      // getData={this.getData.bind(this)}
+                      getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
                       />
                   {
