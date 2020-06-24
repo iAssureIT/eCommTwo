@@ -266,9 +266,9 @@ export default class DistributionManagement extends React.Component {
                                                         <td>status</td>
                                                         <td>
                                                             <span>
-																<i className="fa fa-pencil" title="Edit" id={result._id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp;
-													    		<i className="fa fa-trash redFont " id={result._id} onClick={this.deletePO.bind(this)}></i>&nbsp; &nbsp;
-													    		<i className="fa fa-eye" id={result._id} onClick={this.getViewData.bind(this)}></i>
+																<i className="fa fa-pencil" title="Distribute" id={result._id} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp;
+													    		{/* <i className="fa fa-trash redFont " id={result._id} onClick={this.deletePO.bind(this)}></i>&nbsp; &nbsp; */}
+													    		{/* <i className="fa fa-eye" id={result._id} onClick={this.getViewData.bind(this)}></i> */}
 															</span>
                                                         </td>
 													</tr>

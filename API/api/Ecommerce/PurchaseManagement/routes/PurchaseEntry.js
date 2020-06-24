@@ -17,7 +17,14 @@ router.post('/post/datewisepurchase/',PurchaseEntryController.get_datewise_purch
 
 router.get('/get/PurchaseNumbers'       , PurchaseEntryController.get_purchase_numbers);
 
-router.get('/get/TotalInward/:itemcode' , PurchaseEntryController.get_total_inward)
+router.get('/get/TotalInward/:itemcode' , PurchaseEntryController.get_total_inward);
+
+/* Bulk upload code by madhuri */
+router.post('/raw_material_bulk_upload',PurchaseEntryController.raw_material_bulk_upload);
+
+router.get('/get/filedetails/:fileName',PurchaseEntryController.filedetails);
+
+
 /*
 router.get('/get/datewisepurchase/:purchaseDate',PurchaseEntryController.get_datewise_purchaceEntry);
 

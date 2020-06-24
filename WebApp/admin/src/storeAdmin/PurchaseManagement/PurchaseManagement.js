@@ -6,7 +6,8 @@ import axios from 'axios';
 import jQuery from 'jquery';
 import $ from 'jquery';
 import moment from 'moment';
-
+import Loader from '../loader/Loader.js'; 
+import BulkUpload   from "../bulkupload/BulkUpload.js";
 export default class PurchaseManagement extends React.Component {
 
 	constructor(props) {
@@ -47,7 +48,37 @@ export default class PurchaseManagement extends React.Component {
 					},
 		            "startRange"        : 0,
 		            "limitRange"        : 10, 
-		            "editId"                    : this.props.match.params ? this.props.match.params.purchaseId : '',
+					"editId"            : this.props.match.params ? this.props.match.params.purchaseId : '',
+					fileDetailUrl           : "/api/purchaseentry/get/filedetails/",
+					goodRecordsTable      : [],
+					failedRecordsTable    : [],
+					goodRecordsHeading :{
+					  purchaseDate          : "Purchase Date",
+					  purchaseNumber        : "Purchase Number",
+					  detail                : "Details",
+					  supplier              : "Supplier",
+					  purchasedBy           : "Purchased By",        
+					  productName           : "Product Name",        
+					  unit                  : "Unit",        
+					  quantity              : "Quantity",
+					  amount                : "Total Amount ",
+					  action                : "Action"
+				    },
+					failedtableHeading :{
+					  purchaseDate          : "Purchase Date",
+					  purchaseNumber        : "Purchase Number",
+					  detail                : "Details",
+					  supplier              : "Supplier",
+					  purchasedBy           : "Purchased By",        
+					  productName           : "Product Name", 
+					  itemCode              : "Item Code",   
+					  unit                  : "Unit",        
+					  quantity              : "Quantity",
+					  amount                : "Total Amount ",
+					  failedRemark          :  "Failed Data Remark",
+					  action                : "Action",
+					},
+					
 		            blockActive			: "all",
 		            "listofRoles"	    : "",
 		            adminRolesListData  : [],
@@ -62,9 +93,11 @@ export default class PurchaseManagement extends React.Component {
 					filterData : {},
 					PurchaseNumberArray:[],
 					totalPoAmount : 0,
-					ItemCode   : ''
-			      	
-      };
+					ItemCode   : ''	,
+					UOM        :'Kg'	      	
+	  };
+	  this.uploadedData = this.uploadedData.bind(this);
+	  this.getFileDetails = this.getFileDetails.bind(this);
 	}
 	
 
@@ -108,10 +141,6 @@ export default class PurchaseManagement extends React.Component {
 				required: true,	
 				noSpace: true			
 			  },
-			  Details: {
-				required: true,
-				noSpace: true
-			  },
 			  purchaseStaff:{
 				required: true,
 				noSpace: true
@@ -144,9 +173,7 @@ export default class PurchaseManagement extends React.Component {
 			  if (element.attr("name") === "purchaseNumber") {
 				error.insertAfter("#purchaseNumber");
 			  }
-			  if (element.attr("name") === "Details") {
-				error.insertAfter("#Details");
-			  }
+			  
 			  if (element.attr("name") === "purchaseStaff") {
 				error.insertAfter("#purchaseStaff");
 			  }
@@ -174,7 +201,71 @@ export default class PurchaseManagement extends React.Component {
           })
           this.edit(editId);
         }
-    }
+	}
+	/*bulk upload start*/
+	uploadedData(data){
+		this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
+	}
+
+	getFileDetails(fileName){
+		console.log("fileName",fileName);
+		axios
+		.get(this.state.fileDetailUrl+fileName)
+		.then((response)=> {
+			console.log("response",response);
+		// $('.fullpageloader').hide();  
+		if (response) {
+		  this.setState({
+			  fileDetails:response.data,
+			  failedRecordsCount : response.data.failedRecords.length,
+			  goodDataCount : response.data.goodrecords.length
+		  });
+  
+			var tableData = response.data.goodrecords.map((a, i)=>{
+			 
+			return{
+				"familyID"        : a.familyID        ? a.familyID    : '-',
+				"nameOfFH"        : a.nameOfFH        ? a.nameOfFH    : '-',
+				"uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
+				"contactNumber"   : a.contactNumber     ? a.contactNumber : '-',
+				"caste"           : a.caste     ? a.caste : '-',
+				"landCategory"   : a.landCategory     ? a.landCategory : '-',
+				"incomeCategory"      : a.incomeCategory     ? a.incomeCategory : '-',
+				"specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
+				"dist" : a.dist ? a.dist : '-',
+				"block" : a.block ? a.block : '-', 
+				"village"   : a.village     ? a.village : '-'
+			}
+		  })
+  
+		  var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+		  return{
+			  "purchaseDate"        : a.purchaseDate      ? a.purchaseDate    : '-',
+			  "purchaseNumber"      : a.purchaseNumber    ? a.purchaseNumber    : '-',
+			  "detail"              : a.details  ? a.details : '-',
+			  "supplier"            : a.purchaseLocation  ? a.purchaseLocation : '-',
+			  "purchasedBy"         : a.purchaseStaff     ? a.purchaseStaff : '-',
+			  "productName"         : a.product     ? a.product : '-',
+			  "itemCode"            : a.itemCode   ? a.itemCode : '-',
+			  "unit"                : a.Units     ? a.Units : '-',
+			  "quantity"            : a.quantity     ? a.quantity : '-',
+			  "amount"              : a.amount ? a.amount : '-',
+			  "failedRemark"        : a.remark     ? a.remark : '-'
+			  
+		  }
+		  })
+		  this.setState({
+			  goodRecordsTable : tableData,
+			  failedRecordsTable : failedRecordsTable
+		  })
+		}
+		})
+		.catch((error)=> { 
+		  console.log('error', error);
+		}) 
+	} 
+
+	/* Bulk upload end*/
 	edit(id){
          $("#addNewPurchaseOrder").validate().resetForm();
         axios.get('/api/purchaseentry/get/one/'+id)
@@ -383,9 +474,9 @@ export default class PurchaseManagement extends React.Component {
 		})
     }
     Submit(event){
-    event.preventDefault();
-	var productDatalist = $(".productDatalist").find("option[value='" + this.state.product + "']");
-    const formValues1 = {
+      event.preventDefault();
+	  var productDatalist = $(".productDatalist").find("option[value='" + this.state.product + "']");
+      const formValues1 = {
         "amount"         	: this.state.amount ,
         "purchaseDate" 		: this.state.purchaseDate,
       	"purchaseStaff" 	: this.state.purchaseStaff,
@@ -394,7 +485,8 @@ export default class PurchaseManagement extends React.Component {
 		"productName" 		: this.state.product,
 		"ItemCode"          : this.state.ItemCode,
       	"unit" 				: this.state.Units,
-      	"unitRate" 	        : this.state.unitRate,
+		"unitRate" 	        : this.state.unitRate,
+		"unitOfMeasurement" : this.state.UOM,
 		"purchaseNumber"    : this.state.purchaseNumber,
 		"Details" 			: this.state.Details,
        
@@ -419,7 +511,8 @@ export default class PurchaseManagement extends React.Component {
 				product         : "", 
 				ItemCode        : "",		
 				Units           : "Kg",
-				unitRate    : "",
+				unitRate        : "",
+				UMO             : "Kg"
 			},()=>{
 				this.getData();
 			});  
@@ -479,193 +572,205 @@ export default class PurchaseManagement extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
-						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                            <h4 className="">Purchase Entry</h4>
+						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right ">
+                            <h4 className="col-lg-3 col-md-3 col-sm-12 col-xs-12" style={{"display":"inline","float":"left"}}>Purchase Entry</h4>
+							<ul className="nav tabNav nav-pills col-lg-3 col-md-3 col-sm-12 col-xs-12" style={{"display":"inline","float":"right"}}>
+                    		  <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>
+                    		  <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk Upload</a></li>
+                  		   </ul>
                         </div>
-						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20" id="addNewPurchaseOrder">
-							 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-								<div className="row">
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Purchase Date <i className="redFont">*</i></label>
-										<input type="Date"  className="form-control"  value={ this.state.purchaseDate} name="purchaseDate" refs="purchaseDate" onChange={this.handleChange.bind(this)} id="purchaseDate"/>
-									</div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Supplier <i className="redFont">*</i></label>
-										<input list="purchaseLocation" type="text" refs="purchaseLocation" className="form-control"    placeholder="Select Supplier" value={this.state.purchaseLocation}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct1.bind(this)} name="purchaseLocation" />
-	    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
-										
-										  <datalist id="purchaseLocation" name="purchaseLocation" >
-										    <option value="Open Market"/>
-										    {/*<option value="cauliflower"/>
-										    <option value="spinach"/>
-										    <option value="onion"/>
-										    <option value="garlic"/>*/}
-										  </datalist>
-									</div>
-								  </div>
-								 </div>	
-								 <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding mtop20"> 
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Purchase No <i className="redFont">*</i></label>
-										<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
-									</div>
-									<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
-										<label >Details <i className="redFont">*</i></label>
-										<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
-									</div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Purchased By(Staff Name) <i className="redFont">*</i></label>
-										<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
-									</div>
-								 </div>
-								 
-						         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12  NOpadding">
-{/*
-                                       <div className="form-margin col-lg-6 col-md-6 col-sm-12 col-xs-12" >
-                                                    <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Vendor <sup className="astrick">*</sup></label>
-                                                    <select id="vendor" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.vendor} ref="vendor" name="vendor" onChange={this.handleChange.bind(this)}>
-                                                        <option>--Select Vendor--</option>
-                                                        {
-                                                            this.state.productArray && this.state.productArray.length > 0 ?
-                                                                this.state.productArray.map((data, i)=>{
-                                                                    return(
-                                                                        <option key={i} value={data._id}>{data.productName}</option>
-                                                                    );
-                                                                })
-                                                            :
-                                                            null
-                                                        }
-                                                    </select>
-                                                </div>
-*/}
-										
-										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25 ">
-											<label >Select Product <i className="redFont">*</i></label>
-											{/*<input type="text" className="form-control" id="email"/>*/}
-											<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
-		    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
+						<div className="tab-content ">
+							<div id="manual" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in active">
+								<form className="mtophr20" id="addNewPurchaseOrder">
+									<div className="row">
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+											<label >Purchase Date <i className="redFont">*</i></label>
+											<input type="Date"  className="form-control"  value={ this.state.purchaseDate} name="purchaseDate" refs="purchaseDate" onChange={this.handleChange.bind(this)} id="purchaseDate"/>
+										</div>
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+											<label >Supplier <i className="redFont">*</i></label>
+											<input list="purchaseLocation" type="text" refs="purchaseLocation" className="form-control"    placeholder="Select Supplier" value={this.state.purchaseLocation}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct1.bind(this)} name="purchaseLocation" />
+											{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
 											
-											  <datalist id="product" name="product" className="productDatalist">
-											    {
-                                                    this.state.productArray && this.state.productArray.length > 0 ?
-                                                        this.state.productArray.map((data, i)=>{
-                                                            return(
-                                                                <option value={data.productName} data-itemCode={data.itemCode} data-unit={data.unit}>{data.productName} - {data.productCode} - {data.itemCode}</option>
-                                                            );
-                                                        })
-                                                    :
-                                                    null
-                                                }
-											  </datalist>
-										</div>
-										 <div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
-					                       <div className="">
-					                        <label className="control-label statelabel locationlabel" >Unit Rate <i className="redFont">*</i></label>
-					                          <div className="input-group inputBox-main  new_inputbx unitRateDiv" >
-						                           <div className="input-group-addon inputIcon">
-						                           <i class="fa fa-rupee"></i>
-						                         </div> 
-						                         <input type="number" placeholder="1234" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)}/>
-					                         </div>     
-					                      </div>  
-                   					     </div>
-									{/*<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Unit Rate</label>
-										<input type="number" placeholder="1234" className="form-control" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate"/>
-									</div>*/}
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-										<label >Quantity <i className="redFont">*</i></label>
-										<div className="quantityDiv">
-											<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
-											<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
-												<option selected={true} disabled={true}>-- Select --</option>
-											  	<option value="Kg">Kg</option>
-											  	<option value="Ltr">Ltr</option>
-											  	<option value="gram">Gm</option>
-											  	<option value="Nos">Nos</option>
-											</select>
+											<datalist id="purchaseLocation" name="purchaseLocation" >
+												<option value="Open Market"/>
+												{/*<option value="cauliflower"/>
+												<option value="spinach"/>
+												<option value="onion"/>
+												<option value="garlic"/>*/}
+											</datalist>
 										</div>
 									</div>
-									 <div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
-				                       <div className="">
-				                        <label className="control-label statelabel locationlabel" >Amount <i className="redFont">*</i></label>
-				                          <div className="input-group inputBox-main  new_inputbx amountDiv" >
-					                           <div className="input-group-addon inputIcon">
-					                           <i class="fa fa-rupee"></i>
-					                         </div> 
-					                         <input type="number" placeholder="12345678" className="form-control new_inputbx1" value={ this.state.amount} name="amount" refs="amount" onChange={this.handleChange.bind(this)} id="amount" min="1"/>
-				                         </div>     
-				                       </div>  
-                   					</div>
-								</div>	
-								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
-								    {this.state.editId ?
-                                    <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
-                                    :
-                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
-                                   }
+									<div  className="row NOpadding mtop20"> 
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+											<label >Purchase No <i className="redFont">*</i></label>
+											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
+										</div>
+										<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
+											<label >Details</label>
+											<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
+										</div>
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+											<label >Purchased By(Staff Name) <i className="redFont">*</i></label>
+											<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
+										</div>
+									</div>
 									
+									<div  className="row  NOpadding">
+											<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25 ">
+												<label >Select Product <i className="redFont">*</i></label>
+												{/*<input type="text" className="form-control" id="email"/>*/}
+												<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
+												{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
+												
+												<datalist id="product" name="product" className="productDatalist">
+													{
+														this.state.productArray && this.state.productArray.length > 0 ?
+															this.state.productArray.map((data, i)=>{
+																return(
+																	<option value={data.productName} data-itemCode={data.itemCode} data-unit={data.unit}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+																);
+															})
+														:
+														null
+													}
+												</datalist>
+											</div>
+											<div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
+											<div className="">
+												<label className="control-label statelabel locationlabel" >Unit Rate <i className="redFont">*</i></label>
+												<div className="input-group inputBox-main  new_inputbx unitRateDiv" >
+													<div className="input-group-addon inputIcon">
+													   <i class="fa fa-rupee"></i>
+													</div> 
+													<input type="number" placeholder="1234" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)}/>
+													{/* <select id="UOM"  name="UOM" value={this.state.UOM} refs="Units" onChange={this.handleChange.bind(this)}  className="input-group">
+														<option selected={true} disabled={true}>-- Select --</option>
+														<option value="Kg">Kg</option>
+														<option value="Ltr">Ltr</option>
+														<option value="gram">Gm</option>
+														<option value="Nos">Nos</option>
+													</select> */}
+												</div>     
+											</div>  
+											</div>
+										{/*<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+											<label >Unit Rate</label>
+											<input type="number" placeholder="1234" className="form-control" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate"/>
+										</div>*/}
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+											<label >Quantity <i className="redFont">*</i></label>
+											<div className="quantityDiv">
+												<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
+												<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
+													<option selected={true} disabled={true}>-- Select --</option>
+													<option value="Kg">Kg</option>
+													<option value="Ltr">Ltr</option>
+													<option value="gram">Gm</option>
+													<option value="Nos">Nos</option>
+												</select>
+											</div>
+										</div>
+										<div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
+										<div className="">
+											<label className="control-label statelabel locationlabel" >Amount <i className="redFont">*</i></label>
+											<div className="input-group inputBox-main  new_inputbx amountDiv" >
+												<div className="input-group-addon inputIcon">
+												<i class="fa fa-rupee"></i>
+												</div> 
+												<input type="number" placeholder="12345678" className="form-control new_inputbx1" value={ this.state.amount} name="amount" refs="amount" onChange={this.handleChange.bind(this)} id="amount" min="1"/>
+											</div>     
+										</div>  
+										</div>
+									</div>	
+									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
+										{this.state.editId ?
+										<button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
+										:
+										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+									}
+										
+									</div>
+								</form>
+								<div className="row mtop25">
+									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+										<label>Purchase Date:</label>
+										{/* <div className="form-group"> */}
+										<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.serchByDate} name="serchByDate" refs="serchByDate" onChange={this.handleChangeDate.bind(this)} id="serchByDate"/>
+										{/* </div> */}
+									</div>
+									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+										<label>Purchase Number:</label>
+										<select className="form-control allPoNumbers" aria-describedby="basic-addon1" name="selectedPurchaseNum" id="selectedPoNum" ref="selectedPoNum" value={this.state.selectedPurchaseNum} onChange={this.filterChange.bind(this)}>
+										<option disabled="">Select Purchase Number</option>
+											{
+												this.state.PurchaseNumberArray && this.state.PurchaseNumberArray.length > 0 ?
+													this.state.PurchaseNumberArray.map((data, i)=>{
+														return(
+															<option>{data}</option>
+														);
+													})
+												:
+												null
+											}
+										</select>
+									</div>
+									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+										<label>Product Name:</label>
+										<select className="form-control allProducts" aria-describedby="basic-addon1" name="selectedProductName" id="SelectProduct" ref="SelectProduct" value={this.state.selectedProductName} onChange={this.filterChange.bind(this)}>
+										<option disabled="">Select Product</option>
+										{
+											this.state.productArray && this.state.productArray.length > 0 ?
+												this.state.productArray.map((data, i)=>{
+													return(
+														<option>{data.productName}</option>
+													);
+												})
+											:
+											null
+										}
+										</select>
+									</div>
 								</div>
-							</form>
-						</div>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
-						  <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-							<label>Purchase Date:</label>
-							{/* <div className="form-group"> */}
-							 <input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.serchByDate} name="serchByDate" refs="serchByDate" onChange={this.handleChangeDate.bind(this)} id="serchByDate"/>
-                            {/* </div> */}
-						  </div>
-						  <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
-							<label>Purchase Number:</label>
-							<select className="form-control allPoNumbers" aria-describedby="basic-addon1" name="selectedPurchaseNum" id="selectedPoNum" ref="selectedPoNum" value={this.state.selectedPurchaseNum} onChange={this.filterChange.bind(this)}>
-							   <option disabled="">Select Purchase Number</option>
-								{
-									this.state.PurchaseNumberArray && this.state.PurchaseNumberArray.length > 0 ?
-										this.state.PurchaseNumberArray.map((data, i)=>{
-											return(
-												<option>{data}</option>
-											);
-										})
-									:
-									null
-								}
-							</select>
-						  </div>
-						  <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
-							<label>Product Name:</label>
-							<select className="form-control allProducts" aria-describedby="basic-addon1" name="selectedProductName" id="SelectProduct" ref="SelectProduct" value={this.state.selectedProductName} onChange={this.filterChange.bind(this)}>
-							<option disabled="">Select Product</option>
-							{
-								this.state.productArray && this.state.productArray.length > 0 ?
-									this.state.productArray.map((data, i)=>{
-										return(
-											<option>{data.productName}</option>
-										);
-									})
-								:
-								null
-                            }
-							</select>
-						  </div>
-						</div>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<IAssureTable
-									tableHeading={this.state.tableHeading}
-                                    twoLevelHeader={this.state.twoLevelHeader} 
-                                    dataCount={this.state.dataCount}
-                                    tableData={this.state.tableData}
-                                    getData={this.getData.bind(this)}
-                                    tableObjects={this.state.tableObjects}
-								/>
-						</div>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25" style={{textAlignLast: "end"}}>
-								<div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12">
-									<label>Total</label>
+								<div className="row">
+									<IAssureTable
+										tableHeading={this.state.tableHeading}
+										twoLevelHeader={this.state.twoLevelHeader} 
+										dataCount={this.state.dataCount}
+										tableData={this.state.tableData}
+										getData={this.getData.bind(this)}
+										tableObjects={this.state.tableObjects}
+									/>
 								</div>
-								<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-									<label><i class="fa fa-rupee"></i> {this.state.totalPoAmount}</label>
+								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25" style={{textAlignLast: "end"}}>
+									<div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12">
+										<label>Total</label>
+									</div>
+									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+										<label><i class="fa fa-rupee"></i> {this.state.totalPoAmount}</label>
+									</div>
 								</div>
+							</div>
+							<div id="bulk" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in">
+								<div className="row outerForm">
+									<BulkUpload 
+										url="/api/purchaseentry/raw_material_bulk_upload" 
+										data={{"purchaseNumber" : this.state.purchaseNumber}} 
+										uploadedData={this.uploadedData} 
+										fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
+										fileDetailUrl={this.state.fileDetailUrl}
+										getFileDetails={this.getFileDetails}
+										getData={this.getData.bind(this)}
+										fileDetails={this.state.fileDetails}
+										goodRecordsHeading ={this.state.goodRecordsHeading}
+										failedtableHeading={this.state.failedtableHeading}
+										failedRecordsTable ={this.state.failedRecordsTable}
+										failedRecordsCount={this.state.failedRecordsCount}
+										goodRecordsTable={this.state.goodRecordsTable}
+										goodDataCount={this.state.goodDataCount}
+									/>
+								</div>
+							</div>
 						</div>		
 					</div>
 				</div>

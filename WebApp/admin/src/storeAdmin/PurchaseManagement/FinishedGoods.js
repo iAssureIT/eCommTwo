@@ -333,23 +333,51 @@ export default class FinishedGoods extends React.Component {
 	}
 	
 	calculateTotalWeight(event){
-		var weightforFG;
+		var weightforFG = this.state.Quantity * this.state.weight;
+		var scrap = 0;
 		const {name,value} = event.target;
+		
 		this.setState({ 
 			[name]:value,
 			finishedGoodsUnit : this.state.wtPerUnit,
 		  },()=>{
 			weightforFG = this.state.Quantity * this.state.weight;
-	     });
+		});
 
-		this.setState(() => {
-			const val = this.state.Quantity * this.state.weight
-			return {
-				weightforFG: val,
-				finishedGoodsUnit: this.state.wtPerUnit
-			}
-		},()=>{
-	    });
+		if(weightforFG > this.state.outwardFromRaw){
+			swal("Total Weight or finished goods should be less than or equal to Outward From Raw Material.");
+			var Quantity = this.state.outwardFromRaw / this.state.weight;
+			this.setState({ 
+				Quantity : Quantity,
+				weightforFG : Quantity * this.state.weight,
+				scrap : Number(this.state.outwardFromRaw) - Number(Quantity * this.state.weight)
+			  },()=>{
+				weightforFG = Quantity * this.state.weight;
+				scrap = this.state.scrap;
+			 });
+		 }else{
+			this.setState({ 
+				finishedGoodsUnit: this.state.wtPerUnit,
+				weightforFG: Math.round(weightforFG),
+				scrap : Number(this.state.outwardFromRaw) - Number(this.state.Quantity * this.state.weight)
+			  },()=>{
+				 console.log("scrap",this.state.scrap)
+			 });
+		 }
+
+		 
+
+		// this.setState(() => {
+		// 	const val = this.state.Quantity * this.state.weight
+		// 	return {
+		// 		weightforFG: weightforFG,
+		// 		finishedGoodsUnit: this.state.wtPerUnit,
+		// 		scrap : Number(this.state.outwardFromRaw) - Number(val)
+		// 	}
+		// },()=>{
+		// });
+		
+		
 		
 	}
 
