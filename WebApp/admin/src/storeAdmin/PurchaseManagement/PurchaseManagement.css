@@ -36,3 +36,7 @@
 	border-bottom:none;
 	border-right: none;
 }
+
+.prependSelect {
+	border-left: 1px solid #979797 !important;
+}

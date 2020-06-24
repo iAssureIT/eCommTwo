@@ -13,8 +13,10 @@ const PurchaseEntrySchema = mongoose.Schema({
     unit                      : String,
     amount                    : Number,
     unitRate                  : Number,
+    unitOfMeasurement         : String,
     Details                   : String,
     purchaseNumber            : String,
+    fileName                  : String, 
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,
 });

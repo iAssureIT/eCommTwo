@@ -27,6 +27,7 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                     unit                      : req.body.unit,
                     amount                    : req.body.amount,
                     unitRate                  : req.body.unitRate,
+                    unitOfMeasurement         : req.body.unitOfMeasurement,
                     Details                   : req.body.Details,
                     purchaseNumber            : req.body.purchaseNumber,
                     createdBy                 : req.body.createdBy,
@@ -87,6 +88,7 @@ exports.update_PurchaseEntry = (req,res,next)=>{
                     unitRate                  : req.body.unitRate,
                     Details                   : req.body.Details,
                     purchaseNumber            : req.body.purchaseNumber,
+                    unitOfMeasurement         : req.body.unitOfMeasurement,
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
                 }
@@ -227,44 +229,66 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
         var invalidData = [];
         var invalidObjects = [];
         var remark = ''; 
+        var date;
+
 
       //  console.log("test",productData,req.body.reqdata);
 
         for(k = 0 ; k < productData.length ; k++){
             productData[k].purchaseNumber = req.body.reqdata.purchaseNumber;
-                      //  console.log("productData",productData[k]);
+                if (typeof productData[k].purchaseDate == 'number') {
+                    date = moment(new Date(Math.round((productData[k].purchaseDate - 25569)*86400*1000))).format("YYYY-MM-DD");
+               }else{
+                    date = moment(productData[k].purchaseDate,'YYYY-MM-DD')._i
+                }
+
+                productData[k].purchaseDate = date;
+
                 if (productData[k].product.trim() != '') {
-                    //var sectionObject = await sectionInsert(productData[k].section)
-                  //  //console.log('sectionObject',sectionObject)
                     if (productData[k].product != undefined && productData[k].productCode != undefined && productData[k].itemCode != undefined) {
                         var productPresent = await findProduct(productData[k].itemCode,productData[k].product);
                          if (productPresent) {
-                            var purchaseDate = moment(productData[k].purchaseDate).format("YYYY-MM-DD");
-                            if(moment(new Date(purchaseDate), "YYYY-MM-DD").isValid()){
-                               if(typeof productData[k].unitRate  === 'number' && isFinite(productData[k].unitRate )){
-                                   if(typeof productData[k].quantity  === 'number' && isFinite(productData[k].quantity )){
-                                        if(typeof productData[k].amount  === 'number' && isFinite(productData[k].amount)){
-                                            var insertPurchaseEntryObj = await insertPurchaseEntry(productData[k]);
-                                            if (insertPurchaseEntryObj != 0) {
-                                                Count++;
+                            if(moment(new Date(date), "YYYY-MM-DD").isValid()){
+                               if(typeof productData[k].unitRate  === 'number'){
+                                  if(typeof productData[k].unitOfMeasurement != undefined){
+                                    if(typeof productData[k].unit != undefined){
+                                        if(typeof productData[k].quantity  === 'number'){
+                                            if(typeof productData[k].amount  === 'number'){
+                                                productData[k].fileName = req.body.fileName;
+                                               // console.log("filename",productData[k].fileName);
+                                                var insertPurchaseEntryObj = await insertPurchaseEntry(productData[k]);
+                                                if (insertPurchaseEntryObj != 0) {
+                                                    Count++;
+                                                }else{
+                                                    remark += insertPurchaseEntryObj.err;
+                                                    invalidObjects =  productData[k];
+                                                    invalidObjects.failedRemark = remark;
+                                                    invalidData.push(invalidObjects);
+                                                }
                                             }else{
-                                                remark += insertPurchaseEntryObj.err;
+                                                remark += "Amount should be number and not empty";
                                                 invalidObjects =  productData[k];
                                                 invalidObjects.failedRemark = remark;
                                                 invalidData.push(invalidObjects);
-                                            }
-                                        }else{
-                                            remark += "Amount should be number and not empty";
+                                           }
+                                       }else{
+                                            remark += "Quantity should be number and not empty";
                                             invalidObjects =  productData[k];
                                             invalidObjects.failedRemark = remark;
                                             invalidData.push(invalidObjects);
                                        }
-                                   }else{
-                                        remark += "Quantity should be number and not empty";
+                                    }else{
+                                            remark += "Unit should not be empty.";
+                                            invalidObjects =  productData[k];
+                                            invalidObjects.failedRemark = remark;
+                                            invalidData.push(invalidObjects);
+                                    }
+                                }else{
+                                        remark += "Unit Of Measurement should not be empty";
                                         invalidObjects =  productData[k];
                                         invalidObjects.failedRemark = remark;
                                         invalidData.push(invalidObjects);
-                                   }
+                                }
                                }else{
                                     remark += "Unit rate should be number and not empty";
                                     invalidObjects =  productData[k];
@@ -284,7 +308,7 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                          }
                     }
                 }
-       console.log("invalidData",moment(productData[k].purchaseDate).format("YYYY-MM-DD"));                
+
         if (productData[k].itemCode != undefined) {
             TotalCount++;
             if(productData[k].productCode == undefined){
@@ -296,7 +320,6 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                 }else{
                      remark += ", Purchase Date not found, ";
                 }
-               
             }
             if (productData[k].unitRate == undefined) {
                 remark += "Unit Rate not found, ";
@@ -325,7 +348,6 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
         failedRecords.fileName = req.body.fileName;
         failedRecords.totalRecords = TotalCount;
 
-        console.log("failedRecords",req.body.fileName);
         await insertFailedRecords(failedRecords); 
         
          var msgstr = "";
@@ -364,7 +386,6 @@ function findProduct(itemCode, productName) {
 
 exports.filedetails = (req,res,next)=>{
     var finaldata = {};
-    console.log(req.params.fileName)
     PurchaseEntry.find({fileName:req.params.fileName})
     .exec()
     .then(data=>{
@@ -373,7 +394,7 @@ exports.filedetails = (req,res,next)=>{
         FailedRecords.find({fileName:req.params.fileName})  
             .exec()
             .then(badData=>{
-                console.log("baddata",badData);
+               // console.log("baddata",badData);
                  finaldata.failedRecords = badData[0].failedRecords
                  finaldata.totalRecords = badData[0].totalRecords
                 res.status(200).json(finaldata);
@@ -398,14 +419,15 @@ var insertPurchaseEntry = async (data) => {
                     purchaseDate              : data.purchaseDate,
                     purchaseStaff             : data.purchaseStaff,
                     purchaseLocation          : data.purchaseLocation,
-                    itemCode                  : data.ItemCode,
-                    productName               : data.productName,
+                    itemCode                  : data.itemCode,
+                    productName               : data.product,
                     quantity                  : data.quantity,
-                    unit                      : data.unit,
+                    unit                      : data.Units,
                     amount                    : data.amount,
                     unitRate                  : data.unitRate,
-                    Details                   : data.Details,
+                    Details                   : data.details,
                     purchaseNumber            : data.purchaseNumber,
+                    fileName                  : data.fileName,
                     createdBy                 : data.createdBy,
                     createdAt                 : new Date()
                 });
@@ -425,14 +447,12 @@ var insertPurchaseEntry = async (data) => {
 
 
 var insertFailedRecords = async (invalidData) => {
-    console.log("insertFailedRecords");
-     console.log('invalidData',invalidData.fileName);
     return new Promise(function(resolve,reject){ 
     FailedRecords.find({fileName:invalidData.fileName})  
             .exec()
             .then(data=>{
             if(data.length>0){
-                console.log('data',data)   
+                //console.log('data',data)   
                 if (data[0].failedRecords.length>0) {
                     FailedRecords.updateOne({ fileName:invalidData.fileName},  
                         {   $set:   { 'failedRecords': [] } })
@@ -494,85 +514,6 @@ var insertFailedRecords = async (invalidData) => {
     })            
 }
 
-
-
-
-
-    //     // console.log("record",validData);
-
-    //     BeneficiaryFamilies.insertMany(validData)
-    //     .then(data=>{
-    //         // console.log("data",data);
-    //     })
-    //     .catch(err =>{
-    //         console.log("err",err);
-    //     });
-            
-    //     failedRecords.FailedRecords = invalidData
-    //     failedRecords.fileName = req.body.fileName;
-    //     failedRecords.totalRecords = req.body.totalRecords;
-
-    //     await insertFailedRecords(failedRecords,req.body.updateBadData);
-    //     // console.log("newfamilyLst",newfamilyLst);
-    //     if(k >= families.length){
-    //         //res.status(200).json({"uploadedData": newfamilyLst,"message":"Families Uploaded Successfully"})
-    //     }
-
-    //     var msgstr = "";
-    //     if (DuplicateCount > 0 && Count > 0) {
-    //         if (DuplicateCount > 1 && Count > 1) {
-    //            msgstr =  " " + Count+" families are added successfully and "+"\n"+DuplicateCount+" families are duplicate";
-    //         }
-    //         else if(DuplicateCount ==1 && Count == 1 ){
-    //             msgstr =  " " + Count+" family is added successfully and "+"\n"+DuplicateCount+" family is duplicate";
-    //         }
-    //         else if(DuplicateCount > 1 && Count == 1)
-    //         {
-    //             msgstr =  " " + Count+" family is added successfully and "+"\n"+DuplicateCount+" families are duplicate";
-    //         }else if(DuplicateCount == 1 && Count > 1){
-    //             msgstr =  " " + Count+" families are added successfully and "+"\n"+DuplicateCount+" family is duplicate";
-    //         }
-    //     }
-    //     else if(DuplicateCount > 0 && Count == 0)
-    //     {
-    //         if (DuplicateCount > 1) {
-    //             msgstr = "Failed to add families as "+DuplicateCount+" families are duplicate";
-    //         }else{
-    //             msgstr = "Failed to add families as "+DuplicateCount+" family is duplicate";
-    //         }
-            
-    //     }
-    //     else if(DuplicateCount == 0 && Count > 0)
-    //     { 
-    //         if (Count > 1) {
-    //             msgstr = " " + Count+" families are added successfully";
-    //         }else{
-    //             msgstr = " " + Count+" family is added successfully";
-    //         }            
-    //     }else{
-    //         msgstr = "Failed to add families";
-    //     }
-    //     res.status(200).json({
-    //         "message": msgstr,
-    //         "completed": true
-    //     });
-    // }    
-
-
-
-// var fetchBeneficiaryFamilies = async (center_ID)=>{
-//     return new Promise(function(resolve,reject){ 
-//         BeneficiaryFamilies.find({center_ID:center_ID})
-//         .exec()
-//         .then(data=>{
-//             resolve(data);            
-//         })
-//         .catch(err =>{
-//             console.log(err);
-//             reject(err); 
-//         });
-//     })
-// }
 var insertFailedRecords = async (invalidData,updateBadData) => {
      //console.log('invalidData',invalidData);
     return new Promise(function(resolve,reject){ 

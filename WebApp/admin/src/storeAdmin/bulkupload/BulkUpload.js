@@ -312,9 +312,9 @@ class BulkUpload extends Component{
       "csv"
     ]
     return (
-    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
           <Loader type="fullpageloader" percentage={this.state.percentage}/>
-	        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent">
+	        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 bulkEmployeeContent">
 	          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 bulkEmployeeImg">
 	            <a href={this.props.fileurl} download>
               <img src="https://s3.ap-south-1.amazonaws.com/assureidportal/websiteImgs/filecsv.png" />
@@ -328,7 +328,7 @@ class BulkUpload extends Component{
 	            </ul>
 	          </div>
 	        </div>
-	        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 bulkuploadFileouter">
+	        <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 bulkuploadFileouter">
 	            <input
 			          ref={el => this.fileInput = el}
 			          type="file"
@@ -340,12 +340,12 @@ class BulkUpload extends Component{
           {
             this.state.inputFileData.length > 0 ?
             <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4" style={{marginTop:'2%'}}>
-              <button className="submitBtnGo btn addBtn"
+              <button className="submitBtn btn btnSubmit"
               onClick={this.bulkUpload.bind(this)} >Submit</button>
             </div>           
             :
             <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4" style={{marginTop:'2%'}}>
-              <button className="submitBtn btn addBtn"
+              <button className="submitBtn btn btnSubmit"
                     disabled>Submit</button>
             </div>        
           }
