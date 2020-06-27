@@ -62,9 +62,24 @@ componentWillMount() {
 }
 
    async componentDidMount(){
+     //if websiteModel is Franchise Model then save that franchise model in localStorage
+    if(localStorage.getItem('websiteModel')=== null){
+      axios.get("/api/adminPreference/get")
+      .then(preference =>{
+        if(preference.data){
+          // console.log("preference = ",preference.data[0].websiteModel);
+          if(preference.data[0].websiteModel === "FranchiseModel"){
+            localStorage.setItem("websiteModel",preference.data[0].websiteModel);
+          }         
+        } 
+      })
+      .catch(error=>{
+        console.log("Error in getting adminPreference = ", error);
+      }) 
+  }//end if
+
     await this.props.fetchCartData(); 
     //console.log(this.props.recentCartData);
-
     document.getElementsByTagName("DIV")[0].removeAttribute("style");
     this.getCartCount();
     this.getWishlistCount();
@@ -86,15 +101,6 @@ componentWillMount() {
       .catch((error) => {
         // console.log('error', error);
       })
-
-    /*$(".dropdown").hover(
-      function () {
-        $(this).addclass("open");
-      },
-      function () {
-        $(this).removeclass("open");
-      }
-    );*/
 
     var localcatArray = JSON.parse(localStorage.getItem("catArray"));
     var searchstr = localStorage.getItem("searchstr");
@@ -238,7 +244,6 @@ componentWillMount() {
     localStorage.setItem("user_ID", "");
     this.props.fetchCartData(); 
     this.props.history.push('/');
-    
 
   }
   getCartCount() {

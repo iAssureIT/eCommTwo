@@ -16,7 +16,7 @@ exports.insert_cartid = (req,res,next)=>{
                             {
                                 $inc:{
                                     'cartItems.$.quantity':(req.body.quantity),
-                                    'cartItems.$.totalWeight':(req.body.totalWeight),
+                                    
                                 },
                             }
                         )
@@ -41,8 +41,7 @@ exports.insert_cartid = (req,res,next)=>{
                     }else{
                         var cartArr = {
                             'product_ID' : req.body.product_ID,
-                            'quantity'   : req.body.quantity,
-                            'totalWeight': req.body.totalWeight,
+                            'quantity' : req.body.quantity
                         }
                         Carts.updateOne(
                             {'_id':cartData._id},
@@ -80,19 +79,18 @@ exports.insert_cartid = (req,res,next)=>{
                 });
             }else{
                 var cartItems = [{
-                    "product_ID"    : req.body.product_ID,
-                    "quantity"      : req.body.quantity,
-                    "totalWeight"   : req.body.totalWeight,
+                    "product_ID"        : req.body.product_ID,
+                    "quantity"          : req.body.quantity,
                 }];
                 const cartDetails = new Carts({
-                    _id             : new mongoose.Types.ObjectId(),  
+                    _id                       : new mongoose.Types.ObjectId(),  
                     "user_ID"       :   req.body.user_ID,
                     "cartItems"     :   cartItems,
                 });
                 cartDetails.save()
                 .then(data=>{
                     res.status(200).json({
-                        "message"   : "Product added to cart successfully.",
+                        "message": "Product added to cart successfully.",
                         "cartCount" : 1
                     });
                 })
@@ -226,8 +224,7 @@ exports.change_cart_item_quantity = (req, res, next)=>{
         {"user_ID":req.body.user_ID,'cartItems.product_ID':req.body.product_ID},
         {
             $set:{
-                'cartItems.$.quantity'   : parseInt(req.body.quantityAdded),
-                'cartItems.$.totalWeight': req.body.totalWeight,
+                'cartItems.$.quantity':parseInt(req.body.quantityAdded),
             },
         }
     )

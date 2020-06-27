@@ -15,6 +15,7 @@ const initialState = {
 	categoryDetails:[]
 }
 const reducer = (state = initialState,action) =>{
+	console.log("Inside reducer======");
 	const newState = {...state}; 
 	if(action.type === "CART_COUNT_INITIALLY"){
 		newState.cartCount 	= action.cartCount;
@@ -44,8 +45,7 @@ const reducer = (state = initialState,action) =>{
 	}
 	if(action.type === "GET_CATEGORY_DETAILS"){
 		newState.categoryDetails 		= action.categoryDetails;
-	}
-	
+	}	
 
 	return newState;
 }

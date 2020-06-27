@@ -15,6 +15,8 @@ class WebsiteModel extends Component {
             "franchise"        : "",
             "marketplace"      : "",
             "SingleOwner"      : "",
+            "askPincodeYes"    : "",
+            "askPincodeNo"     : "",
 
         };
         
@@ -26,29 +28,39 @@ class WebsiteModel extends Component {
                 console.log("preferences value:",preferences.data[0].websiteModel);
                 var askpincodeToUser = preferences.data[0].askPincodeToUser;
                 console.log("askpincodeToUser:",preferences.data[0].askPincodeToUser);
-               if(preferences.data[0].websiteModel === "FranchiseModel"){
-                   this.setState = {
-                       'franchise' : 'checked',
+               if(preferences.data[0].websiteModel === "FranchiseModel"){                   
+                   this.setState({
+                    'franchise' : 'checked',
+                })
+                   if(this.state.franchise){
+                    console.log("1.this.state.franchise:",this.state.franchise);
                    }
-                   console.log("1.this.state.franchise:",this.state.franchise);
+                   
                }else if(preferences.data[0].websiteModel === "MarketPlace"){                        
-                    this.setState ={
-                        'marketplace': 'checked'
-                    }
+                    
+                    this.setState({
+                        'marketplace' : 'checked',
+                    })
+                    console.log("2.this.state.marketPlace:",this.state.marketplace);
                }else if(preferences.data[0].websiteModel === "SingleOwner"){                        
-                    this.setState ={
-                        'SingleOwner': 'checked'
-                    }
+                    this.setState({
+                        'SingleOwner': 'checked',
+                    })
                     console.log("3.this.state.SingleOwner:",this.state.SingleOwner);
                }else if(preferences.data[0].askPincodeToUser === "true"){                        
-                    this.state ={
-                        'askPincodeYes': 'checked'
+                    
+                    this.setState({
+                        'askPincodeYes': 'checked',
+                    })
+                    if(this.state.askPincodeYes){
+                        console.log("this.state.askPincodeYes:",this.state.askPincodeYes);
                     }
-                    console.log("this.state.askPincodeYes:",this.state.askPincodeYes);
-                }else if(preferences.data[0].askPincodeToUser === "false"){                        
-                    this.state ={
-                        'askPincodeNo': 'checked'
-                    }
+                   
+                }else if(preferences.data[0].askPincodeToUser === "false"){                    
+     
+                    this.setState({
+                        'askPincodeNo': 'checked',
+                    })
                     console.log("this.state.askPincodeNo:",this.state.askPincodeNo);
                 }       
             
@@ -83,9 +95,9 @@ class WebsiteModel extends Component {
                         swal({
                             text : response.data.message
                         })               
-                        this.setState({
-                            WebsiteModel  : ""
-                        })
+                        // this.setState({
+                        //     WebsiteModel  : ""
+                        // })
                     })
                     .catch((error)=>{
                         console.log('error', error);
@@ -153,7 +165,7 @@ class WebsiteModel extends Component {
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Ask Pincode To User on Homepage Launch <span><i className="astrick">*</i></span></div>
 
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
-                                                        {this.state.askPincodeYes === "checked" ?
+                                                        {this.state.askPincodeYes === 'checked' ?
                                                             <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                             checked onClick={this.handleChange.bind(this)} />
                                                         :

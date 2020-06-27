@@ -82,7 +82,7 @@
     font-size: 16px !important;
 }
 .cart-dropdown-menu{
-    margin-top: -2px !important;
+    margin-top: -5px !important;
 }
 
 /* megamenu css */
@@ -94,9 +94,6 @@
 }
 .megamenuWrapper{
     margin-top: 14px;
-}
-.megamenuWrapper:hover{
-    /* background-color: transparent !important; */
 }
 ul.main-nav > li:hover {
     background-color: #fff !important;

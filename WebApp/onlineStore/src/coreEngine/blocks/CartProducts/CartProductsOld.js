@@ -10,7 +10,6 @@ import Loader from "../../common/loader/Loader.js";
 import Message from '../Message/Message.js';
 import {ntc} from '../../ntc/ntc.js';
 import emptyCartImg from '../../../sites/currentSite/images/emptycart.png';
-import { size } from 'underscore';
 class CartProducts extends Component{
     constructor(props) {
         super(props);
@@ -84,37 +83,33 @@ class CartProducts extends Component{
     }
     cartquantityincrease(event){
         event.preventDefault();
-        const userid     = localStorage.getItem('user_ID');
-        const product_ID = event.target.getAttribute('productid');        
-        const quantity   = parseInt(event.target.getAttribute('dataquntity'));
+        const userid = localStorage.getItem('user_ID');
+        const product_ID = event.target.getAttribute('productid');
+        const quantity = parseInt(event.target.getAttribute('dataquntity'));
         
         var availableQuantity = parseInt(event.target.getAttribute('availableQuantity'));
-        const quantityAdded   = parseInt(quantity+1);
-
-        if(localStorage.getItem('websiteModel')==="FranchiseModel"){
-            const size       = event.target.getAttribute('size');
-            const unit       = event.target.getAttribute('unit');
-            var totalWeight  = quantityAdded * size;             
-            if(unit === "gm"){
-                if(totalWeight >= 1000){
-                    console.log("set unit kg");
-                    //if weight is greater than 1000 gram then convert it to kg
-                    totalWeight = totalWeight/1000;
-                    totalWeight = totalWeight+" KG";
-                    // console.log("document.getElementById(product_ID)===",document.getElementById("totalWeight-"+product_ID));
-                    // document.getElementById("totalWeight-"+product_ID).innerHTML= totalWeight+"KG";                
-                }else{
-                    totalWeight      = totalWeight+" GM";
+        const quantityAdded = parseInt(quantity+1);
+        const formValues = { 
+            "user_ID"     	: userid,
+            "product_ID" 	: product_ID,
+            "quantityAdded" : quantityAdded,
+        }
+        if(quantityAdded > availableQuantity){
+            this.setState({
+                messageData : {
+                    "type" : "outpage",
+                    "icon" : "fa fa-check-circle",
+                    "message" : "Last "+availableQuantity+" items taken by you",
+                    "class": "success",
+                    "autoDismiss" : true
                 }
-            }else{
-                totalWeight      = totalWeight+" "+unit;
-            }
-            const formValues = { 
-                "user_ID"     	: userid,
-                "product_ID" 	: product_ID,
-                "quantityAdded" : quantityAdded,
-                "totalWeight"   : totalWeight,
-            }            
+            })
+            setTimeout(() => {
+                this.setState({
+                    messageData   : {},
+                })
+            }, 3000);
+        }else{
             axios.patch("/api/carts/quantity" ,formValues)
             .then((response)=>{
                     this.props.fetchCartData();
@@ -122,41 +117,7 @@ class CartProducts extends Component{
             .catch((error)=>{
                     console.log('error', error);
             })
-            
-        }else{
-            const formValues = { 
-                "user_ID"     	: userid,
-                "product_ID" 	: product_ID,
-                "quantityAdded" : quantityAdded,
-                "totalWeight"   : totalWeight,
-            }
-            if(quantityAdded > availableQuantity){
-                this.setState({
-                    messageData : {
-                        "type" : "outpage",
-                        "icon" : "fa fa-check-circle",
-                        "message" : "Last "+availableQuantity+" items taken by you",
-                        "class": "success",
-                        "autoDismiss" : true
-                    }
-                })
-                setTimeout(() => {
-                    this.setState({
-                        messageData   : {},
-                    })
-                }, 3000);
-            }
-            else{
-                axios.patch("/api/carts/quantity" ,formValues)
-                .then((response)=>{
-                        this.props.fetchCartData();
-                })
-                .catch((error)=>{
-                        console.log('error', error);
-                })
-            }
-        }        
-        
+        }
     }
     Closepagealert(event){
         event.preventDefault();
@@ -169,66 +130,28 @@ class CartProducts extends Component{
         $(".toast-info").removeClass('toast');
         $(".toast-warning").removeClass('toast');
     }
-
     cartquantitydecrease(event){
     	event.preventDefault();
-        const userid     = localStorage.getItem('user_ID');
-        const cartitemid = event.target.getAttribute('id'); 
-        const size       = event.target.getAttribute('size');
-        const quantity   = parseInt(event.target.getAttribute('dataquntity'));
+        const userid = localStorage.getItem('user_ID');
+        const cartitemid = event.target.getAttribute('id');
+        const quantity = parseInt(event.target.getAttribute('dataquntity'));
 
         const quantityAdded = parseInt(quantity-1) <= 0 ? 1 : parseInt(quantity-1);
-       
-        if(localStorage.getItem('websiteModel')==="FranchiseModel"){
-            const size       = event.target.getAttribute('size');
-            const unit       = event.target.getAttribute('unit');
-            var totalWeight  = quantityAdded * size;
-
-            if(unit === "gm"){
-                if(totalWeight >= 1000){
-                    totalWeight = totalWeight/1000;
-                    totalWeight = totalWeight+" KG";
-                    
-                    // document.getElementById("totalWeight-"+cartitemid).innerHTML= totalWeight+"KG";                
-                }
-                else{
-                    totalWeight      = totalWeight+" GM";
-                }
-            }else{
-                totalWeight      = totalWeight+" "+unit;
-            }
-            const formValues = { 
-                "user_ID"     	: userid,
-                "product_ID" 	: cartitemid,
-                "quantityAdded" : quantityAdded,
-                "totalWeight"   : totalWeight,
-            }            
-            axios.patch("/api/carts/quantity" ,formValues)
-            .then((response)=>{
-                    this.props.fetchCartData();
-            })
-            .catch((error)=>{
-                    console.log('error', error);
-            })
-            
-        }else{
-            const formValues    = { 
-                "user_ID"     	: userid,
-                "product_ID" 	: cartitemid,
-                "quantityAdded" : quantityAdded,            
-            }
-            axios.patch("/api/carts/quantity" ,formValues)
-            .then((response)=>{
-                this.props.fetchCartData();
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })
-        }
         
+        const formValues = { 
+			"user_ID"     	: userid,
+			"product_ID" 	: cartitemid,
+			"quantityAdded" : quantityAdded,
+        }
+        console.log('for', formValues);
+        axios.patch("/api/carts/quantity" ,formValues)
+		.then((response)=>{
+             this.props.fetchCartData();
+		})
+		.catch((error)=>{
+		    console.log('error', error);
+		})
     }
-
-
     proceedToCheckout(event){
         event.preventDefault();
         
@@ -309,8 +232,7 @@ class CartProducts extends Component{
 
     }
     render(){
-        console.log("this.props.recentCartData[0].cartItems===",this.props.recentCartData[0]);
-        return(            
+        return(
             <div className="container">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartHeight">
                 <Loader type="fullpageloader"/>
@@ -327,17 +249,14 @@ class CartProducts extends Component{
                                             <th>ITEMS</th>
                                             <th>PRICE</th>
                                             <th>QUANTITY</th>
-                                            { localStorage.getItem('websiteModel') === 'FranchiseModel'? 
-                                                <th>TOTAL WEIGHT</th>
-                                            :
-                                                <th>SIZE</th>
-                                            }
+                                            <th>SIZE</th>
                                             <th>TOTAL</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {                                            
+                                        {
+                                            
                                             this.props.recentCartData[0].cartItems.map((data, index)=>{
                                                 
                                                 return(
@@ -359,10 +278,9 @@ class CartProducts extends Component{
                                                                         :
                                                                         <span className="price"><i className="fa fa-inr"></i>{data.productDetail.originalPrice}</span>
                                                                 }
-
                                                                 <div>
                                                                     {data.productDetail.color ? <span className="cartColor">Color : <span style={{backgroundColor : data.productDetail.color, padding: '0px 5px'}}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span> : null}
-                                                                    {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp;<span className="CapsUnit">{data.productDetail.unit}</span></span>: null}
+                                                                    {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp;{data.productDetail.unit}</span>: null}
                                                                 </div>
                                                                     <button productid={data.productDetail._id} id={data._id} onClick={this.moveWishlist.bind(this)} className="btn moveWish">Move to Wishlist</button>
                                                                 </td>
@@ -374,7 +292,7 @@ class CartProducts extends Component{
                                                             data.productDetail.availableQuantity > 0 ?
                                                                 <div >
                                                                     <span id="productPrize" className={"cartProductPrize fa fa-inr"}>&nbsp;{data.productDetail.discountedPrice}</span><br />
-                                                                    <span className ="productUnit" id={data.productDetail._id}>Per &nbsp;<span className="CapsUnit">{data.productDetail.unit}</span></span>
+                                                                    <span className ="productUnit" id={data.productDetail._id}>Per &nbsp;{data.productDetail.unit}</span>
                                                                 </div>
                                                             :
                                                             <span>-</span>
@@ -385,44 +303,17 @@ class CartProducts extends Component{
                                                             {
                                                                 data.productDetail.availableQuantity > 0 ?
                                                                 <div className="quantityWrapper">
-                                                                    <span className="minusQuantity fa fa-minus" id={data.productDetail._id} size={data.productDetail.size} unit={data.productDetail.unit} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} onClick={this.cartquantitydecrease.bind(this)}></span>&nbsp;
+                                                                    <span className="minusQuantity fa fa-minus" id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} onClick={this.cartquantitydecrease.bind(this)}></span>&nbsp;
                                                                     <span className="inputQuantity">{this.state['quantityAdded|'+data._id] ? this.state['quantityAdded|'+data._id] : data.quantity}</span>&nbsp;
-                                                                    <span className="plusQuantity fa fa-plus" size={data.productDetail.size} unit={data.productDetail.unit} productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity}  onClick={this.cartquantityincrease.bind(this)}></span><br/>   
-                                                                    { localStorage.getItem('websiteModel') === 'FranchiseModel'?                                                                 
-                                                                        <span className ="productUnit" id={data.productDetail._id}> Of {data.productDetail.size}&nbsp;<span className="CapsUnit">{data.productDetail.unit}</span></span>
-                                                                    :null
-                                                                    }
+                                                                    <span className="plusQuantity fa fa-plus" productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity}  onClick={this.cartquantityincrease.bind(this)}></span><br/>                                                                    
+                                                                    {/* <span className ="productUnit" id={data.productDetail._id}>{data.productDetail.unit}</span> */}
                                                                 </div>
                                                                 :
                                                                 <span className="sold textAlignCenter">SOLD OUT</span>
                                                             }
                                                         </td>
-
-                                                        <td>  
-                                                            { localStorage.getItem('websiteModel') === 'FranchiseModel'? 
-                                                                // data.productDetail.totalWeight=== "1000" || data.productDetail.totalWeight=== "750" || data.productDetail.totalWeight=== "500" || data.productDetail.totalWeight=== "250" && data.productDetail.unit ==="gm" ?
-                                                                //     <span className="productSize" id={data.product_ID}>&nbsp; {data.totalWeight}&nbsp;
-                                                                //     <span className="CapsUnit">{data.productDetail.unit}</span></span>
-                                                                // :
-                                                                //     <span className="productSize" id={"totalWeight"+data.product_ID}>&nbsp; {data.totalWeight}&nbsp;
-                                                                //         <span className="CapsUnit">{data.productDetail.unit}</span>
-                                                                //         {/* { data.productDetail.unit === "gm" && data.totalWeight<25 ?
-                                                                //             <span className="CapsUnit">{data.productDetail.unit}</span>
-                                                                //         :
-                                                                //             null
-                                                                //         } */}
-                                                                //     </span>    
-                                                                
-                                                                
-                                                                // data.productDetail.unit === "gm" ?                                 
-                                                                //     <span className="productSize">&nbsp;{data.totalWeight} &nbsp;</span> 
-                                                                // :
-                                                                //     <span className="productSize" id={"totalWeight"+data.product_ID}>&nbsp; {data.totalWeight}&nbsp;
-                                                                //     <span className="CapsUnit">{data.productDetail.unit}</span></span>
-                                                                <span className="productSize totalWeight">&nbsp;{data.totalWeight} &nbsp;</span> 
-                                                            :
-                                                                    <span className="productSize">&nbsp;{data.productDetail.size} &nbsp; <span className="CapsUnit">{data.productDetail.unit}</span></span>
-                                                            }
+                                                        <td>
+                                                             <span className="productSize">&nbsp;{data.productDetail.size} &nbsp; {data.productDetail.unit}</span>
                                                         </td>
                                                         <td className="nowrap">
                                                         {

@@ -7,6 +7,7 @@ const cartSchema = mongoose.Schema({
         {
             product_ID          : { type: mongoose.Schema.Types.ObjectId, ref: 'products' },
             quantity            : Number,
+            totalWeight         : String,
         }
     ],
     cartTotal             : Number,

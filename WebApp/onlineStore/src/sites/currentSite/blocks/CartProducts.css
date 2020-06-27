@@ -48,7 +48,7 @@
     color: #5f5f5f;
     text-align: center;
     font-weight: 700;
-    line-height: 37px;
+    line-height: 30px;
     font-size: 1.8rem;
 }
 .minusQuantity{
@@ -212,4 +212,7 @@
     font-size: 13px;
     color: #878787;
     text-decoration: line-through;
+}
+.CapsUnit{
+    text-transform: uppercase !important;
 }
