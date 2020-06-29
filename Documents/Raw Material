@@ -1,0 +1,54 @@
+Raw Material  =  [
+	{D1, P1, 100 Kg, finGoodsOutward =  [
+																				{D1, 50Kg}
+																				{D2, 50Kg}
+																			],
+		balance=0 Kg
+	}
+	{D2, P1, 200 Kg, finGoodsOutward =  [
+																				{D3, 100Kg}
+																				{D4, 100Kg}
+																			],
+		balance=0 Kg
+	}
+	{D3, P1, 250 Kg, finGoodsOutward =  [
+																				{D4, 50Kg}
+																				{D5, 150Kg}
+																			],
+		balance=50 Kg
+	}
+	{D4, P1, 330 Kg, finGoodsOutward =  [
+																			],
+		balance=330 Kg
+	}
+]
+
+
+
+============================================
+
+
+
+	
+
+
+finishedGoods = [
+	{D1, P1, 50Kg, 45Kg, 5Kg, DistriFranchise=[
+																							{F1, D1, 10Kg}
+																							{F2, D1, 15Kg}
+																							{F3, D1, 10Kg}
+																							{F1, D2, 10Kg}
+																						],
+					balance= 0 Kg
+	}
+	{D2, P1, 50Kg, 45Kg, 5Kg, DistriFranchise=[																							
+																							{F2, D2, 15Kg}
+																							{F3, D2, 10Kg}
+																						],
+					balance= 20 Kg
+	}
+	{D3, P1, 100Kg, 90Kg, 10Kg}
+	{D4, P1, 150Kg, 145Kg, 5Kg}
+	{D5, P1, 150Kg, 140Kg, 10Kg}
+	{D6, P1, 50Kg, 45Kg, 5Kg}
+]

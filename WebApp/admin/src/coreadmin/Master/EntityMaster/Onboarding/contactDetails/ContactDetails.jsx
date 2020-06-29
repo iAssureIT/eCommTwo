@@ -81,17 +81,14 @@ class ContactDetails extends Component {
 	}
 	getAllEntites() {
 		var formvalues = {};
-		// if(this.state.pathname === "corporate"){
-		// 	formvalues = { type : "employee"}
-		// }else{
-		// 	formvalues = { type : "driver"}
-		// }
 		
-		if(typeof this.props.employeeType === 'undefined' || typeof this.props.employeeType === ''){
+		if(typeof this.props.employeeType === 'undefined' ||
+			 this.props.employeeType === ''){
 			formvalues = { type : "employee" }	
 		}else{
 			formvalues = { type : this.props.employeeType }			
 		}
+
 		var listOfEmpID = [];
 			axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
 			.then((response) => {

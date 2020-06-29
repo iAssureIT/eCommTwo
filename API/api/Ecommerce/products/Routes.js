@@ -2,6 +2,7 @@ const express 	= require("express");
 const router 	= express.Router();
 
 const productController = require('./Controller');
+const productStock 			= require('./Controller2');
 
 router.post('/post', productController.insert_product);
 
@@ -123,5 +124,16 @@ router.get('/get/attributes/:sectionID', productController.getattributes);
 router.get('/get/attributesbycategory/:categoryID', productController.getattributesbycategory);
 
 router.get('/get/attributesbysubcategory/:subCategoryID', productController.getattributesbysubcategory);
+
+
+
+
+//==================================================
+
+router.get('/get/franchisestock', productStock.getfranchisestock);
+
+// router.get('/get/warehousestock', productStock.getwarehousestock);
+
+
 
 module.exports = router;

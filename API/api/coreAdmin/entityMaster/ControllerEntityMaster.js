@@ -79,12 +79,12 @@ function getNextSequence() {
 }
 
 exports.listEntity = (req,res,next)=>{
-    console.log("listEntity req.params = ",req.params);
+    // console.log("listEntity req.params = ",req.params);
 
     EntityMaster.find({entityType:req.params.entityType})
                 .sort({createdAt : -1})    
                 .then(data=>{
-                    console.log("listEntity data = ",data);
+                    // console.log("listEntity data = ",data);
                     res.status(200).json(data);
                 })
                 .catch(err =>{

@@ -1,0 +1,20 @@
+{
+    "_id" : ObjectId("5ef39e8566e9f608909c06c2"),
+    "Date"          : "2020-06-25",
+    "ItemCode"      : "1500",
+    "ProductCode"   : "FS101",
+    "productName"   : "Raw Mango",
+    "CurrentStock"  : 50,
+    "OutwardRawMaterial" : 30,
+    "OutwardUnit"   : "Kg",
+    "fgUnitQty"     : 1,
+    "fgUnitWt"      : "Kg",
+    "fgTotalQty"    : 27,
+    "fgInwardQty"   : 27,
+    "fgInwardUnit"  : "Kg",
+    "scrapQty"      : 0,
+    "scrapUnit"     : "Kg",
+    "finishedBy"    : "abc",
+    "createdAt"     : ISODate("2020-06-24T18:42:13.547Z"),
+    "__v" : 0
+}

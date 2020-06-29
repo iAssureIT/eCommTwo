@@ -13,22 +13,15 @@ exports.insert_franchisePO = (req,res,next)=>{
     .sort({createdAt: -1})
     .exec()
     .then(data=>{
-        // console.log("data",data);
         if(data && data.length > 0){
             if (data[0].orderNo) {
                 var orderNo = data[0].orderNo + 1;
             }else{
                 var orderNo = 1000;
             }
-        // console.log("orderNo",orderNo);
-
         }else{
           var orderNo = 1000;
-        // console.log("orderNo orderNo",orderNo);
-
         }
-        // console.log("req.body orderNo",req.body);
-
         const franchisePO = new FranchisePO({
             _id                       : new mongoose.Types.ObjectId(), 
             franchise_id              : req.body.franchise_id, 
@@ -41,23 +34,23 @@ exports.insert_franchisePO = (req,res,next)=>{
         });
 
         franchisePO.save()
-        .then(data => {
-            res.status(200).json({
-                "message"  : "Franchise Purchase Order Submitted Successfully",
-                "order_id" : data._id
-            });
-        })
-        .catch(err =>{
-            console.log("err0",err);
-            res.status(500).json({
-                error: err
-            });
-        })
-
+                .then(data => {
+                    res.status(200).json({
+                        "message"  : "Franchise Purchase Order Submitted Successfully",
+                        "order_id" : data._id
+                    });
+                })
+                .catch(err =>{
+                    console.log("err0",err);
+                    res.status(500).json({
+                        error: err
+                    });
+                })
+    })
     .catch(err =>{
         res.status(500).json({error:err})
     });  
-    });
+    
 };
 
 exports.update_franchisePO = (req,res,next)=>{
