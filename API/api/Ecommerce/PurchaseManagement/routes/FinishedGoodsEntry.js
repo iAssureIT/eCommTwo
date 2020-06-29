@@ -5,7 +5,7 @@ const FinishedGoodsEntryController = require('../controllers/FinishedGoodsEntry'
 
 router.post('/post', FinishedGoodsEntryController.insert_FinishedGoodsEntry);
 
-router.get('/get/list',FinishedGoodsEntryController.list_FinishedGoodsEntry);
+router.post('/post/list',FinishedGoodsEntryController.list_FinishedGoodsEntry);
 
 router.get('/get/one/:fetchId'       , FinishedGoodsEntryController.fetch_one);
 
@@ -15,7 +15,15 @@ router.delete('/delete/:purchaseID',FinishedGoodsEntryController.delete_Finished
 
 router.get('/get/TotalOutward/:itemcode'       , FinishedGoodsEntryController.get_total_outward);
 
+router.get('/get/ProductList',FinishedGoodsEntryController.list_Products);
 
+
+/* Bulk upload code by madhuri */
+router.post('/finishedGoodsBulkUpload' ,FinishedGoodsEntryController.finished_goods_bulk_upload);
+
+router.get('/get/filedetails/:fileName' ,FinishedGoodsEntryController.filedetails);
+
+/* Bulk upload code end */
 
 /*
 router.get('/get/list/:section_ID',PurchaseEntryController.list_category);

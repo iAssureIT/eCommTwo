@@ -82,7 +82,7 @@ export default class PurchaseManagement extends React.Component {
 					},
 					
 		            blockActive			: "all",
-		            "listofRoles"	    : "",
+		            listofRoles	    : "",
 		            adminRolesListData  : [],
 		            checkedUser  : [],
 		            activeswal : false,
@@ -106,13 +106,11 @@ export default class PurchaseManagement extends React.Component {
 	componentDidMount(){
 		this.getproducts();
 		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
-		
 		var editId = this.props.match.params.purchaseId;
-		var PurchaseNumber = "PO"+Math.floor(100000 + Math.random() * 900000);
 		this.getData();
-
+		this.GeneratePurchaseNumber();
 		this.setState({
-			purchaseNumber : PurchaseNumber
+			purchaseDate   : serchByDate
         });
 
 		$.validator.addMethod("noSpace", function(value, element) { 
@@ -350,6 +348,22 @@ export default class PurchaseManagement extends React.Component {
     getSearchText(searchText, startRange, limitRange){
 
 	}
+
+	GeneratePurchaseNumber(){
+		axios.get("/api/purchaseentry/get/GeneratePurchaseNumber")
+            .then((response) => {
+				console.log("GeneratePurchaseNumber",response.data);
+				this.setState({
+					purchaseNumber : response.data
+				},()=>{
+					// console.log("GeneratePurchaseNumber",this.state.purchseNumber);
+				});
+            })
+            .catch((error) => {
+                console.log('error', error);
+            })
+	}
+
 	getPurNumberList(){
 		axios.get("/api/purchaseentry/get/PurchaseNumbers")
             .then((response) => {
@@ -507,14 +521,14 @@ export default class PurchaseManagement extends React.Component {
 				console.log(error);
 			});
 			this.setState({
-				amount          : "",     
-				product         : "",    	
-				quantity        : "", 			
-				product         : "", 
-				ItemCode        : "",		
-				Units           : "Kg",
-				unitRate        : "",
-				unitOfMeasurement             : "Kg"
+				amount            : "",     
+				product           : "",    	
+				quantity          : "", 			
+				product           : "", 
+				ItemCode          : "",		
+				Units             : "Kg",
+				unitRate          : "",
+				unitOfMeasurement : "Kg"
 			},()=>{
 				this.getData();
 			});  
@@ -556,7 +570,7 @@ export default class PurchaseManagement extends React.Component {
 			      	"quantity" 			: "",
 					"product" 		    : "",
 					"ItemCode"          : "",
-					"unit" 				: "Kg",
+				    "unit"              : "Kg",
 					"unitOfMeasurement" : "Kg",
                     "unitRate"          : "",
 				    "purchaseNumber"    : "",
@@ -647,13 +661,13 @@ export default class PurchaseManagement extends React.Component {
 													<div className="input-group-addon inputIcon">
 													   <i className="fa fa-rupee"></i>
 													</div> 
-													<input type="number" placeholder="1234" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)}/>
+													<input type="number" placeholder="" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)}/>
 													<div className="input-group-addon inputIcon prependSelect" style={{"borderLeft": "1px solid gray !important"}}>
 														<select id="unitOfMeasurement"  name="unitOfMeasurement" value={this.state.unitOfMeasurement} onChange={this.handleChange.bind(this)}  className="input-group" style={{"border":0,"width": "40px","fontSize":"small"}}> 
 															<option selected={true} disabled={true}>-- Select --</option>
 															<option value="Kg">Kg</option>
 															<option value="Ltr">Ltr</option>
-															<option value="gram">Gm</option>
+															<option value="Gn">Gm</option>
 															<option value="Nos">Nos</option> 	
 														</select>
 													</div> 
@@ -669,7 +683,7 @@ export default class PurchaseManagement extends React.Component {
 													<option selected={true} disabled={true}>-- Select --</option>
 													<option value="Kg">Kg</option>
 													<option value="Ltr">Ltr</option>
-													<option value="gram">Gm</option>
+													<option value="Gm">Gm</option>
 													<option value="Nos">Nos</option>
 												</select>
 											</div>
@@ -681,7 +695,7 @@ export default class PurchaseManagement extends React.Component {
 												<div className="input-group-addon inputIcon">
 												<i className="fa fa-rupee"></i>
 												</div> 
-												<input type="number" placeholder="12345678" className="form-control new_inputbx1" value={ this.state.amount} name="amount" refs="amount" onChange={this.handleChange.bind(this)} id="amount" min="1"/>
+												<input type="number" placeholder="" className="form-control new_inputbx1" value={ this.state.amount} name="amount" refs="amount" onChange={this.handleChange.bind(this)} id="amount" min="1"/>
 											</div>     
 										</div>  
 										</div>

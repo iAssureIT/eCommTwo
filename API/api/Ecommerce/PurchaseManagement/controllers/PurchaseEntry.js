@@ -30,6 +30,9 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                     unitOfMeasurement         : req.body.unitOfMeasurement,
                     Details                   : req.body.Details,
                     purchaseNumber            : req.body.purchaseNumber,
+                    balance                   : req.body.quantity,
+                    finishedGoodsArray        : [],
+                    balanceUnit               : req.body.unit,
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
                 });
@@ -114,7 +117,7 @@ exports.update_PurchaseEntry = (req,res,next)=>{
         });
 };
 exports.get_datewise_purchaceEntry = (req, res, next)=>{
-    console.log("req body = ",req.body);
+    // console.log("req body = ",req.body);
     const purchaseDate = req.body.purchaseDate;
     var selector = {};
     if(typeof(req.body.purchaseNumber) != "undefined" && typeof(req.body.productName) != "undefined"){
@@ -131,7 +134,7 @@ exports.get_datewise_purchaceEntry = (req, res, next)=>{
 
     PurchaseEntry.find(selector)
     .then(data=>{
-       console.log("data----=",data);
+       // console.log("data----=",data);
        res.status(200).json(data);   
        
     })
@@ -157,7 +160,7 @@ exports.list_purchaseEntry = (req, res, next)=>{
         .sort({createdAt : -1})
         .exec()
         .then(data=>{
-            console.log("data--",data);
+            // console.log("data--",data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -212,6 +215,55 @@ exports.get_total_inward = (req,res,next) => {
         });
     }); 
 }
+
+
+exports.raw_material_current_stock = (req,res,next) => {
+    // PurchaseEntry.aggregate([
+    //    {"$match": { "itemCode": req.params.itemcode}},
+        // {
+        //     "$group": {
+        //         "_id":  "$balanceUnit",
+        //         "CurrentStock": { "$sum": "$balance"},
+        //     }
+        // },
+       // {
+       //     {"$group": 
+       //              {"_id": null,"balanceUnit":"$balanceUnit"},
+       //              {"CurrentStock": { "$sum": "$balance"}},
+
+       //     },
+       // }
+    PurchaseEntry.find({itemCode : req.params.itemcode,balance: { $gt: 0 }})
+     .then(data=>{
+       res.status(200).json(data);   
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }); 
+}
+
+exports.generate_purchase_number = (req, res, next)=>{
+    PurchaseEntry.findOne()
+        .sort({ "createdAt": -1 })
+        .exec()
+        .then(data=>{
+            if(data){
+                 const PONum= data.purchaseNumber.replace('PO','');
+                 const number = Number(PONum) + Number(1);
+                 PurchaseNumber = "PO" + number;
+             }else{
+                 PurchaseNumber = "PO" + 1;
+             }
+            res.status(200).json(PurchaseNumber);
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        });
+};
 
 exports.raw_material_bulk_upload = (req,res,next)=>{
     const moment = require('moment-timezone');
@@ -309,33 +361,32 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                     }
                 }
 
-        if (productData[k].itemCode != undefined) {
-            TotalCount++;
-            if(productData[k].productCode == undefined){
-                 remark += "Product Code not found";
-            }
-            if (productData[k].purchaseDate == undefined) {
-                if(!moment(new Date(purchaseDate), "YYYY-MM-DD").isValid()){
-                    remark += ", Purchase date should be in YYYY-MM-DD formart, ";
-                }else{
-                     remark += ", Purchase Date not found, ";
+            if (productData[k].itemCode != undefined) {
+                TotalCount++;
+                if(productData[k].productCode == undefined){
+                     remark += "Product Code not found";
+                }
+                if (productData[k].purchaseDate == undefined) {
+                    if(!moment(new Date(purchaseDate), "YYYY-MM-DD").isValid()){
+                        remark += ", Purchase date should be in YYYY-MM-DD formart, ";
+                    }else{
+                         remark += ", Purchase Date not found, ";
+                    }
+                }
+                if (productData[k].unitRate == undefined) {
+                    remark += "Unit Rate not found, ";
+                }
+                if (productData[k].quantity == undefined) {
+                    remark += "Quantity not found, ";
+                }
+                if (productData[k].amount == undefined) {
+                    remark += "Amount not found, ";
+                }
+                if (productData[k].product == undefined) {
+                    remark += "Product Name not found, ";
                 }
             }
-            if (productData[k].unitRate == undefined) {
-                remark += "Unit Rate not found, ";
-            }
-            if (productData[k].quantity == undefined) {
-                remark += "Quantity not found, ";
-            }
-            if (productData[k].amount == undefined) {
-                remark += "Amount not found, ";
-            }
-            if (productData[k].product == undefined) {
-                remark += "Product Name not found, ";
-            }
-        }
             
-
             if (remark != '') {
                 invalidObjects = productData[k];
                 invalidObjects.remark = remark;

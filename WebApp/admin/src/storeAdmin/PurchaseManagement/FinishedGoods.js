@@ -6,21 +6,23 @@ import jQuery from 'jquery';
 import $ from 'jquery';
 import moment from 'moment';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
-
+import Loader from '../loader/Loader.js'; 
+import BulkUpload   from "../bulkupload/BulkUpload.js";
 export default class FinishedGoods extends React.Component {
 
 	constructor(props) {
 		super(props);
 		  this.state = {
 			      	Date                : '',
-			      	ItemCode            : '',
+					ItemCode            : '',
+					ProductCode         : '',
 			      	productName         : '',
-			      	PackageWeight	    : '',
-			      	Quantity            : '',
+			      	PackagefgUnitQty	    : '',
+			      	fgTotalQty            : '',
 					Unit                : 'Kg',
 					finishedGoodsUnit   : 'Kg',
-					outwardUnit         : 'Kg',
-					wtPerUnit           : 'Kg',
+					OutwardUnit         : 'Kg',
+					fgUnitWt           : 'Kg',
 					scrapUnit           : 'Kg',
 			      	"twoLevelHeader"    : {
 						            apply  : false,
@@ -36,41 +38,79 @@ export default class FinishedGoods extends React.Component {
 						actions        	: 'Action',
 					},
 					"tableObjects" 		: {
-						deleteMethod              : 'delete',
-		                apiLink                   : '/api/finishedGoodsEntry',
-		                paginationApply           : false,
-		                searchApply               : false,
-		                editUrl                   : '/finished-goods'
+						deleteMethod    : 'delete',
+		                apiLink         : '/api/finishedGoodsEntry',
+		                paginationApply : false,
+		                searchApply     : false,
+		                editUrl         : '/finished-goods'
 					},
-		            "startRange"        : 0,
-		            "limitRange"        : 10, 
-					"editId"                    : this.props.match.params ? this.props.match.params.finishedGoodId : '',
-					"productArray"      : [],
-					"itemCodeArray"     : [],
-					"outwardFromRaw"    : '',
-					"weight"            : '',
-					"weightforFG"       :  0,
-					"totalInward"       : 0,
-					"totalOutward"      : 0,
-					"currentStock"      : 0,
-					"totalScrap"        : 0,
-					"scrap"             : 0,
-					"errorMsg"          : ''
-
-      };
+					fileDetailUrl           : "/api/finishedGoodsEntry/get/filedetails/",
+					goodRecordsTable      : [],
+					failedRecordsTable    : [],
+					goodRecordsHeading :{
+						Date            : "Date",
+						productName     : "Product Name – Product Code - Item Code",
+						productCode     : "Product Code",
+						itemCode        : "Item Code",
+						InwardStock  	: "Finished Goods",
+						InwardUnit      : "Inward Unit",
+						OutwardStock    : "Raw Material",
+						OutwardUnit     : "Raw Material Unit",
+						Quantity        : "Quantity",
+						Weight          : "Weight",
+						UnitWt          : "Unit Weight",
+						Scrap           : "Scrap",
+						ScrapUnit       : "Scrap Unit"
+					},
+					failedtableHeading :{
+						Date            : "Date",
+						productName     : "Product Name – Product Code - Item Code",
+						productCode     : "Product Code",
+						itemCode        : "Item Code",
+						InwardStock  	: "Finished Goods",
+						InwardUnit      : "Inward Unit",
+						OutwardStock    : "Raw Material",
+						OutwardUnit     : "Raw Material Unit",
+						Quantity        : "Quantity",
+						Weight          : "Weight",
+						UnitWt          : "Unit Weight",
+						Scrap           : "Scrap",
+						ScrapUnit       : "Scrap Unit",
+						failedRemark    :  "Failed Data Remark",
+					},
+		            startRange          : 0,
+		            limitRange          : 10, 
+					editId              : this.props.match.params ? this.props.match.params.finishedGoodId : '',
+					productArray        : [],
+					itemCodeArray       : [],
+					OutwardRawMaterial  : '',
+					fgUnitQty           : '',
+					fgUnitQtyforFG      : 0,
+					totalInward         : 0,
+					totalOutward        : 0,
+					CurrentStock        : 0,
+					totalscrapQty       : 0,
+					scrapQty            : 0,
+					errorMsg            : '',
+					filterData          : {},
+					filterByDate        : '',
+					filterByProduct     : '',
+					productId           : '',
+					CurrentStockUnit    : 'Kg',
+	  };
+	  this.uploadedData = this.uploadedData.bind(this);
+	  this.getFileDetails = this.getFileDetails.bind(this);
 	}
     
 	componentDidMount(){
 		var editId = this.props.match.params.purchaseId;
-		this.getData();
-		this.getproducts();
 		$.validator.addMethod("validDate", function(value, element) {
 			return !isNaN((new Date(value)).getTime());
 			//return this.optional(element) || moment(value,"MM/DD/YYYY").isValid();
 		}, "Please enter a valid date in the format MM/DD/YYYY");
 
 		$.validator.addMethod("noSpace", function(value, element) { 
-			return value == '' || value.trim().length != 0;
+			return value === '' || value.trim().length !== 0;
 		}, "No space please and don't leave it empty");
 
 		jQuery.validator.setDefaults({
@@ -91,7 +131,7 @@ export default class FinishedGoods extends React.Component {
 				required: true,	
 				noSpace:true			
 			  },
-			  PackageWeight: {
+			  PackagefgUnitQty: {
 				required: true,
 				noSpace:true
 			  },
@@ -99,20 +139,20 @@ export default class FinishedGoods extends React.Component {
 				required: true,
 				noSpace:true
 			  },
-			  Quantity:{
+			  fgTotalQty:{
 				required:true,
 				noSpace:true
 			  },
-			  outwardFromRaw:{
+			  OutwardRawMaterial:{
 				required:true,
 				noSpace:true
 			  },
-			  weight:{
+			  fgUnitQty:{
 				required:true,
 				noSpace:true
 			  },
-			  paidBy:{
-				required:true ,
+			  finishedBy:{
+				required:true,
 				noSpace:true
 			  }
 			},
@@ -126,25 +166,33 @@ export default class FinishedGoods extends React.Component {
 			  if (element.attr("name") === "ItemCode") {
 				error.insertAfter("#ItemCode");
 			  }
-			  if (element.attr("name") === "PackageWeight") {
+			  if (element.attr("name") === "PackagefgUnitQty") {
 				error.insertAfter("#Unit");
 			  }
 			  if (element.attr("name") === "Unit") {
 				error.insertAfter("#Unit");
 			  }
-			  if (element.attr("name") === "Quantity") {
-				error.insertAfter("#Quantity");
+			  if (element.attr("name") === "fgTotalQty") {
+				error.insertAfter("#fgTotalQty");
 			  }
-			  if (element.attr("name") === "outwardFromRaw") {
+			  if (element.attr("name") === "OutwardRawMaterial") {
 				error.insertAfter(".outwardRawMatDiv");
 			  }
-			  if (element.attr("name") === "weight") {
-				error.insertAfter(".WeightPerUnitDiv");
+			  if (element.attr("name") === "fgUnitQty") {
+				error.insertAfter(".fgUnitQtyPerUnitDiv");
 			  }
-			  if (element.attr("name") === "paidBy") {
-				error.insertAfter("#paidBy");
+			  if (element.attr("name") === "finishedBy") {
+				error.insertAfter("#finishedBy");
 			  }
 			}
+		});
+
+		this.setState({
+			Date         : moment(new Date()).format("YYYY-MM-DD"),
+			filterByDate : moment(new Date()).format("YYYY-MM-DD")
+		},()=>{
+			this.getData();
+		    this.getListProducts();
 		});
 
 	}
@@ -152,7 +200,7 @@ export default class FinishedGoods extends React.Component {
         var editId = nextProps.match.params.finishedGoodId;
         if(nextProps.match.params.finishedGoodId){
           this.setState({
-            editId : editId
+			editId : editId,
           })
           this.edit(editId);
         }
@@ -166,20 +214,20 @@ export default class FinishedGoods extends React.Component {
 					"Date"         		: response.data.Date ,
 			      	"ItemCode"     		: response.data.ItemCode,
 			      	"productName"  		: response.data.productName,
-			      	"PackageWeight"		: response.data.PackageWeight,
-			      	"Quantity"     		: response.data.Quantity,
+			      	"PackagefgUnitQty"	: response.data.PackagefgUnitQty,
+			      	"fgTotalQty"     	: response.data.fgTotalQty,
 					"Unit"         		: response.data.Unit,
-					"currentStock"      : response.data.CurrentStock,
-					"outwardFromRaw"     : response.data.OutwardStock,
-					"outwardUnit"       : response.data.OutwardUnit,
-					"weight"            : response.data.Weight,
-					"wtPerUnit"         : response.data.WeightPerUnit,
-					"Quantity" 			: response.data.Quantity,
-					"weightforFG"       : response.data.InwardStock,
-					"finishedGoodsUnit" : response.data.InwardStock,
-					"scrap"             : response.data.Scrap,
-					"scrapUnit" 		: response.data.ScrapUnit,
-					"paidBy"            : response.data.PaidBy
+					"CurrentStock"      : response.data.CurrentStock,
+					"OutwardRawMaterial": response.data.OutwardStock,
+					"OutwardUnit"       : response.data.OutwardUnit,
+					"fgUnitQty"         : response.data.fgUnitQty,
+					"fgUnitWt"          : response.data.fgUnitQtyPerUnit,
+					"fgTotalQty" 	    : response.data.fgTotalQty,
+					"fgUnitQtyforFG"    : response.data.fgInwardQty,
+					"finishedGoodsUnit" : response.data.fgInwardQty,
+					"scrapQty"          : response.data.scrapQty,
+					"scrapUnit" 		: response.data.scrapUnit,
+					"finishedBy"        : response.data.finishedBy
             });
             
         })
@@ -188,33 +236,61 @@ export default class FinishedGoods extends React.Component {
         });
     }
 	getData(startRange, limitRange){ 
-	 axios
-      .get('/api/finishedGoodsEntry/get/list')
-      .then((response)=>{
-        var  tableData = response.data ;
-			var tableData = tableData.map((a, i) => {
-					return {
- 
-						_id                  : a._id,
-						Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
-						productName 	     : a.productName ? a.productName +' - '+ a.ProductCode +' - '+ a.ItemCode: "" ,
-						InwardStock          : a.InwardStock ? a.InwardStock +' '+ a.InwardUnit : 0,
-						OutwardStock         : a.OutwardStock ? a.OutwardStock +' '+ a.OutwardUnit : 0,
-						Quantity             : a.Quantity ? a.Quantity : 0,
-						Weight               : a.Weight ? a.Weight +' '+ a.WeightPerUnit : 0,
-						Scrap                : a.Scrap ? a.Scrap +' '+ a.ScrapUnit : 0 
-					}
+		var filterData = this.state.filterData;
+		if(this.state.filterByProduct !== "Select Product"){
+			filterData.itemcode = this.state.filterByProduct;
+		}
+		filterData.date = this.state.filterByDate;
+		axios
+		.post('/api/finishedGoodsEntry/post/list/',filterData)
+		.then((response)=>{
+			var  tableData = response.data ;
+				var tableData = tableData.map((a, i) => {
+						return {
+	
+							_id                  : a._id,
+							Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
+							productName 	     : a.productName ? a.productName +' - '+ a.ProductCode +' - '+ a.ItemCode: "" ,
+							InwardStock          : a.fgInwardQty ? a.fgInwardQty +' '+ a.fgInwardUnit : 0,
+							OutwardStock         : a.OutwardRawMaterial ? a.OutwardRawMaterial +' '+ a.OutwardUnit : 0,
+							Quantity             : a.fgTotalQty ? a.fgTotalQty : 0,
+							Weight               : a.fgUnitQty ? a.fgUnitQty +' '+ a.fgUnitWt : 0,
+							Scrap                : a.scrapQty ? a.scrapQty +' '+ a.scrapUnit : 0 
+						}
+					})
+				this.setState({
+				  tableData 		: tableData,          
 				})
-			this.setState({
-             
-              tableData 		: tableData,          
-            })
-            })
-      .catch((error)=>{
-         console.log("error = ", error);              
-      }); 
+				})
+		.catch((error)=>{
+			console.log("error = ", error);              
+		}); 
 		
-    }
+	}
+	
+	getListProducts(){
+		axios.get("/api/finishedGoodsEntry/get/ProductList")
+            .then((response) => {
+				var ProductList = [];
+				var PoNumbersArray = [];
+				response.data.filter(function(item,index){
+					var i = ProductList.findIndex(x => x.itemCode == item.ProductList[0].itemCode);
+					if(i <= -1){
+						ProductList.push(item.ProductList[0]);
+					}
+					return null;
+				});	
+				this.setState({
+					 productArray: ProductList
+				},() =>{
+					// console.log("ProductList",ProductList);
+				})
+            })
+            .catch((error) => {
+                console.log('error', error);
+            })
+	}
+
     getSearchText(searchText, startRange, limitRange){
 
     }
@@ -227,7 +303,7 @@ export default class FinishedGoods extends React.Component {
 		this.setState({
 			checkedUser : checkedUsersList,
 		})
-		console.log("checkedUser",this.state.checkedUser)
+		// console.log("checkedUser",this.state.checkedUser)
 	}
 	getRole(){
 		
@@ -241,82 +317,124 @@ export default class FinishedGoods extends React.Component {
 	  const {name,value} = event.target;
 	  this.setState({ 
 		[name]:value,
-		weightforFG : this.state.Quantity * this.state.weight
       },()=>{
-		  this.checkValidInward()
+		//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
 	  });
-	  
-	  //this.calculateTotalWeight();
+
+	  if(name == "fgUnitWt"){
+		this.setState({ 
+			fgUnitQtyforFG : this.state.fgTotalQty * this.state.fgUnitQty,
+			finishedGoodsUnit : this.state.OutwardUnit
+		  },()=>{
+			//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
+			  this.weightConverter();
+		  });
+	  }
+	   if(name == "OutwardUnit"){
+		this.setState({ 
+			scrapUnit : value,
+			OutwardUnit : value,
+			finishedGoodsUnit : value
+		  },()=>{
+			//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
+			  this.weightConverter()
+		  });
+	  }
+	  this.checkValidInward();
 	}
 
 	onProductChange(event){
 	  var itemCode;
 	  var productCode;
-	  var TotalWeight;
+	  var productId;
+	  var TotalfgUnitQty;
 	  const {name,value} = event.target;
 	  this.setState({ 
 		[name]:value,
-		currentStock:0
+		CurrentStock:0
       },()=>{
 	  });
 		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
 		$(".productDatalist option").filter(function(index,item){
 		  if(item.value == event.target.value){
-			itemCode =$(item).data('itemcode');
-			productCode =$(item).data('productcode');
+			itemCode    =   $(item).data('itemcode');
+			productCode =   $(item).data('productcode');
+			productId   =   $(item).data('productId');
 		  }
 	  });
 
 	  this.setState({ 
-		"ItemCode":itemCode,
-		"ProductCode":productCode 
+		"ItemCode"    : itemCode,
+		"ProductCode" : productCode,
+		"productId"   : productId
 	  },()=>{
-		  this.getTotalInward();
-		  this.getTotalOutward();
+		  this.getCurrentStock();
 	  });
 	}
 
 	onOutwardRawMaterialChange(event){
 	  const {name,value} = event.target;
-	  var currentStock = this.state.currentStock;
-	  if(value <= currentStock){
-		this.setState({ 
-			[name]:value,
-		  },()=>{
-		  });
-	  }else{
-		swal("Outward should be less than current stock.");
-		this.setState({ 
-			outwardFromRaw:0,
-		  },()=>{
-		});
-	  }
+	  var CurrentStock = this.state.CurrentStock;
+	  this.setState({ 
+		[name]:value,
+	  },()=>{
+		this.weightConverter();
+		this.checkValidInward();
+	  });
+	//   if(value <= CurrentStock){
+	// 	this.setState({ 
+	// 		[name]:value,
+	// 	  },()=>{
+	// 	  });
+	//   }else{
+	// 	// swal("Outward should be less than current stock.");
+	// 	// this.setState({ 
+	// 	// 	OutwardRawMaterial:0,
+	// 	//   },()=>{
+	// 	// });
+	//   }
 	  
 	}
 
-	
-	getTotalInward(){
-		axios.get('/api/purchaseentry/get/TotalInward/'+this.state.ItemCode)
+	getCurrentStock(){
+		    axios.get('/api/purchaseEntry/get/RawMaterialCurrentStock/'+this.state.ItemCode)
 		    .then(response => {
-				this.setState({
-					totalInward : response.data.TotalInward ? response.data.TotalInward : 0
-				},()=>{
-					this.getCurrentStock();
+				console.log("getCurrentStock",response.data);
+				var balanceArray = [];
+				var balanceUnitArray = [];
+				var balanceUnit;
+				response.data.filter(function(item,index){
+					balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
 				});
-			})
-		   .catch(error=>{
-			    console.log("error in getTotalInward = ", error);
-		   });
-	}
 
-	getTotalOutward(){
-		axios.get('/api/finishedGoodsEntry/get/TotalOutward/'+this.state.ItemCode)
-		    .then(response => {
+				balanceArray.filter(function(item,index){
+					if(item.balanceUnit === "Kg"){
+						balanceUnitArray.push(item.balance);
+						balanceUnit = "Kg"
+					}else{
+						if(item.balanceUnit == "Gm"){
+							var converToKG = item.balance/1000;
+							balanceUnitArray.push(converToKG);
+							//converted to kg so balanceunit is kg only
+							balanceUnit = "Kg";
+						}
+						if(item.balanceUnit == "Nos"){
+							balanceUnitArray.push(item.balance);
+							balanceUnit = "Nos";
+						}
+						
+					}
+				});
+
+				let totalBalance = balanceUnitArray.reduce(function(prev, current) {
+				    return prev + +current
+			    }, 0);
+
 				this.setState({
-					totalOutward : response.data.TotalOutward ? response.data.TotalOutward : 0,
-					totalScrap   : response.data.TotalScrap  ? response.data.TotalScrap  : 0
+					CurrentStock     : totalBalance ? totalBalance : 0,
+					CurrentStockUnit : balanceUnit, 
 				},()=>{
-					this.getCurrentStock();
+					
 				});
 			})
 		    .catch(error=>{
@@ -324,80 +442,54 @@ export default class FinishedGoods extends React.Component {
 		    });
 	}
 
-	getCurrentStock(){
-		var scrapStock = this.state.totalScrap;
-		var currentStock = this.state.totalInward - this.state.totalOutward;
-		this.setState({
-			currentStock:currentStock - this.state.totalScrap
-		});
-	}
-	
-	calculateTotalWeight(event){
-		var weightforFG = this.state.Quantity * this.state.weight;
-		var scrap = 0;
-		const {name,value} = event.target;
-		
-		this.setState({ 
-			[name]:value,
-			finishedGoodsUnit : this.state.wtPerUnit,
-		  },()=>{
-			weightforFG = this.state.Quantity * this.state.weight;
-		});
-
-		if(weightforFG > this.state.outwardFromRaw){
-			swal("Total Weight or finished goods should be less than or equal to Outward From Raw Material.");
-			var Quantity = this.state.outwardFromRaw / this.state.weight;
-			this.setState({ 
-				Quantity : Quantity,
-				weightforFG : Quantity * this.state.weight,
-				scrap : Number(this.state.outwardFromRaw) - Number(Quantity * this.state.weight)
-			  },()=>{
-				weightforFG = Quantity * this.state.weight;
-				scrap = this.state.scrap;
-			 });
-		 }else{
-			this.setState({ 
-				finishedGoodsUnit: this.state.wtPerUnit,
-				weightforFG: Math.round(weightforFG),
-				scrap : Number(this.state.outwardFromRaw) - Number(this.state.Quantity * this.state.weight)
-			  },()=>{
-				 console.log("scrap",this.state.scrap)
-			 });
-		 }
-
-		 
-
-		// this.setState(() => {
-		// 	const val = this.state.Quantity * this.state.weight
-		// 	return {
-		// 		weightforFG: weightforFG,
-		// 		finishedGoodsUnit: this.state.wtPerUnit,
-		// 		scrap : Number(this.state.outwardFromRaw) - Number(val)
-		// 	}
-		// },()=>{
-		// });
-		
-		
-		
-	}
-
 	checkValidInward(){
-		var TotalFcInward = Number(this.state.Quantity * this.state.weight) + Number(this.state.scrap);
-		var TotalOutward = this.state.outwardFromRaw;
-		if(Number(TotalFcInward) > Number(TotalOutward)){
-			this.setState({
-				errorMsg : "Total Quantity and scrap material should be equal to or less than outward raw material"
-			},()=>{
-	
-			});
+		var TotalFcInward = Number(this.state.fgUnitQtyforFG) + Number(this.state.scrapQty);
+		var TotalOutward  = this.state.OutwardRawMaterial;
+		var OutwardError  = '';
+		var CurrentStockUnit =  this.state.CurrentStockUnit;
+		var OutwardUnit      =  this.state.OutwardUnit;
+		var finishgoodUnitWt =  this.state.finishedGoodsUnit;
+		var ScrapUnit        =  this.state.scrapUnit;
+
+		if(CurrentStockUnit === OutwardUnit){
+			OutwardError = this.state.CurrentStock >= this.state.OutwardRawMaterial ? "" : "You don't have enough stock to convert";
 		}else{
-			this.setState({
-				errorMsg : ""
-			},()=>{
-	
-			});
+			if(CurrentStockUnit === "Kg" && OutwardUnit === "Gm"){
+				var OutwardRawInKg = this.state.OutwardRawMaterial / 1000;
+				OutwardError =  this.state.CurrentStock >= OutwardRawInKg ? " " : "You don't have enough stock to convert";
+			}
+
+			if(CurrentStockUnit === "Gm" && OutwardUnit === "Kg"){
+				var OutwardRawInGm = this.state.OutwardRawMaterial * 1000;
+				OutwardError =  this.state.CurrentStock >= OutwardRawInGm ? " " : "You don't have enough stock to convert";
+			}
+
+			if(CurrentStockUnit === "Gm" && OutwardUnit === "Gm"){
+				OutwardError =  this.state.CurrentStock >= this.state.OutwardRawMaterial ? " " : "You don't have enough stock to convert";
+			}
+
+			if(CurrentStockUnit === "Kg" && OutwardUnit === "Kg"){
+				OutwardError =  this.state.CurrentStock >= this.state.OutwardRawMaterial ? " " : "You don't have enough stock to convert";
+			}
 		}
+
+		if(Number(TotalFcInward) > Number(TotalOutward)){
+			if(OutwardError !== ""){
+				OutwardError += "\n"+"You can convert only selected Raw material stock quantity.";
+			}else{
+				OutwardError += "  You can convert only selected Raw material stock quantity.";
+			}
+		}else{
+			 OutwardError = "";
+		}
+	
+			this.setState({
+				errorMsg : OutwardError ? OutwardError : "Valid",
+			},()=>{
+				console.log("Error",this.state.errorMsg);
+		 	});
 	}
+
     handleProduct(event){
     	var valproduct = event.currentTarget.value;
 		this.setState({product : valproduct});
@@ -414,34 +506,38 @@ export default class FinishedGoods extends React.Component {
 		this.checkValidInward();
 		var productDatalist = $(".productDatalist").find("option[value='" + this.state.productName + "']");	
 		const formValues1 = {
-			// "amount"         	: this.state.amount ,
 			"Date" 		        : this.state.Date,
+			"productId"         : this.state.productId,
 			"productName" 	    : this.state.productName,
 			"ItemCode" 	        : this.state.ItemCode,
 			"ProductCode"       : this.state.ProductCode,
-			"CurrentStock"      : this.state.currentStock,
-			"OutwardStock"      : this.state.outwardFromRaw,
-			"OutwardUnit"       : this.state.outwardUnit,
-			"Weight"            : this.state.weight,
-			"WeightPerUnit"     : this.state.wtPerUnit,
-			"Quantity" 			: this.state.Quantity,
-			"InwardStock"       : this.state.weightforFG,
-			"InwardUnit"        : this.state.finishedGoodsUnit,
-			"Scrap"             : this.state.scrap,
-			"ScrapUnit" 		: this.state.scrapUnit,
-			"PaidBy"            : this.state.paidBy
-		  
+			"CurrentStock"      : this.state.CurrentStock,
+			"OutwardRawMaterial": this.state.OutwardRawMaterial,
+			"OutwardUnit"       : this.state.OutwardUnit,
+			"fgUnitQty"         : this.state.fgUnitQty,
+			"fgUnitWt"          : this.state.fgUnitWt,
+			"fgTotalQty" 	    : this.state.fgTotalQty,
+			"fgInwardQty"       : this.state.fgUnitQtyforFG,
+			"fgInwardUnit"      : this.state.finishedGoodsUnit,
+			"scrapQty"          : this.state.scrapQty,
+			"scrapUnit" 		: this.state.scrapUnit,
+			"finishedBy"        : this.state.finishedBy,
 		};
-		
 
+	
 	  if ($('#finishedGoodsInwardForm').valid()) {
-		if(productDatalist != null && productDatalist.length > 0){
-			if(this.state.errorMsg === ""){
+		if(productDatalist !== null && productDatalist.length > 0){
+			console.log("errorMsg",this.state.errorMsg.length);
+			if(this.state.errorMsg !== "Valid"){
+				// swal("if");
+				swal(this.state.errorMsg);
+			}else{
+
 				axios
 					.post('/api/finishedGoodsEntry/post',formValues1)
 					.then((response)=>{
 					// handle success
-						console.log("data in block========",response.data);
+						// console.log("data in block========",response.data);
 						swal("Thank you. Your Data addeed successfully.");
 						//window.location.reload();
 						this.getData();
@@ -451,22 +547,21 @@ export default class FinishedGoods extends React.Component {
 						console.log(error);
 					});
 					this.setState({
-						"Date" 		        : '',
+						"Date" 		        : moment(new Date()).format("YYYY-MM-DD"),
 						"ItemCode" 	        : '',
-						"PackageWeight"     : '',
-						"Quantity" 			: '',
+						"PackagefgUnitQty"  : '',
+						"fgTotalQty" 	    : '',
 						"productName" 	    : '',
 						"Unit" 		     	: 'Kg',
-						"weight"            : '',
-						"currentStock"      : 0,
-						"outwardFromRaw"    : '',
-						"weightforFG"       : 0,
-						"scrap"             : 0,
-						"paidBy"            : '',
+						"fgUnitQty"         : '',
+						"CurrentStock"      : 0,
+						"OutwardRawMaterial": '',
+						"fgUnitQtyforFG"    : 0,
+						"scrapQty"          : 0,
+						"finishedBy"        : '',
 						"errorMsg"          : ''
 				})
-			}else{
-				swal(this.state.errorMsg);
+				// swal("correct");
 			}
 		}else{
 			swal("Please select product and item code from list.");
@@ -485,40 +580,40 @@ export default class FinishedGoods extends React.Component {
 			 "productName" 	        : this.state.productName,
 			 "ItemCode" 	        : this.state.ItemCode,
 			 "ProductCode"          : this.state.ProductCode,
-			 "CurrentStock"         : this.state.currentStock,
-			 "OutwardStock"         : this.state.outwardFromRaw,
-			 "OutwardUnit"          : this.state.outwardUnit,
-			 "Weight"               : this.state.weight,
-			 "WeightPerUnit"        : this.state.wtPerUnit,
-			 "Quantity" 			: this.state.Quantity,
-			 "InwardStock"          : this.state.weightforFG,
-			 "InwardUnit"           : this.state.finishedGoodsUnit,
-			 "Scrap"                : this.state.scrap,
-			 "ScrapUnit" 		    : this.state.scrapUnit,
-			 "PaidBy"               : this.state.paidBy
+			 "CurrentStock"         : this.state.CurrentStock,
+			 "OutwardStock"         : this.state.OutwardRawMaterial,
+			 "OutwardUnit"          : this.state.OutwardUnit,
+			 "fgUnitQty"            : this.state.fgUnitQty,
+			 "fgUnitQtyPerUnit"     : this.state.fgUnitWt,
+			 "fgTotalQty" 			: this.state.fgTotalQty,
+			 "fgInwardQty"          : this.state.fgUnitQtyforFG,
+			 "fgInwardUnit"         : this.state.finishedGoodsUnit,
+			 "scrapQty"             : this.state.scrapQty,
+			 "scrapUnit" 		    : this.state.scrapUnit,
+			 "finishedBy"           : this.state.finishedBy,
         }
 		if ($('#finishedGoodsInwardForm').valid()) {
 			if(this.state.errorMsg === ""){
 				axios.patch('/api/finishedGoodsEntry/update/'+this.state.editId,formValues)
 				.then((response)=>{
 					this.props.history.push('/finished-goods');
-					swal(response.data.message);
+					// swal(response.data.message);
 					this.getData(this.state.startRange, this.state.limitRange);
 					this.setState({
 						"date" 		        : '',
 						"ItemCode" 	        : '',
-						"PackageWeight"     : '',
-						"Quantity" 			: '',
+						"PackagefgUnitQty"     : '',
+						"fgTotalQty" 			: '',
 						"productName" 	    : '',
-						"outwardUnit" 		: 'Kg',
-						"wtPerUnit" 		: 'Kg',
+						"OutwardUnit" 		: 'Kg',
+						"fgUnitWt" 		: 'Kg',
 						"finishedGoodsUnit" : 'Kg',
 						'scrapUnit'         : 'Kg',
-						"currentStock"      : 0,
-						"outwardFromRaw"    : '',
-						"weightforFG"       : 0,
-						"scrap"             : 0,
-						"paidBy"            : '',
+						"CurrentStock"      : 0,
+						"OutwardRawMaterial"    : '',
+						"fgUnitQtyforFG"       : 0,
+						"scrapQty"             : 0,
+						"finishedBy"            : '',
 						"editId"            : ''
 						
 					})
@@ -531,140 +626,311 @@ export default class FinishedGoods extends React.Component {
 			}
        }
 	}
-	
-	getproducts(){
-        axios.get('/api/products/get/list')
-		.then((response) => {
-			this.setState({
-				productArray: response.data
-			})
-		})
-		.catch((error) => {
-			
-		})
-    }
 
+	/*bulk upload start*/
+	uploadedData(data){
+		this.getData(this.state.startRange,this.state.limitRange)
+	}
+
+	getFileDetails(fileName){
+		axios
+		.get(this.state.fileDetailUrl+fileName)
+		.then((response)=> {
+		 if (response) {
+		  this.setState({
+			  fileDetails:response.data,
+			  failedRecordsCount : response.data.failedRecords.length,
+			  goodDataCount : response.data.goodrecords.length
+		  });
+  
+		  var tableData = response.data.goodrecords.map((a, i)=>{
+			return{
+				"Date"                : a.Date                ? moment(a.Date).format("YYYY-MM-DD") : '-',
+				"productName"         : a.productName         ? a.productName        : '-',
+				"productCode"         : a.ProductCode         ? a.ProductCode        : '-',
+				"itemCode"            : a.ItemCode            ? a.ItemCode              : '-',
+				"InwardStock"         : a.fgInwardQty         ? a.fgInwardQty        : '-',
+				"InwardUnit"          : a.fgInwardUnit        ? a.fgInwardUnit       : '-',
+				"OutwardStock"        : a.OutwardRawMaterial  ? a.OutwardRawMaterial : '-',
+				"OutwardUnit"         : a.OutwardUnit         ? a.OutwardUnit        : '-',
+				"Quantity"            : a.fgTotalQty          ? a.fgTotalQty         : '-',
+				"Weight"              : a.fgUnitQty           ? a.fgUnitQty          : '-',
+				"UnitWt"              : a.fgUnitWt            ? a.fgUnitWt           : '-',
+				"Scrap"               : a.scrapQty            ? a.scrapQty           : '-',
+				"ScrapUnit"           : a.scrapUnit           ? a.scrapUnit           : '-',
+			}
+		  })
+  
+		  var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+		  return{
+			  "Date"                : a.Date                ? moment(a.Date).format("YYYY-MM-DD") : '-',
+			  "productName"         : a.productName         ? a.productName        : '-',
+			  "productCode"         : a.ProductCode         ? a.ProductCode        : '-',
+			  "itemCode"            : a.itemCode            ? a.itemCode              : '-',
+			  "InwardStock"         : a.fgInwardQty         ? a.fgInwardQty        : '-',
+			  "InwardUnit"          : a.fgInwardQty         ? a.fgInwardQty        : '-',
+			  "OutwardStock"        : a.OutwardRawMaterial  ? a.OutwardRawMaterial : '-',
+			  "OutwardUnit"         : a.OutwardUnit         ? a.OutwardUnit        : '-',
+			  "Quantity"            : a.fgTotalQty          ? a.fgTotalQty         : '-',
+			  "Weight"              : a.fgUnitQty           ? a.fgUnitQty          : '-',
+			  "UnitWt"              : a.fgUnitWt            ? a.fgUnitWt           : '-',
+			  "Scrap"               : a.scrapQty            ? a.scrapQty           : '-',
+			  "ScrapUnit"           : a.scrapUnit           ? a.scrapUnit           : '-',
+			  "failedRemark"        : a.remark              ? a.remark             : '-',
+		  }
+		  })
+		  this.setState({
+			  goodRecordsTable : tableData,
+			  failedRecordsTable : failedRecordsTable
+		  })
+		}
+		})
+		.catch((error)=> { 
+		  console.log('error', error);
+		}) 
+	} 
+
+	/* Bulk upload end*/
+	/* Filters start*/
+	filterChange(event){
+		event.preventDefault();
+		const {name,value} = event.target;
+  
+		this.setState({ 
+		  [name]:value,
+		},()=>{
+		  this.getData();
+		 });
+	  }
+   /* Filters end*/
+   /* Weight Convertor start*/
+    weightConverter() {
+	   // Gram to Kilograms
+		if(this.state.OutwardUnit == 'Gm' && this.state.fgUnitWt == "Kg"){
+			//convert fgunit to gram and calculate
+			var FgUnitKg=this.state.fgUnitQty*1000;
+			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
+			var Scrap = this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty * 1000);
+			this.setState({
+				fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty)*1000,
+				scrapQty          : Scrap > 0 ? Scrap: 0,
+				scrapUnit         : this.state.OutwardUnit,
+			},() => {
+				this.checkValidInward();
+			})
+			
+		}else if(this.state.OutwardUnit == 'Gm' && this.state.fgUnitWt == "Gm"){
+			var FgUnitGm=this.state.fgUnitQty/1000;
+			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
+			this.setState({
+				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+				scrapQty          : Scrap > 0 ? Scrap : 0
+			},() => {
+				this.checkValidInward();
+			})
+		}
+
+		// Kilograms to Gram
+		if(this.state.OutwardUnit == 'Kg' && this.state.fgUnitWt == "Gm"){
+			//convert fgunit to kg and calculate
+			var FgUnitKg=this.state.fgUnitQty*1000;
+			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
+			var Scrap =  this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty/1000);
+			this.setState({
+				fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty)/1000,
+				scrapQty          : Scrap > 0 ? Scrap : 0,
+				scrapUnit         : this.state.OutwardUnit,
+			},() => {
+				this.checkValidInward();
+			})
+			
+		}else if(this.state.OutwardUnit == 'Kg' && this.state.fgUnitWt == "Kg"){
+			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
+			this.setState({
+				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+				scrapQty          : Scrap > 0 ? Scrap : 0
+			},() => {
+				this.checkValidInward();
+			})
+		}
+    }
+   /* Weight Convertor end*/
 	render() {
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
-						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                            <h4 className="">Finished Goods Entry</h4>
+					    <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right ">
+                            <h4 className="col-lg-3 col-md-3 col-sm-12 col-xs-12" style={{"display":"inline","float":"left"}}>Finished Goods Entry</h4>
+							<ul className="nav tabNav nav-pills col-lg-3 col-md-3 col-sm-12 col-xs-12" style={{"display":"inline","float":"right"}}>
+                    		  <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>
+                    		  <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk Upload</a></li>
+                  		   </ul>
                         </div>
-						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20" id="finishedGoodsInwardForm">
-								<div className="row">
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-										<label >Date <i className="redFont">*</i></label>
-										<input type="Date"  className="form-control"  value={ this.state.Date} name="Date" refs="Date" onChange={this.handleChange.bind(this)} id="Date"/>
-									</div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-										<label >Select Product <i className="redFont">*</i></label>
-										{/*<input type="text" className="form-control" id="email"/>*/}
-										<input list="productName" type="text" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.onProductChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" />
-	    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
-										  <datalist id="productName" name="productName" className="productDatalist">
-										  {
-												this.state.productArray && this.state.productArray.length > 0 ?
-													this.state.productArray.map((data, i)=>{
-														return(
-															<option value={data.productName} data-productCode={data.productCode} data-itemCode={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
-														);
-													})
-												:
-												null
-                                          }
-										  </datalist>
-									</div>
-									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-									    <label>Current Stock</label>
-										<input type="text"  className="form-control"  value={ this.state.currentStock} name="currentStock" id="currentStock" readOnly/>
-									</div>
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Outward From Raw Material <i className="redFont">*</i></label>
-										<div className="outwardRawMatDiv">
-											<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.outwardFromRaw} name="outwardFromRaw" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
-											<select id="outwardUnit"  name="outwardUnit" value={this.state.outwardUnit} refs="outwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
-											  	<option selected={true} disabled={true}>-- Select --</option>
-											  	<option value="Kg">Kg</option>
-											  	<option value="Ltr">Ltr</option>
-											  	<option value="gram">gram</option>
-											  	<option value="Nos">Nos</option>
-											</select>
+						<div className="tab-content ">
+							<div id="manual" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in active">
+								<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20" id="finishedGoodsInwardForm">
+									<div className="row">
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+											<label >Date <i className="redFont">*</i></label>
+											<input type="Date"  className="form-control"  value={ this.state.Date} name="Date" refs="Date" onChange={this.handleChange.bind(this)} id="Date"/>
+										</div>
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+											<label >Select Product <i className="redFont">*</i></label>
+											<input list="productName" type="text" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.onProductChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" autocomplete="off"/>
+											<datalist id="productName" name="productName" className="productDatalist" autocomplete="off">
+											{
+													this.state.productArray && this.state.productArray.length > 0 ?
+														this.state.productArray.map((data, i)=>{
+															return(
+																<option value={data.productName} data-productcode={data.productCode} data-itemcode={data.itemCode} data-productId={data._id}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+															);
+														})
+													:
+													<option value="" disabled>No Products</option>
+											}
+											</datalist>
+										</div>
+										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+											<label>Current Stock</label>
+											<div className="input-group inputBox-main  new_inputbx" >
+											    <input type="text"  className="form-control"  value={ this.state.CurrentStock} name="CurrentStock" id="CurrentStock" readOnly/>
+												<div className="input-group-addon">
+												   {this.state.CurrentStockUnit}
+												</div> 
+											</div> 
+										</div>
+										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+											<label >Outward From Raw Material <i className="redFont">*</i></label>
+											<div className="outwardRawMatDiv">
+												<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.OutwardRawMaterial} name="OutwardRawMaterial" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
+												<select id="OutwardUnit"  name="OutwardUnit" value={this.state.OutwardUnit} refs="OutwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
+													<option selected={true} disabled={true}>-- Select --</option>
+													<option value="Kg">Kg</option>
+													<option value="Ltr">Ltr</option>
+													<option value="Gm">Gm</option>
+													<option value="Nos">Nos</option>
+												</select>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div className="row mtop25">
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label>Weight Per Finished Product Unit <i className="redFont">*</i></label>
-										<div className="WeightPerUnitDiv">
-											<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.weight} name="weight" refs="weight" onChange={this.handleChange.bind(this)} id="weight" onBlur={this.calculateTotalWeight.bind(this)} min="1"/>
-											<select id="wtPerUnit"  name="wtPerUnit" value={this.state.wtPerUnit} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" onBlur={this.calculateTotalWeight.bind(this)}>
-											  	<option selected={true} disabled={true}>-- Select --</option>
-											  	<option value="Kg">Kg</option>
-											  	<option value="Ltr">Ltr</option>
-											  	<option value="gram">gram</option>
-											  	<option value="Nos">Nos</option>
-											</select>
+									<div className="row mtop25">
+										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+											<label>Weight Per Finished Product Unit <i className="redFont">*</i></label>
+											<div className="WeightPerUnitDiv">
+												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.handleChange.bind(this)} id="fgUnitQty" onBlur={this.weightConverter.bind(this)} min="1"/>
+												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" onBlur={this.weightConverter.bind(this)}>
+													<option selected={true} disabled={true}>-- Select --</option>
+													<option value="Kg">Kg</option>
+													<option value="Ltr">Ltr</option>
+													<option value="Gm">Gm</option>
+													<option value="Nos">Nos</option>
+												</select>
+											</div>
+										</div>
+										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+											<label >Total Finished Quantity <i className="redFont">*</i></label>
+											<input type="number" placeholder="" className="form-control" value={ this.state.fgTotalQty} name="fgTotalQty" refs="fgTotalQty" onChange={this.handleChange.bind(this)} id="fgTotalQty" onBlur={this.weightConverter.bind(this)} min="0.1"/>
+										</div>
+										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+											<label>Total Weight For finished Goods</label>
+											<div className="WtForFgDiv">
+												<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQtyforFG} name="fgUnitQtyforFG" refs="wtforFG" onChange={this.handleChange.bind(this)} id="fgUnitQtyforFG" min="0" readOnly/>
+												<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
+													<option selected={true} disabled={true}>-- Select --</option>
+													<option value="Kg">Kg</option>
+													<option value="Ltr">Ltr</option>
+													<option value="Gm">Gm</option>
+													<option value="Nos">Nos</option>
+												</select>
+											</div>
+										</div>
+										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+											<label>Scrap Material</label>
+											<div className="scrapMaterialDiv">
+												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.handleChange.bind(this)} id="scrapQty" min="0" onBlur={this.weightConverter.bind(this)}/>
+												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
+													<option selected={true} disabled={true}>-- Select --</option>
+													<option value="Kg">Kg</option>
+													<option value="Ltr">Ltr</option>
+													<option value="Gm">Gm</option>
+													<option value="Nos">Nos</option>
+												</select>
+											</div>
 										</div>
 									</div>
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Total Finished Quantity  <i className="redFont">*</i></label>
-										<input type="number" placeholder="12345678" className="form-control" value={ this.state.Quantity} name="Quantity" refs="Quantity" onChange={this.handleChange.bind(this)} id="Quantity" onBlur={this.calculateTotalWeight.bind(this)} min="1"/>
-									</div>
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label>Total Weight For finished Goods</label>
-										<div className="WtForFgDiv">
-											<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.weightforFG} name="weightforFG" refs="wtforFG" onChange={this.handleChange.bind(this)} id="weightforFG" min="1" readOnly/>
-											<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
-											  	<option selected={true} disabled={true}>-- Select --</option>
-											  	<option value="Kg">Kg</option>
-											  	<option value="Ltr">Ltr</option>
-											  	<option value="gram">gram</option>
-											  	<option value="Nos">Nos</option>
-											</select>
+									<div className="row mtop25">
+										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
+											<label >Finished By <i className="redFont">*</i></label>
+											<input type="text" placeholder="Enter staff" className="form-control" value={ this.state.finishedBy} name="finishedBy" refs="finishedBy" onChange={this.handleChange.bind(this)} id="finishedBy"/>
 										</div>
 									</div>
-									<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label>Scrap Material</label>
-										<div className="scrapMaterialDiv">
-											<input type="number" placeholder="Enter Scrap" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrap} name="scrap" refs="scrap" onChange={this.handleChange.bind(this)} id="scrap" min="0" onBlur={this.calculateTotalWeight.bind(this)}/>
-											<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
-											  	<option selected={true} disabled={true}>-- Select --</option>
-											  	<option value="Kg">Kg</option>
-											  	<option value="Ltr">Ltr</option>
-											  	<option value="gram">gram</option>
-											  	<option value="Nos">Nos</option>
-											</select>
-										</div>
+									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
+										{this.state.editId ?
+										<button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
+										:
+										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+									}
+									</div>
+								</form>
+								<div className="mtop25">
+									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+										<label>Finished Date:</label>
+										<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.filterChange.bind(this)} id="filterByDate"/>
+									</div>
+									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+										<label>Product Name:</label>
+										<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
+										<option disabled="">Select Product</option>
+										{
+											this.state.productArray && this.state.productArray.length > 0 ?
+												this.state.productArray.map((data, i)=>{
+													return(
+													<option key={i} value={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+													);
+												})
+											:
+											null
+										}
+										</select>
 									</div>
 								</div>
-								<div className="row mtop25">
-								    <div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-										<label >Finished By <i className="redFont">*</i></label>
-										<input type="text" placeholder="Enter staff" className="form-control" value={ this.state.paidBy} name="paidBy" refs="paidBy" onChange={this.handleChange.bind(this)} id="paidBy"/>
-									</div>
-								</div>
-								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
-									{this.state.editId ?
-                                    <button onClick={this.update.bind(this)} className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right">Update</button>
-                                    :
-                                    <button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
-                                   }
-								</div>
-							</form>
-						</div>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
-								<IAssureTable
-									tableHeading={this.state.tableHeading}
-                                    twoLevelHeader={this.state.twoLevelHeader} 
-                                    dataCount={this.state.dataCount}
-                                    tableData={this.state.tableData}
-                                    getData={this.getData.bind(this)}
-                                    tableObjects={this.state.tableObjects}
-								/>			
+								<div className="mtop25">
+									<IAssureTable
+										tableHeading={this.state.tableHeading}
+										twoLevelHeader={this.state.twoLevelHeader} 
+										dataCount={this.state.dataCount}
+										tableData={this.state.tableData}
+										getData={this.getData.bind(this)}
+										tableObjects={this.state.tableObjects}
+									/>			
+						       </div>
 							</div>
+							<div id="bulk" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in">
+								<div className="row outerForm">
+									<BulkUpload 
+										url="/api/finishedGoodsEntry/finishedGoodsBulkUpload" 
+										// data={{"purchaseNumber" : this.state.purchaseNumber}} 
+										uploadedData={this.uploadedData} 
+										fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
+										fileDetailUrl={this.state.fileDetailUrl}
+										getFileDetails={this.getFileDetails}
+										getData={this.getData.bind(this)}
+										fileDetails={this.state.fileDetails}
+										goodRecordsHeading ={this.state.goodRecordsHeading}
+										failedtableHeading={this.state.failedtableHeading}
+										failedRecordsTable ={this.state.failedRecordsTable}
+										failedRecordsCount={this.state.failedRecordsCount}
+										goodRecordsTable={this.state.goodRecordsTable}
+										goodDataCount={this.state.goodDataCount}
+									/>
+								</div>
+							</div>
+						</div>
+						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+						</div>
+						
 					</div>
 				</div>
 			</div>
