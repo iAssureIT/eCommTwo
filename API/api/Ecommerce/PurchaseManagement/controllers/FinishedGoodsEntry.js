@@ -2,8 +2,12 @@ const mongoose	= require("mongoose");
 
 const FinishedGoodsEntry = require('../models/FinishedGoodsEntry');
 const PurchaseEntry = require('../models/PurchaseEntry');
+const PurchaseEntryController = require('../controllers/PurchaseEntry');
 const Products      = require('../../products/Model');
 const FailedRecords = require('../../failedRecords/Model');
+const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
+const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
+
 
 exports.insert_FinishedGoodsEntry = (req,res,next)=>{
 	/*PurchaseEntry.find({"purchaseStaff":req.body.purchaseEntry})
@@ -15,7 +19,6 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                     "message": "PurchaseEntry already exists."
                 });
             }else{*/
-                console.log("body",req.body);
                 getData();
                 async function getData(){
                     var obj = {};
@@ -245,7 +248,14 @@ exports.finished_goods_bulk_upload = (req,res,next)=>{
                 if (productData[k].productName != '') {
                     if (typeof(productData[k].productName) != undefined && typeof(productData[k].productCode) != undefined && typeof(productData[k].itemCode) != undefined) {
                         var productPresent = await findProduct(productData[k].itemCode,productData[k].productName);
-                         // console.log("productPresent",productPresent);
+                        var AllUnits = await fetchUnitOfMeasurment();
+                        var unitofmeasurment = AllUnits.filter((data)=>{
+                            if (data.unitofmeasurment.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
+                               return data;
+                            }
+                        })    
+
+                        if (unitofmeasurment.length > 0) {
                          if (productPresent) {
                             if(validDate){
                                 if(typeof productData[k].OutwardRawMaterial  === 'number'){
@@ -258,15 +268,33 @@ exports.finished_goods_bulk_upload = (req,res,next)=>{
                                                             if(typeof productData[k].scrapQty === 'number'){
                                                                 if(typeof productData[k].scrapUnit != undefined){
                                                                     if(typeof productData[k].finishedBy != undefined){
-                                                                            var insertFinishedGoodsEntryObj = await insertFinishedGoodsEntry(productData[k]);
-                                                                            if (insertFinishedGoodsEntryObj != 0) {
-                                                                                Count++;
+                                                                            var currentStock = await raw_material_current_stock(productData[k].itemCode);
+                                                                            if(currentStock != 0){
+                                                                                var totalStock = currentStock[0].totalStock;
+                                                                                if(totalStock >= productData[k].OutwardRawMaterial){
+                                                                                    var insertFinishedGoodsEntryObj = await insertFinishedGoodsEntry(productData[k]);
+                                                                                    if (insertFinishedGoodsEntryObj != 0) {
+                                                                                        Count++;
+                                                                                    }else{
+                                                                                        remark += insertFinishedGoodsEntryObj.err;
+                                                                                        invalidObjects =  productData[k];
+                                                                                        invalidObjects.failedRemark = remark;
+                                                                                        invalidData.push(invalidObjects);
+                                                                                    }
+                                                                                }else{
+                                                                                      console.log("else",currentStock);
+                                                                                    remark += "Not enough stock to outward";
+                                                                                    invalidObjects =  productData[k];
+                                                                                    invalidObjects.failedRemark = remark;
+                                                                                    invalidData.push(invalidObjects);
+                                                                                }
                                                                             }else{
-                                                                                remark += insertFinishedGoodsEntryObj.err;
+                                                                                remark += "Not enough stock to outward";
                                                                                 invalidObjects =  productData[k];
                                                                                 invalidObjects.failedRemark = remark;
                                                                                 invalidData.push(invalidObjects);
-                                                                            }
+                                                                        }
+                                                                           
                                                                     }else{
                                                                          remark += "Finished By should not be empty";
                                                                          invalidObjects =  productData[k];
@@ -334,11 +362,18 @@ exports.finished_goods_bulk_upload = (req,res,next)=>{
                                 invalidData.push(invalidObjects);   
                             }
 
-                         }else{
+                        }else{
+                            remark += "Unit of measurement is not defined";
+                                invalidObjects =  productData[k];
+                                invalidObjects.failedRemark = remark;
+                                invalidData.push(invalidObjects);   
+                        }
+                          
+                    }else{
 
 
-                         }
                     }
+                }
                 
             if (productData[k].itemCode != undefined) {
                 TotalCount++;
@@ -448,6 +483,7 @@ var insertFinishedGoodsEntry = async (data) => {
                 finishedGoods.save()
                 .then(data=>{
                     //To update raw material balance
+                    console.log("obj",obj);
                     var manageRawMaterialObj = manage_raw_material(obj);
                      if(manageRawMaterialObj){
 
@@ -466,7 +502,7 @@ var insertFinishedGoodsEntry = async (data) => {
 }
 
 var manage_raw_material = async (rawdata) => {
-    // console.log('Data',data);
+     // console.log('manage_raw_material',rawdata);
     return new Promise(function(resolve,reject){ 
         updateRawMaterialControl();
         async function updateRawMaterialControl(){
@@ -476,25 +512,32 @@ var manage_raw_material = async (rawdata) => {
               .then(podata=>{
                         //check units and convert
                         // if balance and fc units are same
-                        if(podata[0].balanceUnit == rawdata.OutwardUnit){
+
+                        if(podata[0].balanceUnit.toLowerCase() == rawdata.OutwardUnit.toLowerCase()){
                             var remainingBalance = podata[0].balance - rawdata.OutwardRawMaterial;
                         }else{
                             //if units are different
-                            if(podata[0].balanceUnit == 'Kg' && rawdata.OutwardUnit == "Gm"){
+                            if((podata[0].balanceUnit.toLowerCase() == 'kg' || podata[0].balanceUnit.toLowerCase() == 'kilogram') && (rawdata.OutwardUnit.toLowerCase() == "gm" || rawdata.OutwardUnit.toLowerCase() == "gram")){
                                 //convert raw material gram to kg formula kg=gm/1000
                                var convertToKg            = rawdata.OutwardRawMaterial/1000;
                                rawdata.OutwardRawMaterial = convertToKg;
                                rawdata.OutwardUnit        = podata[0].balanceUnit
                                var remainingBalance       = podata[0].balance - convertToKg;          
                             }
-                            if(podata[0].balanceUnit == 'Gm' && rawdata.OutwardUnit == "Kg"){
+                            if((podata[0].balanceUnit.toLowerCase() == 'gm' || podata[0].balanceUnit.toLowerCase() == 'gram') && (rawdata.OutwardUnit.toLowerCase() == "kg" || rawdata.OutwardUnit.toLowerCase() == "kilogram")){
                                 //convert raw material kg to gram formula g=kg*1000
                                 var convertToGram          = rawdata.OutwardRawMaterial*1000;
                                 rawdata.OutwardRawMaterial = convertToGram;
                                 rawdata.OutwardUnit        = podata[0].balanceUnit
                                 var remainingBalance       = podata[0].balance - convertToGram;
-                            }   
+                            }
+                            if(podata[0].balanceUnit.toLowerCase() == "kg" &&  rawdata.OutwardUnit.toLowerCase() == "kilogram"){
+                               var remainingBalance = podata[0].balance - rawdata.OutwardRawMaterial;
+                            }
 
+                             if(podata[0].balanceUnit.toLowerCase() == "gm" &&  rawdata.OutwardUnit.toLowerCase() == "gram"){
+                               var remainingBalance = podata[0].balance - rawdata.OutwardRawMaterial;
+                            }
                         }
 
 
@@ -522,7 +565,7 @@ var manage_raw_material = async (rawdata) => {
                             var remainFcQty =  rawdata.OutwardRawMaterial - podata[0].balance;
                             var remainingBalance = 0;
                             finishedGoodsArray = {"Date":rawdata.date,"ItemCode":rawdata.ItemCode,"Quantity":podata[0].balance,"Unit":rawdata.OutwardUnit};
-                            PurchaseEntry.update(
+                            PurchaseEntry.updateOne(
                             {    _id:podata[0]._id},  
                             {
                                  $set:   {'balance': remainingBalance} ,
@@ -530,7 +573,6 @@ var manage_raw_material = async (rawdata) => {
                             })
                             .then(data=>{
                                PoUpObj = {"date":rawdata.date,"ItemCode":rawdata.ItemCode,"OutwardRawMaterial":remainFcQty,"OutwardUnit":rawdata.OutwardUnit};
-                               // console.log("PoUpObj",PoUpObj);
                                 if(data.nModified == 1){
                                     if(remainFcQty != 0){
                                          var updateOtherPoObj = updateOtherPo(PoUpObj);
@@ -558,15 +600,72 @@ var manage_raw_material = async (rawdata) => {
     })
 }
 
-var updateOtherPo = async (rawdata) => {
+var raw_material_current_stock = async (data) => {
     // console.log('Data',data);
     return new Promise(function(resolve,reject){ 
-        updateOtherPoControl();
-        async function updateOtherPoControl(){
-            manage_raw_material(rawdata)
+        raw_material_current_stock();
+        async function raw_material_current_stock(){
+         PurchaseEntry.find({itemCode : data,balance: { $gt: 0 }})
+         .then(data=>{
+                var balanceArray = [];
+                var balanceUnitArray = [];
+                var balanceUnit = '';
+                var finalArray = [];
+                data.filter(function(item,index){
+                    balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+                });
+
+                balanceArray.filter(function(item,index){
+                    if(item.balanceUnit === "Kg"){
+                        balanceUnitArray.push(item.balance);
+                        balanceUnit = "Kg"
+                    }else{
+                        if(item.balanceUnit == "Gm"){
+                            var converToKG = item.balance/1000;
+                            balanceUnitArray.push(converToKG);
+                            //converted to kg so balanceunit is kg only
+                            balanceUnit = "Kg";
+                        }else{
+                            balanceUnitArray.push(item.balance);
+                            balanceUnit = item.balanceUnit;
+                        }                    
+                    }
+                });
+
+                let totalBalance = balanceUnitArray.reduce(function(prev, current) {
+                    finalArray.push({"totalStock":prev + +current,"StockUnit":balanceUnit})
+                    return finalArray;
+                }, 0);
+                resolve(totalBalance);           
+        })
+         .catch(err =>{ reject(err); });
         }
     })
 }
+
+
+// var raw_material_current_stock = async (data) => {
+//     console.log('raw_material_current_stock',data);
+//     return new Promise(function(resolve,reject){ 
+//         PurchaseEntryController.raw_material_current_stock(data,function(err){
+//         if(err) return next(err);
+//         // PurchaseEntry.raw_material_current_stock(data);
+//         })
+//     });
+// }
+
+var fetchUnitOfMeasurment = async ()=>{
+    return new Promise(function(resolve,reject){ 
+    UnitOfMeasurmentMaster.find({})
+        .exec()
+        .then(data=>{
+            resolve( data );
+        })
+        .catch(err =>{
+            reject(err);
+        }); 
+    });
+};
 
 
 

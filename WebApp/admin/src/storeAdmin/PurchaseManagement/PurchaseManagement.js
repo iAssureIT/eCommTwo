@@ -13,16 +13,16 @@ export default class PurchaseManagement extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
-			      	amount : '',
-			      	purchaseDate : '',
-			      	purchaseStaff : '',
-			      	purchaseLocation : '',
-			      	quantity : '',
-			      	unitRate : '',
-			      	Details:'',
-			      	purchaseNumber:'',
-			      	product : '',
-			      	Units : 'Kg',
+			      	amount 				: '',
+			      	purchaseDate 		: '',
+			      	purchaseStaff 		: '',
+			      	purchaseLocation	: '',
+			      	quantity			: '',
+			      	unitRate 			: '',
+			      	Details				:'',
+			      	purchaseNumber		:'',
+			      	product 			: '',
+			      	Units 				: 'Kg',
 			      	serchByDate:moment(new Date()).format("YYYY-MM-DD"),
 			      	"twoLevelHeader"    : {
 						            apply  : false,
@@ -41,11 +41,11 @@ export default class PurchaseManagement extends React.Component {
 						actions        	: 'Action',
 					},
 					"tableObjects" 		: {
-						deleteMethod              : 'delete',
-		                apiLink                   : '/api/purchaseentry',
-		                paginationApply           : false,
-		                searchApply               : false,
-		                editUrl                   : '/purchase-management'
+						deleteMethod    : 'delete',
+		                apiLink         : '/api/purchaseentry',
+		                paginationApply : false,
+		                searchApply     : false,
+		                editUrl         : '/purchase-management'
 					},
 		            "startRange"        : 0,
 		            "limitRange"        : 10, 
@@ -81,22 +81,23 @@ export default class PurchaseManagement extends React.Component {
 					//  action                : "Action",
 					},
 					
-		            blockActive			: "all",
-		            listofRoles	    : "",
-		            adminRolesListData  : [],
-		            checkedUser  : [],
-		            activeswal : false,
-		            blockswal : false,
-		            confirmDel : false,
-					tableData : "",
-					PoNumbersArray:[],
-					selectedPurchaseNum :'Select Purchase Number',
-					selectedProductName : 'Select Product',
-					filterData : {},
-					PurchaseNumberArray:[],
-					totalPoAmount : 0,
-					ItemCode   : ''	,
-					unitOfMeasurement       :'Kg'	      	
+		            blockActive			    : "all",
+		            listofRoles	            : "",
+		            adminRolesListData      : [],
+		            checkedUser             : [],
+		            activeswal              : false,
+		            blockswal               : false,
+		            confirmDel              : false,
+					tableData               : "",
+					PoNumbersArray			:[],
+					selectedPurchaseNum 	:'Select Purchase Number',
+					selectedProductName 	: 'Select Product',
+					filterData 				: {},
+					PurchaseNumberArray		:[],
+					totalPoAmount 			: 0,
+					ItemCode   				: ''	,
+					unitOfMeasurement       :'Kg',
+					unitOfMeasurementArray  : []	      	
 	  };
 	  this.uploadedData = this.uploadedData.bind(this);
 	  this.getFileDetails = this.getFileDetails.bind(this);
@@ -109,6 +110,7 @@ export default class PurchaseManagement extends React.Component {
 		var editId = this.props.match.params.purchaseId;
 		this.getData();
 		this.GeneratePurchaseNumber();
+		this.getUom();
 		this.setState({
 			purchaseDate   : serchByDate
         });
@@ -351,17 +353,41 @@ export default class PurchaseManagement extends React.Component {
 
 	GeneratePurchaseNumber(){
 		axios.get("/api/purchaseentry/get/GeneratePurchaseNumber")
-            .then((response) => {
-				console.log("GeneratePurchaseNumber",response.data);
-				this.setState({
-					purchaseNumber : response.data
-				},()=>{
-					// console.log("GeneratePurchaseNumber",this.state.purchseNumber);
-				});
-            })
-            .catch((error) => {
-                console.log('error', error);
-            })
+		.then((response) => {
+			console.log("GeneratePurchaseNumber",response.data);
+			this.setState({
+				purchaseNumber : response.data
+			},()=>{
+				// console.log("GeneratePurchaseNumber",this.state.purchseNumber);
+			});
+		})
+		.catch((error) => {
+			console.log('error', error);
+		})
+	}
+
+	getUom(){
+		axios.get("/api/unitofmeasurmentmaster/get/list")
+		.then((response) => {
+			var unitOfMeasurementArray = [];
+			response.data.filter(function(item,index){
+				var i = unitOfMeasurementArray.findIndex(x => x.department == item.department);
+				if(i <= -1){
+					unitOfMeasurementArray.push(item.department);
+				}
+				return null;
+			});
+
+			console.log("getUom",unitOfMeasurementArray);
+			this.setState({
+				 unitOfMeasurementArray : unitOfMeasurementArray
+			},()=>{
+				 console.log("unitOfMeasurementArray",unitOfMeasurementArray);
+			});
+		})
+		.catch((error) => {
+			console.log('error', error);
+		})
 	}
 
 	getPurNumberList(){
@@ -661,14 +687,24 @@ export default class PurchaseManagement extends React.Component {
 													<div className="input-group-addon inputIcon">
 													   <i className="fa fa-rupee"></i>
 													</div> 
-													<input type="number" placeholder="" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)}/>
+													<input type="number" placeholder="" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)} style={{borderRight: "1px solid gray"}}/>
 													<div className="input-group-addon inputIcon prependSelect" style={{"borderLeft": "1px solid gray !important"}}>
 														<select id="unitOfMeasurement"  name="unitOfMeasurement" value={this.state.unitOfMeasurement} onChange={this.handleChange.bind(this)}  className="input-group" style={{"border":0,"width": "40px","fontSize":"small"}}> 
 															<option selected={true} disabled={true}>-- Select --</option>
-															<option value="Kg">Kg</option>
+															{
+																this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+																	this.state.unitOfMeasurementArray.map((data, i)=>{
+																		return(
+																			<option key={i} value={data}>{data}</option>
+																		);
+																	})
+																:
+																null
+															}
+															{/* <option value="Kg">Kg</option>
 															<option value="Ltr">Ltr</option>
 															<option value="Gn">Gm</option>
-															<option value="Nos">Nos</option> 	
+															<option value="Nos">Nos</option> 	 */}
 														</select>
 													</div> 
 												</div>     
@@ -680,11 +716,17 @@ export default class PurchaseManagement extends React.Component {
 											<div className="quantityDiv">
 												<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
 												<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
-													<option selected={true} disabled={true}>-- Select --</option>
-													<option value="Kg">Kg</option>
-													<option value="Ltr">Ltr</option>
-													<option value="Gm">Gm</option>
-													<option value="Nos">Nos</option>
+												    <option selected={true} disabled={true}>-- Select --</option>
+													{
+														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+															this.state.unitOfMeasurementArray.map((data, i)=>{
+																return(
+																	<option key={i} value={data}>{data}</option>
+																);
+															})
+														:
+														null
+													}
 												</select>
 											</div>
 										</div>

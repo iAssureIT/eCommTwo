@@ -8,7 +8,7 @@ const Orders        = require('../orders/Model');
 var ObjectId        = require('mongodb').ObjectID;
 
 exports.insert_product = (req,res,next)=>{
-    console.log("response",req.body.availableQuantity);
+    console.log("response",res);
     Products.find({"itemCode" : req.body.itemCode,"vendor_ID":req.body.vendor_ID})
         .exec()
         .then(data =>{

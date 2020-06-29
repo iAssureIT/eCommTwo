@@ -17,12 +17,12 @@ export default class FinishedGoods extends React.Component {
 					ItemCode            : '',
 					ProductCode         : '',
 			      	productName         : '',
-			      	PackagefgUnitQty	    : '',
-			      	fgTotalQty            : '',
+			      	PackagefgUnitQty	: '',
+			      	fgTotalQty          : '',
 					Unit                : 'Kg',
 					finishedGoodsUnit   : 'Kg',
 					OutwardUnit         : 'Kg',
-					fgUnitWt           : 'Kg',
+					fgUnitWt            : 'Kg',
 					scrapUnit           : 'Kg',
 			      	"twoLevelHeader"    : {
 						            apply  : false,
@@ -97,6 +97,7 @@ export default class FinishedGoods extends React.Component {
 					filterByProduct     : '',
 					productId           : '',
 					CurrentStockUnit    : 'Kg',
+					unitOfMeasurementArray  : []	
 	  };
 	  this.uploadedData = this.uploadedData.bind(this);
 	  this.getFileDetails = this.getFileDetails.bind(this);
@@ -192,7 +193,8 @@ export default class FinishedGoods extends React.Component {
 			filterByDate : moment(new Date()).format("YYYY-MM-DD")
 		},()=>{
 			this.getData();
-		    this.getListProducts();
+			this.getListProducts();
+			this.getUom();
 		});
 
 	}
@@ -289,6 +291,30 @@ export default class FinishedGoods extends React.Component {
             .catch((error) => {
                 console.log('error', error);
             })
+	}
+
+	getUom(){
+		axios.get("/api/unitofmeasurmentmaster/get/list")
+		.then((response) => {
+			var unitOfMeasurementArray = [];
+			response.data.filter(function(item,index){
+				var i = unitOfMeasurementArray.findIndex(x => x.department == item.department);
+				if(i <= -1){
+					unitOfMeasurementArray.push(item.department);
+				}
+				return null;
+			});
+
+			console.log("getUom",unitOfMeasurementArray);
+			this.setState({
+				 unitOfMeasurementArray : unitOfMeasurementArray
+			},()=>{
+				 console.log("unitOfMeasurementArray",unitOfMeasurementArray);
+			});
+		})
+		.catch((error) => {
+			console.log('error', error);
+		})
 	}
 
     getSearchText(searchText, startRange, limitRange){
@@ -400,42 +426,15 @@ export default class FinishedGoods extends React.Component {
 		    axios.get('/api/purchaseEntry/get/RawMaterialCurrentStock/'+this.state.ItemCode)
 		    .then(response => {
 				console.log("getCurrentStock",response.data);
-				var balanceArray = [];
-				var balanceUnitArray = [];
-				var balanceUnit;
-				response.data.filter(function(item,index){
-					balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
-				});
-
-				balanceArray.filter(function(item,index){
-					if(item.balanceUnit === "Kg"){
-						balanceUnitArray.push(item.balance);
-						balanceUnit = "Kg"
-					}else{
-						if(item.balanceUnit == "Gm"){
-							var converToKG = item.balance/1000;
-							balanceUnitArray.push(converToKG);
-							//converted to kg so balanceunit is kg only
-							balanceUnit = "Kg";
-						}
-						if(item.balanceUnit == "Nos"){
-							balanceUnitArray.push(item.balance);
-							balanceUnit = "Nos";
-						}
+				if(response.data){
+					this.setState({
+						CurrentStock     : response.data[0].totalStock ? response.data[0].totalStock : 0,
+						CurrentStockUnit : response.data[0].StockUnit  ? response.data[0].StockUnit  : "", 
+					},()=>{
 						
-					}
-				});
-
-				let totalBalance = balanceUnitArray.reduce(function(prev, current) {
-				    return prev + +current
-			    }, 0);
-
-				this.setState({
-					CurrentStock     : totalBalance ? totalBalance : 0,
-					CurrentStockUnit : balanceUnit, 
-				},()=>{
-					
-				});
+					});
+				}
+				
 			})
 		    .catch(error=>{
 			    console.log("error in getTotalOutward = ", error);
@@ -805,11 +804,17 @@ export default class FinishedGoods extends React.Component {
 											<div className="outwardRawMatDiv">
 												<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.OutwardRawMaterial} name="OutwardRawMaterial" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
 												<select id="OutwardUnit"  name="OutwardUnit" value={this.state.OutwardUnit} refs="OutwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
-													<option selected={true} disabled={true}>-- Select --</option>
-													<option value="Kg">Kg</option>
-													<option value="Ltr">Ltr</option>
-													<option value="Gm">Gm</option>
-													<option value="Nos">Nos</option>
+												    <option selected={true} disabled={true}>-- Select --</option>
+													{
+														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+															this.state.unitOfMeasurementArray.map((data, i)=>{
+																return(
+																	<option key={i} value={data}>{data}</option>
+																);
+															})
+														:
+														null
+													}
 												</select>
 											</div>
 										</div>
@@ -820,11 +825,17 @@ export default class FinishedGoods extends React.Component {
 											<div className="WeightPerUnitDiv">
 												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.handleChange.bind(this)} id="fgUnitQty" onBlur={this.weightConverter.bind(this)} min="1"/>
 												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" onBlur={this.weightConverter.bind(this)}>
-													<option selected={true} disabled={true}>-- Select --</option>
-													<option value="Kg">Kg</option>
-													<option value="Ltr">Ltr</option>
-													<option value="Gm">Gm</option>
-													<option value="Nos">Nos</option>
+												    <option selected={true} disabled={true}>-- Select --</option>
+													{
+														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+															this.state.unitOfMeasurementArray.map((data, i)=>{
+																return(
+																	<option key={i} value={data}>{data}</option>
+																);
+															})
+														:
+														null
+													}
 												</select>
 											</div>
 										</div>
@@ -837,11 +848,17 @@ export default class FinishedGoods extends React.Component {
 											<div className="WtForFgDiv">
 												<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQtyforFG} name="fgUnitQtyforFG" refs="wtforFG" onChange={this.handleChange.bind(this)} id="fgUnitQtyforFG" min="0" readOnly/>
 												<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
-													<option selected={true} disabled={true}>-- Select --</option>
-													<option value="Kg">Kg</option>
-													<option value="Ltr">Ltr</option>
-													<option value="Gm">Gm</option>
-													<option value="Nos">Nos</option>
+												    <option selected={true} disabled={true}>-- Select --</option>
+													{
+														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+															this.state.unitOfMeasurementArray.map((data, i)=>{
+																return(
+																	<option key={i} value={data}>{data}</option>
+																);
+															})
+														:
+														null
+													}
 												</select>
 											</div>
 										</div>
@@ -850,11 +867,17 @@ export default class FinishedGoods extends React.Component {
 											<div className="scrapMaterialDiv">
 												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.handleChange.bind(this)} id="scrapQty" min="0" onBlur={this.weightConverter.bind(this)}/>
 												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
-													<option selected={true} disabled={true}>-- Select --</option>
-													<option value="Kg">Kg</option>
-													<option value="Ltr">Ltr</option>
-													<option value="Gm">Gm</option>
-													<option value="Nos">Nos</option>
+												    <option selected={true} disabled={true}>-- Select --</option>
+													{
+														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+															this.state.unitOfMeasurementArray.map((data, i)=>{
+																return(
+																	<option key={i} value={data}>{data}</option>
+																);
+															})
+														:
+														null
+													}
 												</select>
 											</div>
 										</div>

@@ -4,6 +4,9 @@ const PurchaseEntry = require('../models/PurchaseEntry');
 const EntityMaster = require('../../../coreAdmin/entityMaster/ModelEntityMaster');
 const Products      = require('../../products/Model');
 const FailedRecords = require('../../failedRecords/Model');
+const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
+const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
+
 exports.insert_purchaseEntry = (req,res,next)=>{
 	/*PurchaseEntry.find({"purchaseStaff":req.body.purchaseEntry})
 		.exec()
@@ -218,24 +221,44 @@ exports.get_total_inward = (req,res,next) => {
 
 
 exports.raw_material_current_stock = (req,res,next) => {
-    // PurchaseEntry.aggregate([
-    //    {"$match": { "itemCode": req.params.itemcode}},
-        // {
-        //     "$group": {
-        //         "_id":  "$balanceUnit",
-        //         "CurrentStock": { "$sum": "$balance"},
-        //     }
-        // },
-       // {
-       //     {"$group": 
-       //              {"_id": null,"balanceUnit":"$balanceUnit"},
-       //              {"CurrentStock": { "$sum": "$balance"}},
-
-       //     },
-       // }
+    // var itemcode;
+    // if(req.params){
+    //     itemcode = req.params.itemcode
+    // }else{
+    //     itemcode = req;
+    // }
     PurchaseEntry.find({itemCode : req.params.itemcode,balance: { $gt: 0 }})
      .then(data=>{
-       res.status(200).json(data);   
+            var balanceArray = [];
+            var balanceUnitArray = [];
+            var balanceUnit;
+            var finalArray = [];
+            data.filter(function(item,index){
+                balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+            });
+
+            balanceArray.filter(function(item,index){
+                if(item.balanceUnit === "Kg"){
+                    balanceUnitArray.push(item.balance);
+                    balanceUnit = "Kg"
+                }else{
+                    if(item.balanceUnit == "Gm"){
+                        var converToKG = item.balance/1000;
+                        balanceUnitArray.push(converToKG);
+                        //converted to kg so balanceunit is kg only
+                        balanceUnit = "Kg";
+                    }else{
+                        balanceUnitArray.push(item.balance);
+                        balanceUnit = item.balanceUnit;
+                    }                    
+                }
+            });
+
+            let totalBalance = balanceUnitArray.reduce(function(prev, current) {
+                finalArray.push({"totalStock":prev + +current,"StockUnit":balanceUnit})
+                return finalArray;
+            }, 0);
+           res.status(200).json(totalBalance);   
        
     })
     .catch(err =>{
@@ -296,10 +319,17 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
 
                 productData[k].purchaseDate = date;
 
-                if (productData[k].product.trim() != '') {
+                if (productData[k].product != '') {
                     if (productData[k].product != undefined && productData[k].productCode != undefined && productData[k].itemCode != undefined) {
                         var productPresent = await findProduct(productData[k].itemCode,productData[k].product);
-                         if (productPresent) {
+                        if (productPresent) {
+                           var AllUnits = await fetchUnitOfMeasurment();
+                            var unitofmeasurment = AllUnits.filter((data)=>{
+                                if (data.unitofmeasurment.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
+                                   return data;
+                                }
+                            })    
+                           if (unitofmeasurment.length > 0) {
                             if(moment(new Date(date), "YYYY-MM-DD").isValid()){
                                if(typeof productData[k].unitRate  === 'number'){
                                   if(typeof productData[k].unitOfMeasurement != undefined){
@@ -353,7 +383,13 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                                 invalidObjects.failedRemark = remark;
                                 invalidData.push(invalidObjects);
                             }
+                          }else{
+                             remark += "Unit of measurement is not defined";
+                             invalidObjects =  productData[k];
+                             invalidObjects.failedRemark = remark;
+                             invalidData.push(invalidObjects);   
 
+                          }   
                          }else{
 
 
@@ -366,12 +402,17 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                 if(productData[k].productCode == undefined){
                      remark += "Product Code not found";
                 }
-                if (productData[k].purchaseDate == undefined) {
-                    if(!moment(new Date(purchaseDate), "YYYY-MM-DD").isValid()){
-                        remark += ", Purchase date should be in YYYY-MM-DD formart, ";
+                if (productData[k].purchaseDate) {
+                    if(productData[k].productCode == undefined){
+                        remark += ", Purchase Date not found, ";
                     }else{
-                         remark += ", Purchase Date not found, ";
+                       if(!moment(new Date(purchaseDate), "YYYY-MM-DD").isValid()){
+                            remark += ", Purchase date should be in YYYY-MM-DD formart, ";
+                        }else{
+                             remark += ", Purchase Date not found, ";
+                        } 
                     }
+                    
                 }
                 if (productData[k].unitRate == undefined) {
                     remark += "Unit Rate not found, ";
