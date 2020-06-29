@@ -32,7 +32,7 @@ class SelectVendor extends React.Component {
                 const user_id = localStorage.getItem("user_ID");
                 axios.get("/api/users/get/compid-locid/:user_id")
                     .then(response => {
-                        localStorage.setItem("companyID", response.data.companyID);
+                        // localStorage.setItem("companyID", response.data.companyID);
                         localStorage.setItem("locationID", response.data.locationID);
                         var companyID  = response.data.companyID;
                         var locationID = response.data.locationID;
@@ -121,8 +121,8 @@ class SelectVendor extends React.Component {
         axios.get('/api/entitymaster/get/one/'+vendorId)
         .then((response)=>{
             this.setState({
-                selectedVendor : response.data,
-                vendorLocationArray: response.data.locations
+                selectedVendor : response.data[0],
+                vendorLocationArray: response.data[0].locations
             },()=>{
                 if(this.state.vendorLocationArray && this.state.vendorLocationArray.length>0){
                     var selectedVendorLocation = this.state.vendorLocationArray.filter((a)=> a._id === vendorLocationId);

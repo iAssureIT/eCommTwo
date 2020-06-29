@@ -272,6 +272,9 @@
     cursor: pointer;
     padding: 2.5px
 }
+.autocomplete-dropdown-container{
+    padding: 0px !important;
+}
 
 .button1 {
     font-weight: 700;
@@ -1256,4 +1259,19 @@ select#gender option[value="others"] {
          max-width : 20%;
          height : 4%;
     }
+}
+.CustomImageUploadBILoading{
+    position: absolute;
+    top:20px;
+    left: 15px;
+}
+.CustomImageUploadBIProfile{
+    position: absolute;
+    top:-49px;
+    left: 15px;
+}
+.CustomImageUploadLDProfile{
+    position: absolute;
+    top:20px;
+    left: 15px;   
 }

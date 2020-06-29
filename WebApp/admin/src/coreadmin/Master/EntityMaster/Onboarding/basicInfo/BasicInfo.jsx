@@ -33,6 +33,7 @@ class BasicInfo extends Component {
     this.setState({
       entityID: this.props.match.params.entityID
     }, () => {
+      console.log("this.props.match.params.entityID",this.props.match.params.entityID)
       this.edit();
     })
     window.scrollTo(0, 0);
@@ -320,6 +321,7 @@ class BasicInfo extends Component {
       } else {
         axios.post('/api/entitymaster/post', formValues)
         .then((response) => {
+          console.log("response",response);
           swal((this.state.pathname === "appCompany" ? "Organzational Settings" : this.state.pathname ) + " created successfully.");
           $(".swal-text").css("text-transform", "capitalize");
           this.props.history.push('/' + this.state.pathname + '/location-details/' + response.data.entityID)
@@ -358,11 +360,17 @@ class BasicInfo extends Component {
             }
           } else {
             swal("Allowed images formats are (jpg,png,jpeg)");
+            this.setState({
+              gotImagecompanyLogo:false
+            })
           }//file types
         }//file
       }//for 
 
       if (event.currentTarget.files) {
+        this.setState({
+          gotImagecompanyLogo:true
+        })
         main().then(formValues => {
           var companyLogo = this.state.companyLogo;
           for (var k = 0; k < formValues.length; k++) {
@@ -452,6 +460,12 @@ class BasicInfo extends Component {
             }
           } else {
             swal("Allowed file formats are (jpg, png, jpeg, pdf)");
+            this.setState({
+              gotImageCOI:false
+            },()=>{
+                console.log("gotImageCOI",this.state.gotImageCOI)
+
+            })
           }//file types
         }//file
       }//for 
@@ -583,22 +597,24 @@ class BasicInfo extends Component {
   }
   edit() {
     var entityID = this.state.entityID;
+    console.log("response",entityID)
     if (entityID !== '') {
       axios.get('/api/entitymaster/get/one/' + entityID)
         .then((response) => {
+          console.log("response",response)
           this.setState({
             "entityID": this.props.match.params.entityID,
-            "entityType": response.data.pathname,
-            "companyName": response.data.companyName,
-            "groupName": response.data.groupName,
-            "website": response.data.website,
-            "companyPhone": response.data.companyPhone,
-            "companyEmail": response.data.companyEmail,
-            "CIN": response.data.CIN,
-            "COI": response.data.COI,
-            "TAN": response.data.TAN,
-            "companyLogo": response.data.companyLogo,
-            "userID": response.data.ID,
+            "entityType": response.data[0].entityType,
+            "companyName": response.data[0].companyName,
+            "groupName": response.data[0].groupName,
+            "website": response.data[0].website,
+            "companyPhone": response.data[0].companyPhone,
+            "companyEmail": response.data[0].companyEmail,
+            "CIN": response.data[0].CIN,
+            "COI": response.data[0].COI,
+            "TAN": response.data[0].TAN,
+            "companyLogo": response.data[0].companyLogo,
+            "userID": response.data[0].ID,
             "createdBy": localStorage.getItem("user_ID")
           })
         })
@@ -626,7 +642,8 @@ class BasicInfo extends Component {
       companyLogo.splice(index, 1);
     }
     this.setState({
-      companyLogo: companyLogo
+      companyLogo: companyLogo,
+      gotImagecompanyLogo : false
     })
   }
   deleteDoc(event) {
@@ -725,7 +742,7 @@ class BasicInfo extends Component {
                             <div className="form-margin col-lg-9 col-md-9 col-sm-12 col-xs-12 NOpadding-left NOpadding-right">
                               
                               <div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Company Email<i className="astrick">*</i></label>
+                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Email<i className="astrick">*</i></label>
                                 <input  type="email" id="companyEmail" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.companyEmail} ref="companyEmail" name="companyEmail" onChange={this.handleChange} required />
                               </div>
 
@@ -764,17 +781,23 @@ class BasicInfo extends Component {
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
                                             <label className="labelform deletelogo col-lg-12 col-md-12 col-sm-12 col-xs-12" title="Delete Logo"  id={logo} onClick={this.deleteLogo.bind(this)}>x</label>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 CustomImageUploadBIImg" id="LogoImageUpOne">
-                                              
                                                   <img src={logo} alt={"companyLogo"+i} className="img-responsive logoStyle" />
-                                                  
-                                              
                                             </div>
                                           </div>
                                         </div>
                                       );
                                     })
                                     :
-                                    null
+                                    ( this.state.gotImagecompanyLogo ?
+                                          <div className="col-lg-12 col-md-2 col-sm-12 col-xs-12 nopadding CustomImageUploadBIProfile">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1" id="profilePhoto">
+                                                      <img src="/images/loading.gif" className="img-responsive logoStyle"/>
+                                                </div>
+                                            </div>
+                                          </div>
+                                :
+                                null)
                                                                          
                                 }
                             </div>
@@ -834,10 +857,10 @@ class BasicInfo extends Component {
                                 })
                                 :
                                 ( this.state.gotImageCOI  ?
-                                          <div className="col-lg-12 col-md-2 col-sm-12 col-xs-12 nopadding CustomImageUpload">
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogosPM" id="profilePhoto">
-                                                      <img src="/images/loading.gif" className="img-responsive profileImageDivlogoStyle2"/>
+                                          <div className="col-lg-12 col-md-2 col-sm-12 col-xs-12 nopadding CustomImageUploadBILoading">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding " id="hide">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos1" id="LogoImageUpOne">
+                                                      <img src="/images/loading.gif" className="img-responsive logoStyle"/>
                                                 </div>
                                             </div>
                                           </div>

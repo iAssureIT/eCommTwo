@@ -7,7 +7,7 @@ function CorporateContactDetails(){
     return (
         <div className="">
             <ContactDetails entity="corporate" 
-                            roles="user"
+                            roles={['employee','manager','corporateadmin']} 
                             userRole="employee" 
                             bookingRequired={true}
             />

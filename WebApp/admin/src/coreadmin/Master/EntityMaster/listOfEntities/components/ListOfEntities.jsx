@@ -37,8 +37,7 @@ class ListOfEntities extends Component {
 			entityType : this.props.entity ,
 			RecordsTable:[],
 			tableHeading:{
-	            companyName:"Company Name",
-	            companyID:"CompanyID#",
+	            companyName:"Company Name & ID",
 	            groupName:"Group Name",
 	            companyEmail:"Company Email",
 	            companyPhone:"Company Contact",
@@ -108,15 +107,14 @@ class ListOfEntities extends Component {
 		.then((response)=>{
 			var tableData = response.data.map((a, i)=>{
 				var locDetails = a.locations.map((l,i)=>{
-					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li>Address: "+l.addressLine1+"</li></ul>"
+					return "<ul><li>#"+(i+1)+"</li><li><b>BranchCode</b>:"+l.branchCode+"</li><li><b>Type</b>: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
 				})
 				var contactData = a.contactPersons.map((c,i)=>{
-					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li>Email:"+c.email+"</li></ul>"
+					return "<ul><li>#"+(i+1)+"</li><li><b>BranchCode</b>:"+c.branchCode+"</li><li><b>Name</b>:"+c.firstName+" "+c.lastName+"</li><li><b>Email</b>:"+c.email+"</li></ul>"
 				})
 	        return{
 	        	_id:a._id,
-	            companyName:a.companyName,
-	            companyID:a.companyID,
+	            companyName:"<b>Name:</b> " + (a.companyName)+ " <br><b>Company ID :</b> " + (a.companyID? a.companyID :"- NA -" ),
 	            groupName:a.groupName,
 	            companyEmail:a.companyEmail,
 	            companyPhone:a.companyPhone,
@@ -182,17 +180,18 @@ class ListOfEntities extends Component {
 		axios.get("/api/entitymaster/get/"+this.state.entityType)
 
 			.then((response) => {
+					console.log("entityList",response.data,this.state.entityList)
 				$(".alphab").css({"color": "#000","background":"#ddd"});
 				$(".allBtn").css("color", "#fff");
 				$(".allBtn").css("background", "#0275ce");
 				this.setState({
 					entityList   : response.data,
 					showDetails  : true,
+					id  			: response.data[0]._id,
 					initial : 'All'
 				},()=>{
 					if(this.state.entityList.length>0)
 					{
-					this.setState({ id: this.state.entityList[0]._id});
 					document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")
 				}
 				})
@@ -353,10 +352,10 @@ class ListOfEntities extends Component {
 			.then((response) => {
 				var tableData = response.data.map((a, i)=>{
 				var locDetails = a.locations.map((l,i)=>{
-					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li>Address: "+l.addressLine1+"</li></ul>"
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
 				})
 				var contactData = a.contactPersons.map((c,i)=>{
-					return "<ul><li>#"+(i+1)+"</li><li>BranchCode#:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li>Email:"+c.email+"</li></ul>"
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li><b>Email</b>:"+c.email+"</li></ul>"
 				})
 		        return{
 		        	_id:a._id,
@@ -393,6 +392,8 @@ class ListOfEntities extends Component {
     }
     
 	render() {
+		console.log("entityList LISR",this.state.entityList)
+
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div className="row">
@@ -513,7 +514,7 @@ class ListOfEntities extends Component {
 			                      </div>
 								 :
 								 this.state.entityList && this.state.entityList.length > 0 ?
-									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 scrollbar" id="style-2">
+									<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 scrollbar" id="style-2">
 										<div className="borderlist12">
 											{
 												this.state.entityList.map((data, index) => {
@@ -526,13 +527,13 @@ class ListOfEntities extends Component {
 																<h5 className="titleprofile">{data.companyName}</h5>
 																<ul className="col-lg-9 col-md-9 col-sm-9 col-xs-9 listfont">
 																	<li><i className="fa fa-user-o " aria-hidden="true"></i>&nbsp;{data.groupName}</li>
-																	<li><i className="fa fa-globe " aria-hidden="true"></i>&nbsp;{data.website}</li>
+																	<li><i className="fa fa-globe " aria-hidden="true"></i>&nbsp;{data.website? data.website: " - "}</li>
 																	<li><i className="fa fa-envelope " aria-hidden="true"></i>&nbsp;{data.companyEmail}</li>
 																	<li><i className="fa fa-phone " aria-hidden="true"></i>&nbsp;{data.companyPhone}</li>
 																</ul>
 															</div>
 															<div className="col-lg-2 noRightPadding">
-																<div className="addedDiv col-lg-10 col-lg-offset-2 ">
+																<div className="addedDiv col-lg-10 col-lg-offset-2">
 																	<img  alt="leftArrow" src="/images/leftArrow.png"/>
 																</div>
 															</div>
@@ -548,8 +549,8 @@ class ListOfEntities extends Component {
 									</div>
 								}
 								{ this.state.view === 'List' && this.state.showDetails && this.state.entityList && this.state.entityList.length > 0?
-									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdcls suppliersOneProfile commonSup" id={this.state.id}>
-										<div id={this.state.id} className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+									<div className="col-lg-7 col-md-6 col-sm-6 col-xs-12 pdcls suppliersOneProfile commonSup noPadding" id={this.state.id}>
+										<div id={this.state.id} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" >
 											<EntityDetails name={this.state.index} id={this.state.id} 
 											entityType={this.state.entityType} getEntities={this.getEntities.bind(this)}
 											hideForm={this.hideForm.bind(this)}/>

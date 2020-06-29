@@ -32,10 +32,13 @@ class ContactDetails extends Component {
 			'branchCode'  				:"",
 			'department'  				:"",
 			'designation'  				:"",
+			'listOfEmpID'               : [],
 			'editData' 					: null,
 			'role'  				    :"",
-			'rolesArray'                : this.props.roles,
-			'isBookingRequired'         : this.props.bookingRequired,
+			"pathname"					: this.props.entity,
+			"employeeType"					: this.props.roles,
+			rolesArray        : [],
+			'isBookingRequired' : this.props.bookingRequired,
 			"pathname"					: this.props.entity,
 			'entityID'					: this.props.match.params ? this.props.match.params.entityID : '',
 			'contactID'					: this.props.match.params ? this.props.match.params.contactID : '',
@@ -44,7 +47,8 @@ class ContactDetails extends Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		this.edit();
-		this.setState({'rolesArray' : nextProps.roles,'isBookingRequired':nextProps.bookingRequired})
+		this.getRoles();
+		// this.setState({'rolesArray' : nextProps.roles,'isBookingRequired':nextProps.bookingRequired})
 	}
 	openForm() {
 		this.setState({
@@ -71,29 +75,34 @@ class ContactDetails extends Component {
 		this.getBranchCode();
 		this.contactDetails();
 		this.edit();
-		// this.getRoles();
+		this.getRoles();
 		axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
 
 	}
 	getAllEntites() {
 		var formvalues = {};
-		if(this.state.pathname === "corporate"){
-			formvalues = { type : "employee"}
+		// if(this.state.pathname === "corporate"){
+		// 	formvalues = { type : "employee"}
+		// }else{
+		// 	formvalues = { type : "driver"}
+		// }
+		
+		if(typeof this.props.employeeType === 'undefined' || typeof this.props.employeeType === ''){
+			formvalues = { type : "employee" }	
 		}else{
-			formvalues = { type : "driver"}
+			formvalues = { type : this.props.employeeType }			
 		}
 		var listOfEmpID = [];
 			axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
 			.then((response) => {
-
 				this.setState({
 					contactarray: response.data.contactPersons
-
 				},()=>{
 					for(let j=0;j<this.state.contactarray.length;j++)
 					{
 						listOfEmpID.push(this.state.contactarray[j].employeeID)
 					}
+					console.log("listOfEmpID===>",listOfEmpID);
 				})
 			})
 			.catch((error) => {
@@ -128,22 +137,19 @@ class ContactDetails extends Component {
 		  .catch((error) => {
 		  })
 	}
-	// getRoles() {
-	// 	var data = {
-	// 	"startRange"        : this.state.startRange,
-	// 	"limitRange"        : this.state.limitRange, 
-	//   }
-	
-	// 	axios.post("/api/roles/get/list",data)
-	// 	  .then((response) => {
-	// 		this.setState({
-	// 		  rolesArray: response.data
-	// 		},()=>{
-	// 		})
-	// 	  })
-	// 	  .catch((error) => {
-	// 	  })
-	// }
+	getRoles() {
+		axios.post("/api/roles/get/list")
+		  .then((response) => {
+				
+			this.setState({
+			  rolesArray: response.data
+			},()=>{
+				// console.log("this.state.rolesArray.data roles==>",this.state.rolesArray)
+			})
+		})
+		  .catch((error) => {
+		  })
+	}
 	getDepartment() {
 	var getcompanyID = localStorage.getItem("companyID")
 
@@ -316,9 +322,8 @@ class ContactDetails extends Component {
 			e.preventDefault();
 		}
 	}
-
 	numberWithCommas(value) {
-    	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	handleComma(event){
 		// var value = event.target.value;
@@ -462,45 +467,42 @@ class ContactDetails extends Component {
 	}
 	contactdetailAddBtn(event) {
 		event.preventDefault();
-		
-		var entityID = this.props.match.params.entityID;
-		//var entityID = this.props.match.params.companyID;
-			var formValues = {
-				'entityID' 						: entityID,
+			var entityID 		= this.props.match.params.entityID;
+			var formValues 	= {
+				'entityID' 							: entityID,
 				'contactDetails' 				: {
 					'branchCode'        		: this.state.branchCode,
 					'branchName'        		: this.state.workLocation,
-					'firstName'               	: this.state.firstName,
-					'middleName'               	: this.state.middleName,
-					'lastName'                	: this.state.lastName,
+					'firstName'             : this.state.firstName,
+					'middleName'            : this.state.middleName,
+					'lastName'              : this.state.lastName,
 					'phone'             		: this.state.phone,
 					'altPhone'          		: this.state.altPhone,
-					'DOB'          				: this.state.DOB,
+					'DOB'          					: this.state.DOB,
 					'gender'          			: this.state.gender,
-					'whatsappNo'          		: this.state.whatsappNo ? this.state.whatsappNo : "",
+					'whatsappNo'          	: this.state.whatsappNo ? this.state.whatsappNo : "",
 					'email'             		: this.state.email,
 					'department'        		: this.state.department,
-					'departmentName'        	: this.state.departmentName,
-					'designationName'       	: this.state.designationName,
+					'departmentName'        : this.state.departmentName,
+					'designationName'       : this.state.designationName,
 					'designation'       		: this.state.designation,
 					'employeeID'        		: this.state.employeeID,
-
-					'bookingApprovalRequired' 	: this.state.bookingApprovalRequired,
-					'approvingAuthorityId1' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId1 : "",
-					'approvingAuthorityId2' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId2 : "",
-					'approvingAuthorityId3' 	: this.state.bookingApprovalRequired ? this.state.approvingAuthorityId3 : "",
+					'bookingApprovalRequired': this.state.bookingApprovalRequired,
+					'approvingAuthorityId1' : this.state.bookingApprovalRequired ? this.state.approvingAuthorityId1 : "",
+					'approvingAuthorityId2' : this.state.bookingApprovalRequired ? this.state.approvingAuthorityId2 : "",
+					'approvingAuthorityId3' : this.state.bookingApprovalRequired ? this.state.approvingAuthorityId3 : "",
 					'preApprovedAmount' 		: this.state.bookingApprovalRequired ? this.state.preApprovedAmount : "",
-					'preApprovedRides'          : this.state.bookingApprovalRequired ? this.state.preApprovedRides : "",
-					'preApprovedKilometer'     : this.state.bookingApprovalRequired ? this.state.preApprovedKilometer : "",
+					'preApprovedRides'      : this.state.bookingApprovalRequired ? this.state.preApprovedRides : "",
+					'preApprovedKilometer'  : this.state.bookingApprovalRequired ? this.state.preApprovedKilometer : "",
 					'createUser'        		: this.state.createUser,
-					'role' 						: this.state.createUser ? this.state.role : "",
-                    'addEmployee'       		: this.state.addEmployee,
+					'role' 									: this.state.createUser ? this.state.role : "",
+          'addEmployee'       		: this.state.addEmployee,
 				}
 			}
 			console.log("formValues",formValues);
 			const main = async()=>{
 				if ($('#ContactDetail').valid()) {
-					if(this.state.createUser === true && this.state.listOfEmpID.indexOf(this.state.employeeID) === -1){
+					if(this.state.createUser === true && this.state.employeeID === -1){
 						formValues.contactDetails.userID = await this.createUser();
 						formValues.contactDetails.personID = await this.savePerson(formValues.contactDetails.userID);
 						var formValues1 = {
@@ -575,15 +577,14 @@ class ContactDetails extends Component {
 			.catch((error)=>{})
 		})
 	}
-
 	savePerson = (userID)=>{
 		console.log("userID",userID);
 		if(userID){
 		var userDetails = {
 			type                    : "employee",
-			companyID				: this.state.companyID,
-			company_Id				: this.state.entityID,
-			companyName 		    : this.state.companyName,
+			companyID								: this.state.companyID,
+			company_Id							: this.state.entityID,
+			companyName 		    		: this.state.companyName,
 			workLocation            : this.state.workLocation,
 			workLocationId          : this.state.workLocationId,
 			branchCode              : this.state.branchCode,
@@ -599,15 +600,17 @@ class ContactDetails extends Component {
 			departmentId            : this.state.department,
 			designationId           : this.state.designation,
 			profilePhoto            : this.state.profilePhoto,
+			empCategory             : this.state.empCategory ? this.state.empCategory : "",
+      empPriority             : this.state.empPriority ? this.state.empPriority : "",
 			employeeId              : this.state.employeeID,
-			userId 					: userID,
-			status					: "Active",
+			userId 									: userID,
+			status									: "Active",
 			bookingApprovalRequired : this.state.bookingApprovalRequired,
 			approvingAuthorityId1   : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId1 : "",
 			approvingAuthorityId2   : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId2 : "",
 			approvingAuthorityId3   : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId3 : "",
-			preApprovedRides  		: this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedRides : "",
-			preApprovedKilometer   : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedKilometer : "",
+			preApprovedRides  			: this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedRides : "",
+			preApprovedKilometer   	: this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedKilometer : "",
 			preApprovedAmount       : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedAmount : "",
 
 		  }
@@ -622,6 +625,7 @@ class ContactDetails extends Component {
 	}
 
 	saveContact = (formValues)=>{
+		console.log("this.state.listOfEmpID===>",this.state.listOfEmpID);
 		if(this.state.listOfEmpID.indexOf(this.state.employeeID)>-1)
 		{
 			swal("Employee ID already exists..!")
@@ -654,7 +658,7 @@ class ContactDetails extends Component {
 						'department'        		: '',
 						'designation'       		: '',
 						'employeeID'        		: '',
-						'bookingApprovalRequired' 	: "No",
+						'bookingApprovalRequired': "No",
 						'createUser' 				: false,
 						'addEmployee'				: false,
 						'approvingAuthorityId1' 		: '',
@@ -674,6 +678,104 @@ class ContactDetails extends Component {
 			})
 		}
 	}
+	// savePerson = (userID)=>{
+	// 	console.log("userID",userID);
+	// 	if(userID){
+	// 	var userDetails = {
+	// 		type                    : "employee",
+	// 		companyID				: this.state.companyID,
+	// 		company_Id				: this.state.entityID,
+	// 		companyName 		    : this.state.companyName,
+	// 		workLocation            : this.state.workLocation,
+	// 		workLocationId          : this.state.workLocationId,
+	// 		branchCode              : this.state.branchCode,
+	// 		firstName               : this.state.firstName,
+	// 		middleName              : this.state.middleName ? this.state.middleName : "",
+	// 		lastName                : this.state.lastName,
+	// 		DOB                     : this.state.DOB ? this.state.DOB : "",
+	// 		gender                  : this.state.gender ? this.state.gender : "",
+	// 		contactNo               : this.state.phone,
+	// 		altContactNo            : this.state.altPhone,
+	// 		email                   : this.state.email,
+	// 		whatsappNo              : this.state.whatsappNo ? this.state.whatsappNo : "",
+	// 		departmentId            : this.state.department,
+	// 		designationId           : this.state.designation,
+	// 		profilePhoto            : this.state.profilePhoto,
+	// 		employeeId              : this.state.employeeID,
+	// 		userId 					: userID,
+	// 		status					: "Active",
+	// 		bookingApprovalRequired : this.state.bookingApprovalRequired,
+	// 		approvingAuthorityId1   : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId1 : "",
+	// 		approvingAuthorityId2   : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId2 : "",
+	// 		approvingAuthorityId3   : this.state.bookingApprovalRequired === "Yes" ? this.state.approvingAuthorityId3 : "",
+	// 		preApprovedRides  		: this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedRides : "",
+	// 		preApprovedKilometer   : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedKilometer : "",
+	// 		preApprovedAmount       : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedAmount : "",
+
+	// 	  }
+	// 	  return new Promise(function(resolve, reject){
+	// 		axios.post('/api/personmaster/post' ,userDetails)
+	// 		.then((response) => {
+	// 			resolve(response.data.PersonId);
+	// 		})
+	// 		.catch((error) => {})
+	// 	  })
+	// 	}
+	// }
+
+	// saveContact = (formValues)=>{
+	// 	if(this.state.employeeID >-1)
+	// 	{
+	// 		swal("Employee ID already exists..!")
+	// 	}else{
+	// 	axios.patch('/api/entitymaster/patch/addContact' ,formValues)
+	// 	.then((response) => {
+	// 			console.log("response",response)
+	// 			if(response.data.duplicated)
+	// 			{
+	// 				swal({
+	// 					title : "Contact already exists.",
+	// 				});
+
+	// 			}else{
+	// 				this.contactDetails();
+	// 				this.getAllEntites()
+
+	// 				swal({
+	// 					title : "Contact added successfully.",
+	// 					text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password :"+this.state.firstName+"123 \n Contact also added in employee list." : ""
+	// 				});
+
+	// 				this.setState({
+	// 					'firstName'               	: '',
+	// 					'lastName'                	: '',
+	// 					'phone'            		 	: '',
+	// 					'altPhone'          		: '',
+	// 					'email'             		: '',
+	// 					'branchCode'        		: '',
+	// 					'department'        		: '',
+	// 					'designation'       		: '',
+	// 					'employeeID'        		: '',
+	// 					'bookingApprovalRequired' 	: "No",
+	// 					'createUser' 				: false,
+	// 					'addEmployee'				: false,
+	// 					'approvingAuthorityId1' 		: '',
+	// 					'approvingAuthorityId2' 		: '',
+	// 					'approvingAuthorityId3' 		: '',
+	// 					'role' 		 				: '',
+	// 					'preApprovedAmount' : '',
+	// 					'preApprovedRides' : '',
+	// 					'preApprovedKilometer' : '',
+	// 					'openForm'					: false,
+	// 				})
+	// 			}
+				
+	// 		})
+	// 		.catch((error) => {
+			
+	// 		})
+	// 	}
+	// }
 	getBranchCode() {
 		var entityID = this.state.entityID;
 		axios.get('/api/entitymaster/get/one/' + entityID)
@@ -1114,16 +1216,10 @@ class ContactDetails extends Component {
 		  [event.target.name] : event.target.checked
 		})
 	}
-	// bookingApproval(val,event) {
-	// 	this.setState({
-	// 		bookingApprovalRequired : val
-	// 	})
-	// }
 	loginCredentials(val,event) {
 		event.preventDefault();
 		this.setState({
 			createUser : val,
-			rolesArray : this.props.roles
 		})
 	}
 
@@ -1140,7 +1236,7 @@ class ContactDetails extends Component {
 	}
 
 	render() {
-			// console.log("all props : ",this.props)
+			// console.log("this.state.rolesArray render:==> ",this.state.rolesArray)
 
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1355,13 +1451,14 @@ class ContactDetails extends Component {
 							                                            <select className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
 							                                              ref="role" name="role" id="role" value={this.state.role} onChange={this.handleChange}>
 							                                              <option value="" disabled={true}>-- Select Role --</option>
-							                                              {this.state.rolesArray && this.state.rolesArray.length > 0 ?
-																				this.state.rolesArray.map((role, index) => {
-																				return (
-																					<option key={index} value={role}>{role}</option>
-																				);
-																				}) : ''
-																			}
+							                                              	{ this.state.rolesArray && this.state.rolesArray.length > 0 ?
+																																this.state.rolesArray.map((data, index) => {
+																																	// console.log("In rolesArray==>",data.role);
+																																return (
+																																	<option key={index} value={data.role}>{data.role}</option>
+																																);
+																																}) : ''
+																															}
 							                                            </select>
 							                                       		</div>
 							                                        </div>

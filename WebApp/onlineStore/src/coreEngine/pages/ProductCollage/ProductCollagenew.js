@@ -309,12 +309,12 @@ class ProductCollage extends Component {
 						<div className="nb-brand">
 							<div className="accordion" id="accordionExample">
 								<div className="card-header" id="headingOne">
-									<div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" >
+									{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" >
 										<button className="btn btn-link" type="button" >
 											CATEGORY
 						        </button>
 										<span className="expand"><i className="fa fa-plus"></i></span>
-									</div>
+									</div> */}
 								</div>
 
 								<div id="collapseOne" className="collapse">
@@ -325,18 +325,14 @@ class ProductCollage extends Component {
 
 													return (
 														<div>
-															{
-																data.subCategoryTitle >= 1 ?
+															
 																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<div className="row">
 																			<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{data.subCategoryTitle}</a>
 
 																		</div>
 																		</div>
-																		:
-																		null
-							
-															}
+															
 													</div>
 										);
 					

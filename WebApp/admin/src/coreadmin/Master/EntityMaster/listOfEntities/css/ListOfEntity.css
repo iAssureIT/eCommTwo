@@ -46,7 +46,7 @@
     overflow-y: scroll;
     margin-left: 22px;
     padding: 0;
-    width: 45%;
+    width: 38%;
 }
 .borderlist12{
 	min-height: 100px !important;
@@ -226,6 +226,7 @@
 .addedDiv{
     display: none;
    	height: 150px;
+   	padding:0px 0px 0px 10px !important; 
     background-color: var(--blue-color);
 }
 .suppliersOneProfile{
@@ -251,7 +252,7 @@
 }
 .addedDiv img{
 	height: 20px;
-    padding: 3px;
+    padding: 4px;
     margin-top: 65px;
 }
 .addButtonList{
@@ -276,6 +277,12 @@
     height: 4em;
     padding: 0
 }
+.imageOuterContainerED {
+    background-size: 232px 128px;
+    background-repeat: no-repeat;
+    height: 2em;
+    padding: 0
+}
 
 .btnactive{
 	background:#0275ce !important;
@@ -286,4 +293,32 @@
 }
 .customTab{
 	padding:10px 10px 10px 0px;
+}
+.marginTop12{
+	margin-top: 12px
+}
+.greenColorED{
+	color: #7cbf00;
+	font-size: 20px;
+}
+.redColorED{
+	color: #f00;
+}
+.newProfile{
+	background-color:#ff9b12;
+	text-align: center;
+	padding: 5px;
+	font-size: 11px;
+	color: #fff;
+	cursor: default;
+	border-radius: 5px;
+}
+.approvedProfile{
+	background-color:#7cbf00;
+	text-align: center;
+	padding: 5px;
+	font-size: 11px;
+	color: #fff;
+	cursor: default;
+	border-radius: 5px;
 }

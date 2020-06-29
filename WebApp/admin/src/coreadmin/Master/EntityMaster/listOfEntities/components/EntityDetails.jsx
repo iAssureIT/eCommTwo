@@ -1,125 +1,74 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import {withRouter}  from 'react-router-dom';
+import {withRouter}  					from 'react-router-dom';
 import swal                   from 'sweetalert';
-
 import 'bootstrap/js/tab.js';
 import '../css/ListOfEntity.css';
 import '../css/ListOfEntityFilter.css';
 import '../css/ListOfAllEntity.css';
 
-class VendorsDetails extends Component {
-	
+class EntityDetails extends Component {
 	constructor(props) {
       super(props);
-    
       this.state = {
-      	id : '',
-
-      	//entityInfo : {},
-        loadMoreLoc: false,
-        loadMoreContacts: false
+      	id : this.props.id,
       };
-      // this.handleChange = this.handleChange.bind(this);
-      this.isLoaded = false
-    }
-    componentWillReceiveProps(nextProps){
-    			$("html,body").scrollTop(0);
+   }
+  componentWillReceiveProps(nextProps){
+  	$("html,body").scrollTop(0);
+  	this.setState({
+			id : nextProps.id
+		},()=>{
+			console.log("id",nextProps.id);
+			this.getEntitiesInfo(this.state.id)
+		})
+  }
 
-    	this.setState({
-  			id : nextProps.id
-  		},()=>{
-
-  			axios.get("/api/entitymaster/get/one/"+this.state.id)
-            .then((response)=>{
-
-          	
-              this.setState({
-                  entityInfo : response.data,
-                  entityType : response.data.entityType
-              },()=>{
-              	
-              	this.getLocations();
-              	this.getContacts();
-              });
-            })
-            .catch((error)=>{
-            })
-  		})
-    }
 	componentDidMount(){
 		$("html,body").scrollTop(0);
-
 		this.setState({
   			id : this.props.id
   		},()=>{
+			console.log("id",this.props.id);
+			this.getEntitiesInfo(this.state.id)
+		})
+  }
+  getEntitiesInfo(id){
+  	axios.get("/api/entitymaster/get/one/"+id)
+      .then((response)=>{
+      	console.log("entityInfo",response)
+        this.setState({
+            entityInfo 	: response.data[0],
+            contacts 		: response.data[0].contactData,
+            locations 	: response.data[0].locations.reverse(),
+            entityType 	: response.data[0].entityType
+        });
+      })
+      .catch((error)=>{
+      })
+  }
 
-  			axios.get("/api/entitymaster/get/one/"+this.state.id)
-            .then((response)=>{
-              this.setState({
-                  entityInfo : response.data,
-                  entityType : response.data.entityType
-              },()=>{
-              	
-              	this.getLocations();
-              	this.getContacts();
-              });
-            })
-            .catch((error)=>{
-            })
-  		})
-  	}
-  	
-  	getLocations(){
-  		if(this.state.entityInfo ){
-  			
-  			var location = this.state.entityInfo.locations.reverse();
-			
-			this.setState({locations : location },()=>{
-				for (var i = 0; i < this.state.locations.length; i++) {
-				}		
-			});
-			
-		}
-  	}
-
-  	getContacts(){
-  		if(this.state.entityInfo ){
-
-  			var contacts = this.state.entityInfo.contactPersons.reverse();
-			this.setState({contacts : contacts },()=>{
-				for (var i = 0; i < this.state.contacts.length; i++) {
-					
-				}	
-			});
-			
-		}
-  	}
-  	LocationEdit(event){
-    	this.props.history.push("/"+this.state.entityType+'/location-details/'+event.currentTarget.getAttribute('data-entityID'))
-    	
-    }
+  LocationEdit(event){
+    this.props.history.push("/"+this.state.entityType+'/location-details/'+event.currentTarget.getAttribute('data-entityID'))
+  }
     
-    contactEdit(event){
-    	this.props.history.push("/"+this.state.entityType+'/contact-details/'+event.currentTarget.getAttribute('data-entityID'))
-    }
+  contactEdit(event){
+  	this.props.history.push("/"+this.state.entityType+'/contact-details/'+event.currentTarget.getAttribute('data-entityID'))
+  }
 
-    showMore(event) { 
-		// $('.listProduct').addClass('showList');
-		// $('.listProduct').removeClass('hide');
+  showMore(event) { 
 		this.setState({
 			'loadMoreLoc':true,
 		})
 	}
+
 	showMoreContacts(event){
 		this.setState({
 			'loadMoreContacts':true,
 		})
 	}
 	showLess(event) {
-		// $('.listProduct').addClass('hide');
-		// $('.listProduct').removeClass('showList');
 		this.setState({
 			'loadMoreLoc':false,
 		})
@@ -130,486 +79,266 @@ class VendorsDetails extends Component {
 		})
 	}
 	editBasicform(event){
-    	this.props.history.push("/"+this.state.entityType+'/basic-details/'+event.currentTarget.getAttribute('data-id'))
-    }
-    deleteEntity(event){
+  	this.props.history.push("/"+this.state.entityType+'/basic-details/'+event.currentTarget.getAttribute('data-id'))
+  }
+  deleteEntity(event){
 		event.preventDefault();
 		this.setState({deleteID: event.currentTarget.getAttribute('data-id')})
 		$('#deleteEntityModal').show();
-    }
-    confirmDelete(event){
-    	event.preventDefault();
-    	axios.delete("/api/entitymaster/delete/"+this.state.deleteID)
-            .then((response)=>{
-           		if (response.data.deleted) {
-					
-           			swal({
-	                    text : (this.state.entityType === "appCompany" ? "Organizational Settings" :this.state.entityType) +" is deleted successfully.",
-					  });
-					  $(".swal-text").css("text-transform", "capitalize");
-           		}	else{
-           			swal({
-	                    text : "Failed to delete.",
-	                  });
-           		}
-              this.props.getEntities();
-              this.props.hideForm();
-              $('#deleteEntityModal').hide();   
+  }
 
-            })
-            .catch((error)=>{
-            })
-    }
-    closeModal(event){
-    	event.preventDefault();
-    	$('#deleteEntityModal').hide(); 
-    }
+  confirmDelete(event){
+  	event.preventDefault();
+  	console.log("this.state.deleteID",this.state.deleteID)
+  	axios.delete("/api/entitymaster/delete/"+this.state.deleteID)
+    .then((response)=>{
+   		if (response.data.deleted) {
+   			swal({
+          text : (this.state.entityType === "appCompany" ? "Organizational Settings" :this.state.entityType) +" is deleted successfully.",
+	  		});
+			  $(".swal-text").css("text-transform", "capitalize");
+	    }else{
+   			swal({text : "Failed to delete.",});
+   		}
+      this.props.getEntities();
+      this.props.hideForm();
+      $('#deleteEntityModal').hide();   
+    })
+    .catch((error)=>{
+    })
+  }
+  closeModal(event){
+  	event.preventDefault();
+  	$('#deleteEntityModal').hide(); 
+  }
 	render() {
-       	return (	
-       			this.state.entityInfo ? 
-
-		        <div>
-		            <div className="row">	                   					  
-					        <div id="supplierprofile" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxshade">					   
-					        	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 singleClientDetails" data-child={this.state.entityInfo._id} id={this.state.entityInfo._id}>
-									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
-									  <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-										<button type="button" className="reset">
-											 Company ID &nbsp; :&nbsp;&nbsp; {this.state.entityInfo.companyID} 
-										</button>
-									</div>
-									</div>
-									<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 supplierLogoDiv">
-										<img src={this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} 
-												 className="supplierLogoImage" 
-												 alt="companyLogo"
-										/>
-									</div>
-									<div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 listprofile">
-										<h5 className="titleprofileList">{this.state.entityInfo.companyName}</h5>
-										<div className="dots dropdown1 col-lg-12 col-md-6 col-sm-6 col-xs-6">
-											<i className="fa fa-ellipsis-h dropbtn1 dropbtn2 buttonDrop3" aria-hidden="true"></i>
-						        			<div className="dropdown-content1 dropdown2-content2">
-												<ul className="pdcls ulbtm">
-													<li id={this.state.entityInfo._id} className="styleContactActbtn" data-index data-id={this.state.entityInfo._id} onClick={this.editBasicform.bind(this)}>	
-												    	<a><i className="fa fa-pencil penmrleft" aria-hidden="true" ></i>&nbsp;&nbsp;<span className="mrflfedit">Edit</span></a>
-												    </li>
-												    <li id className="styleContactActbtn" data-id={this.state.entityInfo._id} onClick={this.deleteEntity.bind(this)}>
-												    	<a><i className="fa fa-trash-o" aria-hidden="true" ></i>&nbsp;Delete</a>
-												    </li>
-											    </ul>
-											</div>
-										</div>
-										<ul className="col-lg-9 col-md-9 col-sm-9 col-xs-9 listfont">
-											<li><i className="fa fa-user-o " aria-hidden="true"></i>&nbsp;{this.state.entityInfo.groupName}</li>
-											<li><i className="fa fa-globe " aria-hidden="true"></i>&nbsp;{this.state.entityInfo.website}</li>
-											<li><i className="fa fa-envelope " aria-hidden="true"></i>&nbsp;{this.state.entityInfo.companyEmail}</li>
-											<li><i className="fa fa-phone " aria-hidden="true"></i>&nbsp;{this.state.entityInfo.companyPhone}</li>
+    return (	
+      this.state.entityInfo ? 
+		    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+			    <div id="supplierprofile" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxshade noPadding">					   
+			      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 singleClientDetails" data-child={this.state.entityInfo._id} id={this.state.entityInfo._id}>
+							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding borderAllED">
+					    	<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 blueBack ">
+					    		<div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
+						    		<div className="col-lg-2 col-md-4 col-sm-4 col-xs-4 companyLogoImageView noPadding">
+											<img src={this.state.entityInfo.companyLogo && this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className=""></img>
+						    		</div>
+					    		</div>
+					    		<div className="col-lg-1 col-md-4 col-sm-4 col-xs-4 noPadding pull-right marginTop12 textAlignCenter">{this.state.entityInfo.profileStatus == "New"?<span className="newProfile" title="New Company Profile">New </span>:<span className="approvedProfile" title="Company Profile Approved">Approved </span>}</div>
+					    		{/*<div className="col-lg-1 col-md-4 col-sm-4 col-xs-4 noPadding pull-right marginTop12 textAlignCenter">{this.state.entityInfo.profileStatus == "New"?<span className="newProfile" title="New Company Profile">New </span>:(this.state.entityInfo.profileStatus=="Acceted by corporateadmin" ? <i class="fa fa-check-circle greenColorED" title="Company profile Approved"aria-hidden="true"></i> : <i class="fa fa-times-circle-o redColorED" aria-hidden="true"></i>)}</div>*/}
+						    </div>
+						    <div className="col-lg-10 col-lg-offset-2 col-md-10 col-sm-10 col-xs-10 ">
+					    		<div className="col-lg-12 col-md-4 col-sm-4 col-xs-4 orgHeadview">
+					    			<label><a target="_blank" title="view company profile" href={"/company-profile/"+this.state.entityInfo._id}>{this.state.entityInfo.companyName}</a></label>&nbsp;&nbsp;<span>( Company ID: <b>{this.state.entityInfo.companyID}</b> )</span>
+					    		</div>
+						    	<div className="col-lg-1 col-md-2 col-sm-2 col-xs-2 editOptionView pull-right noPadding">
+						    		<div id={this.state.entityInfo._id} className=" col-lg-6 noPadding"  title="Edit" data-index data-id={this.state.entityInfo._id} onClick={this.editBasicform.bind(this)}>	
+									    <i className="fa fa-pencil "  aria-hidden="true" ></i>
+									  </div>
+									  <div id={this.state.entityInfo._id} className="col-lg-6 noPadding"  title="delete" data-index data-id={this.state.entityInfo._id} onClick={this.deleteEntity.bind(this)}>	
+									    <i className="fa fa-trash "  aria-hidden="true" ></i>
+									  </div>
+						    	</div>
+					    		<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+					    			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding listLI">
+											<li><i className="fa fa-envelope changeColor " aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.companyEmail}</li>
+											<li><i className="fa fa-phone changeColor" aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.companyPhone}</li>
+											<li><i className="fa fa-globe changeColor " aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.website ? this.state.entityInfo.website :" - "}</li>
 										</ul>
-
-										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 docsAlign">
-										{
-					        				this.state.entityInfo.COI.length>0 ? 
-					        				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-												<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"> COI Document</label>
-											</div>
-					        				: null
-					        			}
-					        			{
-					        				this.state.entityInfo.COI.map((doc,ind)=>{
-					        					return (
-					        						<div key={ind} className=" col-lg-4 col-md-4 col-sm-6 col-xs-12">
-														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-															  {
-															  (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
-	                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="LogoImageUpOne">
-	                                                              <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
-	                                                          </div>
-	                                                          :
-	                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-																<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
-															 </div>
-	                                                         }
-														</div>
-													</div>
-					        					);
-					        				})
-					        			}
-					        			</div>
-
-									</div>
+					    		</div>
+					    		<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+					    			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding listLI">
+											<li>CIN&nbsp; : <b>{this.state.entityInfo.CIN? this.state.entityInfo.CIN :" - "}</b>&nbsp;&nbsp;&nbsp;{this.state.entityInfo.COI && this.state.entityInfo.COI.length > 0 ? <a target="_blank" href={this.state.entityInfo.COI[0]}><img src={this.state.entityInfo.COI[0]} title="Click to view COI document" className="coiImage"></img></a>:""}</li>
+											<li>TAN&nbsp; : <b>{this.state.entityInfo.TAN ? this.state.entityInfo.TAN : " - "}</b></li>
+										</ul>
+					    		</div>				   
+						    </div>				   
+						  </div>
+						</div>
+			      {
+			      this.state.locations && this.state.locations.length>0 &&
+			        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 singleClientDetails">
+								<div className="col-lg-12 col-md-1 col-sm-12 col-xs-12 noPadding">
+									<h4>Locations</h4>
 								</div>
-					        	{
-					        	this.state.locations && this.state.locations.length>0 &&
-					        	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationMainContainer">
-					        		<div className="col-lg-1 col-md-1 col-sm-12 col-xs-12 mapIconMargin">
-										<i className="fa fa-map-marker addressIcon" aria-hidden="true"></i>
-									</div>
-									<div className="col-lg-6 col-md-1 col-sm-12 col-xs-12">
-										<h4>Location Details</h4>
-										<h5 class="locationHeading">List of Locations</h5>
-									</div>
-									<div className="dots dropdown1 col-lg-5 col-md-12 col-sm-12 col-xs-12 pull-right locationDropdown">
-										<i className="fa fa-ellipsis-h dropbtn1 dropbtn2 removeTop" aria-hidden="true"></i>
-										<div className="dropdown-content2">
-											<ul className="pdcls ulbtm">
-												<li className="styleContactActbtn" onClick={this.LocationEdit.bind(this)} data-entityID={this.state.entityInfo._id} /*data-locationID={locationArr._id}*/>	
-											    	<a><i className="fa fa-pencil penmrleft" aria-hidden="true" ></i>&nbsp;&nbsp;<span className="mrflfedit">Edit</span></a>
-											    </li>
-										    </ul>
-										</div>
-									</div>
-					        		{
-										this.state.locations.map((locationArr,index)=>{
-											return(
-												<div>												
-												{ this.state.loadMoreLoc ? 
-												<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12 noRightPadding" key={index}>
-														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{heigth:'100px'}}>
-															<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationAddress">
-															<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationUL">
-										        				<li title="address"><b>{locationArr.district}</b></li>
-										        				<li title="address"> {locationArr.locationType},</li>
-										        				<li title="address">#&nbsp;{locationArr.addressLine1 + ", "+ locationArr.addressLine2} ,</li>
-										        				<li title="address">&nbsp; {locationArr.area ? locationArr.area + ", " : locationArr.area} {locationArr.city + ", "+ locationArr.district},</li>
-										        				<li title="address">&nbsp;{ locationArr.state+", "+  locationArr.country},</li>
-										        				<li title="address">&nbsp;{ locationArr.pincode}</li>
-										        				{ locationArr.GSTIN ?
-										        					<li title="GSTIN Number">&nbsp;GSTIN &nbsp; : &nbsp;{ locationArr.GSTIN}</li>
-										        					:null
-										        				}
-										        				{/*<li title="GSTIN Number">&nbsp;GSTIN Number &nbsp; : &nbsp;{ locationArr.GSTIN}</li>*/}
-										        				<li title="PAN Number">&nbsp;PAN &nbsp; : &nbsp;{ locationArr.PAN}</li>
-
-										        			</ul>
-										        			
-										        			{
-										        				locationArr.GSTDocument.length>0 ? 
-										        				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																	<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">GSTIN Document</label>
-																</div>
-										        				: null
-										        			}
-										        			
-										        			{
-										        				locationArr.GSTDocument.map((doc,ind)=>{
-										        					return (
-										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
-																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				{
-						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
-						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="LogoImageUpOne">
-	                                                              					<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
-						                                                          </div>
-						                                                          :
-						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-																					<a href={doc} target="_blank"  className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
-																				 </div>
-						                                                         }
-
-																			</div>
+								<div className="col-lg-12 col-md-1 col-sm-12 col-xs-12 noPadding">
+			        	{
+									this.state.locations.map((locationArr,index)=>{
+										return(
+											<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12 noPadding borderAllED" key={index}>
+												<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+													<ul className="col-lg-6 col-md-12 col-sm-12 col-xs-12 locationUL ">
+						        				<li><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<b> {locationArr.locationType}</b></li>
+						        				<i className="textAlignLeft noPadding changeColor col-lg-1 width18px" aria-hidden="true"></i> <li className="col-lg-10 noPadding">#{(locationArr.addressLine2 ? locationArr.addressLine2 +" , "  : "")+locationArr.addressLine1 } ,</li>
+						        				{ locationArr.GSTIN ?
+						        					<li title="GSTIN Number" className="col-lg-12 noPadding"><i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp; <b>GSTIN </b><br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ locationArr.GSTIN}</li>
+						        					:null
+						        				}
+						        				{ locationArr.PAN?
+						        					<li title="PAN Number"  className="col-lg-12 noPadding"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp; <b>PAN</b><br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ locationArr.PAN}</li>
+						        					:null
+						        				}
+								        	</ul>
+								        	<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 noPadding">
+								        	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 addGap"></div>
+							        		{
+							        			locationArr.GSTDocument.length>0 ?
+							        				locationArr.GSTDocument.map((doc,ind)=>{
+							        					return (
+							        						<div key={ind} className=" col-lg-2 col-md-3 col-sm-12 col-xs-12 NOpadding-left pull-right">
+																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding margin-bottom9" id="hide">
+																	  {
+	                                  (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
+	                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="LogoImageUpOne">
+	                          						<a href={doc} target="_blank" className="imageOuterContainerED" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
+	                                    </div>
+	                                  :
+	                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																				<a href={doc} target="_blank"  className="imageOuterContainerED" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+																		  </div>
+			                              }
 																		</div>
-										        					);
-										        				})
-										        			}
-										        			{
-										        				locationArr.PANDocument.length>0	? 	
-											        			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																	<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">PAN Document</label>
-																</div> : null
-															}
-															{
-										        				locationArr.PANDocument.map((doc,ind)=>{
-										        					return (
-										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
-																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				{
-						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
-						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-	                                                              					<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
-						                                                          </div>
-						                                                          :
-						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-																					 <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
-																				 </div>
-						                                                         }
-																			</div>
-																		</div>
-										        					);
-										        				})
-										        			}		
-															</div>
-														</div>
-												</div>
-												:
-													index === 0 ?
-													<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12 noRightPadding" key={index}>
-														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{heigth:'100px'}}>
-															<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationAddress">
-															<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationUL">
-										        				<li title="address"><b>{locationArr.district}</b></li>
-										        				<li title="address"> {locationArr.locationType},</li>
-										        				<li title="address">#&nbsp;{locationArr.addressLine1 + " "+ locationArr.addressLine2},</li>
-										        				<li title="address">&nbsp; {locationArr.area ? locationArr.area + ", " : locationArr.area} {locationArr.city + ", "+ locationArr.district},</li>
-										        				<li title="address">&nbsp;{ locationArr.state+", "+  locationArr.country},</li>
-										        				<li title="address">&nbsp;{ locationArr.pincode}</li>
-										        				{ locationArr.GSTIN ?
-										        					<li title="GSTIN Number">&nbsp;GSTIN &nbsp; : &nbsp;{ locationArr.GSTIN}</li>
-										        					:null
-										        				}
-										        				{ locationArr.PAN ?
-										        					<li title="PAN Number">&nbsp;PAN &nbsp; : &nbsp;{ locationArr.PAN}</li>
-										        					:null
-										        				}
-										        				
-										        			</ul>
-										        			{
-										        				locationArr.GSTDocument.length > 0 ? 
-										        				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																	<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">GSTIN Document</label>
-																</div>
-																: null
-										        			}	
-										        			
-										        			{
-										        				locationArr.GSTDocument.map((doc,ind)=>{
-										        					return (
-										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
-																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				{
-						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
-						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-	                                                              						<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
-						                                                          </div>
-						                                                          :
-						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-																					<a href={doc} target="_blank"  className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
-																				 </div>
-						                                                         }
-																			</div>
-																		</div>
-										        					);
-										        				})
-										        			}
-										        			{
-										        				locationArr.PANDocument.length>0 ? 
-											        			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																	<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">PAN Document</label>
-																</div> : null
-															}
-
-															{
-										        				locationArr.PANDocument.map((doc,ind)=>{
-										        					return (
-										        						<div key={ind} className=" col-lg-3 col-md-3 col-sm-12 col-xs-12">
-																			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
-																				
-																				{
-						                                                          (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
-						                                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-	                                                             					 <a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
-						                                                          </div>
-						                                                          :
-						                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
-																					<a href={doc} target="_blank" className="imageOuterContainer" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
-																				 </div>
-						                                                         }
-																			</div>
-																		</div>
-										        					);
-										        				})
-										        			}
-															</div>
-														</div>
-														{
-															this.state.locations.length > 1?
-															<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showMore.bind(this)}>
-																<label>Show More</label>
-															</div>
-															:
-															null
-														}
-													</div>													
-
-													:
-														null
-												}
-												</div>
-												);
-										})										
-										
-									}
-									{
-										this.state.loadMoreLoc ? 
-										<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showLess.bind(this)}>
-											<label>Show Less</label>
-										</div> : null
-									}
-					        	</div>
-					        	}
-					        	<br/>
-					        	{ /*contact Details*/ }
-					        	{
-					        		this.state.entityInfo.contactPersons && this.state.entityInfo.contactPersons.length>0 ?
-					        		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationMainContainer marginTop50">
-					        		<div className="col-lg-1 col-md-1 col-sm-12 col-xs-12 mapIconMargin">
-										<i className="fa fa-address-book contactIcon" aria-hidden="true"></i>
-									</div>
-									<div className="col-lg-6 col-md-1 col-sm-12 col-xs-12">
-										<h4>Contact Details</h4>
-									</div>
-									<div className="dots dropdown1 col-lg-5 col-md-12 col-sm-12 col-xs-12 pull-right locationDropdown">
-										<i className="fa fa-ellipsis-h dropbtn1 dropbtn2 removeTop" aria-hidden="true"></i>
-										<div className="dropdown-content2">
-											<ul className="pdcls ulbtm">
-												<li className="styleContactActbtn" onClick={this.contactEdit.bind(this)} data-entityID={this.state.entityInfo._id} /*data-locationID={contact._id}*/>	
-											    	<a><i className="fa fa-pencil penmrleft" aria-hidden="true" ></i>&nbsp;&nbsp;<span className="mrflfedit">Edit</span></a>
-											    </li>
-										    </ul>
-										</div>
-									</div>
-					        		{this.state.contacts && this.state.contacts.length>0?
-										this.state.contacts.map((contact,index)=>{
-											return(
-												<div>
-												{ this.state.loadMoreContacts ? 
-													<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12 noRightPadding">
-														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{heigth:'100px'}}>
-															<div  className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 locationAddress">
-																<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationUL">
-											        				{/* <li title="Department"><b>{contact.department}</b></li> */}
-											        				<li title="Contact Person">{contact.firstName+" "+contact.lastName}</li>
-																	<li>{"Mobile : "+contact.phone}</li>
-											        				<li>{"Email Id  : "+contact.email}</li>
-											        				<li>{"Branch Code : "+contact.branchCode}</li>
-											        				{
-											        					contact.bookingApprovalRequired === 'Yes'?
-																		<li>Booking Approval Required: Yes</li>	
-																	:
-																	null
-																	}
-											        				{
-											        					contact.approvingAuthorityId1 ?
-											        					<li>Approving Authority Employee ID : {contact.approvingAuthorityId1}</li>
-											        					:
-											        					null
-											        				}
-											        				{
-											        					contact.preApprovedParameterValue ?
-											        					<li>{contact.preApprovedParameter === "Amount" ?
-											        							<span> {contact.preApprovedParameter} &nbsp;: &nbsp;&#8377; {contact.preApprovedParameterValue}</span>
-											        						:
-											        							<span> {contact.preApprovedParameter} &nbsp;: &nbsp; {contact.preApprovedParameterValue}</span>
-											        							
-											        						}
-											        					</li>
-											        					:
-											        					null
-											        				}										        				
-											        				
-											        			</ul>	
-															</div>
-														</div>
-													</div> 
-													:
-													index === 0 ?
-														<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12 noRightPadding">
-														<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{heigth:'100px'}}>
-															<div  className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 locationAddress">
-																<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationUL">
-											        				{/* <li title="Department"><b>{contact.department}</b></li> */}
-											        				<li title="Contact Person">{contact.firstName+" "+contact.lastName}</li>
-																	<li>{"Mobile : "+contact.phone}</li>
-											        				<li>{"Email Id  : "+contact.email}</li>
-											        				<li>{"Branch Code : "+contact.branchCode}</li>
-											        				{
-											        					contact.bookingApprovalRequired === 'Yes'?
-																		<li>Booking Approval Required: Yes</li>	
-																	:
-																	null
-																	}
-											        				{
-											        					contact.approvingAuthorityId1 ?
-											        					<li>Approving Authority Employee ID : {contact.approvingAuthorityId1}</li>
-											        					:
-											        					null
-											        				}
-											        				{
-											        					contact.preApprovedParameterValue ?
-											        					<li>{contact.preApprovedParameter === "Amount" ?
-											        							<span> {contact.preApprovedParameter} &nbsp;: &nbsp;&#8377; {contact.preApprovedParameterValue}</span>
-											        						:
-											        							<span> {contact.preApprovedParameter} &nbsp;: &nbsp; {contact.preApprovedParameterValue}</span>
-											        							
-											        						}
-											        					</li>
-											        					:
-											        					null
-											        				}										        				
-											        				
-											        			</ul>	
-															</div>
-														</div>
-														{
-															this.state.contacts.length > 1?
-															<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showMoreContacts.bind(this)}>
-																<label>Show More</label>
-															</div>
-															:
-															null
-														}
-													</div>
-														
-														:
-														null
-												}
-												
-												</div>
-											);
-										})	
-										:
-										 null
-																			
-									}									
-
-									{
-										this.state.loadMoreContacts ? 
-										<div className="col-lg-12 textAlignCenter showMoreLess" onClick={this.showLessContacts.bind(this)}>
-											<label>Show Less</label>
-										</div> : null
-									}
-					        	</div>	
-					        	:null		            
-					        }
-					        
-					        </div>
-	                  	  </div>
-	                  	
-	                  	  	<div className="modal" id="deleteEntityModal" role="dialog">
-					          <div className="adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					            <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
-					              <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					                <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-					                	<button type="button" className="adminCloseButton" data-dismiss="modal" onClick={this.closeModal.bind(this)}>&times;</button>
-					                </div>
-					              </div>
-					            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  	<h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure, do you want to delete?</h4>
-                                </div>
-					            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    	<button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal" onClick={this.closeModal.bind(this)}>CANCEL</button>
+																	</div>
+							        					);
+							        				})
+						        				:
+						        				null
+						        			}
+						        			</div>
+						        			<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 noPadding">
+													{
+														locationArr.PANDocument.length>0?
+									        		locationArr.PANDocument.map((doc,ind)=>{
+						        					return (
+						        						<div key={ind} className=" col-lg-2 col-md-3 col-sm-12 col-xs-12 NOpadding-left pull-right">
+																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding margin-bottom9" id="hide">
+																	{
+		                              (doc ? doc.split('.').pop() : "") === "pdf" || (doc ? doc.split('.').pop() : "") === "PDF" ?
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+                          						<a href={doc} target="_blank" className="imageOuterContainerED" title="Click to view"><img src="/images/pdf.png" className="img-responsive logoStyle" /></a>
                                     </div>
-					                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-					                  <button type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal" onClick={this.confirmDelete.bind(this)} >DELETE</button>
-					                </div>
-					            </div>
-					            </div>
-					          </div>
-					        </div>
+                                    :
+                                  	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="LogoImageUpOne">
+																	 		<a href={doc} target="_blank" className="imageOuterContainerED" title="Click to view"><img src={doc} className="img-responsive logoStyle" /></a>
+																 		</div>}
+																	</div>
+																</div>
+						        					);
+									        		})
+									        	:
+									        	null
+								          }
+									        </div>	
+												</div>
+											</div>
+										);
+									})										
+								}
+								</div>
+			      	</div>
+			      }		
+			      { /*contact Details*/ }
+			      {
+			      this.state.contacts && this.state.contacts.length>0 ?
+			       	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 singleClientDetails">
+								<div className="col-lg-12 col-md-1 col-sm-12 col-xs-12 noPadding">
+									<h4>Contact Details</h4>
+								</div>
+								{/*<div className="dots dropdown1 col-lg-5 col-md-12 col-sm-12 col-xs-12 pull-right locationDropdown">
+									<i className="fa fa-ellipsis-h dropbtn1 dropbtn2 removeTop" aria-hidden="true"></i>
+									<div className="dropdown-content2">
+										<ul className="pdcls ulbtm">
+											<li className="styleContactActbtn" onClick={this.contactEdit.bind(this)} data-entityID={this.state.entityInfo._id} >	
+										    	<a><i className="fa fa-pencil penmrleft" aria-hidden="true" ></i>&nbsp;&nbsp;<span className="mrflfedit">Edit</span></a>
+										    </li>
+									    </ul>
+									
+									</div>
+								</div>*/}
+								<div className="col-lg-12 col-md-1 col-sm-12 col-xs-12 noPadding">
+			        	{
+									this.state.contacts.map((contact,index)=>{
+										return(
+											<div className="col-lg-12 col-md-1 col-sm-12 col-xs-12 noPadding coverPadding borderAllED">
+												<ul className="col-lg-5 col-md-6 col-sm-6 col-xs-6 locationULContact noPadding">
+						        			<li className="nameOfEmpED" ><a target="_blank" title="view profile" href={"/employee-profile/"+contact.personID}>{contact.firstName+" "+contact.lastName+" ( Emp ID : "+ (contact.employeeID?contact.employeeID:" - ") +" )"}</a></li>
+						        			<li><i className="fa fa-envelope " aria-hidden="true" ></i>&nbsp;&nbsp;{contact.email}</li>
+													<li><i className="fa fa-mobile "></i> &nbsp;&nbsp;{contact.phone ? contact.phone : " - "}</li>
+							        	</ul>
+							        	<div className="col-lg-12 col-md-6 col-sm-6 col-xs-6 noPadding">
+							        		<label className="bookingReq">Booking Approval Required : </label>&nbsp;{contact.bookingApprovalRequired}
+							        	{
+							        		contact.bookingApprovalRequired=="Yes" ?
+							        		<div>
+								        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
+								        			<label className="">Approving Authority 1  </label>
+								        			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
+									        			<li>Emp ID :&nbsp;{contact.manager1Details ? contact.manager1Details.employeeId:" -NA- " }</li>
+									        			<li>Name :&nbsp;{contact.manager1Details?contact.manager1Details.firstName + " " + contact.manager1Details.lastName:"-NA- "}</li>
+																<li>Mobile :&nbsp;{contact.manager1Details?contact.manager1Details.contactNo:"-NA- "}</li>
+																<li>Department :&nbsp;{contact.manager1Details ? (contact.manager1Details.departmentId?contact.manager1Details.departmentId.department:"-NA- " ):" -NA- "}</li>
+																<li>Designation :&nbsp;{contact.manager1Details ? (contact.manager1Details.designationId?contact.manager1Details.designationId.designation:"-NA- " ):" -NA- "}</li>
+										        	</ul>
+								        		</div>
+								        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
+								        			<label className="">Approving Authority 2  </label>
+								        			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
+									        			<li>Emp ID :&nbsp;{contact.manager2Details ? contact.manager2Details.employeeId:"- NA -" }</li>
+									        			<li>Name :&nbsp;{contact.manager2Details?contact.manager2Details.firstName + " " + contact.manager2Details.lastName:""}</li>
+																<li>Mobile :&nbsp;{contact.manager2Details?contact.manager2Details.contactNo:""}</li>
+																<li>Department :&nbsp;{contact.manager2Details ? (contact.manager2Details.departmentId?contact.manager2Details.departmentId.department:"" ):" -NA- "}</li>
+																<li>Designation :&nbsp;{contact.manager2Details ? (contact.manager2Details.designationId?contact.manager2Details.designationId.designation:"" ):" -NA- "}</li>
+										        	</ul>
+										        </div>
+								        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
+								        			<label className="">Approving Authority 3  </label>
+								        				<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
+									        			<li>Emp ID :&nbsp;{contact.manager3Details ? contact.manager3Details.employeeId:"- NA -" }</li>
+									        			<li>Name :&nbsp;{contact.manager3Details?contact.manager3Details.firstName + " " + contact.manager3Details.lastName:"- NA -"}</li>
+																<li>Mobile :&nbsp;{contact.manager3Details?contact.manager3Details.contactNo:"- NA -"}</li>
+																<li>Department :&nbsp;{contact.manager3Details ? (contact.manager3Details.departmentId?contact.manager3Details.departmentId.department:"- NA -" ):" -NA- "}</li>
+																<li>Designation :&nbsp;{contact.manager3Details ? (contact.manager3Details.designationId?contact.manager3Details.designationId.designation:"- NA -" ):" -NA- "}</li>
+										        	</ul>
+										        </div>
+							        		</div>
+							        		:
+							        		null
+							        	}
+							        	</div>	
+											</div>
+										);
+									})
+								}
+								</div>
+			        </div>	
+			      :null		            
+			      }
+			    </div>
+          <div className="modal" id="deleteEntityModal" role="dialog">
+	          <div className="adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	            <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
+	              <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
+	                	<button type="button" className="adminCloseButton" data-dismiss="modal" onClick={this.closeModal.bind(this)}>&times;</button>
+	                </div>
+	              </div>
+	            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          	<h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure, do you want to delete?</h4>
+                        </div>
+	            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            	<button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal" onClick={this.closeModal.bind(this)}>CANCEL</button>
+                            </div>
+	                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+	                  <button type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal" onClick={this.confirmDelete.bind(this)} >DELETE</button>
+	                </div>
 	            </div>
-	            : null
-	    );
+	            </div>
+	          </div>
+	        </div>
+	     	</div>
+	    : null
+	  );
 	} 
 }
-export default withRouter(VendorsDetails); 
+export default withRouter(EntityDetails); 

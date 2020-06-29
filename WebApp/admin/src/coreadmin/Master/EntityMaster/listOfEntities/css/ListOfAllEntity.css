@@ -149,8 +149,17 @@
     padding: 0;
     margin-left:7px;
 }
+.locationUL{
+    padding: 20px !important;
+}
 .locationUL li{
-    padding-bottom: 4px;
+    padding-bottom: 2px;
+}
+.coverPadding{
+    padding: 20px !important;
+}
+.locationULContact li{
+    padding-bottom: 2px;
 }
 .contactNameList{
     padding: 0;
@@ -167,4 +176,23 @@
 }
 .paddinf-left{
     padding-left: 8px;
+}
+.addGap{
+    height: 85px;
+}
+.margin-bottom9{
+    margin-bottom: 9px;
+}
+.borderAllED{
+    border: 2px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+}
+.nameOfEmpED{
+    color: #3c96c3;
+    font-weight: bold;
+    font-size: 13px;
+}
+.bookingReq{
+    font-size: 13px;
 }

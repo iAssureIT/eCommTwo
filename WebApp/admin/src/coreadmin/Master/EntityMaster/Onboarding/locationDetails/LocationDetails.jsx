@@ -229,12 +229,14 @@ class LocationDetails extends Component {
 				// 	required: true,
 				// 	pincodeRegx: /^[0-9][0-9\-\s]/,
 				// },
-				// GSTIN: {
-				// 	regxGSTIN: /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[A-Za-z1-9]{1}[z|Z]{1}[A-Za-z0-9]{1}$|^$/,
-				// },
-				// PAN: {
-				// 	regxPAN: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$|^$/,
-				// },
+				GSTIN: {
+					required:true,
+					regxGSTIN: /^[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[A-Za-z1-9]{1}[z|Z]{1}[A-Za-z0-9]{1}$|^$/,
+				},
+				PAN: {
+					required:true,
+					regxPAN: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$|^$/,
+				},
 				// area: {
 				// 	regxarea: /^[-a-zA-Z0-9-()]+(\s+[-a-zA-Z0-9-()]+)*$|^$/,
 				// },
@@ -581,7 +583,7 @@ class LocationDetails extends Component {
 			axios.get('/api/entitymaster/get/one/' + entityID)
 				.then((response) => {
 					console.log("response",response);
-					var editData = response.data.locations.filter((a) => a._id === locationID);
+					var editData = response.data[0].locations.filter((a) => a._id === locationID);
 					// this.getStates(editData[0].countryCode);
 					// this.getDistrict(editData[0].stateCode, editData[0].countryCode);
 					// this.getBlocks(editData[0].district, editData[0].stateCode, editData[0].countryCode);
@@ -623,7 +625,7 @@ class LocationDetails extends Component {
 		axios.get('/api/entitymaster/get/one/' + this.props.match.params.entityID)
 			.then((response) => {
 				this.setState({
-					locationarray: response.data.locations.reverse()
+					locationarray: response.data[0].locations.reverse()
 				})
 			})
 			.catch((error) => {
@@ -870,6 +872,9 @@ class LocationDetails extends Component {
 			}//for 
 
 			if (event.currentTarget.files) {
+				this.setState({
+					'gotImageGSTIN' : true
+				})
 				main().then(formValues => {
 					var GSTDocument = this.state.GSTDocument;
 					for (var k = 0; k < formValues.length; k++) {
@@ -960,6 +965,9 @@ class LocationDetails extends Component {
 			}//for 
 
 			if (event.currentTarget.files) {
+				this.setState({
+					'gotImagePAN' : true
+				})
 				main().then(formValues => {
 					var PANDocument = this.state.PANDocument;
 					for (var k = 0; k < formValues.length; k++) {
@@ -1028,7 +1036,8 @@ class LocationDetails extends Component {
 			GSTDocument.splice(index, 1);
 		}
 		this.setState({
-			GSTDocument: GSTDocument
+			GSTDocument: GSTDocument,
+			gotImageGSTIN: false
 		})
 	}
 	deletePAN(event) {
@@ -1039,7 +1048,8 @@ class LocationDetails extends Component {
 			PANDocument.splice(index, 1);
 		}
 		this.setState({
-			PANDocument: PANDocument
+			PANDocument: PANDocument,
+			gotImagePAN: false
 		})
 	}
 	keyPressNumber = (e) => {
@@ -1153,30 +1163,7 @@ class LocationDetails extends Component {
 				<div className="row">
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
 						<section className="content OrgSettingFormWrapper">
-							{/*<div className="modal" id="addLocationType" role="dialog">
-                              <div className="adminModal adminModal-dialog marginTopModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div className="modal-content adminModal-content col-lg-8 col-lg-offset-2 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
-                                  <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-                                        <button type="button" className="adminCloseButton" data-dismiss="modal" >&times;</button>
-                                   </div>
-                                  </div>
-                                <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                	 <OneFieldForm fields={this.state.fields}
-		                              tableHeading={this.state.tableHeading}
-		                              tableObjects={this.state.tableObjects}
-		                              editId ={this.props.match.params.fieldID}
-		                              history={this.props.history} />
-		                        </div>
-                                <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal" >CANCEL</button>
-                                    </div>
-                                </div>
-                                </div>
-                              </div>
-                            </div>*/}
- 
+							
 							<div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
 									 {this.state.pathname !="appCompany" ?
@@ -1285,7 +1272,7 @@ class LocationDetails extends Component {
 								                                                name:"addressLine1"
 								                                              })}
 								                                            />
-								                                            <div className="autocomplete-dropdown-container SearchListContainer">
+								                                            <div className={this.state.addressLine1 ? "autocomplete-dropdown-container SearchListContainer" : ""}>
 								                                              {loading && <div>Loading...</div>}
 								                                              {suggestions.map(suggestion => {
 								                                                const className = suggestion.active
@@ -1313,73 +1300,10 @@ class LocationDetails extends Component {
 																	</div>
 																	
 																</div>
-																{/*<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Country <sup className="astrick">*</sup>
-																		</label>
-																		<select id="country" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-																			ref="country" name="country" value={this.state.country} onChange={this.handleChangeCountry} >
-																			<option selected={true}>-- Select --</option>
-																			<option value="IN|India">India</option>
-																		</select>
-																	</div>
-																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">State <sup className="astrick">*</sup> {this.props.typeOption === 'Local' ? <sup className="astrick">*</sup> : null}
-																		</label>
-																		<select id="states" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-																			ref="states" value={this.state.states} name="states" onChange={this.handleChangeState} >
-																			<option selected={true}>-- Select --</option>
-																			{
-																				this.state.stateArray && this.state.stateArray.length > 0 ?
-																					this.state.stateArray.map((stateData, index) => {
-																						return (
-																							<option key={index} value={stateData.stateCode + "|" + stateData.stateName}>{this.camelCase(stateData.stateName)}</option>
-																						);
-																					}
-																					) : ''
-																			}
-																		</select>
-
-																	</div>
-																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">District <sup className="astrick">*</sup> {this.props.typeOption === 'Local' ? <sup className="astrick">*</sup> : null}
-																		</label>
-																		<select id="district" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
-																			ref="district" name="district" value={this.state.district} onChange={this.handleChangeDistrict} >
-																			<option>-- Select --</option>
-																			{
-																				this.state.districtArray && this.state.districtArray.length > 0 ?
-																					this.state.districtArray.map((districtdata, index) => {
-																						return (
-																							<option key={index} value={districtdata.districtName}>{this.camelCase(districtdata.districtName)}</option>
-																						);
-																					}
-																					) : ''
-																			}
-																		</select>
-																	</div>
-																</div>*/}
-																{/*<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">City 
-																		</label>
-																		<input type="text" id="city" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.city} ref="city" name="city" onChange={this.handleChange} />
-																	</div>
-																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Area </label>
-																		<input type="text" id="area" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.area} ref="area" name="area" onChange={this.handleChange} />
-																	</div>
-																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Pincode <sup className="astrick">*</sup>
-																		</label>
-																		<input maxLength="6" onChange={this.handlePincode.bind(this)} type="text" id="pincode" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincode} ref="pincode" name="pincode" onKeyDown={this.keyPressNumber.bind(this)} />
-																		{this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
-																		{this.state.pincodeExists !== "NotAvailable" ? null : <label style={{ color: "red", fontWeight: "100" }}>Pincode can not be validated at this time. Please enter this value carefully</label>}
-																	</div>
-																</div>*/}
+																
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">GSTIN
+																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">GSTIN<i className="astrick">*</i>
 																			<a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="Eg. 29ABCDE1234F1Z5" className="fa fa-question-circle"></i> </a>
 																		</label>
 																		<input type="text" id="GSTIN" placeholder="29ABCDE1234F1Z5" className="form-control uppercase col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.GSTIN} ref="GSTIN" name="GSTIN" onChange={this.handleChange} />
@@ -1424,14 +1348,23 @@ class LocationDetails extends Component {
 																					}
 																				})
 																				:
-																				null
+																				( this.state.gotImageGSTIN ?
+											                                          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 nopadding CustomImageUploadLDProfile">
+											                                            <div className="col-lg-8 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+											                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
+											                                                      <img src="/images/loading.gif" className="img-responsive logoStyle"/>
+											                                                </div>
+											                                            </div>
+											                                          </div>
+											                                :
+											                                null)
 																		}
 																	</div>
 																	<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                             <div className="border col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
                                                                         </div>
 																	<div className=" form-margin col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">PAN
+																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">PAN<i className="astrick">*</i>
 																			<a data-tip data-for='basicInfo4Tooltip' className="pull-right"> <i title="Eg. ABCDE1234E" className="fa fa-question-circle"></i> </a>
 																		</label>
 																		<input type="text" id="PAN" placeholder="ABCDE1234E" className="form-control uppercase col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.PAN} ref="PAN" name="PAN" onChange={this.handleChange} />
@@ -1478,7 +1411,16 @@ class LocationDetails extends Component {
 																					}
 																				})
 																				:
-																				null
+																				( this.state.gotImagePAN ?
+											                                          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 nopadding CustomImageUploadLDProfile">
+											                                            <div className="col-lg-8 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
+											                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
+											                                                      <img src="/images/loading.gif" className="img-responsive logoStyle"/>
+											                                                </div>
+											                                            </div>
+											                                          </div>
+											                                :
+											                                null)
 																		}
 																	</div>
 																</div>

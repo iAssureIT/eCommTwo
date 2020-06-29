@@ -333,6 +333,7 @@ class EcommerceDiscountedProducts extends Component {
                       this.state.newProducts && this.state.newProducts.length > 0 
                        ?
                         this.state.newProducts.map((data, index) => {
+                          console.log("data prod unit====>",data.unit)
                           var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                           if(x && x.length > 0){
                             var wishClass = '';

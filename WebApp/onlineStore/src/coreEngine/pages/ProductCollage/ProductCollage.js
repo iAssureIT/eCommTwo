@@ -781,7 +781,7 @@ class ProductCollage extends Component {
 					    		<span className="caret"></span></button>
 									<ul className="dropdown-menu">
 										<li className="dropdown-submenu">
-											<a className="test" tabindex="-2" href="/">CATEGORY<span className="caret"></span></a>
+											{/* <a className="test" tabindex="-2" href="/">CATEGORY<span className="caret"></span></a> */}
 											<ul className="dropdown-menu">
 												{
 													this.state.categoryDetails.length > 1 ?
@@ -795,16 +795,16 @@ class ProductCollage extends Component {
 																				{
 																					data.subCategory.map((subcat, subind) => {
 																						return (
-																							<div>
-																	{
-																		subcat.subCategoryTitle > 1 ?
 																							<li>
-																								<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
-																							</li>
-																								: 
-																								null
+																								{
+																									subcat.subCategoryTitle > 1 ?
+																										<li>
+																											<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
+																										</li>
+																									: 
+																									null
 																								}
-																							</div>
+																							</li>
 																						);
 																					})
 																				}
@@ -901,7 +901,7 @@ class ProductCollage extends Component {
 
 						{/*for lg and md*/}
 						{
-							this.state.categoryDetails.length > 0 ?
+							this.state.categoryDetails.length > 1 ?
 								<div className="col-lg-3 col-md-3 hidden-sm hidden-xs">
 									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
 										<div className="accordion" id="accordionExample">
@@ -911,13 +911,14 @@ class ProductCollage extends Component {
 														CATEGORY
 						        			</button>
 													<span className="expand"><i className={this.state["toggleIconcategory"] ? this.state["toggleIconcategory"] : "fa fa-plus-circle categoryIcon"} data-key="category"></i></span>
-												</div>
+												</div> 
 											</div>
 											<div id="collapseOne" className="collapse">
 												<div className="card-body">
 													{
-														this.state.categoryDetails.length > 0 ?
+														this.state.categoryDetails.length >= 2 ?
 															this.state.categoryDetails.map((data, index) => {
+																console.log("data in collapse==>",data)
 																return (
 																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<li>
@@ -934,7 +935,7 @@ class ProductCollage extends Component {
 																				}
 
 																			</ul>
-																		</li>
+																		</li> 
 																	</div>
 																);
 															})
@@ -946,22 +947,8 @@ class ProductCollage extends Component {
 												</div>
 											</div>
 
-											<div>
-												{/* temporary commented	 */}
-												{/* {
-								this.state.categoryDetails[0] &&
-								<div className="card-header" id="headingTwo">
-						      <div className="pagefilter" data-toggle="collapse" data-target="#collapseTwo" data-key="color" onClick={this.handleToggle.bind(this)} >	
-						        <button className="btn btn-link" type="button" data-key="color">
-						          COLOR 
-						        </button>
-						        <span className="expand"><i className={this.state["toggleIconcolor"] ? this.state["toggleIconcolor"] : "fa fa-plus-circle colorIcon"} data-key="color"></i></span>
-						     </div>
-						    </div>
-							} */}
-
-
-												<div id="collapseTwo" className="collapse" >
+											{/* 	<div>
+										<div id="collapseTwo" className="collapse" >
 													<div className="card-body">
 														<br />
 														{this.state.colors ?
@@ -977,21 +964,24 @@ class ProductCollage extends Component {
 
 															: ''}
 													</div>
-												</div>
-											</div>
+												</div> 
+											</div>*/}
 
-											{
-												this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
+											{/* {
+												this.state.categoryDetails.length > 2 ?
+												this.state.categoryDetails && this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
 												<div className="card-header" id="headingFour">
 													<div className="pagefilter" data-toggle="collapse" data-target="#collapseFour" data-key="size" onClick={this.handleToggle.bind(this)}>
 														<button className="btn btn-link" type="button" data-key="size">
 															SIZE
-						        </button>
+						        				</button>
 														<span className="expand"><i className={this.state["toggleIconsize"] ? this.state["toggleIconsize"] : "fa fa-plus-circle sizeIcon"} data-key="size"></i></span>
 													</div>
 												</div>
-											}
-											<div id="collapseFour" className="collapse" >
+												:
+												null
+											} */}
+											{/* <div id="collapseFour" className="collapse" >
 												<br />
 												<div className="card-body">
 													<select onChange={this.onSelectedItemsChange.bind(this, "size")}>
@@ -1004,8 +994,8 @@ class ProductCollage extends Component {
 
 													</select>
 												</div>
-											</div>
-											{
+											</div> */}
+											{/* {
 												this.state.envVariable !== '4_UniMandai' ?
 													<div>FEATURED BRANDS
 						    <div className="card-header" id="headingThree">
@@ -1031,8 +1021,8 @@ class ProductCollage extends Component {
 													</div>
 													:
 													null
-											}
-											{
+											} */}
+											{/* {
 												this.state.attributesArray ?
 													Object.entries(this.state.attributesArray).map(([key, value1], i) => {
 
@@ -1064,7 +1054,7 @@ class ProductCollage extends Component {
 														)
 													})
 													: null
-											}
+											} */}
 
 										</div>
 									</div>
