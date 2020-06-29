@@ -17,13 +17,13 @@ export default class FinishedGoods extends React.Component {
 					ItemCode            : '',
 					ProductCode         : '',
 			      	productName         : '',
-			      	PackagefgUnitQty	: '',
-			      	fgTotalQty          : '',
-					Unit                : 'Kg',
-					finishedGoodsUnit   : 'Kg',
-					OutwardUnit         : 'Kg',
-					fgUnitWt            : 'Kg',
-					scrapUnit           : 'Kg',
+			      	PackagefgUnitQty	: '-- Select --',
+			      	fgTotalQty          : '-- Select --',
+					Unit                : '-- Select --',
+					finishedGoodsUnit   : '-- Select --',
+					OutwardUnit         : '-- Select --',
+					fgUnitWt            : '-- Select --',
+					scrapUnit           : '-- Select --',
 			      	"twoLevelHeader"    : {
 						            apply  : false,
 						           },
@@ -96,7 +96,7 @@ export default class FinishedGoods extends React.Component {
 					filterByDate        : '',
 					filterByProduct     : '',
 					productId           : '',
-					CurrentStockUnit    : 'Kg',
+					CurrentStockUnit    : '',
 					unitOfMeasurementArray  : []	
 	  };
 	  this.uploadedData = this.uploadedData.bind(this);
@@ -148,9 +148,18 @@ export default class FinishedGoods extends React.Component {
 				required:true,
 				noSpace:true
 			  },
+			  OutwardUnit:{
+				required:true,
+			  },
 			  fgUnitQty:{
 				required:true,
 				noSpace:true
+			  },
+			  fgUnitWt:{
+				required:true,
+			  },
+			  scrapUnit:{
+				required:true,
 			  },
 			  finishedBy:{
 				required:true,
@@ -176,7 +185,7 @@ export default class FinishedGoods extends React.Component {
 			  if (element.attr("name") === "fgTotalQty") {
 				error.insertAfter("#fgTotalQty");
 			  }
-			  if (element.attr("name") === "OutwardRawMaterial") {
+			  if (element.attr("name") === "OutwardRawMaterial" || element.attr("name") === "OutwardUnit") {
 				error.insertAfter(".outwardRawMatDiv");
 			  }
 			  if (element.attr("name") === "fgUnitQty") {
@@ -185,6 +194,15 @@ export default class FinishedGoods extends React.Component {
 			  if (element.attr("name") === "finishedBy") {
 				error.insertAfter("#finishedBy");
 			  }
+			  
+			  if (element.attr("name") === "scrapUnit") {
+				error.insertAfter(".scrapMaterialDiv");
+			  }
+			  if (element.attr("name") === "fgUnitWt") {
+				error.insertAfter(".WeightPerUnitDiv");
+			  }
+			  
+			  
 			}
 		});
 
@@ -305,11 +323,10 @@ export default class FinishedGoods extends React.Component {
 				return null;
 			});
 
-			console.log("getUom",unitOfMeasurementArray);
 			this.setState({
 				 unitOfMeasurementArray : unitOfMeasurementArray
 			},()=>{
-				 console.log("unitOfMeasurementArray",unitOfMeasurementArray);
+				//  console.log("unitOfMeasurementArray",unitOfMeasurementArray);
 			});
 		})
 		.catch((error) => {
@@ -344,7 +361,7 @@ export default class FinishedGoods extends React.Component {
 	  this.setState({ 
 		[name]:value,
       },()=>{
-		//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
+		this.weightConverter()
 	  });
 
 	  if(name == "fgUnitWt"){
@@ -425,7 +442,7 @@ export default class FinishedGoods extends React.Component {
 	getCurrentStock(){
 		    axios.get('/api/purchaseEntry/get/RawMaterialCurrentStock/'+this.state.ItemCode)
 		    .then(response => {
-				console.log("getCurrentStock",response.data);
+				// console.log("getCurrentStock",response.data);
 				if(response.data){
 					this.setState({
 						CurrentStock     : response.data[0].totalStock ? response.data[0].totalStock : 0,
@@ -485,7 +502,6 @@ export default class FinishedGoods extends React.Component {
 			this.setState({
 				errorMsg : OutwardError ? OutwardError : "Valid",
 			},()=>{
-				console.log("Error",this.state.errorMsg);
 		 	});
 	}
 
@@ -526,7 +542,6 @@ export default class FinishedGoods extends React.Component {
 	
 	  if ($('#finishedGoodsInwardForm').valid()) {
 		if(productDatalist !== null && productDatalist.length > 0){
-			console.log("errorMsg",this.state.errorMsg.length);
 			if(this.state.errorMsg !== "Valid"){
 				// swal("if");
 				swal(this.state.errorMsg);
@@ -536,9 +551,7 @@ export default class FinishedGoods extends React.Component {
 					.post('/api/finishedGoodsEntry/post',formValues1)
 					.then((response)=>{
 					// handle success
-						// console.log("data in block========",response.data);
 						swal("Thank you. Your Data addeed successfully.");
-						//window.location.reload();
 						this.getData();
 					})
 					.catch(function (error) {
@@ -551,14 +564,20 @@ export default class FinishedGoods extends React.Component {
 						"PackagefgUnitQty"  : '',
 						"fgTotalQty" 	    : '',
 						"productName" 	    : '',
-						"Unit" 		     	: 'Kg',
+						"Unit" 		     	: '',
 						"fgUnitQty"         : '',
 						"CurrentStock"      : 0,
 						"OutwardRawMaterial": '',
 						"fgUnitQtyforFG"    : 0,
 						"scrapQty"          : 0,
 						"finishedBy"        : '',
-						"errorMsg"          : ''
+						"errorMsg"          : '',
+						"PackagefgUnitQty"  : '-- Select --',
+						"fgTotalQty" 	    : '-- Select --',
+						"OutwardUnit" 		: '-- Select --',
+						"fgUnitWt" 		    : '-- Select --',
+						"finishedGoodsUnit" : '-- Select --',
+						'scrapUnit'         : '-- Select --',
 				})
 				// swal("correct");
 			}
@@ -601,19 +620,19 @@ export default class FinishedGoods extends React.Component {
 					this.setState({
 						"date" 		        : '',
 						"ItemCode" 	        : '',
-						"PackagefgUnitQty"     : '',
-						"fgTotalQty" 			: '',
+						"PackagefgUnitQty"  : '-- Select --',
+						"fgTotalQty" 	    : '-- Select --',
 						"productName" 	    : '',
-						"OutwardUnit" 		: 'Kg',
-						"fgUnitWt" 		: 'Kg',
-						"finishedGoodsUnit" : 'Kg',
-						'scrapUnit'         : 'Kg',
+						"OutwardUnit" 		: '-- Select --',
+						"fgUnitWt" 		    : '-- Select --',
+						"finishedGoodsUnit" : '-- Select --',
+						'scrapUnit'         : '-- Select --',
 						"CurrentStock"      : 0,
-						"OutwardRawMaterial"    : '',
-						"fgUnitQtyforFG"       : 0,
-						"scrapQty"             : 0,
-						"finishedBy"            : '',
-						"editId"            : ''
+						"OutwardRawMaterial": '',
+						"fgUnitQtyforFG"    : 0,
+						"scrapQty"          : 0,
+						"finishedBy"        : '',
+						"editId"            : '',
 						
 					})
 				})
@@ -752,6 +771,17 @@ export default class FinishedGoods extends React.Component {
 				this.checkValidInward();
 			})
 		}
+
+		if(this.state.OutwardUnit.toLowerCase()  != 'kg' || this.state.OutwardUnit.toLowerCase()  != 'gm'){
+			var Scrap = Number(this.state.OutwardRawMaterial) - Number(this.state.fgUnitQtyforFG);
+			this.setState({
+				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+				scrapQty          : Scrap > 0 ? Scrap : 0
+			},() => {
+				this.checkValidInward();
+			})
+		}
+
     }
    /* Weight Convertor end*/
 	render() {
@@ -804,12 +834,12 @@ export default class FinishedGoods extends React.Component {
 											<div className="outwardRawMatDiv">
 												<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.OutwardRawMaterial} name="OutwardRawMaterial" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
 												<select id="OutwardUnit"  name="OutwardUnit" value={this.state.OutwardUnit} refs="OutwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
-												    <option selected={true} disabled={true}>-- Select --</option>
+												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
 															this.state.unitOfMeasurementArray.map((data, i)=>{
 																return(
-																	<option key={i} value={data}>{data}</option>
+																	<option key={i+1} value={data}>{data}</option>
 																);
 															})
 														:
@@ -825,12 +855,12 @@ export default class FinishedGoods extends React.Component {
 											<div className="WeightPerUnitDiv">
 												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.handleChange.bind(this)} id="fgUnitQty" onBlur={this.weightConverter.bind(this)} min="1"/>
 												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" onBlur={this.weightConverter.bind(this)}>
-												    <option selected={true} disabled={true}>-- Select --</option>
+												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
 															this.state.unitOfMeasurementArray.map((data, i)=>{
 																return(
-																	<option key={i} value={data}>{data}</option>
+																	<option key={i+1} value={data}>{data}</option>
 																);
 															})
 														:
@@ -848,12 +878,12 @@ export default class FinishedGoods extends React.Component {
 											<div className="WtForFgDiv">
 												<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQtyforFG} name="fgUnitQtyforFG" refs="wtforFG" onChange={this.handleChange.bind(this)} id="fgUnitQtyforFG" min="0" readOnly/>
 												<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
-												    <option selected={true} disabled={true}>-- Select --</option>
+												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
 															this.state.unitOfMeasurementArray.map((data, i)=>{
 																return(
-																	<option key={i} value={data}>{data}</option>
+																	<option key={i+1} value={data}>{data}</option>
 																);
 															})
 														:
@@ -865,14 +895,14 @@ export default class FinishedGoods extends React.Component {
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label>Scrap Material</label>
 											<div className="scrapMaterialDiv">
-												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.handleChange.bind(this)} id="scrapQty" min="0" onBlur={this.weightConverter.bind(this)}/>
-												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
-												    <option selected={true} disabled={true}>-- Select --</option>
+												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.handleChange.bind(this)} id="scrapQty" min="0" onBlur={this.weightConverter.bind(this)} style={{"pointerEvents": "none"}}/>
+												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
+												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
 															this.state.unitOfMeasurementArray.map((data, i)=>{
 																return(
-																	<option key={i} value={data}>{data}</option>
+																	<option key={i+1} value={data}>{data}</option>
 																);
 															})
 														:

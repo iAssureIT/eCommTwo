@@ -538,6 +538,10 @@ var manage_raw_material = async (rawdata) => {
                              if(podata[0].balanceUnit.toLowerCase() == "gm" &&  rawdata.OutwardUnit.toLowerCase() == "gram"){
                                var remainingBalance = podata[0].balance - rawdata.OutwardRawMaterial;
                             }
+
+                             if(podata[0].balanceUnit.toLowerCase() !== "kg" ||  rawdata.OutwardUnit.toLowerCase() !== "gram"){
+                               var remainingBalance = podata[0].balance - rawdata.OutwardRawMaterial;
+                            }
                         }
 
 
