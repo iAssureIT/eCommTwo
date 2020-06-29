@@ -63,10 +63,11 @@ class Login extends Component {
       role: "franchise"
     }
     if ($("#login").valid()) {
-      document.getElementById("logInBtn").value = 'Please Wait...';
-      axios.post('/api/auth/post/franchise/login', auth)
+      // document.getElementById("logInBtn").value = 'Please Wait...';
+      // axios.post('/api/auth/post/franchise/login', auth)
+      console.log("auth:==>",auth)
+      axios.post('/api/auth/post/login', auth)
       .then((response) => {
-        console.log("response",response)
           // this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
             var  userDetails = {

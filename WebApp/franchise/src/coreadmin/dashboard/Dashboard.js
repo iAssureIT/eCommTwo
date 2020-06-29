@@ -49,18 +49,18 @@ class Dashboard extends React.Component{
 
 
 
-const mapStateToProps = (state)=>{
-  console.log(" state on Dashboard ==> ",state)
-  return {
-    userDetails   : state.userDetails,
-  }
-};
+// const mapStateToProps = (state)=>{
+//   console.log(" state on Dashboard ==> ",state)
+//   return {
+//     userDetails   : state.userDetails,
+//   }
+// };
 
 
-const mapDispatchToProps = (dispatch)=>{
-  return {
-  }
-};
+// const mapDispatchToProps = (dispatch)=>{
+//   return {
+//   }
+// };
 
 
 // export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Dashboard));

@@ -102,7 +102,7 @@ class ContactDetails extends Component {
 					{
 						listOfEmpID.push(this.state.contactarray[j].employeeID)
 					}
-					console.log("listOfEmpID===>",listOfEmpID);
+					// console.log("listOfEmpID===>",listOfEmpID);
 				})
 			})
 			.catch((error) => {
@@ -547,7 +547,7 @@ class ContactDetails extends Component {
 			
 			main();
 	}
-	createUser = ()=>{
+	createUser(){
 		var userDetails = {
 			firstname				: this.state.firstName,
 			lastname				: this.state.lastName,
@@ -555,12 +555,13 @@ class ContactDetails extends Component {
 			email						: this.state.email,
 			companyID				: this.state.companyID,
 			companyName			: this.state.companyName,
-			pwd							: this.state.firstName+"123",
+			pwd							: "Welcome@123",
 			role						: this.state.pathname === "appCompany"  ? "admin" : this.state.role,
 			status					: 'active',
 			"emailSubject"	: "Email Verification",
 			"emailContent"	: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 		}
+		console.log("userDetails createUser==>",userDetails)
 		return new Promise(function(resolve, reject){
 			axios.post('/api/auth/post/signup/user', userDetails)
 			.then((response)=>{
@@ -625,14 +626,14 @@ class ContactDetails extends Component {
 	}
 
 	saveContact = (formValues)=>{
-		console.log("this.state.listOfEmpID===>",this.state.listOfEmpID);
+		// console.log("this.state.listOfEmpID===>",this.state.listOfEmpID);
 		if(this.state.listOfEmpID.indexOf(this.state.employeeID)>-1)
 		{
 			swal("Employee ID already exists..!")
 		}else{
 		axios.patch('/api/entitymaster/patch/addContact' ,formValues)
 		.then((response) => {
-				console.log("response",response)
+				
 				if(response.data.duplicated)
 				{
 					swal({
@@ -641,11 +642,14 @@ class ContactDetails extends Component {
 
 				}else{
 					this.contactDetails();
-					this.getAllEntites()
-
+					this.getAllEntites();
+					console.log("this.state.createUser in entity==>",this.state.createUser)
+					if(this.state.createUser === true){
+						this.createUser()
+					}
 					swal({
 						title : "Contact added successfully.",
-						text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password :"+this.state.firstName+"123 \n Contact also added in employee list." : ""
+						text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password :Welcome@123 \n Contact also added in employee list." : ""
 					});
 
 					this.setState({
@@ -868,12 +872,9 @@ class ContactDetails extends Component {
 		
 	}
 	updateUser = ()=>{
-		if(this.state.alreadyHasUser && this.state.createUser === false)
-		{
-			
+		if(this.state.alreadyHasUser && this.state.createUser === false){
 			var id = this.state.userID;
 			const token = '';
-			// console.log('id', id);
 			const url = '/api/users/delete/' + id;
 			const headers = {
 				"Authorization": token,

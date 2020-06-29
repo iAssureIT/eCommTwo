@@ -85,24 +85,12 @@ class CreateUser extends Component {
         formerrors.role = value !== "--select--" ? "" : "Please select role";
         break;
 
-      case 'department':
-        formerrors.department = value !== "--select--" ? "" : "Please select department";
-        break;
-
-      case 'designation':
-        formerrors.designation = value !== "--select--" ? "" : "Please select designation";
-        break;
-
       case 'city':
         formerrors.city = value !== "--select--" ? "" : "Please select city";
         break;
 
       case 'state':
         formerrors.state = value !== "--select--" ? "" : "Please select state";
-        break;
-
-      case 'centerName':
-        formerrors.role = value !== "--select--" ? "" : "Please select Center";
         break;
 
       default:
@@ -138,14 +126,6 @@ class CreateUser extends Component {
       return arg !== value;
     }, "Please select the role");
 
-    $.validator.addMethod("regxdesignation", function (value, element, arg) {
-      return arg !== value;
-    }, "Please select the Designation");
-
-
-    $.validator.addMethod("regxdepartment", function (value, element, arg) {
-      return arg !== value;
-    }, "Please select the Department");
 
 
     $.validator.addMethod("regxcity", function (value, element, arg) {
@@ -311,7 +291,7 @@ class CreateUser extends Component {
                 "lastname": this.state.lastname,
                 "email": this.state.signupEmail,
                 "mobNumber": (this.state.mobile).replace("-", ""),
-                "pwd": this.state.firstname + "123",
+                "pwd": "Welcome@123",
                 "role": this.state.role,
                 "department": this.state.department,
                 "designation": this.state.designation,
@@ -603,7 +583,7 @@ class CreateUser extends Component {
 
 
                           <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box">
-                            <label>Company ID <span className="requiredsign">*</span></label>
+                            <label>Franchise ID <span className="requiredsign">*</span></label>
                             <input type="text" className="form-control UMname  has-content"
                               id="companyID" ref="companyID" name="companyID" data-text="companyID" onChange={this.handleChange}
                               value={this.state.companyID} placeholder="company ID" />
@@ -619,68 +599,14 @@ class CreateUser extends Component {
                               value={this.state.companyName} placeholder="company Name"
                             />
                           </div>
-                          <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
-                            <label >Department <span className="requiredsign">*</span></label>
-                            <div className="input-group col-lg-12 col-md-12 col-xs-12 col-sm-12" id="department">
-                              <select className="form-control " value={this.state.department} onChange={this.handleChange} ref="department" id="department" name="department" data-text="department">
-                                <option hidden> --Select-- </option>
-                                {
-                                  this.state.departmentArray && this.state.departmentArray.length > 0 ?
-                                    this.state.departmentArray.map((data, index) => {
-                                      return (
-                                        <option key={index} value={data.department}>{data.department}</option>
-                                      );
-                                    })
-                                    :
-                                    <option value='user'>User</option>
-                                }
-                              </select>
-                            </div>
-                          </div>
-                          <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
-                            <label > Designation <span className="requiredsign">*</span></label>
-                            <div className="input-group col-lg-12 col-md-12 col-xs-12 col-sm-12" id="designation">
-                              <select className="form-control " value={this.state.designation} onChange={this.handleChange} ref="designation" id="designation" name="designation" data-text="designation">
-                                <option hidden> --Select-- </option>
-                                {
-                                  this.state.designationArray && this.state.designationArray.length > 0 ?
-                                    this.state.designationArray.map((data, index) => {
-                                      return (
-                                        <option key={index} value={data.designation}>{data.designation}</option>
-                                      );
-                                    })
-                                    :
-                                    <option value='user'>User</option>
-                                }
-                              </select>
-                            </div>
-                          </div>
-                          <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
-                            {/* <label >City <span className="requiredsign">*</span></label>
-                            <div className="input-group col-lg-12 col-md-12 col-xs-12 col-sm-12" id="city">
-                              <select className="form-control " value={this.state.city} onChange={this.handleChange} ref="city" id="city" name="city" data-text="city">
-                                <option hidden> --Select-- </option>
-                                {
-                                  this.state.adminRolesListData && this.state.adminRolesListData.length > 0 ?
-                                    this.state.adminRolesListData.map((data, index) => {
-                                      return (
-                                          <option key={index} value={data.role}>{data.role}</option>
-                                      );
-                                    })
-                                    :
-                                    <option value='user'>User</option>
-                                }
-                              </select>
-                            </div> */}
+                          {/* <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box " >
 
                           <label >City <span className="requiredsign">*</span></label>
-
                                 <PlacesAutocomplete
                                   value={this.state.cityName}
                                   onChange={this.handleChangePlaces}
                                   onSelect={this.handleSelectLocation}
                                   searchOptions={searchOptions}
-
                                 >
                                   {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                                     <div>
@@ -707,9 +633,7 @@ class CreateUser extends Component {
                                                 style,
                                               })}
                                             >
-                                              {/*<span>{suggestion.description}</span>*/}
                                               <span>{(suggestion.description ? suggestion.description.split(",")[0] : "")}</span>
-
                                             </div>
                                           );
                                         })}
@@ -727,7 +651,7 @@ class CreateUser extends Component {
                               onChange={this.handleChange} disabled
                               value={this.state.states} placeholder="State Name"
                             />
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className=" col-lg-12 col-md-12 col-xs-12 col-sm-12 ">

@@ -26,7 +26,7 @@ class UMListOfUsers extends Component {
 			},
 			"tableHeading": {
 				fullName: 'User Details',
-				companyDetails: 'Company Details',
+				companyDetails: 'Franchise Details',
 				status: 'Status',
 				roles: 'Role',
 				createdAt: 'Registered Since',
@@ -1274,7 +1274,7 @@ class UMListOfUsers extends Component {
 												</select>
 											</div>
 											<div className="form-group col-lg-3 col-md-3 col-sm-6 col-xs-6">
-												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Company</label>
+												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Franchise</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="companyDropdown" name="companyDropdown" onChange={this.selectedCompnay.bind(this)} >
 													<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
 													<option value="all" name="roleListDDOption">Show All</option>
