@@ -93,6 +93,7 @@ export default class FranchiseDistribution extends React.Component {
 						"selectedFranchise" : franchisePurOrders.data.franchise_id
 					},()=>{
 						this.getFooterTotal();
+						this.getFranchiseDetails();
 						console.log("ddd",franchisePurOrders.data);
 					 });
 			})
