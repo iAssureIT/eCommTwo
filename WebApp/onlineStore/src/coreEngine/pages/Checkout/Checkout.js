@@ -212,6 +212,7 @@ class Checkout extends Component {
                 this.setState({
                     cartProduct: response.data[0]
                 });
+                console.log("inside getCartData:",this.state.cartProduct);
             })
             .catch((error) => {
                 console.log('error', error);
@@ -579,25 +580,28 @@ class Checkout extends Component {
                 var deliveryAddress = this.state.deliveryAddress.filter((a, i) => {
                                                                     return a._id === checkoutAddess
                                                                 })
+                console.log("Delivery address:",deliveryAddress);
+
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
                     "name"          : deliveryAddress.length > 0 ? deliveryAddress[0].name      : "",
                     "email"         : deliveryAddress.length > 0 ? deliveryAddress[0].email     : "",
-                    "mobileNumber"  : deliveryAddress.length > 0 ? deliveryAddress[0].mobile    : "",
+                    "mobileNumber"  : deliveryAddress.length > 0 ? deliveryAddress[0].mobileNumber : "",
                     "addType"       : deliveryAddress.length > 0 ? deliveryAddress[0].addType   : "",
                     "addressLine1"  : deliveryAddress.length > 0 ? deliveryAddress[0].addressLine1 : "",
                     "addressLine2"  : deliveryAddress.length > 0 ? deliveryAddress[0].addressLine2 : "",
                     "pincode"       : deliveryAddress.length > 0 ? deliveryAddress[0].pincode   : "",
-                    "area"          : this.state.area,
-                    "city"          : this.state.city,
-                    "district"      : this.state.district,
-                    "stateCode"     : this.state.stateCode,
-                    "state"         : this.state.state,
-                    "countryCode"   : this.state.countryCode,
-                    "country"       : this.country,
-                    "latitude"      : this.state.latitude,
-                    "longitude"     : this.state.longitude,
-                }                
+                    "area"          : deliveryAddress.length > 0 ? deliveryAddress[0].area      : "",
+                    "city"          : deliveryAddress.length > 0 ? deliveryAddress[0].city      : "",
+                    "district"      : deliveryAddress.length > 0 ? deliveryAddress[0].district  : "",
+                    "stateCode"     : deliveryAddress.length > 0 ? deliveryAddress[0].stateCode : "",
+                    "state"         : deliveryAddress.length > 0 ? deliveryAddress[0].state     : "",
+                    "countryCode"   : deliveryAddress.length > 0 ? deliveryAddress[0].countryCode   : "",
+                    "country"       : deliveryAddress.length > 0 ? deliveryAddress[0].country   : "",
+                    "latitude"      : deliveryAddress.length > 0 ? deliveryAddress[0].latitude  : "",
+                    "longitude"     : deliveryAddress.length > 0 ? deliveryAddress[0].longitude : "",
+                } 
+                console.log("inside if address values====",addressValues);               
             }else{
                 console.log("inside else new address");
                 addressValues = {
@@ -619,7 +623,7 @@ class Checkout extends Component {
                     "latitude" : this.state.latitude,
                     "longitude": this.state.longitude,
                 }
-                
+                console.log("inside if address values====",addressValues);     
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     console.log("addressValues:===",addressValues);
@@ -962,7 +966,8 @@ class Checkout extends Component {
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <input type="radio" value={data._id} name="checkoutAddess" required /> &nbsp;
-                                                            <span className="checkoutADDCss"><b>{data.name}</b> <br/>
+                                                            <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br/>
+                                                            <span className="checkoutADDCss">Name : {data.name}.</span> <br/>
                                                             {data.addressLine2}, {data.addressLine1}, 
                                                             Pincode - {data.pincode}. <br/>
                                                             Email: {data.email} <br/>Mobile: {data.mobileNumber} <br/><br/></span> 
@@ -1099,8 +1104,8 @@ class Checkout extends Component {
                                                 <select id="addType" name="addType" ref="addType" value={this.state.addType} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
                                                     <option value="Home">Home (All day delivery) </option>
                                                     <option value="Office">Office/Commercial (10 AM - 5 PM Delivery)</option>
-                                                    <option value="Office">Relative (All day delivery)</option>
-                                                    <option value="Office">Friend (All day delivery)</option>
+                                                    <option value="Relative">Relative (All day delivery)</option>
+                                                    <option value="Friend">Friend (All day delivery)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -1185,9 +1190,9 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Cart Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Discount:</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Discount:</span>                                        
                                         <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">
-                                             {this.props.recentCartData.discount > 0 ? <span> <i className={"fa fa-inr"}></i> parseInt({this.props.recentCartData[0].discount})</span> : "0.00"}
+                                             {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount>=1 ? this.props.recentCartData[0].discount:0.00 }</span> : "0.00"}
                                         </span>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Order Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Delivery Charges:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
@@ -1250,6 +1255,7 @@ const mapStateToProps = (state)=>{
     }
   }
 const mapDispachToProps = (dispatch) => {
+    console.log("getCartData====",getCartData);
   return  bindActionCreators({ fetchCartData: getCartData}, dispatch)
 }
 

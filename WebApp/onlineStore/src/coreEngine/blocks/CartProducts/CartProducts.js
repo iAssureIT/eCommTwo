@@ -400,25 +400,7 @@ class CartProducts extends Component{
 
                                                         <td>  
                                                             { localStorage.getItem('websiteModel') === 'FranchiseModel'? 
-                                                                // data.productDetail.totalWeight=== "1000" || data.productDetail.totalWeight=== "750" || data.productDetail.totalWeight=== "500" || data.productDetail.totalWeight=== "250" && data.productDetail.unit ==="gm" ?
-                                                                //     <span className="productSize" id={data.product_ID}>&nbsp; {data.totalWeight}&nbsp;
-                                                                //     <span className="CapsUnit">{data.productDetail.unit}</span></span>
-                                                                // :
-                                                                //     <span className="productSize" id={"totalWeight"+data.product_ID}>&nbsp; {data.totalWeight}&nbsp;
-                                                                //         <span className="CapsUnit">{data.productDetail.unit}</span>
-                                                                //         {/* { data.productDetail.unit === "gm" && data.totalWeight<25 ?
-                                                                //             <span className="CapsUnit">{data.productDetail.unit}</span>
-                                                                //         :
-                                                                //             null
-                                                                //         } */}
-                                                                //     </span>    
-                                                                
-                                                                
-                                                                // data.productDetail.unit === "gm" ?                                 
-                                                                //     <span className="productSize">&nbsp;{data.totalWeight} &nbsp;</span> 
-                                                                // :
-                                                                //     <span className="productSize" id={"totalWeight"+data.product_ID}>&nbsp; {data.totalWeight}&nbsp;
-                                                                //     <span className="CapsUnit">{data.productDetail.unit}</span></span>
+                                                               
                                                                 <span className="productSize totalWeight">&nbsp;{data.totalWeight} &nbsp;</span> 
                                                             :
                                                                     <span className="productSize">&nbsp;{data.productDetail.size} &nbsp; <span className="CapsUnit">{data.productDetail.unit}</span></span>
@@ -459,7 +441,7 @@ class CartProducts extends Component{
                                                     
                                                     <tr>
                                                         <td>Discount</td>
-                                                        <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >0 ?<span> - <i className={"fa fa-inr"}></i></span> : null} 0.00</td>
+                                                        <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >= 1 ? <span> - <i className="fa fa-inr"></i>{this.props.recentCartData[0].discount} </span> : 0.00}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Order Total</td>

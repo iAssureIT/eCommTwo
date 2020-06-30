@@ -21,13 +21,21 @@ class WebsiteModel extends Component {
         };
         
     }
+    componentDidMount(){        
+        console.log("2.inside component didmount");
+    }
+
     componentWillMount() {
+        console.log("1.inside component will mount");
         axios.get("/api/adminpreference/get")
         .then(preferences =>{
             if(preferences.data){
-                console.log("preferences value:",preferences.data[0].websiteModel);
+                console.log("preferences value:",preferences.data[0]);
                 var askpincodeToUser = preferences.data[0].askPincodeToUser;
                 console.log("askpincodeToUser:",preferences.data[0].askPincodeToUser);
+                this.setState({
+                    'editId' : preferences.data[0]._id,
+                })
                if(preferences.data[0].websiteModel === "FranchiseModel"){                   
                    this.setState({
                     'franchise' : 'checked',
@@ -163,7 +171,6 @@ class WebsiteModel extends Component {
                                                 </div>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 askPincodeToUser NOpadding">
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Ask Pincode To User on Homepage Launch <span><i className="astrick">*</i></span></div>
-
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
                                                         {this.state.askPincodeYes === 'checked' ?
                                                             <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
@@ -176,7 +183,7 @@ class WebsiteModel extends Component {
                                                     </div>
 
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
-                                                        {this.state.askPincodeNo === "false"?
+                                                        {this.state.askPincodeNo === 'checked' ?
                                                             <input name="askPincodeToUser" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                             checked onClick={this.handleChange.bind(this)} />
                                                         :
@@ -190,7 +197,7 @@ class WebsiteModel extends Component {
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     {this.state.editId
                                                         ?
-                                                        <button onClick={this.update.bind(this)} className="btn button3 btn-primary pull-right">Update</button>
+                                                        <button onClick={this.submit.bind(this)} className="btn button3 btn-primary pull-right">Update</button>
                                                         :
                                                         <button onClick={this.submit.bind(this)} className="btn button3 btn-primary pull-right">Submit</button>
                                                     }

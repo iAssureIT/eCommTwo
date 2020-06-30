@@ -349,6 +349,7 @@ class Address extends Component {
         console.log("address id :",id);
         var deliveryAddressID = this.props.addressId;
         console.log("deliveryAddressID :",deliveryAddressID);
+        console.log("pincode:",this.state.modalPincode);
         var formValues = {
             "user_ID"           : id,
             "deliveryAddressID" : deliveryAddressID,
@@ -356,7 +357,7 @@ class Address extends Component {
             "email"             : this.state.modalemail,
             "addressLine1"      : this.state.addressLine1,
             "addressLine2"      : this.state.modaladdressLine2,  
-            "pincode"           : this.state.modalpincode,
+            "pincode"           : this.state.modalPincode,
             "district"          : this.state.modaldistrict,
             "city"              : this.state.modalcity,
             "area"              : this.state.modalarea,
@@ -651,8 +652,8 @@ class Address extends Component {
                                         <select id="modaladdType" name="modaladdType" ref="modaladdType" value={this.state.modaladdType} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
                                             <option value="Home">Home (All day delivery) </option>
                                             <option value="Office">Office/Commercial (10 AM - 5 PM Delivery)</option>
-                                            <option value="Office">Relative (All day delivery)</option>
-                                            <option value="Office">Friend (All day delivery)</option>
+                                            <option value="Relative">Relative (All day delivery)</option>
+                                            <option value="Friend">Friend (All day delivery)</option>
                                         </select>
                                     </div>
                                 </div>

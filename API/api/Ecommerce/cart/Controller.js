@@ -271,6 +271,8 @@ exports.add_address_to_cart = (req, res, next)=>{
                             "countryCode"     : req.body.countryCode,
                             "country"         : req.body.country,
                             "addType"         : req.body.addType,
+                            "latitude"        : req.body.latitude,
+                            "longitude"       : req.body.longitude,
                         }
                     }
                 }) 
