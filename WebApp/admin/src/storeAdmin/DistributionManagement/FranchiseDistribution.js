@@ -18,7 +18,7 @@ export default class FranchiseDistribution extends React.Component {
 					totalSupply:0,
 					user_id:'',
 					orderId:'',
-					FranchiseName:''
+					franchise_name:''
 
       };
 	}
@@ -117,6 +117,21 @@ export default class FranchiseDistribution extends React.Component {
 		});
 
 	}
+
+	getFranchiseDetails(){
+        axios.get("/api/entitymaster/get/one/"+this.state.selectedFranchise)
+        .then((response)=>{
+            this.setState({
+                franchise_name : response.data.companyName,
+                entityInfo 	: response.data,
+                contacts 	: response.data.contactData,
+                locations 	: response.data.locations.reverse(),
+                entityType 	: response.data.entityType
+            });
+        })
+        .catch((error)=>{
+        })
+    }
    
 	handleChange(event){
 	  event.preventDefault();
@@ -154,40 +169,47 @@ export default class FranchiseDistribution extends React.Component {
         var orderArray = [];
     	for (var i = 0; i < this.state.DistributionData.length; i++) {
 			var obj = {};
-			if(this.state.DistributionData[i].supply){
+			if(this.state.DistributionData[i].supply > 0){
 				var remain = this.state.DistributionData[i].orderQty - this.state.DistributionData[i].supply;
 				obj.productCode 	= this.state.DistributionData[i].productCode;
 				obj.itemCode 		= this.state.DistributionData[i].itemCode;
 				obj.productName 	= this.state.DistributionData[i].productName;
 				obj.currentStock 	= this.state.DistributionData[i].currentStock;
-				obj.orderQty 		= this.state.DistributionData[i].orderQty;
+				obj.orderedQty 		= this.state.DistributionData[i].orderQty;
 				obj.suppliedQty 	= this.state.DistributionData[i].supply;
-				obj.remainQty       = remain;
+				obj.status          = "deliverySent";
+				obj.statusBy        = this.state.user_id; 
+			    obj.remainQty       = remain;
 				orderArray.push(obj);
 			}
+
+			// {productCode, itemCode, orderedQty, suppliedQty, status (deliverySent, deliveryAccepted, deliveryRejected, deliveryCancelled), remark, statusBy, statusAt}
+
     		
     	}
     	var formValues = {
-			distributionDate 	: this.state.currentDate,
-			deliveryChallanNo   : "DC"+Math.floor(100000 + Math.random() * 900000),
-			franchiseId         : this.state.selectedFranchise,
-			createdBy 	        : this.state.user_id,
-			totalDemand         : this.state.totalDemand,
-			totalSupply         : this.state.totalSupply,
-			orderItems	        : orderArray,
-			purchaseOrderId     : this.state.orderId
+			franchise_id         : this.state.selectedFranchise,
+			franchisePO_id       : this.state.orderId,
+			deliveryDate 	     : this.state.currentDate,
+			orderedDate          : this.state.orderDate,
+			// deliveryChallanNum   : "DC"+Math.floor(100000 + Math.random() * 900000),
+			deliveredBy          :this.state.user_id,
+			supply               : orderArray,
+			createdBy 	         : this.state.user_id,
+			totalDemand          : this.state.totalDemand,
+			totalSupply          : this.state.totalSupply,
+			orderItems	         : orderArray,
+			purchaseOrderId      : this.state.orderId
 		};
 		
-		if(this.state.totalSupply){
+		if(this.state.totalSupply > 0){
 			axios
-			.post('/api/franchisegoods/post',formValues)
+			.post('/api/franchiseDelivery/post',formValues)
 		  	.then(function (response) {
 		    // handle success
-				console.log("data in block========",response.data);
 				var franchiseGoodsId = response.data.franchiseGoodsId;
 				window.location.href = "/franchise_delivery_challan/"+response.data.franchiseGoodsId; 
 		    	swal("Thank you. Your Data addeed successfully.");
-		    	 // window.location.reload();
 		  	})
 		  	.catch(function (error) {
 		    // handle error
@@ -297,7 +319,7 @@ export default class FranchiseDistribution extends React.Component {
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                            <h4 className="" style={{"display": "inline-block","float": "left"}}>{this.state.FranchiseName} Distribution</h4>
+                            <h4 className="" style={{"display": "inline-block","float": "left"}}>{this.state.franchise_name} Distribution</h4>
                             <a href="/distribution" className="backtoMyOrders" style={{"display": "inline-block","float": "right"}}><i class="fa fa-chevron-circle-left"></i> Back to Distribution</a>
                         </div>
                         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
