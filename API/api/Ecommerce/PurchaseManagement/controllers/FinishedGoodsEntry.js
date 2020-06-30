@@ -434,7 +434,7 @@ function findProduct(itemCode, productName) {
     // console.log("itemCode",itemCode,"productName",productName);
     return new Promise(function(resolve,reject){  
       
-    Products.findOne({"itemCode"       : itemCode },{productName: new RegExp('^'+productName+'$', "i")})
+    Products.findOne({"itemCode": itemCode },{productName: new RegExp('^'+productName+'$', "i")})
                 .exec()
                 .then(productObject=>{
                     if(productObject){

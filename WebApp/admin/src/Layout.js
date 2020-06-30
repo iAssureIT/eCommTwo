@@ -100,6 +100,7 @@ import AdminShoppingList  from './storeAdmin/adminShoppingList/AdminShoppingList
 
 import FranchiseShoppingList from './storeAdmin/FranchiseShoppingList/FranchiseShoppingList.js';
 import FranchiseOrderSummary from './storeAdmin/FranchiseShoppingList/FranchiseOrderSummary.js';
+import OrderPurchaseView from './storeAdmin/FranchiseShoppingList/OrderPurchaseView.js';
 
 import MasterData            from "./storeAdmin/MasterData/MasterData.js";
 
@@ -210,9 +211,11 @@ class Layout extends Component  {
                                                     <Route path="/franchise/list"                                   exact strict component={ListOfEntitiesPage} />                          
 
                                                     <Route path="/franchise-shopping-list"                          exact strict component={FranchiseShoppingList} />
-                                                    <Route path="/franchise-shopping-list/:editId"                          exact strict component={FranchiseShoppingList} />
+                                                    <Route path="/franchise-shopping-list/:editId"                  exact strict component={FranchiseShoppingList} />
                                                                     
                                                     <Route path="/franchise-order-summary"                          exact strict component={FranchiseOrderSummary} />
+
+                                                    <Route path="/franchise-order-view/:orderId"                    exact strict component={OrderPurchaseView} />
 
                                                     { /*Order List*/}
                                                     <Route path="/allorders"                                        exact strict component={AllOrdersList} />

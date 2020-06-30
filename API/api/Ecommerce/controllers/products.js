@@ -103,13 +103,11 @@ exports.bulkUploadProduct = (req,res,next)=>{
                     // console.log('sectionObject:',sectionObject)
                     if (productData[k].category !== undefined) {
                         var categoryObject = await categoryInsert(productData[k].category,productData[k].subCategory,productData[k].section,sectionObject.section_ID);
-                        
                         if (productData[k].itemCode !== undefined) {
                             // console.log("productData[k]:", productData[k]);
                             var insertProductObject = await insertProduct(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
                             // console.log('insertProductObject',insertProductObject)
                             if (insertProductObject !== 0) {
-
                                 Count++;
                             }else{
                                 DuplicateCount++;

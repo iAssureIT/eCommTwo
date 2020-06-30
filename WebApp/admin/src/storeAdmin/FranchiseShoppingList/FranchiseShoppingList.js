@@ -158,7 +158,6 @@ export default class FranchiseShoppingList extends React.Component {
   			}
   		}
   	}
-  	// console.log("ProdArray2",ProdArray);
 
 	  const formValues1 = {
 	    franchise_id            	: this.state.selectedFranchise, 
@@ -170,21 +169,23 @@ export default class FranchiseShoppingList extends React.Component {
     console.log("formValues1",formValues1);
     axios.post('/api/franchisepo/post',formValues1)
 	  	.then(function (response) {
-	    // handle success
-	    	console.log("data in block========",response.data);
-	    	swal("Thank you. Your Product addeed successfully.");
+				var orderId = response.data.order_id;
+				console.log("data in orderid========",orderId);
+				this.props.history.push("/franchise-order-view/"+orderId);
+				// swal("Thank You!","Your Order has been placed successfully!!")
+				// .then((success) => {
+				// })
 	  	})
 	  	.catch(function (error) {
-	    // handle error
 	    	console.log(error);
 	  	});
 	}
 	Update(event){
 		event.preventDefault();
    	    const formValues1 = {
-	        purchaseorder_id    	  : this.state.editId, 
+	        purchaseorder_id    	  	: this.state.editId, 
 	        orderItems                : this.state.prodStockOrder,
-	        orderDate				  : moment(new Date()).format("YYYY-MM-DD"),
+	        orderDate				  				: moment(new Date()).format("YYYY-MM-DD"),
 	        user_id                   : this.state.user_ID,
 	       
         };

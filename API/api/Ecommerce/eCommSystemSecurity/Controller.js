@@ -17,7 +17,6 @@ function getRandomInt(min, max) {
 // ============ Account dashboard users API methods ============
 exports.user_details = (req, res, next) => {
 	var id = req.params.userID;
-	console.log("inside api:",id);
 	User.findOne({ _id: id })
 		// .select("profile")
 		.exec()
@@ -48,9 +47,6 @@ exports.delete_user = function (req, res, next) {
 					    })
 					    .catch(err =>{
 					        console.log(err);
-					        // res.status(500).json({
-					        //     error: err
-					        // });
 					    });
 				}
 				User.deleteOne({ _id: req.params.userID }, function (err) {
