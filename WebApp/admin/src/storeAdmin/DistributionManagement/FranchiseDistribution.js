@@ -25,7 +25,7 @@ export default class FranchiseDistribution extends React.Component {
     
 	componentDidMount(){
 		var orderId = this.props.match.params.orderId;
-		console.log("purchaseId",orderId);
+		// console.log("purchaseId",orderId);
 		var currentDate = moment().startOf('day').format("YYYY-MM-DD");
 		document.getElementsByClassName('date').value = moment().startOf('day').format("YYYY-MM-DD") ;
 		const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -36,7 +36,7 @@ export default class FranchiseDistribution extends React.Component {
 		},()=>{
 			this.getAllfrachiseData();
 			this.getData();
-			console.log("currentDate",this.state.currentDate);
+			// console.log("currentDate",this.state.currentDate);
 		 });
 	}
 
@@ -86,15 +86,17 @@ export default class FranchiseDistribution extends React.Component {
 						DistributionData.push(franchisePurOrders.data.orderItems[j]);
 					}
 
+					var franchise_name = franchisePurOrders.data.franchiseName.map(function(value) {
+						return value.companyName;
+					  });
+
 					this.setState({
 						"DistributionData"  : DistributionData,
-						"FranchiseName"     : "Franchise 3",
+						"franchise_name"     : franchise_name[0],
 						"orderDate"         : moment(franchisePurOrders.data.orderDate).format("YYYY-MM-DD"),
 						"selectedFranchise" : franchisePurOrders.data.franchise_id
 					},()=>{
 						this.getFooterTotal();
-						this.getFranchiseDetails();
-						console.log("ddd",franchisePurOrders.data);
 					 });
 			})
 			.catch(error=>{
@@ -118,21 +120,6 @@ export default class FranchiseDistribution extends React.Component {
 		});
 
 	}
-
-	getFranchiseDetails(){
-        axios.get("/api/entitymaster/get/one/"+this.state.selectedFranchise)
-        .then((response)=>{
-            this.setState({
-                franchise_name : response.data.companyName,
-                entityInfo 	: response.data,
-                contacts 	: response.data.contactData,
-                locations 	: response.data.locations.reverse(),
-                entityType 	: response.data.entityType
-            });
-        })
-        .catch((error)=>{
-        })
-    }
    
 	handleChange(event){
 	  event.preventDefault();
@@ -389,7 +376,7 @@ export default class FranchiseDistribution extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
-													console.log("DistributionData",result);
+												//	console.log("DistributionData",result);
 													return( 
 																<tr key={index}>
 																	<td>{result.productCode}</td>
