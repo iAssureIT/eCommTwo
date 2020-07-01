@@ -5,183 +5,172 @@ import moment from 'moment';
 import swal from 'sweetalert';
 import './FranchiseShoppingList.css';
 
+
 export default class FranchiseShoppingList extends React.Component {
 
 	constructor(props) {
 		super(props);
 	  	this.state = {
-            objects 			: [],
-            units 			: "",
-		    productList 	: [],
-            currentStock 	: [],	
-         	prodStockOrder : [],	      
-	        selectedSection : "",	
-	        date : ""	,
-	        editId : "",
-	        user_ID : ""
+          objects 				: [],
+          units 					: "",
+		    	productList 		: [],
+          currentStock 		: [],	
+         	prodStockOrder 	: [],
+	        selectedSection : "All Sections",
+	        date 						: "" ,
+	        editId 					: "" ,
+	        user_ID 				: ""
    	};
 	}
 
 	componentDidMount(){
 		/*this.getProductList();*/
-		this.getCurrentStock();
+		this.getProductStock();
 
-		var editid1 = window.location.pathname;
-			// console.log("pageUrl = ",pageUrl);
-		let editId = editid1 ? editid1.split('/')[2] : "";
-	        // console.log("a==>",editId); 
-	    const user_ID = localStorage.getItem("user_ID");
-   			 // console.log("user_ID",user_ID);
-		var today = moment(new Date()).format("YYYY-MM-DD");
-		// console.log("today",today);
+		this.getFranchiseList();
+
+		var editid1 	= window.location.pathname;
+		let editId 		= editid1 ? editid1.split('/')[2] : "";
+	  const user_ID = localStorage.getItem("user_ID");
+		var today 		= moment(new Date()).format("YYYY-MM-DD");
 		this.setState({
-				date : today,
-				editId : editId,
+				date 		: today,
+				editId 	: editId,
 				user_ID : user_ID,
 			},()=>{
 					console.log("editId = ",this.state.editId);
-					this.getEditData();
+					if(typeof this.state.editId !== 'undefined'){
+						this.getEditData();
+					}
 				});
 
+				var userDetails = (localStorage.getItem('userDetails'));
+				var userData = JSON.parse(userDetails);
+				const companyID = parseInt(userData.companyID);
+				this.setState({
+					user_ID: user_ID,
+					companyID: companyID
+				}, () => {
+					axios.get('/api/entitymaster/get/one/companyName/'+this.state.companyID)
+					.then((res) => {
+						// console.log("res.data in companyName==>", res.data._id);
+						var franchiseid = res.data._id;
+							this.setState({
+								selectedFranchise: franchiseid,
+							})
+					})
+					.catch((error) => {});		
+			})
 	}
+
+	getFranchiseList(){
+		axios.get('/api/entitymaster/get/franchise/')
+        .then((response) => {
+          this.setState({
+            "franchiseList": response.data,
+          },()=>{
+						console.log("franchiseList = ",this.state.franchiseList);
+					})
+	      })
+	      .catch((error) => {
+					console.log("Error in franchiseList = ", error);
+	      })
+
+	}
+
 	getEditData(){
 		axios.get('/api/franchisepo/get/one/purchaseorder/'+this.state.editId)
-            .then((editdatalist) => {
-				// console.log("prodlist prodlist",editdatalist.data);
-
-                this.setState({
-                    "prodStockOrder": editdatalist.data.orderItems,
-                },()=>{
-					// console.log("prodStockOrder = ",this.state.prodStockOrder);
-				})
-
-            })
-            .catch((error) => {
-				console.log("error in getEditData = ", error);
-              
-            })
-
+        .then((editdatalist) => {
+            this.setState({
+                "prodStockOrder": editdatalist.data.orderItems,
+            },()=>{
+						})
+	      })
+	      .catch((error) => {
+					console.log("error in getEditData = ", error);        
+	      })
 	}
-/*
-	getProductList(){
-		var data = {
-            startRange: 0,
-            limitRange: 100
-        }
-        this.getCount();
-        axios.post('/api/products/get/list', data)
-            .then(prodlist => {
-				console.log("prodlist prodlist",prodlist.data);
+	getProductStock(){
 
-                this.setState({
-                    "productList": prodlist.data,
-                },()=>{
-					console.log("productList = ",this.state.productList);
-				})
+      axios.get('/api/products/get/franchisestock')
+          .then(franchisestock => {
+          	  console.log("franchisestock = ",franchisestock.data);
+							var prodStockOrder = [];
+							if(franchisestock.data.length > 0){
+									for (var i = 0; i<franchisestock.data.length; i++) {
+										var obj = {};
+										var productCode = franchisestock.data[i].productCode;
+										var itemCode 		= franchisestock.data[i].itemCode;
 
-            })
-            .catch((error) => {
-				console.log("error in getProductList = ", error);
-              
-            })
-	}*/
+										obj.productCode 	= productCode;
+										obj.itemCode 			= itemCode;
+										obj.productName 	= franchisestock.data[i].productName;
+										obj.currentStock 	= franchisestock.data[i].currentStock;
+										obj.section 			= franchisestock.data[i].section;	
+										obj.orderQty 			= 0;
+										obj.unit 					= franchisestock.data[i].unit;
 
-	getCurrentStock(){
-        axios.get('/api/products/get/list')
-            .then(prodlist => {
-			    // console.log("productListproductList=>",prodlist.data);
-
-				this.setState({
-                    "productList": prodlist.data,
-
-					"currentStock" :  [
-								         	{productCode : "FS101", itemCode: "1001", currentStock: 10, units: "Kg"},
-								         	{productCode : "FS101", itemCode: "1002", currentStock: 20, units: "Kg"},
-								         	{productCode : "FS101", itemCode: "1003", currentStock: 30, units: "Kg"},
-								         	{productCode : "FS102", itemCode: "1500", currentStock: 40, units: "Kg"},
-								         	{productCode : "FS103", itemCode: "2000", currentStock: 50, units: "Kg"},
-								         	{productCode : "FS104", itemCode: "2010", currentStock: 60, units: "Kg"},
-								         ],
-				},()=>{
-						var prodStockOrder = [];
-						// console.log("productListproductList=>",this.state.productList);
-						if(this.state.productList.length > 0){
-							if(this.state.currentStock.length > 0){
-								for (var i = 0; i < this.state.productList.length; i++) {
-									var obj = {};
-									obj.productCode 	= this.state.productList[i].productCode;
-									obj.itemCode 		= this.state.productList[i].itemCode;
-									obj.productName 	= this.state.productList[i].productName;									
-									obj.currentStock 	= 10 + i;	
-									obj.section 	= this.state.productList[i].section;	
-									obj.orderQty = 0;
-									obj.unit = "";
-
-									prodStockOrder[i] = obj;
+										prodStockOrder[i] = obj;
+									}
+									if(i >= franchisestock.data.length){
+										this.setState({
+											prodStockOrder : prodStockOrder,
+										},()=>{
+											console.log("prodStockOrder = ",this.state.prodStockOrder);
+										});										
+									}
 								}
-								this.setState({
-									prodStockOrder : prodStockOrder,
-								},()=>{
-									// console.log("prodStockOrder = ",this.state.prodStockOrder);
-								})
-							}
-						}
-					// console.log("currentStock = ",this.state.currentStock);
-				})
-			})
-			.catch(error=>{
-				console.log("error in getCurrentStock = ", error);
-			})
+					})
+					.catch(error=>{
+						console.log("error in getCurrentStock = ", error);
+					})
 	}
 
-   Submit(event){
+	getCurrentStock(productCode,itemCode){
+		return new Promise((resolve,reject)=>{
+			resolve(1);
+		})
+
+	}
+  Submit(event){
     event.preventDefault();
-    	var ProdArray = []
-    	if (this.state.prodStockOrder) {
-    		for (var i = 0; i < this.state.prodStockOrder.length; i++) {
-    			if (this.state.prodStockOrder[i].orderQty > 0) {
-    				var ProdArrayelement =this.state.prodStockOrder[i];
-    				ProdArray.push(ProdArrayelement);
-    				// console.log("ProdArray",ProdArray);
-    			} 
-
-    		}
-    	}
-    	// console.log("ProdArray2",ProdArray);
-
-   	    const formValues1 = {
-   	    	franchise_id              : "5ece290be5fbb621463a9697", 
-	        companyID                 : "12345", 
-	        // orderNo                   : "1000", 
-	        orderDate                 : moment(new Date()).format("YYYY-MM-DD"), 
-	        orderItems                : ProdArray,
-	        createdBy                 : this.state.user_ID,
-        };
-        console.log("formValues1",formValues1);
-      axios
-			.post('/api/franchisepo/post',formValues1)
-		  	.then(function (response) {
-		    // handle success
-		    	console.log("data in block========",response.data);
-		    	swal("Thank you. Your Product addeed successfully.");
-		    	 // window.location.reload();
-		  	})
-		  	.catch(function (error) {
-		    // handle error
-		    	console.log(error);
-		  	});
-		  	this.setState({
-					
-      	 })		
+  	var ProdArray = []
+  	if (this.state.prodStockOrder) {
+  		for (var i = 0; i < this.state.prodStockOrder.length; i++) {
+  			if (this.state.prodStockOrder[i].orderQty > 0) {
+  				var ProdArrayelement =this.state.prodStockOrder[i];
+  				ProdArray.push(ProdArrayelement);
+  			}
+  		}
+  	}
+	  const formValues1 = {
+	    franchise_id            	: this.state.selectedFranchise, 
+      companyID                 : this.state.companyID, 
+      orderDate                 : moment(new Date()).format("YYYY-MM-DD"), 
+      orderItems                : ProdArray,
+      createdBy                 : this.state.user_ID,
+    };
+    console.log("formValues1",formValues1);
+    axios.post('/api/franchisepo/post',formValues1)
+	  	.then(function (response) {
+				var id = response.data.order_id;
+				// console.log("data in franchise_id========",id);
+				
+				swal("Thank You!","Your Order has been placed successfully!!")
+				this.props.history.push("/franchise-order-view/"+id);
+				// .then((success) => {
+				// })
+	  	})
+	  	.catch(function (error) {
+	    	console.log(error);
+	  	});
 	}
 	Update(event){
 		event.preventDefault();
-
    	    const formValues1 = {
-   	    	
-	        purchaseorder_id    	  : this.state.editId, 
+	        purchaseorder_id    	  	: this.state.editId, 
 	        orderItems                : this.state.prodStockOrder,
-	        orderDate				  : moment(new Date()).format("YYYY-MM-DD"),
+	        orderDate				  				: moment(new Date()).format("YYYY-MM-DD"),
 	        user_id                   : this.state.user_ID,
 	       
         };
@@ -190,7 +179,7 @@ export default class FranchiseShoppingList extends React.Component {
 			.patch('/api/franchisepo/patch/purchaseorder',formValues1)
 		  	.then(function (response) {
 		    // handle success
-		    	console.log("Order Updated========",response.data);
+		    	// console.log("Order Updated========",response.data);
 		    	swal("Thank you. Your Product Order Updated successfully.");
 		    	 // window.location.reload();
 		  	})
@@ -225,6 +214,21 @@ export default class FranchiseShoppingList extends React.Component {
 		this.setState({selectedSection : selectedValue});
 	}
 
+	// selectFranchise(event){
+	// 	var selectedValue = event.target.value;
+	// 	this.setState({selectedFranchise : selectedValue});
+	// }
+
+	onChageOrderDate(event){
+		var date = event.target.value;
+		this.setState({
+			date : date,
+		},()=>{
+				console.log("date = ",this.state.date);
+			});
+
+	}
+
 	render() {
 		// console.log("productList render = ",this.state.productList);
 
@@ -236,25 +240,49 @@ export default class FranchiseShoppingList extends React.Component {
 								<h1 className="text-center">Franchise Shopping List</h1>
 							</div>
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtopbotm15">
-								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12 pull-right">
-								    <label className=" ">Order Date :</label>
-								    <div className="col-lg-8 col-md-9 col-sm-12 col-xs-12  pull-right nopadding">
-								      <input className=" " id="theDate" type="date" value={this.state.date}/>
+
+								<div className="col-lg-4 col-lg-offset-4 col-md-8 col-sm-12 col-xs-12">
+								    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12">Order Date :</label>
+								    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								      <input 	id="theDate" type="date" className=" form-control"
+								      				onChange={this.onChageOrderDate.bind(this)} 
+								      				value={this.state.date} min={moment(new Date()).format("YYYY-MM-DD")}/>
 								    </div>
 								</div>
 							
-								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12"> 
-									<label>Select Section : </label>
-									<select defaultValue="Vegetables" className="col-lg-8 col-md-9 col-sm-12 col-xs-12 pull-right" onChange={this.handleSelectChange.bind(this)}>
+								{/* <div className="col-lg-4 col-md-8 col-sm-12 col-xs-12"> 
+									<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">Select Franchise </label>
+									<select defaultValue="-- Select --" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" 
+													onChange={this.selectFranchise.bind(this)}>
+										<option>-- Select --</option>
+										{
+											Array.isArray(this.state.franchiseList) && this.state.franchiseList.length > 0
+											? 
+												this.state.franchiseList.map((franchise,index)=>{
+													return(
+														<option key={index} value={franchise._id}>{franchise.groupName}</option>
+													);
+												})
+											:
+												null
+										}
+									</select>
+								</div> */}
+
+{/*								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12"> 
+									<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12">Select Section </label>
+									<select defaultValue="All Sections" className="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+													onChange={this.handleSelectChange.bind(this)}>
 										<option> All Sections </option>
 										<option> Fruits </option>
 										<option> Vegetables </option>
 										<option> Frozen Items </option>
 									</select>
 								</div>
+*/}								
 							</div>
 							<hr/>
-							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 								<div className="table-responsive">          
 							    	<table className="table table-bordered table-striped table-hover">
 									    <thead className="thead-dark text-center">
@@ -263,7 +291,7 @@ export default class FranchiseShoppingList extends React.Component {
 										        <th>Item Code</th>
 										        <th>Product Name</th>
 										        <th>Current Stock</th>
-										        <th>Ordered Items</th>
+										        <th>Order Quantity</th>
 									      	</tr>
 									    </thead>
 									    <tbody>
@@ -271,7 +299,6 @@ export default class FranchiseShoppingList extends React.Component {
 									    	Array.isArray(this.state.prodStockOrder) && this.state.prodStockOrder.length > 0
 									    	? 
 									    		this.state.prodStockOrder.map((result, index)=>{
-													// console.log('result', result);
 													return( 
 													this.state.selectedSection ?
 														result.section === this.state.selectedSection ? 
@@ -282,8 +309,40 @@ export default class FranchiseShoppingList extends React.Component {
 													        	<td>{result.currentStock}</td>
 													        	<td>
 													        	<div class="form-group">
-								                           			<div className="input-group">
-														        		<input type="number" className="form-control width90" 
+								                      <div className="input-group width60p">
+														        		<input type="number" className="form-control" 
+														        				 name={"orderedItems"+"-"+index} 
+														        				 id={result.productCode+"-"+result.itemCode} 
+														        				 value={result.orderQty} 
+														        				 onChange={this.setOrderQty.bind(this)}
+														        		/>
+														        		<div className="input-group-addon">
+																			  	<select id={"Units"+"-"+index} name={"Units"+"-"+index} 
+																			  			  value={result.unit} refs="Units" 
+																			  			  onChange={this.setUnit.bind(this)}  
+																			  			  className="input-group-addon width66h">
+																							<option selected={true}> Units</option>
+																					  	<option value="Kg"> Kg 		</option>
+																					  	<option value="Gm"> Gm 		</option>
+																					  	<option value="Ltr">Ltr 	</option>
+																					  	<option value="Num">Number </option>
+																					</select>
+																		  	</div>
+																			</div>
+																		</div>
+													        </td>													       
+													      </tr>
+														:
+														this.state.selectedSection === "All Sections" ?
+														<tr key={index}>
+													        	<td>{result.productCode}</td>
+													        	<td>{result.itemCode}</td>
+													        	<td>{result.productName}</td>
+													        	<td>{result.currentStock}</td>
+													        	<td>
+													        	<div class="form-group">
+								                      <div className="input-group width60p">
+														        		<input type="number" className="form-control" 
 														        				 name={"orderedItems"+"-"+index} 
 														        				 id={result.productCode+"-"+result.itemCode} 
 														        				 value={result.orderQty} 
@@ -294,7 +353,7 @@ export default class FranchiseShoppingList extends React.Component {
 																		  			  value={result.unit} refs="Units" 
 																		  			  onChange={this.setUnit.bind(this)}  
 																		  			  className="input-group-addon width66h">
-																				<option selected={true}> Units</option>
+																					<option selected={true}> Units</option>
 																			  	<option value="Kg"> Kg 		</option>
 																			  	<option value="Gm"> Gm 		</option>
 																			  	<option value="Ltr">Ltr 	</option>
@@ -305,8 +364,7 @@ export default class FranchiseShoppingList extends React.Component {
 																</div>
 													        </td>													       
 													      </tr>
-														:
-															null
+														:null
 													:
 													<tr key={index}>
 													        	<td>{result.productCode}</td>
@@ -315,7 +373,7 @@ export default class FranchiseShoppingList extends React.Component {
 													        	<td>{result.currentStock}</td>
 													        	<td>
 													        	<div class="form-group">
-								                           			<div className="input-group">
+								                      <div className="input-group">
 														        		<input type="number" className="form-control width90" 
 														        				 name={"orderedItems"+"-"+index} 
 														        				 id={result.productCode+"-"+result.itemCode} 
@@ -347,11 +405,11 @@ export default class FranchiseShoppingList extends React.Component {
 									    </tbody>
 									</table>
 							    </div>
-								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
+								<div>
 									{this.state.editId ?
-										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Update.bind(this)}>Update</button>
+										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 mg0 pull-right" onClick={this.Update.bind(this)}>Update</button>
 									:
-										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 mg0 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
 									}
 								</div>		
 							</div>

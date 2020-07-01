@@ -95,7 +95,7 @@ import AdminShoppingList  from './storeAdmin/adminShoppingList/AdminShoppingList
 
 import FranchiseShoppingList from './storeAdmin/FranchiseShoppingList/FranchiseShoppingList.js';
 import FranchiseOrderSummary from './storeAdmin/FranchiseShoppingList/FranchiseOrderSummary.js';
-
+import OrderPurchaseView from './storeAdmin/FranchiseShoppingList/OrderPurchaseView.js';
 /*===================== CMS ========================*/
 
 
@@ -204,7 +204,7 @@ class Layout extends Component  {
                           <Route path="/franchise-shopping-list/:editId"                          exact strict component={FranchiseShoppingList} />
                                           
                           <Route path="/franchise-order-summary"                          exact strict component={FranchiseOrderSummary} />
-
+                          <Route path="/franchise-order-view/:orderId"                    exact strict component={OrderPurchaseView} />
                           { /*Order List*/}
                           <Route path="/allorders"                                        exact strict component={AllOrdersList} />
                           <Route path="/new-orders-list"                                  exact strict component={NewOrdersList} />

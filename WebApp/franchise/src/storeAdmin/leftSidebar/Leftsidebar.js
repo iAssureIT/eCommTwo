@@ -67,11 +67,6 @@ export default class Leftsidebar extends Component{
         <aside className="leftsidebar">
           <div className="wrapper">
             <nav id="sidebar">
-              {/*<div className="sidebar-header">
-                <h4 className="text-center"><b><img className="slidlogo1" src="/images/anasLogo.png"/></b></h4>
-                <strong><img className="slidlogo" src="/images/furniture-logo1.jpg"/></strong>
-              </div>*/}
-
               <div className="sidebar-header">
                 <h4 className="text-center"><b><label  className="headerImage">UniMandai Franchise</label></b></h4>
                 {/* <strong><img className="slidlogo" src="/images/logoUnimandai.png"/></strong> */}
@@ -84,42 +79,7 @@ export default class Leftsidebar extends Component{
                     Dashboard
                   </a>
                 </li>
-{/*                 
-                <li className="sidebarMenuText">
-                  <a href="#Plan" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-pie-chart" />
-                    Product Management
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="Plan">
-                      <li>
-                        <a href="/add-product">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Add Product</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="/product-upload">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Product Bulk Upload</span>
-                        </a>
-                      </li>  
-                      <li>
-                        <a href="/product-list">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Product List</span>
-                        </a>
-                      </li>  
-                      <li>
-                        <a href="/file-wise-product-list">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">File Wise Product List</span>
-                        </a>
-                      </li>   
-                      <li>
-                        <a href="/product-image-bulk-upload">
-                          <i className="fa fa-circle-o" /> <span className="sidebarMenuSubText">Image Bulk Upload</span>
-                        </a>
-                      </li>   
-                      
-                  </ul>
-                </li> */}
+
                 <li className="sidebarMenuText">
                   <a href="#Shipment" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-map-marker" />
@@ -189,10 +149,11 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li> 
+
                  <li className="sidebarMenuText">
                   <a href="#baData1" data-toggle="collapse" aria-expanded="false">
                     <i className="glyphicon glyphicon-briefcase" />
-                    Inventory Management
+                        Inventory Management
                      <i className="fa fa-sort-down pull-right"></i>
                   </a>
                   <ul className="collapse list-unstyled" id="baData1">
@@ -221,20 +182,6 @@ export default class Leftsidebar extends Component{
                         <span className="sidebarMenuSubText">Consolidate Purchase Orders</span>
                       </a>
                     </li>
-
-
-                    <li>
-                      <a href="/franchise-shopping-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Franchise Shopping List</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/franchise-order-summary">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Franchise Order Summary</span>
-                      </a>
-                    </li>
                     <li>
                       <a href="/franchise-allowable-pincode">
                         <i className="fa fa-circle-o" /> 
@@ -243,49 +190,28 @@ export default class Leftsidebar extends Component{
                     </li>                    
                   </ul>
                 </li>
-                {/* <li className="sidebarMenuText add">
-                  <a href="/distribution">
-                    <i className="fa fa-industry"></i>
-                    Distribution Management
-                  </a>
-                </li> */}
-                {/* <li className="sidebarMenuText">
-                  <a href="#baData" data-toggle="collapse" aria-expanded="false">
+
+                 <li className="sidebarMenuText">
+                  <a href="#myorders" data-toggle="collapse" aria-expanded="false">
                     <i className="glyphicon glyphicon-briefcase" />
-                    Business Associates
+                      My Orders
                      <i className="fa fa-sort-down pull-right"></i>
                   </a>
-                  <ul className="collapse list-unstyled" id="baData">
+                  <ul className="collapse list-unstyled" id="myorders">
                     <li>
-                      <a href="/addNewBA">
+                      <a href="/franchise-shopping-list">
                         <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Add Business Associate</span>
+                        <span className="sidebarMenuSubText">Add Franchise Order</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/ba-list">
+                      <a href="/franchise-order-summary">
                         <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Business Associates List</span>
+                        <span className="sidebarMenuSubText">Franchise Order Summary</span>
                       </a>
-                    </li>
+                    </li>                
                   </ul>
-                </li> */}
-{/* 
-                <li className="active sidebarMenuText add">
-                  <a href="/vendor/list">
-                    <i className="fa fa-industry"></i>
-                    Vendor Master
-                  </a>
                 </li>
-
-                <li className="active sidebarMenuText add">
-                  <a href="/franchise/list">
-                    <i className="fa fa-industry"></i>
-                    Franchise Master
-                  </a>
-                </li> */}
-
-
 
                 <li className="sidebarMenuText">
                   <a href="#Report" data-toggle="collapse" aria-expanded="false">
@@ -308,50 +234,6 @@ export default class Leftsidebar extends Component{
                     </li>
                   </ul>
                 </li>
-                {/* <li className="sidebarMenuText">
-                  <a href="#productreview" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    Product Review
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="productreview">
-                    <li>
-                      <a href="/productreview">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Product Review</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li> */}
-{/*                  
-                <li className="sidebarMenuText">
-                  <a href="#CmsData" data-toggle="collapse" aria-expanded="false">
-                    <i className="fa fa-university" />
-                    CMS
-                    <i className="fa fa-sort-down pull-right"></i>
-                  </a>
-                  <ul className="collapse list-unstyled" id="CmsData">
-                    <li>
-                      <a href="/viewpage1">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Create Page</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/viewblock1">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Create Block</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/static-block-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Static Blocks</span>
-                      </a>
-                    </li>
-                     
-                  </ul>
-                </li>          */}
               </ul>
             </nav>
           </div>

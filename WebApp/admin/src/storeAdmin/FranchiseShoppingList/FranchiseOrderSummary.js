@@ -26,7 +26,7 @@ class FranchiseOrderSummary extends Component {
 				// ordereditems: 'Ordered Items',
 				orderedqty: 'Ordered Qty',
 				profileStatus: "Status",
-				actions: 'Action',
+				actions: 'Actions',
 			},
 			"startRange": 0,
 			"limitRange": 10,	
@@ -49,6 +49,9 @@ class FranchiseOrderSummary extends Component {
 			}
 			this.getData(data);
 		})
+	}
+	redirecttoadd(){
+		this.props.history.push("/franchise-shopping-list");
 	}
 	getData(data) {
 		axios.get('/api/franchisepo/get/purchaseorderallList', data)
@@ -86,6 +89,9 @@ class FranchiseOrderSummary extends Component {
 								<div className="row">
 									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
 										<h3 className="text-center">Franchise Order List</h3>
+									</div>
+									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+										<button className="btn btn-primary col-lg-2 col-md-3 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
 									</div>
 									<form className="newTemplateForm">
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

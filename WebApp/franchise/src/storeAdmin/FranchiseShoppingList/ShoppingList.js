@@ -503,8 +503,8 @@ class IAssureTableUM extends Component {
 																:
 																<td className="textAlignCenter">
 																	<span className="pointer pointerCls">
-																			<i className="" title="Supply" id={value._id}>S</i>&nbsp; &nbsp;
-																			<i className="" title="Delivery" id={value._id}>D</i>&nbsp; &nbsp;
+																			<i className="fa fa-pencil " title="Edit" id={value._id} onClick={this.edit.bind(this,value._id)} ></i>&nbsp; &nbsp;
+																			<i className="fa fa-trash redFont " id={value._id} onClick={this.deletePO.bind(this,value._id)}></i>&nbsp; &nbsp; 
 																			<i className="fa fa-eye" title="View" id={value._id} onClick={this.getViewData.bind(this,value._id)}></i>
 																			{/* <i className="fa fa-pencil " title="Edit" id={value._id} onClick={this.edit.bind(this,value._id)} ></i>&nbsp; &nbsp;
 																			<i className="fa fa-trash redFont " id={value._id} onClick={this.deletePO.bind(this,value._id)}></i>&nbsp; &nbsp; */}
