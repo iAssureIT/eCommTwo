@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const FranchiseGoodsSchema = mongoose.Schema({
 	_id			              : mongoose.Schema.Types.ObjectId,
+    franchiseDeliveryId       : String,
     franchise_id              : String,
     franchisePO_id            : String,
     deliveryChallanNum        : String,

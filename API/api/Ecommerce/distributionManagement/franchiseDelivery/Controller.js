@@ -151,9 +151,12 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
                .then(franchiseData=>{
                    var productObj = franchiseData.supply.find(o => o.itemCode === itemCode);
                    var date = new Date();
-                   var orderObj = {"orderNum":franchiseData.franchisePO_id, "orderDate":franchiseData.orderDate,"orderQty":productObj.orderedQty,"orderDeliveryStatus":productObj.status};
+                   var orderObj = {"orderNum":franchiseData.franchisePO_id, "orderDate":franchiseData.orderedDate,"orderQty":productObj.orderedQty,"orderDeliveryStatus":productObj.status};
+                   console.log("orderObj",orderObj);
+                   console.log("franchiseData",franchiseData.orderedDate);
                     const franchiseGoods = new FranchiseGoods({
-                        _id                       : new mongoose.Types.ObjectId(),    
+                        _id                       : new mongoose.Types.ObjectId(),
+                        franchiseDeliveryId       : franchiseData._id,
                         franchise_id              : franchiseData.franchise_id, 
                         franchisePO_id            : franchiseData.franchisePO_id,
                         deliveryChallanNum        : franchiseData.deliveryChallanNum,
@@ -161,9 +164,9 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
                         itemCode                  : productObj.itemCode,
                         productName               : productObj.productName,
                         inwardQty                 : productObj.suppliedQty,
-                        unit                      : productObj.unit,
                         orders                    : [orderObj],
                         balance                   : productObj.suppliedQty,
+                        unit                      : productObj.supplidUnit,
                         createdBy                 : franchiseData.createdBy,
                         createdAt                 : new Date()
                     });
@@ -199,7 +202,7 @@ var deletefrom_franchise_goods = async (franchiseDcId,itemCode) => {
                 }, 
                 )
                .then(franchiseData=>{
-                   FranchiseGoods.remove({"franchisePO_id" : franchiseData.franchisePO_id,"itemCode":itemCode})
+                   FranchiseGoods.remove({"franchiseDeliveryId" : franchiseDcId,"franchisePO_id" : franchiseData.franchisePO_id,"itemCode":itemCode})
                     .then(data=>{
                             if(data){
                                 resolve(data);

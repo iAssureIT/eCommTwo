@@ -127,7 +127,8 @@ export default class DistributionManagement extends React.Component {
 		var attribute = event.target.getAttribute('data-attribute');
     	var attributeValue = event.target.getAttribute('data-attributeValue');
         var itemcode  = event.currentTarget.getAttribute('data-itemcode');
-
+        var suppliedQty = event.currentTarget.getAttribute('data-suppliedqty');
+        var orderedQty = event.currentTarget.getAttribute('data-orderedqty');
         if(itemcode){
             if(attributeValue=="true"){
                 attributeValue = false;
@@ -135,14 +136,21 @@ export default class DistributionManagement extends React.Component {
                 attributeValue = true;
             }
 
+            if(orderedQty == suppliedQty){
+                if(attribute == 'deliveryAccepted'){
+                    attribute = 'deliveryCompleted';
+                }
+            }
+
             var data = {
-				attribute      : attribute,
-				attributeValue : attributeValue,
-                itemcode       : itemcode,
-                FranchiseDeliveryId            : this.state.FranchiseDeliveryId,
+				attribute           : attribute,
+				attributeValue      : attributeValue,
+                itemcode            : itemcode,
+                FranchiseDeliveryId : this.state.FranchiseDeliveryId,
             }
 
             if(attribute == "accepted"){
+                
                 this.setState({
                     accepted   : attributeValue,
                 },()=>{
@@ -164,6 +172,9 @@ export default class DistributionManagement extends React.Component {
         .then((response)=>{
             var distributionId = this.props.match.params.distributionId;
             this.getFranchiseChallan(distributionId);
+            this.setState({
+                rejectRemark : ''
+            })
         })
         .catch((error)=>{
           console.log('error', error);
@@ -241,9 +252,8 @@ export default class DistributionManagement extends React.Component {
                                             <th rowSpan="2">Product Name</th>
                                             <th>Ordered Quantity </th>
                                             <th>Supplied Quantity</th>
-                                            <th>Remaining Quantity</th>
-                                            <th>Accept</th>
-                                            <th>Reject</th>
+                                            {/* <th>Accept</th> */}
+                                            <th>Action</th>
                                         </tr>
                                        
 									</thead>
@@ -256,11 +266,12 @@ export default class DistributionManagement extends React.Component {
                                                 return(
                                                     <tr key={index}>
 														<td>{result.productName} <br/><small>{result.productCode} - {result.itemCode}</small></td>
-                                                        <td>{result.orderedQty} </td>
-                                                        <td>{result.suppliedQty}</td>
-                                                        <td>{result.remainQty}</td>	
-                                                        <td><i onClick={this.changeAttribute.bind(this)} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title={ (result.status === "deliveryAccepted" )? "Disable It" : "Enable It" } className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i></td>	
-                                                        <td><i data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title={(result.status === "deliveryRejected" ? "Disable It" : "Enable It" )}  className={'fa fa-times-circle prodCheckboxDim ' + ( result.status === "deliveryRejected" ? "prodCheckboxDimSelected rejected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>
+                                                        <td>{result.orderedQty} {result.orderedUnit}</td>
+                                                        <td>{result.suppliedQty} {result.supplidUnit}</td>
+                                                        {/* <td><i onClick={this.changeAttribute.bind(this)} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title={ (result.status === "deliveryAccepted" )? "Disable It" : "Enable It" } className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i></td>	 */}
+                                                        <td>
+                                                        <i onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+                                                        <i data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={'fa fa-times-circle prodCheckboxDim ' + ( result.status === "deliveryRejected" ? "prodCheckboxDimSelected rejected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>
                                                         <div className="modal" id={"showDeleteModal-" + (result.itemCode)} role="dialog">
 																<div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																	<div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
@@ -280,7 +291,7 @@ export default class DistributionManagement extends React.Component {
                                                                                 <form className="remarkForm">
                                                                                 <div className="form-group col-lg-12 col-md-12 col-xs-12 col-sm-12 mbt25">
                                                                                     <label>Remark <i className="redFont">*</i></label>
-                                                                                    <input type="textarea" name="remark" className="rejectRemark form-control" data-itemcode={result.itemCode} value={this.state.rejectRemark} onChange={this.addRejectRemark.bind(this)} required/>
+                                                                                    <textarea type="textarea" name="remark" className="rejectRemark form-control" data-itemcode={result.itemCode} value={this.state.rejectRemark} onChange={this.addRejectRemark.bind(this)} required/>
                                                                                 </div>
                                                                                 </form>
                                                                             </div>
@@ -308,13 +319,11 @@ export default class DistributionManagement extends React.Component {
                                         : null
                                     }
                                     </tbody>
-                                    <tfoot style={{fontWeight:'bold'}}>
+                                    <tfoot style={{fontWeight:'bold',display:'none'}}>
                                         <tr>
                                             <td>Total</td>
                                             <td>{this.state.totalDemand}</td>
                                             <td>{this.state.totalSupply}</td>
-                                            <td>{this.state.totalRemain}</td>
-                                            <td></td>
                                             <td></td>
                                         </tr>
 									</tfoot>

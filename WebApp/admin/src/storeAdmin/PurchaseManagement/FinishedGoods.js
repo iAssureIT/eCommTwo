@@ -291,12 +291,16 @@ export default class FinishedGoods extends React.Component {
 	getListProducts(){
 		axios.get("/api/finishedGoodsEntry/get/ProductList")
             .then((response) => {
+				console.log("response.data",response.data);
+
 				var ProductList = [];
 				var PoNumbersArray = [];
 				response.data.filter(function(item,index){
-					var i = ProductList.findIndex(x => x.itemCode == item.ProductList[0].itemCode);
+					console.log("response.data.ProductList",item.ProductList.itemCode);
+
+					var i = ProductList.findIndex(x => x.itemCode == item.ProductList.itemCode);
 					if(i <= -1){
-						ProductList.push(item.ProductList[0]);
+						ProductList.push(item.ProductList);
 					}
 					return null;
 				});	

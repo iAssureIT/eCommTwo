@@ -207,6 +207,7 @@ exports.list_Products = (req,res,next) => {
                 },
                 
         },
+        {$unwind :'$ProductList' }
       ])
      .then(data=>{
        res.status(200).json(data);   

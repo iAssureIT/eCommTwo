@@ -531,40 +531,45 @@ export default class PurchaseManagement extends React.Component {
 		"unitOfMeasurement" : this.state.unitOfMeasurement,
 		"purchaseNumber"    : this.state.purchaseNumber,
 		"Details" 			: this.state.Details,
-       
-      };
-
-	  if ($('#addNewPurchaseOrder').valid()) {
-		if((productDatalist != null && productDatalist.length > 0)) {
-			 axios
-			.post('/api/purchaseentry/post',formValues1)
-			.then((response) => {
-			// handle success
-				swal("Thank you. Your Product addeed successfully.");
-			})
-			.catch(function (error) {
-			// handle error
-				console.log(error);
-			});
-			this.setState({
-				amount            : "",     
-				product           : "",    	
-				quantity          : "", 			
-				product           : "", 
-				ItemCode          : "",		
-				Units             : "Kg",
-				unitRate          : "",
-				unitOfMeasurement : "Kg"
-			},()=>{
-				this.getData();
-			});  
-		}else{
-			swal("Please select product from list.");
-			this.setState({
-				product:''
-			})
-		}
+	  };
+	  
+	  if(this.state.unitOfMeasurement  === this.state.Units){
+		if ($('#addNewPurchaseOrder').valid()) {
+			if((productDatalist != null && productDatalist.length > 0)) {
+				 axios
+				.post('/api/purchaseentry/post',formValues1)
+				.then((response) => {
+				// handle success
+					swal("Thank you. Your Product addeed successfully.");
+				})
+				.catch(function (error) {
+				// handle error
+					console.log(error);
+				});
+				this.setState({
+					amount            : "",     
+					product           : "",    	
+					quantity          : "", 			
+					product           : "", 
+					ItemCode          : "",		
+					Units             : "Kg",
+					unitRate          : "",
+					unitOfMeasurement : "Kg"
+				},()=>{
+					this.getData();
+				});  
+			}else{
+				swal("Please select product from list.");
+				this.setState({
+					product:''
+				})
+			}
+		  }
+	  }else{
+		swal("You have to select same unit of measurement for unit rate and quantity.");
 	  }
+
+	
 	}
 	update(event){
         event.preventDefault();
@@ -627,11 +632,11 @@ export default class PurchaseManagement extends React.Component {
 							<div id="manual" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in active">
 								<form className="mtophr20" id="addNewPurchaseOrder">
 									<div className="row">
-										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
 											<label >Purchase Date <i className="redFont">*</i></label>
 											<input type="Date"  className="form-control"  value={ this.state.purchaseDate} name="purchaseDate" refs="purchaseDate" onChange={this.handleChange.bind(this)} id="purchaseDate"/>
 										</div>
-										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
 											<label >Supplier <i className="redFont">*</i></label>
 											<input list="purchaseLocation" type="text" refs="purchaseLocation" className="form-control"    placeholder="Select Supplier" value={this.state.purchaseLocation}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct1.bind(this)} name="purchaseLocation" />
 											{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
@@ -644,20 +649,21 @@ export default class PurchaseManagement extends React.Component {
 												<option value="garlic"/>*/}
 											</datalist>
 										</div>
-									</div>
-									<div  className="row NOpadding mtop20"> 
-										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-											<label >Purchase No <i className="redFont">*</i></label>
-											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
-										</div>
-										<div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
-											<label >Details</label>
-											<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
-										</div>
-										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
 											<label >Purchased By(Staff Name) <i className="redFont">*</i></label>
 											<input type="text" placeholder="Enter Purchase Staff"  className="form-control"  value={ this.state.purchaseStaff} name="purchaseStaff" refs="purchaseStaff" onChange={this.handleChange.bind(this)} id="purchaseStaff"/>
 										</div>
+									</div>
+									<div  className="row NOpadding mtop20"> 
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+											<label >Purchase No <i className="redFont">*</i></label>
+											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
+										</div>
+										<div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12 mbt25">
+											<label >Details</label>
+											<input type="text" placeholder="Enter Purchase Details"  className="form-control"  value={ this.state.Details} name="Details" refs="Details" onChange={this.handleChange.bind(this)} id="Details"/>
+										</div>
+										
 									</div>
 									
 									<div  className="row  NOpadding">
@@ -752,6 +758,11 @@ export default class PurchaseManagement extends React.Component {
 									</div>
 								</form>
 								<div className="row mtop25">
+								   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+								       <h4>Raw Material</h4>
+								   </div>
+								</div>
+								<div className="row">
 									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
 										<label>Purchase Date:</label>
 										{/* <div className="form-group"> */}

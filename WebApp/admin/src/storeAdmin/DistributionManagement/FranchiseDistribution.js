@@ -19,7 +19,9 @@ export default class FranchiseDistribution extends React.Component {
 					user_id               : '',
 					orderId               : '',
 					franchise_name        : '',
-					franchise_id          : ''
+					franchise_id          : '',
+					unitOfMeasurementArray: [],
+					error                 : ''
 
       };
 	}
@@ -36,40 +38,9 @@ export default class FranchiseDistribution extends React.Component {
 			orderId : orderId
 		},()=>{
 			this.getAllfrachiseData();
-			this.getData();
+			this.getUom();
 			// console.log("currentDate",this.state.currentDate);
 		 });
-	}
-
-	getData(){
-		// axios.get('/api/franchisepo/get/one/purchaseorder/'+this.state.orderId)
-        // .then((response)=>{
-        //     this.setState({
-        //         "amount"         	: response.data.amount ,
-		//         "purchaseDate" 		: moment(response.data.purchaseDate).format("YYYY-MM-DD"),
-		//       	"purchaseStaff" 	: response.data.purchaseStaff,
-		//       	"purchaseLocation"  : response.data.purchaseLocation,
-		//       	"quantity" 			: response.data.quantity,
-		//       	"unitRate" 	        : response.data.unitRate,
-		//       	"purchaseNumber"    : response.data.purchaseNumber,
-		//       	"Details" 			: response.data.Details,
-		//       	"product" 		    : response.data.productName,
-		//       	"Units" 			: response.data.unit,
-		// 	});
-            
-        // })
-        // .catch((error)=>{
-        //     console.log('error', error);
-        // });
-	}
-	componentWillReceiveProps(nextProps) {
-        // var editId = nextProps.match.params.finishedGoodId;
-        // if(nextProps.match.params.finishedGoodId){
-        //   this.setState({
-        //     editId : editId
-        //   })
-        //   this.edit(editId);
-        // }
 	}
 
 	getAllfrachiseData(){
@@ -81,10 +52,11 @@ export default class FranchiseDistribution extends React.Component {
 					var FranchiseOrderedData = []; 
 					var franchisePurOrdersdata = franchisePurOrders.data;
 					var franchise_id;
-					//console.log("franchisePurOrdersdata",franchisePurOrdersdata);
+
 					for (var j = 0; j < franchisePurOrders.data.orderItems.length; j++) {
 						franchisePurOrders.data.orderItems[j].franchiseId = franchisePurOrders.data.franchise_id;
 						franchisePurOrders.data.orderItems[j].supply = 0;
+						franchisePurOrders.data.orderItems[j].supplyUnit = franchisePurOrders.data.orderItems[j].unit;
 						DistributionData.push(franchisePurOrders.data.orderItems[j]);
 					}
 
@@ -123,6 +95,27 @@ export default class FranchiseDistribution extends React.Component {
 		});
 
 	}
+
+	getUom(){
+		axios.get("/api/unitofmeasurmentmaster/get/list")
+		.then((response) => {
+			var unitOfMeasurementArray = [];
+			response.data.filter(function(item,index){
+				var i = unitOfMeasurementArray.findIndex(x => x.department == item.department);
+				if(i <= -1){
+					unitOfMeasurementArray.push(item.department);
+				}
+				return null;
+			});
+			this.setState({
+				 unitOfMeasurementArray : unitOfMeasurementArray
+			},()=>{
+			});
+		})
+		.catch((error) => {
+			console.log('error', error);
+		})
+	}
    
 	handleChange(event){
 	  event.preventDefault();
@@ -131,26 +124,32 @@ export default class FranchiseDistribution extends React.Component {
 	  var supplyValue = event.target.value;
 	  var index  	 = event.target.name.split("-")[1];
 	  var DistributionData = this.state.DistributionData; 
+	  if(event.target.name == "unitOfMeasurement"+"-"+index){
+		    DistributionData[index].supplyUnit = event.target.value;
+	  }else{
+		    if(DistributionData[index].currentStock < supplyValue){
+			  DistributionData[index].supply = DistributionData[index].currentStock;
+			}else{
+			  DistributionData[index].supply = supplyValue;
+			}
+			let supply = DistributionData.reduce(function(prev, current) {
+				if (current.franchiseId === franchise) {
+					return prev + +current.supply
+				}
+				return prev;
+			  }, 0); 
+			
+			  this.setState({
+				"totalSupply":supply
+			  },()=>{
+				this.getFooterTotal();
+			 });
+			  
 	
-		  if(DistributionData[index].currentStock < supplyValue){
-			DistributionData[index].supply = DistributionData[index].currentStock;
-		  }else{
-			DistributionData[index].supply = supplyValue;
-		  }
+	  }
+	
 	
 	  this.setState({"DistributionData" : DistributionData});
-	  let supply = DistributionData.reduce(function(prev, current) {
-		if (current.franchiseId === franchise) {
-			return prev + +current.supply
-		}
-		return prev;
-	  }, 0); 
-	
-	  this.setState({
-		"totalSupply":supply
-	  },()=>{
-		this.getFooterTotal();
-	 });
 	  
     }
 
@@ -167,15 +166,24 @@ export default class FranchiseDistribution extends React.Component {
 				obj.productName 	= this.state.DistributionData[i].productName;
 				obj.currentStock 	= this.state.DistributionData[i].currentStock;
 				obj.orderedQty 		= this.state.DistributionData[i].orderQty;
+				obj.orderedUnit     = this.state.DistributionData[i].unit;
 				obj.suppliedQty 	= this.state.DistributionData[i].supply;
+				obj.supplidUnit    	= this.state.DistributionData[i].supplyUnit;
 				obj.status          = "deliverySent";
 				obj.statusBy        = this.state.user_id; 
-			    obj.remainQty       = remain;
+			    // obj.remainQty       = remain;
 				orderArray.push(obj);
+
+				if(this.state.DistributionData[i].supplyUnit == 'Unit'){
+					this.setState({
+						error : "Please select unit of measurement."
+					})
+				}else{
+					this.setState({
+						error : ""
+					})
+				}
 			}
-
-			// {productCode, itemCode, orderedQty, suppliedQty, status (deliverySent, deliveryAccepted, deliveryRejected, deliveryCancelled), remark, statusBy, statusAt}
-
     		
     	}
     	var formValues = {
@@ -189,11 +197,10 @@ export default class FranchiseDistribution extends React.Component {
 			totalDemand          : this.state.totalDemand,
 			totalSupply          : this.state.totalSupply,
 			orderItems	         : orderArray,
-			purchaseOrderId      : this.state.orderId
 		};
 
 		
-		if(this.state.totalSupply > 0){
+		if(this.state.totalSupply > 0 && this.state.error != "Please select unit of measurement."){
 			axios
 			.post('/api/franchiseDelivery/post',formValues)
 		  	.then(function (response) {
@@ -215,7 +222,7 @@ export default class FranchiseDistribution extends React.Component {
       			 "Unit" 		     	: '',
       	 })	
 		}else{
-			swal("Please add supply to distribute.")
+			swal("Please add quantity in supply now and select unit of measurement for that.")
 		}
         
 	}
@@ -319,12 +326,14 @@ export default class FranchiseDistribution extends React.Component {
 								    <div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12">
 									   <h5>Ordered Date : {this.state.orderDate}</h5>									
 									</div>
-									<div className="form-group col-lg-2 col-md-2 col-xs-12 col-sm-12">
+									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
                                         <button className="btn btn-primary autoDistributebtn mt" onClick={this.autoDistribute.bind(this)}>Auto Distribute</button>
-									</div>
-									<div className="form-group col-lg-2 col-md-2 col-xs-12 col-sm-12">
 										<input type="reset" value="Reset" className="btn btn-default mt pull-right" onClick={this.onReset.bind(this)}/>
+
 									</div>
+									{/* <div className="form-group col-lg-2 col-md-2 col-xs-12 col-sm-12">
+										<input type="reset" value="Reset" className="btn btn-default mt pull-right" onClick={this.onReset.bind(this)}/>
+									</div> */}
 								</div>
 								<div className="row">
 									{/* <div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12">
@@ -366,12 +375,11 @@ export default class FranchiseDistribution extends React.Component {
 											<thead className="thead-light text-center bg-primary">
 												<tr>
 													<th rowspan="2">Product Name </th>
-													<th rowspan="2">Product Code </th>
-													<th rowspan="2">Item Code </th>
 													<th rowspan="2">Total Stock</th>
 													{/* <th>{this.state.selectedFranchise}</th> */}
-													<th>Demand </th>
-													<th>Supply</th>
+													<th>Ordered Quantity </th>
+													<th>Already Supplied Quantity</th>
+													<th>Supply Now</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -379,15 +387,29 @@ export default class FranchiseDistribution extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
-												//	console.log("DistributionData",result);
+												//	console.log("DistributionData",result); // style={{fontWeight:'bold'}}
 													return( 
 																<tr key={index}>
-																	<td>{result.productCode}</td>
-																	<td>{result.itemCode}</td>
-																	<td>{result.productName}</td>
-																	<td style={{fontWeight:'bold'}}>{result.currentStock} </td>
-																	<td style={{fontWeight:'bold'}}>{result.orderQty} </td>
-																	<td><input type="number"  name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0"/></td>															
+																	<td>{result.productName} <br/><small>{result.itemCode} - {result.productCode}</small></td>
+																	<td>{result.currentStock} </td>
+													                <td>{result.orderQty} {result.unit}</td>
+																	<td>0</td>
+																	<td>
+																	<input type="number"  name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0" style={{"display":"inline"}}/>
+																	<select id="unitOfMeasurement"  name={"unitOfMeasurement"+"-"+index} value={result.supplyUnit} onChange={this.handleChange.bind(this)}  className="input-group form-control" disabled style={{"border": "1px solid #a9a9a969","width": "88px","fontSize":"small","display":"inline"}}> 
+																		<option selected={true} disabled={true}>Unit</option>
+																		{
+																			this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+																				this.state.unitOfMeasurementArray.map((data, i)=>{
+																					return(
+																						<option key={i} value={data}>{data}</option>
+																					);
+																				})
+																			:
+																			null
+																		}
+																	</select>
+																	</td>															
 																</tr>
 														)
 												})
@@ -396,12 +418,13 @@ export default class FranchiseDistribution extends React.Component {
 											  
 	                                        }
 											</tbody>
-											<tfoot style={{fontWeight:'bold'}}>
+											<tfoot style={{fontWeight:'bold',display:'none'}}>
 												<tr>
-													<td colspan="4">Total</td>
+													<td colspan="2">Total</td>
 													<td>
                                                       {this.state.totalDemand}
 													</td>
+													<td>0</td>
 													<td>{this.state.totalSupply}</td>
 												</tr>
 											</tfoot>
