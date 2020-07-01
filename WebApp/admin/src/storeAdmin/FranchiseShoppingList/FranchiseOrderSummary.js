@@ -53,16 +53,17 @@ class FranchiseOrderSummary extends Component {
 	getData(data) {
 		axios.get('/api/franchisepo/get/purchaseorderallList', data)
 			.then((res) => {
-				// console.log("res.data in getdata==>", res.data);
+				console.log("res.data in getdata==>", res.data);
 					var tableData = res.data.map((a, i) => {
-						// console.log('tableData A==>>>',a.franchiseName[0].companyName );
+						// console.log('tableData A==>>>', a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null );
 						return {
-							_id: a._id,
-							orderNo: a.orderNo.toString(),
-							orderDate: moment(a.orderDate).format("llll"),
-							franchisename: a.franchiseName.length > 0 ?  a.franchiseName[0].companyName : null ,
-							orderedqty: a.orderItems.length.toString(),
-							profileStatus: a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+							_id						: a._id,
+							orderNo				: a.orderNo.toString(),
+							orderDate			: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
+							franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+							orderedqty		: a.orderItems.length.toString(),
+							// profileStatus	: a.franchiseName.length !== null || a.franchiseName.length >= 1 ? a.franchiseName[0].profileStatus:null,
+							profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
 						}
 
 					})

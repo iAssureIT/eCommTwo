@@ -37,7 +37,8 @@ exports.insert_franchisePO = (req,res,next)=>{
                 .then(data => {
                     res.status(200).json({
                         "message"  : "Franchise Purchase Order Submitted Successfully",
-                        "order_id" : data._id
+                        "order_id" : data._id,
+                        "franchise_id" : data.franchise_id,
                     });
                 })
                 .catch(err =>{
@@ -271,17 +272,18 @@ exports.allorder_franchise = (req,res,next)=>{
                         for(i = 0 ; i < data.length ; i++){
                             var AllUnits = ""
                             AllUnits = await entityID(data[i].franchise_id);
-                            console.log('data in AllUnits ==>',AllUnits);
+                            console.log('data in AllUnits ==>',AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null);
                             returnData.push({
                                 "_id"		      : data[i]._id,
                                 "orderNo"         : data[i].orderNo,
                                 "orderDate"       : data[i].orderDate,
                                 "orderItems"      : data[i].orderItems,
                                 "orderItemsqty"   : data[i].orderItems.length,
-                                "franchiseName"	  : AllUnits.length > 0 ? AllUnits :null,
+                                "franchiseName"	  : AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null,
+                                
                             });
                         }
-                        console.log('data in returnData ==>',returnData);
+                        // console.log('data in returnData ==>',returnData);
                         if( i >= data.length){
                             res.status(200).json(returnData);
                         }
@@ -296,7 +298,64 @@ exports.allorder_franchise = (req,res,next)=>{
 				});
 			});
 };
+
 function entityID(franchise_id){
+    return new Promise(function(resolve,reject){ 
+        EntityMaster.find({ _id: franchise_id })
+        .exec()
+        .then(res=>{
+            
+            // console.log('res in EntityMaster ==>',res);
+            resolve(res);
+        })
+        .catch(err =>{
+            // res.status(500).json({ error: err });
+            reject(err);
+        }); 
+    });
+};
+exports.franchise_Wise_order = (req,res,next)=>{
+    FranchisePO.find({franchise_id : req.params.franchise_id})
+        .sort({createdAt : -1})
+        .skip(req.body.startRange)
+        .limit(req.body.limitRange)
+        .exec()
+        .then(data=>{
+            main();
+            async function main(){
+                if(data){
+                    var i = 0;
+                    var returnData = [];
+                    for(i = 0 ; i < data.length ; i++){
+                        var AllUnits = ""
+                        AllUnits = await franchiseentityID(data[i].franchise_id);
+                        console.log('data in AllUnits ==>',AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null);
+                        returnData.push({
+                            "_id"		      : data[i]._id,
+                            "orderNo"         : data[i].orderNo,
+                            "orderDate"       : data[i].orderDate,
+                            "orderItems"      : data[i].orderItems,
+                            "orderItemsqty"   : data[i].orderItems.length,
+                            "franchiseName"	  : AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null,
+                            
+                        });
+                    }
+                    // console.log('data in returnData ==>',returnData);
+                    if( i >= data.length){
+                        res.status(200).json(returnData);
+                    }
+                }else{
+                    res.status(200).json({message:"USER_NOT_FOUND"});
+                }
+            }
+        })
+        .catch(err =>{
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+function franchiseentityID(franchise_id){
     return new Promise(function(resolve,reject){ 
         EntityMaster.find({ _id: franchise_id })
         .exec()
@@ -313,7 +372,7 @@ function entityID(franchise_id){
 };
 exports.order_franchise = (req,res,next)=>{
     var franchise_id = req.params.franchise_id;
-    console.log("franchise_id==>",franchise_id);
+    // console.log("franchise_id==>",franchise_id);
     FranchisePO
         .find({
                 franchise_id : franchise_id,
@@ -329,7 +388,7 @@ exports.order_franchise = (req,res,next)=>{
         });
 };
 exports.search_PO = (req, res, next)=>{
-    consol.log("req.body.searchText==>",req.body)
+    // consol.log("req.body.searchText==>",req.body)
 	FranchisePO.find([
 		
 			{$or:

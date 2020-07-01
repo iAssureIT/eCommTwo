@@ -169,10 +169,11 @@ export default class FranchiseShoppingList extends React.Component {
     console.log("formValues1",formValues1);
     axios.post('/api/franchisepo/post',formValues1)
 	  	.then(function (response) {
-				var orderId = response.data.order_id;
-				console.log("data in orderid========",orderId);
-				this.props.history.push("/franchise-order-view/"+orderId);
-				// swal("Thank You!","Your Order has been placed successfully!!")
+				var id = response.data.order_id;
+				console.log("data in franchise_id========",id);
+				
+				swal("Thank You!","Your Order has been placed successfully!!")
+				this.props.history.push("/franchise-order-view/"+id);
 				// .then((success) => {
 				// })
 	  	})
@@ -256,7 +257,7 @@ export default class FranchiseShoppingList extends React.Component {
 							</div>
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtopbotm15">
 
-								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12">
+								<div className="col-lg-4 col-lg-offset-2 col-md-8 col-sm-12 col-xs-12">
 								    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12">Order Date :</label>
 								    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								      <input 	id="theDate" type="date" className=" form-control"
@@ -420,11 +421,11 @@ export default class FranchiseShoppingList extends React.Component {
 									    </tbody>
 									</table>
 							    </div>
-								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20 Subbtnmtop20">
+								<div>
 									{this.state.editId ?
-										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Update.bind(this)}>Update</button>
+										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 mg0 pull-right" onClick={this.Update.bind(this)}>Update</button>
 									:
-										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
+										<button className="btn btn-primary col-lg-3 col-md-3 col-xs-4 col-sm-4 mg0 pull-right" onClick={this.Submit.bind(this)}>Submit</button>
 									}
 								</div>		
 							</div>

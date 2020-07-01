@@ -17,10 +17,65 @@ export default class Header2 extends Component{
       loggedIn: false,
       showNotification: false,
       inAppNotifications:[],
-      notifCount:0
+      inAppNotificationsCount:0
     
     }
   }
+  // componentDidMount(){
+  //   if ( !$('body').hasClass('adminLte')) {
+  //     var adminLte = document.createElement("script");
+  //     adminLte.type="text/javascript";
+  //     adminLte.src = "/js/adminLte.js";
+  //     $("body").append(adminLte);
+  //   }
+  //   $("html,body").scrollTop(0);
+
+  //   //======= User Details ==========
+  //   var userDetails = JSON.parse(localStorage.getItem("userDetails")) ;
+  //   const Token     = userDetails.token;
+    
+  //   // console.log("userDetails = ", userDetails);
+
+  //   if(Token){
+  //     axios.get('/api/entitymaster/get/one/companyName/1')
+  //         .then(companyDetails=>{
+  //             // console.log("companyDetails = ", companyDetails.data);
+  //             this.setState({
+  //                 user_ID       : userDetails.user_id,
+  //                 email         : userDetails.email,
+  //                 profileImage  : userDetails.image,
+  //                 fullname      : userDetails.firstName+' '+userDetails.lastName,
+  //                 companyID     : userDetails.companyID,
+  //                 companyName   : companyDetails.data.companyName,
+  //               },()=>{
+  //                 // console.log("this.state.fullname = ",this.state.fullname);
+  //               });
+
+  //         //======= Notification Unread Count ==========
+  //         axios.get('/api/notifications/get/list/Unread/'+userDetails.user_id)
+  //             .then(notifications => {
+
+  //             this.setState({
+  //                 inAppNotifications: notifications.data ,
+  //                 inAppNotificationsCount    : notifications.data.length
+  //               });
+
+  //             })
+  //             .catch(error => {
+  //               console.log("Error in /api/notifications/get/list/Unread/ = ",error);
+  //             })
+
+  //         })
+  //         .catch(error => {
+  //           console.log("Error in /api/notifications/get/list/Unread/ = ",error);
+  //         });
+
+  //   }else{
+  //     this.props.history.push("/login");
+  //   }
+
+
+  // }
   componentDidMount(){
     if ( !$('body').hasClass('adminLte')) {
       var adminLte = document.createElement("script");
@@ -52,18 +107,18 @@ export default class Header2 extends Component{
                 });
 
           //======= Notification Unread Count ==========
-          axios.get('/api/notifications/get/list/Unread/'+userDetails.user_id)
-              .then(notifications => {
+          // axios.get('/api/notifications/get/list/Unread/'+userDetails.user_id)
+          //     .then(notifications => {
 
-              this.setState({
-                  inAppNotifications: notifications.data ,
-                  notifCount    : notifications.data.length
-                });
+          //     this.setState({
+          //         inAppNotifications: notifications.data ,
+          //         inAppNotificationsCount    : notifications.data.length
+          //       });
 
-              })
-              .catch(error => {
-                console.log("Error in /api/notifications/get/list/Unread/ = ",error);
-              })
+          //     })
+          //     .catch(error => {
+          //       console.log("Error in /api/notifications/get/list/Unread/ = ",error);
+          //     })
 
           })
           .catch(error => {
@@ -76,12 +131,12 @@ export default class Header2 extends Component{
 
 
   }
-
   componentWillReceiveProps(nextProps){
     const user_ID = localStorage.getItem("user_ID");
     axios.get('/api/notifications/get/list/Unread/'+user_ID)
       .then(notifications => {
-        this.setState({ inAppNotifications: notifications.data,notifCount: notifications.data.length })
+        this.setState({ inAppNotifications: notifications.data,
+          inAppNotificationsCount: notifications.data.length })
       })
       .catch(error => {
       })
@@ -145,7 +200,7 @@ export default class Header2 extends Component{
     axios.get('/api/notifications/get/list/Unread/'+user_ID)
       .then(notifications => {
         // console.log('notifications: ',notifications)
-        this.setState({ inAppNotifications: notifications.data,notifCount: notifications.data.length })
+        this.setState({ inAppNotifications: notifications.data,inAppNotificationsCount: notifications.data.length })
       })
       .catch(error => {
       })
@@ -199,9 +254,19 @@ export default class Header2 extends Component{
                 <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8 pull-right">
                   <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 bell_Icon">
                     <i className="fa fa-bell btn " onClick={this.bellNotification.bind(this)} aria-hidden="true"></i>
-                    <span className="badge bg-warning">{this.state.notifCount}</span>
+                    <h1><span class="label label-default badgeClass">{this.state.inAppNotificationsCount}</span></h1>
                     <div className="col-lg-12 col-md-12  bellnotification">
-                      <p>You have {this.state.notifCount} notifications</p>
+                      {/* <p>You have {this.state.inAppNotificationsCount} notifications</p> */}
+                      <div className="msgnotification col-lg-12 col-md-12 " >
+                             <div className="user-notification col-lg-11 col-md-6" >
+                              Notifications
+                            </div>
+                            <div className="user-closernoti col-lg-1 col-md-6" >
+                              <p className="text-center" style={{ "cursor": "pointer" }} onClick={this.bellNotification.bind(this)} title="Close">
+                                X
+                              </p>
+                            </div>
+                        </div>
                       <div className="profiledetails">
                         {this.state.inAppNotifications && this.state.inAppNotifications.length > 0 ?
                             this.state.inAppNotifications.map((data, index) => {
@@ -211,7 +276,6 @@ export default class Header2 extends Component{
                                 </div>
                               )
                             })
-                           
                           :
                           <div >
                             <div>
@@ -223,6 +287,62 @@ export default class Header2 extends Component{
                       </div>
                     </div>
                   </div>
+                  {/* <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6 pull-right bellicon hover" style={{ "cursor": "pointer" }} onClick={this.bellNotification.bind(this)}>
+                        <div className="notification">
+                          { 
+                            this.state.inAppNotificationsCount > 0 ?
+                              this.state.inAppNotificationsCount < 9 ?
+                                <span className="badge"> 
+                                  {this.state.inAppNotificationsCount}
+                                </span>
+                              :
+                                <span className="badge"> 
+                                  9
+                                <i className="fa fa-plus font-size: 3px font-weight:lighter"  aria-hidden="true"></i>
+                                </span>
+                              :
+                              null  
+                          }
+                          <img src="../images/bell-2.png" className="img" />
+                        </div>
+                      </div> 
+                       <div className="arrow-up bellnotification"></div>
+                      <div className="col-lg-12 col-md-12  bellnotification">
+                        <div className="msgnotification col-lg-12 col-md-12 " >
+                             <div className="user-notification col-lg-11 col-md-6" >
+                              Notifications
+                            </div>
+                            <div className="user-closernoti col-lg-1 col-md-6" >
+                              <p className="text-center" style={{ "cursor": "pointer" }} onClick={this.bellNotification.bind(this)} title="Close">
+                                X
+                              </p>
+                            </div>
+                        </div>
+                        <div className="profiledetails user-footer">
+                        {/* {
+                          this.state.inAppNotifications ?
+                          this.state.inAppNotifications.length > 0 ?
+                            this.state.inAppNotifications.map((data, index) => {
+                              
+                               return (
+                                  <div className="msgborderbtm" key={index}>
+                                      <div dangerouslySetInnerHTML={{__html: data.notifMessage}} />
+                                  </div>
+                               )
+                            })
+                            
+                            :
+                            <div >
+                                <div>
+                                    <p>You have no notifications</p>
+                                </div>
+
+                            </div>
+                        :
+                          null
+                          }    
+                        </div>
+                      </div> */}
                   <div className="col-lg-9 col-md-7 col-sm-9 col-xs-12  hover logoutAct pull-right">
                     <div className="row hover" onClick={this.LogoutSectionHover.bind(this)}>
                       <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText onHoverEffect ">
