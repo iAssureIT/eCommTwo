@@ -61,7 +61,6 @@ export default class FranchiseShoppingList extends React.Component {
 	      .catch((error) => {
 					console.log("Error in franchiseList = ", error);
 	      })
-
 	}
 
 	getEditData(){

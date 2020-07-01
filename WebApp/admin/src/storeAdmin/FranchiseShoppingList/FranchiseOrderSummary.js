@@ -32,8 +32,8 @@ class FranchiseOrderSummary extends Component {
 			"limitRange": 10,	
 		}
 	}
-
 	componentDidMount() {
+		this.getFranchiseList();
 		const user_ID = localStorage.getItem("user_ID");
 		var userDetails = (localStorage.getItem('userDetails'));
 		var userData = JSON.parse(userDetails);
@@ -50,6 +50,96 @@ class FranchiseOrderSummary extends Component {
 			this.getData(data);
 		})
 	}
+
+	getFranchiseList(){
+		axios.get('/api/entitymaster/get/franchise/')
+        .then((response) => {
+          this.setState({
+            "franchiseList": response.data,
+          },()=>{
+						console.log("franchiseList = ",this.state.franchiseList);
+					})
+	      })
+	      .catch((error) => {
+					console.log("Error in franchiseList = ", error);
+	      })
+	}
+	// selectedFranchise(event) {
+	// 	event.preventDefault();
+	// 	var selectedValue = this.refs.companyDropdown.value;
+	// 	var keywordSelectedValue = selectedValue.split('$')[0];
+	// 	console.log('keywordSelectedValue A==>>>', keywordSelectedValue);
+	// 		if (selectedValue === "all") {
+	// 			var data = {
+	// 				"startRange": this.state.startRange,
+	// 				"limitRange": this.state.limitRange,
+	// 			}
+	// 			this.getData(data)
+	// 		} else {
+	// 			var data = {
+	// 				"startRange": this.state.startRange,
+	// 				"limitRange": this.state.limitRange,
+	// 			}
+	// 			axios.post('/api/users/get/list/companies/' + keywordSelectedValue, data)
+	// 				.then((res) => {
+	// 					var tableData = tableData.map((a, i) => {
+	// 						// console.log('tableData A==>>>', a);
+	// 						return {
+	// 							_id				: a._id,
+	// 							orderNo			: a.orderNo.toString(),
+	// 							orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
+	// 							franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+	// 							orderedqty		: a.orderItems.length.toString(),
+	// 							profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+	// 						}
+	// 					})
+	// 					this.setState({
+	// 						completeDataCount: res.data.length,
+	// 						tableData: tableData,
+	// 					})
+	// 				}).catch((error) => {
+	// 					swal(" ", "Sorry there is no data of " + selectedValue, "");
+	// 				});
+	// 	}
+	// }
+	selectedFranchise(event){
+		var selectedValue = event.target.value;
+		// this.setState({selectedFranchise : selectedValue});
+		var keywordSelectedValue = selectedValue.split('$')[0];
+		console.log('keywordSelectedValue A==>>>', keywordSelectedValue);
+			if (selectedValue === "all") {
+				var data = {
+					"startRange": this.state.startRange,
+					"limitRange": this.state.limitRange,
+				}
+				this.getData(data)
+			} else {
+				var data = {
+					"startRange": this.state.startRange,
+					"limitRange": this.state.limitRange,
+				}
+				axios.get('/api/franchisepo/get/franchiseorderlist/' + keywordSelectedValue, data)
+					.then((res) => {
+						var tableData = res.data.map((a, i) => {
+							// console.log('tableData A==>>>', a);
+							return {
+								_id				: a._id,
+								orderNo			: a.orderNo.toString(),
+								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
+								franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+								orderedqty		: a.orderItems.length.toString(),
+								profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+							}
+						})
+						this.setState({
+							tableData: tableData,
+						})
+					}).catch((error) => {
+						swal(" ", "Sorry there is no data of " + selectedValue, "");
+					});
+		}
+	}
+
 	redirecttoadd(){
 		this.props.history.push("/franchise-shopping-list");
 	}
@@ -91,7 +181,26 @@ class FranchiseOrderSummary extends Component {
 										<h3 className="text-center">Franchise Order List</h3>
 									</div>
 									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-										<button className="btn btn-primary col-lg-2 col-md-3 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
+										<button className="btn btn-primary col-lg-2 col-md-3 col-xs-4 col-sm-4 " onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
+										<div className="col-lg-4  col-lg-offset-5 col-xs-12 col-sm-12 pdlft85">
+											<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">Select Franchise </label>
+											<select defaultValue="-- Select --" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" 
+															onChange={this.selectedFranchise.bind(this)}>
+												<option>-- Select --</option>
+												<option value="all">Show All</option>
+												{
+													Array.isArray(this.state.franchiseList) && this.state.franchiseList.length > 0
+													? 
+														this.state.franchiseList.map((franchise,index)=>{
+															return(
+																<option key={index} value={franchise._id}>{franchise.groupName}</option>
+															);
+														})
+													:
+														null
+												}
+											</select>
+										</div>
 									</div>
 									<form className="newTemplateForm">
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
