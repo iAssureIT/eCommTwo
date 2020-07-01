@@ -25,7 +25,6 @@ exports.insert_franchise_delivery = (req,res,next)=>{
                 });
                 franchiseDelivery.save()
                 .then(data=>{
-                    console.log("data",data);
                     res.status(200).json({
                         "franchiseGoodsId":data._id,
                         "message": "purchaseEntry Submitted Successfully."
@@ -58,7 +57,6 @@ exports.get_delivery_challan = (req,res,next)=>{
         FranchiseDelivery.find({"_id":req.params.id})
         .exec()
         .then(data=>{
-            console.log("data",data);
              res.status(200).json(data[0]);   
           })
         .catch(err =>{
@@ -112,6 +110,12 @@ exports.update_delivery_attribute = (req,res,next)=>{
                     //if accepted insert into frinchise goods
                     var updateFinishedGoods = update_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
                 }
+
+                if(req.body.attribute == "deliveryRejected"){
+                    //if accepted insert into frinchise goods
+                    var deleteFromFinishedGoods = deletefrom_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
+                }
+
                 res.status(200).json({
                     "message": "Success",
                 });
@@ -145,9 +149,7 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
                 // {'supply.$': 1}
                 )
                .then(franchiseData=>{
-                    console.log("franchiseData",franchiseData.supply);
                    var productObj = franchiseData.supply.find(o => o.itemCode === itemCode);
-                   console.log("productObj",productObj.productCode);
                    var date = new Date();
                    var orderObj = {"orderNum":franchiseData.franchisePO_id, "orderDate":franchiseData.orderDate,"orderQty":productObj.orderedQty,"orderDeliveryStatus":productObj.status};
                     const franchiseGoods = new FranchiseGoods({
@@ -166,6 +168,38 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
                         createdAt                 : new Date()
                     });
                     franchiseGoods.save()
+                    .then(data=>{
+                            if(data){
+                                resolve(data);
+                            }else{
+                                resolve(data);
+                            }
+                    })
+                    .catch(err =>{ reject(err); });
+                })
+               .catch(err =>{
+                   console.log(err);
+                   reject(err);
+               });
+           }
+             
+    })
+
+}
+
+var deletefrom_franchise_goods = async (franchiseDcId,itemCode) => {
+     // console.log('manage_raw_material',rawdata);
+    return new Promise(function(resolve,reject){ 
+        deleteFranchiseGoodsControl();
+         async function deleteFranchiseGoodsControl(){
+              FranchiseDelivery.findOne(
+                {
+                  _id: franchiseDcId,
+                  'supply.itemCode': itemCode
+                }, 
+                )
+               .then(franchiseData=>{
+                   FranchiseGoods.remove({"franchisePO_id" : franchiseData.franchisePO_id,"itemCode":itemCode})
                     .then(data=>{
                             if(data){
                                 resolve(data);

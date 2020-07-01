@@ -11,14 +11,15 @@ export default class FranchiseDistribution extends React.Component {
 		super(props);
 		  this.state = {
 					currentDate           : '',
-					selectedFranchise  : 'Select Franchise',
-					DistributionData :[],
-					FranchiseData :[],
-					totalDemand:0,
-					totalSupply:0,
-					user_id:'',
-					orderId:'',
-					franchise_name:''
+					selectedFranchise     : 'Select Franchise',
+					DistributionData      : [],
+					FranchiseData         : [],
+					totalDemand           : 0,
+					totalSupply           : 0,
+					user_id               : '',
+					orderId               : '',
+					franchise_name        : '',
+					franchise_id          : ''
 
       };
 	}
@@ -79,22 +80,24 @@ export default class FranchiseDistribution extends React.Component {
 					var DistributionData = [];
 					var FranchiseOrderedData = []; 
 					var franchisePurOrdersdata = franchisePurOrders.data;
-
+					var franchise_id;
+					//console.log("franchisePurOrdersdata",franchisePurOrdersdata);
 					for (var j = 0; j < franchisePurOrders.data.orderItems.length; j++) {
 						franchisePurOrders.data.orderItems[j].franchiseId = franchisePurOrders.data.franchise_id;
 						franchisePurOrders.data.orderItems[j].supply = 0;
 						DistributionData.push(franchisePurOrders.data.orderItems[j]);
 					}
 
-					var franchise_name = franchisePurOrders.data.franchiseName.map(function(value) {
-						return value.companyName;
-					  });
+					var franchise_name = franchisePurOrders.data.franchiseName.map(function(value,index) {
+						 franchise_id = value._id;
+						 return value.companyName;
+					});
 
 					this.setState({
 						"DistributionData"  : DistributionData,
 						"franchise_name"     : franchise_name[0],
 						"orderDate"         : moment(franchisePurOrders.data.orderDate).format("YYYY-MM-DD"),
-						"selectedFranchise" : franchisePurOrders.data.franchise_id
+						"selectedFranchise" : franchise_id
 					},()=>{
 						this.getFooterTotal();
 					 });
@@ -180,7 +183,6 @@ export default class FranchiseDistribution extends React.Component {
 			franchisePO_id       : this.state.orderId,
 			deliveryDate 	     : this.state.currentDate,
 			orderedDate          : this.state.orderDate,
-			// deliveryChallanNum   : "DC"+Math.floor(100000 + Math.random() * 900000),
 			deliveredBy          :this.state.user_id,
 			supply               : orderArray,
 			createdBy 	         : this.state.user_id,
@@ -189,6 +191,7 @@ export default class FranchiseDistribution extends React.Component {
 			orderItems	         : orderArray,
 			purchaseOrderId      : this.state.orderId
 		};
+
 		
 		if(this.state.totalSupply > 0){
 			axios
