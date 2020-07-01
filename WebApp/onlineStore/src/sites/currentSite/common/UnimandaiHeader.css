@@ -365,3 +365,13 @@ button.button_search {
 .searchBox{
     margin-top: -7px;
 }
+
+/* login modal css  */
+.loginModalContent{
+    height: 600px;
+
+}
+.loginModalContent .close{
+    font-size: 55px !important;
+    font-weight: 500 !important;
+}

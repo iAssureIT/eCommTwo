@@ -63,44 +63,40 @@ exports.insert_orders = (req,res,next)=>{
                             console.log("franchiseObjects.franchiseID:",franchiseObjects.franchiseID);                           
                             Entitymaster.findOne({_id : franchiseObjects.franchiseID})
                             .then(franchiseData =>{
-                              console.log("Franchise data:=======",franchiseData);
+                              // console.log("Franchise data:=======",franchiseData);
                               if(franchiseData){
                                 var Flatitude  = franchiseData.locations[0].latitude;
                                 var Flongitude = franchiseData.locations[0].longitude;
-                                console.log("Flatitude ===",Flatitude );
-                                console.log("Flongitude ===",Flongitude );                              
-                                console.log("customer longitude ===",req.body.deliveryAddress.longitude ); 
-                                console.log("customer latitude ===",req.body.deliveryAddress.latitude );
+                                // console.log("Flatitude ===",Flatitude );
+                                // console.log("Flongitude ===",Flongitude );                              
+                                // console.log("customer longitude ===",req.body.deliveryAddress.longitude ); 
+                                // console.log("customer latitude ===",req.body.deliveryAddress.latitude );
                                 if(Flatitude && Flongitude){                                  
                                   var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');
-                                  console.log("distance===",distance);
-                                  // var distance = findDistance(Flatitude,Flongitude,lat,lng,'K');
-                                  // distanceList.push(distance);
+                                  // console.log("distance===",distance);
+                                  
                                   if(smDis == -1){
                                     smDis = distance;
                                     minDisFranchise = franchiseObjects;
                                   }else if(distance < smDis){
                                     smDis = distance;
                                     minDisFranchise = franchiseObjects;                                    
-                                  }
-                                  // console.log("minDisFranchise Obj ====:",franchiseObjects);
+                                  }                                  
                                 }//end if lat-long
-                                console.log("minDisFranchise ID=",minDisFranchise);                                
+                                // console.log("minDisFranchise ID=",minDisFranchise);                                
                                 var allocatedToFranchise = minDisFranchise.franchiseID;
                                 console.log("allocatedToFranchise=",allocatedToFranchise);
+                                saveOrderdata(allocatedToFranchise);
                               }
                             })                           
                           }
                           
-                          // console.log("minDisFranchise ID=",minDisFranchise.franchiseID);
-                          // var allocatedToFranchise = minDisFranchise.franchiseID;
                       }else{
-                        // console.log("Min franchise Object======",matchedFranchise[0].franchiseID);                        
-                        // var allocatedToFranchise = matchedFranchise[0].franchiseID; 
                        var allocatedToFranchise = franchiseID; 
-                      //  this.saveOrderdata(allocatedToFranchise);
+                       saveOrderdata(allocatedToFranchise);
                       }
                           // insert orders details and allocate franchise ID to orders
+                       function saveOrderdata(allocatedToFranchise){
                         console.log("inside allocate franchise Id");  
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),
@@ -133,7 +129,7 @@ exports.insert_orders = (req,res,next)=>{
                                                 "country"         : req.body.deliveryAddress.country,
                                                 "countryCode"     : req.body.deliveryAddress.countryCode,
                                                 "addType"         : req.body.deliveryAddress.addType,
-                                                "latitud"         : req.body.deliveryAddress.latitude,
+                                                "latitude"        : req.body.deliveryAddress.latitude,
                                                 "longitude"       : req.body.deliveryAddress.longitude,
                                               },
                           "deliveryStatus"   : [
@@ -143,9 +139,9 @@ exports.insert_orders = (req,res,next)=>{
                                 "Userid"            : req.body.user_ID,
                               }
                           ],
-                        });                                         
+                        });                                 
 
-                     console.log("Order object ====",order);
+                    
                      //save order and send notifications to customer
                      order.save()
                      .then(orderdata=>{        
@@ -322,19 +318,14 @@ exports.insert_orders = (req,res,next)=>{
                              "order_ID" : orderdata._id
                          });
                      })
+                    }
                   }//end if franchiseID
                 }     
             })
-            // .catch(err =>{
-            //     console.log("Error while getting franchise Id",err);
-            //     res.status(500).json({
-            //         error: err
-            //     });
-            // });
           }// end if pincode
           
         }else{
-          console.log("website model is not franchise model");
+          // console.log("website model is not franchise model");
           //if website model !== franchiseModel
           const order = new Orders({
             _id               : new mongoose.Types.ObjectId(),
@@ -575,8 +566,7 @@ exports.insert_orders = (req,res,next)=>{
       });
   });
 
-  function findDistance(lat1, lon1, lat2, lon2, unit) {
-    console.log("inside findDistance");
+  function findDistance(lat1, lon1, lat2, lon2, unit) {    
     if ((lat1 == lat2) && (lon1 == lon2)) {
       return 0;
     }

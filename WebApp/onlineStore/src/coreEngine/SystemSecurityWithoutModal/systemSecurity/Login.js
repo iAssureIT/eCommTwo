@@ -11,8 +11,6 @@ import 'jquery-validation';
 import swal from 'sweetalert';
 import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 
-import SignUp from './SignUp.js';
-
 class Login extends Component {
 
   constructor() {
@@ -98,7 +96,7 @@ class Login extends Component {
             this.setState({
               loggedIn: true
             }, () => {
-              // this.props.history.push('/')
+              this.props.history.push('/')
               window.location.reload();
             })
           } else if (response.data.message === "USER_BLOCK") {
@@ -150,18 +148,6 @@ class Login extends Component {
         });
     }
   }
-  closeModal(event){
-    event.preventDefault();
-    // modal.style.display = "none";
-    $("#loginFormModal").css("display", "none");
-    $('.modal-backdrop').remove();
-    $("#signUpFormModal").show();
-    // $("#loginFormModal").remove(); 
-    // $(".modal-backdrop").hide(); 
-  }
-  openSignUpModal(event){
-      
-  }
   showSignPass() {
     $('.showPwd').toggleClass('showPwd1');
     $('.hidePwd').toggleClass('hidePwd1');
@@ -184,13 +170,23 @@ class Login extends Component {
     $(".toast-warning").removeClass('toast');
   }
   render() {
+    //set dynamic background image
+    var projectName = process.env.REACT_APP_PROJECT_NAME;
+
+    // if (projectName === "4_UniMandai") {
+    //   $(".LoginWrapper").css("background-image", "url(" + "/images/Background_3.png" + ")");
+    // } else if (projectName === "2_AnasHandicraft") {
+    //   $(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
+    // }
+
     return (
-      // <div id="loginFormModal" style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
-        // <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
-        // </div>    
-        <div id="loginFormModal"  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">    
+      <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
+        </div>
+        {/* <div className="pull-right loginLeafimg">
+        </div> */}
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+          <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 col-xs-12 formShadow">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
                 <h3>Sign In</h3>
@@ -242,26 +238,13 @@ class Login extends Component {
                         <a href='/forgotpassword' className="">Forgot Password?</a>
                       </div>
                     </div>
+
                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignRight">
                       <div className="row loginforgotpass">
-                        {/* <a href='/signup' className="">Sign Up</a> */}
-                          <a href='' className="" onClick={this.openSignUpModal.bind(this)}>Sign Up</a>
-{/*                        
-                       {/* login modal 
-                       <div id="signUpFormModal" className="modal in">
-                            <div className="modal-dialog">
-                                <div className="modal-content loginSignUpModalContent" >                            
-                                    <div className="modal-body">   
-                                    <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" >&times;</button>                                                            
-                                        <div className="col-lg-12 col-md-12 loginForm">
-                                            <SignUp />
-                                        </div>                                                                   
-                                    </div>
-                                </div>
-                            </div>
-                        </div>  */}
+                        <a href='/signup' className="">Sign Up</a>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </form>

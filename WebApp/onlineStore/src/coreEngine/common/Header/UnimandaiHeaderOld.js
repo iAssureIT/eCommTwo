@@ -10,15 +10,10 @@ import {getCartData, searchProductAction} from '../../actions/index';
 import $                          from "jquery";
 import cartImg                    from "../../../sites/currentSite/images/icon-cart.png";
 import searchModalImg             from "../../../sites/currentSite/images/icon-search.png";
-import LoginModal                 from "../../common/LoginModal/LoginModal.js";
-import Login          from '../../systemSecurity/Login.js';
-import SignUp         from '../../systemSecurity/SignUp.js';
-import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
-import AskPincode     from '../../blocks/AskPincode/AskPincode.js';
 
 import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
-import iconUserHeader  from "../../../sites/currentSite/images/icon-user-header.png";
-import logoUnimandai   from "../../../sites/currentSite/images/logoUnimandai.png";
+import iconUserHeader from "../../../sites/currentSite/images/icon-user-header.png";
+import logoUnimandai from "../../../sites/currentSite/images/logoUnimandai.png";
 // import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
 
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
@@ -44,10 +39,7 @@ class unimandaiHeader extends Component {
       localCategories: [],
       userData       : {},
       firstname      : '',
-      lastname       : '',
-      loginForm      : "false",
-      signUpForm     : "false",
-      forgotPassForm : "false",
+      lastname       : ''
     }  
     
     if (window.location.pathname !== "/searchProducts") {
@@ -55,24 +47,9 @@ class unimandaiHeader extends Component {
       localStorage.removeItem("searchstr");
     }
 }
-
-openSignUpModal(event){
-  this.setState({
-    "signUpForm" : "true",
-    "LoginForm" : "false",
-    "forgotPassForm" : "false",
-  });
-}
-
 componentWillMount() {
-
-      if(localStorage.getItem("user_ID"=="")){
-
-      }
-      this.setState({
-        loginForm      : "true",
-      })
-      $(document).ready(function(e){      
+      $(document).ready(function(e){
+      
       $('.search-panel li a').on('click', function(e){
         var sp = $(this).closest('.search-panel');
         var to = $(this).html();
@@ -178,7 +155,6 @@ componentWillMount() {
 
   }
 
-  
   unique(arr, prop) {
     return arr.map(function (e) { return e[prop]; }).filter(function (e, i, a) {
       return i === a.indexOf(e);
@@ -417,7 +393,6 @@ loginPage(event){
       })
   }
   render() {
-    $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");
     return (
       <div className="homecontentwrapper">
@@ -430,13 +405,13 @@ loginPage(event){
                         <div className="float-left">
                             <p><img src={iconPhoneHeader} alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
                         </div>
-                         <div className="col-lg-6 col-md-6 NOpadding">
+                         <div className="col-lg-8 col-md-8 NOpadding">
                               <div className="col-lg-12 col-md-12 searchBox">
                                   <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
 						                      <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
                               </div> 
                           </div>
-                        <div className="col-lg-3 float-right">
+                        <div className="col-lg-2 float-right">
                             <div className="hover-menu">
                             {user_ID 
                             ?    
@@ -472,37 +447,8 @@ loginPage(event){
                                 </li>
                             :
                               <li className="dropdown">
-                                  {/* <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span> */}
-                                  <span className="  "><a href="" className="loginButton" data-toggle="modal" data-target="#loginFormModal" area-hidden ="true">Login </a></span>
-                                  <span className="  "><a href="" className="loginButton" data-toggle="modal" data-target="#pincodeModal" area-hidden ="true">Check Delivery </a></span>
-                                  <div id="loginFormModal" className="modal in">
-                                    <div className="modal-dialog">                                        
-                                        <div className="modal-content loginModalContent">                            
-                                            <div className="modal-body">   
-                                            <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
-                                                {this.state.loginForm === "true" ?
-                                                    <div className="col-lg-12 col-md-12 loginForm">
-                                                        <Login />
-                                                    </div>  
-                                                : null
-                                                }  
-                                                {this.state.signUpForm === "true" ?
-                                                    <div className="col-lg-12 col-md-12 signupForm">
-                                                        <SignUp />
-                                                    </div>  
-                                                : null
-                                                } 
-                                                {this.state.forgotPassForm === "true" ?
-                                                    <div className="col-lg-12 col-md-12 loginForm">
-                                                        <ForgotPassword />
-                                                    </div>  
-                                                : null
-                                                }                                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                  </div>
-                                  
+                                  <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span>
+                                  {/* <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a>| &nbsp;<a href="/signup" className="loginButton" area-hidden ="true">Signup </a></span> */}
                               </li>
                             // <li className="dropdown">
                             //     <a className="acc" href="login" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>                           
@@ -564,7 +510,6 @@ loginPage(event){
                                         <input type="text" className="form-control control-search" placeholder="Search and hit enter..."/>
                                         <button className="button_search" type="button">Search</button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

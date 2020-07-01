@@ -11,7 +11,6 @@ import './SignUp.css';
 import swal from 'sweetalert';
 import axios from 'axios';
 import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
-import Login from './Login.js';
 
 class SignUp extends Component {
 
@@ -324,10 +323,20 @@ class SignUp extends Component {
 		return $('#signupPassword').attr('type', 'password');
 	}
 
-	render() {		
+	render() {
+
+		//set dynamic background image
+		var projectName = process.env.REACT_APP_PROJECT_NAME;
+		// console.log("process.env.REACT_APP_PROJECT_NAME=========:",process.env.REACT_APP_PROJECT_NAME);
+		// if (projectName === "4_UniMandai") {
+		// 	$(".LoginWrapper").css("background-image", "url(" + "/images/signInBackground.png" + ")");
+		// } else if (projectName === "2_AnasHandicraft") {
+		// 	$(".LoginWrapper").css("background-image", "url(" + "/images/background.png" + ")");
+		// }
 		return (
-			// <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7  col-sm-12 col-xs-12 formShadow">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
 							<h3>Sign Up</h3>
 						</div>
@@ -402,20 +411,7 @@ class SignUp extends Component {
 								</div>
 							}
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center loginforgotpass mt25">
-								<label>Already have an account?</label> &nbsp; <a href='' data-toggle="modal" data-target="#loginFormModal">Sign In <b>&#8702;</b></a>
-								{/* login modal  */}
-                                  <div id="loginFormModal" className="modal in">
-                                    <div className="modal-dialog">
-                                        <div className="modal-content loginModalContent" >                            
-                                            <div className="modal-body">   
-                                            <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" >&times;</button>                                                            
-                                                <div className="col-lg-12 col-md-12 loginForm">
-                                                    {/* <Login /> */}
-                                                </div>                                                                   
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
+								<label>Already have an account?</label> &nbsp; <a href='/login' className="">Sign In <b>&#8702;</b></a>
 							</div>
 						</form>
 						{/* <div className="modal" id="myModal" role="dialog">
@@ -447,8 +443,8 @@ class SignUp extends Component {
 							</div>
 						</div> */}
 					</div>
-			
-			
+				</div>
+			</div>
 		);
 	}
 }
