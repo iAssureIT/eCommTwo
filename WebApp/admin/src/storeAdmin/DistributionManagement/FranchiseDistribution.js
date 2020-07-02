@@ -204,9 +204,10 @@ export default class FranchiseDistribution extends React.Component {
 			axios
 			.post('/api/franchiseDelivery/post',formValues)
 		  	.then(function (response) {
-		    // handle success
-				var franchiseGoodsId = response.data.franchiseGoodsId;
-				window.location.href = "/franchise_delivery_challan/"+response.data.franchiseGoodsId; 
+			// handle success
+			
+				var franchiseDeliveryId = response.data.franchiseDeliveryId;
+				window.location.href = "/franchise_delivery_challan/"+response.data.franchiseDeliveryId; 
 		    	swal("Thank you. Your Data addeed successfully.");
 		  	})
 		  	.catch(function (error) {
@@ -317,23 +318,17 @@ export default class FranchiseDistribution extends React.Component {
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                            <h4 className="" style={{"display": "inline-block","float": "left"}}>{this.state.franchise_name} Distribution</h4>
+                            <h4 className="text-center" style={{"display": "inline-block","float": "left"}}>{this.state.franchise_name} Distribution</h4>
                             <a href="/distribution" className="backtoMyOrders" style={{"display": "inline-block","float": "right"}}><i class="fa fa-chevron-circle-left"></i> Back to Distribution</a>
                         </div>
                         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 							<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20">
-								<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-								    <div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12">
-									   <h5>Ordered Date : {this.state.orderDate}</h5>									
-									</div>
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                                        <button className="btn btn-primary autoDistributebtn mt" onClick={this.autoDistribute.bind(this)}>Auto Distribute</button>
-										<input type="reset" value="Reset" className="btn btn-default mt pull-right" onClick={this.onReset.bind(this)}/>
-
-									</div>
-									{/* <div className="form-group col-lg-2 col-md-2 col-xs-12 col-sm-12">
-										<input type="reset" value="Reset" className="btn btn-default mt pull-right" onClick={this.onReset.bind(this)}/>
-									</div> */}
+								<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+								        <h5 className="col-lg-8 col-md-8 col-xs-12 col-sm-12 mglft15">Ordered Date : {this.state.orderDate}</h5>
+										<div  className="col-lg-4 col-md-4 col-xs-12 col-sm-12 mglft15">
+										    <button className="btn btn-success col-lg-6 col-md-6 col-xs-4 col-sm-4 mglft15 autoDistributebtn" onClick={this.autoDistribute.bind(this)}>Auto Distribute</button>
+										   <input type="reset" value="Reset" className="btn btn-default col-lg-3 col-md-3 col-xs-4 col-sm-4 mglft15" onClick={this.onReset.bind(this)}/>
+										</div>
 								</div>
 								<div className="row">
 									{/* <div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12">

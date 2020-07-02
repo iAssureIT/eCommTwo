@@ -281,7 +281,7 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
 exports.bulkUploadUnitOfMeasurment = (req, res, next)=>{
     // var departments = [{department:"mesh"},{department:"mesh1"},{department:"mesh2"}];
     var departments = req.body.data;
-    console.log("departments",departments);
+    // console.log("departments",departments);
 
     var validData = [];
     var validObjects = [];
@@ -299,12 +299,12 @@ exports.bulkUploadUnitOfMeasurment = (req, res, next)=>{
             if (departments[k].department == '-') {
                 remark += "department not found, " ;  
             }
-            console.log("remark",remark)
+            // console.log("remark",remark)
 
               if (remark == '') {
                 // var allDepartments = await fetchAllDepartments(req.body.reqdata);
                 // console.log("alldepartments",allDepartments);
-                 console.log()
+                 // console.log()
                   var alldepartments = await fetchAllDepartments(req.body.reqdata);
                   var departmentExists = alldepartments.filter((data)=>{
                     if (data.department == departments[k].department)
@@ -313,7 +313,7 @@ exports.bulkUploadUnitOfMeasurment = (req, res, next)=>{
                     }
                 })
                
-                 console.log("in else validObjects",departmentExists);
+                 // console.log("in else validObjects",departmentExists);
                 if (departmentExists.length==0) {
                     validObjects = departments[k];
                     validObjects.fileName       = req.body.fileName;

@@ -7,7 +7,7 @@ import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.js
 import jQuery from 'jquery';
 import $ from 'jquery';
 
-export default class FranchiseDeliveryChallan extends React.Component {
+export default class DeliveryChallans extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
@@ -29,14 +29,17 @@ export default class FranchiseDeliveryChallan extends React.Component {
                     contacts 	      : '',
                     locations 	      : '',
                     entityType 	      : '',
-                    franchise_name    : ''
+                    franchise_name    : '',
+                    DeliveryChallanArray : [],
+                    challanData       : []
       };
     }
     
     componentDidMount(){
-        //console.log('orderID',this.props.match.params.distributionId);
-        var distributionId = this.props.match.params.distributionId;
-        this.getFranchiseChallan(distributionId);
+        console.log("fffff");
+        console.log('orderID',this.props.match.params.purchaseId);
+        var poId = this.props.match.params.purchaseId;
+        this.getdeliveryChallansForPo(poId);
         var  role = localStorage.getItem("roles");
 
         this.setState({
@@ -63,48 +66,79 @@ export default class FranchiseDeliveryChallan extends React.Component {
         });
        
     }
+
+    getdeliveryChallansForPo(id){
+        // deliveryChallansForPo
+        axios.get('/api/franchiseDelivery/get/deliveryChallansForPo/'+id)
+        .then((franchiseData) => {
+            console.log('franchiseData',franchiseData.data[0].franchise_id);
+
+            var DeliveryChallanArray = [];
+            var challanNo;
+            franchiseData.data.filter(function(item,index){
+                var i = DeliveryChallanArray.findIndex(x => x.deliveryChallanNum == item.deliveryChallanNum);
+                if(i <= -1){
+                    DeliveryChallanArray.push(item.deliveryChallanNum);
+                }
+                return null;
+            });
+
+            this.setState({
+                DeliveryChallanArray : DeliveryChallanArray,
+                AllChallans          : franchiseData.data,
+                FranchiseId          : franchiseData.data[0].franchise_id
+            },()=>{        
+                this.getFranchiseDetails();
+                this.SelectDeliveryChallan(DeliveryChallanArray[0]);
+
+            })
+        })
+        .catch(error=>{
+            console.log("error in franchise Challan = ", error);
+        })
+	}
     
     getFranchiseChallan(distributionId){
-        axios.get('/api/franchiseDelivery/get/franchiseDeliveryChallan/'+distributionId)
-        .then((franchiseData) => {
-                  var FranchiseData = [];
-                  var DistributionData = [];
-                  var FranchiseOrderedData = []; 
-                  if(franchiseData){
-                    //console.log("franchiseData",franchiseData);
-                    let remain = franchiseData.data.supply.reduce(function(prev, current) {
-                        return prev + +current.remainQty
-                    }, 0); 
+        // // axios.get('/api/franchiseDelivery/get/franchiseDeliveryChallan/'+distributionId)
+        // // .then((franchiseData) => {
+        // //           var FranchiseData = [];
+        // //           var DistributionData = [];
+        // //           var FranchiseOrderedData = []; 
+        // //           if(franchiseData){
+        // //             //console.log("franchiseData",franchiseData);
+        // //             let remain = franchiseData.data.supply.reduce(function(prev, current) {
+        // //                 return prev + +current.remainQty
+        // //             }, 0); 
 
-                    let totalDemand = franchiseData.data.supply.reduce((prev, current) => {
-                        return prev + +current.orderedQty;
-                    }, 0); 
+        // //             let totalDemand = franchiseData.data.supply.reduce((prev, current) => {
+        // //                 return prev + +current.orderedQty;
+        // //             }, 0); 
           
-                    let totalSupply = franchiseData.data.supply.reduce(function(prev, current) {
-                          return prev + +current.suppliedQty
-                    }, 0); 
+        // //             let totalSupply = franchiseData.data.supply.reduce(function(prev, current) {
+        // //                   return prev + +current.suppliedQty
+        // //             }, 0); 
 
                     
-                    this.setState({
-                        "FranchiseDeliveryId" : franchiseData.data._id,
-                        "FranchiseData"       : franchiseData.data.supply,
-                        "DeliveryChallanNo"   : franchiseData.data.deliveryChallanNum,
-                        "DistributionDate"    : moment(franchiseData.data.distributionDate).format("YYYY-MM-DD"),
-                        "FranchiseId"         : franchiseData.data.franchise_id,
-                        "totalDemand"         : totalDemand,
-                        "totalSupply"         : totalSupply,
-                        "totalRemain"         : remain,
+        // //             this.setState({
+        // //                 "FranchiseDeliveryId" : franchiseData.data._id,
+        // //                 "FranchiseData"       : franchiseData.data.supply,
+        // //                 "DeliveryChallanNo"   : franchiseData.data.deliveryChallanNum,
+        // //                 "DistributionDate"    : moment(franchiseData.data.distributionDate).format("YYYY-MM-DD"),
+        // //                 "FranchiseId"         : franchiseData.data.franchise_id,
+        // //                 "totalDemand"         : totalDemand,
+        // //                 "totalSupply"         : totalSupply,
+        // //                 "totalRemain"         : remain,
                         
-                    },()=>{
-                        this.getFranchiseDetails();
-                    });
-                  }
+        // //             },()=>{
+        // //                 this.getFranchiseDetails();
+        // //             });
+        // //           }
 
                 
-          })
-          .catch(error=>{
-              console.log("error in franchise Challan = ", error);
-          })
+        //   })
+        //   .catch(error=>{
+        //       console.log("error in franchise Challan = ", error);
+        //   })
     }
 
     getFranchiseDetails(){
@@ -221,6 +255,28 @@ export default class FranchiseDeliveryChallan extends React.Component {
         });
     }
 
+    SelectDeliveryChallan(challanNo){
+        var filteredArray = this.state.AllChallans.filter(function(item,index){
+            if(item.deliveryChallanNum ==  challanNo){
+                return item;
+            }
+            return null;
+        });
+
+        this.setState({
+            challanData       : filteredArray[0].supply,
+            DeliveryChallanNo : filteredArray[0].deliveryChallanNum,
+            DistributionDate  : moment(filteredArray[0].deliveryDate).format("YYYY-MM-DD")
+        },()=>{
+            console.log("state",filteredArray.deliveryChallanNum);
+        })
+    }
+
+    
+
+
+
+
 	render() {
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -229,6 +285,19 @@ export default class FranchiseDeliveryChallan extends React.Component {
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                             <h4 className="" style={{"display": "inline-block","float": "left"}}>Franchise Delivery Challan</h4>
                             <a href="/distribution" className="backtoMyOrders" style={{"display": "inline-block","float": "right"}}><i class="fa fa-chevron-circle-left"></i> Back to Distribution</a>
+                        </div>
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                            <h5 className="col-lg-4 col-md-4 col-xs-12 col-sm-12">Delivery Challans</h5>
+                            <div className="col-lg-8 col-md-8 col-xs-12 col-sm-12">
+                                {
+                                    this.state.DeliveryChallanArray.map((result, index)=>{
+                                        // console.log("result",result);
+                                        return(
+                                            <button className="btn btn-success result" onClick={this.SelectDeliveryChallan.bind(this,result)}>{result}</button>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
                         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 outerbox">
                             <div className=" col-lg-4 col-md-4 col-xs-12 col-sm-12">
@@ -244,6 +313,7 @@ export default class FranchiseDeliveryChallan extends React.Component {
                                <div className="box-content">{this.state.franchise_name}</div>
                             </div>
                         </div>
+                        
                         <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 outerbox">
                             <div className="table-responsive">          
 								<table className="table table-bordered table-striped table-hover">
@@ -259,10 +329,10 @@ export default class FranchiseDeliveryChallan extends React.Component {
 									</thead>
 								    <tbody>
                                     {
-                                        Array.isArray(this.state.FranchiseData) && this.state.FranchiseData.length > 0
+                                        Array.isArray(this.state.challanData) && this.state.challanData.length > 0
                                         ? 
-                                            this.state.FranchiseData.map((result, index)=>{
-                                                // console.log("result",result);
+                                            this.state.challanData.map((result, index)=>{
+                                                console.log("result",result);
                                                 return(
                                                     <tr key={index}>
 														<td>{result.productName} <br/><small>{result.productCode} - {result.itemCode}</small></td>
@@ -277,7 +347,7 @@ export default class FranchiseDeliveryChallan extends React.Component {
 																	<div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 																		<div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																			<div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-																				<button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-" + (result.itemCode).replace(/[^a-zA-Z]/g, "")}>&times;</button>
+																				<button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-" + (result.itemCode)}>&times;</button>
 																			</div>
 
 																		</div>
@@ -303,9 +373,9 @@ export default class FranchiseDeliveryChallan extends React.Component {
 																			</div>
 																			<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                                                 {this.state.rejectRemark ?
-																				<button onClick={this.delete.bind(this)} id={(result.itemCode).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} data-dismiss="modal">DELETE</button>
+																				<button onClick={this.delete.bind(this)} id={(result.itemCode)} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} data-dismiss="modal">DELETE</button>
                                                                                 : 
-                                                                                <button onClick={this.delete.bind(this)} id={(result.itemCode).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1 disabled"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} >DELETE</button>
+                                                                                <button onClick={this.delete.bind(this)} id={(result.itemCode)} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1 disabled"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} >DELETE</button>
                                                                                 }
 																			</div>
 																		</div>

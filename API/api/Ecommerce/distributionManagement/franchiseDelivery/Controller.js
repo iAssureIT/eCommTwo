@@ -26,7 +26,7 @@ exports.insert_franchise_delivery = (req,res,next)=>{
                 franchiseDelivery.save()
                 .then(data=>{
                     res.status(200).json({
-                        "franchiseGoodsId":data._id,
+                        "franchiseDeliveryId":data._id,
                         "message": "purchaseEntry Submitted Successfully."
                     });
                 })
@@ -41,19 +41,6 @@ exports.insert_franchise_delivery = (req,res,next)=>{
 
 
 exports.get_delivery_challan = (req,res,next)=>{
-     // FranchiseDelivery.aggregate([
-     //    { $lookup:
-     //       {
-     //        from: 'entitymasters',
-     //        localField: 'franchise_id',
-     //        foreignField: '_id',
-     //        as: 'franchiseDetails'
-     //       }
-     //    },
-     //    { $unwind : "$franchiseDetails" },
-     //            { $match :  { "_id": req.params.id }},
-
-     //   ])
         FranchiseDelivery.find({"_id":req.params.id})
         .exec()
         .then(data=>{
@@ -221,4 +208,21 @@ var deletefrom_franchise_goods = async (franchiseDcId,itemCode) => {
     })
 
 }
+
+exports.get_delivery_challans_for_po = (req,res,next)=>{
+        FranchiseDelivery.find({"franchisePO_id":req.params.id})
+        .exec()
+        .then(data=>{
+             res.status(200).json(data);   
+          })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+       
+};
+
+
 

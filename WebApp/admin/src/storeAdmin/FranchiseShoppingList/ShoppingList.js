@@ -353,6 +353,14 @@ class IAssureTableUM extends Component {
 	getViewData(id){
 		this.props.history.push("/franchise-order-view/"+id);
 	}
+	supply(id){
+		this.props.history.push("/franchise_distribution/"+id);
+	}
+
+	showDeliveryChallans(id){
+		this.props.history.push("/delivery_challan/"+id);
+	}
+	
 	deletePO(id){
 	 	swal({
           title: "Are you sure you want to delete this Order ?",
@@ -380,8 +388,8 @@ class IAssureTableUM extends Component {
 	render() {
 		return (
 			<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-				<div className="col-lg-2 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
-					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding labelform text-left">Orders Per Page</label>
+				<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
+					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding labelform text-left">Users Per Page</label>
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 						<select onChange={this.setLimit.bind(this)} value={this.props.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding form-control">
 							<option value="Not Selected" disabled>Select Limit</option>
@@ -398,10 +406,10 @@ class IAssureTableUM extends Component {
 						</select>
 					</div>
 				</div>
-				<div className="col-lg-4 col-md-4 col-md-offset-6 col-xs-12 col-sm-12 marginTop17 NOpadding-right">
+				<div className="col-lg-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 marginTop17 NOpadding-right">
 					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding labelform text-left">Search</label>
 					<div className="">
-						<input type="text" placeholder="Search By Franchise Name, PO Number..." onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control fa fa-search" ref="tableSearch" id="tableSearch" name="tableSearch" />
+						<input type="text" placeholder="Search By Franchise Name,PO Number..." onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control fa fa-search" ref="tableSearch" id="tableSearch" name="tableSearch" />
 						<span className="input-group-addon input_status">
 						</span>
 					</div>
@@ -438,18 +446,18 @@ class IAssureTableUM extends Component {
 												([key, value], i) => {
 													if (key === 'actions') {
 														return (
-															<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
+															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value}</th>
 														);
 													} else {
 														return (
-															<th key={i} className="umDynamicHeader srpadd text-center">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);
 													}
 
 												}
 											)
 											:
-											<th className="umDynamicHeader srpadd text-center"></th>
+											<th className="umDynamicHeader srpadd textAlignLeft"></th>
 										}
 									</tr>
 								</thead>
@@ -470,14 +478,13 @@ class IAssureTableUM extends Component {
 																			var value2 = value1 ? value1.replace(regex, '') : '';
 																			var aN = value2.replace(this.state.reA, "");
 																			if (aN && $.type(aN) === 'string') {
-																				// var textAlign = 'textAlignLeft';
-																				var textAlign = 'text-center';
+																				var textAlign = 'textAlignLeft';
 																			} else {
 																				var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
 																				if (bN) {
-																					var textAlign = 'text-center';
+																					var textAlign = 'textAlignLeft';
 																				} else {
-																					var textAlign = 'text-center';
+																					var textAlign = 'textAlignLeft';
 																				}
 																			}
 																			var found = Object.keys(this.state.tableHeading).filter((k) => {
@@ -503,8 +510,8 @@ class IAssureTableUM extends Component {
 																:
 																<td className="textAlignCenter">
 																	<span className="pointer pointerCls">
-																			<i className="" title="Supply" id={value._id}>S</i>&nbsp; &nbsp;
-																			<i className="" title="Delivery" id={value._id}>D</i>&nbsp; &nbsp;
+																	        <i className="fa fa-truck" title="Supply" id={value._id} onClick={this.supply.bind(this,value._id)}></i>&nbsp; &nbsp;
+																			<i className="fa fa-file" title="Delivery Challan" id={value._id} onClick={this.showDeliveryChallans.bind(this,value._id)}></i>&nbsp; &nbsp;
 																			<i className="fa fa-eye" title="View" id={value._id} onClick={this.getViewData.bind(this,value._id)}></i>
 																			{/* <i className="fa fa-pencil " title="Edit" id={value._id} onClick={this.edit.bind(this,value._id)} ></i>&nbsp; &nbsp;
 																			<i className="fa fa-trash redFont " id={value._id} onClick={this.deletePO.bind(this,value._id)}></i>&nbsp; &nbsp; */}
