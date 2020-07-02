@@ -39,3 +39,15 @@
 .rejected{
 	color:#ff000099;
 }
+
+.challanBtn{
+	background-color: gray;
+	border-color: gray;
+	color:white;
+}
+
+.activeChallanBtn{
+	background-color: #337ab7;
+	border-color: #337ab7;
+	color:white;
+}

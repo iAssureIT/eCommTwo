@@ -31,7 +31,7 @@ export default class DeliveryChallans extends React.Component {
                     entityType 	      : '',
                     franchise_name    : '',
                     DeliveryChallanArray : [],
-                    challanData       : []
+                    challanData       : [],
       };
     }
     
@@ -204,8 +204,8 @@ export default class DeliveryChallans extends React.Component {
     updateFranchiseDelivery(data){
         axios.put('/api/franchiseDelivery/attribute', data)
         .then((response)=>{
-            var distributionId = this.props.match.params.distributionId;
-            this.getFranchiseChallan(distributionId);
+            var poId = this.props.match.params.purchaseId;
+            this.getdeliveryChallansForPo(poId);
             this.setState({
                 rejectRemark : ''
             })
@@ -264,6 +264,7 @@ export default class DeliveryChallans extends React.Component {
         });
 
         this.setState({
+            FranchiseDeliveryId : filteredArray[0]._id,
             challanData       : filteredArray[0].supply,
             DeliveryChallanNo : filteredArray[0].deliveryChallanNum,
             DistributionDate  : moment(filteredArray[0].deliveryDate).format("YYYY-MM-DD")
@@ -283,18 +284,25 @@ export default class DeliveryChallans extends React.Component {
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                            <h4 className="" style={{"display": "inline-block","float": "left"}}>Franchise Delivery Challan</h4>
-                            <a href="/distribution" className="backtoMyOrders" style={{"display": "inline-block","float": "right"}}><i class="fa fa-chevron-circle-left"></i> Back to Distribution</a>
+                            <h4 className="" style={{"display": "inline-block","float": "left"}}>Franchise Delivery Challans</h4>
+                            <a href="/franchise-order-summary" className="backtoMyOrders" style={{"display": "inline-block","float": "right"}}><i class="fa fa-chevron-circle-left"></i> Back</a>
                         </div>
                         <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                            <h5 className="col-lg-4 col-md-4 col-xs-12 col-sm-12">Delivery Challans</h5>
+                            <h5 className="col-lg-4 col-md-4 col-xs-12 col-sm-12">All Challans</h5>
                             <div className="col-lg-8 col-md-8 col-xs-12 col-sm-12">
                                 {
                                     this.state.DeliveryChallanArray.map((result, index)=>{
                                         // console.log("result",result);
-                                        return(
-                                            <button className="btn btn-success result" onClick={this.SelectDeliveryChallan.bind(this,result)}>{result}</button>
-                                        )
+                                        if(this.state.DeliveryChallanNo == result){
+                                            return(
+                                                <button className="btn btn-sm result activeChallanBtn" onClick={this.SelectDeliveryChallan.bind(this,result)}>{result}</button>
+                                            )
+                                        }else{
+                                            return(
+                                                <button className="btn btn-sm result challanBtn" onClick={this.SelectDeliveryChallan.bind(this,result)}>{result}</button>
+                                            )
+                                        }
+                                       
                                     })
                                 }
                             </div>
@@ -340,8 +348,8 @@ export default class DeliveryChallans extends React.Component {
                                                         <td>{result.suppliedQty} {result.supplidUnit}</td>
                                                         {/* <td><i onClick={this.changeAttribute.bind(this)} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title={ (result.status === "deliveryAccepted" )? "Disable It" : "Enable It" } className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i></td>	 */}
                                                         <td>
-                                                        <i onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
-                                                        <i data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={'fa fa-times-circle prodCheckboxDim ' + ( result.status === "deliveryRejected" ? "prodCheckboxDimSelected rejected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>
+                                                        <i  onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+                                                        <i  data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={'fa fa-times-circle prodCheckboxDim ' + ( result.status === "deliveryRejected" ? "prodCheckboxDimSelected rejected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>
                                                         <div className="modal" id={"showDeleteModal-" + (result.itemCode)} role="dialog">
 																<div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																	<div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
