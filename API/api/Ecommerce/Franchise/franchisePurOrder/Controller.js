@@ -2,7 +2,7 @@ const mongoose       = require("mongoose");
 var   ObjectId       = require('mongodb').ObjectID;
 const EntityMaster   = require('../../../coreAdmin/entityMaster/ModelEntityMaster');
 const FranchiseGoods = require('../../distributionManagement/Model');
-
+const FinishedGoods = require('../../PurchaseManagement/models/FinishedGoodsEntry');
 
 const FranchisePO   = require('./Model');
 
@@ -486,6 +486,11 @@ exports.one_franchisePO = (req,res,next)=>{
                     // console.log('data in     ==>',data);
                     AllUnits = await franchiseid(data.franchise_id);
                     // console.log('data in AllUnits ==>',AllUnits);
+                        for(let obj of data.orderItems) {
+                          currentStock = await getFgCurrentStock(obj.itemCode);
+                          obj.currentStock = currentStock[0].totalStock;
+                          obj.currentStockUnit = currentStock[0].StockUnit;
+                        }
                         returnData={
                             "_id"		      : data._id,
                             "orderNo"         : data.orderNo,
@@ -539,3 +544,53 @@ exports.delete_franchisePO = (req,res,next)=>{
             });
         });    
 };
+
+function getFgCurrentStock(itemcode){
+    return new Promise(function(resolve,reject){ 
+      FinishedGoods.find({"ItemCode" : itemcode,balance: { $gt: 0 }})
+     .then(data=>{
+            var balanceArray = [];
+            var balanceUnitArray = [];
+            var balanceUnit;
+            var finalArray = [];
+            var finalStock = [];
+            data.filter(function(item,index){
+                balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+            });
+
+            balanceArray.filter(function(item,index){
+                if(item.balanceUnit === "Kg"){
+                    balanceUnitArray.push(item.balance);
+                    balanceUnit = "Kg"
+                }else{
+                    if(item.balanceUnit == "Gm"){
+                        var converToKG = item.balance/1000;
+                        balanceUnitArray.push(converToKG);
+                        //converted to kg so balanceunit is kg only
+                        balanceUnit = "Kg";
+                    }else{
+                        balanceUnitArray.push(item.balance);
+                        balanceUnit = item.balanceUnit;
+                    }                    
+                }
+            });
+
+            let stock = balanceUnitArray.reduce(function(prev, current) {
+                   finalArray.push({"totalStock":current})
+                return finalArray;
+            }, 0);
+
+            var total = 0;
+            finalArray.forEach(item => {
+                total += item.totalStock;
+            });
+           resolve([{"totalStock":total,"StockUnit":balanceUnit}]);   
+       
+    })
+    .catch(err =>{
+       reject(err);
+    }); 
+    });
+};
+
+

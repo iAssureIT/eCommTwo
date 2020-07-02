@@ -52,14 +52,13 @@ export default class FranchiseDistribution extends React.Component {
 					var FranchiseOrderedData = []; 
 					var franchisePurOrdersdata = franchisePurOrders.data;
 					var franchise_id;
-
 					for (var j = 0; j < franchisePurOrders.data.orderItems.length; j++) {
 						franchisePurOrders.data.orderItems[j].franchiseId = franchisePurOrders.data.franchise_id;
 						franchisePurOrders.data.orderItems[j].supply = 0;
 						franchisePurOrders.data.orderItems[j].supplyUnit = franchisePurOrders.data.orderItems[j].unit;
+						
 						DistributionData.push(franchisePurOrders.data.orderItems[j]);
 					}
-
 					var franchise_name = franchisePurOrders.data.franchiseName.map(function(value,index) {
 						 franchise_id = value._id;
 						 return value.companyName;
@@ -75,7 +74,7 @@ export default class FranchiseDistribution extends React.Component {
 					 });
 			})
 			.catch(error=>{
-				console.log("error in getCurrentStock = ", error);
+				console.log("error in getAllfrachiseData = ", error);
 			})
 	}
 
@@ -117,6 +116,7 @@ export default class FranchiseDistribution extends React.Component {
 		})
 	}
    
+
 	handleChange(event){
 	  event.preventDefault();
 	  var franchise = this.state.selectedFranchise;
@@ -168,7 +168,7 @@ export default class FranchiseDistribution extends React.Component {
 				obj.orderedQty 		= this.state.DistributionData[i].orderQty;
 				obj.orderedUnit     = this.state.DistributionData[i].unit;
 				obj.suppliedQty 	= this.state.DistributionData[i].supply;
-				obj.supplidUnit    	= this.state.DistributionData[i].supplyUnit;
+				obj.suppliedUnit    = this.state.DistributionData[i].supplyUnit;
 				obj.status          = "deliverySent";
 				obj.statusBy        = this.state.user_id; 
 			    // obj.remainQty       = remain;
@@ -382,11 +382,11 @@ export default class FranchiseDistribution extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
-												//	console.log("DistributionData",result); // style={{fontWeight:'bold'}}
+													console.log("render map",result.currentStock); // style={{fontWeight:'bold'}}
 													return( 
 																<tr key={index}>
 																	<td>{result.productName} <br/><small>{result.itemCode} - {result.productCode}</small></td>
-																	<td>{result.currentStock} </td>
+													                <td>{result.currentStock} {result.currentStockUnit}</td>
 													                <td>{result.orderQty} {result.unit}</td>
 																	<td>0</td>
 																	<td>

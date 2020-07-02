@@ -8,8 +8,8 @@ import moment from 'moment';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import Loader from '../loader/Loader.js'; 
 import BulkUpload   from "../bulkupload/BulkUpload.js";
-export default class FinishedGoods extends React.Component {
 
+export default class FinishedGoods extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
@@ -25,9 +25,9 @@ export default class FinishedGoods extends React.Component {
 					fgUnitWt            : '-- Select --',
 					scrapUnit           : '-- Select --',
 			      	"twoLevelHeader"    : {
-						            apply  : false,
-						           },
-		             "tableHeading"     : {
+						                  apply  : false,
+					},
+		            "tableHeading"     : {
 		                Date            : "Date",
 		        		productName     : "Product Name – Product Code - Item Code",
 						InwardStock  	: "Finished Goods",

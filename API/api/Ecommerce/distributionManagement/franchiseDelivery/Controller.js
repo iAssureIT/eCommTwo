@@ -2,19 +2,21 @@ const mongoose	= require("mongoose");
 
 const FranchiseDelivery = require('./Model');
 const FranchiseGoods = require('../Model');
-
+const FinishedGoods      = require('../../PurchaseManagement/models/FinishedGoodsEntry');
+//console.log("FinishedGoods",FinishedGoods);
 exports.insert_franchise_delivery = (req,res,next)=>{
             getData();
             async function getData(){
                 var dc_challan = await generate_delivery_Challan();
                 //deliverySent, deliveryAccepted, deliveryRejected, deliveryCancelled
+                var obj = req.body.supply;
                 const franchiseDelivery = new FranchiseDelivery({
                     _id                       : new mongoose.Types.ObjectId(),    
                     franchise_id              : req.body.franchise_id, 
                     franchisePO_id            : req.body.franchisePO_id,
                     deliveryDate              : new Date(), 
                     deliveredBy               : req.body.deliveredBy,          
-                    deliveryChallanNum         : dc_challan,
+                    deliveryChallanNum        : dc_challan,
                     supply                    : req.body.supply,
                     purchaseOrderId           : req.body.purchaseOrderId,
                     totalDemand               : req.body.totalDemand,
@@ -25,8 +27,15 @@ exports.insert_franchise_delivery = (req,res,next)=>{
                 });
                 franchiseDelivery.save()
                 .then(data=>{
+                    
+                    var manageFinishedGoodsObj = manage_finished_goods(obj,new Date());
+                         if(manageFinishedGoodsObj){
+
+                         }else{
+                            console.log("err");
+                    }
                     res.status(200).json({
-                        "franchiseDeliveryId":data._id,
+                        "franchiseDeliveryId" : data._id,
                         "message": "purchaseEntry Submitted Successfully."
                     });
                 })
@@ -38,7 +47,6 @@ exports.insert_franchise_delivery = (req,res,next)=>{
                 });
             }
 };
-
 
 exports.get_delivery_challan = (req,res,next)=>{
         FranchiseDelivery.find({"_id":req.params.id})
@@ -70,7 +78,6 @@ function generate_delivery_Challan() {
              }else{
                  dc_challan = "DC" + 1;
              }
-             console.log("generate_delivery_Challan",resolve);
              resolve(dc_challan);
             
         })
@@ -122,7 +129,7 @@ exports.update_delivery_attribute = (req,res,next)=>{
 };
 
 var update_franchise_goods = async (franchiseDcId,itemCode) => {
-     // console.log('manage_raw_material',rawdata);
+     // console.log('manage_raw_material',obj);
     return new Promise(function(resolve,reject){ 
         updateFranchiseGoodsControl();
          async function updateFranchiseGoodsControl(){
@@ -138,9 +145,6 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
                .then(franchiseData=>{
                    var productObj = franchiseData.supply.find(o => o.itemCode === itemCode);
                    var date = new Date();
-                   var orderObj = {"orderNum":franchiseData.franchisePO_id, "orderDate":franchiseData.orderedDate,"orderQty":productObj.orderedQty,"orderDeliveryStatus":productObj.status};
-                   console.log("orderObj",orderObj);
-                   console.log("franchiseData",franchiseData.orderedDate);
                     const franchiseGoods = new FranchiseGoods({
                         _id                       : new mongoose.Types.ObjectId(),
                         franchiseDeliveryId       : franchiseData._id,
@@ -151,9 +155,9 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
                         itemCode                  : productObj.itemCode,
                         productName               : productObj.productName,
                         inwardQty                 : productObj.suppliedQty,
-                        orders                    : [orderObj],
+                        orders                    : [],
                         balance                   : productObj.suppliedQty,
-                        unit                      : productObj.supplidUnit,
+                        unit                      : productObj.suppliedUnit,
                         createdBy                 : franchiseData.createdBy,
                         createdAt                 : new Date()
                     });
@@ -178,7 +182,7 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
 }
 
 var deletefrom_franchise_goods = async (franchiseDcId,itemCode) => {
-     // console.log('manage_raw_material',rawdata);
+     // console.log('manage_raw_material',obj);
     return new Promise(function(resolve,reject){ 
         deleteFranchiseGoodsControl();
          async function deleteFranchiseGoodsControl(){
@@ -223,6 +227,171 @@ exports.get_delivery_challans_for_po = (req,res,next)=>{
         });
        
 };
+
+var manage_finished_goods = async (data,deliveryDate) => {
+      console.log('manage_finished_goods',data);
+    return new Promise(function(resolve,reject){ 
+        updateFinishGoodsControl();
+        async function updateFinishGoodsControl(){
+               for(let obj of data) {
+                   FinishedGoods.find({itemCode : obj.ItemCode,balance: { $gt: 0 }})
+                  .sort({createdAt : 1})
+                  .limit(1)
+                  .then(fgdata=>{
+                   console.log("fgdata",obj.suppliedUnit,obj.suppliedUnit);
+                   // console.log("fgdata",obj.suppliedUnit.toLowerCase(),obj.suppliedUnit);
+                        if(escape(fgdata.balanceUnit).toLowerCase() == escape(obj.suppliedUnit).toLowerCase()){
+                            var remainingBalance = fgdata[0].balance - obj.suppliedQty;
+                        }else{
+                            //if units are different
+                            if((escape(fgdata[0].balanceUnit).toLowerCase() == 'kg' || escape(fgdata[0].balanceUnit).toLowerCase() == 'kilogram') && (escape(obj.suppliedUnit.toLowerCase()) == "gm" || escape(obj.suppliedUnit.toLowerCase()) == "gram")){
+                                //convert raw material gram to kg formula kg=gm/1000
+                               var convertToKg        = obj.suppliedQty/1000;
+                               obj.suppliedQty = convertToKg;
+                               obj.suppliedUnit        = fgdata[0].balanceUnit
+                               var remainingBalance   = fgdata[0].balance - convertToKg;          
+                            }
+                            if((escape(fgdata[0].balanceUnit).toLowerCase() == 'gm' || fgdata[0].balanceUnit.toLowerCase() == 'gram') && (obj.suppliedUnit.toLowerCase() == "kg" || obj.suppliedUnit.toLowerCase() == "kilogram")){
+                                //convert raw material kg to gram formula g=kg*1000
+                                var convertToGram      = obj.suppliedQty*1000;
+                                obj.suppliedQty = convertToGram;
+                                obj.suppliedUnit        = fgdata[0].balanceUnit
+                                var remainingBalance   = fgdata[0].balance - convertToGram;
+                            }
+                            if(escape(fgdata[0].balanceUnit.toLowerCase()) == "kg" &&  escape(obj.suppliedUnit.toLowerCase()) == "kilogram"){
+                               var remainingBalance = fgdata[0].balance - obj.suppliedQty;
+                            }
+
+                             if(escape(fgdata[0].balanceUnit).toLowerCase() == "gm" &&  escape(obj.suppliedUnit.toLowerCase()) == "gram"){
+                               var remainingBalance = fgdata[0].balance - obj.suppliedQty;
+                            }
+
+                             if(escape(fgdata[0].balanceUnit).toLowerCase() !== "kg" ||  escape(obj.suppliedUnit.toLowerCase()) !== "gram"){
+                               var remainingBalance = fgdata[0].balance - obj.suppliedQty;
+                            }
+                        }
+
+
+                       // compare and update raw material stock
+                       if(fgdata[0].balance >= obj.suppliedQty){
+                         // var remainingBalance = fgdata[0].balance - obj.suppliedQty;
+                         obj.finishedGoods = obj;
+                         obj.balance = remainingBalance;
+                         franchiseDistArray = {"Date":deliveryDate,"ItemCode":obj.itemCode,"Quantity":obj.suppliedQty,"Unit":obj.suppliedUnit};
+                            FinishedGoods.update(
+                            {    _id:fgdata[0]._id},  
+                            {
+                                 $set:   {'balance': remainingBalance} ,
+                                 $push:  {'franchiseDistArray' : franchiseDistArray }                         
+                            })
+                                .then(data=>{
+                                    if(data.nModified == 1){
+                                        resolve(data);
+                                    }else{
+                                        resolve(data);
+                                    }
+                                })
+                                .catch(err =>{ reject(err); });
+                        }else{
+                            var remainFcQty =  obj.suppliedQty - fgdata[0].balance;
+                            var remainingBalance = 0;
+                            franchiseDistArray = {"Date":deliveryDate,"ItemCode":obj.itemCode,"Quantity":fgdata[0].balance,"Unit":obj.suppliedUnit};
+                            FinishedGoods.updateOne(
+                            {    _id:fgdata[0]._id},  
+                            {
+                                 $set:   {'balance': remainingBalance} ,
+                                 $push:  {'franchiseDistArray' : franchiseDistArray }                         
+                            })
+                            .then(data=>{
+                               FgUpObj = {"date":deliveryDate,"ItemCode":obj.itemCode,"OutwardRawMaterial":remainFcQty,"OutwardUnit":obj.suppliedUnit};
+                                if(data.nModified == 1){
+                                    if(remainFcQty != 0){
+                                         var updateOtherFgentriesObj = updateOtherFgentries(FgUpObj);
+                                         if(updateOtherFgentriesObj){
+
+                                         }else{
+                                            console.log("err");
+                                         }
+                                    }
+                                    resolve(data);
+                                }else{
+                                    resolve(data);
+                                }
+                            })
+                            .catch(err =>{ reject(err); });
+                            resolve(0);
+                        }   
+                   })
+                   .catch(err =>{
+                       console.log(err);
+                       reject(err);
+                   });
+                
+               }
+               
+        }
+    })
+}
+
+var updateOtherFgentries = async (data) => {
+    // console.log('Data',data);
+    return new Promise(function(resolve,reject){ 
+        updateOtherFgControl();
+        async function updateOtherFgControl(){
+            manage_finished_goods(data)
+        }
+    })
+}
+
+
+exports.finish_goods_current_stock = (req,res,next) => {
+    FinishedGoods.find({ItemCode : req.params.itemcode,balance: { $gt: 0 }})
+     .then(data=>{
+            var balanceArray = [];
+            var balanceUnitArray = [];
+            var balanceUnit;
+            var finalArray = [];
+            var finalStock = [];
+            data.filter(function(item,index){
+                balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+            });
+
+            balanceArray.filter(function(item,index){
+                if(item.balanceUnit === "Kg"){
+                    balanceUnitArray.push(item.balance);
+                    balanceUnit = "Kg"
+                }else{
+                    if(item.balanceUnit == "Gm"){
+                        var converToKG = item.balance/1000;
+                        balanceUnitArray.push(converToKG);
+                        //converted to kg so balanceunit is kg only
+                        balanceUnit = "Kg";
+                    }else{
+                        balanceUnitArray.push(item.balance);
+                        balanceUnit = item.balanceUnit;
+                    }                    
+                }
+            });
+
+            let stock = balanceUnitArray.reduce(function(prev, current) {
+                   finalArray.push({"totalStock":current})
+                return finalArray;
+            }, 0);
+
+            var total = 0;
+            finalArray.forEach(item => {
+                total += item.totalStock;
+            });
+            res.status(200).json([{"totalStock":total,"StockUnit":balanceUnit}]);   
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }); 
+}
 
 
 

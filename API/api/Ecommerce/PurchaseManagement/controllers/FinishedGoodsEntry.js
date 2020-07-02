@@ -44,6 +44,8 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                         fgInwardUnit              : req.body.fgInwardUnit,
                         scrapQty                  : req.body.scrapQty,
                         scrapUnit                 : req.body.scrapUnit,
+                        balance                   : req.body.OutwardRawMaterial,
+                        balanceUnit               : req.body.OutwardUnit,
                         finishedBy                : req.body.finishedBy,
                         createdBy                 : req.body.createdBy,
                         createdAt                 : new Date(),
@@ -502,6 +504,8 @@ var insertFinishedGoodsEntry = async (data) => {
     })
 }
 
+
+
 var manage_raw_material = async (rawdata) => {
      // console.log('manage_raw_material',rawdata);
     return new Promise(function(resolve,reject){ 
@@ -601,6 +605,16 @@ var manage_raw_material = async (rawdata) => {
                    reject(err);
                });
                 
+        }
+    })
+}
+
+var updateOtherPo = async (rawdata) => {
+    // console.log('Data',data);
+    return new Promise(function(resolve,reject){ 
+        updateOtherPoControl();
+        async function updateOtherPoControl(){
+            manage_raw_material(rawdata)
         }
     })
 }

@@ -16,6 +16,8 @@ const FinishedGoodsEntrySchema = mongoose.Schema({
     fgInwardUnit              : String,
     scrapQty                  : Number,
     scrapUnit                 : String,
+    balance                   : Number,
+    balanceUnit               : String,
     finishedBy                : String,
     fileName                  : String,
     franchiseDistArray        : Array, 

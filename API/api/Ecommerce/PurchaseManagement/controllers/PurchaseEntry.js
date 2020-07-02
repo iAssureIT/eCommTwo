@@ -221,12 +221,6 @@ exports.get_total_inward = (req,res,next) => {
 
 
 exports.raw_material_current_stock = (req,res,next) => {
-    // var itemcode;
-    // if(req.params){
-    //     itemcode = req.params.itemcode
-    // }else{
-    //     itemcode = req;
-    // }
     PurchaseEntry.find({itemCode : req.params.itemcode,balance: { $gt: 0 }})
      .then(data=>{
             var balanceArray = [];
