@@ -540,7 +540,7 @@ loginPage(event){
                           {user_ID 
                             ? 
                                 <li className="dropdown">
-                                    <span className="  "><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" area-hidden ="true">                         
+                                    <span className="  "><a href="" className="faIcon" area-hidden ="true">                         
                                     <img src={loginActiveIconImg} className="icon-cart"></img>
                                 </a></span>
                                     <ul className="col-lg-3 dropdown-menu list-menu">                                        

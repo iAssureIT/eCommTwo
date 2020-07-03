@@ -148,7 +148,6 @@ class HomePage extends Component {
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
           <div className="row">
             <EcommerceBanner/>
-
           </div>
             <div className="homeRow">
             { /*new product */}
