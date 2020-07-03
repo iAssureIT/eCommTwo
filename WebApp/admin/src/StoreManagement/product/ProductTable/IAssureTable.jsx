@@ -96,25 +96,31 @@ class IAssureTable extends Component {
 		let id = e.target.id;
 		console.log("orderid ==>",id);
 		
-		// axios.get('/api/products/get/one/'+id)
-		// 	.then((response)=>{
-		// 		console.log('response.data product==>>>',response.data);
-				axios({
-					method: tableObjects.deleteMethod,
-					url: tableObjects.apiLink+'/delete/'+id
-				}).then((response)=> {
-					console.log(this.state.startRange, this.state.limitRange);
-					this.props.getData(this.state.startRange, this.state.limitRange);
+		axios.get('/api/products/get/one/'+id)
+			.then((response)=>{
+				console.log('response.data product==>>>',response.data);
+				if(response.data._id || response.data.status === "Publish"){
 					swal({
-						text : response.data.message,
+						text : "This product is in Order and Publish!",
 					});
-				}).catch(function (error) {
-					console.log('error', error);
-				});	
-			// })
-			// .catch((error)=>{
-			//   console.log('error', error);
-			// })
+				}else{
+					axios({
+						method: tableObjects.deleteMethod,
+						url: tableObjects.apiLink+'/delete/'+id
+					}).then((response)=> {
+						console.log(this.state.startRange, this.state.limitRange);
+						this.props.getData(this.state.startRange, this.state.limitRange);
+						swal({
+							text : response.data.message,
+						});
+					}).catch(function (error) {
+						console.log('error', error);
+					});	
+				}
+			})
+			.catch((error)=>{
+			  console.log('error', error);
+			})
 		
     } 
     sortNumber(key, tableData){
