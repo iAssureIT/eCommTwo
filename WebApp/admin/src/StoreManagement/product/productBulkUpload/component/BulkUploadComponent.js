@@ -292,18 +292,12 @@ constructor(props) {
   isArray (value) {
     return value && typeof value === 'object' && value.constructor === Array;
   }
-
-  // ES5 actually has a method for this (ie9+)
-  //Array.isArray(value);
-
   bulkUpload() {
         var formValues = this.state.finalData;
         $('.fullpageLoader').show();
         if (!this.state.fileWarningError) {
             axios.post('/api/products/post/bulkUploadProduct', formValues)
                 .then((response) => {
-                    
-                    // console.log("response.data.message",response.data.message);
                     this.fileInput.value = '';
                     this.setState({
                           finalData: [],
@@ -379,8 +373,6 @@ constructor(props) {
 
 
   render() {
-    //console.log('tableData',this.state.tableData)  
-     // console.log("===->",this.state.finalData)
     const SheetJSFT = [
         "xlsx",
         "xls",
@@ -419,7 +411,6 @@ constructor(props) {
                 <p className="fileWarningError" style={{ color: "red" }}>Filename should be proper. It should not contain any special character and spaces</p>
                 : null}
         </div>
-        
         </div>
         {
             this.state.finalData.length > 0 ?
@@ -472,8 +463,6 @@ constructor(props) {
                       getData={this.getData.bind(this)}
                       tableObjects={this.state.tableObjects}
                       />
-
-
                     <table className="table" width="50%" id="table-to-xls" style={{display:"none"}}>
                       <thead>
                         <tr>

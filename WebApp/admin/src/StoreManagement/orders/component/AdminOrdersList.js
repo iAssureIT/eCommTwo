@@ -33,6 +33,13 @@ class AdminOrdersList extends Component{
     }
 
     componentDidMount() {
+      var websiteModel = (localStorage.getItem('websiteModel'));
+    
+    this.setState({
+      websiteModel: websiteModel
+    },()=>{
+      // console.log("websiteModel==>",this.state.websiteModel)FranchiseModel
+    })
         this.getBA();
     }
     
@@ -160,6 +167,7 @@ class AdminOrdersList extends Component{
       };
       const columns = [
           { name:"Order Id" },
+          {name:this.state.websiteModel == "FranchiseModel"?"Franchise Name": null},
           { name:"Customer Name" }, 
           { name:"Total Items" },
           { name:"Total Price" },

@@ -87,11 +87,32 @@ class Login extends Component {
             localStorage.setItem("roles", response.data.roles);
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
             
+            axios.get("/api/entitymaster/get/one/companyName/"+response.data.userDetails.companyID)
+            .then(entity=>{
+              var appCompany_entity_id = entity.data._id;
+              axios.get("/api/adminPreference/get")
+                  .then(preference =>{
+                    // console.log("preference ===> ",preference.data);
+                    // console.log("appCompany_entity_id ===> ",appCompany_entity_id);
+                    var websiteModel = preference.data[0].websiteModel;
+                    // console.log("preference.data[0].websiteModel, ===> ",websiteModel);
+                    localStorage.setItem("websiteModel",websiteModel);
+                  })
+                  .catch(error=>{
+                      console.log("Error in getting adminPreference ===> ", error);
+                    }) 
+    
+              })
+              .catch(error=>{
+                console.log("Error in getting appCompany_entity_id ===> ", error);
+              }) ;
+
+
             this.setState({
               loggedIn: true
             },()=>{
               this.props.history.push('/dashboard')
-              window.location.reload();
+              // window.location.reload();
             })
           }else if(response.data.message === "USER_BLOCK"){
             swal({

@@ -61,12 +61,13 @@ export default class Rightsidebar extends Component{
                         <span className="sidebarMenuSubText">Technical Masters </span>
                       </a>
                   </li>
-                  <li>
+                  
+                  {/* <li>
                       <a href="/preferences" title="Facility Master">
                         <i className="fa fa-briefcase darkGreenColor"></i>
                         <span className="sidebarMenuSubText">Preferences </span>
                       </a>
-                  </li>
+                  </li> */}
 {/*
                   <li className="sidebarMenuText">
                       <a href="/module" title="Module Master">

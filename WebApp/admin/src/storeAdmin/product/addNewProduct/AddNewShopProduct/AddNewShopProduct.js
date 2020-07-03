@@ -285,6 +285,7 @@ class AddNewShopProduct extends Component {
     this.getSectionData();
     this.getVendorList();
     this.getTaxData();
+    this.getUom();
   }
   getSectionData() {
     axios.get('/api/sections/get/list')
@@ -298,6 +299,29 @@ class AddNewShopProduct extends Component {
         console.log('error', error);
       })
   }
+  getUom(){
+		axios.get("/api/unitofmeasurmentmaster/get/list")
+		.then((response) => {
+			var unitOfMeasurementArray = [];
+			response.data.filter(function(item,index){
+				var i = unitOfMeasurementArray.findIndex(x => x.department == item.department);
+				if(i <= -1){
+					unitOfMeasurementArray.push(item.department);
+				}
+				return null;
+			});
+
+			console.log("getUom",unitOfMeasurementArray);
+			this.setState({
+				 unitOfMeasurementArray : unitOfMeasurementArray
+			},()=>{
+				//  console.log("unitOfMeasurementArray",unitOfMeasurementArray);
+			});
+		})
+		.catch((error) => {
+			console.log('error', error);
+		})
+	}
   showRelevantCategories(event) {
     var section = event.target.value;
     this.setState({
@@ -887,7 +911,7 @@ class AddNewShopProduct extends Component {
                                     <label>Quantity <i className="redFont">*</i></label>
                                     <input onChange={this.handleChange.bind(this)} value={this.state.availableQuantity} id="availableQuantity" name="availableQuantity" type="number" className="form-control availableQuantityNew" placeholder="Quantity" aria-describedby="basic-addon1" ref="availableQuantity" />
                                   </div>*/}
-                                  <div className="col-lg-4 col-md-4 col-sm-12 <col-xs-12></col-xs-12>">
+                                  {/* <div className="col-lg-4 col-md-4 col-sm-12 <col-xs-12></col-xs-12>">
                                     <label>Unit <i className="redFont">*</i></label>
                                     <select className="form-control selectdropdown " ref="unit" id="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}>
                                       <option value="Single">Single</option>
@@ -897,7 +921,40 @@ class AddNewShopProduct extends Component {
                                       <option value="Liters">Liters</option>
                                       <option value="Mililiters">Mililiters</option>
                                     </select>
+                              <select id="unitOfMeasurement"  name="unitOfMeasurement" value={this.state.unitOfMeasurement} onChange={this.handleChange.bind(this)}  className="input-group" style={{"border":0,"width": "40px","fontSize":"small"}}> 
+															<option selected={true} disabled={true}>-- Select --</option>
+															{
+																this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+																	this.state.unitOfMeasurementArray.map((data, i)=>{
+																		return(
+																			<option key={i} value={data}>{data}</option>
+																		);
+																	})
+																:
+																null
+															}
+														</select>
+                                  </div> */}
+
+                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields">
+                                    <label>Unit <i className="redFont">*</i> </label>
+                                    {/*<div className="input-group" id="subCategory">*/}
+                                    <select className="form-control allProductSubCategories"  name="unit" id="unit" ref="subCategory" value={this.state.unit} onChange={this.handleChange.bind(this)}>
+                                      <option selected defaultValue="">Select Unit</option>
+                                      {this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
+                                        this.state.unitOfMeasurementArray.map((data, index) => {
+
+                                          return (
+                                            <option key={index} value={data}>{data}</option>
+                                          );
+                                        })
+                                        :
+                                        <option disabled>{"No Units added"}</option>
+                                      }
+                                    </select>
                                   </div>
+
+
                                   <div className=" col-lg-2 col-md-2 col-sm-12 col-xs-12 paddingRightZeroo">
                                     <label>Original Price <i className="redFont">*</i></label>
                                     <input onChange={this.percentAndPrice.bind(this)} value={this.state.originalPrice} id="originalPrice" name="originalPrice" type="number" className="form-control availableQuantityNew" placeholder="Original Price" aria-describedby="basic-addon1" ref="originalPrice" />

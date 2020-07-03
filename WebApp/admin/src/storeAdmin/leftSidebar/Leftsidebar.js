@@ -27,6 +27,13 @@ export default class AdminDashboard extends Component{
   }
 
   componentDidMount(){
+    var websiteModel = (localStorage.getItem('websiteModel'));
+    
+    this.setState({
+      websiteModel: websiteModel
+    },()=>{
+      // console.log("websiteModel==>",this.state.websiteModel)FranchiseModel
+    })
     if (!$('body').hasClass('adminLte')) {
       var adminLte = document.createElement("script");
       adminLte.type="text/javascript";
@@ -56,6 +63,7 @@ export default class AdminDashboard extends Component{
   }
    
   componentWillUnmount(){
+    
       $("script[src='/js/adminLte.js']").remove();
       $("link[href='/css/dashboard.css']").remove();
   }
@@ -265,36 +273,6 @@ export default class AdminDashboard extends Component{
                 </li>  
               </ul>
             </li>
-
-
-
-
-            <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
-                <i className="fa fa-book" aria-hidden="true"></i>
-                <span className="smsidenames sidebarMenuTitle">Business Associates</span>
-                <span className="pull-right-container">
-                  <i className={"fa pull-right menu-icon-toggle "+(vendorData?this.openIcon:this.closeIcon)} />
-                </span>
-              </a>
-              <ul className="treeview-menu" >                    
-                <li className="noPadLR"> 
-                  <a href="/addNewBA" data-id="/addNewBA" title="Add Business Associate" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Add Business Associate
-                  </a> 
-                </li>  
-                <li className="noPadLR"> 
-                  <a href="/ba-list" data-id="/ba-list" title="Business Associates List" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Business Associates List
-                  </a> 
-                </li>    
-              </ul>
-            </li>
-
-
-
-
-
             <li className="treeview" >
               <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
                 <i className="fa fa-book" aria-hidden="true"></i>
@@ -318,6 +296,53 @@ export default class AdminDashboard extends Component{
             </li>
 
 
+          {
+            this.state.websiteModel === "MarketPlace" ?
+              <li className="treeview" >
+                <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
+                  <i className="fa fa-book" aria-hidden="true"></i>
+                  <span className="smsidenames sidebarMenuTitle">Business Associates</span>
+                  <span className="pull-right-container">
+                    <i className={"fa pull-right menu-icon-toggle "+(vendorData?this.openIcon:this.closeIcon)} />
+                  </span>
+                </a>
+                <ul className="treeview-menu" >                    
+                  <li className="noPadLR"> 
+                    <a href="/addNewBA" data-id="/addNewBA" title="Add Business Associate" onClick={this.activeMenu.bind(this)}>
+                      <i className="fa fa-circle-o dashr" />Add Business Associate
+                    </a> 
+                  </li>  
+                  <li className="noPadLR"> 
+                    <a href="/ba-list" data-id="/ba-list" title="Business Associates List" onClick={this.activeMenu.bind(this)}>
+                      <i className="fa fa-circle-o dashr" />Business Associates List
+                    </a> 
+                  </li>    
+                </ul>
+              </li>
+            :
+            null
+          }
+          {
+            this.state.websiteModel === "MarketPlace" ?
+              <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+                <a href="/vendor/list" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
+                  <i className="fa fa-money" aria-hidden="true"></i>
+                  <span className="sidebarMenuTitle">Vendor Master</span>
+                </a>
+              </li>
+            :
+            null
+          }
+           
+
+
+          {/* {
+
+          } */}
+            
+         
+
+
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/project-master-data" title="Master Data" onClick={()=>this.openMenu("dashboard")}>
                 <i className="fa fa-th-large" aria-hidden="true"></i>
@@ -325,12 +350,7 @@ export default class AdminDashboard extends Component{
               </a>
             </li>
 
-            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
-              <a href="/vendor/list" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
-                <i className="fa fa-money" aria-hidden="true"></i>
-                <span className="sidebarMenuTitle">Vendor Master</span>
-              </a>
-            </li>
+            
 
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/franchise/list" title="Franchise Master" onClick={()=>this.openMenu("dashboard")}>
