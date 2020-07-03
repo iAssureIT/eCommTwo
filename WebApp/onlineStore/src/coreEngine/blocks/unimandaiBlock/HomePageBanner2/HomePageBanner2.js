@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "../../../../sites/currentSite/blocks/HomePageBanner2.css";
+import axios from 'axios';
 
 import HomePageBanner2_1 from "../../../../sites/currentSite/images/Vegetables.png"
 import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits.png"
@@ -10,14 +11,25 @@ class HomePageBanner2 extends Component{
         super(props);
         this.state={}
     }
+    componentDidMount(){
+        axios.get("/api/sections/get/get_megamenu_list")
+                  .then((response)=>{                   
+                    this.setState({ 
+                        categoryData : response.data                    })
+                  })
+                  .catch((error)=>{
+                      console.log('error', error);
+                  })
+      }  
     render(){
         return(
             <div className="col-lg-12 col-md-12 col-sm-12 HomePageBanner2">
                 <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 ">
                     <div className="row">
                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
-                            <a className="hover-images col-lg-12" href="/" >
+                            <a className="hover-images col-lg-12" href="/" >                                
                                 <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_1} alt="banner" />
+                                {/* <div className="imgTitle">Vegetables</div> */}
                             </a>                        
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">

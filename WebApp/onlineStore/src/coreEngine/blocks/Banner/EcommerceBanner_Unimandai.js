@@ -12,8 +12,6 @@ import Background_2  from "../../../sites/currentSite/images/Background_2.png";
 import Background_22  from "../../../sites/currentSite/images/Background_22.png";
 import Background_3  from "../../../sites/currentSite/images/Background_3.png";
 
-
-
 export default class EcommerceBanner extends Component {
 	constructor(props){
     super(props);
@@ -46,9 +44,9 @@ export default class EcommerceBanner extends Component {
                             			responsive={this.state.responsive} 
 										autoplay={true}
 										// margin={0}
-										nav={true}
+										// nav={true}
 			                            autoplayHoverPause={true}
-										// dots={true}
+										dots={true}
 										
 			                            dotData={true}
 									>

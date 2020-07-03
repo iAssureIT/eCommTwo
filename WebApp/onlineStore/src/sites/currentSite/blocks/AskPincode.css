@@ -48,7 +48,7 @@
     margin-top: 30px;
 }
 .pincodemodal {
-    height: 240px; 
+    height: 290px; 
     /* border-radius: 10px !important; */
     background-color: #fff !important;
     z-index: 100;
@@ -65,7 +65,7 @@
     border-radius: 10px !important;
 }
 .Pincode_div{
-    margin-top: 20px;
+    /* margin-top: 20px; */
     text-align: center;
 }
 .pinocodeInput{  
@@ -82,20 +82,29 @@
     padding: 5px 10px;
     font-weight: 600;
     border-radius: 5px;
+    margin-top: 5px;
     display: none;
+    text-align: center !important;
 }
 .AllowDeliveryMsg{
     margin-bottom: 10px;
     background-color: rgb(232, 247, 233);
-    margin-top: -22px;
 }
 .NotAllowDeliveryMsg {
     margin-bottom: 10px;
     background-color: rgba(232, 174, 171, 0.25);
-    margin-top: -22px;
+    
 }
 .DeliveryStatusMsg{
     display: none;
     text-align: center;
     margin-top: 5px;
+}
+.pinMessage{
+    color: #80b435;
+    font-size: 18px;
+    font-weight: 700;
+}
+.marginTop{
+    margin-top: 50px;
 }

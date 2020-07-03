@@ -65,6 +65,7 @@ export default class Footer extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 {this.state.categoryData && this.state.categoryData.map((data,index)=>{
                     return(
+                        index <=3 ?
                         <div className="">
                             <div className=" col-lg-3 col-md-3 col-sm-3 sectionName">
                                 <a className="sectionurl" href={"/section/"+data.sectionUrl+'/'+data._id} ><span>{data.section}</span></a>
@@ -83,6 +84,7 @@ export default class Footer extends Component {
                             }
                             </div>
                         </div>
+                        :null
                     );
                     })
                 }
