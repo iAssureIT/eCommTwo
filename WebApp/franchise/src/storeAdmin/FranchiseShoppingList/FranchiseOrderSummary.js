@@ -64,9 +64,9 @@ class FranchiseOrderSummary extends Component {
 		}
 		this.getData(data);
 	}
-	redirecttoadd(){
-		this.props.history.push("/franchise-shopping-list");
-	}
+	// redirecttoadd(){
+	// 	this.props.history.push("/franchise-shopping-list");
+	// }
 	getData(data) {
 		axios.get('/api/franchisepo/get/franchiseorderlist/'+this.state.franchiseid, data)
 			.then((res) => {
@@ -101,9 +101,7 @@ class FranchiseOrderSummary extends Component {
 									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
 										<h3 className="text-center">Franchise Order Summary</h3>
 									</div>
-									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-										<button className="btn btn-primary col-lg-2 col-md-3 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
-									</div>
+									
 									<form className="newTemplateForm">
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<ShoppingList

@@ -158,31 +158,6 @@ export default class Leftsidebar extends Component{
                   </a>
                   <ul className="collapse list-unstyled" id="baData1">
                     <li>
-                      <a href="/purchase-management">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Raw Material Inward</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/finished-goods">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Finished Goods Inward</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/franchise-shopping-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Finished Goods Ourward</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="/admin-shopping-list">
-                        <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Consolidate Purchase Orders</span>
-                      </a>
-                    </li>
-                    <li>
                       <a href="/franchise-allowable-pincode">
                         <i className="fa fa-circle-o" /> 
                         <span className="sidebarMenuSubText">Allowable Pincode</span>

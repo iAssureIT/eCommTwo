@@ -345,7 +345,9 @@ class IAssureTableUM extends Component {
 			})
 		}
 	}
-	
+	redirecttoadd(){
+		this.props.history.push("/franchise-shopping-list");
+	}
 	edit(id){
 		console.log("edit id",id);
 		this.props.history.push("/franchise-shopping-list/"+id);
@@ -380,25 +382,12 @@ class IAssureTableUM extends Component {
 	render() {
 		return (
 			<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-				<div className="col-lg-2 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
-					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop17 NOpadding labelform text-left">Orders Per Page</label>
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-						<select onChange={this.setLimit.bind(this)} value={this.props.limitRange} id="limitRange" ref="limitRange" name="limitRange" className="col-lg-12 col-md-12 col-sm-6 col-xs-12  noPadding form-control">
-							<option value="Not Selected" disabled>Select Limit</option>
-							<option value={5}>5</option>
-							<option value={10}>10</option>
-							<option value={20}>20</option>
-							<option value={25}>25</option>
-							<option value={50}>50</option>
-							<option value={100}>100</option>
-							<option value={500}>500</option>
-							<option value={1000}>1000</option>
-							<option value={1500}>1500</option>
-							<option value={2000}>2000</option>
-						</select>
-					</div>
+				<div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
+						<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+							<button className="btn btn-primary col-lg-12 col-md-3 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
+						</div>
 				</div>
-				<div className="col-lg-4 col-md-4 col-md-offset-6 col-xs-12 col-sm-12 marginTop17 NOpadding-right">
+				<div className="col-lg-4  col-lg-offset-5 col-md-4 col-md-offset-2 col-xs-12 col-sm-12 NOpadding-right">
 					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding labelform text-left">Search</label>
 					<div className="">
 						<input type="text" placeholder="Search By Franchise Name, PO Number..." onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control fa fa-search" ref="tableSearch" id="tableSearch" name="tableSearch" />
