@@ -28,12 +28,12 @@ export default class PurchaseManagement extends React.Component {
 						            apply  : false,
 						           },
 		             "tableHeading"     : {
-						date            : 'Purchase Date',
-						PurchaseNumber  : 'Purchase Number',
+						date            : 'Pur Date',
+						PurchaseNumber  : 'Pur Number',
 						Details         : 'Details',
 						Supplier        : 'Supplier',
 						PurchasedBy     : 'Purchased By',
-						productName     : "Product Name",
+						productName     : "Product",
 						UnitRate        : 'Unit Rate',
 						UnitOfMeasurement : 'UOM',
 						Quantity        : 'Quantity',
@@ -95,9 +95,11 @@ export default class PurchaseManagement extends React.Component {
 					filterData 				: {},
 					PurchaseNumberArray		:[],
 					totalPoAmount 			: 0,
-					ItemCode   				: ''	,
+					ItemCode   				: '',
+					ProductCode             : '',
 					unitOfMeasurement       :'Kg',
-					unitOfMeasurementArray  : []	      	
+					unitOfMeasurementArray  : [],
+					completeProductName     : ''     	
 	  };
 	  this.uploadedData = this.uploadedData.bind(this);
 	  this.getFileDetails = this.getFileDetails.bind(this);
@@ -153,7 +155,9 @@ export default class PurchaseManagement extends React.Component {
 			  },
 			  unitRate:{
 				  required:true,
-				  noSpace: true
+				  noSpace: true,
+				  maxlength: 5,
+				  digits: true
 			  },
 			  quantity:{
 				  required:true,
@@ -224,7 +228,6 @@ export default class PurchaseManagement extends React.Component {
 		  });
   
 			var tableData = response.data.goodrecords.map((a, i)=>{
-			 
 			return{
 				"purchaseDate"        : a.purchaseDate      ? moment(a.purchaseDate).format("YYYY-MM-DD")  : '-',
 				"purchaseNumber"      : a.purchaseNumber    ? a.purchaseNumber    : '-',
@@ -273,7 +276,9 @@ export default class PurchaseManagement extends React.Component {
             this.setState({
                 "amount"         	: response.data.amount ,
 		        "purchaseDate" 		: moment(response.data.purchaseDate).format("YYYY-MM-DD"),
-		      	"purchaseStaff" 	: response.data.purchaseStaff,
+				"purchaseStaff" 	: response.data.purchaseStaff,
+				"ItemCode"          : response.data.itemCode,
+				"ProductCode"       : response.data.productCode,
 		      	"purchaseLocation"  : response.data.purchaseLocation,
 		      	"quantity" 			: response.data.quantity,
 		      	"unitRate" 	        : response.data.unitRate,
@@ -294,16 +299,21 @@ export default class PurchaseManagement extends React.Component {
 		var filterData = this.state.filterData;
 		if(this.state.selectedPurchaseNum != "Select Purchase Number"){
 			filterData.purchaseNumber = this.state.selectedPurchaseNum;
+		}else{
+			delete filterData["purchaseNumber"];
 		}
 
 		if(this.state.selectedProductName != "Select Product"){
 			filterData.productName = this.state.selectedProductName;
+		}else{
+			delete filterData["productName"];
 		}
-
+		
 		filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
 		axios
 		.post('/api/purchaseentry/post/datewisepurchase/',filterData)
 		.then((response)=>{
+			//console.log("response",response);
 			var  tableData = response.data ;
 				var tableData = tableData.map((a, i) => {
 						return {
@@ -313,7 +323,7 @@ export default class PurchaseManagement extends React.Component {
 							Details 			: a.Details ,
 							Supplier            : a.purchaseLocation,
 							PurchasedBy 		: a.purchaseStaff ? a.purchaseStaff : "" ,
-							productName 		: a.productName,
+							productName 		: a.productName ? a.productName + '-' + a.productCode + '-' +a.productCode : "",
 							UnitRate 	        : a.unitRate ,
 							UnitOfMeasurement   : a.unitOfMeasurement,
 							Quantity 			: a.quantity +' '+ a.unit,
@@ -378,7 +388,6 @@ export default class PurchaseManagement extends React.Component {
 				return null;
 			});
 
-			console.log("getUom",unitOfMeasurementArray);
 			this.setState({
 				 unitOfMeasurementArray : unitOfMeasurementArray
 			},()=>{
@@ -438,33 +447,88 @@ export default class PurchaseManagement extends React.Component {
 
 	handleChange(event){
       event.preventDefault();
-      // const datatype = event.target.getAttribute('data-text');
 	  const {name,value} = event.target;
-	  var itemCode;
-	  var unit;
+	  this.setState({ 
+		[name]:value,
+      },()=>{
 
-	  if(name == "product"){
+	  });
+	}
+
+	onChangeProduct(event){
+		event.preventDefault();
+		const {name,value} = event.target;
+		var itemCode = '';
+		var unit = '';
+		var productCode = '';
+		var productName = '';
+		var completeProductName = '';
+  
 		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
 		$(".productDatalist option").filter(function(index,item){
 			if(item.value == event.target.value){
-			itemCode =$(item).data('itemcode');
-			unit = $(item).data('unit');
+				itemCode    = $(item).data('itemcode');
+				productCode = $(item).data('productcode');
+				unit        = $(item).data('unit');
+				productName = $(item).data('productname');
+				completeProductName = productName + " - " +productCode+" - "+itemCode;
 			}
 		});
+		console.log("productName",productName);
+		if(productName){
+			this.setState({ 
+				"ItemCode"         : itemCode,
+				"ProductCode"      : productCode,
+				"Units"            : unit,
+				"unitOfMeasurement": unit,
+				"product"          : productName,
+				"completeProductName" : completeProductName,
+			 },()=>{
+				 console.log(this.state.completeProductName);
+			 });
+		}else{
+			this.setState({ 
+				[name]:value,
+			  },()=>{
+			   });
+		}
+	}
 
+	onChangePoNum(event){
+		event.preventDefault();
+		event.target.value = event.target.value.replace(/[PO+]/g, ''); //replace all $ with empty string
+		event.target.value = 'PO' + event.target.value; //prepend $ to the input value
+		var {name,value} = event.target;
 
 		this.setState({ 
-		"ItemCode":itemCode,
-		"Units":unit
+			[name]:value,
 		},()=>{
 		});
-     }
-	
-      this.setState({ 
-        [name]:value,
-	  },()=>{
-		//this.getData();
-	   });
+	}
+
+	onChangeUnitRate(event){
+		event.preventDefault();
+		var {name,value} = event.target;
+		var invalidChars = /[^0-9]/gi
+		if(invalidChars.test(value)) {
+			value = value.replace(invalidChars,"");
+		}
+		this.setState({ 
+			[name]:value,
+		},()=>{
+		});
+	}
+
+	onChangeUnit(event){
+		event.preventDefault();
+		var {name,value} = event.target;
+		this.setState({ 
+			[name]:value,
+			Units : value,
+			unitOfMeasurement : value
+		},()=>{
+
+		});
 	}
 	filterChange(event){
 	  event.preventDefault();
@@ -473,7 +537,7 @@ export default class PurchaseManagement extends React.Component {
       this.setState({ 
         [name]:value,
 	  },()=>{
-		this.getData();
+		 this.getData();
 	   });
 	}
     handleProduct(event){
@@ -525,14 +589,15 @@ export default class PurchaseManagement extends React.Component {
       	"purchaseLocation"  : this.state.purchaseLocation,
       	"quantity" 			: this.state.quantity,
 		"productName" 		: this.state.product,
-		"ItemCode"          : this.state.ItemCode,
+		"itemCode"          : this.state.ItemCode,
+		"productCode"       : this.state.ProductCode,
       	"unit" 				: this.state.Units,
 		"unitRate" 	        : this.state.unitRate,
 		"unitOfMeasurement" : this.state.unitOfMeasurement,
 		"purchaseNumber"    : this.state.purchaseNumber,
 		"Details" 			: this.state.Details,
 	  };
-	  
+	  console.log("productDatalist",productDatalist,this.state.product);
 	  if(this.state.unitOfMeasurement  === this.state.Units){
 		if ($('#addNewPurchaseOrder').valid()) {
 			if((productDatalist != null && productDatalist.length > 0)) {
@@ -540,7 +605,7 @@ export default class PurchaseManagement extends React.Component {
 				.post('/api/purchaseentry/post',formValues1)
 				.then((response) => {
 				// handle success
-					swal("Thank you. Your Product addeed successfully.");
+					swal("Thank you. Raw Material addeed successfully.");
 				})
 				.catch(function (error) {
 				// handle error
@@ -554,7 +619,8 @@ export default class PurchaseManagement extends React.Component {
 					ItemCode          : "",		
 					Units             : "Kg",
 					unitRate          : "",
-					unitOfMeasurement : "Kg"
+					unitOfMeasurement : "Kg",
+					completeProductName : ""
 				},()=>{
 					this.getData();
 				});  
@@ -580,7 +646,8 @@ export default class PurchaseManagement extends React.Component {
 	      	"purchaseLocation"  : this.state.purchaseLocation,
 	      	"quantity" 			: this.state.quantity,
 			"productName" 		: this.state.product,
-			"ItemCode"          : this.state.ItemCode,
+			"itemCode"          : this.state.ItemCode,
+			"productCode"       : this.state.ProductCode,
 	      	"unit" 				: this.state.Units,
 			"unitRate" 	        : this.state.unitRate,
 			"unitOfMeasurement" : this.state.unitOfMeasurement,
@@ -606,7 +673,8 @@ export default class PurchaseManagement extends React.Component {
                     "unitRate"          : "",
 				    "purchaseNumber"    : "",
 					"Details" 		    :"",	
-                    "editId"            : ""
+					"editId"            : "",
+					"completeProductName" : ""
                 })
             })
             .catch((error)=>{
@@ -614,6 +682,7 @@ export default class PurchaseManagement extends React.Component {
             })
        }
 	}
+
 
 
 	render() {
@@ -657,7 +726,7 @@ export default class PurchaseManagement extends React.Component {
 									<div  className="row NOpadding mtop20"> 
 										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
 											<label >Purchase No <i className="redFont">*</i></label>
-											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={ this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.handleChange.bind(this)} id="purchaseNumber"/>
+											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.onChangePoNum.bind(this)} id="purchaseNumber"/>
 										</div>
 										<div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12 mbt25">
 											<label >Details</label>
@@ -670,15 +739,18 @@ export default class PurchaseManagement extends React.Component {
 											<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25 ">
 												<label >Select Product <i className="redFont">*</i></label>
 												{/*<input type="text" className="form-control" id="email"/>*/}
-												<input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />
-												{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
-												
+												{/* { this.state.completeProductName ? 
+													<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="completeProductName" /> 
+												   : <input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />}
+												 */}
+												<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.onChangeProduct.bind(this)} name="completeProductName" /> 
+
 												<datalist id="product" name="product" className="productDatalist">
 													{
 														this.state.productArray && this.state.productArray.length > 0 ?
 															this.state.productArray.map((data, i)=>{
 																return(
-																	<option key={i} value={data.productName} data-itemcode={data.itemCode} data-unit={data.unit}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+																	<option key={i} value={data.productName} data-itemcode={data.itemCode} data-productcode={data.productCode} data-unit={data.unit} data-productname={data.productName}>{data.productName} - {data.productCode} - {data.itemCode}</option>
 																);
 															})
 														:
@@ -688,14 +760,14 @@ export default class PurchaseManagement extends React.Component {
 											</div>
 											<div className="formht col-lg-3 col-md-3 col-sm-12 col-xs-12">
 											<div className="">
-												<label className="control-label statelabel locationlabel" >Unit Rate <i className="redFont">*</i></label>
+												<label className="control-label statelabel locationlabel" >Rate Per Unit<i className="redFont">*</i></label>
 												<div className="input-group inputBox-main  new_inputbx unitRateDiv" >
 													<div className="input-group-addon inputIcon">
 													   <i className="fa fa-rupee"></i>
 													</div> 
-													<input type="number" placeholder="" className="form-control new_inputbx1" value={ this.state.unitRate} name="unitRate" refs="unitRate" onChange={this.handleChange.bind(this)} id="unitRate" min="1" onBlur={this.calculateAmount.bind(this)} style={{borderRight: "1px solid gray"}}/>
+													<input type="text" placeholder="" className="form-control new_inputbx1"  value={ this.state.unitRate} name="unitRate" pattern="\d{5}" maxlength="5" refs="unitRate" onChange={this.onChangeUnitRate.bind(this)} id="unitRate" min="1"  onBlur={this.calculateAmount.bind(this)}  style={{borderRight: "1px solid gray"}}/>
 													<div className="input-group-addon inputIcon prependSelect" style={{"borderLeft": "1px solid gray !important"}}>
-														<select id="unitOfMeasurement"  name="unitOfMeasurement" value={this.state.unitOfMeasurement} onChange={this.handleChange.bind(this)}  className="input-group" style={{"border":0,"width": "40px","fontSize":"small"}}> 
+														<select id="unitOfMeasurement"  name="unitOfMeasurement" value={this.state.unitOfMeasurement} onChange={this.onChangeUnit.bind(this)}  className="input-group" style={{"border":0,"width": "65px","fontSize":"small"}}> 
 															<option selected={true} disabled={true}>-- Select --</option>
 															{
 																this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -707,10 +779,7 @@ export default class PurchaseManagement extends React.Component {
 																:
 																null
 															}
-															{/* <option value="Kg">Kg</option>
-															<option value="Ltr">Ltr</option>
-															<option value="Gn">Gm</option>
-															<option value="Nos">Nos</option> 	 */}
+														
 														</select>
 													</div> 
 												</div>     
@@ -720,8 +789,8 @@ export default class PurchaseManagement extends React.Component {
 										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 											<label >Quantity <i className="redFont">*</i></label>
 											<div className="quantityDiv">
-												<input type="number" placeholder="Enter quantity " className="h34 col-lg-8 col-md-8 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
-												<select id="Units"  name="Units" value={this.state.Units} refs="Units" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-4 col-xs-4 col-sm-4 h34">
+												<input type="number" placeholder="Enter quantity " className="h34 col-lg-7 col-md-7 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
+												<select id="Units" className="col-lg-5 col-md-5 col-xs-4 col-sm-4 h34" name="Units" value={this.state.Units} refs="Units" onChange={this.onChangeUnit.bind(this)}  >
 												    <option selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?

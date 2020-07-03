@@ -345,7 +345,7 @@ export default class DeliveryChallans extends React.Component {
                                                     <tr key={index}>
 														<td>{result.productName} <br/><small>{result.productCode} - {result.itemCode}</small></td>
                                                         <td>{result.orderedQty} {result.orderedUnit}</td>
-                                                        <td>{result.suppliedQty} {result.supplidUnit}</td>
+                                                        <td>{result.suppliedQty} {result.suppliedUnit}</td>
                                                         {/* <td><i onClick={this.changeAttribute.bind(this)} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title={ (result.status === "deliveryAccepted" )? "Disable It" : "Enable It" } className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i></td>	 */}
                                                         <td>
                                                         <i  onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;

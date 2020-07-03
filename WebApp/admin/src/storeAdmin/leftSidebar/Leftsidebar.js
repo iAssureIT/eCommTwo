@@ -238,17 +238,17 @@ export default class AdminDashboard extends Component{
               <ul className="treeview-menu" >                    
                 <li className="noPadLR"> 
                   <a href="/purchase-management" data-id="/purchase-management" title="Raw Material Inward" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Raw Material Inward
+                    <i className="fa fa-circle-o dashr" />Raw Material
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/finished-goods" data-id="/finished-goods" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Finished Goods
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
                   <a href="/raw-material-stock-report" data-id="/raw-material-stock-report" title="Raw Material Stock Report" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Raw Material Stock Report
-                  </a> 
-                </li>  
-                <li className="noPadLR"> 
-                  <a href="/finished-goods" data-id="/finished-goods" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Finished Goods Inward
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
@@ -266,6 +266,12 @@ export default class AdminDashboard extends Component{
                     <i className="fa fa-circle-o dashr" />Franchise Order Summary
                   </a> 
                 </li>  
+                <li className="noPadLR">
+                  <a href="/distribution" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
+                    <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
+                    <span className="sidebarMenuTitle">Distribution Management</span>
+                  </a>
+                </li>
                 <li className="noPadLR"> 
                   <a href="/franchise-allowable-pincode" data-id="/franchise-allowable-pincode" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Allowable Pincode
@@ -358,27 +364,7 @@ export default class AdminDashboard extends Component{
                 <span className="sidebarMenuTitle">Franchise Master</span>
               </a>
             </li>
-
-            {/* <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
-              <a href="/franchise_distribution" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
-                <i className="fa fa-money" aria-hidden="true"></i>
-                <span className="sidebarMenuTitle">Franchise Distribution</span>
-              </a>
-            </li> */}
-
-            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
-              <a href="/distribution" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
-                <i className="fa fa-money" aria-hidden="true"></i>
-                <span className="sidebarMenuTitle">Distribution Management</span>
-              </a>
-            </li>
-
-            {/* <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
-              <a href="/FranchiseDeliveryChallan" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
-                <i className="fa fa-money" aria-hidden="true"></i>
-                <span className="sidebarMenuTitle">FranchiseDeliveryChallan</span>
-              </a>
-            </li> */}
+            
           </ul>
         </section>
       </aside>

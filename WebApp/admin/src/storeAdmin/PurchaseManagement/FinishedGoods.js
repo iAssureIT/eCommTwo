@@ -728,7 +728,7 @@ export default class FinishedGoods extends React.Component {
    /* Weight Convertor start*/
     weightConverter() {
 	   // Gram to Kilograms
-		if(this.state.OutwardUnit == 'Gm' && this.state.fgUnitWt == "Kg"){
+		if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "kg"){
 			//convert fgunit to gram and calculate
 			var FgUnitKg=this.state.fgUnitQty*1000;
 			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
@@ -741,7 +741,7 @@ export default class FinishedGoods extends React.Component {
 				this.checkValidInward();
 			})
 			
-		}else if(this.state.OutwardUnit == 'Gm' && this.state.fgUnitWt == "Gm"){
+		}else if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "gm"){
 			var FgUnitGm=this.state.fgUnitQty/1000;
 			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
 			this.setState({
@@ -753,20 +753,20 @@ export default class FinishedGoods extends React.Component {
 		}
 
 		// Kilograms to Gram
-		if(this.state.OutwardUnit == 'Kg' && this.state.fgUnitWt == "Gm"){
+		if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "gm"){
 			//convert fgunit to kg and calculate
 			var FgUnitKg=this.state.fgUnitQty*1000;
 			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
 			var Scrap =  this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty/1000);
 			this.setState({
-				fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty)/1000,
+				fgUnitQtyforFG    : (this.state.fgUnitQty/1000) * (this.state.fgTotalQty),
 				scrapQty          : Scrap > 0 ? Scrap : 0,
 				scrapUnit         : this.state.OutwardUnit,
 			},() => {
 				this.checkValidInward();
 			})
 			
-		}else if(this.state.OutwardUnit == 'Kg' && this.state.fgUnitWt == "Kg"){
+		}else if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "kg"){
 			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
 			this.setState({
 				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
@@ -776,7 +776,7 @@ export default class FinishedGoods extends React.Component {
 			})
 		}
 
-		if(this.state.OutwardUnit.toLowerCase()  != 'kg' || this.state.OutwardUnit.toLowerCase()  != 'gm'){
+		if(this.state.OutwardUnit.toLowerCase()  != 'kg' && this.state.OutwardUnit.toLowerCase()  != 'gm'){
 			var Scrap = Number(this.state.OutwardRawMaterial) - Number(this.state.fgUnitQtyforFG);
 			this.setState({
 				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,

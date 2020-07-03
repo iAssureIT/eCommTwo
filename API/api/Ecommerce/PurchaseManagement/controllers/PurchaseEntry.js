@@ -8,15 +8,6 @@ const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasur
 const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
 
 exports.insert_purchaseEntry = (req,res,next)=>{
-	/*PurchaseEntry.find({"purchaseStaff":req.body.purchaseEntry})
-		.exec()
-		.then(data =>{
-            console.log(req.body)
-            if(data && data.length > 0){
-                res.status(200).json({
-                    "message": "PurchaseEntry already exists."
-                });
-            }else{*/
                 const purchaseEntry = new PurchaseEntry({
                     _id                       : new mongoose.Types.ObjectId(),                    
                     purchaseDate              : req.body.purchaseDate,
@@ -24,7 +15,8 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                     purchaseLocation          : req.body.purchaseLocation,
                     /*productId                 : req.body.productId,
                     itemId                    : req.body.itemId,*/
-                    itemCode                  : req.body.ItemCode,
+                    itemCode                  : req.body.itemCode,
+                    productCode               : req.body.productCode,
                     productName               : req.body.productName,
                     quantity                  : req.body.quantity,
                     unit                      : req.body.unit,
@@ -51,14 +43,7 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                         error: err
                     });
                 });
-   /*         }
-	})
-	.catch(err =>{
-		console.log(err);
-		res.status(500).json({
-			error: err
-		});
-	});*/
+   
 };
 exports.fetch_one = (req,res,next)=>{
     PurchaseEntry.findOne({"_id":req.params.fetchId})
@@ -88,6 +73,8 @@ exports.update_PurchaseEntry = (req,res,next)=>{
                     productId                 : req.body.productId,
                     itemId                    : req.body.itemId,
                     productName               : req.body.productName,
+                    productCode               : req.body.productCode,
+                    itemCode                  : req.body.itemCode,
                     quantity                  : req.body.quantity,
                     unit                      : req.body.unit,
                     amount                    : req.body.amount,
@@ -135,6 +122,7 @@ exports.get_datewise_purchaceEntry = (req, res, next)=>{
         }
     }
 
+    //console.log("selector",selector);
     PurchaseEntry.find(selector)
     .then(data=>{
        // console.log("data----=",data);

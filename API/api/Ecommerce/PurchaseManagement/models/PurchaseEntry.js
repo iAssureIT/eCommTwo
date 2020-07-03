@@ -8,6 +8,7 @@ const PurchaseEntrySchema = mongoose.Schema({
     productId                 : String,/*_id from productMaster*/
     itemId                    : String,/*itemID from productMaster*/
     itemCode                  : String,
+    productCode               : String,
     productName               : String,
     quantity                  : Number,
     unit                      : String,
