@@ -88,11 +88,10 @@ componentWillMount() {
             
             {
               this.state.categoryData && this.state.categoryData.map((data,index)=>{
-
                   return(
                     <li key={index} className="top-level-link">
                       <a className="mega-menu" href={"/section/"+data.sectionUrl+'/'+data._id}><span>{data.section}</span></a>
-                      <div className="col-lg-3 col-md-3 sub-menu-block textAlignLeft">
+                      <div className="col-lg-4 col-md-4 sub-menu-block textAlignLeft">
                         <div className="row">
                           <div className="col-md-3 col-lg-3 col-sm-3 megamenusubwidth">
                           <ul className="sub-menu-head">

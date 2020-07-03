@@ -12,10 +12,11 @@ const initialState = {
 	bestSellerData : [],
 	searchResult:[],
 	searchCriteria: [],
-	categoryDetails:[]
+	categoryDetails:[],
+	formToShow :"login",
 }
 const reducer = (state = initialState,action) =>{
-	console.log("Inside reducer======");
+
 	const newState = {...state}; 
 	if(action.type === "CART_COUNT_INITIALLY"){
 		newState.cartCount 	= action.cartCount;
@@ -46,7 +47,10 @@ const reducer = (state = initialState,action) =>{
 	if(action.type === "GET_CATEGORY_DETAILS"){
 		newState.categoryDetails 		= action.categoryDetails;
 	}	
-
+	if(action.type === "MODAL_DATA"){
+		newState.formToShow  = action.formToShow;
+		console.log("FormtoShow:===",newState.formToShow);
+	}
 	return newState;
 }
 

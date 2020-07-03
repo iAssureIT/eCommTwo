@@ -9,8 +9,11 @@ import axios from 'axios';
 import jQuery from 'jquery';
 import 'jquery-validation';
 import swal from 'sweetalert';
-import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 
+import { bindActionCreators }     from 'redux';
+import {getForm} from '../actions/index';
+
+import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 import SignUp from './SignUp.js';
 
 class Login extends Component {
@@ -160,8 +163,18 @@ class Login extends Component {
     // $(".modal-backdrop").hide(); 
   }
   openSignUpModal(event){
+      event.preventDefault();
+      this.props.formToShow("signUp");
+      console.log("getForm value = ", this.props.formToShow);
       
   }
+
+  openForgotPasswordModal(event){
+    event.preventDefault();
+    this.props.formToShow("forgotPassword");
+    console.log("getForm value = ", this.props.formToShow);
+    
+}
   showSignPass() {
     $('.showPwd').toggleClass('showPwd1');
     $('.hidePwd').toggleClass('hidePwd1');
@@ -239,7 +252,7 @@ class Login extends Component {
                   <div className="row">
                     <div className="textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10">
                       <div className="row loginforgotpass">
-                        <a href='/forgotpassword' className="">Forgot Password?</a>
+                        <a href='/forgotpassword' className="" onClick={this.openForgotPasswordModal.bind(this)}>Forgot Password?</a>
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignRight">
@@ -274,24 +287,16 @@ class Login extends Component {
   }
 }
 
-// const mapStateToProps = (state)=>{
-//   console.log("state = ",state)
-//   return {
-//     userDetails   : state.userDetails,
-//   }
-// };
+const mapStateToProps = (state) => {
+  console.log("state:",state);
+  return {
+    formToShow     : state.formToShow,
+  }
+}
 
+const mapDispachToProps = (dispatch) => {
+  return  bindActionCreators({formToShow :getForm}, dispatch)
+}
 
-// const mapDispatchToProps = (dispatch)=>{
-//   return {
-//       setGlobalUser  : (userDetails)=> dispatch({
-//                           type      : "SET_GLOBAL_USER",
-//                           userDetails : userDetails,
-//                         }),
-//   }
-// };
-
-
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
-export default Login;
+export default connect(mapStateToProps, mapDispachToProps)(Login);
+// export default Login;

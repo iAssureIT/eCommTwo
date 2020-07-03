@@ -145,10 +145,20 @@ export default class AskPincode extends Component {
                                                         </div>
                                                         <div className="pincodeChild">
                                                             <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 NotAllowDeliveryMsg deliveryMsg">
-                                                                {this.state.NotAllowDeliveryMsg}                                    
+                                                                <span>{this.state.NotAllowDeliveryMsg}  </span>
+                                                                <div className=" col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 pincodeBtnwrapper">
+                                                                    <input type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-6 col-xs-6 pull-left pinocodeInput" 
+                                                                        ref="pincode" name="pincode" placeholder = "Enter Pincode..."/>
+                                                                    <button className="col-lg-5 col-md-6 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                                </div>
                                                             </div>
                                                             <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 AllowDeliveryMsg deliveryMsg">
-                                                                {this.state.AllowDeliveryMsg}                                            
+                                                                <span>{this.state.AllowDeliveryMsg} </span>
+                                                                <div className=" col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 pincodeBtnwrapper">
+                                                                    <input type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-6 col-xs-6 pull-left pinocodeInput" 
+                                                                        ref="pincode" name="pincode" placeholder = "Enter Pincode..."/>
+                                                                    <button className="col-lg-5 col-md-6 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                                </div>
                                                             </div>
                                                             <div  className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>

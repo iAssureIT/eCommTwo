@@ -6,7 +6,7 @@ import { withRouter }             from 'react-router-dom';
 import Message                    from '../../blocks/Message/Message.js'; 
 import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
-import {getCartData, searchProductAction} from '../../actions/index';
+import {getCartData, searchProductAction,getForm} from '../../actions/index';
 import $                          from "jquery";
 import cartImg                    from "../../../sites/currentSite/images/icon-cart.png";
 import searchModalImg             from "../../../sites/currentSite/images/icon-search.png";
@@ -18,12 +18,13 @@ import AskPincode     from '../../blocks/AskPincode/AskPincode.js';
 
 import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
 import iconUserHeader  from "../../../sites/currentSite/images/icon-user-header.png";
-import logoUnimandai   from "../../../sites/currentSite/images/logoUnimandai.png";
-// import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
-
+import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
+import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
+import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
+import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
+import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
-
-// import './Header.css';
+import '../../../sites/currentSite/common/Header.css';
 // import jQuery from "jquery";
 
 
@@ -45,9 +46,7 @@ class unimandaiHeader extends Component {
       userData       : {},
       firstname      : '',
       lastname       : '',
-      loginForm      : "false",
-      signUpForm     : "false",
-      forgotPassForm : "false",
+      formToShow     : "login",
     }  
     
     if (window.location.pathname !== "/searchProducts") {
@@ -56,19 +55,10 @@ class unimandaiHeader extends Component {
     }
 }
 
-openSignUpModal(event){
-  this.setState({
-    "signUpForm" : "true",
-    "LoginForm" : "false",
-    "forgotPassForm" : "false",
-  });
-}
-
 componentWillMount() {
+      this.props.formToShow("login");
+      console.log("getForm value ===",this.props.formToShow);
 
-      if(localStorage.getItem("user_ID"=="")){
-
-      }
       this.setState({
         loginForm      : "true",
       })
@@ -148,7 +138,6 @@ componentWillMount() {
     }
 
   }
-
 
   componentWillReceiveProps(nextProps) {
     // var categoryArray = [];
@@ -424,7 +413,8 @@ loginPage(event){
         <Message messageData={this.state.messageData} />
         <header className="col-lg-12 headerflow">            
           <div className="row">
-            <div id="topbar" className="topheadbar">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip"></div>
+            {/* <div id="topbar" className="topheadbar">
                 <div className="container headerContainer">
                     <div className="inner-topbar box">
                         <div className="float-left">
@@ -439,7 +429,7 @@ loginPage(event){
                         <div className="col-lg-3 float-right">
                             <div className="hover-menu">
                             {user_ID 
-                            ?    
+                            ? 
                                 <li className="dropdown">
                                     <a className="acc" href="/account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
                                     <ul className="col-lg-3 dropdown-menu list-menu">                                        
@@ -471,10 +461,9 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
-                              <li className="dropdown">
-                                  {/* <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span> */}
+                              <li className="dropdown">                                
                                   <span className="  "><a href="" className="loginButton" data-toggle="modal" data-target="#loginFormModal" area-hidden ="true">Login </a></span>
-                                  <span className="  "><a href="" className="loginButton" data-toggle="modal" data-target="#pincodeModal" area-hidden ="true">Check Delivery </a></span>
+                                  <span className="  "><a href="" className="loginButton" data-toggle="modal" data-target="#pincodeModal" area-hidden ="true"><i class="fa fa-map-marker" aria-hidden="true"></i> </a></span>
                                   <div id="loginFormModal" className="modal in">
                                     <div className="modal-dialog">                                        
                                         <div className="modal-content loginModalContent">                            
@@ -501,34 +490,18 @@ loginPage(event){
                                             </div>
                                         </div>
                                     </div>
-                                  </div>
-                                  
+                                  </div>                                  
                               </li>
-                            // <li className="dropdown">
-                            //     <a className="acc" href="login" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>                           
-                            //     <ul className="dropdown-menu logout-list-menu">
-                            //       <li className="col-lg-12 col-md-12 col-sm-12">
-                            //         <div className="welcomeTxt">Welcome</div>
-                            //         <p>To access account and manage orders</p>
-                            //         <div className="borderTop"></div>
-                            //         <span className=" pull-left signInOutBtn"><a href="/login"><b> SIGN IN</b> </a></span>
-                            //         <span className=" pull-right signInOutBtn"><a href="/signup"><b>SIGN UP</b></a></span>
-                            //       </li>
-                            //     </ul>
-                            // </li>
-
-
                             }
                             </div>
                         </div>
                     </div>
                 </div>                
-            </div> 
+            </div>  */}
 
             <div className="col-lg-12 firstDiv">
-              <div className="row">              
-                
-                <div className="col-lg-2 col-md-2 col-sm-2 header-top">
+              <div className="row">           
+                <div className="col-lg-2 col-md-1 col-sm-2 header-top">
                     <div className="contaner">
                         <div className="box col-lg-12 col-md-12 col-sm-12">
                             <p className="icon-menu-mobile"><i className="fa fa-bars"></i></p>
@@ -542,41 +515,118 @@ loginPage(event){
                 </div>
 
                 <nav>
-                    <div className="col-lg-8 col-md-8 col-sm-8 megamenuWrapper">
+                    <div className="col-lg-6 col-md-6 col-sm-8 megamenuWrapper">
                         <Megamenu />
                     </div>
                 </nav>
-
+                
+                <div className="col-lg-3 col-md-3 NOpadding searchBoxWrapper">
+                              <div className="col-lg-12 col-md-12 searchBox">
+                                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
+						                      <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
+                              </div> 
+                </div>
 
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
-                    {/* <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
-                      <img src={searchModalImg} className="search"></img>                      
-                    </div> */}
-
-                   {/* Search modal */}
-                    {/* <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
-                        <div className="modal-dialog modal-lg">
-                            <div className="modal-content popup-search">
-                                <button type="button" className="close" data-dismiss="modal"><i className="fa fa-times" aria-hidden="true"></i></button>
-                                <div className="modal-body search-modal-body">
-                                    <div className="input-group">
-                                        <input type="text" className="form-control control-search" placeholder="Search and hit enter..."/>
-                                        <button className="button_search" type="button">Search</button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-
-                    <div className="col-lg-5 col-md-5 col-sm-5 dropdown cart hover-menu ">                        
-                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart">
-                            <img src={cartImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>                            
+                      <div className="col-lg-4 col-md-4 col-sm-4">
+                          {/* <span className="  "><a href="" className="faIcon" data-toggle="modal" data-target="#pincodeModal" area-hidden ="true"><i class="fa fa-map-marker" aria-hidden="true"></i> </a></span> */}
+                          <span className="  "><a href="" className="faIcon " data-toggle="modal" data-target="#pincodeModal" area-hidden ="true">
+                            <img src={modalImg} className="icon-cart"></img>
+                          </a></span>
+                          
+                      </div>
+                      <div className="col-lg-4 col-md-4 col-sm-4">
+                          {user_ID 
+                            ? 
+                                <li className="dropdown">
+                                    <span className="  "><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" area-hidden ="true">                         
+                                    <img src={loginActiveIconImg} className="icon-cart"></img>
+                                </a></span>
+                                    <ul className="col-lg-3 dropdown-menu list-menu">                                        
+                                        <li className="col-lg-12 NOpadding">
+                                            <a href="/">
+                                            <div className="row">
+                                                <div className="col-lg-2">
+                                                <div className="shortnamebk">
+                                                    <div className="">                                                    
+                                                        <div className="userinfo">{this.state.firstname}{this.state.lastname}</div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div className="col-lg-10">
+                                                <div className="col-lg-12">
+                                                    <div className="userinfotext"><span >{this.state.userData ? this.state.userData.fullName : null}</span></div>
+                                                </div>
+                                                <div className="col-lg-12">
+                                                    <div className="useremail"><span>{this.state.userData ? this.state.userData.email : null}</span></div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </a>
+                                        </li>                                  
+                                        <li className="col-lg-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
+                                        <li className="col-lg-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
+                                        <li className="col-lg-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
+                                        <li className="col-lg-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
+                                    </ul>
+                                </li>
+                            :
+                            <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" area-hidden ="true">                            
+                              <img src={loginIconImg} className="icon-cart"></img></a>
+                            </span>
+                          }
+                      </div>
+                      
+                      <div id="loginFormModal" className="modal in">
+                          <div className="modal-dialog">                                        
+                              <div className="modal-content loginModalContent">                            
+                                  <div className="modal-body">   
+                                  <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                                      {/* {this.props.formToShow === "login" ? */}
+                                      {this.state.formToShow === "login" ?
+                                          <div className="col-lg-12 col-md-12 loginForm">
+                                              <Login />
+                                          </div>  
+                                      : null
+                                      }  
+                                      {this.props.formToShow === "signUp" ?
+                                          <div className="col-lg-12 col-md-12 signupForm">
+                                              <SignUp />
+                                          </div>  
+                                      : null
+                                      } 
+                                      {this.props.formToShow === "forgotPassword" ?
+                                          <div className="col-lg-12 col-md-12 loginForm">
+                                              <ForgotPassword />
+                                          </div>  
+                                      : null
+                                      }                                                                
+                                  </div>
+                              </div>
+                          </div>
+                        </div> 
+                    
+                    <div className="col-lg-4 col-md-4 col-sm-5 dropdown faIcon cart hover-menu ">
+                      <span>  
+                      {user_ID ?                      
+                        <a href={user_ID ? "/cart" : null} className="icon-cart">
+                            <img src={cartIconImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>
+                            {/* <i class="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                             </span>
                         </a>
+                        :
+                        <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal">
+                            <img src={cartIconImg} className="icon-cart"></img>
+                            {/* <i class="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
+                            <span className="cart-count">
+                                {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
+                            </span>
+                        </a>
+                      }
+                      </span>
                         {user_ID ?
                           <ul className="dropdown-menu cart-dropdown-menu" role="menu" aria-labelledby="menu1">
                             <div className="checkoutBtn">
@@ -654,13 +704,14 @@ loginPage(event){
 }
 const mapStateToProps = (state) => {
   return {
-    searchResult: state.searchResult,
-    searchCriteria: state.searchCriteria,
-    recentCartData :  state.recentCartData
+    searchResult   : state.searchResult,
+    searchCriteria : state.searchCriteria,
+    recentCartData : state.recentCartData,
+    formToShow     : state.formToShow,
 
   }
 }
 const mapDispachToProps = (dispatch) => {
-  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction }, dispatch)
+  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction, formToShow :getForm}, dispatch)
 }
 export default connect(mapStateToProps, mapDispachToProps)(withRouter(unimandaiHeader));

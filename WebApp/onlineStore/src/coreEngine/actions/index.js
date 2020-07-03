@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export function getCartData() {
-
 	return dispatch =>{
 
 	// $('.fullpageloader').show();
@@ -33,4 +32,9 @@ export const searchProductAction = (searchCriteria, searchResult )=> ({
       type: 'SEARCH_PRODUCT',
       searchCriteria: searchCriteria,
       searchResult: searchResult
+});
+
+export const getForm = formToShow => ({
+  type: 'MODAL_DATA',
+  formToShow: formToShow
 });

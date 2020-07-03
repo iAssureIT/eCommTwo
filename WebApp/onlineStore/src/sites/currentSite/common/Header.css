@@ -440,7 +440,14 @@ ul.box-static-link li span {
     width: 38px;
     padding: 10px;
 }
-
+.userinfo, .userinfotext {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.userinfo{
+  padding-top: 10px;
+}
 .userinfotext{
     color: #555;
     font-size: 12px;
@@ -456,7 +463,8 @@ ul.box-static-link li span {
     color: #FFF;
     font-size: 12px;
     font-weight: 600;
-    text-transform: capitalize;
+    text-transform: uppercase;
+    margin-top: -13px;
     /*background-color: #A2632C;*/
 
 }
@@ -466,6 +474,8 @@ ul.box-static-link li span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 25px;
+  margin-bottom: 15px;
 }
 
 /* Absolute Center Spinner */

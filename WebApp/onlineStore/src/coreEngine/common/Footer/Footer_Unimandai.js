@@ -6,8 +6,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
 import '../../../sites/currentSite/common/Footer.css';
+import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
 
 import paypal_footer from "../../../sites/currentSite/images/paypal-footer.png";
+import footerAnimationImg from '../../../sites/currentSite/images/bg-footer.jpg';
 
 export default class Footer extends Component {
 
@@ -20,202 +22,114 @@ export default class Footer extends Component {
         }
     }
     componentDidMount(){
-     
-      this.getCompanyDetails();
-
-      axios.get("/api/category/get/list")
-                .then((response)=>{
-                  this.setState({
-                      categoryDetails : response.data
-                  })
-                })
-                .catch((error)=>{
-                    console.log('error', error);
-                })  
-    }
-
-    getCompanyDetails(){
-        axios.get("/api/entitymaster/get/one/companyName/1")
-          .then((response)=>{ 
-            console.log("companyData:" ,response.data);
-            this.setState({
-                companyInfo   : response.data[0],
-                locationdata  : response.data[0].companyLocationsInfo,             
-            },
-                ()=>{
+        axios.get("/api/sections/get/get_megamenu_list")
+            .then((response)=>{
+             
+              this.setState({ 
+                  categoryData : response.data
               })
-          })
-          .catch((error)=>{
+            })
+            .catch((error)=>{
                 console.log('error', error);
-          })
+            })
     }
+
+    // getCompanyDetails(){
+    //     axios.get("/api/entitymaster/get/one/companyName/1")
+    //       .then((response)=>{ 
+    //         console.log("companyData:" ,response.data);
+    //         this.setState({
+    //             companyInfo   : response.data[0],
+    //             locationdata  : response.data[0].companyLocationsInfo,             
+    //         },
+    //             ()=>{
+    //           })
+    //       })
+    //       .catch((error)=>{
+    //             console.log('error', error);
+    //       })
+    // }
 
     render(){
        return(
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerWrapper">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerWrapper" >
         <br/>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerAnimation"></div>
+        {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerAnimation" style={{'background' : "url("+footerAnimationImg +")" }}></div> */}
+        <div className="container">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer1">
-            <div className="container col-lg-offset-1  col-lg-10 col-md-10 col-sm-10 col-xs-10">
-            <div className="col-sm-12 col-sm-3">
-                <div className="footer-top">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
-                About Us
-                </div>   
-                 <p className="footer-v3">With more than 15 years of experience we can proudly say that we are one of the best in business, a trusted supplier for more than 1000 companies...</p>
+            <div className="col-lg-7 col-md-6 col-sm-6 col-xs-12 onlineShoppingWrapper">
+                <div>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Online Shopping</div>
+                    <div className=" col-lg-2 col-md-4 col-sm-6 col-xs-12 hrLine"></div>
                 </div>
-            </div>
-            <div className="col-sm-12 col-sm-3">
-                <div className="footer-top">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding title-footer"> 
-                     Information
-                </div>   
-               <ul className="sublist">
-                    <li><a href="/">Delivery</a></li>
-                    <li><a href="/">Legal Notice</a></li>
-                    <li><a href="/">About Us</a></li>
-                    <li><a href="/">Secure Payment</a></li>
-                    <li><a href="/">Our Stores</a></li>
-                </ul>
-                </div> 
-            </div>
-            <div className="col-sm-12 col-sm-3">
-                <div className="footer-top">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
-                        <p className="footertxt">Get In Touch</p>
-                        <div className="social space-30">
-                            <ul className="no-icon-list socialicon col-lg-12">
-                            <li className="col-lg-2"><a href="#" target="_blank" title="Twitter"><i className="col-lg-3 fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li className="col-lg-2"><a href="#" target="_blank" title="Facebook"><i className="facebook col-lg-3 fa fa-facebook" aria-hidden="true"></i></a></li>
-                            <li className="col-lg-2"><a href="#" target="_blank" title="Instagram"><i className="col-lg-3 fa fa-instagram" aria-hidden="true"></i></a></li>
-                            <li className="col-lg-2"><a href="#" target="_blank" title="Whatsapp"><i className="col-lg-3 fa fa-whatsapp whatsupIcon" aria-hidden="true"></i></a></li>
-                            </ul>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {this.state.categoryData && this.state.categoryData.map((data,index)=>{
+                    return(
+                        <div className="">
+                            <div className=" col-lg-3 col-md-3 col-sm-3 sectionName">
+                                <a className="sectionurl" href={"/section/"+data.sectionUrl+'/'+data._id} ><span>{data.section}</span></a>
+                            
+                            {
+                                data.categorylist.map((cateoryDetails,catindex)=>{                             
+                                
+                                    return(
+                                    <div key={catindex} className="">                                   
+                                        <div className="categortTitle">
+                                            <a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}><span>{cateoryDetails.category}</span></a>
+                                        </div>
+                                    </div>
+                                    );                            
+                                })
+                            }
+                            </div>
                         </div>
-                    </div>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
-                        Payment Accept
-                    </div>
-                    <div><img src={paypal_footer} alt="images"/></div>
-               </div>
+                    );
+                    })
+                }
             </div>
-            <div className="col-sm-12 col-sm-3">
-                <div className="footer-top">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 title-footer NoPadding"> 
-                     Get Newsletter
-                </div>  
-                <p className="footer-v3">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium</p> 
-                <form action="#" method="get" acceptCharset="utf-8" className="subscribe">
-                   <input type="text" className="input-text required-entry validate-email form-control subscribeMail" placeholder="Enter your Email" />
-                    <button className="button button1 hover-white" title="Subscribe" type="submit">Subscribe<i className="fa fa-long-arrow-right"></i></button>
-                 </form>
+            </div>
+
+            <div className="col-lg-2 col-md-3 col-sm-3 col-xs-12 onlineShoppingWrapper">
+                <div>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">About Us</div>
+                    <div className=" col-lg-7 col-md-7 col-sm-6 col-xs-12 hrLine"></div>
+                </div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div className="categortTitle"><a href="/termsandcondition" target="_blank"><span>Terms Of Use</span></a></div>
+                    <div className="categortTitle"><a href="/privacypolicy" target="_blank"><span>Privacy Policy</span></a></div>
+                    <div className="categortTitle"><a href="/returnpolicy" target="_blank"><span>Return Policy</span></a></div>      
+                    <div className="categortTitle"><a href="/legalnotice" target="_blank"><span>Legal Notice</span></a></div>               
                 </div>
             </div>
-            </div>
+            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12 onlineShoppingWrapper">
+               {/* <div className="container"></div> */}
+                <div>
+                    <div className="logo col-lg-8 col-md-8 col-sm-12">
+                        <a href="/" title="Unimandai logo ">
+                            <img src={logoUnimandai} alt="images" className="footerLogoImg col-lg-12"/>
+                        </a>
+                    </div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Connect</div>
+                </div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div className="socialMediaIcons"><a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.instagram.com/accounts/login/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="http://www.youtub.com" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
+                    <div className="socialMediaIcons"><a href="https://web.whatsapp.com/" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></div>                   
+                </div>
+
+            </div>            
         </div>
-       {/* <div className="container">
-            <div className="footer col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                <div className="footer-middle">
-                    <div className="row">
-                        <div className="col-md-12 col-lg-12 col-sm-12 col-xs-12 logo-nb"> 
-                            <a href="/" title="">
-                                <img src="../../../sites/currentSite/images/anasLogo.png" alt="" />
-                            </a>
-                        </div>
-                        <div className="col-md-3 col-lg-3 col-sm-3 col-xs-6"> 
-                            <div className="footer-middle-contact">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"> 
-                                <strong>CONTACT US</strong>
-                            </div>    
-                                <div className="col-lg-3 icondiv">
-                                    <i className="fa fa-map-marker"></i>
-                                </div>
-                                {   this.state.locationdata && this.state.locationdata.length > 1 ?
-
-                                    
-                                        
-                                        this.state.locationdata.map((data, index)=>{
-                                           return(
-
-                                                 <div key={index} className="col-lg-9 addressDetails">  
-                                                    <a>{data.locationType},&nbsp;{data.landmark}<br />{data.blockName}, &nbsp;{data.area},
-                                                    {data.city}-{data.pincode}</a>
-
-                                                </div>
-                                            );
-                                        })
-                                    : null
-                                }
-                            </div>
-                        </div> 
-
-                        <div className="col-md-3 col-lg-3 col-sm-3 col-xs-6">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-                            <strong className="hidelabel">phone</strong> 
-                        </div>
-                            <div className="col-lg-3 icondiv">
-                                <i className="fa fa-phone"></i>
-                            </div>
-                            <div className="col-lg-9 addressDetails">  
-                            <a href="/">Mob:+91-{this.state.companyInfo.companyContactNumber}<br />Mob:+91-{this.state.companyInfo.companyMobileNumber}</a>
-                            </div>
-                        </div> 
-
-                        <div className="col-md-3 col-lg-3 col-sm-3 col-xs-6">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-                        <strong className="hidelabel">contact</strong>
-                        </div>
-                            <div className="col-lg-3 icondiv">
-                                <i className="fa fa-envelope"></i>
-                            </div>
-                            <div className="col-lg-9 addressDetails">  
-                            <a href="/">{this.state.companyInfo.companyEmail}<br />{this.state.companyInfo.companyAltEmail}</a>
-                            </div>
-                        </div>
-
-                        <div className="col-md-3 col-lg-3 col-sm-3 col-xs-6">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">    
-                            <strong>FOLLOW US</strong>
-                        </div>    
-                            <div className="col-lg-12 socialMedia">  
-                                <ul>
-                                    <li><a className="circle spin" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/"> <i className="fa fa-facebook-f icon-facebook"></i></a></li>
-                                    <li><a className="circle spin" target="_blank" rel="noopener noreferrer" href="https://twitter.com/"> <i className="fa fa-twitter icon-twitter icon-twitter"></i> </a></li>
-                                    <li><a className="circle spin" target="_blank" rel="noopener noreferrer" href="https://plus.google.com/"> <i className="fa fa-google-plus icon-gplus"></i></a></li>
-                                    <li className="ic-pinterest"><a className="circle spin" target="_blank" rel="noopener noreferrer" href="https://www.pinterest.com/"> <i className="fa fa-pinterest-square icon-pinterest"></i></a></li>
-                                    <li><a className="circle spin" target="_blank" rel="noopener noreferrer" href="http://www.linkercreative.com/"> <i className="fa fa-linkedin icon-linkedin"></i></a></li>
-                                </ul>
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-                
-                <div className="categoryDiv row">
-                    
-                    
-                    
-                </div>
-                <br />
-            </div>
-        </div>*/} 
+        </div>
+       
         <div className="footer3">
             <div className="container">
             <div className="footer_bottom">
                 <div className="col-sm-4 col-md-4 col-lg-6 copyrighttxt">
-                    <p>Copyright @2020 <i className="fa fa-copyright"></i> Unimandai All Rights Reserved.</p>
+                    <p>Copyright @2020 <i className="fa fa-copyright"></i> <span className="uniColor">Uni</span><span className="mandaiColor">mandai</span> All Rights Reserved.</p>
                 </div>
                 <div className="col-sm-6 col-md-6 col-lg-6 footernabbar">
-                 <ul>
-                  <li><a href="#home">Contact Us</a></li>
-                  <li><a href="#news">Term of Use</a></li>
-                  <li><a href="#contact">Privacy Policy</a></li>
-                  <li><a href="#about" className="">Site Map</a></li>
-                  <li><a href="#about" className="sitemapDiv">Language:</a></li>
-                  <li><a href="#about" className="sitemapDiv">Price:</a></li>
-                </ul>
-
-                {/*<a href="#">
-                    <img src="http://demo8.cmsmart.net/mag2_amazon_themeforest/pub/media/multistore/icon/icon-footer.png" alt="" />
-                </a>*/}
+                    <span>Design & Developed by <a href="https://www.iassureit.com" target="_blank"> iAssure International Technologies Pvt. Ltd. </a> Version 1.0</span>
                 </div>
             </div>
             </div>

@@ -17,21 +17,27 @@ export default class OurCources extends React.Component {
 			"OurCources"		: [
 								{
 									blogDate:"DEC 17,2016",
-									blogTitle:"100% Organic",
-									blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor.",
+									blogTitle:"100% Fresh ",
+									blogPara:"Fruits and vegetables are an important part of a healthy diet. That’s why we always provide Fresh products. We believe in “Good Quality” of products.", 
 									bloggerImg:one,
 									blogsubimg:icon_choose_1,
 								},
 								{
 									blogDate:"DEC 17,2016",
-									blogTitle:"Family healthy",
-									blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+									blogTitle:"Sanitized",
+									blogPara:"We ensure you with sanitized fruits and vegetables, which are sanitized with ozone wash. It removes pesticides, fungus and bacteria over it.",								
 									blogsubimg:icon_choose_2,
 								},
 								{
 									blogDate:"DEC 17,2016",
-									blogTitle:"Always Fresh",
-									blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+									blogTitle:"Doorstep services ",
+									blogPara:"We know the importance of time, with just a click you will get everything at your doorstep. Faster than you can imagine. ",								
+									blogsubimg:icon_choose_3,
+								},
+								{
+									blogDate:"DEC 17,2016",
+									blogTitle:"Free Delivery  ",
+									blogPara:"We deliver you all products by taking no delivery charges. You don’t have to pay any additional charges for it. ",								
 									blogsubimg:icon_choose_3,
 								},
 						],
@@ -39,21 +45,27 @@ export default class OurCources extends React.Component {
 		    "OurCourcesmaster" : [
 							{
 								blogDate:"DEC 17,2016",
-								blogTitle:"100% Organic",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor.",
+								blogTitle:"Expanded booking cost ",
+								blogPara:"You never have to wait for opening of booking slots. Our booking slots are 24 hours available. If your booking is done before 9 pm, you will get the delivery by next day evening. ",
 								bloggerImg:one,
 								blogsubimg:icon_choose_4,
 							},
 							{
 								blogDate:"DEC 17,2016",
-								blogTitle:"Family healthy",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+								blogTitle:"Ready to cook veggies  ",
+								blogPara:"Our products which are provided to you are sanitized, neatly graded and chopped which you can directly cook. ",								
 								blogsubimg:icon_choose_5,
 							},
 							{
 								blogDate:"DEC 17,2016",
-								blogTitle:"Always Fresh",
-								blogPara:"Suspendisse ultricies nisi vel quam suscipit, et rutrum odio porttitor",								
+								blogTitle:"Affordability",
+								blogPara:"Despite of sanitizing ,grading ,chopping and packaging in food grade containers, we deliver it to you in the same price of market. There is no extra cost for it. ",								
+								blogsubimg:icon_choose_6,
+							},
+							{
+								blogDate:"DEC 17,2016",
+								blogTitle:"Fast response ",
+								blogPara:"If you order a product from us we will deliver it to your doorstep as soon as possible also",								
 								blogsubimg:icon_choose_6,
 							},
 						]				  
@@ -69,7 +81,18 @@ export default class OurCources extends React.Component {
 					<div className="mtop65">
 					 <div className="ocTitle txt2c offeredTitle text-center"><h3>Why Choose Us</h3></div>
 					  <div className="col-lg-12 ">
-						<div className="col-lg-8 col-lg-offset-2 text-center whyusText"><p>The fact of the matter is that you really know something's organic when you find bugs! they obviously wouldn't have made it that far in a non-organic growing environment, so better than any certification or seal on a package, the presence of creatures let you know the plant was healthy and.</p></div>
+						<div className="col-lg-8 col-lg-offset-2 text-center whyusText">
+							<p>
+								There are various motivations to work with Consumer Fresh Produce. We give the freshest, most 
+								excellent Fruits and Vegetables. Our absolute duty towards the customers, our imaginative utilization 
+								of maturing and arranging innovation, our rigid consistence to sanitation, our effective coordination 
+								and our unmatched customer care.
+								We don't want to push our ideas on to customers, we simply want to make what they want. We 
+								believe in the power of recognition and empowerment leading to great employee engagement. Our 
+								guidelines are “Happy Customer” and “Satisfied Customer”. 
+							</p>							
+
+						</div>
 					  </div> 
 						<div className="col-lg-12 whyUsDiv">
 							<div className="col-lg-3  courceblockDiv1 courceblockDiv12">
@@ -96,7 +119,7 @@ export default class OurCources extends React.Component {
 	                				null
 		                		}
 		                	</div>
-		                		<div className="col-lg-4">
+		                		<div className="col-lg-4 whychooseUsImg">
 		                		 <img src={images_choose}/>
 		                		</div>
                             <div className="col-lg-offset-1 col-lg-3 courceblockDiv1 movemasterdiv">
