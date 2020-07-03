@@ -94,8 +94,6 @@ class IAssureTable extends Component {
 	  	e.preventDefault();
 	  	var tableObjects =  this.props.tableObjects;
 		let id = e.target.id;
-		console.log("orderid ==>",id);
-		
 		axios.get('/api/products/get/one/'+id)
 			.then((response)=>{
 				console.log('response.data product==>>>',response.data);
