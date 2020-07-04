@@ -348,8 +348,8 @@ export default class Header2 extends Component{
                       <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText onHoverEffect ">
                         <span className="col-lg-11 nopadding ">
                           <img src={this.state.profileImage ? this.state.profileImage : "/images/person.png"} className="userIcon"/>
-                          {/* <label className="mailtext">&nbsp;&nbsp;&nbsp;{this.state.fullname ? this.state.fullname : ""}</label> */}
-                          <label className="mailtext">&nbsp;&nbsp;&nbsp;UniMandai Admin</label>
+                          <label className="mailtext">&nbsp;&nbsp;&nbsp;{this.state.fullname ? this.state.fullname : "UniMandai Admin"}</label>
+                          {/* <label className="mailtext">&nbsp;&nbsp;&nbsp;UniMandai Admin</label> */}
                         </span>
                         <span className="textAlignCenter" style={{"marginTop": "4px"}}>
                         </span>

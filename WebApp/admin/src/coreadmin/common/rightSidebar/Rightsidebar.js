@@ -56,7 +56,7 @@ export default class Rightsidebar extends Component{
                       </a>
                   </li>
                   <li className="sidebarMenuText">
-                      <a href="/technicalMaster/tax-rate" title="Technical Masters">
+                      <a href="/technical-master" title="Technical Masters">
                         <i className="fa fa-th-large yellowColor"></i>  
                         <span className="sidebarMenuSubText">Technical Masters </span>
                       </a>

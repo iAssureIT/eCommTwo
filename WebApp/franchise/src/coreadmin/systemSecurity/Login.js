@@ -15,6 +15,7 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
+      btnLoading: false,
       loggedIn: false,
       auth: {
         email: '',
@@ -55,21 +56,109 @@ class Login extends Component {
       }
     });
   }
+  // userlogin(event) {
+  //   event.preventDefault();
+  //   var auth = {
+  //     email: this.refs.loginusername.value,
+  //     password: this.refs.loginpassword.value,
+  //     role: "franchise"
+  //   }
+  //   if ($("#login").valid()) {
+  //     document.getElementById("logInBtn").value = this.setState({ btnLoading: true });
+  //     // document.getElementById("logInBtn").value = 'Please Wait...';
+  //     // axios.post('/api/auth/post/franchise/login', auth)
+  //     console.log("auth:==>",auth)
+  //     axios.post('/api/auth/post/login', auth)
+  //     .then((response) => {
+  //         // this.props.setGlobalUser(response.data.userDetails);
+  //         if (response.data.ID) {
+  //           var  userDetails = {
+  //             firstName : response.data.userDetails.firstName, 
+  //             lastName  : response.data.userDetails.lastName, 
+  //             email     : response.data.userDetails.email, 
+  //             phone     : response.data.userDetails.phone, 
+  //             city      : response.data.userDetails.city,
+  //             companyID : parseInt(response.data.userDetails.companyID),
+  //             locationID: response.data.userDetails.locationID,
+  //             user_id   : response.data.userDetails.user_id,
+  //             roles     : response.data.userDetails.roles,
+  //             token     : response.data.userDetails.token, 
+  //           }
+  //           document.getElementById("logInBtn").value = 'Sign In';
+  //           localStorage.setItem("token", response.data.token);
+  //           localStorage.setItem("user_ID", response.data.ID);
+  //           localStorage.setItem("roles", response.data.roles);
+  //           localStorage.setItem('userDetails', JSON.stringify(userDetails));
+            
+  //           this.setState({
+  //             loggedIn: true
+  //           },()=>{
+  //             this.props.history.push('/dashboard')
+  //             window.location.reload();
+  //           })
+  //         }else if(response.data.message === "USER_BLOCK"){
+  //           swal({
+  //             text : "You are blocked by admin. Please contact Admin."
+  //           });
+  //           document.getElementById("logInBtn").value = 'Sign In';
+  //         }else if(response.data.message === "NOT_REGISTER"){
+  //           swal({
+  //             text : "This Email ID is not registered. Please try again."
+  //           });
+  //           document.getElementById("logInBtn").value = 'Sign In';
+  //         }else if(response.data.message === "INVALID_PASSWORD"){
+  //           swal({
+  //             text : "You have entered wrong password. Please try again."
+  //           });
+  //           document.getElementById("logInBtn").value = 'Sign In';
+  //         }else if(response.data.message === "USER_UNVERIFIED"){
+  //           swal({
+  //             text : "You have not verified your account. Please verify your account."
+  //           })
+  //           .then((value)=>{
+  //             var emailText = {
+  //               "emailSubject"	: "Email Verification", 
+  //               "emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+  //             }
+  //             axios.patch('/api/auth/patch/setsendemailotpusingEmail/'+this.refs.loginusername.value, emailText)
+  //             .then((response)=>{
+  //               swal("We send you a Verification Code to your registered email. Please verify your account.");
+  //               this.props.history.push("/confirm-otp/" + response.data.userID);
+  //             })
+  //             .catch((error)=>{
+  //               swal(" Failed to sent OTP");
+  //             })    
+  //           });
+  //           document.getElementById("logInBtn").value = 'Sign In';
+
+  //         }
+  //     })
+  //     .catch((error) => {
+  //       console.log("error",error);
+  //        swal({
+  //             text : "Please enter valid Email ID and Password"
+  //           })
+  //       document.getElementById("logInBtn").value = 'Sign In';
+  //       if (localStorage !== null) {
+  //       }
+  //     });
+  //   }
+  // }
   userlogin(event) {
     event.preventDefault();
     var auth = {
       email: this.refs.loginusername.value,
       password: this.refs.loginpassword.value,
       role: "franchise"
-    }
+    } 
     if ($("#login").valid()) {
-      // document.getElementById("logInBtn").value = 'Please Wait...';
-      // axios.post('/api/auth/post/franchise/login', auth)
-      console.log("auth:==>",auth)
+      document.getElementById("logInBtn").value = this.setState({ btnLoading: true });
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
+        console.log("response",response)
           // this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
+            this.setState({ btnLoading: false });
             var  userDetails = {
               firstName : response.data.userDetails.firstName, 
               lastName  : response.data.userDetails.lastName, 
@@ -88,6 +177,24 @@ class Login extends Component {
             localStorage.setItem("roles", response.data.roles);
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
             
+            axios.get("/api/entitymaster/get/one/companyName/"+response.data.userDetails.companyID)
+            .then(entity=>{
+              axios.get("/api/adminPreference/get")
+                  .then(preference =>{
+                    var websiteModel = preference.data[0].websiteModel;
+                    // console.log("preference.data[0].websiteModel, ===> ",websiteModel);
+                    localStorage.setItem("websiteModel",websiteModel);
+                  })
+                  .catch(error=>{
+                      console.log("Error in getting adminPreference ===> ", error);
+                    }) 
+    
+              })
+              .catch(error=>{
+                console.log("Error in getting appCompany_entity_id ===> ", error);
+              }) ;
+
+
             this.setState({
               loggedIn: true
             },()=>{
@@ -127,8 +234,8 @@ class Login extends Component {
                 swal(" Failed to sent OTP");
               })    
             });
-            document.getElementById("logInBtn").value = 'Sign In';
-
+            // document.getElementById("logInBtn").value = 'Sign In';
+            this.setState({ btnLoading: false });
           }
       })
       .catch((error) => {
@@ -136,9 +243,7 @@ class Login extends Component {
          swal({
               text : "Please enter valid Email ID and Password"
             })
-        document.getElementById("logInBtn").value = 'Sign In';
-        if (localStorage !== null) {
-        }
+        this.setState({ btnLoading: false });
       });
     }
   }
@@ -194,9 +299,27 @@ class Login extends Component {
                   </div>
 
                 </div>
-                <div className="col-lg-10 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
+                {/* <div className="col-lg-10 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
                   <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
+                </div> */}
+                {
+                  this.state.btnLoading
+                  ?
+                  <div className="col-lg-3 col-lg-offset-4 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight ">
+                  <div align="center" className="cssload-fond">
+                    <div className="cssload-container-general">
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_1"> </div></div>
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_2"> </div></div>
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_3"> </div></div>
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_4"> </div></div>
+                    </div>
+                  </div>
                 </div>
+                  :
+                  <div className="col-lg-10 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
+                    <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
+                  </div>
+                }
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
                     <div className="textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
