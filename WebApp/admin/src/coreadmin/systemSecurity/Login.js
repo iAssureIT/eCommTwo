@@ -68,7 +68,7 @@ class Login extends Component {
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
         console.log("response",response)
-          this.props.setGlobalUser(response.data.userDetails);
+          // this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
             this.setState({ btnLoading: false });
             var  userDetails = {
@@ -155,9 +155,6 @@ class Login extends Component {
          swal({
               text : "Please enter valid Email ID and Password"
             })
-        // document.getElementById("logInBtn").value = 'Sign In';
-        // if (localStorage !== null) {
-        // }
         this.setState({ btnLoading: false });
       });
     }
@@ -260,11 +257,7 @@ class Login extends Component {
                     null
                     }
 
-                    <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12 mt10 textAlignRight">
-                      {/* <div className="row loginforgotpass">
-                        <a href='/signup' className="">Sign Up</a>
-                      </div> */}
-                    </div>
+                    
 
                   </div>
                 </div>
@@ -279,26 +272,9 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state)=>{
-  console.log("state = ",state)
-  return {
-    userDetails   : state.userDetails,
-  }
-};
 
 
-const mapDispatchToProps = (dispatch)=>{
-  return {
-      setGlobalUser  : (userDetails)=> dispatch({
-                          type      : "SET_GLOBAL_USER",
-                          userDetails : userDetails,
-                        }),
-  }
-};
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
 
 
 
