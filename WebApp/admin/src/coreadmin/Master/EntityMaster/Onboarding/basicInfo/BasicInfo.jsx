@@ -122,7 +122,7 @@ class BasicInfo extends Component {
           entityList   : response.data,
           entityID     : response.data[0]._id
         },()=>{
-          console.log("entityID",this.state.entityID,this.state.entityList)
+          // console.log("entityID",this.state.entityID,this.state.entityList)
          {/* if (this.state.entityList.length > 0 && this.state.entityList[0].entityType === "appCompany")
           {
            this.props.history.push('/org-profile/' + this.state.entityID);
@@ -599,22 +599,23 @@ class BasicInfo extends Component {
     var entityID = this.state.entityID;
     console.log("response",entityID)
     if (entityID !== '') {
-      axios.get('/api/entitymaster/get/one/' + entityID)
+      console.log("entityID in edit==>",entityID)
+      axios.get('/api/entitymaster/get/one/'+this.state.entityID)
         .then((response) => {
-          console.log("response",response)
+          console.log("response.data[0].companyName",response.data)
           this.setState({
             "entityID": this.props.match.params.entityID,
-            "entityType": response.data[0].entityType,
-            "companyName": response.data[0].companyName,
-            "groupName": response.data[0].groupName,
-            "website": response.data[0].website,
-            "companyPhone": response.data[0].companyPhone,
-            "companyEmail": response.data[0].companyEmail,
-            "CIN": response.data[0].CIN,
-            "COI": response.data[0].COI,
-            "TAN": response.data[0].TAN,
-            "companyLogo": response.data[0].companyLogo,
-            "userID": response.data[0].ID,
+            "entityType": response.data.entityType,
+            "companyName": response.data.companyName,
+            "groupName": response.data.groupName,
+            "website": response.data.website,
+            "companyPhone": response.data.companyPhone,
+            "companyEmail": response.data.companyEmail,
+            "CIN": response.data.CIN,
+            "COI": response.data.COI,
+            "TAN": response.data.TAN,
+            "companyLogo": response.data.companyLogo,
+            "userID": response.data.ID,
             "createdBy": localStorage.getItem("user_ID")
           })
         })

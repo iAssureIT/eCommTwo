@@ -37,12 +37,12 @@ class EntityDetails extends Component {
   getEntitiesInfo(id){
   	axios.get("/api/entitymaster/get/one/"+id)
       .then((response)=>{
-      	console.log("entityInfo",response)
+      	console.log("entityInfo===>>>",response.data)
         this.setState({
-            entityInfo 	: response.data[0],
+            entityInfo 	: response.data,
             contacts 		: response.data[0].contactData,
             locations 	: response.data[0].locations.reverse(),
-            entityType 	: response.data[0].entityType
+            entityType 	: response.data.entityType
         });
       })
       .catch((error)=>{

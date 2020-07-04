@@ -30,7 +30,7 @@ class BasicInfo extends Component {
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-
+    console.log("this.props.match.params.entityID=====>",this.props.match.params.entityID);
     this.setState({
       entityID: this.props.match.params.entityID
     }, () => {
@@ -122,7 +122,7 @@ class BasicInfo extends Component {
           entityList   : response.data,
           entityID     : response.data[0]._id
         },()=>{
-          console.log("entityID",this.state.entityID,this.state.entityList)
+          console.log("entityID",this.state.entityID)
          {/* if (this.state.entityList.length > 0 && this.state.entityList[0].entityType === "appCompany")
           {
            this.props.history.push('/org-profile/' + this.state.entityID);
@@ -584,6 +584,7 @@ class BasicInfo extends Component {
   edit() {
     var entityID = this.state.entityID;
     if (entityID !== '') {
+      console.log("entityID in edit==>",entityID)
       axios.get('/api/entitymaster/get/one/' + entityID)
         .then((response) => {
           this.setState({

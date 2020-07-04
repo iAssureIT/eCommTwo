@@ -1448,14 +1448,14 @@ class LocationDetails extends Component {
 												</div>
 											</form>
 										</div>
-										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										{/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div className="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right">
 												<i className="fa fa-th fa-lg btn viewBtn" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'Grid')} onChange={this.handleChange} aria-hidden="true"></i>&nbsp;&nbsp;
 												<i className="fa fa-th-list fa-lg btn viewBtn btnactive" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'List')} onChange={this.handleChange} aria-hidden="true"></i>
 											</div>
-										</div>
+										</div> */}
 
-										{this.state.view === 'Grid' ?
+										{/* {this.state.view === 'Grid' ? */}
 										 <IAssureTable 
 					                      tableHeading={this.state.tableHeading}
 					                      dataCount={this.state.entityCount}
@@ -1465,7 +1465,7 @@ class LocationDetails extends Component {
 					                      id={"id"}
 					                      tableName={"Location"}
 					                      />
-										 :
+										 {/* :
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											{this.state.locationarray && this.state.locationarray.length > 0 ?
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1605,7 +1605,6 @@ class LocationDetails extends Component {
 																								<a href={'/' + this.state.pathname + "/location-details/" + this.props.match.params.entityID + "/" + Suppliersdata._id}><i className="fa fa-pencil penmrleft" aria-hidden="true"></i>&nbsp;&nbsp;Edit</a>
 																							</li>
 																							<li name={index} data-id={Suppliersdata._id} onClick={this.deleteEntity.bind(this)} >
-																								{/*<span onClick={this.locationDelete.bind(this)} id={Suppliersdata._id}>*/}
 																								<a><i className="fa fa-trash-o" aria-hidden="true"></i> &nbsp; Delete</a>
 																							</li>
 																						</ul>
@@ -1625,7 +1624,7 @@ class LocationDetails extends Component {
 												:
 												null
 											}
-										</div>
+										</div> */}
 									 }
 									</div>
 								</section>

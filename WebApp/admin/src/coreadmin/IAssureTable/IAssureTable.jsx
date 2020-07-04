@@ -553,7 +553,7 @@ class IAssureTable extends Component {
 					this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 ?
 						<React.Fragment>
 							<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-								<button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+								<button type="button" className=" pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
 								<ReactHTMLTableToExcel
 									id="table-to-xls"
 									className="download-table-xls-button fa fa-download tableicons pull-right"

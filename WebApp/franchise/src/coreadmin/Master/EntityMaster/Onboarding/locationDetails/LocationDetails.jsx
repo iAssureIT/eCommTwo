@@ -580,7 +580,7 @@ class LocationDetails extends Component {
 		if (locationID) {
 			axios.get('/api/entitymaster/get/one/' + entityID)
 				.then((response) => {
-					console.log("response",response);
+					// console.log("response",response);
 					var editData = response.data.locations.filter((a) => a._id === locationID);
 					// this.getStates(editData[0].countryCode);
 					// this.getDistrict(editData[0].stateCode, editData[0].countryCode);

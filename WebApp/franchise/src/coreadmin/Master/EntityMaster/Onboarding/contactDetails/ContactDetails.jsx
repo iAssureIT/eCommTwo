@@ -628,7 +628,7 @@ class ContactDetails extends Component {
 		}else{
 		axios.patch('/api/entitymaster/patch/addContact' ,formValues)
 		.then((response) => {
-				console.log("response",response)
+				// console.log("response",response)
 				if(response.data.duplicated)
 				{
 					swal({
@@ -678,7 +678,7 @@ class ContactDetails extends Component {
 		var entityID = this.state.entityID;
 		axios.get('/api/entitymaster/get/one/' + entityID)
 			.then((response) => {
-				console.log("response",response);
+				// console.log("response",response);
 				this.setState({
 					companyID: response.data.companyID,
 					companyName: response.data.companyName,
@@ -874,7 +874,7 @@ class ContactDetails extends Component {
 		  console.log("userDetails updated employee",userDetails)
 			axios.patch('/api/personmaster/patch',userDetails)
 			.then((response) => {
-				console.log("response",response);
+				// console.log("response",response);
 				
 			})
 			.catch((error) => {})
@@ -1042,7 +1042,7 @@ class ContactDetails extends Component {
 				})
 				axios.get('/api/personmaster/get/emailID/' + email)
 					.then((response) => {
-						console.log("response=>>",response.data.data[0]);
+						// console.log("response=>>",response.data.data[0]);
 						this.setState({
 							personID: response.data.data[0]._id,
 							userId: response.data.data[0].userId,
