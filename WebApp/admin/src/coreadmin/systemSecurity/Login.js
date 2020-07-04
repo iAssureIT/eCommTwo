@@ -114,7 +114,7 @@ class Login extends Component {
               loggedIn: true
             },()=>{
               this.props.history.push('/dashboard')
-              // window.location.reload();
+              window.location.reload();
             })
           }else if(response.data.message === "USER_BLOCK"){
             swal({
