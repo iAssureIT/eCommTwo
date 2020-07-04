@@ -97,10 +97,14 @@ export default class Footer extends Component {
                     <div className=" col-lg-7 col-md-7 col-sm-6 col-xs-12 hrLine"></div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="categortTitle"><a href="/termsandcondition" target="_blank"><span>Terms Of Use</span></a></div>
-                    <div className="categortTitle"><a href="/privacypolicy" target="_blank"><span>Privacy Policy</span></a></div>
-                    <div className="categortTitle"><a href="/returnpolicy" target="_blank"><span>Return Policy</span></a></div>      
-                    <div className="categortTitle"><a href="/legalnotice" target="_blank"><span>Legal Notice</span></a></div>               
+                <div className="categortTitle"><a href="/returnpolicy" target="_blank"><span>Return Policy</span></a></div>
+                    <div className="categortTitle"><a href="/about-us" target="_blank"><span>About Us</span></a></div>
+                    {/* <div className="categortTitle"><a href="/terms-conditions" target="_blank"><span>Terms Of Use</span></a></div> */}
+                    {/* <div className="categortTitle"><a href="/privacypolicy" target="_blank"><span>Privacy Policy</span></a></div> */}      
+                    <div className="categortTitle"><a href="/legal-notice" target="_blank"><span>Legal Notice</span></a></div>
+                    <div className="categortTitle"><a href="/sitemap" target="_blank"><span>Site Map</span></a></div> 
+                    <div className="categortTitle"><a href="/contact-us" target="_blank"><span>Contact Us</span></a></div>    
+                                  
                 </div>
             </div>
             <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12 onlineShoppingWrapper">

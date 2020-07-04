@@ -29,6 +29,4 @@ class Aboutuspage extends Component {
   }
 }
 
-
-
 export default (Aboutuspage);

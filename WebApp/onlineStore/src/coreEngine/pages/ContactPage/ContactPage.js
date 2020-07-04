@@ -186,7 +186,7 @@ class ContactPage extends Component{
                                             <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                               <div className="row">
                                                 <h5><strong>PHONE</strong></h5>
-                                                <span>{this.state.companyInfo.companyContactNumber}</span>
+                                                <span>{this.state.companyInfo? this.state.companyInfo.companyContactNumber:null}</span>
                                               </div>
                                             </div>
                                         </div>
@@ -216,8 +216,7 @@ class ContactPage extends Component{
                                             <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                               <div className="row">
                                                 <h5><strong>EMAIL</strong></h5>
-                                                <span>{this.state.companyInfo.companyEmail}</span>
-                                                
+                                                <span>{this.state.companyInfo ? this.state.companyInfo.companyEmail:null}</span>                                                
                                               </div>
                                             </div>
                                         </div>

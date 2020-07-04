@@ -9,15 +9,6 @@ import 'bootstrap/js/collapse.js';
 import "../../../sites/currentSite/pages/PrivacyPolicy.css";
 
 export default class PrivacyPolicy extends Component {
-	constructor(props){
-    super(props);
-	    this.state = {
-	    	
-	    	
-	    };
-  	}  
-  	  
-
 
   render() {
 		return (

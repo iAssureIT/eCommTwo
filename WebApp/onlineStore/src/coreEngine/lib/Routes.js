@@ -50,6 +50,8 @@ import PrivacyPolicy                             from "../pages/PrivacyPolicy/Pr
 import Aboutuspage                               from "../pages/Aboutuspage/Aboutuspage.js";
 import ReturnPolicy                              from '../pages/ReturnPolicy/ReturnPolicy.js';
 import ContactPage                               from '../pages/ContactPage/ContactPage.js';
+import TermsAndCondition                         from '../pages/TermsAndCondition/TermsAndCondition.js';
+import LegalNotice                               from '../pages/LeagalNotice/LeagalNotice.js';
 import SiteMap                                   from '../pages/SiteMap/SiteMap.js';
 
 
@@ -116,7 +118,7 @@ class Routes extends Component{
                 <Route path="/privacypolicy"             exact strict component={PrivacyPolicy}  />
                 <Route path="/about-us"             exact strict component={Aboutuspage}  />
                 <Route path="/sitemap" exact strict component={SiteMap}  />
-                <Route path="/contact-us" exact strict component={ContactPage}  />
+                {/* <Route path="/contact-us" exact strict component={ContactPage}  /> */}
               </div>
             );
             return (
@@ -153,7 +155,7 @@ class Routes extends Component{
             <Route path="/privacypolicy"             exact strict component={PrivacyPolicy}  />
             <Route path="/about-us"             exact strict component={Aboutuspage}  />
             <Route path="/sitemap" exact strict component={SiteMap}  />
-            <Route path="/contact-us" exact strict component={Login}  />
+            {/* <Route path="/contact-us" exact strict component={Login}  /> */}
             <Route path="/cart"                     exact strict component={ Login } />
             <Route path="/checkout"                 exact strict component={ Login } />
             <Route path="/my-ordersUni"                exact strict component={ Login } />
@@ -168,6 +170,11 @@ class Routes extends Component{
             <Route path="/address-book"            exact strict component={ Login } />
             <Route path="/address/:deliveryAddressID"            exact strict component={ Login } />
             <Route path="/address"            exact strict component={ Login } />
+
+            <Route path="/contact-us" exact strict component={ContactPage}  />
+            <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
+            <Route path="/legal-notice" exact strict component={LegalNotice}  />
+            
             
           </div>
         );
@@ -224,6 +231,8 @@ class Routes extends Component{
             <Route path="/about-us"             exact strict component={Aboutuspage}  />
             <Route path="/sitemap" exact strict component={SiteMap}  />
             <Route path="/contact-us" exact strict component={ContactPage}  />
+            <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
+            <Route path="/legal-notice" exact strict component={LegalNotice}  />
           </div>
         );
         return (
@@ -276,6 +285,9 @@ class Routes extends Component{
             <Route path="/address-book"            exact strict component={ Login } />
             <Route path="/address/:deliveryAddressID"            exact strict component={ Login } />
             <Route path="/address"            exact strict component={ Login } />
+
+            <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
+            <Route path="/legal-notice" exact strict component={LegalNotice}  />
             
           </div>
         );
