@@ -425,9 +425,11 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
         async function productDuplicateControl(){
             var productPresent = await findProduct(data.productCode, data.itemCode,data.productName);
             if(data.unit){
-                console.log("data.createdBy",data.createdBy);
                var insertUOM = await insertUnitOfMeasurment(data.unit);
-            }
+             }
+
+             console.log("vendor id", data.vendor);
+            console.log("vendor id split", data.vendor ? data.vendor.split('|')[1] : null);
           
             if (productPresent==0) {
                     const productObj = new Products({
@@ -700,7 +702,13 @@ exports.list_product = (req,res,next)=>{
     Products.find({"status": "Publish"}).sort({'productName': 1})       
     .exec()
     .then(data=>{
-        res.status(200).json(data);
+        console.log("data",data);
+        // if(data.length > 0){
+             res.status(200).json(data);
+        // }else{
+        //      res.status(200).json("It seems that you don't have any product added or you have added products but not yet published.");
+        // }
+       
     })
     .catch(err =>{
         console.log(err);
