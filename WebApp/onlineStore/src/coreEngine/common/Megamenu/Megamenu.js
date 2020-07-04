@@ -18,10 +18,11 @@ constructor(props) {
 componentDidMount(){
   axios.get("/api/sections/get/get_megamenu_list")
             .then((response)=>{
-             
+             if(response.data){
               this.setState({ 
                   categoryData : response.data
               })
+            }
             })
             .catch((error)=>{
                 console.log('error', error);

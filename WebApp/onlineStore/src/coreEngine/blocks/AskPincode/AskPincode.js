@@ -29,7 +29,7 @@ export default class AskPincode extends Component {
         //  console.log("In will mount");
         var pincode = localStorage.getItem('pincode');          
         if(pincode){            
-            if(localStorage.getItem('status') === "NotAllow"){
+            if(localStorage.getItem('status')){
                 axios.get("/api/allowablepincode/checkpincode/"+pincode)
                     .then((response)=>{
                         if(response){          
@@ -41,7 +41,8 @@ export default class AskPincode extends Component {
                                 //     DeliveryStatus : "Allowable",
                                 // })
                                 $('.DeliveryStatusMsg').text("Congratulations!! Your saved Pincode is "+pincode +". Now delivery is possible in your area. Continue Your Shopping!")
-                                $('.DeliveryStatusMsg').show();    
+                                $('.DeliveryStatusMsg').show();  
+                                // $('..pinMessage').show();  
                                 // $('.pincodeChild').hide();                         
                                 localStorage.setItem("DeliveryStatus","Allowable");
                                 localStorage.setItem("pincodeFlag","true");
@@ -103,7 +104,8 @@ export default class AskPincode extends Component {
                         $('.AllowDeliveryMsg').show();  
                         $('.DeliveryStatusMsg').hide();   
                         $('.NotAllowDeliveryMsg').hide();  
-                        $('.marginTop').hide();                       
+                        $('.marginTop').hide();  
+                        $('.addPincode').css("margin-top","20px");                     
                         localStorage.setItem("status","Allow");
                         // console.log("pincode===",localStorage.getItem('pincode'));
                                           
@@ -115,7 +117,8 @@ export default class AskPincode extends Component {
                         $('.NotAllowDeliveryMsg').show(); 
                         $('.DeliveryStatusMsg').hide();
                         $('.AllowDeliveryMsg').hide();  
-                        $('.marginTop').hide();                     
+                        $('.marginTop').hide(); 
+                        $('.addPincode').css("margin-top","20px");                    
                         // var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
                         // pincodeObj.status = "NotAllow";
                         localStorage.setItem("status", "NotAllow");
@@ -143,7 +146,7 @@ export default class AskPincode extends Component {
                                 <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.closeModal.bind(this)}>&times;</button>                       
                                     <form>                                    
                                         <div className="col-lg-12 col-md-12 addPincode">
-                                            <div id="pincode" className="Pincode_div">                                                
+                                            <div id="pincode" className=" col-lg-12 col-md-12 col-sm-12 Pincode_div">                                                
                                                 <div>
                                                         {(localStorage.getItem('pincode') !== null)?
                                                              <div className="pinMessage">Message</div>
@@ -163,9 +166,11 @@ export default class AskPincode extends Component {
                                                             <div  className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                 <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>
                                                             </div>
-                                                            <div className=" col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 pincodeBtnwrapper">                                                    
-                                                                <input class="form-control error pull-left pinocodeInput" id="pincode" type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-6 col-xs-6 pull-left pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input>
-                                                                <button className="col-lg-5 col-md-6 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                            <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pincodeBtnwrapper">   
+                                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">                                                 
+                                                                    <input class="form-control error pull-left pinocodeInput" id="pincode" type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-6 col-xs-6 pull-left pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input>
+                                                                    <button className="col-lg-5 col-md-6 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                                </div>
                                                             </div> 
                                                         </div>
                                                 </div>                     

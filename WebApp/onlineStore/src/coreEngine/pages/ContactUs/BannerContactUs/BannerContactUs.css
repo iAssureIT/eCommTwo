@@ -1,0 +1,18 @@
+.bannercusweapper{
+	height: 275px;
+	background-color: #fff;
+	padding: 35px 40px;
+}
+.bgImageTextonBCUS{
+	background-image: url("/images/header3.jpg");
+	background-size: 100% 100%;
+	height: 100%;
+	width: 100%;
+}
+.margTop5p25per{
+	padding-top: 5.25%;
+}
+.fs40CU{
+	font-size: 40px;
+	font-weight: 600;
+}

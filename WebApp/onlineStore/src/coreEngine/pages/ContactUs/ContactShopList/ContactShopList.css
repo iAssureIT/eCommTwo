@@ -1,0 +1,21 @@
+
+.cshoplistwrap{
+	min-height: 725px
+}
+.boxOfShop{
+	margin: 15px 10px 15px 10px;
+	height: 150px;
+	background-color: #fff;
+	box-shadow: #ccc 0px 0px 6px 0px;
+	border-radius: 10px;
+}
+.mtop10a{
+	margin-top: 15px;
+}
+.mtop10bqa{
+	margin-top: 15px;
+	margin-left: 49%;
+}
+.boxmtop{
+	margin-top: 3%;
+}

@@ -170,11 +170,9 @@ class Routes extends Component{
             <Route path="/address-book"            exact strict component={ Login } />
             <Route path="/address/:deliveryAddressID"            exact strict component={ Login } />
             <Route path="/address"            exact strict component={ Login } />
-
             <Route path="/contact-us" exact strict component={ContactPage}  />
             <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
-            <Route path="/legal-notice" exact strict component={LegalNotice}  />
-            
+            <Route path="/legal-notice" exact strict component={LegalNotice}  />            
             
           </div>
         );
@@ -285,10 +283,8 @@ class Routes extends Component{
             <Route path="/address-book"            exact strict component={ Login } />
             <Route path="/address/:deliveryAddressID"            exact strict component={ Login } />
             <Route path="/address"            exact strict component={ Login } />
-
             <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
-            <Route path="/legal-notice" exact strict component={LegalNotice}  />
-            
+            <Route path="/legal-notice" exact strict component={LegalNotice}  />            
           </div>
         );
         return (
