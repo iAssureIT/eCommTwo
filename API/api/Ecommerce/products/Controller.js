@@ -439,7 +439,7 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
                         _id                       : new mongoose.Types.ObjectId(),   
                         user_ID                   : vendor,  
                         vendor_ID                 : vendor, 
-                        vendorName                : vendor.split('|')[0],  
+                        vendorName                : vendor,  
                         section_ID                : section_ID,           
                         section                   : section,      
                         category                  : categoryObject.category,
