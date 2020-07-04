@@ -799,6 +799,47 @@ exports.filedetails = (req,res,next)=>{
     });
 };
 
+
+exports.get_finished_goods_report = (req, res, next)=>{
+    const moment = require('moment-timezone');
+    const startDate = req.body.fromDate;
+    const endDate = req.body.toDate;
+
+    var selector = {};
+    if(req.body.itemcode != undefined && req.body.itemcode != ""){
+        FinishedGoodsEntry.find({ 
+            Date: { '$gte': req.body.fromDate, '$lt': req.body.toDate },
+            ItemCode:req.body.itemcode
+        })
+        .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+           res.status(200).json(data);   
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }else{
+         FinishedGoodsEntry.find({ 
+            Date: { '$gte': req.body.fromDate, '$lt': req.body.toDate },
+        })
+        .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+           res.status(200).json(data);   
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }
+};
+
 /*Code by madhuri*/
 
 

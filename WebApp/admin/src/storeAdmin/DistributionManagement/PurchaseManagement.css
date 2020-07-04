@@ -37,7 +37,7 @@
 }
 
 .rejected{
-	color:#ff000099;
+	/* color:#ff000099; */
 }
 
 .challanBtn{
@@ -49,5 +49,12 @@
 .activeChallanBtn{
 	background-color: #337ab7;
 	border-color: #337ab7;
+	color:white;
+}
+
+
+.NotClicked{
+	background-color: darkgray;
+	border-color: darkgray;
 	color:white;
 }

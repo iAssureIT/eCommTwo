@@ -6,6 +6,7 @@ const Sections      = require('../sections/Model');
 const FailedRecords = require('../failedRecords/Model');
 const Orders        = require('../orders/Model');
 var ObjectId        = require('mongodb').ObjectID;
+var UnitOfMeasurmentMaster = require('../departmentMaster/ModelUnitofmeasurment');
 
 exports.insert_product = (req,res,next)=>{
     console.log("response",res);
@@ -423,12 +424,16 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
         productDuplicateControl();
         async function productDuplicateControl(){
             var productPresent = await findProduct(data.productCode, data.itemCode,data.productName);
-            
+            if(data.unit){
+                console.log("data.createdBy",data.createdBy);
+               var insertUOM = await insertUnitOfMeasurment(data.unit);
+            }
+          
             if (productPresent==0) {
                     const productObj = new Products({
-                        _id                       : new mongoose.Types.ObjectId(),  
-                        vendor_ID                 : data.vendor.split('|')[2],  
+                        _id                       : new mongoose.Types.ObjectId(),   
                         user_ID                   : data.vendor.split('|')[1],  
+                        vendor_ID                 : data.vendor ? data.vendor.split('|')[1] : null, 
                         vendorName                : data.vendor.split('|')[0],  
                         section_ID                : section_ID,           
                         section                   : section,      
@@ -468,7 +473,7 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
                         createdBy                 : data.createdBy,
                         createdAt                 : new Date()
                     });
-                
+             
                 productObj
                 .save()
                 .then(data=>{
@@ -2061,3 +2066,43 @@ exports.getattributesbysubcategory = (req,res,next)=>{
         });
     });
 };
+
+
+var insertUnitOfMeasurment = async(unit,created) =>{
+    return new Promise(function(resolve,reject){ 
+        UnitOfMeasurmentMaster.find({})
+            .exec()
+            .then(data=>{
+                // console.log("departmentExists",data);
+                var departmentExists = data.filter((data)=>{
+                    if (data.department == unit) {
+                        return data;
+                    }
+                })
+
+                if (departmentExists.length>0) {
+                    departmentId = departmentExists[0]._id;
+                    resolve( data._id );
+                }else{
+                     unitOfMeasurmentMaster = new UnitOfMeasurmentMaster({
+                        _id                   : new mongoose.Types.ObjectId(),
+                        department            : unit,
+                        createdAt             : new Date()
+                    })
+                    unitOfMeasurmentMaster.save()
+                    .then(data=>{
+                        console.log("saved");
+                        resolve( data._id );
+                    })
+                    .catch(err =>{
+                        reject(err); 
+                    });
+                }
+            })
+            .catch(err =>{
+                reject(err);
+            }); 
+        
+          
+    });
+}

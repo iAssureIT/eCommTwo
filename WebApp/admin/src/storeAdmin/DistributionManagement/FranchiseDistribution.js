@@ -370,7 +370,7 @@ export default class FranchiseDistribution extends React.Component {
 											<thead className="thead-light text-center bg-primary">
 												<tr>
 													<th rowspan="2">Product Name </th>
-													<th rowspan="2">Total Stock</th>
+													<th rowspan="2">Current Stock</th>
 													{/* <th>{this.state.selectedFranchise}</th> */}
 													<th>Ordered Quantity </th>
 													<th>Already Supplied Quantity</th>

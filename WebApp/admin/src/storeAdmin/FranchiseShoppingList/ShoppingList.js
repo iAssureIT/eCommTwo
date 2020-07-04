@@ -586,9 +586,9 @@ class IAssureTableUM extends Component {
 																:
 																<td className="textAlignCenter">
 																	<span className="pointer pointerCls">
-																	        <i className="fa fa-truck" title="Supply" id={value._id} onClick={this.supply.bind(this,value._id)}></i>&nbsp; &nbsp;
-																			<i className="fa fa-file" title="Delivery Challan" id={value._id} onClick={this.showDeliveryChallans.bind(this,value._id)}></i>&nbsp; &nbsp;
-																			<i className="fa fa-eye" title="View" id={value._id} onClick={this.getViewData.bind(this,value._id)}></i>
+																	        <i className="fa fa-eye" title="View purchase order" id={value._id} onClick={this.getViewData.bind(this,value._id)}></i>&nbsp; &nbsp;
+																	        <i className="fa fa-truck" title="Supply to this purchasr order" id={value._id} onClick={this.supply.bind(this,value._id)}></i>&nbsp; &nbsp;
+																			<i className="fa fa-file" title="Delivery Challan for this purchase order" id={value._id} onClick={this.showDeliveryChallans.bind(this,value._id)}></i>&nbsp; &nbsp;
 																			{/* <i className="fa fa-pencil " title="Edit" id={value._id} onClick={this.edit.bind(this,value._id)} ></i>&nbsp; &nbsp;
 																			<i className="fa fa-trash redFont " id={value._id} onClick={this.deletePO.bind(this,value._id)}></i>&nbsp; &nbsp; */}
 																			

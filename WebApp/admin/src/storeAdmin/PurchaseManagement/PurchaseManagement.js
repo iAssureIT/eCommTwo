@@ -23,7 +23,7 @@ export default class PurchaseManagement extends React.Component {
 			      	purchaseNumber		:'',
 			      	product 			: '',
 			      	Units 				: 'Kg',
-			      	serchByDate:moment(new Date()).format("YYYY-MM-DD"),
+			      	serchByDate         : moment(new Date()).format("YYYY-MM-DD"),
 			      	"twoLevelHeader"    : {
 						            apply  : false,
 						           },

@@ -93,11 +93,14 @@ export default class FinishedGoods extends React.Component {
 					scrapQty            : 0,
 					errorMsg            : '',
 					filterData          : {},
+					reportFilterData    : {},
 					filterByDate        : '',
 					filterByProduct     : '',
 					productId           : '',
 					CurrentStockUnit    : '',
-					unitOfMeasurementArray  : []	
+					unitOfMeasurementArray  : [],
+					fromDate            : moment(new Date()).format("YYYY-MM-DD"),
+					toDate              : moment(new Date()).format("YYYY-MM-DD")
 	  };
 	  this.uploadedData = this.uploadedData.bind(this);
 	  this.getFileDetails = this.getFileDetails.bind(this);
@@ -213,6 +216,7 @@ export default class FinishedGoods extends React.Component {
 			this.getData();
 			this.getListProducts();
 			this.getUom();
+			this.getReportBetweenDates();
 		});
 
 	}
@@ -221,7 +225,8 @@ export default class FinishedGoods extends React.Component {
         if(nextProps.match.params.finishedGoodId){
           this.setState({
 			editId : editId,
-          })
+          },()=>{
+		  })
           this.edit(editId);
         }
     }
@@ -263,6 +268,43 @@ export default class FinishedGoods extends React.Component {
 		filterData.date = this.state.filterByDate;
 		axios
 		.post('/api/finishedGoodsEntry/post/list/',filterData)
+		.then((response)=>{
+			var  tableData = response.data ;
+				var tableData = tableData.map((a, i) => {
+						return {
+	
+							_id                  : a._id,
+							Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
+							productName 	     : a.productName ? a.productName +' - '+ a.ProductCode +' - '+ a.ItemCode: "" ,
+							InwardStock          : a.fgInwardQty ? a.fgInwardQty +' '+ a.fgInwardUnit : 0,
+							OutwardStock         : a.OutwardRawMaterial ? a.OutwardRawMaterial +' '+ a.OutwardUnit : 0,
+							Quantity             : a.fgTotalQty ? a.fgTotalQty : 0,
+							Weight               : a.fgUnitQty ? a.fgUnitQty +' '+ a.fgUnitWt : 0,
+							Scrap                : a.scrapQty ? a.scrapQty +' '+ a.scrapUnit : 0 
+						}
+					})
+				this.setState({
+				  tableData 		: tableData,          
+				})
+				})
+		.catch((error)=>{
+			console.log("error = ", error);              
+		}); 
+		
+	}
+
+	getReportBetweenDates(){
+		var reportFilterData = this.state.reportFilterData;
+		if(this.state.filterByProduct !== "Select Product"){
+			reportFilterData.itemcode = this.state.filterByProduct;
+		}else{
+			reportFilterData.itemcode = ''
+		}
+		reportFilterData.fromDate = this.state.fromDate;
+		reportFilterData.toDate = this.state.toDate;
+
+		axios
+		.post('/api/finishedGoodsEntry/post/getReportOfFinishedGoods/',reportFilterData)
 		.then((response)=>{
 			var  tableData = response.data ;
 				var tableData = tableData.map((a, i) => {
@@ -365,28 +407,28 @@ export default class FinishedGoods extends React.Component {
 	  this.setState({ 
 		[name]:value,
       },()=>{
-		this.weightConverter()
+		// this.weightConverter()
 	  });
 
-	  if(name == "fgUnitWt"){
-		this.setState({ 
-			fgUnitQtyforFG : this.state.fgTotalQty * this.state.fgUnitQty,
-			finishedGoodsUnit : this.state.OutwardUnit
-		  },()=>{
-			//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
-			  this.weightConverter();
-		  });
-	  }
-	   if(name == "OutwardUnit"){
-		this.setState({ 
-			scrapUnit : value,
-			OutwardUnit : value,
-			finishedGoodsUnit : value
-		  },()=>{
-			//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
-			  this.weightConverter()
-		  });
-	  }
+	//   if(name == "fgUnitWt"){
+	// 	this.setState({ 
+	// 		fgUnitQtyforFG : this.state.fgTotalQty * this.state.fgUnitQty,
+	// 		finishedGoodsUnit : this.state.OutwardUnit
+	// 	  },()=>{
+	// 		//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
+	// 		  this.weightConverter();
+	// 	  });
+	//   }
+	//    if(name == "OutwardUnit"){
+	// 	this.setState({ 
+	// 		scrapUnit : value,
+	// 		OutwardUnit : value,
+	// 		finishedGoodsUnit : value
+	// 	  },()=>{
+	// 		//   console.log("finishedGoodsUnit",this.state.fgUnitWt);
+	// 		  this.weightConverter()
+	// 	  });
+	//   }
 	  this.checkValidInward();
 	}
 
@@ -450,7 +492,8 @@ export default class FinishedGoods extends React.Component {
 				if(response.data){
 					this.setState({
 						CurrentStock     : response.data[0].totalStock ? response.data[0].totalStock : 0,
-						CurrentStockUnit : response.data[0].StockUnit  ? response.data[0].StockUnit  : "", 
+						CurrentStockUnit : response.data[0].StockUnit  ? response.data[0].StockUnit  : "",
+						OutwardUnit      : response.data[0].StockUnit  ? response.data[0].StockUnit  : "",
 					},()=>{
 						
 					});
@@ -713,6 +756,7 @@ export default class FinishedGoods extends React.Component {
 	} 
 
 	/* Bulk upload end*/
+
 	/* Filters start*/
 	filterChange(event){
 		event.preventDefault();
@@ -722,71 +766,248 @@ export default class FinishedGoods extends React.Component {
 		  [name]:value,
 		},()=>{
 		  this.getData();
+		  this.getReportBetweenDates();
 		 });
 	  }
    /* Filters end*/
+
+   onChangeScrap(event){
+	event.preventDefault();
+	const {name,value} = event.target;
+	  this.setState({ 
+		[name]:value,
+	  },()=>{
+		this.calculateFcByScrap();
+	  });
+   }
+
+   onFgWeightChange(event){
+	event.preventDefault();
+	const {name,value} = event.target;
+	  this.setState({ 
+		[name]:value,
+	  },()=>{
+		this.calculateScrapByFc();
+	  });
+   }
+
+   onChangefgTotalQty(event){
+	event.preventDefault();
+	const {name,value} = event.target;
+	if(this.state.fgUnitQtyforFG > 0){
+		this.setState({ 
+			[name]:value,
+			// fgUnitQty : this.state.fgUnitQtyforFG / value
+		  },()=>{
+			this.calculateWeightPerFP();
+		  });
+	}else{
+		this.setState({ 
+			[name]:value,
+			fgUnitQty : this.state.fgUnitQtyforFG / value
+		  },()=>{
+			this.calculateWeightPerFP();
+		  });
+	}
+	  
+   }
+
+   calculateFcByScrap(){
+		var OutwardUnit = this.state.OutwardUnit.toLowerCase();
+		var scrapUnit   =  this.state.scrapUnit.toLowerCase();
+		if(OutwardUnit === 'kg' && scrapUnit === "gm"){
+			//convert fgunit to kg and calculate
+			this.setState({
+				fgUnitQtyforFG    : this.state.OutwardRawMaterial - (this.state.scrapQty/1000) > 0 ? this.state.OutwardRawMaterial - (this.state.scrapQty/1000) : 0,
+				finishedGoodsUnit : this.state.OutwardUnit,
+			},() => {
+			    this.checkValidInward();
+			})
+		}else if((OutwardUnit === 'kg' && scrapUnit === "kg") || (OutwardUnit === 'gm' && scrapUnit === "gm")){
+			this.setState({
+				fgUnitQtyforFG    : this.state.OutwardRawMaterial - this.state.scrapQty > 0 ? this.state.OutwardRawMaterial - this.state.scrapQty : 0,
+				finishedGoodsUnit : this.state.OutwardUnit,
+			},() => {
+			    this.checkValidInward();
+			})
+		}else if(OutwardUnit === 'gm' && scrapUnit === "kg"){
+			var scrapInKg=this.state.scrapQty*1000;
+			this.setState({
+				fgUnitQtyforFG    : this.state.OutwardRawMaterial - (this.state.scrapQty*1000) > 0 ? this.state.OutwardRawMaterial - (this.state.scrapQty*1000) : 0,
+				finishedGoodsUnit : this.state.OutwardUnit,
+			},() => {
+			    this.checkValidInward();
+			})
+		}
+
+   }
+
+   calculateScrapByFc(){
+	var OutwardUnit = this.state.OutwardUnit.toLowerCase();
+	var finishedGoodsUnit   =  this.state.finishedGoodsUnit.toLowerCase();
+	if(OutwardUnit === 'kg' && finishedGoodsUnit === "gm"){
+		//convert fgunit to kg and calculate
+		this.setState({
+			scrapQty    : this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG/1000) > 0 ? this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG/1000) : 0,
+			scrapUnit : this.state.OutwardUnit,
+		},() => {
+			this.checkValidInward();
+		})
+	}else if((OutwardUnit === 'kg' && finishedGoodsUnit === "kg") || (OutwardUnit === 'gm' && finishedGoodsUnit === "gm")){
+		this.setState({
+			scrapQty    : this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG > 0 ? this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG : 0,
+			scrapUnit : this.state.OutwardUnit,
+		},() => {
+			this.checkValidInward();
+		})
+	}else if(OutwardUnit === 'gm' && finishedGoodsUnit === "kg"){
+		var scrapInKg=this.state.fgUnitQtyforFG*1000;
+		this.setState({
+			scrapQty    : this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG*1000) > 0 ? this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG*1000) : 0,
+			scrapUnit : this.state.OutwardUnit,
+		},() => {
+			this.checkValidInward();
+		})
+	}
+
+   }
+
+   calculateWeightPerFP(){
+
+	var TotalFcWt = this.state.fgUnitQty * this.state.fgTotalQty;
+	// console.log("TotalFcWt",this.state.fgUnitQty * this.state.fgTotalQty - this.state.fgUnitQtyforFG);
+	// console.log("TotalFcWt",TotalFcWt);
+
+	if(TotalFcWt <= this.state.fgUnitQtyforFG){
+		this.setState({
+			fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
+			fgUnitWt     : this.state.finishedGoodsUnit,
+			scrapQty     : this.state.fgUnitQtyforFG - TotalFcWt > 0.01 ? this.state.fgUnitQtyforFG - TotalFcWt : 0
+		},() => {
+			this.checkValidInward();
+		})
+	}else if(TotalFcWt > this.state.fgUnitQtyforFG){
+		this.setState({
+			fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
+			fgUnitWt     : this.state.finishedGoodsUnit,
+			scrapQty     : this.state.fgUnitQtyforFG - TotalFcWt,
+		},() => {
+			this.checkValidInward();
+		})
+	}else{
+		this.setState({
+			fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
+			fgUnitWt     : this.state.finishedGoodsUnit,
+		},() => {
+			this.checkValidInward();
+		})
+	}
+	
+   }
+
+   onChangefgUnitQty(event){
+		event.preventDefault();
+		const {name,value} = event.target;
+		this.setState({ 
+			[name]:value,
+		},()=>{
+			this.calculateFgAndScrapByUnit();
+		});
+   }
+
+   calculateFgAndScrapByUnit(){
+
+   }
+
    /* Weight Convertor start*/
     weightConverter() {
 	   // Gram to Kilograms
-		if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "kg"){
-			//convert fgunit to gram and calculate
-			var FgUnitKg=this.state.fgUnitQty*1000;
-			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
-			var Scrap = this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty * 1000);
-			this.setState({
-				fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty)*1000,
-				scrapQty          : Scrap > 0 ? Scrap: 0,
-				scrapUnit         : this.state.OutwardUnit,
-			},() => {
-				this.checkValidInward();
-			})
+		// if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "kg"){
+		// 	//convert fgunit to gram and calculate
+		// 	var FgUnitKg=this.state.fgUnitQty*1000;
+		// 	var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
+		// 	var Scrap = this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty * 1000);
+		// 	this.setState({
+		// 		fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty)*1000,
+		// 		scrapQty          : Scrap > 0 ? Scrap: 0,
+		// 		scrapUnit         : this.state.OutwardUnit,
+		// 	},() => {
+		// 		this.checkValidInward();
+		// 	})
 			
-		}else if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "gm"){
-			var FgUnitGm=this.state.fgUnitQty/1000;
-			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
-			this.setState({
-				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
-				scrapQty          : Scrap > 0 ? Scrap : 0
-			},() => {
-				this.checkValidInward();
-			})
-		}
+		// }else if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "gm"){
+		// 	var FgUnitGm=this.state.fgUnitQty/1000;
+		// 	var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
+		// 	this.setState({
+		// 		fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+		// 		scrapQty          : Scrap > 0 ? Scrap : 0
+		// 	},() => {
+		// 		this.checkValidInward();
+		// 	})
+		// }
 
-		// Kilograms to Gram
-		if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "gm"){
-			//convert fgunit to kg and calculate
-			var FgUnitKg=this.state.fgUnitQty*1000;
-			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
-			var Scrap =  this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty/1000);
-			this.setState({
-				fgUnitQtyforFG    : (this.state.fgUnitQty/1000) * (this.state.fgTotalQty),
-				scrapQty          : Scrap > 0 ? Scrap : 0,
-				scrapUnit         : this.state.OutwardUnit,
-			},() => {
-				this.checkValidInward();
-			})
+		// // Kilograms to Gram
+		// if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "gm"){
+		// 	//convert fgunit to kg and calculate
+		// 	var FgUnitKg=this.state.fgUnitQty*1000;
+		// 	var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
+		// 	var Scrap =  this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty/1000);
+		// 	this.setState({
+		// 		fgUnitQtyforFG    : (this.state.fgUnitQty/1000) * (this.state.fgTotalQty),
+		// 		scrapQty          : Scrap > 0 ? Scrap : 0,
+		// 		scrapUnit         : this.state.OutwardUnit,
+		// 	},() => {
+		// 		this.checkValidInward();
+		// 	})
 			
-		}else if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "kg"){
-			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
-			this.setState({
-				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
-				scrapQty          : Scrap > 0 ? Scrap : 0
-			},() => {
-				this.checkValidInward();
-			})
-		}
+		// }else if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "kg"){
+		// 	var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
+		// 	this.setState({
+		// 		fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+		// 		scrapQty          : Scrap > 0 ? Scrap : 0
+		// 	},() => {
+		// 		this.checkValidInward();
+		// 	})
+		// }
 
-		if(this.state.OutwardUnit.toLowerCase()  != 'kg' && this.state.OutwardUnit.toLowerCase()  != 'gm'){
-			var Scrap = Number(this.state.OutwardRawMaterial) - Number(this.state.fgUnitQtyforFG);
-			this.setState({
-				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
-				scrapQty          : Scrap > 0 ? Scrap : 0
-			},() => {
-				this.checkValidInward();
-			})
-		}
+		// if(this.state.OutwardUnit.toLowerCase()  != 'kg' && this.state.OutwardUnit.toLowerCase()  != 'gm'){
+		// 	var Scrap = Number(this.state.OutwardRawMaterial) - Number(this.state.fgUnitQtyforFG);
+		// 	this.setState({
+		// 		fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+		// 		scrapQty          : Scrap > 0 ? Scrap : 0
+		// 	},() => {
+		// 		this.checkValidInward();
+		// 	})
+		// }
 
+
+
+	}
+
+	handleFromChange(event){
+        event.preventDefault();
+       const target = event.target;
+       const name = target.name;
+
+       this.setState({
+           [name] : event.target.value,
+       },()=>{
+		   this.getReportBetweenDates();
+	   });
     }
+    handleToChange(event){
+        event.preventDefault();
+       const target = event.target;
+       const name = target.name;
+
+       this.setState({
+          [name] : event.target.value,
+       },()=>{
+		  this.getReportBetweenDates();
+	   });
+    }
+
+   
    /* Weight Convertor end*/
 	render() {
 		return (
@@ -794,14 +1015,15 @@ export default class FinishedGoods extends React.Component {
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 					    <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right ">
-                            <h4 className="col-lg-3 col-md-3 col-sm-12 col-xs-12" style={{"display":"inline","float":"left"}}>Finished Goods Entry</h4>
-							<ul className="nav tabNav nav-pills col-lg-3 col-md-3 col-sm-12 col-xs-12" style={{"display":"inline","float":"right"}}>
-                    		  <li className="active col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>
-                    		  <li className="col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk Upload</a></li>
+                            <h4 className="col-lg-4 col-md-4 col-sm-12 col-xs-12" style={{"display":"inline","float":"left"}}>Finished Goods</h4>
+							<ul className="nav tabNav nav-pills col-lg-4 col-md-4 col-sm-12 col-xs-12" style={{"display":"inline","float":"right"}}>
+							  <li className="col-lg-3 col-md-3 col-xs-6 col-sm-6 NOpadding  text-center active"><a data-toggle="pill"  href="#report">Report</a></li>
+							  <li className="col-lg-3 col-md-3 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>
+                    		  <li className="col-lg-3 col-md-3 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk</a></li>
                   		   </ul>
                         </div>
 						<div className="tab-content ">
-							<div id="manual" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in active">
+							<div id="manual" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in">
 								<form className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtophr20" id="finishedGoodsInwardForm">
 									<div className="row">
 										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
@@ -857,8 +1079,9 @@ export default class FinishedGoods extends React.Component {
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label>Weight Per Finished Product Unit <i className="redFont">*</i></label>
 											<div className="WeightPerUnitDiv">
-												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.handleChange.bind(this)} id="fgUnitQty" onBlur={this.weightConverter.bind(this)} min="1"/>
-												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" onBlur={this.weightConverter.bind(this)}>
+												{/* onChangefgTotalQty called bcoz both are for same calculation */}
+												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.onChangefgUnitQty.bind(this)} id="fgUnitQty" min="1"/>
+												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.onChangefgUnitQty.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" >
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -875,13 +1098,13 @@ export default class FinishedGoods extends React.Component {
 										</div>
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label >Total Finished Quantity <i className="redFont">*</i></label>
-											<input type="number" placeholder="" className="form-control" value={ this.state.fgTotalQty} name="fgTotalQty" refs="fgTotalQty" onChange={this.handleChange.bind(this)} id="fgTotalQty" onBlur={this.weightConverter.bind(this)} min="0.1"/>
+											<input type="number" placeholder="" className="form-control" value={ this.state.fgTotalQty} name="fgTotalQty" refs="fgTotalQty" onChange={this.onChangefgTotalQty.bind(this)} id="fgTotalQty"  min="0.1"/>
 										</div>
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label>Total Weight For finished Goods</label>
 											<div className="WtForFgDiv">
-												<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQtyforFG} name="fgUnitQtyforFG" refs="wtforFG" onChange={this.handleChange.bind(this)} id="fgUnitQtyforFG" min="0" readOnly/>
-												<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
+												<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQtyforFG} name="fgUnitQtyforFG" refs="wtforFG" onChange={this.onFgWeightChange.bind(this)} id="fgUnitQtyforFG" min="0"/>
+												<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.onFgWeightChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" >
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -899,8 +1122,9 @@ export default class FinishedGoods extends React.Component {
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label>Scrap Material</label>
 											<div className="scrapMaterialDiv">
-												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.handleChange.bind(this)} id="scrapQty" min="0" onBlur={this.weightConverter.bind(this)} style={{"pointerEvents": "none"}}/>
-												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" style={{"pointerEvents": "none"}}>
+												{/* onBlur={this.weightConverter.bind(this)} */}
+												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.onChangeScrap.bind(this)} id="scrapQty" min="0" />
+												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.onChangeScrap.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -931,26 +1155,26 @@ export default class FinishedGoods extends React.Component {
 									</div>
 								</form>
 								<div className="mtop25">
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-										<label>Finished Date:</label>
-										<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.filterChange.bind(this)} id="filterByDate"/>
-									</div>
-									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
-										<label>Product Name:</label>
-										<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
-										<option disabled="">Select Product</option>
-										{
-											this.state.productArray && this.state.productArray.length > 0 ?
-												this.state.productArray.map((data, i)=>{
-													return(
-													<option key={i} value={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
-													);
-												})
-											:
-											null
-										}
-										</select>
-									</div>
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+											<label>Date:</label>
+											<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.filterChange.bind(this)} id="filterByDate"/>
+										</div>
+										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+											<label>Product Name:</label>
+											<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
+											<option value="Select Product" disabled="">Select Product</option>
+											{
+												this.state.productArray && this.state.productArray.length > 0 ?
+													this.state.productArray.map((data, i)=>{
+														return(
+														<option key={i} value={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+														);
+													})
+												:
+												null
+											}
+											</select>
+										</div>
 								</div>
 								<div className="mtop25">
 									<IAssureTable
@@ -963,6 +1187,50 @@ export default class FinishedGoods extends React.Component {
 									/>			
 						       </div>
 							</div>
+							<div id="report" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop25 tab-pane fade in active" >
+									<div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 reports-select-date-fromto">
+										<div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 reports-select-date-from1">
+										    <label>From Date</label>
+											<div className="reports-select-date-from3">
+												<input onChange={this.handleFromChange.bind(this)} name="fromDate" ref="fromDateCustomised" value={this.state.fromDate} type="date" className="reportsDateRef form-control" placeholder=""  />
+											</div>
+										</div>
+										<div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 reports-select-date-to1">
+											<label>To Date</label>
+											<div className="reports-select-date-to3">
+												<input onChange={this.handleToChange.bind(this)} name="toDate" ref="toDateCustomised" value={this.state.toDate} type="date" className="reportsDateRef form-control" placeholder=""   />
+											</div>
+										</div>
+									</div>
+										{/* <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+											<label>Date:</label>
+											<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.filterChange.bind(this)} id="filterByDate"/>
+										</div> */}
+									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+										<label>Product Name:</label>
+										<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
+										<option value="Select Product" disabled="">Select Product</option>
+										{
+											this.state.productArray && this.state.productArray.length > 0 ?
+												this.state.productArray.map((data, i)=>{
+													return(
+													<option key={i} value={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+													);
+												})
+											:
+											null
+										}
+										</select>
+									</div>
+									<IAssureTable
+										tableHeading={this.state.tableHeading}
+										twoLevelHeader={this.state.twoLevelHeader} 
+										dataCount={this.state.dataCount}
+										tableData={this.state.tableData}
+										getData={this.getData.bind(this)}
+										tableObjects={this.state.tableObjects}
+									/>			
+						       </div>
 							<div id="bulk" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in">
 								<div className="row outerForm">
 									<BulkUpload 
@@ -983,9 +1251,6 @@ export default class FinishedGoods extends React.Component {
 									/>
 								</div>
 							</div>
-						</div>
-						<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-
 						</div>
 						
 					</div>

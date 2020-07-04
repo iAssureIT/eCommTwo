@@ -23,6 +23,8 @@ router.post('/finishedGoodsBulkUpload' ,FinishedGoodsEntryController.finished_go
 
 router.get('/get/filedetails/:fileName' ,FinishedGoodsEntryController.filedetails);
 
+router.post('/post/getReportOfFinishedGoods',FinishedGoodsEntryController.get_finished_goods_report);
+
 /* Bulk upload code end */
 
 /*
