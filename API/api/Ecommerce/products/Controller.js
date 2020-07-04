@@ -424,18 +424,21 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
         productDuplicateControl();
         async function productDuplicateControl(){
             var productPresent = await findProduct(data.productCode, data.itemCode,data.productName);
+            var vendor = '';
             if(data.unit){
                var insertUOM = await insertUnitOfMeasurment(data.unit);
-             }
+            }
 
-             console.log("vendor id", data.vendor);
-            console.log("vendor id split", data.vendor ? data.vendor.split('|')[1] : null);
-          
+            if(data.vendor != undefined && data.vendor != ''){
+                vendor = data.vendor ? data.vendor.split('|')[1] : null;
+            }else{
+                vendor =  null;
+            }
             if (productPresent==0) {
                     const productObj = new Products({
                         _id                       : new mongoose.Types.ObjectId(),   
-                        user_ID                   : data.vendor.split('|')[1],  
-                        vendor_ID                 : data.vendor ? data.vendor.split('|')[1] : null, 
+                        user_ID                   : vendor,  
+                        vendor_ID                 : vendor, 
                         vendorName                : data.vendor.split('|')[0],  
                         section_ID                : section_ID,           
                         section                   : section,      
