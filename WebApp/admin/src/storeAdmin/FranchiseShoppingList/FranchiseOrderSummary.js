@@ -139,7 +139,7 @@ class FranchiseOrderSummary extends Component {
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
 								<div className="row">
 									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
-										<h3 className="text-center">Franchise Order Summary</h3>
+										<h3 className="text-center">List of Franchise PO</h3>
 									</div>
 									{/* <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 										<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">

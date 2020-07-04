@@ -15,6 +15,7 @@ class Login extends Component {
   constructor() {
     super();
     this.state = {
+      btnLoading: false,
       loggedIn: false,
       auth: {
         email: '',
@@ -63,12 +64,13 @@ class Login extends Component {
       role: "admin"
     }
     if ($("#login").valid()) {
-      document.getElementById("logInBtn").value = 'Please Wait...';
+      document.getElementById("logInBtn").value = this.setState({ btnLoading: true });
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
         console.log("response",response)
           this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
+            this.setState({ btnLoading: false });
             var  userDetails = {
               firstName : response.data.userDetails.firstName, 
               lastName  : response.data.userDetails.lastName, 
@@ -147,8 +149,8 @@ class Login extends Component {
                 swal(" Failed to sent OTP");
               })    
             });
-            document.getElementById("logInBtn").value = 'Sign In';
-
+            // document.getElementById("logInBtn").value = 'Sign In';
+            this.setState({ btnLoading: false });
           }
       })
       .catch((error) => {
@@ -156,9 +158,10 @@ class Login extends Component {
          swal({
               text : "Please enter valid Email ID and Password"
             })
-        document.getElementById("logInBtn").value = 'Sign In';
-        if (localStorage !== null) {
-        }
+        // document.getElementById("logInBtn").value = 'Sign In';
+        // if (localStorage !== null) {
+        // }
+        this.setState({ btnLoading: false });
       });
     }
   }
@@ -209,9 +212,27 @@ class Login extends Component {
                   </div>
 
                 </div>
-                <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
+                {/* <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
                   <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
+                </div> */}
+                {
+                  this.state.btnLoading
+                  ?
+                  <div className="col-lg-3 col-lg-offset-4 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight ">
+                  <div align="center" className="cssload-fond">
+                    <div className="cssload-container-general">
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_1"> </div></div>
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_2"> </div></div>
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_3"> </div></div>
+                        <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_4"> </div></div>
+                    </div>
+                  </div>
                 </div>
+                  :
+                  <div className="col-lg-10 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
+                    <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
+                  </div>
+                }
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
                     <div className="textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
