@@ -218,16 +218,19 @@ export default class PurchaseManagement extends React.Component {
 		axios
 		.get(this.state.fileDetailUrl+fileName)
 		.then((response)=> {
-		// console.log("response",response);
+		// console.log("response.data in material==>",response.data);
 		// $('.fullpageloader').hide();  
 		if (response) {
 		  this.setState({
 			  fileDetails:response.data,
 			  failedRecordsCount : response.data.failedRecords.length,
 			  goodDataCount : response.data.goodrecords.length
-		  });
-  
+			},()=>{
+				console.log("this.state.fileDetails==>",this.state.fileDetails);
+			});
+			
 			var tableData = response.data.goodrecords.map((a, i)=>{
+
 			return{
 				"purchaseDate"        : a.purchaseDate      ? moment(a.purchaseDate).format("YYYY-MM-DD")  : '-',
 				"purchaseNumber"      : a.purchaseNumber    ? a.purchaseNumber    : '-',
@@ -316,6 +319,8 @@ export default class PurchaseManagement extends React.Component {
 			//console.log("response",response);
 			var  tableData = response.data ;
 				var tableData = tableData.map((a, i) => {
+					console.log("response.data.goodrecords==>",tableData);
+			
 						return {
 							_id                 : a._id,
 							date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",

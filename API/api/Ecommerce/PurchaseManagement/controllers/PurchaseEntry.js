@@ -125,7 +125,7 @@ exports.get_datewise_purchaceEntry = (req, res, next)=>{
     //console.log("selector",selector);
     PurchaseEntry.find(selector)
     .then(data=>{
-       // console.log("data----=",data);
+    //    console.log("data----=",data);
        res.status(200).json(data);   
        
     })

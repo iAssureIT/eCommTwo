@@ -46,7 +46,7 @@ class IAssureTableUM extends Component {
 			completeDataCount: this.props.completeDataCount
 		})
 		const user_ID = localStorage.getItem("user_ID");
-		
+		this.getFranchiseList();
 		this.setState({
 			user_ID: user_ID,
 		}, () => {
@@ -310,26 +310,26 @@ class IAssureTableUM extends Component {
 		if (searchText && searchText.length !== 0) {
 			var data = {
 				searchText: searchText.toString(),
-				startRange: this.state.startRange,
-				limitRange: this.state.limitRange,
+				// startRange: this.state.startRange,
+				// limitRange: this.state.limitRange,
 			}
 			axios.post('/api/franchisepo/post/searchlist', data)
 				.then((res) => {
 					console.log("Res in searchtext==>", res)
-					var tableData = res.data.map((a, i) => {
-						return {
-							_id: a._id,
-							orderNo: a.orderNo.toString(),
-							orderDate: moment(a.orderDate).format("llll"),
-							franchisename: 'Franchise Name',
-							ordereditems: 'Ordered Items',
-							orderedqty: a.orderItems.length.toString(),
-							profileStatus: "Status",
-						}
-					})
-					this.setState({
-						tableData: tableData,
-					})
+					// var tableData = res.data.map((a, i) => {
+					// 	return {
+					// 		_id: a._id,
+					// 		orderNo: a.orderNo.toString(),
+					// 		orderDate: moment(a.orderDate).format("llll"),
+					// 		franchisename: 'Franchise Name',
+					// 		ordereditems: 'Ordered Items',
+					// 		orderedqty: a.orderItems.length.toString(),
+					// 		profileStatus: "Status",
+					// 	}
+					// })
+					// this.setState({
+					// 	tableData: tableData,
+					// })
 				})
 				.catch((error) => {
 				})
@@ -358,11 +358,82 @@ class IAssureTableUM extends Component {
 	supply(id){
 		this.props.history.push("/franchise_distribution/"+id);
 	}
-
+	getFranchiseList(){
+		axios.get('/api/entitymaster/get/franchise/')
+        .then((response) => {
+          this.setState({
+            "franchiseList": response.data,
+          },()=>{
+						// console.log("franchiseList = ",this.state.franchiseList);
+					})
+	      })
+	      .catch((error) => {
+					console.log("Error in franchiseList = ", error);
+	      })
+	}
+	selectedFranchise(event){
+		var selectedValue = event.target.value;
+		var keywordSelectedValue = selectedValue.split('$')[0];
+		console.log('keywordSelectedValue A==>>>', keywordSelectedValue);
+			if (selectedValue === "all") {
+				var data = {
+					"startRange": this.state.startRange,
+					"limitRange": this.state.limitRange,
+				}
+				this.getData(data)
+			} else {
+				var data = {
+					"startRange": this.state.startRange,
+					"limitRange": this.state.limitRange,
+				}
+				axios.get('/api/franchisepo/get/franchiseorderlist/' + keywordSelectedValue, data)
+					.then((res) => {
+						var tableData = res.data.map((a, i) => {
+							console.log('tableData A==>>>', a);
+							return {
+								_id				: a._id,
+								orderNo			: a.orderNo.toString(),
+								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
+								franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+								orderedqty		: a.orderItems.length.toString(),
+								profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+							}
+						})
+						this.setState({
+							tableData: tableData,
+						})
+					}).catch((error) => {
+						swal(" ", "Sorry there is no data of " + selectedValue, "");
+					});
+		}
+	}
 	showDeliveryChallans(id){
 		this.props.history.push("/delivery_challan/"+id);
 	}
+	getData(data) {
+		axios.get('/api/franchisepo/get/purchaseorderallList', data)
+			.then((res) => {
+				// console.log("res.data in getdata==>", res.data);
+					var tableData = res.data.map((a, i) => {
+						// console.log('tableData A==>>>', a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null );
+						return {
+							_id						: a._id,
+							orderNo				: a.orderNo.toString(),
+							orderDate			: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
+							franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+							orderedqty		: a.orderItems.length.toString(),
+							// profileStatus	: a.franchiseName.length !== null || a.franchiseName.length >= 1 ? a.franchiseName[0].profileStatus:null,
+							profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+						}
 
+					})
+					this.setState({
+						tableData: tableData,
+					})
+			})
+			.catch((error) => {
+			});
+	}
 	deletePO(id){
 	 	swal({
           title: "Are you sure you want to delete this Order ?",
@@ -391,18 +462,34 @@ class IAssureTableUM extends Component {
 		return (
 			<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
 				 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-					{/* <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12"> */}
 						<button className="btn btn-primary col-lg-8 col-md-12 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
-					{/* </div> */}
+				</div>  
+				 <div className="col-lg-4 col-lg-offset-4 col-md-4 col-sm-12 col-xs-12 ">
+				 			<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Company</label>
+							<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="companyDropdown" name="companyDropdown" onChange={this.selectedFranchise.bind(this)} >
+								<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+								<option value="all" name="roleListDDOption">Show All</option>
+								{
+									this.state.franchiseList && this.state.franchiseList.length > 0 ?
+										this.state.franchiseList.map((data, index) => {
+											// console.log("companyDropdown==>",data);
+											return (
+												<option key={index} value={data._id}>{data.companyName}</option>
+											);
+										})
+										:
+										<option value='user'>User</option>
+								}
+							</select>
 				</div> 
-				<div className="col-lg-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 NOpadding-right">
+				{/* <div className="col-lg-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 NOpadding-right">
 					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding labelform text-left">Search</label>
 					<div className="">
 						<input type="text" placeholder="Search By Franchise Name,PO Number..." onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control fa fa-search" ref="tableSearch" id="tableSearch" name="tableSearch" />
 						<span className="input-group-addon input_status">
 						</span>
 					</div>
-				</div>
+				</div> */}
 					<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right" data-toggle="tooltip" data-placement="top" title="Download Table Data!">
 						<ReactHTMLTableToExcel
 							id="test-table-xls-button"

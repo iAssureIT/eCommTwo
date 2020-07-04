@@ -108,7 +108,7 @@ class FranchiseOrderSummary extends Component {
 	getData(data) {
 		axios.get('/api/franchisepo/get/purchaseorderallList', data)
 			.then((res) => {
-				console.log("res.data in getdata==>", res.data);
+				// console.log("res.data in getdata==>", res.data);
 					var tableData = res.data.map((a, i) => {
 						// console.log('tableData A==>>>', a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null );
 						return {
@@ -132,16 +132,20 @@ class FranchiseOrderSummary extends Component {
 
 	render() {
 		return (
-			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+			<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
  					<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-
 					<div className="formWrapper">
 						<section className="content">
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent ">
 								<div className="row">
 									<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
-										<h3 className="text-center">Franchise Order List</h3>
+										<h3 className="text-center">Franchise Order Summary</h3>
 									</div>
+									{/* <div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+										<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+											<button className="btn btn-primary col-lg-8 col-md-12 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
+										</div>
+									</div> */}
 									<form className="newTemplateForm">
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<ShoppingList
@@ -158,7 +162,6 @@ class FranchiseOrderSummary extends Component {
 					</div>
 				</div>
 			</div>
-
 		);
 	}
 

@@ -388,35 +388,46 @@ exports.order_franchise = (req,res,next)=>{
         });
 };
 exports.search_PO = (req, res, next)=>{
-    // consol.log("req.body.searchText==>",req.body)
-	FranchisePO.find([
-		
+	console.log("req.body in search==>",req.body.searchText);
+	FranchisePO.aggregate([
+		{$match:
 			{$or:
 			  [
-						{ "orderNo"	: { "$regex": req.body.searchText, $options: "i" } },
-						// { "franchiseName"	: { "$regex": req.body.searchText, $options: "i" } },
+				{ "orderNo"	: { "$regex": req.body.searchText, $options: "i" } },
 			  ]
 			}
-		 
-		])
+		},
+	])
 	.exec()
 	.then(data=>{
-		console.log("Data in search==>",data)
-		if(data){
-			var i = 0;
-			var returnData = [];
-			for(i = 0 ; i < data.length ; i++){
-				returnData.push({
-									"_id"			: data[i]._id,
-									"email"			: data[i].orderNo, //Mandatory 
-								});
-			}
-			if( i >= data.length){
-				res.status(200).json(returnData);
-			}
-		}else{
-			res.status(200).json({message:"USER_NOT_FOUND"});
-		}
+        console.log("Data in search==>",data)
+        main();
+        async function main(){
+            if(data){
+                var i = 0;
+                var returnData = [];
+                for(i = 0 ; i < data.length ; i++){
+                    var AllUnits = ""
+                    AllUnits = await franchiseentityID(data[i].franchise_id);
+                    console.log('data in AllUnits ==>',AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null);
+                    returnData.push({
+                        "_id"		      : data[i]._id,
+                        "orderNo"         : data[i].orderNo,
+                        "orderDate"       : data[i].orderDate,
+                        "orderItems"      : data[i].orderItems,
+                        "orderItemsqty"   : data[i].orderItems.length,
+                        "franchiseName"	  : AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null,
+                        
+                    });
+                }
+                console.log('data in returnData ==>',returnData);
+                if( i >= data.length){
+                    res.status(200).json(returnData);
+                }
+            }else{
+                res.status(200).json({message:"USER_NOT_FOUND"});
+            }
+        }
 	})
 	.catch(err=>{
 		res.status(500).json({
@@ -424,14 +435,27 @@ exports.search_PO = (req, res, next)=>{
 		})
 	})
 }
+function franchiseentityID(franchise_id){
+    return new Promise(function(resolve,reject){ 
+        EntityMaster.find({ _id: franchise_id })
+        .exec()
+        .then(res=>{
+            
+            // console.log('res in EntityMaster ==>',res);
+            resolve(res);
+        })
+        .catch(err =>{
+            // res.status(500).json({ error: err });
+            reject(err);
+        }); 
+    });
+};
 
 exports.list_allfranchisePO = (req,res,next)=>{
    var orderDate    = req.params.orderDate;
    FranchisePO.aggregate([
         {$match : { orderDate : new Date(orderDate)}},
         {$lookup: {from: "entitymasters",localField: "franchise_id",foreignField: "_id",as: "franchiseData"}},
-        //{$unwind: "$franchisegoods"},
-        //{$lookup: {from: "franchisegoods",localField: "_id",foreignField: "purchaseOrderId",as: "finishedGoodsData"}},
    ])
    .then(data=>{
 
@@ -443,19 +467,6 @@ exports.list_allfranchisePO = (req,res,next)=>{
           error: err
         });
    });
-    // FranchisePO
-    //     .find({
-    //             orderDate : new Date(orderDate)
-    //         })       
-    //     .then(data=>{
-    //         res.status(200).json(data);
-    //     })
-    //     .catch(err =>{
-    //         console.log(err);
-    //         res.status(500).json({
-    //             error: err
-    //         });
-    //     });
 };
 
 exports.allFrachisePOData = (req,res,next)=>{   
