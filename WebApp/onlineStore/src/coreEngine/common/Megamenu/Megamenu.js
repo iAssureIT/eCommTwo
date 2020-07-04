@@ -88,7 +88,7 @@ componentWillMount() {
           <ul className="main-nav textAlignCenter">
             
             {
-              this.state.categoryData && this.state.categoryData.map((data,index)=>{
+              this.state.categoryData.length>0 && this.state.categoryData.map((data,index)=>{
                   return(
                     <li key={index} className="top-level-link">
                       <a className="mega-menu" href={"/section/"+data.sectionUrl+'/'+data._id}><span>{data.section}</span></a>
