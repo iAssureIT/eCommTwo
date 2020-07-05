@@ -87,8 +87,7 @@ componentWillMount() {
           </a>
           <a href="javascript:void(0);" className="ic close"> </a>*/}
 
-          <ul className="main-nav textAlignCenter">
-            
+          <ul className="main-nav textAlignCenter">            
             {
               this.state.categoryData.length>0 && this.state.categoryData.map((data,index)=>{
                   return(
