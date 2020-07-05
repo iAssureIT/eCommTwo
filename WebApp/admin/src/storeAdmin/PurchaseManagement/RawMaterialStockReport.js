@@ -26,13 +26,12 @@ export default class RawMaterialStockReport extends React.Component {
 						           },
 		             "tableHeading"     : {
 						Date            : 'Date',
-						ItemCode 		: "Item Code",
-		        		ProductCode     : "Product Code",
-		        		ProductName     : "Product Name",
+						itemCode 		: "Item Code",
+		        		productCode     : "Product Code",
+		        		productName     : "Product Name",
 						OpeningStock    : 'Opening Stock',
 		                StockAddedToday : 'Stock Added Today',
-		                TotalStock      : 'Total Stock',
-						actions        	: 'Action',
+		                totalStock      : 'Total Stock',	 
 					},
 					"tableObjects" 		: {
 						deleteMethod              : 'delete',
@@ -47,11 +46,15 @@ export default class RawMaterialStockReport extends React.Component {
 		            blockActive			: "all",
 		            "listofRoles"	    : "",
 		            adminRolesListData  : [],
-		            checkedUser  : [],
-		            activeswal : false,
-		            blockswal : false,
-		            confirmDel : false,
-		            tableData : ""
+		            checkedUser         : [],
+		            activeswal          : false,
+		            blockswal           : false,
+		            confirmDel          : false,
+					tableData           : "",
+					reportFilterData    : {},
+					filterByProduct     : 'Select Product',
+					fromDate            : moment(new Date()).format("YYYY-MM-DD"),
+					toDate              : moment(new Date()).format("YYYY-MM-DD"),
 			      	
       };
 	}
@@ -61,10 +64,8 @@ export default class RawMaterialStockReport extends React.Component {
 		this.getproducts();
 		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
 		// console.log("today",today);
-
+		this.getReportBetweenDates();
 		var editId = this.props.match.params.purchaseId;
-        console.log('ven', editId);
-        this.getData();
 
 	}
 	componentWillReceiveProps(nextProps) {
@@ -76,74 +77,47 @@ export default class RawMaterialStockReport extends React.Component {
           this.edit(editId);
         }
     }
-	edit(id){
-        // $("#taxMaster").validate().resetForm();
-        axios.get('/api/purchaseentry/get/one/'+id)
-        .then((response)=>{
-            console.log('res', response);
-            this.setState({
-                "amount"         	: response.data.amount ,
-		        "purchaseDate" 		: response.data.purchaseDate,
-		      	"purchaseStaff" 	: response.data.purchaseStaff,
-		      	"purchaseLocation"  : response.data.purchaseLocation,
-		      	"quantity" 			: response.data.quantity,
-		      	"unitRate" 	        : response.data.unitRate,
-		      	"purchaseNumber"    : response.data.purchaseNumber,
-		      	"Details" 			: response.data.Details,
-		      	"productName" 		: response.data.product,
-		      	"unit" 				: response.data.Units,
-            });
-            
-        })
-        .catch((error)=>{
-            console.log('error', error);
-        });
-    }
-	getData(startRange, limitRange){ 
-	var dateToSearch=this.state.serchByDate;
-	var filterData = {};
-	filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
-	// axios
-	// .post('/api/purchaseentry/post/datewisepurchase/',filterData)
-	// .then((response)=>{
-	// 	console.log("list===>",response.data);
-	// 	var  tableData = response.data ;
-	// 		var tableData = tableData.map((a, i) => {
-	// 				return {
-	// 					_id                  :a._id,
-	// 					Date   				: a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
-	// 					ItemCode 		    : a.itemCode ? a.itemCode : "" ,
-	// 					ProductCode 		: a.productCode ,
-	// 					ProductName 		: a.productName,
-	// 					OpeningStock        : a.openingStock ? a.openingStock : "",
-	// 					StockAddedToday     : a.quantity ? a.quantity : "",
-	// 					TotalStock 	        : a.quantity ? a.quantity : "",
-	// 				}
-	// 		});
 	
-	// 		let totalAmount = tableData.reduce(function(prev, current) {
-	// 			console.log("current supply",current);
-	// 				// return prev + +current.TotalAmount
-	// 		}, 0);
+	getReportBetweenDates(){
+		var reportFilterData = this.state.reportFilterData;
+		if(this.state.filterByProduct !== "Select Product"){
+			reportFilterData.itemcode = this.state.filterByProduct;
+		}else{
+			delete reportFilterData["itemcode"];
+		}
+		reportFilterData.fromDate = this.state.fromDate;
+		reportFilterData.toDate = this.state.toDate;
 
-	// 		this.setState({ 
-	// 		   tableData 		: tableData,  
-	// 		}) 
-	// 	})
-	// .catch((error)=>{
-	// 	console.log("error = ", error);              
-	// }); 
+		console.log("reportFilterData",reportFilterData);
 
-	axios
-	.get('/api/purchaseentry/get/get_report/',filterData)
-    .then((response)=>{
-		console.log("res",response)
-	})
-	.catch((error)=>{
+		axios
+		.post('/api/purchaseentry/post/getReportOfPurchaseEntry/',reportFilterData)
+		.then((response)=>{
+			var  tableData = response.data ;
+			console.log("tableData",tableData);
+				var tableData = tableData.map((a, i) => {
+						return {
+	
+							_id                  : a._id,
+							Date   				 : a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
+							itemCode             : a.itemCode     ? a.itemCode     : "",
+							productCode          : a.productCode  ? a.productCode  : "",
+							productName 	     : a.productName  ? a.productName +' - '+ a.productCode +' - '+ a.itemCode: "" ,
+							OpeningStock         : a.OpeningStock ? a.OpeningStock : 0,
+							StockAddedToday      : a.quantity     ? a.quantity     : 0,
+							totalStock           : a.balance      ? a.balance +' '+a.balanceUnit : 0,
+							
+						}
+					})
+				this.setState({
+				  tableData 		: tableData,          
+				})
+				})
+		.catch((error)=>{
 			console.log("error = ", error);              
-		});
-	
-    }
+		}); 
+		
+	}
     getSearchText(searchText, startRange, limitRange){
 
     }
@@ -158,53 +132,13 @@ export default class RawMaterialStockReport extends React.Component {
 		})
 		console.log("checkedUser",this.state.checkedUser)
 	}
-	getRole(){
-		
-	}
+	
 	selectedRole(event){
 		event.preventDefault();
 					    
 	}
-	handleChangeDate(event){
-      event.preventDefault();
-      var dateVal = event.target.id;
-      // console.log("datVal",dateVal);
-      // const datatype = event.target.getAttribute('data-text');
-      const {name,value} = event.target;
 
-      this.setState({ 
-        [name]:value,
- 
-      },()=>{
-      	console.log("date",this.state.serchByDate);
-		this.getData();
-
-      } );
-    }
-
-	handleChange(event){
-      event.preventDefault();
-
-      // const datatype = event.target.getAttribute('data-text');
-      const {name,value} = event.target;
-
-      this.setState({ 
-        [name]:value,
- 
-      } );
-    }
-    handleProduct(event){
-    	var valproduct = event.currentTarget.value;
-    	console.log("valproduct",valproduct);
-		this.setState({product : valproduct});
-
-    }
-    handleProduct1(event){
-    	var valpurchaseLocation = event.currentTarget.value;
-    	console.log("valpurchaseLocation",valpurchaseLocation);
-		this.setState({purchaseLocation : valpurchaseLocation});
-
-    }
+    
      getproducts(){
         axios.get('/api/products/get/list')
 		.then((response) => {
@@ -222,88 +156,43 @@ export default class RawMaterialStockReport extends React.Component {
 		.catch((error) => {
 			
 		})
-    }
-    Submit(event){
-    event.preventDefault();
-
-    const formValues1 = {
-        "amount"         	: this.state.amount ,
-        "purchaseDate" 		: this.state.purchaseDate,
-      	"purchaseStaff" 	: this.state.purchaseStaff,
-      	"purchaseLocation"  : this.state.purchaseLocation,
-      	"quantity" 			: this.state.quantity,
-      	"productName" 		: this.state.product,
-      	"unit" 				: this.state.Units,
-      	"unitRate" 	    : this.state.unitRate,
-		"purchaseNumber"    : this.state.purchaseNumber,
-		"Details" 			: this.state.Details,
-       
-      };
-      console.log("formValues1",formValues1);
-      axios
-			.post('/api/purchaseentry/post',formValues1)
-		  	.then(function (response) {
-		    // handle success
-		    	console.log("data in block========",response.data);
-		    	swal("Thank you. Your Product addeed successfully.");
-		    	 // window.location.reload();
-		  	})
-		  	.catch(function (error) {
-		    // handle error
-		    	console.log(error);
-		  	});
-		  	this.setState({
-				 amount          : "",         	
-		         purchaseDate    : "", 		
-		      	 purchaseStaff   : "", 	
-		      	 purchaseLocation: "",  
-		      	 quantity        : "", 			
-		      	 product         : "", 		
-		      	 Units           : "",
-		      	 unitRate    : "",
-			     purchaseNumber  : "",
-				 Details 		 :"",	
-      	 })		
 	}
-	update(event){
+	
+
+	/* Filters start*/
+	filterChange(event){
+		event.preventDefault();
+		const {name,value} = event.target;
+  
+		this.setState({ 
+		  [name]:value,
+		},()=>{
+		  this.getReportBetweenDates();
+		 });
+	  }
+   /* Filters end*/
+	
+	handleFromChange(event){
         event.preventDefault();
-        var formValues = {
-            
-             "amount"         	: this.state.amount ,
-	        "purchaseDate" 		: this.state.purchaseDate,
-	      	"purchaseStaff" 	: this.state.purchaseStaff,
-	      	"purchaseLocation"  : this.state.purchaseLocation,
-	      	"quantity" 			: this.state.quantity,
-	      	"productName" 		: this.state.product,
-	      	"unit" 				: this.state.Units,
-	      	"unitRate" 	        : this.state.unitRate,
-			"purchaseNumber"    : this.state.purchaseNumber,
-			"Details" 			: this.state.Details,
-        }
-        /*if($("#taxMaster").valid()){*/
-            axios.patch('/api/purchaseentry/patch/'+this.state.editId,formValues)
-            .then((response)=>{
-                this.props.history.push('/purchase-management');
-                swal(response.data.message);
-                this.getData(this.state.startRange, this.state.limitRange);
-                this.setState({
-                    "amount"         	: "" ,
-			        "purchaseDate" 		: "",
-			      	"purchaseStaff" 	: "",
-			      	"purchaseLocation"  : "",
-			      	"quantity" 			: "",
-			      	"productName" 		: "",
-			      	"unit" 				: "",
-                    "unitRate"      : "",
-				     "purchaseNumber"   : "",
-					 "Details" 		    :"",	
-                     editId             : ""
-                })
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })
-      /*  }*/
+       const target = event.target;
+       const name = target.name;
+
+       this.setState({
+           [name] : event.target.value,
+       },()=>{
+		   this.getReportBetweenDates();
+	   });
+    }
+    handleToChange(event){
+        event.preventDefault();
+       const target = event.target;
+       const name = target.name;
+
+       this.setState({
+          [name] : event.target.value,
+       },()=>{
+		  this.getReportBetweenDates();
+	   });
     }
 
 
@@ -315,23 +204,46 @@ export default class RawMaterialStockReport extends React.Component {
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                             <h4 className="">Raw Material Stock Report</h4>
                         </div>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtop25">
-						  <div className="form-group col-lg-6 col-md-6 col-xs-12 col-sm-12 mbt25">
-							<div className="col-lg-4 col-md-4"><label>Search By Date:</label></div>
-							<div className="col-lg- col-md-6">
-							 <input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.serchByDate} name="serchByDate" refs="serchByDate" onChange={this.handleChangeDate.bind(this)} id="serchByDate"/>
-                            </div>
-						</div>
-						</div>
+						
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<IAssureTable
-									tableHeading={this.state.tableHeading}
-                                    twoLevelHeader={this.state.twoLevelHeader} 
-                                    dataCount={this.state.dataCount}
-                                    tableData={this.state.tableData}
-                                    getData={this.getData.bind(this)}
-                                    tableObjects={this.state.tableObjects}
-								/>			
+						    <div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 reports-select-date-fromto">
+								<div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 reports-select-date-from1">
+									<label>From Date</label>
+									<div className="reports-select-date-from3">
+										<input onChange={this.handleFromChange.bind(this)} name="fromDate" ref="fromDateCustomised" value={this.state.fromDate} type="date" className="reportsDateRef form-control" placeholder=""  />
+									</div>
+								</div>
+								<div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 reports-select-date-to1">
+									<label>To Date</label>
+									<div className="reports-select-date-to3">
+										<input onChange={this.handleToChange.bind(this)} name="toDate" ref="toDateCustomised" value={this.state.toDate} type="date" className="reportsDateRef form-control" placeholder=""   />
+									</div>
+								</div>
+							</div>
+							<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
+									<label>Product Name:</label>
+									<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
+									<option value="Select Product" disabled="">Select Product</option>
+									{
+										this.state.productArray && this.state.productArray.length > 0 ?
+											this.state.productArray.map((data, i)=>{
+												return(
+												<option key={i} value={data.itemCode}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+												);
+											})
+										:
+										null
+									}
+									</select>
+							</div>
+							<IAssureTable
+								tableHeading={this.state.tableHeading}
+								twoLevelHeader={this.state.twoLevelHeader} 
+								dataCount={this.state.dataCount}
+								tableData={this.state.tableData}
+								getData={this.getReportBetweenDates.bind(this)}
+								tableObjects={this.state.tableObjects}
+							/>			
 							</div>
 					</div>
 				</div>

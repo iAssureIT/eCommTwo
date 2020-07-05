@@ -100,7 +100,8 @@ export default class FinishedGoods extends React.Component {
 					CurrentStockUnit    : '',
 					unitOfMeasurementArray  : [],
 					fromDate            : moment(new Date()).format("YYYY-MM-DD"),
-					toDate              : moment(new Date()).format("YYYY-MM-DD")
+					toDate              : moment(new Date()).format("YYYY-MM-DD"),
+					firstEntered        :''
 	  };
 	  this.uploadedData = this.uploadedData.bind(this);
 	  this.getFileDetails = this.getFileDetails.bind(this);
@@ -298,7 +299,7 @@ export default class FinishedGoods extends React.Component {
 		if(this.state.filterByProduct !== "Select Product"){
 			reportFilterData.itemcode = this.state.filterByProduct;
 		}else{
-			reportFilterData.itemcode = ''
+			delete reportFilterData["itemcode"];
 		}
 		reportFilterData.fromDate = this.state.fromDate;
 		reportFilterData.toDate = this.state.toDate;
@@ -333,13 +334,9 @@ export default class FinishedGoods extends React.Component {
 	getListProducts(){
 		axios.get("/api/finishedGoodsEntry/get/ProductList")
             .then((response) => {
-				console.log("response.data",response.data);
-
 				var ProductList = [];
 				var PoNumbersArray = [];
 				response.data.filter(function(item,index){
-					console.log("response.data.ProductList",item.ProductList.itemCode);
-
 					var i = ProductList.findIndex(x => x.itemCode == item.ProductList.itemCode);
 					if(i <= -1){
 						ProductList.push(item.ProductList);
@@ -505,6 +502,10 @@ export default class FinishedGoods extends React.Component {
 		    });
 	}
 
+	compareVariable(a,b,c) {
+		return a==b || b==c || c==a;
+	}
+
 	checkValidInward(){
 		var TotalFcInward = Number(this.state.fgUnitQtyforFG) + Number(this.state.scrapQty);
 		var TotalOutward  = this.state.OutwardRawMaterial;
@@ -515,24 +516,48 @@ export default class FinishedGoods extends React.Component {
 		var ScrapUnit        =  this.state.scrapUnit;
 
 		if(CurrentStockUnit === OutwardUnit){
-			OutwardError = this.state.CurrentStock >= this.state.OutwardRawMaterial ? "" : "You don't have enough stock to convert";
+			if(Number(TotalFcInward) > Number(TotalOutward)){
+				if(OutwardError !== ""){
+					OutwardError += "\n"+"You can convert only selected Raw material stock quantity.";
+				}else{
+					OutwardError += "  You can convert only selected Raw material stock quantity.";
+				}
+			}else{
+				 OutwardError = "";
+			}
+	
+			if(TotalFcInward == this.state.OutwardRawMaterial){
+				var compareVariable = this.compareVariable(this.state.fgUnitWt.toLowerCase(),finishgoodUnitWt.toLowerCase(),ScrapUnit.toLowerCase());
+				if(compareVariable){
+					OutwardError =  "";
+				}else{
+					OutwardError =  "Units of Scrap material,Finished goods and Weight Per Finished Product must be same";
+				}
+			}else{
+				OutwardError = this.state.CurrentStock >= this.state.OutwardRawMaterial ? "" : "You don't have enough stock to convert";
+			}
+			
 		}else{
-			if(CurrentStockUnit === "Kg" && OutwardUnit === "Gm"){
+			if(CurrentStockUnit.toLowerCase() === "kg" && OutwardUnit.toLowerCase() === "gm"){
 				var OutwardRawInKg = this.state.OutwardRawMaterial / 1000;
 				OutwardError =  this.state.CurrentStock >= OutwardRawInKg ? " " : "You don't have enough stock to convert";
 			}
 
-			if(CurrentStockUnit === "Gm" && OutwardUnit === "Kg"){
+			if(CurrentStockUnit.toLowerCase() === "gm" && OutwardUnit.toLowerCase() === "kg"){
 				var OutwardRawInGm = this.state.OutwardRawMaterial * 1000;
 				OutwardError =  this.state.CurrentStock >= OutwardRawInGm ? " " : "You don't have enough stock to convert";
 			}
 
-			if(CurrentStockUnit === "Gm" && OutwardUnit === "Gm"){
+			if(CurrentStockUnit.toLowerCase() === "gm" && OutwardUnit.toLowerCase() === "gm"){
 				OutwardError =  this.state.CurrentStock >= this.state.OutwardRawMaterial ? " " : "You don't have enough stock to convert";
 			}
 
-			if(CurrentStockUnit === "Kg" && OutwardUnit === "Kg"){
+			if(CurrentStockUnit.toLowerCase() === "kg" && OutwardUnit.toLowerCase() === "kg"){
 				OutwardError =  this.state.CurrentStock >= this.state.OutwardRawMaterial ? " " : "You don't have enough stock to convert";
+			}
+
+			if(CurrentStockUnit.toLowerCase() !== "kg" && OutwardUnit.toLowerCase() !== "kg"){
+				OutwardError =  "Current Stock unit and Outward from raw material unit should be same";
 			}
 		}
 
@@ -543,13 +568,23 @@ export default class FinishedGoods extends React.Component {
 				OutwardError += "  You can convert only selected Raw material stock quantity.";
 			}
 		}else{
-			 OutwardError = "";
+			if(TotalFcInward == this.state.OutwardRawMaterial){
+				var compareVariable = this.compareVariable(this.state.fgUnitWt.toLowerCase(),finishgoodUnitWt.toLowerCase(),ScrapUnit.toLowerCase());
+				if(compareVariable){
+					OutwardError =  "";
+				}else{
+					OutwardError =  "Units of Scrap material,Finished goods and Weight Per Finished Product must be same";
+				}
+			}else{
+				OutwardError = this.state.CurrentStock >= this.state.OutwardRawMaterial ? "" : "You don't have enough stock to convert";
+			}
+			
 		}
-	
-			this.setState({
-				errorMsg : OutwardError ? OutwardError : "Valid",
-			},()=>{
-		 	});
+
+		this.setState({
+			errorMsg : OutwardError ? OutwardError : "Valid",
+		},()=>{
+		});
 	}
 
     handleProduct(event){
@@ -794,7 +829,7 @@ export default class FinishedGoods extends React.Component {
    onChangefgTotalQty(event){
 	event.preventDefault();
 	const {name,value} = event.target;
-	if(this.state.fgUnitQtyforFG > 0){
+	if(this.state.fgUnitQty > 0){
 		this.setState({ 
 			[name]:value,
 			// fgUnitQty : this.state.fgUnitQtyforFG / value
@@ -873,34 +908,60 @@ export default class FinishedGoods extends React.Component {
    }
 
    calculateWeightPerFP(){
-
+	// var firstEntered;
 	var TotalFcWt = this.state.fgUnitQty * this.state.fgTotalQty;
-	// console.log("TotalFcWt",this.state.fgUnitQty * this.state.fgTotalQty - this.state.fgUnitQtyforFG);
-	// console.log("TotalFcWt",TotalFcWt);
-
-	if(TotalFcWt <= this.state.fgUnitQtyforFG){
+	if(this.state.fgUnitQtyforFG == 0  && this.state.scrapQty == 0){
 		this.setState({
-			fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
-			fgUnitWt     : this.state.finishedGoodsUnit,
-			scrapQty     : this.state.fgUnitQtyforFG - TotalFcWt > 0.01 ? this.state.fgUnitQtyforFG - TotalFcWt : 0
-		},() => {
+			firstEntered      : "Product_unit",
+			fgUnitQtyforFG    : TotalFcWt,
+			finishedGoodsUnit : this.state.fgUnitWt,
+			scrapQty          : this.state.OutwardRawMaterial - TotalFcWt > 0.01 ? this.state.OutwardRawMaterial - TotalFcWt : 0,
+			scrapUnit         : this.state.fgUnitWt,
+		},()=>{
 			this.checkValidInward();
-		})
-	}else if(TotalFcWt > this.state.fgUnitQtyforFG){
-		this.setState({
-			fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
-			fgUnitWt     : this.state.finishedGoodsUnit,
-			scrapQty     : this.state.fgUnitQtyforFG - TotalFcWt,
-		},() => {
-			this.checkValidInward();
-		})
+		});
 	}else{
 		this.setState({
-			fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
-			fgUnitWt     : this.state.finishedGoodsUnit,
-		},() => {
+			firstEntered      : "Scrap_material",
+		});
+	}
+
+	if(this.state.firstEntered == "Product_unit"){	
+		this.setState({
+			firstEntered   : "Product_unit",
+			fgUnitQtyforFG : TotalFcWt,
+			fgUnitWt       : this.state.fgUnitWt,
+			scrapQty       : this.state.OutwardRawMaterial - TotalFcWt > 0.01 ? this.state.OutwardRawMaterial - TotalFcWt : 0,
+			scrapUnit      : this.state.fgUnitWt,
+		},()=>{
+			this.weightConverter();
 			this.checkValidInward();
 		})
+	}else if(this.state.firstEntered == "Scrap_material"){
+		if(TotalFcWt <= this.state.fgUnitQtyforFG){
+			this.setState({
+				fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
+				fgUnitWt     : this.state.finishedGoodsUnit,
+				scrapQty     : this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG > 0 ? this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG : 0
+			},() => {
+				this.checkValidInward();
+			})
+		}else if(TotalFcWt > this.state.fgUnitQtyforFG){
+			this.setState({
+				fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
+				fgUnitWt     : this.state.finishedGoodsUnit,
+				scrapQty     : this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG > 0 ? this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG : 0,
+			},() => {
+				this.checkValidInward();
+			})
+		}else{
+			this.setState({
+				fgUnitQty    : this.state.fgUnitQtyforFG / this.state.fgTotalQty > 0.1 ? (this.state.fgUnitQtyforFG / this.state.fgTotalQty).toFixed(2) : 0,
+				fgUnitWt     : this.state.finishedGoodsUnit,
+			},() => {
+				this.checkValidInward();
+			})
+		}
 	}
 	
    }
@@ -911,7 +972,11 @@ export default class FinishedGoods extends React.Component {
 		this.setState({ 
 			[name]:value,
 		},()=>{
-			this.calculateFgAndScrapByUnit();
+			if(this.state.firstEntered == 'Product_unit'){
+				this.calculateWeightPerFP();
+			}else{
+				this.calculateFgAndScrapByUnit();
+			}
 		});
    }
 
@@ -922,63 +987,63 @@ export default class FinishedGoods extends React.Component {
    /* Weight Convertor start*/
     weightConverter() {
 	   // Gram to Kilograms
-		// if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "kg"){
-		// 	//convert fgunit to gram and calculate
-		// 	var FgUnitKg=this.state.fgUnitQty*1000;
-		// 	var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
-		// 	var Scrap = this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty * 1000);
-		// 	this.setState({
-		// 		fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty)*1000,
-		// 		scrapQty          : Scrap > 0 ? Scrap: 0,
-		// 		scrapUnit         : this.state.OutwardUnit,
-		// 	},() => {
-		// 		this.checkValidInward();
-		// 	})
+		if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "kg"){
+			//convert fgunit to gram and calculate
+			var FgUnitKg=this.state.fgUnitQty*1000;
+			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
+			var Scrap = this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty * 1000);
+			this.setState({
+				fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty)*1000,
+				scrapQty          : Scrap > 0 ? Scrap: 0,
+				scrapUnit         : this.state.OutwardUnit,
+			},() => {
+				this.checkValidInward();
+			})
 			
-		// }else if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "gm"){
-		// 	var FgUnitGm=this.state.fgUnitQty/1000;
-		// 	var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
-		// 	this.setState({
-		// 		fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
-		// 		scrapQty          : Scrap > 0 ? Scrap : 0
-		// 	},() => {
-		// 		this.checkValidInward();
-		// 	})
-		// }
+		}else if(this.state.OutwardUnit.toLowerCase() == 'gm' && this.state.fgUnitWt.toLowerCase() == "gm"){
+			var FgUnitGm=this.state.fgUnitQty/1000;
+			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
+			this.setState({
+				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+				scrapQty          : Scrap > 0 ? Scrap : 0
+			},() => {
+				this.checkValidInward();
+			})
+		}
 
-		// // Kilograms to Gram
-		// if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "gm"){
-		// 	//convert fgunit to kg and calculate
-		// 	var FgUnitKg=this.state.fgUnitQty*1000;
-		// 	var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
-		// 	var Scrap =  this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty/1000);
-		// 	this.setState({
-		// 		fgUnitQtyforFG    : (this.state.fgUnitQty/1000) * (this.state.fgTotalQty),
-		// 		scrapQty          : Scrap > 0 ? Scrap : 0,
-		// 		scrapUnit         : this.state.OutwardUnit,
-		// 	},() => {
-		// 		this.checkValidInward();
-		// 	})
+		// Kilograms to Gram
+		if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "gm"){
+			//convert fgunit to kg and calculate
+			var FgUnitKg=this.state.fgUnitQty*1000;
+			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
+			var Scrap =  this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty/1000);
+			this.setState({
+				fgUnitQtyforFG    : (this.state.fgUnitQty/1000) * (this.state.fgTotalQty),
+				scrapQty          : Scrap > 0 ? Scrap : 0,
+				scrapUnit         : this.state.OutwardUnit,
+			},() => {
+				this.checkValidInward();
+			})
 			
-		// }else if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "kg"){
-		// 	var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
-		// 	this.setState({
-		// 		fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
-		// 		scrapQty          : Scrap > 0 ? Scrap : 0
-		// 	},() => {
-		// 		this.checkValidInward();
-		// 	})
-		// }
+		}else if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "kg"){
+			var Scrap = this.state.OutwardRawMaterial - (this.state.fgUnitQty * this.state.fgTotalQty);
+			this.setState({
+				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+				scrapQty          : Scrap > 0 ? Scrap : 0
+			},() => {
+				this.checkValidInward();
+			})
+		}
 
-		// if(this.state.OutwardUnit.toLowerCase()  != 'kg' && this.state.OutwardUnit.toLowerCase()  != 'gm'){
-		// 	var Scrap = Number(this.state.OutwardRawMaterial) - Number(this.state.fgUnitQtyforFG);
-		// 	this.setState({
-		// 		fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
-		// 		scrapQty          : Scrap > 0 ? Scrap : 0
-		// 	},() => {
-		// 		this.checkValidInward();
-		// 	})
-		// }
+		if(this.state.OutwardUnit.toLowerCase()  != 'kg' && this.state.OutwardUnit.toLowerCase()  != 'gm'){
+			var Scrap = Number(this.state.OutwardRawMaterial) - Number(this.state.fgUnitQtyforFG);
+			this.setState({
+				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+				scrapQty          : Scrap > 0 ? Scrap : 0
+			},() => {
+				this.checkValidInward();
+			})
+		}
 
 
 
@@ -1032,7 +1097,7 @@ export default class FinishedGoods extends React.Component {
 										</div>
 										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
 											<label >Select Product <i className="redFont">*</i></label>
-											<input list="productName" type="text" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.onProductChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" autocomplete="off"/>
+											<input list="productName" type="text" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.onProductChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" autocomplete="off" autocomplete="off"/>
 											<datalist id="productName" name="productName" className="productDatalist" autocomplete="off">
 											{
 													this.state.productArray && this.state.productArray.length > 0 ?
@@ -1042,7 +1107,7 @@ export default class FinishedGoods extends React.Component {
 															);
 														})
 													:
-													<option value="" disabled>No Products</option>
+													<option>No Products </option>
 											}
 											</datalist>
 										</div>
@@ -1202,10 +1267,7 @@ export default class FinishedGoods extends React.Component {
 											</div>
 										</div>
 									</div>
-										{/* <div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
-											<label>Date:</label>
-											<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.filterChange.bind(this)} id="filterByDate"/>
-										</div> */}
+									
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label>Product Name:</label>
 										<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
@@ -1229,7 +1291,7 @@ export default class FinishedGoods extends React.Component {
 										tableData={this.state.tableData}
 										getData={this.getData.bind(this)}
 										tableObjects={this.state.tableObjects}
-									/>			
+									/>
 						       </div>
 							<div id="bulk" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in">
 								<div className="row outerForm">

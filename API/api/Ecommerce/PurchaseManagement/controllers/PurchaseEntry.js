@@ -6,6 +6,7 @@ const Products      = require('../../products/Model');
 const FailedRecords = require('../../failedRecords/Model');
 const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
 const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
+const moment = require('moment-timezone');
 
 exports.insert_purchaseEntry = (req,res,next)=>{
                 const purchaseEntry = new PurchaseEntry({
@@ -671,6 +672,48 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
     
     })            
 }
+
+
+
+exports.get_purchase_entry_report = (req, res, next)=>{
+    const moment = require('moment-timezone');
+    const startDate = req.body.fromDate;
+    const endDate = req.body.toDate;
+
+    if(req.body.itemcode != undefined && req.body.itemcode != ""){
+        PurchaseEntry.find({ 
+            purchaseDate: { '$gte': startDate, '$lt': endDate},
+            itemCode:req.body.itemcode
+        })
+        .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+           res.status(200).json(data);   
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }else{
+    
+         PurchaseEntry.find({ 
+            purchaseDate: { '$gte': startDate, '$lt': endDate},
+        })
+        .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+           res.status(200).json(data);   
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }
+};
 
 
 

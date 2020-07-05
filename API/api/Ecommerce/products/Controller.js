@@ -705,7 +705,7 @@ exports.list_product = (req,res,next)=>{
     Products.find({"status": "Publish"}).sort({'productName': 1})       
     .exec()
     .then(data=>{
-        console.log("data",data);
+        // console.log("data",data);
         // if(data.length > 0){
              res.status(200).json(data);
         // }else{

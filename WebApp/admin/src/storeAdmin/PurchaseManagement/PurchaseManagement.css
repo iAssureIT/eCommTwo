@@ -40,3 +40,7 @@
 .prependSelect {
 	border-left: 1px solid #979797 !important;
 }
+
+#report #ActionContent{
+  display: none;
+}

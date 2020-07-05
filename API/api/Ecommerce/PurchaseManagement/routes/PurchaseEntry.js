@@ -7,6 +7,8 @@ router.post('/post', PurchaseEntryController.insert_purchaseEntry);
 
 router.get('/get/list',PurchaseEntryController.list_purchaseEntry);
 
+router.post('/post/getReportOfPurchaseEntry',PurchaseEntryController.get_purchase_entry_report);
+
 router.get('/get/one/:fetchId'          , PurchaseEntryController.fetch_one);
 
 router.patch('/patch/:purchaseID'       , PurchaseEntryController.update_PurchaseEntry);

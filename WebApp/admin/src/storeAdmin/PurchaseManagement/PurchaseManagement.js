@@ -748,7 +748,7 @@ export default class PurchaseManagement extends React.Component {
 													<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="completeProductName" /> 
 												   : <input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />}
 												 */}
-												<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.onChangeProduct.bind(this)} name="completeProductName" /> 
+												<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.onChangeProduct.bind(this)} name="completeProductName" autocomplete="off"/> 
 
 												<datalist id="product" name="product" className="productDatalist">
 													{
@@ -759,7 +759,7 @@ export default class PurchaseManagement extends React.Component {
 																);
 															})
 														:
-														null
+														<option>No products available</option>
 													}
 												</datalist>
 											</div>

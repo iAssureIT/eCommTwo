@@ -247,11 +247,6 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
-                  <a href="/raw-material-stock-report" data-id="/raw-material-stock-report" title="Raw Material Stock Report" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Raw Material Stock Report
-                  </a> 
-                </li>  
-                <li className="noPadLR"> 
                   <a href="/franchise-shopping-list" data-id="/franchise-shopping-list" title="Franchise Purchase Order" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Franchise Purchase Order
                   </a> 
@@ -294,10 +289,15 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
+                  <a href="/raw-material-stock-report" data-id="/raw-material-stock-report" title="Raw Material Stock Report" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Raw Material Stock Report
+                  </a> 
+                </li>  
+                {/* <li className="noPadLR" > 
                   <a href="/ba-list" data-id="/ba-list" title="Category Wise Sales Report" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Category Wise Sales Report
                   </a> 
-                </li>    
+                </li>     */}
               </ul>
             </li>
 
