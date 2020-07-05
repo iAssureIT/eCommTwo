@@ -13,6 +13,7 @@ class EntityDetails extends Component {
       super(props);
       this.state = {
       	id : this.props.id,
+      	entityInfo : {},
       };
    }
   componentWillReceiveProps(nextProps){
@@ -37,13 +38,21 @@ class EntityDetails extends Component {
   getEntitiesInfo(id){
   	axios.get("/api/entitymaster/get/one/"+id)
       .then((response)=>{
-      	console.log("entityInfo===>>>",response.data)
+      	console.log("entityInfo===>>>",response.data.companyName);
+      	console.log("entityInfo===>>>",response.data.companyID);
+      	console.log("entityInfo===>>>",response.data.companyEmail);
+      	console.log("entityInfo===>>>",response.data.entityType);
+      	console.log("entityInfo===>>>",response.data.groupName);
+      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
+      	console.log("response.data[0].locations,===>>>",response.data.locations,);
         this.setState({
             entityInfo 	: response.data,
-            contacts 		: response.data[0].contactData,
-            locations 	: response.data[0].locations.reverse(),
+            contacts 		: response.data.contactPersons,
+            locations 	: response.data.locations.reverse(),
             entityType 	: response.data.entityType
-        });
+        },()=>{
+					console.log("entityInfo===>>>",this.state.entityInfo);
+				});
       })
       .catch((error)=>{
       })
@@ -112,6 +121,7 @@ class EntityDetails extends Component {
   	$('#deleteEntityModal').hide(); 
   }
 	render() {
+		console.log("this.state.entityInfo==>",this.state.entityInfo)
     return (	
       this.state.entityInfo ? 
 		    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
@@ -121,7 +131,7 @@ class EntityDetails extends Component {
 					    	<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 blueBack ">
 					    		<div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
 						    		<div className="col-lg-2 col-md-4 col-sm-4 col-xs-4 companyLogoImageView noPadding">
-											<img src={this.state.entityInfo.companyLogo && this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className=""></img>
+											<img src={this.state.entityInfo.companyLogo && this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className="logoimg"></img>
 						    		</div>
 					    		</div>
 					    		<div className="col-lg-1 col-md-4 col-sm-4 col-xs-4 noPadding pull-right marginTop12 textAlignCenter">{this.state.entityInfo.profileStatus == "New"?<span className="newProfile" title="New Company Profile">New </span>:<span className="approvedProfile" title="Company Profile Approved">Approved </span>}</div>
@@ -145,13 +155,7 @@ class EntityDetails extends Component {
 											<li><i className="fa fa-phone changeColor" aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.companyPhone}</li>
 											<li><i className="fa fa-globe changeColor " aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.website ? this.state.entityInfo.website :" - "}</li>
 										</ul>
-					    		</div>
-					    		<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
-					    			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding listLI">
-											<li>CIN&nbsp; : <b>{this.state.entityInfo.CIN? this.state.entityInfo.CIN :" - "}</b>&nbsp;&nbsp;&nbsp;{this.state.entityInfo.COI && this.state.entityInfo.COI.length > 0 ? <a target="_blank" href={this.state.entityInfo.COI[0]}><img src={this.state.entityInfo.COI[0]} title="Click to view COI document" className="coiImage"></img></a>:""}</li>
-											<li>TAN&nbsp; : <b>{this.state.entityInfo.TAN ? this.state.entityInfo.TAN : " - "}</b></li>
-										</ul>
-					    		</div>				   
+					    		</div>	   
 						    </div>				   
 						  </div>
 						</div>
@@ -171,11 +175,11 @@ class EntityDetails extends Component {
 						        				<li><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<b> {locationArr.locationType}</b></li>
 						        				<i className="textAlignLeft noPadding changeColor col-lg-1 width18px" aria-hidden="true"></i> <li className="col-lg-10 noPadding">#{(locationArr.addressLine2 ? locationArr.addressLine2 +" , "  : "")+locationArr.addressLine1 } ,</li>
 						        				{ locationArr.GSTIN ?
-						        					<li title="GSTIN Number" className="col-lg-12 noPadding"><i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp; <b>GSTIN </b><br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ locationArr.GSTIN}</li>
+						        					<li title="GSTIN Number" className="col-lg-12 noPadding"><i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp; <b>GSTIN:</b>&nbsp;&nbsp;&nbsp;{ locationArr.GSTIN}</li>
 						        					:null
 						        				}
 						        				{ locationArr.PAN?
-						        					<li title="PAN Number"  className="col-lg-12 noPadding"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp; <b>PAN</b><br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ locationArr.PAN}</li>
+						        					<li title="PAN Number"  className="col-lg-12 noPadding"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp; <b>PAN:</b>&nbsp;&nbsp;&nbsp;{ locationArr.PAN}</li>
 						        					:null
 						        				}
 								        	</ul>
@@ -265,7 +269,7 @@ class EntityDetails extends Component {
 						        			<li><i className="fa fa-envelope " aria-hidden="true" ></i>&nbsp;&nbsp;{contact.email}</li>
 													<li><i className="fa fa-mobile "></i> &nbsp;&nbsp;{contact.phone ? contact.phone : " - "}</li>
 							        	</ul>
-							        	<div className="col-lg-12 col-md-6 col-sm-6 col-xs-6 noPadding">
+							        	{/* <div className="col-lg-12 col-md-6 col-sm-6 col-xs-6 noPadding">
 							        		<label className="bookingReq">Booking Approval Required : </label>&nbsp;{contact.bookingApprovalRequired}
 							        	{
 							        		contact.bookingApprovalRequired=="Yes" ?
@@ -304,7 +308,7 @@ class EntityDetails extends Component {
 							        		:
 							        		null
 							        	}
-							        	</div>	
+							        	</div>	 */}
 											</div>
 										);
 									})

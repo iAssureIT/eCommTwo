@@ -390,10 +390,12 @@ class AddNewShopProduct extends Component {
 
         this.getCategories();
         this.getSubCategories(response.data.category_ID);
-        console.log('attributes', response.data)
+        console.log('attributes===>', response.data)
         this.setState({
           showDiscount: response.data.discountedPrice ? false : true,
-          vendor: response.data.vendorName + '|' +response.data.user_ID +'|'+ response.data.vendor_ID,
+          vendor: response.data.vendorName ,
+          user_ID: response.data.user_ID,
+          vendor_ID: response.data.vendor_ID,
           section: response.data.section + '|' + response.data.section_ID,
           category: response.data.category + '|' + response.data.category_ID,
           subCategory: response.data.subCategory + '|' + response.data.subCategory_ID,
@@ -575,10 +577,12 @@ class AddNewShopProduct extends Component {
         }
       }
     }
+    console.log("this.refs.vendor.value.split('|')[2]==>",this.state.vendor);
+    // console.log("this.refs.vendor.value.split('|')[1]==>",this.refs.vendor.value.split('|')[1]);
     var formValues = {
-      "vendor_ID"         : this.refs.vendor.value.split('|')[2],
-      "user_ID"           : this.refs.vendor.value.split('|')[1],
-      "vendorName"        : this.refs.vendor.value.split('|')[0],
+      "vendor_ID"         : this.state.vendor_ID,
+      "user_ID"           : this.state.user_ID,
+      "vendorName"        : this.state.vendor,
       "section"           : this.refs.section.value.split('|')[0],
       "section_ID"        : this.refs.section.value.split('|')[1],
       "product_ID"        : this.state.editId,

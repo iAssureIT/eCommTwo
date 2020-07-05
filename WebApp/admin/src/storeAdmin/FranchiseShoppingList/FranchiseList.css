@@ -46,6 +46,9 @@
 .mg0 {
     margin:0px !important;
 }
+.mg10{
+    margin: 10px;
+  }
 .theadcolor {
     background-color: #436264;
     color: #fff;
