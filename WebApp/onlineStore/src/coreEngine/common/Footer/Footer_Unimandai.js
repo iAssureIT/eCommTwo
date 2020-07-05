@@ -19,15 +19,17 @@ export default class Footer extends Component {
           categoryDetails:[],
            companyInfo   :"",
            Locationdata  :[],
+           categoryData  :[],
         }
     }
     componentDidMount(){
-        axios.get("/api/sections/get/get_megamenu_list")
+        axios.get("/api/sections/get/get_megamenu_list1")
             .then((response)=>{
-             
-              this.setState({ 
-                  categoryData : response.data
-              })
+                if(response){
+                    this.setState({ 
+                        categoryData : response.data
+                    })
+                }
             })
             .catch((error)=>{
                 console.log('error', error);
