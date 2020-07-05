@@ -125,7 +125,7 @@ export default class FranchiseShoppingList extends React.Component {
 										this.setState({
 											prodStockOrder : prodStockOrder,
 										},()=>{
-											console.log("prodStockOrder = ",this.state.prodStockOrder);
+											console.log("prodStockOrder ===> ",this.state.prodStockOrder);
 										});										
 									}
 								}
@@ -363,8 +363,9 @@ export default class FranchiseShoppingList extends React.Component {
 														        				 value={result.orderQty} 
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
-														        		<div className="input-group-addon">
-																		  	<select id={"Units"+"-"+index} name={"Units"+"-"+index} 
+														        		<div className="input-group-addon unitbox">
+																				<td  className=" width66h">{result.unit}</td>
+																		  	{/* <select id={"Units"+"-"+index} name={"Units"+"-"+index} 
 																		  			  value={result.unit} refs="Units" 
 																		  			  onChange={this.setUnit.bind(this)}  
 																		  			  className="input-group-addon width66h">
@@ -373,7 +374,7 @@ export default class FranchiseShoppingList extends React.Component {
 																			  	<option value="Gm"> Gm 		</option>
 																			  	<option value="Ltr">Ltr 	</option>
 																			  	<option value="Num">Number </option>
-																			</select>
+																			</select> */}
 																	  	</div>
 																	</div>
 																</div>

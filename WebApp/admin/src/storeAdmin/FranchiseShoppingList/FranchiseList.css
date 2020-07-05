@@ -40,6 +40,9 @@
 .mg20px {
     margin-top: 20px;
 }
+.unitbox {
+    width: 80px !important;
+}
 .pdlft85 {
     padding-left: 85px;
 }
