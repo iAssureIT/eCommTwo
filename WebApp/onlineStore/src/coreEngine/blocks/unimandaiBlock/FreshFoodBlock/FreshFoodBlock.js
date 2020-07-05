@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import "../../../../sites/currentSite/blocks/FreshFoodBlock.css";
-import freshFoodImg1   from "../../../../sites/currentSite/images/freshFoodImg1.jpg";
+// import freshFoodImg1   from "../../../../sites/currentSite/images/freshFoodImg1.jpg";
+import freshFoodImg1   from "../../../../sites/currentSite/images/we_are_fresh_food_block.png"; 
 import bgBorderCenter  from "../../../../sites/currentSite/images/bg-border-center.png";
 import icon_shipping_1 from "../../../../sites/currentSite/images/icon-shipping-1.png";
 import icon_shipping_2 from "../../../../sites/currentSite/images/icon-shipping-2.png";
@@ -19,7 +20,7 @@ class FreshFoodBlock extends Component{
             <div className="container container-ver2 freshFood">
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <img className="img-responsive hidden-table" src={freshFoodImg1} alt="banner"/>            
+                        <img className="img-responsive hidden-table freshfoodImg" src={freshFoodImg1} alt="banner"/>            
                     </div>
                     
                     <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -30,7 +31,7 @@ class FreshFoodBlock extends Component{
 
                         <div className="align-center border-choose" style={{background: "url("+bgBorderChoose +")"}}>
 
-                            <div className="images">
+                            <div className="images ">
                                 <img src={bgBorderCenter} alt="icon" />
                             </div>
                         </div>

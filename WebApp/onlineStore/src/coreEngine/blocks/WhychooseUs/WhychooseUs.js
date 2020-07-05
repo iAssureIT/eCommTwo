@@ -8,6 +8,7 @@ import icon_choose_4 	from '../../../sites/currentSite/images/icon-choose-4.png'
 import icon_choose_5 	from '../../../sites/currentSite/images/icon-choose-5.png';
 import icon_choose_6 	from '../../../sites/currentSite/images/icon-choose-6.png';
 import images_choose 	from "../../../sites/currentSite/images/images-choose.jpg";
+// import images_choose 	from "../../../sites/currentSite/images/why_choose_usback.png";
 import one 						from '../../../sites/currentSite/images/1.jpg';
 
 export default class OurCources extends React.Component {

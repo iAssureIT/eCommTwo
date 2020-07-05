@@ -6,6 +6,10 @@ import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetables1.
 import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits1.jpg"
 import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
 
+// import HomePageBanner2_1 from "../../../../sites/currentSite/images/unimandai_vegetable_blocks.png"
+// import HomePageBanner2_2 from "../../../../sites/currentSite/images/unimandai_Fruits_blocks.png";
+// import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
+
 class HomePageBanner2 extends Component{
     constructor(props){
         super(props);
@@ -21,14 +25,14 @@ class HomePageBanner2 extends Component{
                         console.log("Category data=======",response.data); 
                         var sectionDetailsArray = response.data;
                        for(let i=0;i<response.data.length;i++){
-                           console.log("sectionDetailsArray[i].section==",sectionDetailsArray[i].section);
+                        //    console.log("sectionDetailsArray[i].section==",sectionDetailsArray[i].section);
                             if(sectionDetailsArray[i].section === "Vegetables"){
                                 sectionDetails[i] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
                                     "sectionImg" : "HomePageBanner2_1"
                                 }
-                                console.log("sectionDetails:",sectionDetails);
+                                // console.log("sectionDetails:",sectionDetails);
                             }else if(sectionDetailsArray[i].section === "Fruits"){
                                 sectionDetails[i] = {
                                     "section"    : sectionDetailsArray[i].section,
@@ -41,14 +45,14 @@ class HomePageBanner2 extends Component{
                                     "sectionId"  : sectionDetailsArray[i]._id,
                                     "sectionImg" : "HomePageBanner2_3"
                                 }
-                                console.log("sectionDetails===",sectionDetails);
+                                // console.log("sectionDetails===",sectionDetails);
                                                             
                             }                        
                         }   
                     this.setState({ 
                         "sectionDetails" : sectionDetails                  
                     });   
-                    console.log("sectionData =========",this.state.sectionData);      
+                    // console.log("sectionData =========",this.state.sectionData);      
                     }
                   })
                   .catch((error)=>{

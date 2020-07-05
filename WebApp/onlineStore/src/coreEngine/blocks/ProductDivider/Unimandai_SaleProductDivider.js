@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import "../../../sites/4_UniMandai/blocks/ProductDivider.css";
+import "../../../sites/currentSite/blocks/ProductDivider.css";
 
-import saleimage        from "../../../sites/currentSite/images/saleimage.png";
+import saleimage        from "../../../sites/currentSite/images/BigSaleToday.png";
 import icon_shipping_5  from "../../../sites/currentSite/images/icon-shipping-5.png";
 
 export default class SaleProductDivider extends Component {
@@ -14,7 +14,7 @@ export default class SaleProductDivider extends Component {
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 abc NOpadding">
             <div className="block newBlock">
              <div className="col-lg-5 ">
-              <img src={saleimage}/>
+              <img src={saleimage} className="bigSaleImg"/>
              </div>
 
             <div className="col-md-7 ">

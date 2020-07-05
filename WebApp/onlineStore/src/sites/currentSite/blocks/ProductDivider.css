@@ -360,3 +360,6 @@ ul.tabs.tabs-title li {
 .viewdetails{
     border-radius: 0px;
 }
+.bigSaleImg{
+    height: 300px !important;
+}
