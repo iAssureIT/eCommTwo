@@ -105,7 +105,7 @@ class HomePage extends Component {
       console.log('productType3==>', productType3);
       axios.get("/api/products/get/listbytype/"+productType3)
             .then((response)=>{
-              console.log('discounted prod response==>', response.data);
+              console.log('discounted prod response==>', response);
               this.setState({
                 discountedProductsloading:false,
                 discountedProducts : response.data
