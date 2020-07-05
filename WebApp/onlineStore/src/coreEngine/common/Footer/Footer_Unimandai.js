@@ -23,7 +23,7 @@ export default class Footer extends Component {
         }
     }
     componentDidMount(){
-        axios.get("/api/sections/get/get_megamenu_list1")
+        axios.get("/api/sections/get/get_megamenu_list")
             .then((response)=>{
                 if(response){
                     this.setState({ 
@@ -65,7 +65,7 @@ export default class Footer extends Component {
                     <div className=" col-lg-2 col-md-4 col-sm-6 col-xs-12 hrLine"></div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                {this.state.categoryData && this.state.categoryData.map((data,index)=>{
+                {Array.isArray(this.state.categoryData) && this.state.categoryData.map((data,index)=>{
                     return(
                         index <=3 ?
                         <div className="">

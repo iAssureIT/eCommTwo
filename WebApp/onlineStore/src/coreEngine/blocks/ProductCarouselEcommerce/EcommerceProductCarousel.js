@@ -80,7 +80,7 @@ class EcommerceProductCarousel extends Component {
       // this.getProductData(productCode, clr);
       axios.get("/api/products/get/productcode/" + productCode)
         .then((response) => {
-          console.log('getProductData', response.data);
+          // console.log('getProductData', response.data);
           let mymap = new Map();
           var colorFilter = response.data.filter(x => {
             return x.color === clr && x.availableQuantity > 0

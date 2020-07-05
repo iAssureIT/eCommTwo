@@ -357,7 +357,7 @@ class Ecommercenewproductcaro extends Component {
                   >
                     {
                       this.state.newProducts && this.state.newProducts.length > 0 ?
-                        this.state.newProducts.map((data, index) => {
+                        Array.isArray(this.state.newProducts) && this.state.newProducts.map((data, index) => {
                           var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                           if(x && x.length > 0){
                             var wishClass = '';

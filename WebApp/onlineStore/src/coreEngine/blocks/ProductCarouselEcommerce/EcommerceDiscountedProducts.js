@@ -111,7 +111,7 @@ class EcommerceDiscountedProducts extends Component {
           this.setState({
             ['relatedProductArray' + id]: unique
           })
-          console.log('unique', unique);
+          // console.log('unique', unique);
           if (unique.length > 0) {
             if (unique.length === 1) {
               if (unique[0].size) {
@@ -330,7 +330,7 @@ class EcommerceDiscountedProducts extends Component {
                     autoplayHoverPause={true}
                   >
                     {
-                      this.state.newProducts && this.state.newProducts.length > 0 
+                     Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 
                        ?
                         this.state.newProducts.map((data, index) => {
                           console.log("data prod unit====>",data.unit)
