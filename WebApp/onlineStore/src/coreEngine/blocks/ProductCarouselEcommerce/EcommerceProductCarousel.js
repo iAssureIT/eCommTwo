@@ -346,7 +346,7 @@ class EcommerceProductCarousel extends Component {
                     autoplayHoverPause={true}
                   >
                     {
-                      this.state.newProducts && this.state.newProducts.length > 0 ?
+                      Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 ?
                         this.state.newProducts.map((data, index) => {
                           var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                            var wishClass = '';
