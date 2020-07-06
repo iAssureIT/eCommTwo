@@ -120,8 +120,7 @@ componentDidMount(){
 											<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxOfShop">
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 													<img height="45px" className="mtop10a" src={result.Image}/>
-													<p dangerouslySetInnerHTML={ { __html:result.Title}}></p>
-												
+													<p dangerouslySetInnerHTML={ { __html:result.Title}}></p>												
 												</div>
 											</div>
 										</div>

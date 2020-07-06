@@ -1,5 +1,6 @@
 import React from 'react';
 import './BannerContactUs.css';
+import Contact_Background from '../../../../sites/currentSite/images/Contact_Background.jpg';
 
 export default class BannerContactUs extends React.Component {
 
@@ -11,7 +12,7 @@ export default class BannerContactUs extends React.Component {
 		return (
 			<div>
 				<div className="bannercusweapper"> 
-					<div className="bgImageTextonBCUS"> 
+					<div className="bgImageTextonBCUS" style={{'background' : "url("+Contact_Background +")"}}> 
 						<div className="margTop5p25per"> 
 							<div className="text-center">
 								<p className="fs40CU">Contact Us</p>

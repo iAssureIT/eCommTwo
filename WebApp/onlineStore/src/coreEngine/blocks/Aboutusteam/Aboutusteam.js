@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import "./Aboutusteam.css";
+// import "../../../sites/currentSite/images/Aboutusteam.css";
 
 export default class Aboutusteam extends Component {
 	constructor(props){
     super(props);
-	    this.state = {
-	    	
+	    this.state = {	    	
 	    };
   	}  
   render() {

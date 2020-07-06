@@ -1,6 +1,6 @@
 import React, { Component }       from 'react';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-// import Megamenu                   from '../Megamenu/Megamenu.js';
+import Megamenu                   from '../Megamenu/Megamenu.js';
 import axios                      from 'axios';
 import { withRouter }             from 'react-router-dom';
 import Message                    from '../../blocks/Message/Message.js'; 
@@ -516,7 +516,7 @@ loginPage(event){
 
                 <nav>
                     <div className="col-lg-6 col-md-6 col-sm-8 megamenuWrapper">
-                        {/* <Megamenu /> */}
+                        <Megamenu />
                     </div>
                 </nav>
                 

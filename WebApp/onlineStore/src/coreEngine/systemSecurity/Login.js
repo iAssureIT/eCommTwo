@@ -164,8 +164,9 @@ class Login extends Component {
   }
   openSignUpModal(event){
       event.preventDefault();
-      this.props.formToShow("signUp");
-      console.log("getForm value = ", this.props.formToShow);
+
+      this.props.updareformToShow("signUp");
+      // console.log("getForm value = ", this.props.formToShow);
       
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./Aboutusmultistore.css";
+import "../../../sites/currentSite/blocks/Aboutusmultistore.css";
 
 export default class Aboutusmultistore extends Component {
 	constructor(props){
@@ -7,7 +7,8 @@ export default class Aboutusmultistore extends Component {
 	    this.state = {
 	    	
 	    };
-  	}  
+	  }  
+	  
   render() {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">

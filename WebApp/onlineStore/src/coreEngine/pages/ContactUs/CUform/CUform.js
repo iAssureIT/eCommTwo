@@ -6,6 +6,10 @@ import jQuery                      from 'jquery';
 import validate               from 'jquery-validation';
 import Swal from 'sweetalert';
 
+import Phone_Img from '../../../../sites/currentSite/images/Phone.png';
+import Email_Img from '../../../../sites/currentSite/images/Email.png';
+import Map_Img   from '../../../../sites/currentSite/images/Map.png';
+
 export default class CUform extends React.Component {
 
     constructor(props) {
@@ -211,7 +215,7 @@ componentDidMount(){
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 										{/*<label class="col-md-4 col-lg-4 col-xs-4 col-sm-4 nopadding">Your Name</label>*/}
 										{/*<input className="form-control" name="from" type="text" placeholder="Your name"/>*/}
-										<input className="form-control" name="name" type="text" ref="name" placeholder="Your name" value={this.state.name} onChange={this.handleChange.bind(this)}/>
+										<input className="form-control formControl" name="name" type="text" ref="name" placeholder="Your name" value={this.state.name} onChange={this.handleChange.bind(this)}/>
 
 									</div>
 								</div>
@@ -219,7 +223,7 @@ componentDidMount(){
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 										{/*<label class="col-md-12 col-lg-12 col-xs-12 col-sm-12 nopadding">Your Email address</label>*/}
 										{/*<input className="form-control" name="from" type="email" placeholder="Your@email.com"/>*/}
-										<input className="form-control" name="email" type="email" data-text="clientEmail" placeholder="Your@email.com" ref="email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+										<input className="form-control formControl" name="email" type="email" data-text="clientEmail" placeholder="Your@email.com" ref="email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
 
 									</div>
 								</div>
@@ -228,7 +232,7 @@ componentDidMount(){
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 										{/*<label class="col-md-12 col-lg-12 col-xs-12 col-sm-12 nopadding">Subject</label>*/}
 										{/*<input className="form-control" name="from" type="text" placeholder="Subject" />*/}
-										  <input className="form-control" name="Subject" type="text" placeholder="Subject" ref="Subject" value={this.state.Subject} onChange={this.handleChange.bind(this)} />
+										  <input className="form-control formControl" name="Subject" type="text" placeholder="Subject" ref="Subject" value={this.state.Subject} onChange={this.handleChange.bind(this)} />
 
 									</div>
 								</div>
@@ -236,7 +240,7 @@ componentDidMount(){
 									
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 										{/*<label class="col-md-12 col-lg-12 col-xs-12 col-sm-12 nopadding">Message</label>*/}
-								          <textarea className="form-control" name="message" placeholder="How can we help?" rows="4"  value={this.state.message} onChange={this.handleChange.bind(this)}></textarea>
+								          <textarea className="form-control formControl" name="message" placeholder="How can we help?" rows="4"  value={this.state.message} onChange={this.handleChange.bind(this)}></textarea>
 								        
 									</div>
 								</div>
@@ -261,7 +265,7 @@ componentDidMount(){
 									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 bt20">
 										<div className="col-lg-2 col-md-2 col-xs-2 col-sm-2">
 											{/*<img src="/images/loca.png" height="45px"/>*/}
-											<img src="/images/loca.png" height="40px"/>
+											<img src={Map_Img} height="40px"/>
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Visit Us:</b> </label><br/>
@@ -273,24 +277,24 @@ componentDidMount(){
 								
 									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 bt20">
 										<div className="col-lg-2 col-md-2 col-xs-2 col-sm-2">
-											<img src="/images/mail.png" height="40px"/>
+											<img src={Email_Img} height="40px"/>
 
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Mail Us:</b> </label><br/>
-											<p>info@mail.com
+											<p>info@unimandai.com
 											</p>
 
 										</div>
 									</div>
 									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 bt20">
 										<div className="col-lg-2 col-md-2 col-xs-2 col-sm-2">
-											<img src="/images/phn.png" height="40px"/>
+											<img src={Phone_Img} height="40px"/>
 
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Phone Us:</b> </label><br/>
-											<p>+8 (123) 985 789
+											<p>+91 9036553355
 											</p>
 
 										</div>
