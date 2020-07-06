@@ -91,8 +91,8 @@ class ForgotPassword extends Component {
     }
     render() {
         return (
-            <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
-                <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 col-xs-12 formShadow">
+            // <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     </div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
@@ -142,7 +142,6 @@ class ForgotPassword extends Component {
                             </div>
                     }
                 </div>
-            </div>
         )
     }
 }

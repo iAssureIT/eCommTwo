@@ -56,8 +56,8 @@ class unimandaiHeader extends Component {
 }
 
 componentWillMount() {
-      this.props.formToShow("login");
-      console.log("getForm value ===",this.props.formToShow);
+      // this.props.formToShow("login");
+      // console.log("getForm value ===",this.props.formToShow);
 
       this.setState({
         loginForm      : "true",
@@ -406,6 +406,7 @@ loginPage(event){
       })
   }
   render() {
+    console.log("FormToShow Render======",this.props.formToShow);
     $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");
     return (
@@ -583,8 +584,8 @@ loginPage(event){
                               <div className="modal-content loginModalContent">                            
                                   <div className="modal-body">   
                                   <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
-                                      {/* {this.props.formToShow === "login" ? */}
-                                      {this.state.formToShow === "login" ?
+                                      {this.props.formToShow === "login" ?
+                                      // {this.state.formToShow === "login" ?
                                           <div className="col-lg-12 col-md-12 loginForm">
                                               <Login />
                                           </div>  
@@ -703,15 +704,17 @@ loginPage(event){
   }
 }
 const mapStateToProps = (state) => {
+  console.log("form state===",state);
   return {
     searchResult   : state.searchResult,
     searchCriteria : state.searchCriteria,
     recentCartData : state.recentCartData,
     formToShow     : state.formToShow,
 
+
   }
 }
 const mapDispachToProps = (dispatch) => {
-  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction, formToShow :getForm}, dispatch)
+  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction, formToShowValue :getForm}, dispatch)
 }
 export default connect(mapStateToProps, mapDispachToProps)(withRouter(unimandaiHeader));

@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+export function updateForm(formValue) {
+  console.log("In Action updateForm value ===",formValue);
+  return {
+    type: "MODAL_DATA",
+    formToShow: formValue
+  }
+}
+
 export function getCartData() {
 	return dispatch =>{
 

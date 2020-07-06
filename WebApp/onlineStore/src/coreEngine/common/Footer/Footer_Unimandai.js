@@ -137,7 +137,7 @@ export default class Footer extends Component {
                     <p>Copyright @2020 <i className="fa fa-copyright"></i> <span className="uniColor">Uni</span><span className="mandaiColor">mandai</span> All Rights Reserved.</p>
                 </div>
                 <div className="col-sm-6 col-md-6 col-lg-6 footernabbar">
-                    <span>Design & Developed by <a href="https://www.iassureit.com" target="_blank"> iAssure International Technologies Pvt. Ltd. </a> Version 1.0</span>
+                    <span>Design & Developed by <a href="http://iassureit.com/" target="_blank"> iAssure International Technologies Pvt. Ltd. </a> Version 1.0</span>
                 </div>
             </div>
             </div>

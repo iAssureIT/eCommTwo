@@ -10,6 +10,10 @@ import 'font-awesome/css/font-awesome.min.css';
 import './SignUp.css';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators }     from 'redux';
+import {getForm,updateForm} from '../actions/index';
+
 import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 import Login from './Login.js';
 
@@ -323,7 +327,11 @@ class SignUp extends Component {
 		$('.hidePwd').toggleClass('hidePwd1');
 		return $('#signupPassword').attr('type', 'password');
 	}
-
+	openSignInModal(event){
+		event.preventDefault();
+		this.props.updateFormValue("login");
+		
+	}
 	render() {		
 		return (
 			// <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
@@ -402,7 +410,7 @@ class SignUp extends Component {
 								</div>
 							}
 							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center loginforgotpass mt25">
-								<label>Already have an account?</label> &nbsp; <a href='' data-toggle="modal" data-target="#loginFormModal">Sign In <b>&#8702;</b></a>
+								<label>Already have an account?</label> &nbsp; <a href='' onClick={this.openSignInModal.bind(this)}>Sign In <b>&#8702;</b></a>
 								{/* login modal  */}
                                   <div id="loginFormModal" className="modal in">
                                     <div className="modal-dialog">
@@ -452,4 +460,18 @@ class SignUp extends Component {
 		);
 	}
 }
-export default SignUp;
+
+const mapStateToProps = (state) => {
+	console.log("Login  state:",state);
+	return {
+	  formToShow     : state.formToShow,
+  
+	}
+  }
+  
+  const mapDispachToProps = (dispatch) => {
+	return  bindActionCreators({formToShow :getForm, updateFormValue: updateForm}, dispatch)
+  }
+
+  export default connect(mapStateToProps, mapDispachToProps)(SignUp);
+// export default SignUp;

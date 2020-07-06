@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch, Link, location } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,8 +9,9 @@ import jQuery from 'jquery';
 import 'jquery-validation';
 import swal from 'sweetalert';
 
+import { connect } from 'react-redux';
 import { bindActionCreators }     from 'redux';
-import {getForm} from '../actions/index';
+import {getForm,updateForm} from '../actions/index';
 
 import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 import SignUp from './SignUp.js';
@@ -138,7 +138,6 @@ class Login extends Component {
                   })
               });
             document.getElementById("logInBtn").value = 'Sign In';
-
           }
         })
         .catch((error) => {
@@ -164,18 +163,14 @@ class Login extends Component {
   }
   openSignUpModal(event){
       event.preventDefault();
-
-      this.props.updareformToShow("signUp");
-      // console.log("getForm value = ", this.props.formToShow);
+      this.props.updateFormValue("signUp");
       
   }
-
   openForgotPasswordModal(event){
     event.preventDefault();
-    this.props.formToShow("forgotPassword");
-    console.log("getForm value = ", this.props.formToShow);
-    
+    this.props.updateFormValue("forgotPassword");   
 }
+ 
   showSignPass() {
     $('.showPwd').toggleClass('showPwd1');
     $('.hidePwd').toggleClass('hidePwd1');
@@ -224,17 +219,7 @@ class Login extends Component {
                     <i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i>
                   </div>
                 </div>
-                {/* {
-                  process.env.REACT_APP_PROJECT_NAME === '2_AnasHandicrafts' ?
                 
-                <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 NOpaddingRight">
-                  <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn" value="Sign In" />
-                </div>
-                :
-                 <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight">
-                  <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
-                </div>
-                } */}
 
                 {
                   this.state.btnLoading
@@ -257,23 +242,8 @@ class Login extends Component {
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignRight">
-                      <div className="row loginforgotpass">
-                        {/* <a href='/signup' className="">Sign Up</a> */}
-                          <a href='' className="" onClick={this.openSignUpModal.bind(this)}>Sign Up</a>
-{/*                        
-                       {/* login modal 
-                       <div id="signUpFormModal" className="modal in">
-                            <div className="modal-dialog">
-                                <div className="modal-content loginSignUpModalContent" >                            
-                                    <div className="modal-body">   
-                                    <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" >&times;</button>                                                            
-                                        <div className="col-lg-12 col-md-12 loginForm">
-                                            <SignUp />
-                                        </div>                                                                   
-                                    </div>
-                                </div>
-                            </div>
-                        </div>  */}
+                      <div className="row loginforgotpass">                        
+                          <a href='' className="" onClick={this.openSignUpModal.bind(this)}>Sign Up</a>                    
                       </div>
                     </div>
                   </div>
@@ -289,14 +259,15 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("state:",state);
+  console.log("Login  state:",state);
   return {
     formToShow     : state.formToShow,
+
   }
 }
 
 const mapDispachToProps = (dispatch) => {
-  return  bindActionCreators({formToShow :getForm}, dispatch)
+  return  bindActionCreators({formToShow :getForm, updateFormValue: updateForm}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispachToProps)(Login);
