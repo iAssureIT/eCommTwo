@@ -176,13 +176,13 @@ export default class Leftsidebar extends Component{
                     <li>
                       <a href="/franchise-shopping-list">
                         <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Add Franchise Order</span>
+                        <span className="sidebarMenuSubText">Add Order</span>
                       </a>
                     </li>
                     <li>
                       <a href="/franchise-order-summary">
                         <i className="fa fa-circle-o" /> 
-                        <span className="sidebarMenuSubText">Franchise Order Summary</span>
+                        <span className="sidebarMenuSubText">Order Summary</span>
                       </a>
                     </li>                
                   </ul>
