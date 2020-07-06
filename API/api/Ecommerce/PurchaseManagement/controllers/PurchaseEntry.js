@@ -11,7 +11,7 @@ const moment = require('moment-timezone');
 exports.insert_purchaseEntry = (req,res,next)=>{
                 const purchaseEntry = new PurchaseEntry({
                     _id                       : new mongoose.Types.ObjectId(),                    
-                    purchaseDate              : req.body.purchaseDate,
+                    purchaseDate              : moment(req.body.purchaseDate).tz('Asia/Kolkata').startOf('day'),
                     purchaseStaff             : req.body.purchaseStaff,
                     purchaseLocation          : req.body.purchaseLocation,
                     /*productId                 : req.body.productId,
@@ -108,18 +108,18 @@ exports.update_PurchaseEntry = (req,res,next)=>{
         });
 };
 exports.get_datewise_purchaceEntry = (req, res, next)=>{
-    // console.log("req body = ",req.body);
-    const purchaseDate = req.body.purchaseDate;
+    const moment = require('moment-timezone');
+    const purchaseDate = moment(req.body.purchaseDate).tz('Asia/Kolkata').startOf('day');
     var selector = {};
     if(typeof(req.body.purchaseNumber) != "undefined" && typeof(req.body.productName) != "undefined"){
-        selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
+        selector ={"purchaseDate":purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
     }else{
         if(typeof(req.body.purchaseNumber) != "undefined"){
             selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber};
         }else if(typeof(req.body.productName) != "undefined"){
-            selector ={"purchaseDate":req.body.purchaseDate,"productName":req.body.productName};
+            selector ={"purchaseDate":purchaseDate,"productName":req.body.productName};
         }else{
-            selector ={"purchaseDate":req.body.purchaseDate};
+            selector ={"purchaseDate":purchaseDate};
         }
     }
 
@@ -677,9 +677,11 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
 
 exports.get_purchase_entry_report = (req, res, next)=>{
     const moment = require('moment-timezone');
-    const startDate = req.body.fromDate;
-    const endDate = req.body.toDate;
+    const startDate = moment(req.body.fromDate).tz('Asia/Kolkata').startOf('day');
+    const endDate =  moment(req.body.toDate).tz('Asia/Kolkata').endOf('day');
 
+    console.log("startDate",startDate);
+    console.log("endDate",endDate);
     if(req.body.itemcode != undefined && req.body.itemcode != ""){
         PurchaseEntry.find({ 
             purchaseDate: { '$gte': startDate, '$lt': endDate},
