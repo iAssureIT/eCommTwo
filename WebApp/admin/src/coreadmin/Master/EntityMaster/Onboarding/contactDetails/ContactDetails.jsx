@@ -205,7 +205,7 @@ class ContactDetails extends Component {
 				},*/
 				email: {
 					required: true,
-					regxEmail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
+					regxEmail: /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/
 				},
 				firstName: {
 					required: true,
@@ -1388,7 +1388,7 @@ class ContactDetails extends Component {
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Email <sup className="astrick">*</sup></label>
-																		<input id="email" type="email" maxLength="30" className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.email} ref="email" name="email" onChange={this.handleChange.bind(this)} required />
+																		<input id="email" type="email" className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.email} ref="email" name="email" onChange={this.handleChange.bind(this)} required />
 																	</div>
 																    <div className="form-group valid_box col-lg-4 col-md-4 col-sm-12 col-xs-12">
 														                <div className="form-group">
@@ -1401,7 +1401,7 @@ class ContactDetails extends Component {
 														                        name: 'phone',
 														                        required: true
 														                      }}
-																			  onChange={phone=>{this.setState({phone})}}
+																			  					onChange={phone=>{this.setState({phone})}}
 														                  />
 														                </div> 
 													              	</div>
@@ -1416,7 +1416,7 @@ class ContactDetails extends Component {
 														                        name: 'altPhone',
 														                        required: true
 														                      }}
-																			  onChange={altPhone=>{this.setState({altPhone})}}
+																			  					onChange={altPhone=>{this.setState({altPhone})}}
 														                  />
 														                </div> 
 													              	</div>

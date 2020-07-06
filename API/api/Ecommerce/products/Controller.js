@@ -702,7 +702,8 @@ exports.update_product_multiple = (req,res,next)=>{
 };
 
 exports.list_product = (req,res,next)=>{
-    Products.find({"status": "Publish"}).sort({'productName': 1})       
+    // Products.find({"status": "Publish"}).sort({'productName': 1})       
+    Products.find({"status": "Publish"}).sort({'itemCode': 1})       
     .exec()
     .then(data=>{
         // console.log("data",data);

@@ -2,16 +2,17 @@ const mongoose  = require("mongoose");
 const Shipping = require('./Model');
 
 exports.insert_shipping = (req,res,next)=>{
-    Shipping.find({"fromamount":req.body.fromamount},{"toamount": req.body.toamount})
+    Shipping.find({"shippingcosting":req.body.shippingcosting})
         .exec()
         .then(data =>{
             if (data.length == 0) {
         	const ShippingObj = new Shipping({
                         _id                       : new mongoose.Types.ObjectId(),                    
-                        fromamount                : req.body.fromamount,
-                        toamount                  : req.body.toamount,
-                        shippingcost              : req.body.shippingcost,
-                        shippingallow             : req.body.shippingallow,
+                        shippingcosting                : req.body.shippingcosting,
+                        // fromamount                : req.body.fromamount,
+                        // toamount                  : req.body.toamount,
+                        // shippingcost              : req.body.shippingcost,
+                        // shippingallow             : req.body.shippingallow,
                         createdBy 				  : req.body.createdBy, 	
                         createdAt                 : new Date()
                     });
@@ -67,10 +68,11 @@ exports.update_section = (req,res,next)=>{
             { _id:req.body.shippingID},  
             {
                 $set:{
-                    fromamount                : req.body.fromamount,
-                    toamount                  : req.body.toamount,
-                    shippingcost              : req.body.shippingcost,
-                    shippingallow              : req.body.shippingallow,
+                    shippingcosting                : req.body.fromamount,
+                    // fromamount                : req.body.fromamount,
+                    // toamount                  : req.body.toamount,
+                    // shippingcost              : req.body.shippingcost,
+                    // shippingallow              : req.body.shippingallow,
                 }
             }
         )

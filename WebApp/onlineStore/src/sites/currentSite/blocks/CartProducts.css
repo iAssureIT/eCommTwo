@@ -8,6 +8,9 @@
     height: 100px;
     width: 100px;
 }
+.mg20{
+    margin-top: 20px;
+}
 .cartWishIcon{
     color: #F7BB64;
     background: #fff;
@@ -142,6 +145,13 @@
     background-color: #80b435;
     color: #fff;
 }
+.blockcartCheckout{
+    font-weight: 700;
+    padding: 8px 0px;
+    border-radius: 25px;
+    background-color: #999;
+    color: #fff;
+}
 .cartTotal{
     font-size: 14px;
     color: #333;
@@ -189,6 +199,9 @@
 }
 .saving{
     color: #03a685 !important;
+}
+.minpurchase{
+    color: red !important;
 }
 .sold{
     color: red !important;

@@ -23,6 +23,8 @@ class CartProducts extends Component{
             companyInfo:"",
             cartProduct:"",
             shippingCharges:0,
+            "startRange": 0,
+            "limitRange": 10,
             quantityAdded: 0,
             totalIndPrice: 0,
             bannerData : {
@@ -34,7 +36,8 @@ class CartProducts extends Component{
     }
 
     async componentDidMount(){
-    	await this.props.fetchCartData();
+        await this.props.fetchCartData();
+        this.getshippingamount(this.state.startRange, this.state.limitRange);
     }
     componentWillReceiveProps(nextProps) { 
        
@@ -51,6 +54,18 @@ class CartProducts extends Component{
           .catch((error)=>{
             console.log('error', error);
           })
+    }
+    getshippingamount(startRange, limitRange){
+        axios.get('/api/shipping/get/list-with-limits/' + startRange + '/' + limitRange)
+        .then((response) => {
+          console.log('shippingamount = ', response.data[0].shippingcosting);
+          this.setState({
+            minvalueshipping: response.data[0].shippingcosting,
+          })
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
     }
     Removefromcart(event){
         event.preventDefault();
@@ -448,8 +463,27 @@ class CartProducts extends Component{
                                                         <td className="textAlignRight">&nbsp; <i className={"fa fa-inr"}></i> {this.props.recentCartData[0].total > 0 ? parseInt(this.props.recentCartData[0].total) : 0.00} </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Delivery Charges</td>
-                                                        <td className="textAlignRight saving">&nbsp;{this.state.shippingCharges > 0 ?(this.state.shippingCharges).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "Free"} </td>
+                                                        {console.log("this.state.minvalueshipping==>",this.state.minvalueshipping)}
+                                                     
+                                                             <td>Delivery Charges</td>
+                                                        
+                                                        {/* <td className="textAlignRight saving">&nbsp;{this.state.shippingCharges > 0 ? (this.state.shippingCharges).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "Free"} </td> */}
+                                                        <td className="textAlignRight saving">&nbsp;{ 
+                                                            this.state.minvalueshipping >= this.props.recentCartData[0].total ?
+                                                                // "This store requires minimum order of Rs."+this.state.minvalueshipping
+                                                                // "Make minimum purchase of Rs."+this.state.minvalueshipping+" to checkout your order."
+                                                                "No Delivery"
+                                                            :  
+                                                                "Free"
+                                                            }
+                                                        </td>
+                                                        {/* <td className="textAlignRight saving">&nbsp;{ 
+                                                            this.state.minvalueshipping >= this.props.recentCartData[0].total ?
+                                                                "Make minimum purchase of Rs."+this.state.minvalueshipping+" to checkout your order."
+                                                            :  
+                                                                "Free"
+                                                            }
+                                                        </td> */}
                                                     </tr>
                                                     <tr>
                                                         <td className="cartTotal">Total</td>
@@ -459,10 +493,20 @@ class CartProducts extends Component{
                                             </table>
                                         </div>
                                     </div>
-                                    <button onClick={this.proceedToCheckout.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn cartCheckout">
-                                        PROCEED TO CHECKOUT
-                                    </button>
+                                    {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
+                                        <button onClick={this.proceedToCheckout.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn cartCheckout">
+                                            PROCEED TO CHECKOUT
+                                        </button>
+                                        :
+                                        <button  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn blockcartCheckout">
+                                            PROCEED TO CHECKOUT
+                                        </button>   
+                                    }
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mg20">
+                                        <span className="minpurchase">Make minimum purchase of Rs.{this.state.minvalueshipping} to checkout your order.</span>&nbsp;
+                                    </div>
                                 </div>
+                                
                             </div>
                         </div>
                         : 

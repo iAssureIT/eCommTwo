@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 
 const shippingSchema = mongoose.Schema({
 	_id			          	: mongoose.Schema.Types.ObjectId,
-    fromamount              : String,
-    toamount           	    : String,
-    shippingcost            : String,
-    shippingallow           : Boolean,
+    shippingcosting              : String,
+    // fromamount              : String,
+    // toamount           	    : String,
+    // shippingcost            : String,
+    // shippingallow           : Boolean,
     createdBy               : String,
     createdAt               : Date
     });

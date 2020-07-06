@@ -19,10 +19,11 @@ class ShippingManagement extends Component {
       
 
       "tableHeading": {
-        fromamount: "From Amount",
-        toamount: "To Amount",
-        shippingcost: "Shipping Cost",
-        shippingallow: "Shipping Allow",
+        shippingcosting: "Shipping Amount",
+        // fromamount: "From Amount",
+        // toamount: "To Amount",
+        // shippingcost: "Shipping Cost",
+        // shippingallow: "Shipping Allow",
         actions: 'Actions',
       },
       "tableObjects": {
@@ -139,10 +140,11 @@ class ShippingManagement extends Component {
     event.preventDefault();
     // if ($('#ShippingManagement').valid()) {
       var formValues = {
-        "fromamount"   : this.state.fromamount,
-        "toamount"     : this.state.toamount,
-        "shippingcost" : this.state.shippingcost,
-        'shippingallow'   : this.state.shippingallow,
+        "shippingcosting"   : this.state.shippingcosting,
+        // "fromamount"   : this.state.fromamount,
+        // "toamount"     : this.state.toamount,
+        // "shippingcost" : this.state.shippingcost,
+        // 'shippingallow'   : this.state.shippingallow,
         "createdBy"    : localStorage.getItem("admin_ID")
       }
       console.log("response formValues==>",formValues);
@@ -153,10 +155,11 @@ class ShippingManagement extends Component {
             text: response.data.message,
           });
           this.setState({
-            "fromamount"   : '',
-            "toamount"     : '',
-            "shippingcost" : '',
-            "shippingallow" : '',
+            "shippingcosting"   : '',
+            // "fromamount"   : '',
+            // "toamount"     : '',
+            // "shippingcost" : '',
+            // "shippingallow" : '',
           });
           this.getData(this.state.startRange, this.state.limitRange);
         })
@@ -170,10 +173,11 @@ class ShippingManagement extends Component {
     event.preventDefault();
 
       var formValues = {
-        "fromamount"     : this.state.fromamount,
-        "toamount"     : this.state.toamount,
-        "shippingcost" : this.state.shippingcost,
-        "shippingallow" : this.state.shippingallow,
+        "shippingcosting"     : this.state.shippingcosting,
+        // "fromamount"     : this.state.fromamount,
+        // "toamount"     : this.state.toamount,
+        // "shippingcost" : this.state.shippingcost,
+        // "shippingallow" : this.state.shippingallow,
         "shippingID" : this.state.editId,
       }
       axios.patch('/api/shipping/patch', formValues)
@@ -200,10 +204,11 @@ class ShippingManagement extends Component {
         console.log('edit = ', response.data);
         if (response.data) {
           this.setState({
-            "fromamount"     : response.data.fromamount,
-            "toamount"       : response.data.toamount,
-            "shippingcost"   : response.data.shippingcost,
-            "shippingallow"   : response.data.shippingallow
+            "shippingcosting"     : response.data.shippingcosting,
+            // "fromamount"     : response.data.fromamount,
+            // "toamount"       : response.data.toamount,
+            // "shippingcost"   : response.data.shippingcost,
+            // "shippingallow"   : response.data.shippingallow
           });
         }
       })
@@ -245,18 +250,23 @@ class ShippingManagement extends Component {
                       <div className="col-lg-12 col-md-12 marginTopp NOpadding">
                       <form id="ShippingManagement" className="">
                           <div className="col-lg-5 fieldWrapper">
-                            <div className="col-lg-12">
+                          <div className="col-lg-12">
+                              <label>Shipping Amount <i className="redFont">*</i></label>
+                              <input value={this.state.shippingcosting} name="shippingcosting" id="shippingcosting" onChange={this.createsectionUrl.bind(this)} type="text" className="form-control edit-catg-new" placeholder="From amount" ref="shippingcosting" />
+                            </div>
+                          </div>
+                            {/* <div className="col-lg-12">
                               <label>Shipping From Amount <i className="redFont">*</i></label>
                               <input value={this.state.fromamount} name="fromamount" id="fromamount" onChange={this.createsectionUrl.bind(this)} type="text" className="form-control edit-catg-new" placeholder="From amount" ref="fromamount" />
                             </div>
-                          </div>
-                          <div className="col-lg-5 fieldWrapper">
+                          </div> */}
+                          {/* <div className="col-lg-5 fieldWrapper">
                             <div className="col-lg-12">
                               <label>Shipping To Amount <i className="redFont">*</i></label>
                               <input value={this.state.toamount} onChange={this.handleChange.bind(this)} id="toamount" name="toamount" type="text" className="form-control toamount" placeholder="To amount" ref="toamount" />
                             </div>                            
-                          </div>
-                          <div className="col-lg-12 fieldWrapper">
+                          </div> */}
+                          {/* <div className="col-lg-12 fieldWrapper">
                             <div className="col-lg-5 fieldWrapper">
                                   <label>Shipping Cost <i className="redFont">*</i></label>                                                                    
                                   <input value={this.state.shippingcost} onChange={this.handleChange.bind(this)} id="shippingcost" name="shippingcost" type="number" className="form-control shippingcost" placeholder="Shipping cost" ref="shippingcost"  />
@@ -272,7 +282,7 @@ class ShippingManagement extends Component {
                                   </label>
                                 </div>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="col-lg-12">
                             <div className="col-lg-4 btnWrapper pull-right">
                             <label>&nbsp;</label>
