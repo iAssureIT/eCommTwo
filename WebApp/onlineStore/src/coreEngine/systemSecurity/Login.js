@@ -224,10 +224,16 @@ class Login extends Component {
                 {
                   this.state.btnLoading
                   ?
-                    <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight btn loginBtn_uni has-spinner active">
-                      Processing...
-                      <span className="spinner"><i className="fa fa-refresh fa-spin"></i></span>
+                  <div className="col-lg-3 col-lg-offset-4 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight ">
+                  <div align="center" className="cssload-fond">
+                    <div className="cssload-container-general">
+                      <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_1"> </div></div>
+                      <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_2"> </div></div>
+                      <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_3"> </div></div>
+                      <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_4"> </div></div>
                     </div>
+                  </div>
+                </div>
                   :
                     <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight">
                       <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
