@@ -209,7 +209,7 @@ var insertFailedRecords = async (invalidData) => {
             .exec()
             .then(data=>{
             if(data.length>0){
-                console.log('data',data)   
+                // console.log('data',data)   
                 if (data[0].failedRecords.length>0) {
                     FailedRecords.updateOne({ fileName:invalidData.fileName},  
                         {   $set:   { 'failedRecords': [] } })
@@ -338,7 +338,7 @@ function categoryInsert(catgName,subcatgName,sectionname,section) {
                     categoryObj
                     .save()
                     .then(data=>{
-                        console.log('insertCategory',data.subCategory);
+                       // console.log('insertCategory',data.subCategory);
                         resolve({category_ID : data._id, category : catgName, subCategory_ID : (data.subCategory.length>0 ? data.subCategory[0]._id : null) });
                     })
                     .catch(err =>{
@@ -2115,5 +2115,196 @@ var insertUnitOfMeasurment = async(unit,created) =>{
             }); 
         
           
+    });
+}
+
+// bulk update 
+exports.bulkUploadProductUpdate = (req,res,next)=>{
+    var record = []; 
+    var i = 0;
+    var found = 0;
+    var catid;
+    var subcatid;
+    var failedRecords = [];
+    getData();
+
+    async function getData(){
+        var productData = req.body;
+        var TotalCount  = 0;
+        var Count  = 0;
+        var DuplicateCount  = 0;
+        var invalidData = [];
+        var invalidObjects = [];
+        var remark = ''; 
+
+        for(k = 0 ; k < productData.length ; k++){
+            if(productData[k].section != undefined && productData[k].itemCode != undefined){
+                if (productData[k].section.trim() != '') {
+                    var sectionObject = await sectionInsert(productData[k].section)
+                    //console.log('sectionObject',sectionObject)
+                    if (productData[k].category != undefined) {
+                        var categoryObject = await categoryInsert(productData[k].category,productData[k].subCategory,productData[k].section,sectionObject.section_ID);
+                        
+                        if (productData[k].itemCode != undefined) {
+                            var updateProductObject = await updateProductBulk(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
+                            // console.log('updateProductBulk',updateProductObject)
+                            if (updateProductObject != 0) {
+                                Count++;
+                            }else{
+                                DuplicateCount++;
+                                remark += "Item code should not be duplicate, ";
+                            }
+                        }  
+                    }
+                }
+            }
+            
+        if (productData[k].itemCode != undefined) {
+            TotalCount++;
+            if(productData[k].section == undefined){
+                 remark += "section not found";
+            }
+            if (productData[k].category == undefined) {
+                remark += ", category not found, ";
+            }
+            if (productData[k].productCode == undefined) {
+                remark += "Product code not found, ";
+            }
+            if (productData[k].productName == undefined) {
+                remark += "Product name not found, ";
+            }
+            if (productData[k].brand == undefined) {
+                remark += "brand not found, ";
+            }
+            // if (productData[k].availableQuantity == undefined) {
+            //     remark += "product quantity not found, ";
+            // }
+            if (productData[k].originalPrice == undefined) {
+                remark += "product price not found, ";
+            }
+
+        }
+            
+
+            if (remark != '') {
+                invalidObjects = productData[k];
+                invalidObjects.remark = remark;
+                invalidData.push(invalidObjects);
+            } 
+            remark = '';
+        }
+        
+        failedRecords.FailedRecords = invalidData
+        failedRecords.fileName = productData[0].filename;
+        failedRecords.totalRecords = TotalCount;
+
+        await insertFailedRecords(failedRecords); 
+        
+        var msgstr = "";
+        if (DuplicateCount > 0 && Count > 0) {
+            if (DuplicateCount > 1 && Count > 1) {
+               msgstr =  " " + Count+" products are updated successfully and "+"\n"+DuplicateCount+" products are duplicate";
+            }
+            else if(DuplicateCount ==1 && Count == 1 ){
+                msgstr =  " " + Count+" product is updated successfully and "+"\n"+DuplicateCount+" product is duplicate";
+            }
+            else if(DuplicateCount > 1 && Count == 1)
+            {
+                msgstr =  " " + Count+" product is updated successfully and "+"\n"+DuplicateCount+" products are duplicate";
+            }else if(DuplicateCount == 1 && Count > 1){
+                msgstr =  " " + Count+" products are updated successfully and "+"\n"+DuplicateCount+" product is duplicate";
+            }
+            
+        }
+        else if(DuplicateCount > 0 && Count == 0)
+        {
+            if (DuplicateCount > 1) {
+                msgstr = "Failed to update products as "+DuplicateCount+" products are duplicate";
+            }else{
+                msgstr = "Failed to update products as "+DuplicateCount+" product is duplicate";
+            }
+            
+        }
+        else if(DuplicateCount == 0 && Count > 0)
+        { 
+            if (Count > 1) {
+                msgstr = " " + Count+" products are updated successfully";
+            }else{
+                msgstr = " " + Count+" product is updated successfully";
+            }            
+        }else{
+            msgstr = "Failed to update products";
+        }
+
+        console.log("msgstr",msgstr);
+        res.status(200).json({
+            "message": msgstr
+        });
+    }
+};
+
+var updateProductBulk = async (section_ID, section, categoryObject,data) => {
+    return new Promise(function(resolve,reject){ 
+                if(data.vendor != undefined && data.vendor != ''){
+                    vendor = data.vendor ? data.vendor.split('|')[1] : null;
+                }else{
+                    vendor =  null;
+                }
+
+                Products.updateOne(
+                { itemCode:data.itemCode},  
+                {
+                    $set:{
+                        user_ID                   : vendor,  
+                        vendor_ID                 : vendor, 
+                        vendorName                : vendor,  
+                        section_ID                : section_ID,           
+                        section                   : section,      
+                        category                  : categoryObject.category,
+                        category_ID               : categoryObject.category_ID,
+                        subCategory               : data.subCategory,
+                        subCategory_ID            : categoryObject.subCategory_ID ? categoryObject.subCategory_ID : null,
+                        brand                     : data.brand ? data.brand : "",
+                        productCode               : data.productCode ? data.productCode : "",
+                        itemCode                  : data.itemCode ? data.itemCode : "",
+                        productName               : data.productName,
+                        productUrl                : !isNaN(data.productName) ? data.productName.replace(/\s+/g, '-').toLowerCase() : null,
+                        productDetails            : data.productDetails ? data.productDetails : "",
+                        shortDescription          : data.shortDescription ? data.shortDescription : "",
+                        featureList               : data.featureList ? data.featureList : "",
+                        attributes                : data.attributes ? data.attributes : [],
+                        currency                  : data.currency ? data.currency.toLowerCase() : "inr",
+                        originalPrice             : data.originalPrice ? data.originalPrice : 0,
+                        discountPercent           : data.discountPercent ? data.discountPercent : 0,  
+                        discountedPrice           : data.discountPercent == 0 ? (data.originalPrice ? data.originalPrice : 0) : data.discountedPrice,
+                        offeredPrice              : data.offeredPrice ? data.offeredPrice : "",
+                        actualPrice               : data.actualPrice ? data.actualPrice : "",
+                        // availableQuantity         : data.availableQuantity ? data.availableQuantity : "",
+                        status                    : "Draft",
+                        offered                   : data.offered,
+                        unit                      : data.unit ? data.unit : "",
+                        size                      : data.size ? data.size : "",
+                        color                     : data.color ? data.color : "",
+                        exclusive                 : data.exclusive,
+                        featured                  : data.featured,
+                        newProduct                : data.newProduct,
+                        bestSeller                : data.bestSeller,  
+                        tags                      : data.tags,
+                        taxInclude                : data.taxInclude,
+                        taxRate                   : data.taxRate == undefined && data.taxRate != ''  ? 0 : data.taxRate,
+                        fileName                  : data.filename,
+                        updatedBy                 : data.createdBy,
+                        updatedAt                 : new Date()
+                    }
+                }
+            )
+            .exec()
+            .then(data=>{
+                 resolve(data);
+            })
+            .catch(err =>{
+                reject(err);
+            });
+       
     });
 }

@@ -52,7 +52,9 @@ const productsSchema = mongoose.Schema({
     taxRate                  : Number,
     fileName                 : String,
     createdBy                : String,
-    createdAt                : Date
+    createdAt                : Date,
+    updatedBy                : String,
+    updatedAt                : Date
 });
 
 module.exports = mongoose.model('products',productsSchema);

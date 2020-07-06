@@ -27,6 +27,7 @@ import AddNewProductImages  from './storeAdmin/product/addNewProduct/AddNewProdu
 // import SectionManagement    from './storeAdmin/product/sectionManagement/component/SectionManagement.js';
 
 import AddNewBulkProduct    from './StoreManagement/product/productBulkUpload/component/ProductBulkUpload.js';
+import UpdateBulkProduct    from './StoreManagement/product/productBulkUpload/component/productUpdateBulkUpload.js';
 import TemplateManagement   from './StoreManagement/product/productBulkUpload/component/TemplateManagement.js';
 
 import ProductList          from './StoreManagement/product/productList/component/ProductList.js';
@@ -181,6 +182,9 @@ class Layout extends Component  {
                                                     <Route path="/section-management"                               exact strict component={SectionManagement} />
                                                     <Route path="/section-management/:sectionID"                    exact strict component={SectionManagement} />
 */}                                                 <Route path="/product-upload"                                   exact strict component={AddNewBulkProduct} />
+                                                    <Route path="/update_product-upload"                            exact strict component={UpdateBulkProduct} />
+                                                    <Route path="/template-management"                              exact strict component={TemplateManagement} />
+                                                    
                                                     <Route path="/template-management"                              exact strict component={TemplateManagement} />
                                                     <Route path="/template-management/:template_ID"                 exact strict component={TemplateManagement} />
                                                     <Route path="/product-list"                                     exact strict component={ProductList} />

@@ -155,6 +155,11 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
+                  <a href="/update_product-upload" data-id="/update_product-upload" title="Update Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Product Update Bulk Upload
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
                   <a href="/product-list" data-id="/product-list" title="Product List" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Product List
                   </a> 

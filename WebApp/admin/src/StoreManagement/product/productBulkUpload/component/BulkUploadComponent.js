@@ -296,7 +296,7 @@ constructor(props) {
         var formValues = this.state.finalData;
         $('.fullpageLoader').show();
         if (!this.state.fileWarningError) {
-            axios.post('/api/products/post/bulkUploadProduct', formValues)
+            axios.post(this.props.url, formValues)
                 .then((response) => {
                     this.fileInput.value = '';
                     this.setState({

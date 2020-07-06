@@ -8,6 +8,8 @@ router.post('/post', productController.insert_product);
 
 router.post('/post/bulkUploadProduct', productController.bulkUploadProduct);
 
+router.post('/post/bulkUploadProductUpdate', productController.bulkUploadProductUpdate);
+
 router.get('/get/filedetails/:fileName',productController.filedetails);
 
 router.post('/get/wishlist/product', productController.wishlist_product);

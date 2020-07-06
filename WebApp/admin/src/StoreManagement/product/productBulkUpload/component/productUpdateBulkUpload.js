@@ -6,7 +6,7 @@ import BulkUploadComponent from './BulkUploadComponent';
 import  '../css/productBulkUpload.css'
 import Message from '../../../../storeAdmin/message/Message.js';
 
-class AddNewBulkProduct extends Component {
+class UpdateProductBulkUpload extends Component {
     constructor(props) {
         super(props);
 
@@ -66,34 +66,6 @@ class AddNewBulkProduct extends Component {
           }) 
 
         this.getSectionData();
-        // var dbdata = [];
-        // dbdata.push({name: "section", type: "string", label:"Section"})
-        // dbdata.push({name: "category", type: "string", label:"Category"})
-        // dbdata.push({name: "subCategory", type: "string", label:"Subcategory" })
-        // dbdata.push({name: "brand", type: "string", label:"Brand"})
-        // dbdata.push({name: "productCode", type: "string", label:"Product Code"})
-        // dbdata.push({name: "itemCode", type: "string", label:"Item Code"})
-        // dbdata.push({name: "productName", type: "string", label:"Product Name"})
-        // dbdata.push({name: "productDetails", type: "string", label:"Product Details"})
-        // dbdata.push({name: "shortDescription", type: "string", label:"Short Description"})
-        // dbdata.push({name: "featureList", type: "string", label:"Feature List"})
-        // dbdata.push({name: "currency", type: "string", label:"Currency"})
-        // dbdata.push({name: "originalPrice", type: "number", label:"Original Price"})
-        // dbdata.push({name: "discountPercent", type: "number", label:"Discount Percent"})
-        // dbdata.push({name: "discountedPrice", type: "number", label:"Discounted Price"})
-        // dbdata.push({name: "availableQuantity", type: "number", label:"Available Quantity"})
-        // dbdata.push({name: "unit", type: "string", label:"Unit"})
-        // dbdata.push({name: "size", type: "string", label:"Size"})
-        // dbdata.push({name: "color", type: "string", label:"Color"})
-        // dbdata.push({name: "exclusive", type: "string", label:"Does this product is Exclusive"})
-        // dbdata.push({name: "featured", type: "string", label:"Does this product Featured"})
-        // dbdata.push({name: "taxInclude", type: "string", label:"Does Tax Include"})
-        // dbdata.push({name: "taxRate", type: "string", label:"Tax Rate"})
-
-        // this.setState({
-        //   dbdata: dbdata
-        // })
-        //console.log('dbdata',this.state.dbdata);  
     }
 
 
@@ -130,48 +102,7 @@ class AddNewBulkProduct extends Component {
           })
     }
     showProgressBar() {
-        // var getPercernt = UserSession.get("progressbarSession",Meteor.userId());
-        // var allPercernt = UserSession.get("allProgressbarSession",Meteor.userId());
-
-        // if(getPercernt && allPercernt){
-        //     var total = getPercernt/allPercernt*100;
-        //     total = parseInt(total);
-        //     var styleC = {
-        //         width:total + "%",
-        //         display:"block",
-        //     }
-        //     var styleCBar = {
-        //         display:"block",
-        //     }
-        // }
-        // if(!getPercernt){
-        //     var total = 0;
-
-        //     var styleC = {
-        //         width:0 + "%",
-        //         display:"none",
-        //     }
-        //     var styleCBar = {
-        //         display:"none",
-        //     }
-        // }
-        // // console.log('total',total);
-        // if(total === 100){
-        //     return (
-        //         <div></div>
-        //     );
-        // }else{
-        //     return (
-        //         <div>
-        //             <div className="progress"  style= {styleCBar}>
-        //                 <div className="progress-bar progress-bar-striped active" role="progressbar"
-        //                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style= {styleC}>
-        //                     {total} %
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     );
-        // }
+      
     }
     
     
@@ -249,7 +180,7 @@ class AddNewBulkProduct extends Component {
                                 <div className="">
                                     <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left" >
-                                            <h4 className="NOpadding-right">Product Bulk Upload</h4>
+                                            <h4 className="NOpadding-right">Product Update Bulk Upload</h4>
                                         </div>
                                         
                                     </div> 
@@ -325,10 +256,11 @@ class AddNewBulkProduct extends Component {
                                 {
                                    // (this.state.preferences==="MarketPlace" && this.state.vendor &&  this.state.fileurl) || 
                                    // ?
-                                       <BulkUploadComponent url="api/products/post/bulkUploadProduct" 
-                                                            fileurl={this.state.fileurl}
-                                                            fileDetailUrl="/api/products/get/filedetails/"
-                                                            requiredData={requiredData}
+                                       <BulkUploadComponent 
+                                            url="api/products/post/bulkUploadProductUpdate" 
+                                            fileurl={this.state.fileurl}
+                                            fileDetailUrl="/api/products/get/filedetails/"
+                                            requiredData={requiredData}
                                         />   
                                     // : 
                                     //     null                                        
@@ -342,7 +274,7 @@ class AddNewBulkProduct extends Component {
         );
     }
 }
-export default withRouter(AddNewBulkProduct);
+export default withRouter(UpdateProductBulkUpload);
 
 // AddNewBulkProduct = withTracker(props => {
 //     var vendorData          = [];
