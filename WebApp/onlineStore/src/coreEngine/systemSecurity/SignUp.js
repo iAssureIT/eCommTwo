@@ -220,7 +220,7 @@ class SignUp extends Component {
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
 													this.props.history.push("/");
 													swal('Congratulations! You have been successfully Login, Now you can place your order.');
-													// window.location.reload();
+													window.location.reload();
 												}
 											}
 
