@@ -23,6 +23,9 @@
 .mglft15 {
     margin-left: 15px;
 }
+.unitbox {
+    width: 80px !important;
+}
 .lstdiv {
     background-color: #436264;
     height: 70px;
