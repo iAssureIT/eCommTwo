@@ -873,6 +873,13 @@ export default class FinishedGoods extends React.Component {
 			},() => {
 			    this.checkValidInward();
 			})
+		}else{
+			this.setState({
+				fgUnitQtyforFG    : this.state.OutwardRawMaterial - this.state.scrapQty > 0 ? this.state.OutwardRawMaterial - this.state.scrapQty : 0,
+				finishedGoodsUnit : this.state.OutwardUnit,
+			},() => {
+			    this.checkValidInward();
+			})
 		}
 
    }
