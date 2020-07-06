@@ -218,7 +218,7 @@
 }
 .flatSaleBlock{
     font: 300 42px/50px "Roboto Slab";
-    color: #80b435;
+    color: #fff;
     text-transform: uppercase;
     vertical-align: bottom;
     display: inline-block;
@@ -360,6 +360,21 @@ ul.tabs.tabs-title li {
 .viewdetails{
     border-radius: 0px;
 }
+.shopNow{
+    background-color: #fff;
+    border: 1px solid #fff;
+    color: #80b435;
+    font-size: 12px;
+    padding: 10px;
+    margin-top: 40px;
+}
+
 .bigSaleImg{
     height: 300px !important;
 }
+.bigSaleWrapper {
+    background-position: 100% 100% !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+

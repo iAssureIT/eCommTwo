@@ -11,16 +11,16 @@ export default class SaleProductDivider extends Component {
     
   render() {
         return (
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 abc NOpadding">
-            <div className="block newBlock">
-             <div className="col-lg-5 ">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 abc NOpadding bigSaleWrapper" style={{"background":"url("+saleimage+")"}}>
+            <div className=" col-lg-12 col-md-12 block newBlock">
+             {/* <div className="col-lg-5 ">
               <img src={saleimage} className="bigSaleImg"/>
-             </div>
+             </div> */}
 
-            <div className="col-md-7 ">
+            <div className="col-md-7  pull-right">
                 <div className="flatSaleBlock"><span><img src={icon_shipping_5} className="imageposition"/></span>BIG SALE TODAY <span className="OffBlock"></span> </div>
-                <div className="col-lg-8 offerText special-content">GET 30% OFF YOUR ORDER OF $100 OR MORE...</div>
-                <a href="/"><div className="col-lg-3 col-lg-offset-5 btn viewdetails" title="">SHOP NOW</div></a>
+                <div className="col-lg-8 offerText special-content">GET 30% OFF YOUR ORDER OVER <span>&#x20B9;</span>&nbsp;200 ...</div>
+                <a href="/"><div className="col-lg-3 col-lg-offset-5 btn shopNow" title="">SHOP NOW</div></a>
             </div>
           </div>  
         </div>

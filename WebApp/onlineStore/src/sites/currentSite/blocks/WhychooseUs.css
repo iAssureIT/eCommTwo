@@ -1,8 +1,11 @@
 .mtop25{
 	margin-top: 25px;
 }
-.ocTitle{
-	
+.whyUsDiv{
+  background-size: cover !important;
+  background-position: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  padding: 20px !important;
 }
 .newocTitle{
     color: #376bff;

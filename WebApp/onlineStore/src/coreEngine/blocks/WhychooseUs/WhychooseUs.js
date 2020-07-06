@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../../../sites/4_UniMandai/blocks/WhychooseUs.css';
+import '../../../sites/currentSite/blocks/WhychooseUs.css';
 import icon_choose_1 	from '../../../sites/currentSite/images/icon-choose-1.png';
 import icon_choose_2 	from '../../../sites/currentSite/images/icon-choose-2.png';
 import icon_choose_3 	from '../../../sites/currentSite/images/icon-choose-3.png';
@@ -9,6 +9,7 @@ import icon_choose_5 	from '../../../sites/currentSite/images/icon-choose-5.png'
 import icon_choose_6 	from '../../../sites/currentSite/images/icon-choose-6.png';
 import images_choose 	from "../../../sites/currentSite/images/images-choose.jpg";
 // import images_choose 	from "../../../sites/currentSite/images/why_choose_usback.png";
+import why_choose_BgImg from '../../../sites/currentSite/images/why_choose_usback.png';
 import one 						from '../../../sites/currentSite/images/1.jpg';
 
 export default class OurCources extends React.Component {
@@ -95,7 +96,7 @@ export default class OurCources extends React.Component {
 
 						</div>
 					  </div> 
-						<div className="col-lg-12 whyUsDiv">
+					  <div className="col-lg-12 whyUsDiv" style={{background: "url("+why_choose_BgImg +")"}}>
 							<div className="col-lg-3  courceblockDiv1 courceblockDiv12">
 							{
 		                		data && data.length > 0 ?
@@ -121,7 +122,7 @@ export default class OurCources extends React.Component {
 		                		}
 		                	</div>
 		                		<div className="col-lg-4 whychooseUsImg">
-		                		 <img src={images_choose}/>
+		                		 {/* <img src={images_choose}/> */}
 		                		</div>
                             <div className="col-lg-offset-1 col-lg-3 courceblockDiv1 movemasterdiv">
                            {/*  <div className=" col-md-2"></div>*/}
@@ -129,14 +130,14 @@ export default class OurCources extends React.Component {
 		                		data1 && data1.length > 0 ?
 				      				data1.map((data1, index)=>{
 	                					return(
-						          			<div className="col-lg-12 Allblog whyUsSubDiv">
+						          		<div className="col-lg-12 Allblog whyUsSubDiv">
 						          			 <div className="col-lg-12">
-                                               <div className= "col-lg-10">
-                                                <p className="subtext_choose">{data1.blogTitle}</p>
-                                               </div>
-                                               <div className="col-lg-2">
-                                                <img src={data1.blogsubimg}/>
-                                               </div>
+												<div className= "col-lg-10">
+													<p className="subtext_choose">{data1.blogTitle}</p>
+												</div>
+												<div className="col-lg-2">
+													<img src={data1.blogsubimg}/>
+												</div>
                                               </div>
                                               <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                <p className="choosepara text-right">{data1.blogPara}</p>
