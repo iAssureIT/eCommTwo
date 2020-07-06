@@ -28,7 +28,8 @@ export default class RawMaterialStockReport extends React.Component {
 						Date            : 'Date',
 						itemCode 		: "Item Code",
 		        		productCode     : "Product Code",
-		        		productName     : "Product Name",
+						productName     : "Product Name",
+						UnitRate        : "Rate Per Unit",
 						OpeningStock    : 'Opening Stock',
 		                StockAddedToday : 'Stock Added Today',
 		                totalStock      : 'Total Stock',	 
@@ -96,19 +97,30 @@ export default class RawMaterialStockReport extends React.Component {
 			var  tableData = response.data ;
 			console.log("tableData",tableData);
 				var tableData = tableData.map((a, i) => {
+					// var totalAmount =0;
+					// if(i=0){
+					// 	totalAmount = 0;
+					// 	console.log("a",tableData[i].quantity);
+					// }else{
+					// 	totalAmount = tableData[i-1].quantity;
+					// 	console.log("a",tableData[i].quantity)
+					// }
 						return {
-	
 							_id                  : a._id,
 							Date   				 : a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
 							itemCode             : a.itemCode     ? a.itemCode     : "",
 							productCode          : a.productCode  ? a.productCode  : "",
 							productName 	     : a.productName  ? a.productName +' - '+ a.productCode +' - '+ a.itemCode: "" ,
-							OpeningStock         : a.OpeningStock ? a.OpeningStock : 0,
-							StockAddedToday      : a.quantity     ? a.quantity     : 0,
+							OpeningStock         : a.totalAmount    ? a.totalAmount : 0,
+							UnitRate             : a.unitRate     ? a.unitRate +' '+a.unitOfMeasurement     : 0,
+							StockAddedToday      : a.quantity     ? a.quantity +' '+a.unit     : 0,
 							totalStock           : a.balance      ? a.balance +' '+a.balanceUnit : 0,
 							
 						}
 					})
+					
+				
+
 				this.setState({
 				  tableData 		: tableData,          
 				})

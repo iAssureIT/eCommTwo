@@ -30,7 +30,7 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
 
                     const finishedGoods = new FinishedGoodsEntry({
                         _id                       : new mongoose.Types.ObjectId(),                    
-                        Date                      : req.body.Date,
+                        Date                      : moment(req.body.Date).tz('Asia/Kolkata').startOf('day'),
                         ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/      
                         ProductCode               : req.body.ProductCode,
                         productName               : req.body.productName,
@@ -802,8 +802,8 @@ exports.filedetails = (req,res,next)=>{
 
 exports.get_finished_goods_report = (req, res, next)=>{
     const moment = require('moment-timezone');
-    const startDate = req.body.fromDate;
-    const endDate = req.body.toDate;
+    const startDate = moment(req.body.fromDate).tz('Asia/Kolkata').startOf('day');
+    const endDate =  moment(req.body.toDate).tz('Asia/Kolkata').endOf('day');
 
     var selector = {};
     if(req.body.itemcode != undefined && req.body.itemcode != ""){

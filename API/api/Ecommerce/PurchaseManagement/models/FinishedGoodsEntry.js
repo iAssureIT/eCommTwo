@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const FinishedGoodsEntrySchema = mongoose.Schema({
 	_id			              : mongoose.Schema.Types.ObjectId,
-    Date                      : String,
+    Date                      : Date,
     ItemCode                  : String,/*itemID from productMaster*/
     ProductCode               : String,
     productName               : String,

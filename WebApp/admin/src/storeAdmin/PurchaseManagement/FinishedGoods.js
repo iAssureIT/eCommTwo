@@ -464,7 +464,7 @@ export default class FinishedGoods extends React.Component {
 	  this.setState({ 
 		[name]:value,
 	  },()=>{
-		this.weightConverter();
+		// this.weightConverter();
 		this.checkValidInward();
 	  });
 	//   if(value <= CurrentStock){
@@ -801,7 +801,7 @@ export default class FinishedGoods extends React.Component {
 		  [name]:value,
 		},()=>{
 		  this.getData();
-		  this.getReportBetweenDates();
+		//   this.getReportBetweenDates();
 		 });
 	  }
    /* Filters end*/
@@ -910,6 +910,13 @@ export default class FinishedGoods extends React.Component {
 		},() => {
 			this.checkValidInward();
 		})
+	}else{
+		this.setState({
+			scrapQty    : this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG > 0 ? this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG : 0,
+			scrapUnit : this.state.OutwardUnit,
+		},() => {
+			this.checkValidInward();
+		})
 	}
 
    }
@@ -917,7 +924,7 @@ export default class FinishedGoods extends React.Component {
    calculateWeightPerFP(){
 	// var firstEntered;
 	var TotalFcWt = this.state.fgUnitQty * this.state.fgTotalQty;
-	if(this.state.fgUnitQtyforFG == 0  && this.state.scrapQty == 0){
+	if(this.state.fgUnitQtyforFG == 0  && this.state.scrapQty == 0 || this.state.fgUnitQtyforFG == "NaN"  && this.state.scrapQty == ""){
 		this.setState({
 			firstEntered      : "Product_unit",
 			fgUnitQtyforFG    : TotalFcWt,
@@ -1045,7 +1052,7 @@ export default class FinishedGoods extends React.Component {
 		if(this.state.OutwardUnit.toLowerCase()  != 'kg' && this.state.OutwardUnit.toLowerCase()  != 'gm'){
 			var Scrap = Number(this.state.OutwardRawMaterial) - Number(this.state.fgUnitQtyforFG);
 			this.setState({
-				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty,
+				fgUnitQtyforFG    : this.state.fgUnitQty * this.state.fgTotalQty > 0 ? this.state.fgUnitQty * this.state.fgTotalQty : 0,
 				scrapQty          : Scrap > 0 ? Scrap : 0
 			},() => {
 				this.checkValidInward();
@@ -1149,7 +1156,7 @@ export default class FinishedGoods extends React.Component {
 									</div>
 									<div className="row mtop25">
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
-											<label>Weight Per Finished Product Unit <i className="redFont">*</i></label>
+											<label>Weight Per Finished Product Unit<i className="redFont">*</i></label>
 											<div className="WeightPerUnitDiv">
 												{/* onChangefgTotalQty called bcoz both are for same calculation */}
 												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.onChangefgUnitQty.bind(this)} id="fgUnitQty" min="1"/>
