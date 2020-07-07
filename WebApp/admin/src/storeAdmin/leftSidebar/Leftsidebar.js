@@ -150,18 +150,23 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
+                  <a href="/product-list" data-id="/product-list" title="Product List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Product List
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
                   <a href="/product-upload" data-id="/product-upload" title="Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Product Bulk Upload
+                    <i className="fa fa-circle-o dashr" />Bulk Insert
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
                   <a href="/update_product-upload" data-id="/update_product-upload" title="Update Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Product Update Bulk Upload
+                    <i className="fa fa-circle-o dashr" />Bulk Update
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
-                  <a href="/product-list" data-id="/product-list" title="Product List" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Product List
+                  <a href="/product-image-bulk-upload" data-id="/product-image-bulk-upload" title="Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Image Bulk Insert
                   </a> 
                 </li>  
                 <li className="noPadLR"> 
@@ -169,11 +174,7 @@ export default class AdminDashboard extends Component{
                     <i className="fa fa-circle-o dashr" />File Wise Product List
                   </a> 
                 </li>  
-                <li className="noPadLR"> 
-                  <a href="/product-image-bulk-upload" data-id="/product-image-bulk-upload" title="Product Bulk Upload" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Image Bulk Upload
-                  </a> 
-                </li>  
+              
               </ul>
             </li>
 

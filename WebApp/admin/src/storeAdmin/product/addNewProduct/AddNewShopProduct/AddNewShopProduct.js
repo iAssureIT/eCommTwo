@@ -487,8 +487,8 @@ class AddNewShopProduct extends Component {
       "originalPrice": this.refs.originalPrice.value,
       "discountPercent": this.refs.discountPercent.value ? this.refs.discountPercent.value : "0",
       "discountedPrice": this.state.discountedPrice ? this.state.discountedPrice : this.state.originalPrice,
-      // "availableQuantity": this.refs.availableQuantity.value,
-      "unit": this.refs.unit.value,
+      "availableQuantity": this.refs.availableQuantity.value,
+      "unit": this.state.unit,
       "size": this.refs.size.value,
       "color": this.state.color,
       "currency": this.refs.currency.value,
@@ -906,15 +906,15 @@ class AddNewShopProduct extends Component {
                                   </div>
                                 </div>
                                 <div className="addNewProductWrap col-lg-12 col-md-12 col-sm-12 col-xs-12 add-new-productCol">
-                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields">
+                                  <div className="col-lg-3 col-md-4 col-sm-4 col-xs-4 inputFields">
                                     <label>Brand Name</label>
                                     <input value={this.state.brand} name="brand" id="brand" type="text" className="form-control productBrandName" placeholder="Brand Name" aria-label="Brand" aria-describedby="basic-addon1" ref="brand" onChange={this.handleChange.bind(this)} />
                                   </div>
 
-                                  {/*<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 paddingRightZeroo">
+                                  <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 ">
                                     <label>Quantity <i className="redFont">*</i></label>
                                     <input onChange={this.handleChange.bind(this)} value={this.state.availableQuantity} id="availableQuantity" name="availableQuantity" type="number" className="form-control availableQuantityNew" placeholder="Quantity" aria-describedby="basic-addon1" ref="availableQuantity" />
-                                  </div>*/}
+                                  </div>
                                   {/* <div className="col-lg-4 col-md-4 col-sm-12 <col-xs-12></col-xs-12>">
                                     <label>Unit <i className="redFont">*</i></label>
                                     <select className="form-control selectdropdown " ref="unit" id="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}>
@@ -963,7 +963,7 @@ class AddNewShopProduct extends Component {
                                     <label>Original Price <i className="redFont">*</i></label>
                                     <input onChange={this.percentAndPrice.bind(this)} value={this.state.originalPrice} id="originalPrice" name="originalPrice" type="number" className="form-control availableQuantityNew" placeholder="Original Price" aria-describedby="basic-addon1" ref="originalPrice" />
                                   </div>
-                                  <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 paddingLeftZeroo">
+                                  <div className="col-lg-1 col-md-2 col-sm-12 col-xs-12 paddingLeftZeroo">
                                     <label>Currency <i className="redFont">*</i></label>
                                     <select className="form-control selectdropdown" ref="currency" id="currency" name="currency" value={this.state.currency} onChange={this.handleChange.bind(this)}>
                                       <option value="inr">INR</option>

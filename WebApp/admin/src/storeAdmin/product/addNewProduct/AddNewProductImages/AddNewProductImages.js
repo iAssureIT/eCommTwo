@@ -240,7 +240,6 @@ class AddNewProductImages extends Component{
                                                             </div>
                                                             <img aria-hidden="true" data-toggle="modal" data-target={"#openImageModal"+index} title="view Image" src={imageData} alt="Product Image" className="img-responsive" />
                                                         </div>
-
                                                         <div className="modal fade" id={"openImageModal"+index} role="dialog">
                                                             <div className="modal-dialog">
                                                                 <div className="modal-content">

@@ -461,7 +461,7 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
                         discountedPrice           : data.discountPercent == 0 ? (data.originalPrice ? data.originalPrice : 0) : data.discountedPrice,
                         offeredPrice              : data.offeredPrice ? data.offeredPrice : "",
                         actualPrice               : data.actualPrice ? data.actualPrice : "",
-                        // availableQuantity         : data.availableQuantity ? data.availableQuantity : "",
+                        availableQuantity         : data.availableQuantity ? data.availableQuantity : "",
                         status                    : "Draft",
                         offered                   : data.offered,
                         unit                      : data.unit ? data.unit : "",
@@ -2177,9 +2177,9 @@ exports.bulkUploadProductUpdate = (req,res,next)=>{
             if (productData[k].brand == undefined) {
                 remark += "brand not found, ";
             }
-            // if (productData[k].availableQuantity == undefined) {
-            //     remark += "product quantity not found, ";
-            // }
+            if (productData[k].availableQuantity == undefined) {
+                remark += "product quantity not found, ";
+            }
             if (productData[k].originalPrice == undefined) {
                 remark += "product price not found, ";
             }
@@ -2280,7 +2280,7 @@ var updateProductBulk = async (section_ID, section, categoryObject,data) => {
                         discountedPrice           : data.discountPercent == 0 ? (data.originalPrice ? data.originalPrice : 0) : data.discountedPrice,
                         offeredPrice              : data.offeredPrice ? data.offeredPrice : "",
                         actualPrice               : data.actualPrice ? data.actualPrice : "",
-                        // availableQuantity         : data.availableQuantity ? data.availableQuantity : "",
+                        availableQuantity         : data.availableQuantity ? data.availableQuantity : "",
                         status                    : "Draft",
                         offered                   : data.offered,
                         unit                      : data.unit ? data.unit : "",

@@ -502,11 +502,15 @@ class CartProducts extends Component{
                                             PROCEED TO CHECKOUT
                                         </button>   
                                     }
+                                     {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
+                                        null
+                                    :
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mg20">
                                         {/* <span className="minpurchase">Make minimum purchase of Rs.{this.state.minvalueshipping} to checkout your order.</span>&nbsp; */}
                                         <span className="minpurchase">Minimum order should be ₹{this.state.minvalueshipping} to Checkout & Place Order. 
                                             Add more products worth ₹{this.state.minvalueshipping - this.props.recentCartData[0].total} to proceed further.</span>
                                     </div>
+                                    }
                                 </div>
                                 
                             </div>
