@@ -176,7 +176,7 @@ class WebsiteModel extends Component {
                                                             <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                             checked onClick={this.handleChange.bind(this)} />
                                                         :
-                                                            <input name="askPincodeToUser" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            <input name="askPincodeToUser" type="radio" value="false" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                             onClick={this.handleChange.bind(this)} />
                                                         }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Yes</span>
@@ -184,13 +184,37 @@ class WebsiteModel extends Component {
 
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
                                                         {this.state.askPincodeNo === 'checked' ?
-                                                            <input name="askPincodeToUser" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            <input name="askPincodeToUser" type="radio" value="true" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                             checked onClick={this.handleChange.bind(this)} />
                                                         :
                                                             <input name="askPincodeToUser" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                             onClick={this.handleChange.bind(this)} />
                                                         }
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">No</span>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 askPincodeToUser NOpadding">
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">For login show seprate page or modal <span><i className="astrick">*</i></span></div>
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
+                                                        {this.state.LoginYes === 'checked' ?
+                                                            <input name="LoginYes" type="radio" value="true" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            checked onClick={this.handleChange.bind(this)} />
+                                                        :
+                                                            <input name="login" type="radio" value="false" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            onClick={this.handleChange.bind(this)} />
+                                                        }
+                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Show Login Page</span>
+                                                    </div>
+
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">
+                                                        {this.state.modalYes === 'checked' ?
+                                                            <input name="modal" type="radio" value="true" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            checked onClick={this.handleChange.bind(this)} />
+                                                        :
+                                                            <input name="modal" type="radio" value="false" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                            onClick={this.handleChange.bind(this)} />
+                                                        }
+                                                        <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Show Modal</span>
                                                     </div>
                                                 </div>
                                                 <br/> 

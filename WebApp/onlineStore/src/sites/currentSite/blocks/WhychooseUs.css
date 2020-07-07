@@ -18,8 +18,13 @@
 
 }
 .whychooseUsImg{
-  margin-top: 100px;
+  margin-top: 150px;
 }
+.WhyChooseUsImg{
+  height: 450px;
+  width:150%;
+}
+
 .ocLine{
 	margin-top: 45px;
 	height: 2px;

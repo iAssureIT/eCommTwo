@@ -9,8 +9,7 @@ import icon_choose_5 	from '../../../sites/currentSite/images/icon-choose-5.png'
 import icon_choose_6 	from '../../../sites/currentSite/images/icon-choose-6.png';
 // import images_choose 	from "../../../sites/currentSite/images/images-choose.jpg";
 import images_choose 	from "../../../sites/currentSite/images/Why_Choose_us.png";
-// import images_choose from "../../../sites/currentSite/images/Why Choose us.png";
-import why_choose_BgImg from '../../../sites/currentSite/images/why_choose_usback.png';
+
 import one 						from '../../../sites/currentSite/images/1.jpg';
 
 export default class OurCources extends React.Component {
@@ -124,7 +123,7 @@ export default class OurCources extends React.Component {
 		                		}
 		                	</div>
 							<div className="col-lg-4 whychooseUsImg">
-								<img src={images_choose} className="col-lg-12 col-md-12"/>
+								<img src={images_choose} className="WhyChooseUsImg"/>
 							</div>
                             <div className="col-lg-offset-1 col-lg-3 courceblockDiv1 movemasterdiv">
                            {/*  <div className=" col-md-2"></div>*/}
