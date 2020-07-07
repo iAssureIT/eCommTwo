@@ -266,12 +266,12 @@ export default class AdminDashboard extends Component{
                     <i className="fa fa-circle-o dashr" />Franchise Order Summary
                   </a> 
                 </li>  
-                <li className="noPadLR">
+                {/* <li className="noPadLR">
                   <a href="/distribution" title="Vendor Master" onClick={()=>this.openMenu("dashboard")}>
                     <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
                     <span className="sidebarMenuTitle">Distribution Management</span>
                   </a>
-                </li>
+                </li> */}
                 <li className="noPadLR"> 
                   <a href="/franchise-allowable-pincode" data-id="/franchise-allowable-pincode" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Allowable Pincode

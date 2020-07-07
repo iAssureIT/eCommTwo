@@ -621,14 +621,14 @@ export default class FinishedGoods extends React.Component {
 			"finishedBy"        : this.state.finishedBy,
 		};
 
-	
+	console.log("errorMsg",this.state.errorMsg);
 	  if ($('#finishedGoodsInwardForm').valid()) {
+		console.log("in if ");
 		if(productDatalist !== null && productDatalist.length > 0){
 			if(this.state.errorMsg !== "Valid"){
 				// swal("if");
 				swal(this.state.errorMsg);
 			}else{
-
 				axios
 					.post('/api/finishedGoodsEntry/post',formValues1)
 					.then((response)=>{
@@ -892,6 +892,7 @@ export default class FinishedGoods extends React.Component {
 		this.setState({
 			scrapQty    : this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG/1000) > 0 ? this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG/1000) : 0,
 			scrapUnit : this.state.OutwardUnit,
+			fgTotalQty : this.state.fgUnitQtyforFG/this.state.fgUnitQty
 		},() => {
 			this.checkValidInward();
 		})
@@ -899,6 +900,7 @@ export default class FinishedGoods extends React.Component {
 		this.setState({
 			scrapQty    : this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG > 0 ? this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG : 0,
 			scrapUnit : this.state.OutwardUnit,
+			fgTotalQty : this.state.fgUnitQtyforFG/this.state.fgUnitQty
 		},() => {
 			this.checkValidInward();
 		})
@@ -907,13 +909,15 @@ export default class FinishedGoods extends React.Component {
 		this.setState({
 			scrapQty    : this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG*1000) > 0 ? this.state.OutwardRawMaterial - (this.state.fgUnitQtyforFG*1000) : 0,
 			scrapUnit : this.state.OutwardUnit,
+			fgTotalQty : this.state.fgUnitQtyforFG/this.state.fgUnitQty,
 		},() => {
 			this.checkValidInward();
 		})
 	}else{
 		this.setState({
 			scrapQty    : this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG > 0 ? this.state.OutwardRawMaterial - this.state.fgUnitQtyforFG : 0,
-			scrapUnit : this.state.OutwardUnit,
+			scrapUnit : this.state.OutwardUnit, 
+			fgTotalQty : this.state.fgUnitQtyforFG/this.state.fgUnitQty
 		},() => {
 			this.checkValidInward();
 		})

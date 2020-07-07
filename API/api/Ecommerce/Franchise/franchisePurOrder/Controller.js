@@ -272,6 +272,7 @@ exports.allorder_franchise = (req,res,next)=>{
                         for(i = 0 ; i < data.length ; i++){
                             var AllUnits = ""
                             AllUnits = await entityID(data[i].franchise_id);
+                            DistributionData = await franchiseGoods(data[i]._id);
                             console.log('data in AllUnits ==>',AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null);
                             returnData.push({
                                 "_id"		      : data[i]._id,
@@ -280,7 +281,7 @@ exports.allorder_franchise = (req,res,next)=>{
                                 "orderItems"      : data[i].orderItems,
                                 "orderItemsqty"   : data[i].orderItems.length,
                                 "franchiseName"	  : AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null,
-                                
+                                "distributionData"  : DistributionData.length > 0 || DistributionData.length !== null ? DistributionData : null,
                             });
                         }
                         // console.log('data in returnData ==>',returnData);
@@ -314,6 +315,23 @@ function entityID(franchise_id){
         }); 
     });
 };
+
+function franchiseGoods(po_id){
+    return new Promise(function(resolve,reject){ 
+        FranchiseGoods.find({ franchisePO_id: po_id })
+        .exec()
+        .then(res=>{
+            
+            // console.log('res in EntityMaster ==>',res);
+            resolve(res);
+        })
+        .catch(err =>{
+            // res.status(500).json({ error: err });
+            reject(err);
+        }); 
+    });
+};
+
 exports.franchise_Wise_order = (req,res,next)=>{
     FranchisePO.find({franchise_id : req.params.franchise_id})
         .sort({createdAt : -1})

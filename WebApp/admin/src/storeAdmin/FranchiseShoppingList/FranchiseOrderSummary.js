@@ -90,7 +90,9 @@ class FranchiseOrderSummary extends Component {
 								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
 								franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
 								orderedqty		: a.orderItems.length.toString(),
-								profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+								// profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+								profileStatus	: "Test2",
+
 							}
 						})
 						this.setState({
@@ -109,16 +111,40 @@ class FranchiseOrderSummary extends Component {
 		axios.get('/api/franchisepo/get/purchaseorderallList', data)
 			.then((res) => {
 				// console.log("res.data in getdata==>", res.data);
+				    var status;
 					var tableData = res.data.map((a, i) => {
-						// console.log('tableData A==>>>', a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null );
+						console.log("a",a);
+						if(a.distributionData.length > 0){
+							for (i= 0; i < a.distributionData.length; i++) {
+								if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
+									if(a.orderItems[i].orderQty == a.distributionData[i].inwardQty){
+										status  = "Order Completed";
+									}else{
+										status  = "Partially Completed";
+									}
+								}else{
+									status = "Pending"
+								}
+								
+							}
+						}else{
+							status = "Pending"
+						}
+						
+					
+						// if(a.distributionData.length > 0){
+						// 	status  = "Partially";
+						// }else{
+						// 	status  = "Pending";
+						// }
 						return {
 							_id						: a._id,
 							orderNo				: a.orderNo.toString(),
 							orderDate			: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
-							franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
-							orderedqty		: a.orderItems.length.toString(),
+							franchisename	    : a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+							orderedqty		    : a.orderItems.length.toString(),
 							// profileStatus	: a.franchiseName.length !== null || a.franchiseName.length >= 1 ? a.franchiseName[0].profileStatus:null,
-							profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+							profileStatus	    : status,
 						}
 
 					})

@@ -10,15 +10,7 @@ const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfM
 
 
 exports.insert_FinishedGoodsEntry = (req,res,next)=>{
-	/*PurchaseEntry.find({"purchaseStaff":req.body.purchaseEntry})
-		.exec()
-		.then(data =>{
-            console.log(req.body)
-            if(data && data.length > 0){
-                res.status(200).json({
-                    "message": "PurchaseEntry already exists."
-                });
-            }else{*/
+	           const moment = require('moment-timezone');
                 getData();
                 async function getData(){
                     var obj = {};
@@ -70,14 +62,6 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                         });
                     });
                 }
-   /*         }
-	})
-	.catch(err =>{
-		console.log(err);
-		res.status(500).json({
-			error: err
-		});
-	});*/
 };
 exports.fetch_one = (req,res,next)=>{
     FinishedGoodsEntry.findOne({"_id":req.params.fetchId})
