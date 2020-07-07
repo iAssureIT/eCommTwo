@@ -1180,7 +1180,7 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
-                                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 shippingtimes">
                                             <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" />  &nbsp;
                                             <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
                                         </div>
@@ -1199,7 +1199,7 @@ class Checkout extends Component {
                                                         <option value='user'>No Timings available</option>
                                                 }
                                             </select>
-                                        </div>
+                                        </div> 
                                         <div className="modal col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 checkoutAddressModal" id="termsNconditionsmodal" role="dialog">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -1224,16 +1224,31 @@ class Checkout extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                                         <div id="termsNconditions col-lg-6 col-md-12"></div>
                                      
                                     </div>
-                                    
-                                    
+                                    {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
+                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
+                                            <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
+                                                <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
+                                                {
+                                                    this.state.gettimes && this.state.gettimes.length > 0 ?
+                                                        this.state.gettimes.map((data, index) => {
+                                                            return (
+                                                                <option key={index} value={data._id}>{data.fromtime}-{data.totime}</option>
+                                                            );
+                                                        })
+                                                        :
+                                                        <option value='user'>No Timings available</option>
+                                                }
+                                            </select>
+                                        </div> */}
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
+                                        </div>
 
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </form>
