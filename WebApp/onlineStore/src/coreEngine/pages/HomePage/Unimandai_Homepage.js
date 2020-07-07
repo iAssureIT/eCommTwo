@@ -89,7 +89,7 @@ class HomePage extends Component {
       var productType2 = 'exclusive';
       axios.get("/api/products/get/listbytype/"+productType2)
             .then((response)=>{
-              console.log('exclusiveProductsData = ' , response.data)
+              // console.log('exclusiveProductsData = ' , response.data)
 
               this.setState({
                 exclusiveprloading:false,
@@ -105,7 +105,7 @@ class HomePage extends Component {
       console.log('productType3==>', productType3);
       axios.get("/api/products/get/listbytype/"+productType3)
             .then((response)=>{
-              console.log('discounted prod response==>', response);
+              // console.log('discounted prod response==>', response);
               this.setState({
                 discountedProductsloading:false,
                 discountedProducts : response.data

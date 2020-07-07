@@ -120,10 +120,10 @@ export default class Footer extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Connect</div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="socialMediaIcons"><a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href="https://www.instagram.com/accounts/login/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href="http://www.youtub.com" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
-                    <div className="socialMediaIcons"><a href="https://web.whatsapp.com/" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></div>                   
+                    <div className="socialMediaIcons"><a href="https://www.facebook.com/Unimandai-105550984521880" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.instagram.com/unimandai/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href=" https://www.youtube.com/channel/UCOXIsYFFEHlzRnMI89Enoag" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
+                    <div className="socialMediaIcons"><a href="https://twitter.com/Unimandai1" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></div>                   
                 </div>
 
             </div>            

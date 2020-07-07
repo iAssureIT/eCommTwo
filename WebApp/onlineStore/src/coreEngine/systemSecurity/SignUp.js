@@ -49,7 +49,6 @@ class SignUp extends Component {
 	}
 	componentDidMount() {
 		var projectName = process.env.REACT_APP_PROJECT_NAME;
-		console.log("process.env.REACT_APP_PROJECT_NAME=========:", process.env.REACT_APP_PROJECT_NAME);
 
 
 	}
@@ -471,7 +470,6 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log("Login  state:",state);
 	return {
 	  formToShow     : state.formToShow,
   

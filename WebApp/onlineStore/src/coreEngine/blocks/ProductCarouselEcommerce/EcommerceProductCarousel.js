@@ -102,7 +102,7 @@ class EcommerceProductCarousel extends Component {
           this.setState({
             ['relatedProductArray' + id]: unique
           })
-          console.log('unique', unique);
+          // console.log('unique', unique);
           if (unique.length > 0) {
             if (unique.length === 1) {
               if (unique[0].size) {
@@ -127,7 +127,7 @@ class EcommerceProductCarousel extends Component {
           console.log('error', error);
         })
     } else {
-      console.log("inside cart");
+      // console.log("inside cart");
       this.setState({
         messageData: {
           "type": "outpage",

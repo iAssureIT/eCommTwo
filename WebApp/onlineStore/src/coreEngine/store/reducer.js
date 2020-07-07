@@ -49,7 +49,7 @@ const reducer = (state = initialState,action) =>{
 	}	
 	if(action.type === "MODAL_DATA"){
 		newState.formToShow  = action.formToShow;
-		console.log("FormtoShow:===",newState.formToShow);
+		// console.log("FormtoShow:===",newState.formToShow);
 	}
 	return newState;
 }
