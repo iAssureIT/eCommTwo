@@ -42,6 +42,7 @@ const orderSchema = mongoose.Schema({
         }
     ],
     paymentMethod             : String,
+    shippingtime              : String,
     productLength             : Number,
     cartQuantity              : Number,
     deliveryAddress           : {

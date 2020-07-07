@@ -606,7 +606,7 @@ class AddNewShopProduct extends Component {
       "size"              : this.refs.size.value,
       "color"             : this.state.color,
       "discountedPrice"   : this.state.discountedPrice ? this.state.discountedPrice : this.state.originalPrice,
-      // "availableQuantity" : this.refs.availableQuantity.value,
+      "availableQuantity" : this.refs.availableQuantity.value,
       "currency"          : this.refs.currency.value,
       "status"            : this.refs.status.value,
       "featured"          : productFeatured,

@@ -38,22 +38,24 @@ class AdminOrdersList extends Component{
     this.setState({
       websiteModel: websiteModel
     },()=>{
-      // console.log("websiteModel==>",this.state.websiteModel)FranchiseModel
+      // FranchiseModel
+      console.log("websiteModel==>",this.state.websiteModel)
     })
-        this.getBA();
+        // this.getBA();
+    
     }
     
-    getBA(){
-      axios.get("/api/businessassociates/get/list")
-            .then((response)=>{
-              this.setState({
-                  baList : response.data
-              })
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })  
-    }
+    // getBA(){
+    //   axios.get("/api/businessassociates/get/list")
+    //         .then((response)=>{
+    //           this.setState({
+    //               baList : response.data
+    //           })
+    //         })
+    //         .catch((error)=>{
+    //             console.log('error', error);
+    //         })  
+    // }
     componentWillReceiveProps(nextProps){
         if(nextProps){
             this.setState({
@@ -157,17 +159,16 @@ class AdminOrdersList extends Component{
       const data = this.state.data;
       console.log("Dattta",data);
       const options = {
-       
         print: false, 
-        download: false,
-        viewColumns: false,
-        filter: false,
+        download: true,
+        viewColumns: true,
+        filter: true,
         responsive: "stacked",
         selectableRows: 'none'
       };
       const columns = [
           { name:"Order Id" },
-          {name:this.state.websiteModel == "FranchiseModel"?"Franchise Name": null},
+          {name:"Franchise Name"},
           { name:"Customer Name" }, 
           { name:"Total Items" },
           { name:"Total Price" },
@@ -214,7 +215,7 @@ class AdminOrdersList extends Component{
               sort: false,
               selectableRows: false, 
               customBodyRender: (value, tableMeta, updateValue) => {
-                console.log('dsfhds', value.deliveryStatus);
+                // console.log('dsfhds', value.deliveryStatus);
                   return (
 
                     <div>
@@ -315,6 +316,7 @@ class AdminOrdersList extends Component{
 
           }
         ];
+        
         return(         
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div className="row"> 

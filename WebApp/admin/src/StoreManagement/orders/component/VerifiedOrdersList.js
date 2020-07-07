@@ -30,6 +30,7 @@ export default class VerifiedOrdersList extends Component{
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
+                  var allocatedToFranchise = response.data[i].allocatedToFranchise.companyName;
                   var userFullName = response.data[i].userFullName;
                   var totalQuantity = response.data[i].totalQuantity;
                   var currency = response.data[i].currency;
@@ -42,10 +43,10 @@ export default class VerifiedOrdersList extends Component{
                   
                   var UserArray = [];
                   UserArray.push(orderID);
+                  UserArray.push(allocatedToFranchise);
                   UserArray.push(userFullName);
                   UserArray.push(totalQuantity);
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
-                   
                   UserArray.push(createdAt);
                   UserArray.push({status : status, deliveryStatus : deliveryStatus});
                   UserArray.push({_id:_id, viewOrder:viewOrder, deliveryStatus:deliveryStatus});

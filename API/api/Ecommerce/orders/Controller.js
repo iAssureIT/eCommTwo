@@ -113,6 +113,7 @@ exports.insert_orders = (req,res,next)=>{
                         "createdAt"            : new Date(),
                         "products"             : req.body.cartItems,
                         "paymentMethod"        : req.body.paymentMethod,
+                        "shippingtime"         : req.body.shippingtime,
                         "productLength"        : req.body.cartItems.length,
                         "cartQuantity"         : req.body.cartQuantity,
                         'deliveryAddress'      : {
@@ -341,6 +342,7 @@ exports.insert_orders = (req,res,next)=>{
           "createdAt"         : new Date(),
           "products"          : req.body.cartItems,
           "paymentMethod"     : req.body.paymentMethod,
+          "shippingtime"      : req.body.shippingtime,
           "productLength"     : req.body.cartItems.length,
           "cartQuantity"      : req.body.cartQuantity,
           'deliveryAddress'   : {
@@ -608,6 +610,7 @@ exports.update_order = (req,res,next)=>{
                     status                    : req.body.status,
                     products                  : req.body.products,
                     paymentMethod             : req.body.paymentMethod,
+                    shippingtime              : req.body.shippingtime,
                     productLength             : req.body.productLength,
                     totalQuantity             : req.body.totalQuantity,
                     deliveryAddress           : req.body.deliveryAddress,
@@ -636,9 +639,12 @@ exports.update_order = (req,res,next)=>{
         });
 };
 exports.list_order = (req,res,next)=>{
-    Orders.find({}).sort({createdAt:-1})      
+    Orders.find({})
+        .populate("allocatedToFranchise")
+        .sort({createdAt:-1})      
         .exec()
         .then(data=>{
+          // console.log("allocatedToFranchise===>>>",data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -722,20 +728,24 @@ exports.vendor_order_count = (req,res,next)=>{
   });
 };
 exports.list_orderby_status = (req,res,next)=>{
-    Orders.aggregate([
-    { "$match": { "deliveryStatus.status" :  req.params.status} },
-    { "$redact":
-        {
-            "$cond": {
-               "if": { "$eq": [ { "$arrayElemAt": [ "$deliveryStatus.status", -1 ] }, req.params.status ] },
-               "then": "$$KEEP",
-               "else": "$$PRUNE"
-            }
-        }
-    }
-    ]).sort({createdAt:-1})      
+    // Orders.aggregate([
+    // { "$match": { "deliveryStatus.status" :  req.params.status} },
+    // { "$redact":
+    //     {
+    //         "$cond": {
+    //            "if": { "$eq": [ { "$arrayElemAt": [ "$deliveryStatus.status", -1 ] }, req.params.status ] },
+    //            "then": "$$KEEP",
+    //            "else": "$$PRUNE"
+    //         }
+    //     }
+    // }
+    // ])
+    Orders.find({"deliveryStatus.status" :  req.params.status})
+    .populate("allocatedToFranchise")
+    .sort({createdAt:-1})      
         .exec()
         .then(data=>{
+          console.log("allocatedToFranchise===>>>",data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -815,19 +825,11 @@ exports.list_order_by_ba = (req,res,next)=>{
 
 
 exports.list_order_with_limits = (req,res,next)=>{
-    Orders.find({}).sort({createdAt:-1})
+    Orders.find({})
+    .sort({createdAt:-1})
     .exec()
     .then(data=>{
-        // var allData = data.map((x, i)=>{
-        //     return {
-        //         "_id"                   : x._id,
-        //         "orderCode"           : x.orderID,
-        //         "orderName"           : x.orderName,
-        //         "featured"              : x.featured,
-        //         "exclusive"             : x.exclusive,
-        //         "status"                : x.status
-        //     }
-        // })
+      console.log("data in order ==>",data);
         res.status(200).json(data);
     })
     .catch(err =>{
@@ -837,6 +839,19 @@ exports.list_order_with_limits = (req,res,next)=>{
         });
     });
 };
+// exports.list_order_with_limits = (req,res,next)=>{
+//     Orders.find({}).sort({createdAt:-1})
+//     .exec()
+//     .then(data=>{
+//         res.status(200).json(data);
+//     })
+//     .catch(err =>{
+//         console.log(err);
+//         res.status(500).json({
+//             error: err
+//         });
+//     });
+// };
 exports.count_order = (req,res,next)=>{
     Orders.find({})
     .exec()

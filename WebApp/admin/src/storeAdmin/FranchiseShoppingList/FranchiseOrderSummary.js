@@ -65,44 +65,6 @@ class FranchiseOrderSummary extends Component {
 					console.log("Error in franchiseList = ", error);
 	      })
 	}
-	selectedFranchise(event){
-		var selectedValue = event.target.value;
-		var keywordSelectedValue = selectedValue.split('$')[0];
-		console.log('keywordSelectedValue A==>>>', keywordSelectedValue);
-			if (selectedValue === "all") {
-				var data = {
-					"startRange": this.state.startRange,
-					"limitRange": this.state.limitRange,
-				}
-				this.getData(data)
-			} else {
-				var data = {
-					"startRange": this.state.startRange,
-					"limitRange": this.state.limitRange,
-				}
-				axios.get('/api/franchisepo/get/franchiseorderlist/' + keywordSelectedValue, data)
-					.then((res) => {
-						var tableData = res.data.map((a, i) => {
-							// console.log('tableData A==>>>', a);
-							return {
-								_id				: a._id,
-								orderNo			: a.orderNo.toString(),
-								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
-								franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
-								orderedqty		: a.orderItems.length.toString(),
-								// profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
-								profileStatus	: "Test2",
-
-							}
-						})
-						this.setState({
-							tableData: tableData,
-						})
-					}).catch((error) => {
-						swal(" ", "Sorry there is no data of " + selectedValue, "");
-					});
-		}
-	}
 
 	redirecttoadd(){
 		this.props.history.push("/franchise-shopping-list");

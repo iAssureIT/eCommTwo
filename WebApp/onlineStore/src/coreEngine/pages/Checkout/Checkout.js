@@ -44,16 +44,30 @@ class Checkout extends Component {
             giftOption: false,
             deliveryAddress: [],
             pincodeExists:true,
-            addressLine1 : ""
+            addressLine1 : "",
+            "startRange": 0,
+            "limitRange": 10,
         }
         this.getCartData();
         // this.getCompanyDetails();
         this.getUserAddress();
         this.camelCase = this.camelCase.bind(this)
     }
+    gettimes(startRange, limitRange) {
+        axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
+          .then((response) => {
+            // console.log('gettimes ===> ', response.data);
+            this.setState({
+                gettimes: response.data
+            })
+          })
+          .catch((error) => {
+            console.log('error', error);
+          });
+      }
     componentDidMount() {
         this.getCartData();
-        // this.getCompanyDetails();
+        this.gettimes(this.state.startRange, this.state.limitRange);
         this.getUserAddress();
         this.validation();
     }
@@ -212,7 +226,7 @@ class Checkout extends Component {
                 this.setState({
                     cartProduct: response.data[0]
                 });
-                console.log("inside getCartData:",this.state.cartProduct);
+                // console.log("inside getCartData:",this.state.cartProduct);
             })
             .catch((error) => {
                 console.log('error', error);
@@ -363,10 +377,10 @@ class Checkout extends Component {
                 totalAmount += finalPrice;
 
             } // end of i loop
-            console.log('totalAmount', discountedPrice, totalAmount);
+            // console.log('totalAmount', discountedPrice, totalAmount);
             if (totalAmount > 0) {
                 var themeSettings = this.state.companyInfo;
-                console.log('themeSettings', themeSettings);
+                // console.log('themeSettings', themeSettings);
                 if (themeSettings) {
                     var taxCount = themeSettings.taxSettings.length;
                     if (taxCount > 0) {
@@ -548,7 +562,6 @@ class Checkout extends Component {
     }
     placeOrder(event) {
         event.preventDefault();
-
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
         var checkoutAddess = $("input[name='checkoutAddess']:checked").val();
@@ -580,8 +593,7 @@ class Checkout extends Component {
                 var deliveryAddress = this.state.deliveryAddress.filter((a, i) => {
                                                                     return a._id === checkoutAddess
                                                                 })
-                console.log("Delivery address:",deliveryAddress);
-
+                // console.log("Delivery address:",deliveryAddress);
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
                     "name"          : deliveryAddress.length > 0 ? deliveryAddress[0].name      : "",
@@ -601,9 +613,9 @@ class Checkout extends Component {
                     "latitude"      : deliveryAddress.length > 0 ? deliveryAddress[0].latitude  : "",
                     "longitude"     : deliveryAddress.length > 0 ? deliveryAddress[0].longitude : "",
                 } 
-                console.log("inside if address values====",addressValues);               
+                // console.log("inside if address values====",addressValues);               
             }else{
-                console.log("inside else new address");
+                // console.log("inside else new address");
                 addressValues = {
                     "user_ID"   : localStorage.getItem('user_ID'),
                     "name": this.state.username,
@@ -623,10 +635,10 @@ class Checkout extends Component {
                     "latitude" : this.state.latitude,
                     "longitude": this.state.longitude,
                 }
-                console.log("inside if address values====",addressValues);     
+                // console.log("inside if address values====",addressValues);     
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
-                    console.log("addressValues:===",addressValues);
+                    // console.log("addressValues:===",addressValues);
                     axios.patch('/api/ecommusers/patch/address', addressValues)
                     .then((response) => {
                         $('.fullpageloader').hide();
@@ -645,9 +657,6 @@ class Checkout extends Component {
                             })
                         }, 3000);
                         this.getUserAddress();
-                        // $(".checkoutAddressModal").hide();
-                        // $(".modal-backdrop").hide();
-
                     })
                     .catch((error) => {
                         console.log('error', error);
@@ -666,7 +675,7 @@ class Checkout extends Component {
 
                 axios.patch('/api/carts/address', addressValues)
                 .then(async (response) => {
-                    console.log("Response After inserting address to cart===",response);
+                    // console.log("Response After inserting address to cart===",response);
                     await this.props.fetchCartData();
                     var cartItems = this.props.recentCartData[0].cartItems.map((a, i)=>{
                         return{
@@ -691,10 +700,11 @@ class Checkout extends Component {
                             "vendor_ID"         : a.productDetail.vendor_ID
                         }
                     })
-                    console.log("this.props.recentCartData[0].deliveryAddress = ",this.props.recentCartData[0].deliveryAddress,);
+                    // console.log("this.props.recentCartData[0].deliveryAddress = ",this.props.recentCartData[0].deliveryAddress,);
                     var orderData = {
                         user_ID         : localStorage.getItem('user_ID'),
                         cartItems       : cartItems,
+                        shippingtime    : this.state.shippingtiming,
                         total           : this.props.recentCartData[0].total,
                         cartTotal       : this.props.recentCartData[0].cartTotal,
                         discount        : this.props.recentCartData[0].discount,
@@ -702,7 +712,7 @@ class Checkout extends Component {
                         deliveryAddress : this.props.recentCartData[0].deliveryAddress,
                         paymentMethod   : this.props.recentCartData[0].paymentMethod
                     }
-                    console.log("Order Data:---",orderData);
+                    // console.log("Order Data:--->",orderData);
                     axios.post('/api/orders/post', orderData)
                     .then((result) => {
                         this.props.fetchCartData();
@@ -794,64 +804,29 @@ class Checkout extends Component {
         $(".toast-info").removeClass('toast');
         $(".toast-warning").removeClass('toast');
     }
-
-    // handleChangeCountry(event) {
-    //     const target = event.target;
-    //     this.setState({
-    //         [event.target.name]: event.target.value,
-    //         country : target.options[target.selectedIndex].innerHTML
-    //     })
-    //     this.getStates(event.target.value);
-    // }
-    
-    // getStates(countryCode) {
-    //     axios.get("http://locations2.iassureit.com/api/states/get/list/" + countryCode)
-    //         .then((response) => {
-    //             this.setState({
-    //                 stateArray: response.data
-    //             })
-    //             $('#Statedata').val(this.state.states);
-    //         })
-    //         .catch((error) => {
-    //             console.log('error', error);
-    //         })
-    // }
-    // handleChangeState(event){
-    //     this.setState({
-    //         [event.target.name]: event.target.value,
-    //         state : event.target.options[event.target.selectedIndex].innerHTML
-    //     })
-    //     const target = event.target;
-    //     const stateCode = event.target.value;
-    //     const countryCode = this.state.countryCode;
-    //     this.getDistrict(countryCode,stateCode);
-         
-    // }
-    // getDistrict(countryCode, stateCode){
-        
-    // axios.get("http://locations2.iassureit.com/api/districts/get/list/"+countryCode+"/"+stateCode)
-    //         .then((response)=>{
-    //         // console.log('districtArray', response.data);
-    //         this.setState({
-    //             districtArray : response.data
-    //         })
-    //         // console.log(this.state.city);
-    //         $('#Citydata').val(this.state.city);
-    //         })
-    //         .catch((error)=>{
-    //             console.log('error', error);
-    //         })
-    // }
-    //google API 
     handleChangePlaces = address => {
         this.setState({ addressLine1 : address});
     };
-
+    selectedTimings(event){
+		var selectedValue = event.target.value;
+        var keywordSelectedValue = selectedValue.split('$')[0];
+        // console.log("keywordSelectedValue==>",keywordSelectedValue);
+        axios.get('/api/time/get/one/'+keywordSelectedValue)
+        .then((response) => {
+          var shippingtime = response.data.fromtime+"-"+response.data.totime;
+        //   console.log('shippingtiming ===> ', shippingtime);
+          this.setState({ shippingtiming : shippingtime});
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
+       
+    }
     handleSelect = address => {    
         geocodeByAddress(address)
         .then((results) =>{
             if(results){
-                console.log("result ===",results);
+                // console.log("result ===",results);
                 // console.log("result ===",results);
             for (var i = 0; i < results[0].address_components.length; i++) {
                 for (var b = 0; b < results[0].address_components[i].types.length; b++) {
@@ -908,12 +883,10 @@ class Checkout extends Component {
         .then(({ lat, lng }) =>{            
             this.setState({'latitude' : lat});
             this.setState({'longitude' : lng});
-            console.log('Successfully got latitude and longitude', { lat, lng });
+            // console.log('Successfully got latitude and longitude', { lat, lng });
         });           
           this.setState({ addressLine1 : address});
-      }; //end google api   
-
-
+    }; //end google api   
     camelCase(str) {
         return str
             .toLowerCase()
@@ -1206,9 +1179,27 @@ class Checkout extends Component {
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" />  &nbsp;
-                                        <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
+                                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                            <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" />  &nbsp;
+                                            <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
+                                        </div>
+                                        <div className="col-lg-5 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
+                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
+                                            <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
+                                                <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
+                                                {
+                                                    this.state.gettimes && this.state.gettimes.length > 0 ?
+                                                        this.state.gettimes.map((data, index) => {
+                                                            return (
+                                                                <option key={index} value={data._id}>{data.fromtime}-{data.totime}</option>
+                                                            );
+                                                        })
+                                                        :
+                                                        <option value='user'>No Timings available</option>
+                                                }
+                                            </select>
+                                        </div>
                                         <div className="modal col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 checkoutAddressModal" id="termsNconditionsmodal" role="dialog">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -1234,8 +1225,12 @@ class Checkout extends Component {
                                         </div>
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div id="termsNconditions"></div>
+                                        <div id="termsNconditions col-lg-6 col-md-12"></div>
+                                     
                                     </div>
+                                    
+                                    
+
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
                                     </div>
@@ -1255,7 +1250,7 @@ const mapStateToProps = (state)=>{
     }
   }
 const mapDispachToProps = (dispatch) => {
-    console.log("getCartData====",getCartData);
+    // console.log("getCartData====",getCartData);
   return  bindActionCreators({ fetchCartData: getCartData}, dispatch)
 }
 

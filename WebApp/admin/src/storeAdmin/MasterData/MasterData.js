@@ -6,6 +6,7 @@ import axios              from 'axios';
 
 import Section            from  './sectionManagement/component/SectionManagement.js';
 import ShippingManagement            from  './shippingManagement/component/ShippingManagement.js';
+import TimeManagement            from  './timeManagement/component/TimeManagement.js';
 import Category           from  './categoryManagement/component/CategoryManagement.js';
 import TaxName            from  './TaxName/TaxName.js';
 import TaxRate            from  './TaxRate/TaxRate.js';
@@ -88,6 +89,7 @@ import UnitOfMeasurment   from  './UnitOfMeasurment/UnitOfMeasurmentMaster';
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#TaxRate" data-toggle="tab">         Tax Rate         </a></li> */}
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#UnitOfMeasurment" data-toggle="tab">Unit of Measurement </a></li>
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#ShippingManagement" data-toggle="tab">Shipping Management </a></li>
+                          <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#TimeManagement" data-toggle="tab">Time Management </a></li>
 
                           
                         </ul>   
@@ -97,6 +99,7 @@ import UnitOfMeasurment   from  './UnitOfMeasurment/UnitOfMeasurmentMaster';
                         <div className="tab-pane" id="Category">        <Category          editId={this.state.editId}/>  </div>
                         <div className="tab-pane" id="UnitOfMeasurment"><UnitOfMeasurment  editId={this.state.editId}/>  </div>  
                         <div className="tab-pane" id="ShippingManagement"><ShippingManagement editId={this.state.editId}/>  </div>  
+                        <div className="tab-pane" id="TimeManagement"><TimeManagement editId={this.state.editId}/>  </div>  
                         {/* <div className="tab-pane" id="TaxName">         <TaxName           editId={this.state.editId}/>  </div>
                         <div className="tab-pane" id="TaxRate">         <TaxRate           editId={this.state.editId}/>  </div> */}
                         {/* <div className="tab-pane" id="UnitOfMeasurment"><UnitOfMeasurment  editId={this.state.editId}/>  </div>   */}

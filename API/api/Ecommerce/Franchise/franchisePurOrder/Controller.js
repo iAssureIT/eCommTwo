@@ -508,7 +508,6 @@ exports.one_franchisePO = (req,res,next)=>{
         .findOne({_id : purchaseorder_id})
         .then(data=>{
             main();
-            main();
             async function main(){
                 if(data){
                     var returnData = {};
