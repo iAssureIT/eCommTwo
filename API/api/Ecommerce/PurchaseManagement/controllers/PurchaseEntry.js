@@ -14,7 +14,7 @@ exports.insert_purchaseEntry = (req,res,next)=>{
                     purchaseDate              : moment(req.body.purchaseDate).tz('Asia/Kolkata').startOf('day'),
                     purchaseStaff             : req.body.purchaseStaff,
                     purchaseLocation          : req.body.purchaseLocation,
-                    /*productId                 : req.body.productId,
+                    /*productId                 : req.body.productId, 
                     itemId                    : req.body.itemId,*/
                     itemCode                  : req.body.itemCode,
                     productCode               : req.body.productCode,

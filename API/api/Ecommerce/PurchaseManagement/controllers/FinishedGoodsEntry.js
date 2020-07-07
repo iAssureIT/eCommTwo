@@ -7,10 +7,10 @@ const Products      = require('../../products/Model');
 const FailedRecords = require('../../failedRecords/Model');
 const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
 const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
+const moment = require('moment-timezone');
 
 
 exports.insert_FinishedGoodsEntry = (req,res,next)=>{
-	           const moment = require('moment-timezone');
                 getData();
                 async function getData(){
                     var obj = {};
@@ -127,10 +127,11 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
 
 exports.list_FinishedGoodsEntry = (req, res, next)=>{
     var selector = {};
+    var date = moment(req.body.date).tz('Asia/Kolkata').startOf('day');
     if(req.body.itemcode){
-        selector = {ItemCode:req.body.itemcode,Date:req.body.date}
+        selector = {ItemCode:req.body.itemcode,Date:date}
     }else{
-        selector = {Date:req.body.date}
+        selector = {Date:date}
     }
     FinishedGoodsEntry.find(selector)
         .sort({createdAt : -1})
@@ -792,7 +793,7 @@ exports.get_finished_goods_report = (req, res, next)=>{
     var selector = {};
     if(req.body.itemcode != undefined && req.body.itemcode != ""){
         FinishedGoodsEntry.find({ 
-            Date: { '$gte': req.body.fromDate, '$lt': req.body.toDate },
+            Date: { '$gte': startDate, '$lt': endDate },
             ItemCode:req.body.itemcode
         })
         .sort({createdAt:-1})      
@@ -808,7 +809,7 @@ exports.get_finished_goods_report = (req, res, next)=>{
         });
     }else{
          FinishedGoodsEntry.find({ 
-            Date: { '$gte': req.body.fromDate, '$lt': req.body.toDate },
+            Date: { '$gte': startDate, '$lt': endDate},
         })
         .sort({createdAt:-1})      
         .exec()

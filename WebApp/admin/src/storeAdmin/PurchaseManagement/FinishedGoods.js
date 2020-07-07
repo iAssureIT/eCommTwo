@@ -101,7 +101,8 @@ export default class FinishedGoods extends React.Component {
 					unitOfMeasurementArray  : [],
 					fromDate            : moment(new Date()).format("YYYY-MM-DD"),
 					toDate              : moment(new Date()).format("YYYY-MM-DD"),
-					firstEntered        :''
+					firstEntered        :'',
+					reportTableData     :''
 	  };
 	  this.uploadedData = this.uploadedData.bind(this);
 	  this.getFileDetails = this.getFileDetails.bind(this);
@@ -296,19 +297,19 @@ export default class FinishedGoods extends React.Component {
 
 	getReportBetweenDates(){
 		var reportFilterData = this.state.reportFilterData;
-		if(this.state.filterByProduct !== "Select Product"){
+		if(this.state.filterByProduct !== "Select Product" && this.state.filterByProduct !== ""){
 			reportFilterData.itemcode = this.state.filterByProduct;
 		}else{
 			delete reportFilterData["itemcode"];
 		}
 		reportFilterData.fromDate = this.state.fromDate;
 		reportFilterData.toDate = this.state.toDate;
-
+		console.log("reportFilterData",this.state.filterByProduct);
 		axios
 		.post('/api/finishedGoodsEntry/post/getReportOfFinishedGoods/',reportFilterData)
 		.then((response)=>{
-			var  tableData = response.data ;
-				var tableData = tableData.map((a, i) => {
+			var  reportTableData = response.data ;
+				var reportTableData = reportTableData.map((a, i) => {
 						return {
 	
 							_id                  : a._id,
@@ -322,7 +323,7 @@ export default class FinishedGoods extends React.Component {
 						}
 					})
 				this.setState({
-				  tableData 		: tableData,          
+					reportTableData 		: reportTableData,          
 				})
 				})
 		.catch((error)=>{
@@ -437,10 +438,21 @@ export default class FinishedGoods extends React.Component {
 	  const {name,value} = event.target;
 	  this.setState({ 
 		[name]:value,
-		CurrentStock:0
+		CurrentStock       : 0,
+		OutwardRawMaterial : 0,
+		OutwardUnit        : '-- Select --',
+		fgUnitQty 	       : 0,
+		fgUnitWt           : '-- Select --',
+		fgTotalQty         : 0,
+		fgUnitQtyforFG     : 0,
+		finishedGoodsUnit  : '-- Select --',
+		scrapQty           : 0,
+		scrapUnit          : '-- Select --',
+
       },()=>{
-	  });
-		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
+	  });  
+
+	  var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
 		$(".productDatalist option").filter(function(index,item){
 		  if(item.value == event.target.value){
 			itemCode    =   $(item).data('itemcode');
@@ -996,6 +1008,7 @@ export default class FinishedGoods extends React.Component {
 				this.calculateFgAndScrapByUnit();
 			}
 		});
+		
    }
 
    calculateFgAndScrapByUnit(){
@@ -1306,7 +1319,7 @@ export default class FinishedGoods extends React.Component {
 										tableHeading={this.state.tableHeading}
 										twoLevelHeader={this.state.twoLevelHeader} 
 										dataCount={this.state.dataCount}
-										tableData={this.state.tableData}
+										tableData={this.state.reportTableData}
 										getData={this.getData.bind(this)}
 										tableObjects={this.state.tableObjects}
 									/>

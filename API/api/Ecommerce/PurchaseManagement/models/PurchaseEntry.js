@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const PurchaseEntrySchema = mongoose.Schema({
 	_id			              : mongoose.Schema.Types.ObjectId,
-    purchaseDate              : String,
+    purchaseDate              : Date,
     purchaseStaff             : String,
     purchaseLocation          : String,
     productId                 : String,/*_id from productMaster*/
