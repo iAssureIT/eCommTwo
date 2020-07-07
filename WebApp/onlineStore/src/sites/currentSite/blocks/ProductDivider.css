@@ -376,5 +376,6 @@ ul.tabs.tabs-title li {
     background-position: 100% 100% !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
+    height: 450px;
 }
 

@@ -23,6 +23,8 @@
 }
 .HomePageBanner2 img {
     border-radius: 5px;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
 }
 
 .zoomImg {

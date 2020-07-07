@@ -265,7 +265,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("Login  state:",state);
+  // console.log("Login  state:",state);
   return {
     formToShow     : state.formToShow,
 

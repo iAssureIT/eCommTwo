@@ -7,8 +7,9 @@ import icon_choose_3 	from '../../../sites/currentSite/images/icon-choose-3.png'
 import icon_choose_4 	from '../../../sites/currentSite/images/icon-choose-4.png';
 import icon_choose_5 	from '../../../sites/currentSite/images/icon-choose-5.png';
 import icon_choose_6 	from '../../../sites/currentSite/images/icon-choose-6.png';
-import images_choose 	from "../../../sites/currentSite/images/images-choose.jpg";
-// import images_choose 	from "../../../sites/currentSite/images/why_choose_usback.png";
+// import images_choose 	from "../../../sites/currentSite/images/images-choose.jpg";
+import images_choose 	from "../../../sites/currentSite/images/Why_Choose_us.png";
+// import images_choose from "../../../sites/currentSite/images/Why Choose us.png";
 import why_choose_BgImg from '../../../sites/currentSite/images/why_choose_usback.png';
 import one 						from '../../../sites/currentSite/images/1.jpg';
 
@@ -32,7 +33,7 @@ export default class OurCources extends React.Component {
 								},
 								{
 									blogDate:"DEC 17,2016",
-									blogTitle:"Doorstep services ",
+									blogTitle:"Doorstep Services ",
 									blogPara:"We know the importance of time, with just a click you will get everything at your doorstep. Faster than you can imagine. ",								
 									blogsubimg:icon_choose_3,
 								},
@@ -47,14 +48,14 @@ export default class OurCources extends React.Component {
 		    "OurCourcesmaster" : [
 							{
 								blogDate:"DEC 17,2016",
-								blogTitle:"Expanded booking cost ",
+								blogTitle:"Expanded Booking Cost ",
 								blogPara:"You never have to wait for opening of booking slots. Our booking slots are 24 hours available. If your booking is done before 9 pm, you will get the delivery by next day evening. ",
 								bloggerImg:one,
 								blogsubimg:icon_choose_4,
 							},
 							{
 								blogDate:"DEC 17,2016",
-								blogTitle:"Ready to cook veggies  ",
+								blogTitle:"Ready To Cook Veggies  ",
 								blogPara:"Our products which are provided to you are sanitized, neatly graded and chopped which you can directly cook. ",								
 								blogsubimg:icon_choose_5,
 							},
@@ -66,7 +67,7 @@ export default class OurCources extends React.Component {
 							},
 							{
 								blogDate:"DEC 17,2016",
-								blogTitle:"Fast response ",
+								blogTitle:"Fast Response ",
 								blogPara:"If you order a product from us we will deliver it to your doorstep as soon as possible also",								
 								blogsubimg:icon_choose_6,
 							},
@@ -96,7 +97,8 @@ export default class OurCources extends React.Component {
 
 						</div>
 					  </div> 
-					  <div className="col-lg-12 whyUsDiv" style={{background: "url("+why_choose_BgImg +")"}}>
+					  {/* <div className="col-lg-12 whyUsDiv" style={{background: "url("+why_choose_BgImg +")"}}> */}
+					  <div className="col-lg-12 whyUsDiv">
 							<div className="col-lg-3  courceblockDiv1 courceblockDiv12">
 							{
 		                		data && data.length > 0 ?
@@ -121,9 +123,9 @@ export default class OurCources extends React.Component {
 	                				null
 		                		}
 		                	</div>
-		                		<div className="col-lg-4 whychooseUsImg">
-		                		 {/* <img src={images_choose}/> */}
-		                		</div>
+							<div className="col-lg-4 whychooseUsImg">
+								<img src={images_choose} className="col-lg-12 col-md-12"/>
+							</div>
                             <div className="col-lg-offset-1 col-lg-3 courceblockDiv1 movemasterdiv">
                            {/*  <div className=" col-md-2"></div>*/}
 							{

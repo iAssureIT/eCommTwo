@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "../../../sites/currentSite/blocks/ProductDivider.css";
 
 import saleimage        from "../../../sites/currentSite/images/BigSaleToday.png";
-import icon_shipping_5  from "../../../sites/currentSite/images/icon-shipping-5.png";
+import icon_shipping_5  from "../../../sites/currentSite/images/icon-shipping-6.png";
 
 export default class SaleProductDivider extends Component {
     // constructor(props){
@@ -18,7 +18,7 @@ export default class SaleProductDivider extends Component {
              </div> */}
 
             <div className="col-md-7  pull-right">
-                <div className="flatSaleBlock"><span><img src={icon_shipping_5} className="imageposition"/></span>BIG SALE TODAY <span className="OffBlock"></span> </div>
+                <div className="flatSaleBlock"><span><img src={icon_shipping_5} className="imageposition"/></span>&nbsp;&nbsp;BIG SALE TODAY <span className="OffBlock"></span> </div>
                 <div className="col-lg-8 offerText special-content">GET 30% OFF YOUR ORDER OVER <span>&#x20B9;</span>&nbsp;200 ...</div>
                 <a href="/"><div className="col-lg-3 col-lg-offset-5 btn shopNow" title="">SHOP NOW</div></a>
             </div>

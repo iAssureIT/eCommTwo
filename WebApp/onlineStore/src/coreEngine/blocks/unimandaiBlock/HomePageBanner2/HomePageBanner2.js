@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import "../../../../sites/currentSite/blocks/HomePageBanner2.css";
 import axios from 'axios';
 
-import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetables1.jpeg"
-import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits1.jpg"
-import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
-
-// import HomePageBanner2_1 from "../../../../sites/currentSite/images/unimandai_vegetable_blocks.png"
-// import HomePageBanner2_2 from "../../../../sites/currentSite/images/unimandai_Fruits_blocks.png";
+// import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetables1.jpeg"
+// import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits1.jpg"
 // import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
+
+import HomePageBanner2_1 from "../../../../sites/currentSite/images/unimandai_vegetable_blocks.png"
+import HomePageBanner2_2 from "../../../../sites/currentSite/images/unimandai_Fruits_blocks.png";
+import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
 
 class HomePageBanner2 extends Component{
     constructor(props){
@@ -22,7 +22,7 @@ class HomePageBanner2 extends Component{
                   .then((response)=>{                      
                     if(response.data){
                         var sectionDetails = [];
-                        console.log("Category data=======",response.data); 
+                        // console.log("Category data=======",response.data); 
                         var sectionDetailsArray = response.data;
                        for(let i=0;i<response.data.length;i++){
                         //    console.log("sectionDetailsArray[i].section==",sectionDetailsArray[i].section);
@@ -66,20 +66,20 @@ class HomePageBanner2 extends Component{
                     <div className="row">
                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
                             <a className="hover-images col-lg-12" href="/" > 
-                                <div className="imgTitle">Vegetables</div>                               
+                                {/* <div className="imgTitle">Vegetables</div>                                */}
                                 <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_1} alt="banner" />
                                 
                             </a>                        
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
                             <a className="hover-images col-lg-12" href="/">
-                                <div className="imgTitle">Fruits</div> 
+                                {/* <div className="imgTitle">Fruits</div>  */}
                                 <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_2} alt="banner" />
                             </a>                        
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
                             <a className="hover-images col-lg-12" href="/">
-                                <div className="imgTitle">Frozen Items</div> 
+                                {/* <div className="imgTitle">Frozen Items</div>  */}
                                 <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_3} alt="banner" />
                             </a>                        
                         </div>

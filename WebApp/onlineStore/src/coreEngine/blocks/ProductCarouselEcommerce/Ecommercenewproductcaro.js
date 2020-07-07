@@ -281,7 +281,7 @@ class Ecommercenewproductcaro extends Component {
     event.preventDefault();
     var id = event.target.id;
     this.props.changeProductCateWise(id, this.state.productType);
-    console.log('id', id);
+  
   }
   openModal(event) {
     event.preventDefault();
