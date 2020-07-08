@@ -96,7 +96,7 @@ class Routes extends Component{
                 <Route path="/my-ordersUni"             exact strict component={ MyOrders_Unimandai } />
                 <Route path="/view-order/:order_ID"     exact strict component={ ViewOrder } />
                 <Route path="/shipment-tracking"        exact strict component={ ShipmentTracking } />
-                <Route path="/productdetails/:productID"             exact strict component={ ProductDetailsEcommerce } />
+                <Route path="/productdetails/:productID"exact strict component={ ProductDetailsEcommerce } />
                 <Route path="/productdetails/:productURL/:productID"             exact strict component={ ProductDetailsEcommerce } />
                 <Route path="/searchProducts"           exact strict component={ SearchProduct } />
                 <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />

@@ -57,17 +57,28 @@ class Ecommercenewproductcaro extends Component {
       relatedProductArray: []
     };
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      newProducts: nextProps.newProducts,
-      type: nextProps.type
-    })
-    console.log("product array====",this.state.newProducts);
-  }
+  
   async componentDidMount(){ 
     await this.props.fetchCartData(); 
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
+      for(var i=0;i<nextProps.newProducts.length;i++){      
+          var availableSizes = [];         
+          if(nextProps.newProducts[i].size){
+            availableSizes.push(nextProps.newProducts[i].size*1);
+            availableSizes.push(nextProps.newProducts[i].size*2);
+            availableSizes.push(nextProps.newProducts[i].size*4); 
+            nextProps.newProducts[i].availableSizes = availableSizes;           
+          }
+      }
+    } 
+      this.setState({
+        newProducts: nextProps.newProducts,        
+        type: nextProps.type
+      });
+  }
 
   addtocart(event) {
     event.preventDefault();
@@ -154,7 +165,7 @@ class Ecommercenewproductcaro extends Component {
     }
   }
 
-  addCart(formValues, quantityAdded, availableQuantity) {
+  addCart(formValues, quantityAdded, availableQuantity){
     if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
       axios.post('/api/carts/post', formValues)
         .then((response) => {
@@ -229,14 +240,13 @@ class Ecommercenewproductcaro extends Component {
   }//end else websiteModel
   }
   
-  submitCart(event) {
+  submitCart(event){
     var id = event.target.id;
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
       var selectedSize = event.target.value;
       var size = event.target.getAttribute('mainSize');
       var unit = event.target.getAttribute('unit');
-    }
-    
+    }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
     var currProId = event.target.getAttribute('currPro');
@@ -292,32 +302,7 @@ class Ecommercenewproductcaro extends Component {
       ['sizeCollage' + id]: false
     })
   }
-  componentWillReceiveProps(nextProps) {
-    // console.log('newProducts componentWillReceiveProps', nextProps.newProducts);
-    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
-      for(var i=0;i<nextProps.newProducts.length;i++){      
-          var availableSizes = [];
-          // console.log("available sizes: ====", nextProps.products[i].size);
-          // console.log("available unit: ====", nextProps.products[i].unit);
-          if(nextProps.newProducts[i].size){
-            availableSizes.push(nextProps.newProducts[i].size*1);
-            availableSizes.push(nextProps.newProducts[i].size*2);
-            availableSizes.push(nextProps.newProducts[i].size*4); 
-            nextProps.newProducts[i].availableSizes = availableSizes;
-            // console.log("availableSizes=======",availableSizes);    
-          }
-      }
-    }
-      // console.log("componentWillReceiveProp products===:",nextProps.products);
-      this.setState({
-        newProducts: nextProps.newProducts,
-        // masterLimitProducts: nextProps.products,
-        // categoryDetails: nextProps.categoryDetails,
-        type: nextProps.type
-      });
-    
- 
-  }
+  
 
   addtowishlist(event) {
     event.preventDefault();
@@ -482,9 +467,7 @@ class Ecommercenewproductcaro extends Component {
                                                 this.state['relatedProductArray' + data._id].map((a, i) => {
                                                   if (a.size) {
                                                     return (                                            
-                                                        <div className="selectSizeBox">
-                                                          {/* <input title="Please select size first." currPro={data._id} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} value={a.size} name="size" type="radio" id={a._id} /> */}
-                                                          {/* <span title={a.size} className="collageCheck ">{a.size}</span> */}
+                                                        <div className="selectSizeBox">                                                          
                                                           <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
                                                           <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
                                                             { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {

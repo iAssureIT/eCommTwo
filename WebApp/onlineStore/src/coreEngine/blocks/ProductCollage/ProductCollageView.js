@@ -338,21 +338,14 @@ class ProductCollageView extends Component {
       var selectedSize = event.target.value;
       var size = event.target.getAttribute('mainSize');
       var unit = event.target.getAttribute('unit');
-      // console.log("selectedSize===",selectedSize);
     }
     
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
-    // console.log("1. submitCart availableQuantity:",availableQuantity);
     var currProId = event.target.getAttribute('currPro');
-    // console.log("2. recentCartData:===",this.props.recentCartData);
-
     var recentCartData = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
-    // console.log("3.submitCart recentCartData====",recentCartData);
     var productCartData = recentCartData.filter((a) => a.product_ID === id);
-    // console.log("4.submitCart productCartData====",productCartData);
     var quantityAdded = productCartData.length > 0 ? productCartData[0].quantity : 0;
-    // console.log("5. submitCart quantityAdded====",quantityAdded);
     var formValues ={};
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
       if(selectedSize === size){
@@ -377,7 +370,6 @@ class ProductCollageView extends Component {
           "size"         : size,
           "totalWeight"  : totalWeight,
         }
-        // console.log("cart formvalues :",formValues);
       }
       
     }else{      
@@ -407,7 +399,7 @@ class ProductCollageView extends Component {
         <Message messageData={this.state.messageData} />
         <div className="row">
           {
-            Array.isArray(this.state.products) && this.state.products.length > 0 ?
+            Array.isArray(this.state.products) && this.state.products.length > 0 ? 
             Array.isArray(this.state.products) && this.state.products.map((data, index) => {
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 var wishClass = '';
@@ -445,9 +437,7 @@ class ProductCollageView extends Component {
                                       this.state['relatedProductArray' + data._id].map((a, i) => {
                                         if (a.size) {
                                           return (                                            
-                                              <div className="selectSizeBox">
-                                                {/* <input title="Please select size first." currPro={data._id} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} value={a.size} name="size" type="radio" id={a._id} /> */}
-                                                {/* <span title={a.size} className="collageCheck ">{a.size}</span> */}
+                                              <div className="selectSizeBox">                                                
                                                 <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
                                                 <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
                                                   { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
@@ -458,8 +448,7 @@ class ProductCollageView extends Component {
                                                           data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
                                                             <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
                                                           :
-                                                          <option className="" value={size}>{size}{data.unit}</option>
-                                                        
+                                                          <option className="" value={size}>{size}{data.unit}</option>                                                        
                                                       )
                                                       
                                                     })

@@ -595,12 +595,12 @@ class ProductViewEcommerce extends Component {
 																	return(
 																		<div>
 																			<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt15 detailtitle">Size</label>
-																			<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 NOpaddingLeft">
+																			{/* <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 NOpaddingLeft">
 																				<label className="size col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																					<input title="Please select size first." checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onChange={this.setNewSizeProduct.bind(this)}/>
 																					<span title={a.size} className="checkmark col-lg-12 col-md-12 col-sm-12 col-xs-12">{a.size}</span>
 																				</label>
-																			</div>
+																			</div> */}
 																		</div>
 																	);
 																}else{

@@ -32,13 +32,28 @@ class SearchProductCollage extends Component {
     }, () => { });
 
   }
+  
   componentWillReceiveProps(nextProps) {
-
+    // console.log("componentWillReceiveProps:",nextProps.products);
+    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
+    for(var i=0;i<nextProps.products.length;i++){      
+        var availableSizes = [];
+      
+        if(nextProps.products[i].size){
+          availableSizes.push(nextProps.products[i].size*1);
+          availableSizes.push(nextProps.products[i].size*2);
+          availableSizes.push(nextProps.products[i].size*4); 
+          nextProps.products[i].availableSizes = availableSizes;
+          // console.log("availableSizes=======",availableSizes);    
+        }
+    }
+  }
+    // console.log("componentWillReceiveProp products===:",nextProps.products);
     this.setState({
       products: nextProps.products,
       masterLimitProducts: nextProps.products,
       categoryDetails: nextProps.categoryDetails
-    }, () => { });
+    });
   }
 
   addtocart(event) {
@@ -48,12 +63,14 @@ class SearchProductCollage extends Component {
 
     if (user_ID) {
       var id = event.target.id;
-      const userid = localStorage.getItem('user_ID');
+      const userid          = localStorage.getItem('user_ID');
       var availableQuantity = event.target.getAttribute('availableQuantity');
-      var recentCartData = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
-      var productCartData = recentCartData.filter((a) => a.product_ID === id);
-      var quantityAdded = productCartData.length > 0 ? productCartData[0].quantity : 0;
+      var recentCartData    = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
+      var productCartData   = recentCartData.filter((a) => a.product_ID === id);
+      var quantityAdded     = productCartData.length > 0 ? productCartData[0].quantity : 0;
+      // if(localStorage.getItem('websiteModel')==="FranchiseModel"{
 
+      // }
       const formValues = {
         "user_ID": userid,
         "product_ID": event.target.id,
@@ -62,9 +79,9 @@ class SearchProductCollage extends Component {
       // this.getProductData(productCode, clr);
       axios.get("/api/products/get/productcode/" + productCode)
         .then((response) => {
-          console.log('getProductData', response.data);
+          // console.log('getProductData', response.data);
           let mymap = new Map();
-          var colorFilter = response.data.filter(x => {
+          var colorFilter = response.data.filter(x => { 
             return x.color === clr && x.availableQuantity > 0
           });
           var unique = colorFilter.filter(el => {
@@ -84,7 +101,6 @@ class SearchProductCollage extends Component {
           this.setState({
             ['relatedProductArray' + id]: unique
           })
-          console.log('unique', unique);
           if (unique.length > 0) {
             if (unique.length === 1) {
               if (unique[0].size) {
@@ -109,6 +125,10 @@ class SearchProductCollage extends Component {
           console.log('error', error);
         })
     } else {
+      var previousUrl = window.location.href;
+      localStorage.setItem("previousUrl",previousUrl);
+      // console.log("previousUrl===",previousUrl);
+      // console.log("localstorage previousUrl===",localStorage.getItem('previousUrl'));
       this.setState({
         messageData: {
           "type": "outpage",
@@ -126,6 +146,34 @@ class SearchProductCollage extends Component {
     }
   }
   addCart(formValues, quantityAdded, availableQuantity) {
+    if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
+      axios.post('/api/carts/post', formValues)
+        .then((response) => {
+          this.props.fetchCartData();
+          console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          this.setState({
+            messageData: {
+              "type": "outpage",
+              "icon": "fa fa-check-circle",
+              "message": "&nbsp; " + response.data.message,
+              "class": "success",
+              "autoDismiss": true
+            }
+          })
+          setTimeout(() => {
+            this.setState({
+              messageData: {},
+            })
+          }, 3000);
+
+          console.log("changrCartCount:",response.data.cartCount);
+          this.props.changeCartCount(response.data.cartCount);
+
+        })
+        .catch((error) => {
+          console.log('error', error);
+        })
+    }else{
     if (quantityAdded >= availableQuantity) {
       this.setState({
         messageData: {
@@ -142,9 +190,11 @@ class SearchProductCollage extends Component {
         })
       }, 3000);
     } else {
+      // console.log("addCart formValues===",formValues);
       axios.post('/api/carts/post', formValues)
         .then((response) => {
           this.props.fetchCartData();
+          // console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
               "type": "outpage",
@@ -159,6 +209,7 @@ class SearchProductCollage extends Component {
               messageData: {},
             })
           }, 3000);
+          // console.log("changrCartCount:",response.data.cartCount);
           this.props.changeCartCount(response.data.cartCount);
 
         })
@@ -166,21 +217,56 @@ class SearchProductCollage extends Component {
           console.log('error', error);
         })
     }
+  }//end else websiteModel
   }
+
   submitCart(event) {
     var id = event.target.id;
+    if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
+      var selectedSize = event.target.value;
+      var size = event.target.getAttribute('mainSize');
+      var unit = event.target.getAttribute('unit');
+    }
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
     var currProId = event.target.getAttribute('currPro');
     var recentCartData = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
     var productCartData = recentCartData.filter((a) => a.product_ID === id);
     var quantityAdded = productCartData.length > 0 ? productCartData[0].quantity : 0;
-
-    const formValues = {
-      "user_ID": userid,
-      "product_ID": event.target.id,
-      "quantity": 1,
+    var formValues ={};
+    if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
+      if(selectedSize === size){
+         var quantity = 1;
+         var totalWeight = selectedSize +" "+unit
+         formValues = {
+          "user_ID": userid,
+          "product_ID": event.target.id,
+          "quantity": 1,  
+          "selectedSize" : selectedSize,
+          "size"         : size,
+          "totalWeight"  : totalWeight,      
+        }
+      }else{
+        var quantity    = selectedSize/size;
+        var totalWeight = size*quantity +" "+unit;
+        formValues = {
+          "user_ID"      : userid,
+          "product_ID"   : event.target.id,
+          "quantity"     : quantity,
+          "selectedSize" : selectedSize,
+          "size"         : size,
+          "totalWeight"  : totalWeight,
+        }
+      }
+      
+    }else{      
+      formValues = {
+        "user_ID": userid,
+        "product_ID": event.target.id,
+        "quantity": 1,        
+      }      
     }
+
     this.addCart(formValues, quantityAdded, availableQuantity);
     this.setState({
       ['sizeCollage' + currProId]: false
@@ -347,12 +433,34 @@ class SearchProductCollage extends Component {
                                         this.state['relatedProductArray' + data._id].map((a, i) => {
                                           if (a.size) {
                                             return (
-                                              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 NOpaddingLeft">
-                                                <label className="collageSize col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                                  <input title="Please select size first." currPro={data._id} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} value={a.size} name="size" type="radio" id={a._id} />
-                                                  <span title={a.size} className="collageCheck col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">{a.size}</span>
-                                                </label>
-                                              </div>
+                                              <div className="selectSizeBox">                                                
+                                                <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
+                                                <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
+                                                  { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
+                                                      return(
+                                                          size === 1000?
+                                                          <option className="" value={size}>{size}KG</option>
+                                                          :
+                                                          data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                            <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                          :
+                                                          <option className="" value={size}>{size}{data.unit}</option>                                                        
+                                                      )
+                                                      
+                                                    })
+                                                  }
+                                                </select>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 pull-left Nopadding prodName">{data.productName}</div>
+                                                {data.discountedPrice === data.originalPrice ?
+                                                  <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.originalPrice} &nbsp;                                                    
+                                                  </div>
+                                                :
+                                                  <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.discountedPrice} &nbsp;
+                                                    <span className="discountedPrice">Rs.{data.originalPrice}</span>&nbsp;
+                                                    <span className="disscountedPer">({data.discountPercent}% Off)</span>
+                                                  </div>
+                                                }
+                                              </div> 
                                             );
                                           }
                                         })
