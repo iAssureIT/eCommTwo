@@ -13,7 +13,8 @@ exports.insert_preferences = (req, res, next) => {
                     {
                         $set:{
                             "websiteModel"      : req.body.websiteModel,
-                            "askPincodeToUser"  : req.body.askPincodeToUser
+                            "askPincodeToUser"  : req.body.askPincodeToUser,
+                            "showLoginAs"       : req.body.showLoginAs,
                         }
                     }
                 )
@@ -34,7 +35,8 @@ exports.insert_preferences = (req, res, next) => {
                 _id                 : mongoose.Types.ObjectId(),      
                 "websiteModel"      : req.body.websiteModel,
                 "askPincodeToUser"  : req.body.askPincodeToUser,
-                createdAt           : new Date()
+                "showLoginAs"       : req.body.showLoginAs,
+                 createdAt           : new Date()
             });            
             adminpreference.save(
                 function(err){

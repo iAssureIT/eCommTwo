@@ -19,11 +19,11 @@ componentDidMount(){
   axios.get("/api/sections/get/get_megamenu_list")
             .then((response)=>{
              if(response.data){
-              console.log("section data===",response.data); 
+              // console.log("section data===",response.data); 
               this.setState({ 
                   categoryData : response.data
               })
-              console.log("megamenu section Data: ",this.state.categoryData);
+              // console.log("megamenu section Data: ",this.state.categoryData);
             }
             })
             .catch((error)=>{

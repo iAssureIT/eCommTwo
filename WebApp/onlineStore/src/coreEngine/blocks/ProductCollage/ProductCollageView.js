@@ -33,6 +33,7 @@ class ProductCollageView extends Component {
       products: this.props.products,
       masterLimitProducts: this.props.products
     });
+    // console.log("Products array :",this.state.products);
 
   }
   componentWillReceiveProps(nextProps) {
@@ -258,7 +259,6 @@ class ProductCollageView extends Component {
   
   addCart(formValues, quantityAdded, availableQuantity) {
     if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
-      console.log("inside franchise model");
       axios.post('/api/carts/post', formValues)
         .then((response) => {
           this.props.fetchCartData();
@@ -302,11 +302,11 @@ class ProductCollageView extends Component {
         })
       }, 3000);
     } else {
-      console.log("addCart formValues===",formValues);
+      // console.log("addCart formValues===",formValues);
       axios.post('/api/carts/post', formValues)
         .then((response) => {
           this.props.fetchCartData();
-          console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          // console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
               "type": "outpage",
@@ -321,7 +321,7 @@ class ProductCollageView extends Component {
               messageData: {},
             })
           }, 3000);
-          console.log("changrCartCount:",response.data.cartCount);
+          // console.log("changrCartCount:",response.data.cartCount);
           this.props.changeCartCount(response.data.cartCount);
 
         })
@@ -331,6 +331,7 @@ class ProductCollageView extends Component {
     }
   }//end else websiteModel
   }
+  
   submitCart(event) {
     var id = event.target.id;
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
@@ -342,7 +343,7 @@ class ProductCollageView extends Component {
     
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
-    console.log("1. submitCart availableQuantity:",availableQuantity);
+    // console.log("1. submitCart availableQuantity:",availableQuantity);
     var currProId = event.target.getAttribute('currPro');
     // console.log("2. recentCartData:===",this.props.recentCartData);
 
@@ -376,7 +377,7 @@ class ProductCollageView extends Component {
           "size"         : size,
           "totalWeight"  : totalWeight,
         }
-        console.log("cart formvalues :",formValues);
+        // console.log("cart formvalues :",formValues);
       }
       
     }else{      
@@ -392,6 +393,8 @@ class ProductCollageView extends Component {
       ['sizeCollage' + currProId]: false
     })
   }
+
+
   closeSize(event) {
     var id = event.target.id;
     this.setState({
@@ -404,8 +407,8 @@ class ProductCollageView extends Component {
         <Message messageData={this.state.messageData} />
         <div className="row">
           {
-            this.state.products && this.state.products.length > 0 ?
-              this.state.products && this.state.products.map((data, index) => {
+            Array.isArray(this.state.products) && this.state.products.length > 0 ?
+            Array.isArray(this.state.products) && this.state.products.map((data, index) => {
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 var wishClass = '';
                 var tooltipMsg = '';
@@ -461,9 +464,7 @@ class ProductCollageView extends Component {
                                                 </select>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 pull-left Nopadding prodName">{data.productName}</div>
                                                 {data.discountedPrice === data.originalPrice ?
-                                                  <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.originalPrice} &nbsp;
-                                                    {/* <span className="discountedPrice">Rs.{data.discountedPrice}</span>&nbsp; */}
-                                                    {/* <span className="disscountedPer">({data.discountPercent}% Off)</span> */}
+                                                  <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.originalPrice} &nbsp;                                                    
                                                   </div>
                                                 :
                                                   <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.discountedPrice} &nbsp;
@@ -568,7 +569,7 @@ class ProductCollageView extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps====",state);
+  
   return {
     recentCartData: state.recentCartData
   }

@@ -56,12 +56,7 @@ class unimandaiHeader extends Component {
 }
 
 componentWillMount() {
-      // this.props.formToShow("login");
-      // console.log("getForm value ===",this.props.formToShow);
-
-      this.setState({
-        loginForm      : "true",
-      })
+      
       $(document).ready(function(e){      
       $('.search-panel li a').on('click', function(e){
         var sp = $(this).closest('.search-panel');
@@ -406,7 +401,6 @@ loginPage(event){
       })
   }
   render() {
-    console.log("FormToShow Render======",this.props.formToShow);
     $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");
     return (
@@ -704,7 +698,7 @@ loginPage(event){
   }
 }
 const mapStateToProps = (state) => {
-  console.log("form state===",state);
+  // console.log("form state===",state);
   return {
     searchResult   : state.searchResult,
     searchCriteria : state.searchCriteria,

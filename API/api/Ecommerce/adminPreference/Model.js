@@ -4,6 +4,7 @@ const adminPreferenceSchema = mongoose.Schema({
 	_id			: mongoose.Schema.Types.ObjectId,    
     "websiteModel"     : String,
     "askPincodeToUser" : String,
+    "showLoginAs"      : String,
     createdAt          : Date
 });
 
