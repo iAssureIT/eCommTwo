@@ -57,7 +57,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	const ordersRoutes				= require("./api/Ecommerce/orders/Routes"); 
 	const cartsRoutes					= require("./api/Ecommerce/cart/Routes"); 
 	const wishlistRoutes			= require("./api/Ecommerce/wishlist/Routes"); 
-<<<<<<< Updated upstream
+
 	const SectionRoutes			  = require("./api/Ecommerce/sections/Routes"); 
 	const ShippingRoutes			= require("./api/Ecommerce/ShippingManagement/Routes"); 
 	const TimingRoutes			  = require("./api/Ecommerce/TimeManagement/Routes"); 
@@ -65,14 +65,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	const ReturnedProductsRoutes  = require("./api/Ecommerce/returnedProducts/Routes"); 
 	const BulkUploadTemplate	= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
 	const adminPreference     = require("./api/Ecommerce/adminPreference/Routes");
-=======
-	const SectionRoutes			  	= require("./api/Ecommerce/sections/Routes"); 
-	const ShippingRoutes			= require("./api/Ecommerce/ShippingManagement/Routes"); 
-	const taxSetting          	    = require("./api/Ecommerce/taxManagement/Routes");
-	const ReturnedProductsRoutes    = require("./api/Ecommerce/returnedProducts/Routes"); 
-	const BulkUploadTemplate		= require("./api/Ecommerce/bulkUploadTemplate/Routes"); 
-	const adminPreference     	    = require("./api/Ecommerce/adminPreference/Routes");
->>>>>>> Stashed changes
+
 	// const unitOfMeasurment       = require("./api/Ecommerce/unitOfMeasurement/RoutesUnitOfMeasurment");
 	const unitOfMeasurment    = require("./api/Ecommerce/departmentMaster/RoutesUnitofmeasurment");
 
