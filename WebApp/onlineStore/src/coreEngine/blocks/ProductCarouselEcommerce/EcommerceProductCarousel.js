@@ -9,9 +9,13 @@ import "../../../sites/currentSite/blocks/EcommerceProductCarousel.css";
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import ProductDetailsHomeView from "../../pages/ProductDetailsEcommerce/ProductDetailsHomeView.js";
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 import 'bootstrap/js/tab.js';
+import Login          from '../../systemSecurity/Login.js';
+import SignUp         from '../../systemSecurity/SignUp.js';
+import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 import Message from '../Message/Message.js';
 const OwlCarousel = Loadable({
   loader: () => import('react-owl-carousel'),
@@ -71,6 +75,13 @@ class EcommerceProductCarousel extends Component {
         newProducts: nextProps.newProducts,        
         type: nextProps.type
       });
+    }
+
+  componentDidMount() {
+    const websiteModel = localStorage.getItem("websiteModel");      
+    const showLoginAs = localStorage.getItem("showLoginAs");      
+    this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
+
   }
   
   addtocart(event) {
@@ -145,7 +156,8 @@ class EcommerceProductCarousel extends Component {
         messageData: {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
-          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",
           "class": "danger",
           "autoDismiss": true
         }
@@ -330,7 +342,9 @@ class EcommerceProductCarousel extends Component {
         messageData : {
           "type" : "outpage",
           "icon" : "fa fa-exclamation-circle",
-          "message" : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message" : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          "message" : this.state.showLoginAs ==="modal"? "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First." : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",                    
+
           "class": "warning",
           "autoDismiss" : true
         }
@@ -440,7 +454,7 @@ class EcommerceProductCarousel extends Component {
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>
                                         {data.discountPercent ? <div className=" discounttag">{data.discountPercent} % </div> : null} 
                                         <a href={"/productdetails/"+data.productUrl+"/" + data._id} className="product photo product-item-photo" tabIndex="-1">
-                                          <img src={data.productImage[0] ? data.productImage[0] : '/images/notavailable.jpg'} />
+                                          <img src={data.productImage[0] ? data.productImage[0] : notavailable} />
                                         </a>
                                       </div>
                                       <div className="productDetails">
@@ -557,6 +571,33 @@ class EcommerceProductCarousel extends Component {
                     </div>
                   </div>
                 </div>
+                <div id="loginFormModal" className="modal in">
+                <div className="modal-dialog">                                        
+                    <div className="modal-content loginModalContent">                            
+                        <div className="modal-body">   
+                        <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                            {this.props.formToShow === "login" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <Login />
+                                </div>  
+                            : null
+                            }  
+                            {this.props.formToShow === "signUp" ?
+                                <div className="col-lg-12 col-md-12 signupForm">
+                                    <SignUp />
+                                </div>  
+                            : null
+                            } 
+                            {this.props.formToShow === "forgotPassword" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <ForgotPassword />
+                                </div>  
+                            : null
+                            }                                                                
+                        </div>
+                    </div>
+                </div>
+              </div>
               </div>
             </div>
           </div>

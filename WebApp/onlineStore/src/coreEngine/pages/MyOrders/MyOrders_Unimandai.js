@@ -14,6 +14,7 @@ import Message from '../../blocks/Message/Message.js';
 import ReturnStatus from "../../common/Wizard/ReturnStatus.jsx";
 import Loader from "../../common/loader/Loader.js";
 import StepWizard         from "../../common/Wizard/StepWizard.jsx";
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 export default class MyOrders extends Component {
   constructor(props) {
     super(props);
@@ -583,7 +584,7 @@ export default class MyOrders extends Component {
                           <tbody>{
                             this.state.oneproductdetails ?
                               <tr>
-                                <td data-th="Order #" className="col id orderimgsize"><img src={this.state.oneproductdetails.productImage[0] ? this.state.oneproductdetails.productImage[0] : "/images/notavailable.jpg"} alt="" /></td>
+                                <td data-th="Order #" className="col id orderimgsize"><img src={this.state.oneproductdetails.productImage[0] ? this.state.oneproductdetails.productImage[0] : notavailable} alt="" /></td>
                                 <td data-th="Order #" className="col id">{this.state.oneproductdetails.productName}</td>
                                 <td data-th="Order Total" className="col total"><span><i className={"fa fa-" + this.state.oneproductdetails.currency}> {this.state.oneproductdetails.discountedPrice}</i></span></td>
                               </tr>
@@ -680,7 +681,7 @@ export default class MyOrders extends Component {
                             <tbody>{
                               this.state.oneproductdetails ?
                                 <tr>
-                                  <td data-th="Order #" className="col id orderimgsize"><img src={this.state.oneproductdetails.productImage[0] ? this.state.oneproductdetails.productImage[0] : "/images/notavailable.jpg" } alt="" /></td>
+                                  <td data-th="Order #" className="col id orderimgsize"><img src={this.state.oneproductdetails.productImage[0] ? this.state.oneproductdetails.productImage[0] : notavailable } alt="" /></td>
                                   <td data-th="Order #" className="col id">{this.state.oneproductdetails.productName}</td>
                                   <td data-th="Order Total" className="col total textAlignRight"><span><i className={"fa fa-" + this.state.oneproductdetails.currency}> {this.state.oneproductdetails.discountedPrice}</i></span></td>
                                 </tr>

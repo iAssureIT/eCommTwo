@@ -10,6 +10,8 @@ import Loader from "../../common/loader/Loader.js";
 import Message from '../Message/Message.js';
 import {ntc} from '../../ntc/ntc.js';
 import emptyCartImg from '../../../sites/currentSite/images/emptycart.png';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
+
 import { size } from 'underscore';
 class CartProducts extends Component{
     constructor(props) {
@@ -360,7 +362,7 @@ class CartProducts extends Component{
                                                         <td>
                                                             <tr>
                                                                 <td>
-                                                                    <a href={"/productdetails/" + data.product_ID}><img className="img img-responsive cartProductImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : '/images/notavailable.jpg'} alt="ProductImg"/></a>
+                                                                    <a href={"/productdetails/" + data.product_ID}><img className="img img-responsive cartProductImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="ProductImg"/></a>
                                                                 </td>
                                                                 <td className="cartProductDetail">
                                                                 <a href={"/productdetails/" + data.product_ID}><h5>{data.productDetail.productName}</h5></a>
@@ -517,7 +519,8 @@ class CartProducts extends Component{
                         </div>
                         : 
                         <div className="col-lg-12 textAlignCenter">
-                          <img src={emptyCartImg} alt="" />
+                          <img src={notavailable} alt="" />
+                          
                         </div>   
                     }
                     

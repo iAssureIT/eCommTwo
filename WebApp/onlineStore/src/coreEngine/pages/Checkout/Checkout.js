@@ -17,7 +17,7 @@ import { bindActionCreators } from 'redux';
 import {getCartData} from '../../actions/index';
 import "../../../sites/currentSite/pages/Checkout.css";
 import checkoutBanner from  "../../../sites/currentSite/images/checkout.png";
-
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
   
 class Checkout extends Component {
@@ -1105,7 +1105,7 @@ class Checkout extends Component {
                                                         return (
                                                             <tr key={'cartData' + index}>
                                                                 {/* <td><span className="fa fa-times-circle-o crossOrder" id={data._id} onClick={this.Removefromcart.bind(this)}></span></td> */}
-                                                                <td><img className="img img-responsive orderImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : "/images/notavailable.jpg"} /></td>
+                                                                <td><img className="img img-responsive orderImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} /></td>
                                                                 <td>
                                                                     <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productDetail.productName}</h5></a>
                                                                     

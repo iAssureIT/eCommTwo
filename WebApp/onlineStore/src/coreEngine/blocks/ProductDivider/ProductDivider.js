@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "../../../sites/currentSite/blocks/ProductDivider.css";
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 export default class ProductDivider extends Component {
 	constructor(props){
@@ -36,7 +37,7 @@ export default class ProductDivider extends Component {
 										?
 										<img src={data.categoryImage} alt="home banner" className="divImage"/>
 										:
-										<img src="../../../sites/currentSite/images/notavailable.jpg" alt="home banner" className="divImage"/>
+										<img src={notavailable} alt="home banner" className="divImage"/>
 										}
 									</a>
 									<div className=" figcaption1">

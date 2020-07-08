@@ -27,6 +27,9 @@ class ProductModalViewEcommerce extends Component {
   	}  
 
   	async componentDidMount(){
+			const websiteModel = localStorage.getItem("websiteModel");      
+      const showLoginAs = localStorage.getItem("showLoginAs");      
+      this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
 		await this.props.fetchCartData(); 
       	
   		// var imageArray=[
@@ -165,7 +168,7 @@ class ProductModalViewEcommerce extends Component {
         messageData : {
           "type" : "outpage",
           "icon" : "fa fa-exclamation-circle",
-          "message" : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          "message" : this.state.showLoginAs ==="modal"? "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First." : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
           "class": "danger",
           "autoDismiss" : true
         }
@@ -241,7 +244,7 @@ class ProductModalViewEcommerce extends Component {
           messageData : {
             "type" : "outpage",
             "icon" : "fa fa-exclamation-circle",
-            "message" : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            "message" : this.state.showLoginAs ==="modal"? "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First." : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
 			"class": "warning",
 			"autoDismiss" : true
           }

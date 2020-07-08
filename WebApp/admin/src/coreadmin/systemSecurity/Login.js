@@ -88,28 +88,20 @@ class Login extends Component {
             localStorage.setItem("user_ID", response.data.ID);
             localStorage.setItem("roles", response.data.roles);
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
-            
-            axios.get("/api/entitymaster/get/one/companyName/"+response.data.userDetails.companyID)
-            .then(entity=>{
-              console.log("in getting entity ===> ", entity);
-
-              localStorage.setItem("franchise_Id",entity._id);
-
-              axios.get("/api/adminPreference/get")
-                  .then(preference =>{
-                    var websiteModel = preference.data[0].websiteModel;
-                    // console.log("preference.data[0].websiteModel, ===> ",websiteModel);
-                    localStorage.setItem("websiteModel",websiteModel);
-                  })
-                  .catch(error=>{
-                      console.log("Error in getting adminPreference ===> ", error);
-                    }) 
-    
-              })
-              .catch(error=>{
-                console.log("Error in getting appCompany_entity_id ===> ", error);
-              }) ;
-
+           
+            axios.get("/api/adminPreference/get")
+            .then(preference =>{
+              var websiteModel = preference.data[0].websiteModel;
+              var showLoginAs = preference.data[0].showLoginAs;
+              var preferencedata = preference.data[0];
+              // console.log("preference.data, ===> ",preferencedata);
+              localStorage.setItem("websiteModel",websiteModel);
+              localStorage.setItem("showLoginAs",showLoginAs);
+              localStorage.setItem("preferencedata",preferencedata);
+            })
+            .catch(error=>{
+                console.log("Error in getting adminPreference ===> ", error);
+              }) 
 
             this.setState({
               loggedIn: true

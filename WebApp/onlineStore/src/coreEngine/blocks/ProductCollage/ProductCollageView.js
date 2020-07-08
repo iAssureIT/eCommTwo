@@ -11,6 +11,10 @@ import Message from '../Message/Message.js';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../actions/index';
 import { size } from 'underscore';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
+import Login          from '../../systemSecurity/Login.js';
+import SignUp         from '../../systemSecurity/SignUp.js';
+import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 const user_ID = localStorage.getItem("user_ID");
 
 class ProductCollageView extends Component {
@@ -133,7 +137,8 @@ class ProductCollageView extends Component {
         messageData: {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
-          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
           "class": "warning",
           "autoDismiss": true
         }
@@ -244,7 +249,9 @@ class ProductCollageView extends Component {
         messageData: {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
-          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+          
           "class": "danger",
           "autoDismiss": true
         }
@@ -422,7 +429,7 @@ class ProductCollageView extends Component {
                             {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
 
                             <a className="product photo product-item-photo collage" tabIndex="-1" href={"/productdetails/" + data.productUrl + "/" + data._id}>
-                              <img src={data.productImage[0] ? data.productImage[0] : '/images/notavailable.jpg'} alt="ProductImg" />
+                              <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImg" />
                             </a>
                           </div>
 
@@ -555,6 +562,33 @@ class ProductCollageView extends Component {
               </div>
             </div>
           </div>
+          <div id="loginFormModal" className="modal in">
+                <div className="modal-dialog">                                        
+                    <div className="modal-content loginModalContent">                            
+                        <div className="modal-body">   
+                        <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                            {this.props.formToShow === "login" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <Login />
+                                </div>  
+                            : null
+                            }  
+                            {this.props.formToShow === "signUp" ?
+                                <div className="col-lg-12 col-md-12 signupForm">
+                                    <SignUp />
+                                </div>  
+                            : null
+                            } 
+                            {this.props.formToShow === "forgotPassword" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <ForgotPassword />
+                                </div>  
+                            : null
+                            }                                                                
+                        </div>
+                    </div>
+                </div>
+              </div>
         </div>
       </div>
     );

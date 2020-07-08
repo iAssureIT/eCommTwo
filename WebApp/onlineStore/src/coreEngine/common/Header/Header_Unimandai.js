@@ -12,7 +12,7 @@ import '../../../sites/currentSite/common/Header.css';
 // import './Header.css';
 // import jQuery from "jquery";
 
-
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 class Header extends Component {
   constructor(props){
@@ -576,23 +576,25 @@ componentWillMount() {
                                   <li className="col-lg-12 cartdropheight " key={index}>
 
                                     <div className="cartdropborder">
-                                      <div className="col-lg-3 cartdropimg">
-                                        <div className="row">
-                                          <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : "/images/notavailable.jpg"} alt="Product Picture" />
-                                        </div>
+                                      {/* <div className="col-lg-3 cartdropimg"> */}
+                                      <div className="col-lg-3">
+                                        {/* <div className="row"> */}
+                                          <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="Product Picture" />
+                                        {/* </div> */}
                                       </div>
-                                      <div className="col-lg-9 cartdropimg">
-                                        <div className="row">
+                                      <div className="col-lg-9">
+                                      {/* <div className="col-lg-9 cartdropimg"> */}
+                                        {/* <div className="row"> */}
                                           <a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><p className="cartdroptext col-lg-12" title={data.productDetail.productName}>{data.productDetail.productName}</p></a>
                                           <div className="col-lg-12 text-center">
-                                            <div className="row">
+                                            {/* <div className="row"> */}
                                               <div className="col-lg-4"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
                                               <div className="col-lg-3"><p className="row"><b> {data.quantity}</b></p></div>
                                               <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
                                               <div className="col-lg-2"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
-                                            </div>
+                                            {/* </div> */}
                                           </div>
-                                        </div>
+                                        {/* </div> */}
                                       </div>
                                     </div>
                                   </li>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "../../../sites/currentSite/blocks/ShopByCategories.css";
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 export default class ShopByCategories extends Component {
 	constructor(props){

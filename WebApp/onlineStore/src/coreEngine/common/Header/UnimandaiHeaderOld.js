@@ -542,7 +542,7 @@ loginPage(event){
                                       <div className="cartdropborder">
                                         <div className="col-lg-3 cartdropimg">
                                           <div className="row">
-                                            <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : "/images/notavailable.jpg"} alt="Product Picture" />
+                                            <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : "../../../sites/currentSite/images/notavailable.jpg"} alt="Product Picture" />
                                           </div>
                                         </div>
                                         <div className="col-lg-9 cartdropimg">

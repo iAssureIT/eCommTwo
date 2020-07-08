@@ -38,8 +38,8 @@ class HomePage extends Component {
     }  
     componentDidMount() {
       // console.log("2.Didmount askPincodeToUser:");
-      const preferences = localStorage.getItem("preferences");      
-      // console.log("localstorage preferences:=============",preferences);
+      const preferences = localStorage.getItem("websiteModel");      
+      const showLoginAs = localStorage.getItem("showLoginAs");      
       this.setState({"askPincodeToUser" : preferences}); 
 
       // if(localStorage.getItem('flag')=== null){

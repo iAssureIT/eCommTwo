@@ -11,7 +11,7 @@ import $                          from "jquery";
 import '../../../sites/currentSite/common/Header.css';
 // import jQuery from "jquery";
 
-
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 class Header extends Component {
   constructor(props){
@@ -504,7 +504,7 @@ componentWillMount() {
                                     <div className="cartdropborder">
                                       <div className="col-lg-3 cartdropimg">
                                         <div className="row">
-                                          <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : "/images/notavailable.jpg"} alt="Product Picture" />
+                                          <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="Product Picture" />
                                         </div>
                                       </div>
                                       <div className="col-lg-9 cartdropimg">

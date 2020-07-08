@@ -8,7 +8,7 @@ import _            from 'underscore';
 import moment       from "moment";
 import swal         from 'sweetalert';
 import '../../../sites/currentSite/pages/Productreview.css';
-
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 class Productreview extends Component {
   constructor(props) {
@@ -180,7 +180,7 @@ class Productreview extends Component {
                       <div key={index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 reviewborder topspace15">
                         <div className="row">
                           <div className="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                            <img className="img img-responsive reviewProImg" src={data.productDetails.length >0 ? (data.productDetails[0].productImage[0] ? data.productDetails[0].productImage[0] : "/images/notavailable.jpg") : ""} alt="" />
+                            <img className="img img-responsive reviewProImg" src={data.productDetails.length >0 ? (data.productDetails[0].productImage[0] ? data.productDetails[0].productImage[0] : notavailable) : ""} alt="" />
                           </div>
                           <div className="col-lg-10 col-md-10 col-sm-8 col-xs-12 ">
                             <div className="row">
@@ -249,7 +249,7 @@ class Productreview extends Component {
                                             <tbody>{
                                               this.state.oneproductdetails ?
                                                 <tr>
-                                                  <td data-th="Order #" className="col id orderimgsize"><img src={this.state.oneproductdetails.productImage[0] ? this.state.oneproductdetails.productImage[0] : "/images/notavailable.jpg"} alt="" /></td>
+                                                  <td data-th="Order #" className="col id orderimgsize"><img src={this.state.oneproductdetails.productImage[0] ? this.state.oneproductdetails.productImage[0] : notavailable} alt="" /></td>
                                                   <td data-th="Order #" className="col id">{this.state.oneproductdetails.productName}</td>
                                                   <td data-th="Order Total" className="col total textAlignRight"><span><i className={"fa fa-" + this.state.oneproductdetails.currency}> {this.state.oneproductdetails.discountedPrice}</i></span></td>
                                                 </tr>

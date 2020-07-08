@@ -5,6 +5,7 @@ import axios                from 'axios';
 import { connect }        from 'react-redux';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 class ShopByCategoriesEcommerce extends Component {
 	constructor(props){
@@ -148,8 +149,8 @@ render() {
 															</div>
 														}
 															<a title="View Product"href={"/ProductDetailsEcommerce/"+data._id}><div className=" flip-box-inner">
-																<img src={data.productImage[0] ? data.productImage[0] : '/images/notavailable.jpg'} className="flip-box-front img-responsive" alt="blog1"/>       
-																<img src={data.productImage[1] ? data.productImage[1] : (data.productImage[0] ? data.productImage[0] : '/images/notavailable.jpg')} className="flip-box-back img-responsive " alt="blog1"/>
+																<img src={data.productImage[0] ? data.productImage[0] : notavailable} className="flip-box-front img-responsive" alt="blog1"/>       
+																<img src={data.productImage[1] ? data.productImage[1] : (data.productImage[0] ? data.productImage[0] : notavailable)} className="flip-box-back img-responsive " alt="blog1"/>
 															</div></a>
 													<div id="" className="col-lg-6 col-sm-12 col-xs-12 mt40 row">
 																	{/*<fieldset className="ratingReview stars ">

@@ -26,7 +26,7 @@ import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 import '../../../sites/currentSite/common/Header.css';
 // import jQuery from "jquery";
-
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 
 class unimandaiHeader extends Component {
@@ -572,14 +572,13 @@ loginPage(event){
                             </span>
                           }
                       </div>
-                      
+                    
                       <div id="loginFormModal" className="modal in">
                           <div className="modal-dialog">                                        
                               <div className="modal-content loginModalContent">                            
                                   <div className="modal-body">   
                                   <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
                                       {this.props.formToShow === "login" ?
-                                      // {this.state.formToShow === "login" ?
                                           <div className="col-lg-12 col-md-12 loginForm">
                                               <Login />
                                           </div>  
@@ -640,24 +639,24 @@ loginPage(event){
                                     <li className="col-lg-12 cartdropheight " key={index}>
 
                                       <div className="cartdropborder">
-                                        <div className="col-lg-3 cartdropimg">
-                                          <div className="row">
-                                            <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : "/images/notavailable.jpg"} alt="Product Picture" />
-                                          </div>
+                                        <div className="col-lg-3">
+                                            <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="Product Picture" className="imghgt" />
                                         </div>
-                                        <div className="col-lg-9 cartdropimg">
-                                          <div className="row">
-                                            <a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><p className="cartdroptext col-lg-12" title={data.productDetail.productName}>{data.productDetail.productName}</p></a>
+                                        <div className="col-lg-9 ">
+                                          {/* <div className="row"> */}
+                                            {/* <a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}></a> */}
+                                            <div className="col-lg-12"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div>
                                             <div className="col-lg-12 text-center">
-                                              <div className="row">
-                                                <div className="col-lg-4"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
-                                                <div className="col-lg-3"><p className="row"><b> {data.quantity}</b></p></div>
-                                                <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
+                                              {/* <div className="row"> */}
+                                                {/* <div className="col-lg-4"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div> */}
+                                                <div className="col-lg-2"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
+                                                <div className="col-lg-2"><p className="row"><b> {data.quantity}</b></p></div>
+                                                <div className="col-lg-2"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
                                                 <div className="col-lg-2"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
-                                              </div>
+                                              {/* </div> */}
                                             </div>
                                           </div>
-                                        </div>
+                                        {/* </div> */}
                                       </div>
                                     </li>
                                   );

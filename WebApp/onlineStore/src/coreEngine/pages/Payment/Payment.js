@@ -4,6 +4,7 @@ import '../../../sites/currentSite/pages/Payment.css';
 import { withRouter } from 'react-router-dom';
 import { ntc } from '../../ntc/ntc.js';
 import moment from 'moment';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 class Payment extends Component {
   constructor(props) {
     super(props);
@@ -144,7 +145,7 @@ class Payment extends Component {
                         this.state.orderData.products.map((data, index) => {
                           return (
                             <tr key={'cartData' + index}>
-                              <td><img alt="Product Image" className="img img-responsive orderImg" src={data.productImage[0] ? data.productImage[0] : "/images/notavailable.jpg"} /></td>
+                              <td><img alt="Product Image" className="img img-responsive orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
                               <td>
                                 <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productName}</h5></a>
 

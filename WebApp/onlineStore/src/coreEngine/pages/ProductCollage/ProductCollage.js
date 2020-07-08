@@ -903,8 +903,8 @@ class ProductCollage extends Component {
 						{
 							this.state.categoryDetails.length > 1 ?
 								<div className="col-lg-3 col-md-3 hidden-sm hidden-xs">
-									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
-										<div className="accordion" id="accordionExample">
+									{/* <div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding"> */}
+										{/* <div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
 												<div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
 													<button className="btn btn-link" type="button" data-key="category"   >
@@ -945,7 +945,7 @@ class ProductCollage extends Component {
 															</div>
 													}
 												</div>
-											</div>
+											</div> */}
 
 											{/* 	<div>
 										<div id="collapseTwo" className="collapse" >
@@ -1056,9 +1056,9 @@ class ProductCollage extends Component {
 													: null
 											} */}
 
-										</div>
-									</div>
-									<br />
+										{/* </div>
+									</div> */}
+									{/* <br /> */}
 									{/* <div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
 					 <div className="Featured-Brands-tittle">Featured Brands</div>						
 						<br/>

@@ -27,12 +27,16 @@ export default class AdminDashboard extends Component{
   }
 
   componentDidMount(){
-    var websiteModel = (localStorage.getItem('websiteModel'));
-    
+    var preferencedata = (localStorage.getItem('preferencedata'));
+      const websiteModel = localStorage.getItem("websiteModel");      
+      const showLoginAs = localStorage.getItem("showLoginAs");      
+    console.log("preferencedata==>",preferencedata)
+    console.log("websiteModel==>",websiteModel)
+    console.log("showLoginAs==>",showLoginAs)
     this.setState({
       websiteModel: websiteModel
     },()=>{
-      // console.log("websiteModel==>",this.state.websiteModel)FranchiseModel
+      console.log("websiteModel==>",this.state.websiteModel)
     })
     if (!$('body').hasClass('adminLte')) {
       var adminLte = document.createElement("script");
@@ -345,15 +349,6 @@ export default class AdminDashboard extends Component{
             :
             null
           }
-           
-
-
-          {/* {
-
-          } */}
-            
-         
-
 
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/project-master-data" title="Master Data" onClick={()=>this.openMenu("dashboard")}>
@@ -361,8 +356,6 @@ export default class AdminDashboard extends Component{
                 <span className="sidebarMenuTitle">Master Data</span>
               </a>
             </li>
-
-            
 
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/franchise/list" title="Franchise Master" onClick={()=>this.openMenu("dashboard")}>

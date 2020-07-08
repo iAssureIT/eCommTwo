@@ -80,11 +80,14 @@ class Login extends Component {
         this.setState({ btnLoading: true });
       axios.post('/api/auth/post/login', auth)
         .then((response) => {
+          // console.log("preference.data, ===> ",response.data.userDetails);
+
           if (response.data.ID) {
             this.setState({ btnLoading: false });
             var userDetails = {
               firstName: response.data.userDetails.firstName,
               lastName: response.data.userDetails.lastName,
+              companyID : parseInt(response.data.userDetails.companyID),
               email: response.data.userDetails.email,
               phone: response.data.userDetails.phone,
               pincode: response.data.userDetails.pincode,
@@ -97,6 +100,19 @@ class Login extends Component {
             localStorage.setItem("user_ID", response.data.ID);
             localStorage.setItem("roles", response.data.roles);
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
+              axios.get("/api/adminPreference/get")
+                  .then(preference =>{
+                    var websiteModel = preference.data[0].websiteModel;
+                    var showLoginAs = preference.data[0].showLoginAs;
+                    var preferencedata = preference.data[0];
+                    // console.log("preference.data, ===> ",preferencedata);
+                    localStorage.setItem("websiteModel",websiteModel);
+                    localStorage.setItem("showLoginAs",showLoginAs);
+                    localStorage.setItem("preferencedata",preferencedata);
+                  })
+                  .catch(error=>{
+                      console.log("Error in getting adminPreference ===> ", error);
+                    }) 
 
             this.setState({
               loggedIn: true

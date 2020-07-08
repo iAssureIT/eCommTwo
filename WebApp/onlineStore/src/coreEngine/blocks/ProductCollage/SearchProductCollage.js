@@ -8,6 +8,10 @@ import 'bootstrap/js/modal.js';
 import 'bootstrap/js/tab.js';
 import $ from 'jquery';
 import Message from '../Message/Message.js';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
+import Login          from '../../systemSecurity/Login.js';
+import SignUp         from '../../systemSecurity/SignUp.js';
+import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../actions/index';
 const user_ID = localStorage.getItem("user_ID");
@@ -133,7 +137,9 @@ class SearchProductCollage extends Component {
         messageData: {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
-          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+
           "class": "danger",
           "autoDismiss": true
         }
@@ -316,7 +322,8 @@ class SearchProductCollage extends Component {
         messageData: {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
-          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",
           "class": "warning",
           "autoDismiss": true
         }
@@ -420,7 +427,7 @@ class SearchProductCollage extends Component {
                               <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
                               {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
                               <a href="/" className="product photo product-item-photo collage" tabIndex="-1">
-                                <img src={data.productImage[0] ? data.productImage[0] : '/images/notavailable.jpg'} alt="ProductImage" />
+                                <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImage" />
                               </a>
                             </div>
                             <div className="productDetails">
@@ -536,6 +543,33 @@ class SearchProductCollage extends Component {
               </div>
             </div>
           </div>
+          <div id="loginFormModal" className="modal in">
+                <div className="modal-dialog">                                        
+                    <div className="modal-content loginModalContent">                            
+                        <div className="modal-body">   
+                        <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                            {this.props.formToShow === "login" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <Login />
+                                </div>  
+                            : null
+                            }  
+                            {this.props.formToShow === "signUp" ?
+                                <div className="col-lg-12 col-md-12 signupForm">
+                                    <SignUp />
+                                </div>  
+                            : null
+                            } 
+                            {this.props.formToShow === "forgotPassword" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <ForgotPassword />
+                                </div>  
+                            : null
+                            }                                                                
+                        </div>
+                    </div>
+                </div>
+              </div>
         </div>
       </div>
     );
