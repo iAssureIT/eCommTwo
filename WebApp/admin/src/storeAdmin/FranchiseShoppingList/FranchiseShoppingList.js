@@ -31,7 +31,7 @@ export default class FranchiseShoppingList extends React.Component {
 
 		var editid1 	= window.location.pathname;
 		let editId 		= editid1 ? editid1.split('/')[2] : "";
-	  const user_ID = localStorage.getItem("user_ID");
+	    const user_ID = localStorage.getItem("user_ID");
 		var today 		= moment(new Date()).format("YYYY-MM-DD");
 
 

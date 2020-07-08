@@ -32,10 +32,10 @@ class IAssureTableUM extends Component {
 			"normalData": true,
 			"resetPassword": "",
 			"resetPasswordConfirm": "",
-			
 			show: true,
 			selectedUser: [],
 			allid: null,
+			filterDate : moment(new Date()).format("YYYY-MM-DD"),
 		}
 	}
 	componentDidMount() {
@@ -385,18 +385,40 @@ class IAssureTableUM extends Component {
 				var data = {
 					"startRange": this.state.startRange,
 					"limitRange": this.state.limitRange,
+					"date"      : this.state.filterDate
 				}
 				axios.get('/api/franchisepo/get/franchiseorderlist/' + keywordSelectedValue, data)
 					.then((res) => {
 						var tableData = res.data.map((a, i) => {
-							console.log('tableData A==>>>', a);
+							console.log('tableData A==>>>', keywordSelectedValue);
+							if(a.distributionData.length > 0){
+								for (i= 0; i < a.distributionData.length; i++) {
+									if(a.orderItems[i]){
+										if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
+											console.log(a.orderItems[i].orderQty, a.distributionData[i].suppliedQty)
+											if(a.orderItems[i].orderQty === a.distributionData[i].suppliedQty){
+												a.status = "Order Completed";
+											}else{
+												a.status = "Partially Completed";
+											}
+										}else{
+											// a.status = "Pending"
+										}
+									}else{
+										a.status = "Pending"
+									}
+									
+								}
+							}else{
+								a.status = "Pending"
+							}
 							return {
 								_id				: a._id,
 								orderNo			: a.orderNo.toString(),
 								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
-								franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+								franchisename	: a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
 								orderedqty		: a.orderItems.length.toString(),
-								profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+								profileStatus	: a.status,
 							}
 						})
 						this.setState({
@@ -411,27 +433,61 @@ class IAssureTableUM extends Component {
 		this.props.history.push("/delivery_challan/"+id);
 	}
 	getData(data) {
-		axios.get('/api/franchisepo/get/purchaseorderallList', data)
+		
+		if(data){
+			data.date = this.state.filterDate;
+		}else{
+			var data = {
+				"date": this.state.filterDate,
+			}
+		}
+		axios.post('/api/franchisepo/get/purchaseorderallList/',data)
 			.then((res) => {
-				// console.log("res.data in getdata==>", res.data);
 					var tableData = res.data.map((a, i) => {
-						// console.log('tableData A==>>>', a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null );
+						
+						if(a.distributionData.length > 0){
+							for (i= 0; i < a.distributionData.length; i++) {
+							    if(a.orderItems[i]){
+									if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
+										console.log(a.orderItems[i].orderQty, a.distributionData[i].suppliedQty)
+										if(a.orderItems[i].orderQty === a.distributionData[i].suppliedQty){
+											a.status = "Order Completed";
+										}else{
+											a.status = "Partially Completed";
+										}
+									}else{
+										// a.status = "Pending"
+									}
+								}else{
+									a.status = "Pending"
+								}
+								
+							}
+						}else{
+							a.status = "Pending"
+						}
+						
+					
 						return {
-							_id						: a._id,
+							_id					: a._id,
 							orderNo				: a.orderNo.toString(),
 							orderDate			: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
-							franchisename	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
-							orderedqty		: a.orderItems.length.toString(),
+							franchisename	    : a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+							orderedqty		    : a.orderItems.length.toString(),
 							// profileStatus	: a.franchiseName.length !== null || a.franchiseName.length >= 1 ? a.franchiseName[0].profileStatus:null,
-							profileStatus	: a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].profileStatus : null,
+							profileStatus	    : a.status,
 						}
 
 					})
+
 					this.setState({
 						tableData: tableData,
+					},()=>{
+						console.log("tableData",tableData);
 					})
 			})
 			.catch((error) => {
+				console.log("error",error);
 			});
 	}
 	deletePO(id){
@@ -457,14 +513,33 @@ class IAssureTableUM extends Component {
             swal("Your Order is safe!");
           }
         }); 
-    }	
+	}	
+	
+	/* Filters start*/
+	filterChange(event){
+		event.preventDefault();
+		const {name,value} = event.target;
+  
+		this.setState({ 
+		  [name]:value,
+		},()=>{
+		  this.getData();
+		//   this.getReportBetweenDates();
+		 });
+	  }
+   /* Filters end*/
+
 	render() {
 		return (
 			<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
 				 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
-						<button className="btn btn-primary col-lg-8 col-md-12 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
+						<button className="btn btn-primary col-lg-8 col-md-12 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)} style={{"margin": "23px"}}>Add Franchise Order</button>
 				</div>  
-				 <div className="col-lg-4 col-lg-offset-4 col-md-4 col-sm-12 col-xs-12 ">
+				<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+					<label class="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Date:</label>
+					<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterDate} name="filterDate" refs="filterDate" onChange={this.filterChange.bind(this)} id="filterDate"/>
+				</div>
+				<div className="col-lg-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
 				 			<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Company</label>
 							<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="companyDropdown" name="companyDropdown" onChange={this.selectedFranchise.bind(this)} >
 								<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
@@ -542,7 +617,6 @@ class IAssureTableUM extends Component {
 										this.state.tableData.map(
 											(value, i) => {
 												 console.log('log.value=====>', value.profileStatus);
-
 												return (
 													<tr key={i} className="">
 														{

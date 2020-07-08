@@ -70,51 +70,54 @@ class FranchiseOrderSummary extends Component {
 		this.props.history.push("/franchise-shopping-list");
 	}
 	getData(data) {
-		axios.get('/api/franchisepo/get/purchaseorderallList', data)
+		data.date = moment(new Date()).format("YYYY-MM-DD");
+		axios.post('/api/franchisepo/get/purchaseorderallList',data)
 			.then((res) => {
-				// console.log("res.data in getdata==>", res.data);
-				    var status;
+				console.log("tableData",res);
+
 					var tableData = res.data.map((a, i) => {
-						console.log("a",a);
 						if(a.distributionData.length > 0){
 							for (i= 0; i < a.distributionData.length; i++) {
-								if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
-									if(a.orderItems[i].orderQty == a.distributionData[i].inwardQty){
-										status  = "Order Completed";
+							    if(a.orderItems[i]){
+									if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
+										console.log(a.orderItems[i].orderQty, a.distributionData[i].suppliedQty)
+										if(a.orderItems[i].orderQty === a.distributionData[i].suppliedQty){
+											a.status = "Order Completed";
+										}else{
+											a.status = "Partially Completed";
+										}
 									}else{
-										status  = "Partially Completed";
+										// a.status = "Pending"
 									}
 								}else{
-									status = "Pending"
+									a.status = "Pending"
 								}
 								
 							}
 						}else{
-							status = "Pending"
+							a.status = "Pending"
 						}
-						
 					
-						// if(a.distributionData.length > 0){
-						// 	status  = "Partially";
-						// }else{
-						// 	status  = "Pending";
-						// }
 						return {
-							_id						: a._id,
+							_id					: a._id,
 							orderNo				: a.orderNo.toString(),
 							orderDate			: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
-							franchisename	    : a.franchiseName !== null || a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+							franchisename	    : a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
 							orderedqty		    : a.orderItems.length.toString(),
 							// profileStatus	: a.franchiseName.length !== null || a.franchiseName.length >= 1 ? a.franchiseName[0].profileStatus:null,
-							profileStatus	    : status,
+							profileStatus	    : a.status,
 						}
 
 					})
+
+					console.log("tableData",tableData);
+
 					this.setState({
 						tableData: tableData,
 					})
 			})
 			.catch((error) => {
+				console.log("error",error);
 			});
 	}
 

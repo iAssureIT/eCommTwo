@@ -1,7 +1,7 @@
 const mongoose       = require("mongoose");
 var   ObjectId       = require('mongodb').ObjectID;
 const EntityMaster   = require('../../../coreAdmin/entityMaster/ModelEntityMaster');
-const FranchiseGoods = require('../../distributionManagement/Model');
+const FranchiseDelivery = require('../../distributionManagement/franchiseDelivery/Model');
 const FinishedGoods = require('../../PurchaseManagement/models/FinishedGoodsEntry');
 
 const FranchisePO   = require('./Model');
@@ -258,7 +258,8 @@ exports.list_franchisePO = (req,res,next)=>{
         
 // };
 exports.allorder_franchise = (req,res,next)=>{
-        FranchisePO.find({})
+    console.log("req.body.date",req.body.date)
+        FranchisePO.find({orderDate:req.body.date})
 			.sort({createdAt : -1})
 			.skip(req.body.startRange)
 			.limit(req.body.limitRange)
@@ -269,11 +270,19 @@ exports.allorder_franchise = (req,res,next)=>{
                     if(data){
                         var i = 0;
                         var returnData = [];
+                        var DistData = [];
                         for(i = 0 ; i < data.length ; i++){
-                            var AllUnits = ""
+                            var AllUnits = "";
+                         
                             AllUnits = await entityID(data[i].franchise_id);
-                            DistributionData = await franchiseGoods(data[i]._id);
-                            console.log('data in AllUnits ==>',AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null);
+                            DistributionData = await franchiseDelivery(data[i]._id);
+
+                            DistributionData.forEach((item)=>{  
+                             // do something with each item  
+                             DistData.push(item.supply[0]); 
+                             // console.log("item",item.supply[0]);
+                            });
+
                             returnData.push({
                                 "_id"		      : data[i]._id,
                                 "orderNo"         : data[i].orderNo,
@@ -281,7 +290,7 @@ exports.allorder_franchise = (req,res,next)=>{
                                 "orderItems"      : data[i].orderItems,
                                 "orderItemsqty"   : data[i].orderItems.length,
                                 "franchiseName"	  : AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null,
-                                "distributionData"  : DistributionData.length > 0 || DistributionData.length !== null ? DistributionData : null,
+                                "distributionData": DistData.length > 0 || DistData.length !== null ? DistData : null,
                             });
                         }
                         // console.log('data in returnData ==>',returnData);
@@ -316,13 +325,13 @@ function entityID(franchise_id){
     });
 };
 
-function franchiseGoods(po_id){
+function franchiseDelivery(po_id){
+    console.log("po_id",po_id);
     return new Promise(function(resolve,reject){ 
-        FranchiseGoods.find({ franchisePO_id: po_id })
+        FranchiseDelivery.find({ franchisePO_id: po_id })
         .exec()
         .then(res=>{
-            
-            // console.log('res in EntityMaster ==>',res);
+            console.log('res in franchiseGoods ==>',res);
             resolve(res);
         })
         .catch(err =>{
@@ -511,14 +520,24 @@ exports.one_franchisePO = (req,res,next)=>{
             async function main(){
                 if(data){
                     var returnData = {};
+                    var DistData = [];
+
                     // console.log('data in     ==>',data);
-                    AllUnits = await franchiseid(data.franchise_id);
+                    AllUnits             = await franchiseid(data.franchise_id);
+                    DistributionData     = await franchiseDelivery(data._id);
                     // console.log('data in AllUnits ==>',AllUnits);
                         for(let obj of data.orderItems) {
                           currentStock = await getFgCurrentStock(obj.itemCode);
                           obj.currentStock = currentStock[0].totalStock;
                           obj.currentStockUnit = currentStock[0].StockUnit;
                         }
+
+                        DistributionData.forEach((item)=>{  
+                             // do something with each item  
+                             DistData.push(item.supply[0]); 
+                             // console.log("item",item.supply[0]);
+                        });
+
                         returnData={
                             "_id"		      : data._id,
                             "orderNo"         : data.orderNo,
@@ -526,6 +545,7 @@ exports.one_franchisePO = (req,res,next)=>{
                             "orderItems"      : data.orderItems,
                             "orderItemsqty"   : data.orderItems.length,
                             "franchiseName"	  : AllUnits.length !== "undefined" || undefined || null ? AllUnits :null,
+                            "DistributionData": DistData !== "undefined" || undefined || null ? DistData :null 
                         };
                     res.status(200).json(returnData);
                 }else{

@@ -47,12 +47,56 @@ export default class FranchiseDistribution extends React.Component {
 		var dateOfOrder = moment(new Date(this.state.currentDate)).format("YYYY-MM-DD");
 		axios.get('/api/franchisepo/get/one/purchaseorder/'+this.state.orderId)
           .then((franchisePurOrders) => {
+			  console.log("franchisePurOrders",franchisePurOrders);
 					var FranchiseData = [];
 					var DistributionData = [];
 					var FranchiseOrderedData = []; 
 					var franchisePurOrdersdata = franchisePurOrders.data;
 					var franchise_id;
+					// if(franchisePurOrders.data.distributionData[j].supply[j].itemCode == franchisePurOrders.data.orderItems[j].itemCode){
+					// 	if(franchisePurOrders.data.orderItems[j].orderQty === franchisePurOrders.data.distributionData[j].supply[j].suppliedQty){
+					// 		franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
+					// 	}else{
+					// 		franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
+					// 	}
+					// }else{
+					// 	franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
+					// }
 					for (var j = 0; j < franchisePurOrders.data.orderItems.length; j++) {
+						
+						var total = [];
+						franchisePurOrders.data.DistributionData.forEach(item => {
+							if(franchisePurOrders.data.orderItems[j].itemCode == item.itemCode){
+								console.log("abc",item.itemCode,Number(item.suppliedQty));
+								total[j] = Number(total) + Number(item.suppliedQty)
+							// total = Number(total) + Number(item.suppliedQty);
+							}else{
+
+							}
+						});
+
+						// console.log("total",total);
+											
+						if(franchisePurOrders.data.DistributionData[j]){
+								if(franchisePurOrders.data.DistributionData[j].itemCode == franchisePurOrders.data.orderItems[j].itemCode){
+									if(franchisePurOrders.data.orderItems[j].orderQty === franchisePurOrders.data.DistributionData[j].suppliedQty){
+										// franchisePurOrders.data.orderItems.splice(j,1);
+										franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
+										franchisePurOrders.data.orderItems[j].alreadySuppliedUnit = franchisePurOrders.data.DistributionData[j].suppliedUnit;
+									}else{
+										franchisePurOrders.data.orderItems[j].alreadySupplied = total;
+										franchisePurOrders.data.orderItems[j].alreadySuppliedUnit = franchisePurOrders.data.DistributionData[j].suppliedUnit;
+									}
+								}else{
+									 franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
+									 franchisePurOrders.data.orderItems[j].alreadySuppliedUnit = franchisePurOrders.data.DistributionData[j].suppliedUnit;
+
+								}
+						}else{
+							franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
+						}
+						
+						
 						franchisePurOrders.data.orderItems[j].franchiseId = franchisePurOrders.data.franchise_id;
 						franchisePurOrders.data.orderItems[j].supply = 0;
 						franchisePurOrders.data.orderItems[j].supplyUnit = franchisePurOrders.data.orderItems[j].unit;
@@ -64,12 +108,21 @@ export default class FranchiseDistribution extends React.Component {
 						 return value.companyName;
 					});
 
+				
+					// DistributionData.splice(DistributionData.findIndex(e => e.alreadySupplied == e.orderQty),1);
+
+					console.log("alreadySupplied",DistributionData	);
+
+					
+					
+
 					this.setState({
 						"DistributionData"  : DistributionData,
 						"franchise_name"     : franchise_name[0],
 						"orderDate"         : moment(franchisePurOrders.data.orderDate).format("YYYY-MM-DD"),
 						"selectedFranchise" : franchise_id
 					},()=>{
+						console.log("totalAlreadySupplied",DistributionData);
 						this.getFooterTotal();
 					 });
 			})
@@ -382,13 +435,13 @@ export default class FranchiseDistribution extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
-													console.log("render map",result.currentStock); // style={{fontWeight:'bold'}}
+													// console.log("render map",result); // style={{fontWeight:'bold'}}
 													return( 
 																<tr key={index}>
 																	<td>{result.productName} <br/><small>{result.itemCode} - {result.productCode}</small></td>
 													                <td>{result.currentStock} {result.currentStockUnit}</td>
 													                <td>{result.orderQty} {result.unit}</td>
-																	<td>0</td>
+													                <td>{result.alreadySupplied} {result.alreadySuppliedUnit}</td>
 																	<td>
 																	<input type="number"  name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0" style={{"display":"inline"}}/>
 																	<select id="unitOfMeasurement"  name={"unitOfMeasurement"+"-"+index} value={result.supplyUnit} onChange={this.handleChange.bind(this)}  className="input-group form-control" disabled style={{"border": "1px solid #a9a9a969","width": "88px","fontSize":"small","display":"inline"}}> 

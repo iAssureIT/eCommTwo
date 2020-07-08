@@ -7,7 +7,7 @@ router.post('/post', franchisePOController.insert_franchisePO);
 
 router.get('/get/purchaseorderList/:franchise_id/:orderDate',franchisePOController.list_franchisePO);
 
-router.get('/get/purchaseorderallList',franchisePOController.allorder_franchise);
+router.post('/get/purchaseorderallList',franchisePOController.allorder_franchise);
 
 router.get('/get/franchiseorderlist/:franchise_id',franchisePOController.franchise_Wise_order);
 
