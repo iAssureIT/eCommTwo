@@ -14,7 +14,7 @@ class HomePageBanner2 extends Component{
     constructor(props){
         super(props);
         this.state={
-            "sectionDetails" : [],
+            sectionDetails : [],
         }
     }
     componentWillMount(){
@@ -25,39 +25,42 @@ class HomePageBanner2 extends Component{
                   .then((response)=>{                      
                     if(response.data){
                         var sectionDetails = [];
-                        console.log("Category data=======",response.data); 
+                        // console.log("Category data=======",response.data); 
                         var sectionDetailsArray = response.data;
                        for(let i=0;i<response.data.length;i++){
-                           console.log("sectionDetailsArray[i].section==",sectionDetailsArray[i].section);
+                        //    console.log("sectionDetailsArray[i].section==",sectionDetailsArray[i].section);
                             if(sectionDetailsArray[i].section === "Vegetables"){
                                 sectionDetails[0] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
-                                    "sectionImg" : "HomePageBanner2_1"
+                                    "sectionImg" : HomePageBanner2_1,
                                 }                                
                                  
                             }else if(sectionDetailsArray[i].section === "Fruits"){
                                 sectionDetails[1] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
-                                    "sectionImg" : "HomePageBanner2_2"
+                                    "sectionImg" : HomePageBanner2_2,
                                 }
-                                console.log("sectionDetails===",sectionDetails);
+                                // console.log("sectionDetails===",sectionDetails);
                             }else if(sectionDetailsArray[i].section === "Frozen Items"){
                                 sectionDetails[2] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
-                                    "sectionImg" : "HomePageBanner2_3"
+                                    "sectionImg" : HomePageBanner2_3,
                                 }
-                                console.log("sectionDetails===",sectionDetails);
+                                // console.log("sectionDetails===",sectionDetails);
                                                             
                             }                        
                         }         
-                    
-                            this.setState({ 
-                                "sectionDetails" : sectionDetails,                 
-                            }); 
-                            console.log(" state sectionDetails =========",this.state.sectionDetails); 
+                        // console.log("Array sectionDetails =========",sectionDetails); 
+                        
+                        this.setState({
+                            sectionDetails  : sectionDetails,                                                                             
+                        },()=>{
+                            // console.log(" after setstate sectionDetails =========",this.state.sectionDetails); 
+                        });    
+                            
                         
                     }
                   })
@@ -70,25 +73,28 @@ class HomePageBanner2 extends Component{
             <div className="col-lg-12 col-md-12 col-sm-12 HomePageBanner2">
                 <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 ">
                     <div className="row">
-                        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
-                            <a className="hover-images col-lg-12" href="/" > 
-                                {/* <div className="imgTitle">Vegetables</div>                                */}
-                                <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_1} alt="banner" />
-                                
-                            </a>                        
-                        </div>
-                        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
-                            <a className="hover-images col-lg-12" href="/">
-                                {/* <div className="imgTitle">Fruits</div>  */}
+                        {
+                            Array.isArray(this.state.sectionDetails) && this.state.sectionDetails.map((data, index) => {                                                               
+                                return (
+                                    <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
+                                        <a className="hover-images col-lg-12" href={"/section/"+data.section+"/"+data.sectionId} >                                                              
+                                            <img className="img-responsive zoomImg col-lg-12" src={data.sectionImg} alt="banner" />                                            
+                                        </a>                        
+                                    </div>
+                                )
+                            })
+                        
+                        }
+                        {/* <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
+                            <a className="hover-images col-lg-12" href="/">                                
                                 <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_2} alt="banner" />
                             </a>                        
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
-                            <a className="hover-images col-lg-12" href="/">
-                                {/* <div className="imgTitle">Frozen Items</div>  */}
+                            <a className="hover-images col-lg-12" href="/">                                
                                 <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_3} alt="banner" />
                             </a>                        
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

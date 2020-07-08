@@ -148,7 +148,7 @@ class Routes extends Component{
             <Route path="/searchProducts"           exact strict component={ SearchProduct } />
             <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />
             <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
-            <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
+            <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"        exact strict component={ ProductCollage } />
             <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />
             <Route path="/productreview"            exact strict component={ Productreview } />
             <Route path="/returnpolicy"            exact strict component={ ReturnPolicy } />
