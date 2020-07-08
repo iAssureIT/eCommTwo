@@ -21,10 +21,10 @@ class ContactPage extends Component{
         }
     }
 
-    render(){
+    render(){        
         return(          
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <Message messageData={this.state.messageData} />
+              <Message messageData={this.state.messageData} />              
               <BannerContactUs/>
               <CUform/>
               <ContactShopList/>

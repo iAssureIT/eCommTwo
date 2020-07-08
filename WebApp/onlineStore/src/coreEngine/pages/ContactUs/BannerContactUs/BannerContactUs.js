@@ -1,6 +1,6 @@
 import React from 'react';
 import './BannerContactUs.css';
-import Contact_Background from '../../../../sites/currentSite/images/Contact_Background.jpg';
+import Contact_Background from '../../../../sites/currentSite/images/contact_us.png';
 
 export default class BannerContactUs extends React.Component {
 

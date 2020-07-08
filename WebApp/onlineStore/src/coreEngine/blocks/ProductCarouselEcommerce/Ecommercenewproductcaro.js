@@ -395,7 +395,7 @@ class Ecommercenewproductcaro extends Component {
   }
   
   render() {
-    console.log("newProducts array===:", this.state.newProducts);
+    // console.log("newProducts array===:", this.state.newProducts);
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 abc">
         <div className="row">
@@ -492,7 +492,10 @@ class Ecommercenewproductcaro extends Component {
                                                                     size === 1000?
                                                                     <option className="" value={size}>{size}KG</option>
                                                                     :
-                                                                    <option className="" value={size}>{size}{data.unit}</option>
+                                                                    data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                                      <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                                    :
+                                                                      <option className="" value={size}>{size}{data.unit}</option>
                                                                   
                                                                 )
                                                                 

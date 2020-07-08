@@ -18,11 +18,12 @@
 
 }
 .whychooseUsImg{
-  margin-top: 150px;
+  margin-top: 100px;
 }
 .WhyChooseUsImg{
   height: 500px;
   padding-left: 0px;
+  margin-left: -80px;
 }
 
 .ocLine{
@@ -383,7 +384,7 @@
   margin-top: 50px;
 }
 .whyUsSubDiv{
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 .whyusmainDiv{
   margin-bottom: 200px;

@@ -6,9 +6,9 @@ import axios from 'axios';
 // import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits1.jpg"
 // import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
 
-import HomePageBanner2_1 from "../../../../sites/currentSite/images/unimandai_vegetable_blocks.png"
-import HomePageBanner2_2 from "../../../../sites/currentSite/images/unimandai_Fruits_blocks.png";
-import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
+import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetable blocks.png";
+import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits_blocks.png";
+import HomePageBanner2_3 from "../../../../sites/currentSite/images/Frozenfood_blocks.png";
 
 class HomePageBanner2 extends Component{
     constructor(props){
@@ -17,42 +17,48 @@ class HomePageBanner2 extends Component{
             "sectionDetails" : [],
         }
     }
+    componentWillMount(){
+
+    }
     componentDidMount(){
         axios.get("/api/sections/get/get_megamenu_list")
                   .then((response)=>{                      
                     if(response.data){
                         var sectionDetails = [];
-                        // console.log("Category data=======",response.data); 
+                        console.log("Category data=======",response.data); 
                         var sectionDetailsArray = response.data;
                        for(let i=0;i<response.data.length;i++){
-                        //    console.log("sectionDetailsArray[i].section==",sectionDetailsArray[i].section);
+                           console.log("sectionDetailsArray[i].section==",sectionDetailsArray[i].section);
                             if(sectionDetailsArray[i].section === "Vegetables"){
-                                sectionDetails[i] = {
+                                sectionDetails[0] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
                                     "sectionImg" : "HomePageBanner2_1"
-                                }
-                                // console.log("sectionDetails:",sectionDetails);
+                                }                                
+                                 
                             }else if(sectionDetailsArray[i].section === "Fruits"){
-                                sectionDetails[i] = {
+                                sectionDetails[1] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
                                     "sectionImg" : "HomePageBanner2_2"
                                 }
-                            }else if(sectionDetailsArray[i].section === "Frozen Item"){
-                                sectionDetails[i] = {
+                                console.log("sectionDetails===",sectionDetails);
+                            }else if(sectionDetailsArray[i].section === "Frozen Items"){
+                                sectionDetails[2] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
                                     "sectionImg" : "HomePageBanner2_3"
                                 }
-                                // console.log("sectionDetails===",sectionDetails);
+                                console.log("sectionDetails===",sectionDetails);
                                                             
                             }                        
-                        }   
-                    this.setState({ 
-                        "sectionDetails" : sectionDetails                  
-                    });   
-                    // console.log("sectionData =========",this.state.sectionData);      
+                        }         
+                    
+                            this.setState({ 
+                                "sectionDetails" : sectionDetails,                 
+                            }); 
+                            console.log(" state sectionDetails =========",this.state.sectionDetails); 
+                        
                     }
                   })
                   .catch((error)=>{

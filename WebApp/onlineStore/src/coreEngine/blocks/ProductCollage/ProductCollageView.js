@@ -455,6 +455,9 @@ class ProductCollageView extends Component {
                                                           size === 1000?
                                                           <option className="" value={size}>{size}KG</option>
                                                           :
+                                                          data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                            <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                          :
                                                           <option className="" value={size}>{size}{data.unit}</option>
                                                         
                                                       )
