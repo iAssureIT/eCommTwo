@@ -151,10 +151,10 @@ class AdminOrdersList extends Component{
 
       const options = {
        
-        print: false, 
-        download: false,
-        viewColumns: false,
-        filter: false,
+        print: true, 
+        download: true,
+        viewColumns: true,
+        filter: true,
         responsive: "stacked",
         selectableRows: 'none'
       };

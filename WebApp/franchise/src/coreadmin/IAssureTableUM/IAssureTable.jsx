@@ -775,7 +775,6 @@ class IAssureTableUM extends Component {
 	}
 	showprofile(e) {
 		e.preventDefault();
-
 		this.props.history.push('/edituserprofile/' + e.currentTarget.id);
 	}
 	checkAll(event) {

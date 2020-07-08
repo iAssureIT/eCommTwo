@@ -638,13 +638,31 @@ exports.update_order = (req,res,next)=>{
             });
         });
 };
+exports.list_franchise_order = (req,res,next)=>{
+  console.log("list_franchise_order===>>>",req.params);
+
+    Orders.find({allocatedToFranchise : ObjectId(req.params.franchiseID)})
+        // .populate("allocatedToFranchise")
+        .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+          console.log("allocatedToFranchise===>>>",data);
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
 exports.list_order = (req,res,next)=>{
     Orders.find({})
         .populate("allocatedToFranchise")
         .sort({createdAt:-1})      
         .exec()
         .then(data=>{
-          // console.log("allocatedToFranchise===>>>",data);
+          console.log("allocatedToFranchise===>>>",data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -726,6 +744,22 @@ exports.vendor_order_count = (req,res,next)=>{
           error: err
       });
   });
+};
+exports.list_orderby_status_franchisewise = (req,res,next)=>{
+    Orders.find({"deliveryStatus.status" :  req.params.status,allocatedToFranchise : ObjectId(req.params.franchiseID)})
+    .populate("allocatedToFranchise")
+    .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+          // console.log("allocatedToFranchise===>>>",data);
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 };
 exports.list_orderby_status = (req,res,next)=>{
     // Orders.aggregate([

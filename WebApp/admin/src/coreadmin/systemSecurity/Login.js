@@ -91,6 +91,10 @@ class Login extends Component {
             
             axios.get("/api/entitymaster/get/one/companyName/"+response.data.userDetails.companyID)
             .then(entity=>{
+              console.log("in getting entity ===> ", entity);
+
+              localStorage.setItem("franchise_Id",entity._id);
+
               axios.get("/api/adminPreference/get")
                   .then(preference =>{
                     var websiteModel = preference.data[0].websiteModel;

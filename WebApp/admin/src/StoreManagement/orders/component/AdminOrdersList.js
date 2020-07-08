@@ -159,7 +159,7 @@ class AdminOrdersList extends Component{
       const data = this.state.data;
       console.log("Dattta",data);
       const options = {
-        print: false, 
+        print: true, 
         download: true,
         viewColumns: true,
         filter: true,

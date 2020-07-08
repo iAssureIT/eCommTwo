@@ -30,7 +30,7 @@ export default class InspectedOrdersList extends Component{
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
-                  var allocatedToFranchise = response.data[i].allocatedToFranchise.companyName;
+                  var allocatedToFranchise = response.data[i].allocatedToFranchise ?response.data[i].allocatedToFranchise.companyName : null;
                   var userFullName = response.data[i].userFullName;
                   var totalQuantity = response.data[i].totalQuantity;
                   var currency = response.data[i].currency;

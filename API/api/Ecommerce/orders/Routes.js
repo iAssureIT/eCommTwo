@@ -13,9 +13,13 @@ router.patch('/patch/changeToPreviousStatus', orderController.changeToPreviousSt
 
 router.get('/get/list',orderController.list_order);
 
+router.get('/get/franchisewise/list/:franchiseID',orderController.list_franchise_order);
+
 router.post('/get/vendorwiselist/:vendorID',orderController.vendor_order_list);
 
 router.get('/get/orderlist/:status',orderController.list_orderby_status);
+
+router.get('/get/orderlist/:status/:franchiseID',orderController.list_orderby_status_franchisewise);
 
 router.post('/get/vendororderstatuslist/:vendorID',orderController.vendor_orderlistby_status);
 

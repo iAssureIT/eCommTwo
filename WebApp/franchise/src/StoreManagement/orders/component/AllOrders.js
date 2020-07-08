@@ -24,14 +24,21 @@ export default class AllOrders extends Component{
     this.getOrders();
   }    
   getOrders(){
-      axios.get("/api/orders/get/list")
+    var userDetails = (localStorage.getItem('userDetails'));
+    var userData = JSON.parse(userDetails);
+    axios.get("/api/entitymaster/get/one/companyName/"+userData.companyID)
+    .then((resdata)=>{
+      // console.log("resdata===>",resdata.data._id)
+      axios.get("/api/orders/get/franchisewise/list/"+resdata.data._id)
             .then((response)=>{
+              console.log("resdata===>",response.data)
+
               var UsersArray = [];
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
                   var userFullName = response.data[i].userFullName;
-                  var totalQuantity = response.data[i].totalQuantity;
+                  var totalQuantity = response.data[i].cartQuantity;
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
                   var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
@@ -65,6 +72,10 @@ export default class AllOrders extends Component{
             .catch((error)=>{
                 console.log('error', error);
             })
+          })
+          .catch((error)=>{
+              console.log('error', error);
+          })
     }
 
   render(){

@@ -32,7 +32,7 @@ export default class NewOrdersList extends Component{
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
                   var userFullName = response.data[i].userFullName;
-                  var allocatedToFranchise = response.data[i].allocatedToFranchise.companyName;
+                  var allocatedToFranchise = response.data[i].allocatedToFranchise ?response.data[i].allocatedToFranchise.companyName : null;
                   var totalQuantity = response.data[i].totalQuantity;
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;

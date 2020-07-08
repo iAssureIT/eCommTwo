@@ -163,6 +163,102 @@ class EditUserProfile extends Component {
 			}
 		}
 	}
+	resetPasswordField(event) {
+		event.preventDefault()
+		var id = $(event.currentTarget).attr('data-id');
+		this.setState({
+			['resetPassword' + id]: '',
+			['resetPasswordConfirm' + id]: '',
+		})
+		$("#RestpwdModal-" + id).validate().resetForm();
+	}
+	resetPasswordChange(event) {
+		var name = event.target.name;
+		this.setState({
+			[event.target.name]: event.target.value,
+		}, () => {
+			if (this.state[name]) {
+				this.setState({
+					[name + "Error"]: ""
+				})
+			} else {
+				this.setState({
+					[name + "Error"]: "This field is required."
+				})
+			}
+		})
+	}
+	changepassword() {
+		// event.preventDefault();
+		var id = this.state.UserId;
+		var password = this.state["resetPassword" + id];
+		var conPassword = this.state["resetPasswordConfirm" + id];
+		var formValues = {
+			"pwd": conPassword,
+		}
+		console.log('password', password, 'conPassword', conPassword);
+		var newID = this.state.username;
+		if (newID) {
+			var resetPassword = newID;
+		}
+		console.log('valid');
+		if (password && conPassword) {
+			if (password === conPassword) {
+				// if (password.length >= 6) {
+				axios.patch('/api/auth/patch/change_password_withoutotp/id/' + id, formValues)
+					.then((res) => {
+
+						swal({
+							title: " ",
+							text: "Password has been changed successfully!!",
+						// }).then((success) => {
+						// 	if (success) {
+						// 		window.location.reload();
+						// 	}
+						});
+						var modalid = "RestpwdModal-" + id;
+						var modal = document.getElementById(modalid);
+						modal.style.display = "none";
+						$('.modal-backdrop').remove();
+					})
+					.catch((error) => {
+
+						swal({
+							title: " ",
+							text: "Sorry! Something went wrong",
+						});
+						var modalid = "RestpwdModal-" + id;
+						var modal = document.getElementById(modalid);
+						modal.style.display = "none";
+						$('.modal-backdrop').remove();
+
+					});
+				// } else {
+
+				// swal({
+				// title: "Password should be at least 6 characters long",
+				// text: "Password should be at least 6 characters long",
+				// });
+				// }
+			} else {
+
+				swal({
+					title: " ",
+					text: "Passwords don't match",
+				});
+			}
+		} else {
+			this.setState({
+				["resetPassword" + id + "Error"]: "This field is required.",
+				["resetPasswordConfirm" + id + "Error"]: "This field is required.",
+			})
+		}
+
+	}
+	redirecttoresetpwd(){
+		// this.props.match.params.id
+		this.props.history.push('/reset-pwd/'+this.props.match.params.id);
+	}
 	render() {
 		return (
 			<div className="container-fluid">
@@ -175,12 +271,13 @@ class EditUserProfile extends Component {
 										My Profile
 									</div>
 									<div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 ">
-									{/* <button onClick={this.handleSubmit.bind(this)} className="col-lg-4 col-sm-4 col-xs-2 col-md-2 btn resetBtn resetBtncss pull-right">Reset Password</button> */}
-										<div className="pull-right" data-toggle="modal" aria-labelledby="myModals" data-target="#myModals" aria-hidden="true">
-											<Link to="/reset-password" aria-expanded="false">
-												<p className="btn btnhvr btn-Profile ">Reset Password</p>
+									{/* <i className="fa fa-key" title="Reset Password" id={this.state.UserId} data-toggle="modal" data-target={"#RestpwdModal-" + this.state.UserId}></i> */}
+									<button id={this.state.UserId} data-toggle="modal" data-target={"#RestpwdModal-" + this.state.UserId} className="col-lg-4 col-sm-4 col-xs-2 col-md-2 btn resetBtn resetBtncss pull-right">Reset Password</button>
+										{/* <div className="pull-right" data-toggle="modal" aria-labelledby="myModals" data-target="#myModals" aria-hidden="true">
+											<Link to="/reset-pwd/" aria-expanded="false">
+												<p className="btn btnhvr btn-Profile ">Reset Password</p> 
 											</Link>
-										</div>
+										</div> */}
 									</div>
 								</div>
 								<hr className="hr-head container-fluid row" />
@@ -240,6 +337,53 @@ class EditUserProfile extends Component {
 												</div>
 											</div>
 										</form>
+										<div className="modal modalHide passwordModal" id={"RestpwdModal-" + this.state.UserId} role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+																		<div className="modal-dialog" role="document">
+																			<div className="modal-content  ummodallftmg">
+																				<div className="modal-header adminModal-header userHeader">
+																					<button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.resetPasswordField.bind(this)} id={this.state.UserId} data-id={this.state.UserId}>&times;</button>
+																					<h4 className="modal-title" id="exampleModalLabel1">Reset Password</h4>
+																				</div>
+																				<div className="modal-body row">
+																					<div className="" id={this.state.UserId}>
+																						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+																							<div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																								<form id='resetPassword' >
+																									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+																										<div className="col-lg-6 col-md-6  col-xs-12 col-sm-12 ">
+																											<div className="form-group textAlignLeft col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
+																												<label className="">New Password <span className="requiredsign">&nbsp;*</span></label>
+																												<input type="password" value={this.state["resetPassword" + this.state.UserId]} onChange={this.resetPasswordChange.bind(this)} className="form-control marBtm eye" ref="resetPassword" name={"resetPassword" + this.state.UserId} id={"resetPassword" + this.state.UserId} autoComplete="off" />
+																												<div className="showHideSignDiv showHideEye">
+																													{/* <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
+																													<i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i> */}
+																												</div>
+																												<label className="error">{this.state["resetPassword" + this.state.UserId + "Error"]}</label>
+																											</div>
+																										</div>
+																										<div className="col-lg-6 col-md-6  col-xs-12 col-sm-12 ">
+																											<div className="form-group textAlignLeft  col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding">
+																												<label className=""> Confirm Password <span className="requiredsign">&nbsp;*</span></label>
+																												<input type="password" value={this.state["resetPasswordConfirm" + this.state.UserId]} onChange={this.resetPasswordChange.bind(this)} className="form-control marBtm eye" ref="resetPasswordConfirm" name={"resetPasswordConfirm" + this.state.UserId} id={"resetPasswordConfirm" + this.state.UserId} autoComplete="off" />
+																												<div className="showHideSignDiv showHideEye">
+																													{/* <i className="fa fa-eye showPwd showEyeupSign" aria-hidden="true" onClick={this.showSignPass.bind(this)}></i>
+																													<i className="fa fa-eye-slash hidePwd hideEyeSignup " aria-hidden="true" onClick={this.hideSignPass.bind(this)}></i> */}
+																												</div>
+																												<label className="error">{this.state["resetPasswordConfirm" + this.state.UserId + "Error"]}</label>
+																											</div>
+																										</div>
+																										<div className="submitButtonWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																											<button className="btn  resetBtn pull-right  col-lg-4 col-lg-offset-3 col-md-6 col-sm-12 col-xs-12" onClick={this.changepassword.bind(this)} id={this.state.UserId} >Reset Password</button>
+																										</div>
+																									</div>
+																								</form>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
 									</div>
 								</div>
 							</div>

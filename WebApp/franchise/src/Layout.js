@@ -11,6 +11,7 @@ import Login                from './coreadmin/systemSecurity/Login.js';
 import ConfirmOtp           from './coreadmin/systemSecurity/ConfirmOtp.js';
 import ForgotPassword       from './coreadmin/systemSecurity/ForgotPassword.js';
 import ResetPassword        from './coreadmin/systemSecurity/ResetPassword.js';
+import ResetPwd             from './coreadmin/systemSecurity/ResetPwd';
 import SignUp               from './coreadmin/systemSecurity/SignUp.js';
 
 import Header               from './coreadmin/common/header/Header.js'; 
@@ -293,6 +294,7 @@ class Layout extends Component  {
                       <Route path="/signup"                                           exact strict component={SignUp} />
                       <Route path="/forgotpassword"                                   exact strict component={ForgotPassword} />
                       <Route path="/reset-pwd/:user_ID"                               exact strict component={ResetPassword} />
+                      <Route path="/reset-password"                               exact strict component={ResetPwd} />
                       <Route path="/confirm-otp/:userID"                              exact strict component={ConfirmOtp} />
                   </Switch>
               </Router>

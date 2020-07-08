@@ -24,7 +24,12 @@ export default class NewOrdersList extends Component{
     this.getOrders();
   }    
   getOrders(){
-      axios.get("/api/orders/get/orderlist/New Order")
+    var userDetails = (localStorage.getItem('userDetails'));
+    var userData = JSON.parse(userDetails);
+    axios.get("/api/entitymaster/get/one/companyName/"+userData.companyID)
+    .then((resdata)=>{
+      console.log("resdata===>",resdata.data._id)
+      axios.get("/api/orders/get/orderlist/New Order/"+resdata.data._id)
             .then((response)=>{
               var UsersArray = [];
                 for (let i = 0; i < response.data.length; i++) {
@@ -61,6 +66,10 @@ export default class NewOrdersList extends Component{
             .catch((error)=>{
                 console.log('error', error);
             })
+          })
+          .catch((error)=>{
+              console.log('error', error);
+          })
     }
 
   render(){

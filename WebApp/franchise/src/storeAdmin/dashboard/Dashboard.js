@@ -53,6 +53,10 @@ export default class Dashboard extends Component{
   }
    
   componentDidMount(){
+    var userDetails = (localStorage.getItem('userDetails'));
+    var userData = JSON.parse(userDetails);
+    // console.log('userData==>>>', userData);
+
 
     axios.get("/api/users/get/count")
     .then((response)=>{
