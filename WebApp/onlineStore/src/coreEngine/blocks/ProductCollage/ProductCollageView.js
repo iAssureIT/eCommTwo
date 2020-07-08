@@ -192,7 +192,7 @@ class ProductCollageView extends Component {
         .then((response) => {
           // console.log('getProductData', response.data);
           let mymap = new Map();
-          var colorFilter = response.data.filter(x => {
+          var colorFilter = response.data.filter(x => { 
             return x.color === clr && x.availableQuantity > 0
           });
           var unique = colorFilter.filter(el => {
@@ -331,7 +331,7 @@ class ProductCollageView extends Component {
     }
   }//end else websiteModel
   }
-  
+
   submitCart(event) {
     var id = event.target.id;
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
