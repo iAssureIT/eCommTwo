@@ -549,10 +549,10 @@ class IAssureTable extends Component {
 						:
 						null
 				} 
-				{this.state.tableObjects.downloadApply === true ?
-					this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 ?
+				{/* {this.state.tableObjects.downloadApply === true ? */}
+					{/* this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 ? */}
 						<React.Fragment>
-							<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+							<div className="col-lg-1 col-lg-offset-9 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
 								<button type="button" className=" pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
 								<ReactHTMLTableToExcel
 									id="table-to-xls"
@@ -563,10 +563,10 @@ class IAssureTable extends Component {
 									buttonText="" />
 							</div>
 						</React.Fragment>
-						: null
+						{/* : null
 
 					: null
-				}
+				} */}
 				{
 					this.state.tableObjects.paginationApply === true ?
 						<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding pull-right">

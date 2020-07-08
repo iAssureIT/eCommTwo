@@ -30,6 +30,7 @@ class DailyReport extends Component{
         apiLink             : '/api/annualPlans/',
         editUrl             : '/Plan/',
         paginationApply     : true,
+        downloadApply       : true
       },
       "startRange"          : 0,
       "limitRange"          : 10,
