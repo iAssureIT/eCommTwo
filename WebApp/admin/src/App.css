@@ -2,7 +2,12 @@
   background: #f1f1f1;
   padding: 15px;
 }
-
+@font-face {
+  /* font-family: 'kruti'; */
+  font-family: 'KrutiDevRegular';
+  /* src: url("/fonts/kruti.ttf"); */
+  src: url("/fonts/KrutiDevRegular.ttf");
+}
 
 .hii{background-color:red;}
 .App-logo {

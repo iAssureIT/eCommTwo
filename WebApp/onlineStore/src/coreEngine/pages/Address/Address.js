@@ -159,7 +159,7 @@ class Address extends Component {
         axios.get('/api/ecommusers/'+user_ID)
         .then((response)=>{            
             var deliveryAddress = response.data.deliveryAddress.filter((a)=>{return a._id === deliveryAddressID});
-            console.log("deliveryAddress:====" ,response.data.deliveryAddress[0]);
+            // console.log("deliveryAddress:====" ,response.data.deliveryAddress[0]);
 
             // this.getStates(deliveryAddress[0].countryCode);            
             // this.getDistrict(deliveryAddress[0].stateCode,deliveryAddress[0].countryCode)

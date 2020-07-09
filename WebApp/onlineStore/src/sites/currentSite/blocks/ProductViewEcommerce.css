@@ -18,6 +18,9 @@
 	width: 100%; 
 
 }
+.mg15{
+    margin: 15px;
+}
 .imgCont{
      /* overflow: hidden; */
      width: 60%;

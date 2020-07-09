@@ -20,6 +20,7 @@ class SectionManagement extends Component {
       "tableHeading": {
         section: "Section",
         section: "Section Title",
+        sectionRank: "Section Rank",
         actions: 'Action',
       },
       "tableObjects": {

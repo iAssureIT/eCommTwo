@@ -96,7 +96,7 @@ class Payment extends Component {
                   <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Time:  </span></div>
                     {/*<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-" + this.state.orderData.currency}> Free</i></span> </div>*/}
-                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span>{this.state.orderData.shippingtime}</span> </div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span>{this.state.orderData.shippingtime}</span><br/> </div>
                   </div>
                   <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Discount: </span></div>

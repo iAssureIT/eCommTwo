@@ -428,6 +428,7 @@ class SearchProductCollage extends Component {
                               {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
                               {/* <a href="/" className="product photo product-item-photo collage" tabIndex="-1"> */}
                               <a href={"/productdetails/" + data.productUrl + "/" + data._id} className="product photo product-item-photo collage" tabIndex="-1">
+
                                 <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImage" />
                               </a>
                             </div>
@@ -544,7 +545,6 @@ class SearchProductCollage extends Component {
               </div>
             </div>
           </div>
-
           <div id="loginFormModal" className="modal in">
                 <div className="modal-dialog">                                        
                     <div className="modal-content loginModalContent">                            

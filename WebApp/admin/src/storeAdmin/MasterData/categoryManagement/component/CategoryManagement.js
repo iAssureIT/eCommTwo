@@ -21,7 +21,8 @@ class CategoryManagement extends Component{
             "tableHeading"                      : {
               section                           : "Section",
               category                          : "Category Title",
-              subCategory                       : "Subcategory Title",
+              // subCategory                       : "Subcategory Title",
+              categoryRank                       : "Category Rank",
               categoryDescription               : "Category Description",
               actions                           : 'Action',
               // categoryRank                      : 1,
