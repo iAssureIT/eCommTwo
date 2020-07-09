@@ -129,16 +129,16 @@ class ProductViewEcommerce extends Component {
 				mymap.set(el.color, el._id); 
 				return true; 
 			}); 
-			console.log('unique', unique);
+			// console.log('unique', unique);
 			if(unique[0].size){
 				availableSize.push(unique[0].size*1);
 				availableSize.push(unique[0].size*2);
 				availableSize.push(unique[0].size*4);
 				unique[0].availableSizes = availableSize;
-				// console.log("unique =======",availableSizes);    
+				console.log("unique =======",availableSizes);    
 			  }
 
-			console.log('unique', unique);
+			// console.log('unique', unique);
 			this.setState({
 				relatedProductArray : unique,
 				productSizeArray 	: unique,
@@ -433,13 +433,15 @@ class ProductViewEcommerce extends Component {
 			console.log('error', error);
 		})
 	}
-	setNewSizeProduct(event){
-		var id = event.target.id;
-		this.setState({
-			selectedSize : event.target.value
-		})
+	setNewSizeProduct(id){
+		// var id = event.target.id;
+		// this.setState({
+		// 	selectedSize : event.target.value
+		// })
+		// console.log("id in setnewsize===>",id)
 		axios.get("/api/products/get/one/" + id)
 		.then((response) => {
+		// console.log("response.data in setnewsize===>",response.data)
 			
 			this.setState({
 				productData: response.data,
@@ -609,18 +611,23 @@ class ProductViewEcommerce extends Component {
 												:
 												null
 											}
+											<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt15 detailtitle">Select Size </label>
 											{this.state.productData.availableQuantity > 0 ?
-												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-													<div className="col-lg-12 col-md-12 col-sm-12">
+												<div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+													<div className="col-lg-12 col-md-12 col-sm-12 row">
 													
-													{/* {Array.isArray(this.state.productSizeArray) && this.state.productSizeArray.length>0?
+													{Array.isArray(this.state.productSizeArray) && this.state.productSizeArray.length>0?
 														this.state.productSizeArray.map((a,i)=>{
+															console.log("a in product==>",a)
 															if(a.size){																	
 																	return(	
 																	<div>												
-																		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt15 detailtitle">Select Size </label>
-																	{	Array.isArray(a.availableSizes).length>0 ?
+																		{/* <input title="Please select size first." checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onChange={this.setNewSizeProduct.bind(this)}/> */}
+																		<span title={a.size} checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onClick={this.setNewSizeProduct.bind(this,a._id)} className="checkmark mg15 row col-lg-4 col-md-12 col-sm-12 col-xs-12">{a.size}&nbsp;{a.unit}</span>
+																	{/* {	
+																		Array.isArray(a.availableSizes).length>0 ?
 																			a.availableSizes.map((size,index)=>{
+																			console.log("size in a product==>",size)
 																			return(
 																				<div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 NOpaddingLeft">
 																					<label className="size col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -632,18 +639,18 @@ class ProductViewEcommerce extends Component {
 																			})
 																		:null									
 																			
-																	}
+																	} */}
 																	</div>
 																	);																	
 															}
 														})
 														:
 														null
-													} */}
+													} 
 													</div>
-													<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding colorError">
+													{/* <div className="col-lg-4  col-md-12 col-sm-12 col-xs-12 NOpadding colorError">
 														<label id="size"></label>
-													</div>
+													</div> */}
 												</div>
 												:
 												null
