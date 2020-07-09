@@ -32,10 +32,11 @@ class IAssureTableUM extends Component {
 			"normalData": true,
 			"resetPassword": "",
 			"resetPasswordConfirm": "",
-			
 			show: true,
 			selectedUser: [],
 			allid: null,
+			filterDate : moment(new Date()).format("YYYY-MM-DD"),
+			selectedFranchise : ''
 		}
 	}
 	componentDidMount() {
@@ -46,7 +47,6 @@ class IAssureTableUM extends Component {
 			completeDataCount: this.props.completeDataCount
 		})
 		const user_ID = localStorage.getItem("user_ID");
-		
 		this.setState({
 			user_ID: user_ID,
 		}, () => {
@@ -59,7 +59,9 @@ class IAssureTableUM extends Component {
 				})
 				.catch((error) => {
 				});
-		})
+
+			this.getFranchiseDetails();
+		});
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps) {
@@ -310,26 +312,26 @@ class IAssureTableUM extends Component {
 		if (searchText && searchText.length !== 0) {
 			var data = {
 				searchText: searchText.toString(),
-				startRange: this.state.startRange,
-				limitRange: this.state.limitRange,
+				// startRange: this.state.startRange,
+				// limitRange: this.state.limitRange,
 			}
 			axios.post('/api/franchisepo/post/searchlist', data)
 				.then((res) => {
 					console.log("Res in searchtext==>", res)
-					var tableData = res.data.map((a, i) => {
-						return {
-							_id: a._id,
-							orderNo: a.orderNo.toString(),
-							orderDate: moment(a.orderDate).format("llll"),
-							franchisename: 'Franchise Name',
-							ordereditems: 'Ordered Items',
-							orderedqty: a.orderItems.length.toString(),
-							profileStatus: "Status",
-						}
-					})
-					this.setState({
-						tableData: tableData,
-					})
+					// var tableData = res.data.map((a, i) => {
+					// 	return {
+					// 		_id: a._id,
+					// 		orderNo: a.orderNo.toString(),
+					// 		orderDate: moment(a.orderDate).format("llll"),
+					// 		franchisename: 'Franchise Name',
+					// 		ordereditems: 'Ordered Items',
+					// 		orderedqty: a.orderItems.length.toString(),
+					// 		profileStatus: "Status",
+					// 	}
+					// })
+					// this.setState({
+					// 	tableData: tableData,
+					// })
 				})
 				.catch((error) => {
 				})
@@ -355,6 +357,135 @@ class IAssureTableUM extends Component {
 	getViewData(id){
 		this.props.history.push("/franchise-order-view/"+id);
 	}
+	supply(id){
+		this.props.history.push("/franchise_distribution/"+id);
+	}
+	getFranchiseDetails(){
+		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
+		axios.post('/api/entitymaster/get/one/comapanyDetail/',{"companyID":userDetails.companyID})
+        .then((response) => {
+          this.setState({
+            "selectedFranchise": response.data._id,
+          },()=>{
+			})
+	      })
+	      .catch((error) => {
+			console.log("Error in franchiseDetail = ", error);
+	      })
+	}
+	selectedFranchise(event){
+		let index = event.target.selectedIndex;
+		let label = event.target[index].text;
+		var selectedValue = event.target.value;
+		var keywordSelectedValue = selectedValue.split('$')[0];
+		console.log('keywordSelectedValue A==>>>', keywordSelectedValue);
+			if (selectedValue === "all") {
+				var data = {
+					"startRange": this.state.startRange,
+					"limitRange": this.state.limitRange,
+				}
+				this.getData(data)
+			} else {
+				var data = {
+					"startRange": this.state.startRange,
+					"limitRange": this.state.limitRange,
+					"date"      : this.state.filterDate
+				}
+				axios.get('/api/franchisepo/get/franchiseorderlist/' + keywordSelectedValue, data)
+					.then((res) => {
+						var tableData = res.data.map((a, i) => {
+							console.log('tableData A==>>>', keywordSelectedValue);
+							if(a.distributionData.length > 0){
+								for (i= 0; i < a.distributionData.length; i++) {
+									if(a.orderItems[i]){
+										if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
+											console.log(a.orderItems[i].orderQty, a.distributionData[i].suppliedQty)
+											if(a.orderItems[i].orderQty === a.distributionData[i].suppliedQty){
+												a.status = "Order Completed";
+											}else{
+												a.status = "Partially Completed";
+											}
+										}else{
+											 a.status = "Pending"
+										}
+									}else{
+										a.status = "Pending"
+									}
+									
+								}
+							}else{
+								a.status = "Pending"
+							}
+							return {
+								_id				: a._id,
+								orderNo			: a.orderNo.toString(),
+								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
+								// franchisename	: a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+								orderedqty		: a.orderItems.length.toString(),
+								profileStatus	: a.status != undefined ? a.status : "Pending",
+							}
+						})
+						this.setState({
+							tableData: tableData,
+						})
+					}).catch((error) => {
+						swal(" ", "Sorry there is no data of " + label, "");
+					});
+		}
+	}
+	showDeliveryChallans(id){
+		this.props.history.push("/delivery_challan/"+id);
+	}
+	getData(data) {
+		if(data){
+			data.date = this.state.filterDate;
+		}else{
+			var data = {
+				"date": this.state.filterDate,
+			}
+		}
+
+		axios.get('/api/franchisepo/get/franchiseorderlist/' + this.state.selectedFranchise, data)
+					.then((res) => {
+						var tableData = res.data.map((a, i) => {
+							console.log('tableData A==>>>', this.state.selectedFranchise);
+							if(a.distributionData.length > 0){
+								for (i= 0; i < a.distributionData.length; i++) {
+									if(a.orderItems[i]){
+										if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
+											console.log(a.orderItems[i].orderQty, a.distributionData[i].suppliedQty)
+											if(a.orderItems[i].orderQty === a.distributionData[i].suppliedQty){
+												a.status = "Order Completed";
+											}else{
+												a.status = "Partially Completed";
+											}
+										}else{
+											 a.status = "Pending"
+										}
+									}else{
+										a.status = "Pending"
+									}
+									
+								}
+							}else{
+								a.status = "Pending"
+							}
+							return {
+								_id				: a._id,
+								orderNo			: a.orderNo.toString(),
+								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
+							//	franchisename	: a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
+								orderedqty		: a.orderItems.length.toString(),
+								profileStatus	: a.status != undefined ? a.status : "Pending",
+							}
+						})
+						this.setState({
+							tableData: tableData,
+						})
+					}).catch((error) => {
+						swal(" ", "Sorry there is no data");
+					});
+	}
 	deletePO(id){
 	 	swal({
           title: "Are you sure you want to delete this Order ?",
@@ -378,23 +509,58 @@ class IAssureTableUM extends Component {
             swal("Your Order is safe!");
           }
         }); 
-    }	
+	}	
+	
+	/* Filters start*/
+	filterChange(event){
+		event.preventDefault();
+		const {name,value} = event.target;
+  
+		this.setState({ 
+		  [name]:value,
+		},()=>{
+		  this.getData();
+		//   this.getReportBetweenDates();
+		 });
+	  }
+   /* Filters end*/
+
 	render() {
 		return (
 			<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-				<div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 NOpadding-left">
-						<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-							<button className="btn btn-primary col-lg-12 col-md-3 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)}>Add Franchise Order</button>
-						</div>
+				 <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+						<button className="btn btn-primary col-lg-8 col-md-12 col-xs-4 col-sm-4 mglft15" onClick={this.redirecttoadd.bind(this)} style={{"margin": "23px"}}>Add Order</button>
+				</div>  
+				<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
+					<label class="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Date:</label>
+					<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterDate} name="filterDate" refs="filterDate" onChange={this.filterChange.bind(this)} id="filterDate"/>
 				</div>
-				<div className="col-lg-4  col-lg-offset-5 col-md-4 col-md-offset-2 col-xs-12 col-sm-12 NOpadding-right">
+				{/* <div className="col-lg-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+				 			<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Company</label>
+							<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="companyDropdown" name="companyDropdown" onChange={this.selectedFranchise.bind(this)} >
+								<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+								<option value="all" name="roleListDDOption">Show All</option>
+								{
+									this.state.franchiseList && this.state.franchiseList.length > 0 ?
+										this.state.franchiseList.map((data, index) => {
+											// console.log("companyDropdown==>",data);
+											return (
+												<option key={index} value={data._id}>{data.companyName}</option>
+											);
+										})
+										:
+										<option value='user'>User</option>
+								}
+							</select>
+				</div>  */}
+				{/* <div className="col-lg-4 col-md-4 col-md-offset-4 col-xs-12 col-sm-12 NOpadding-right">
 					<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding labelform text-left">Search</label>
 					<div className="">
-						<input type="text" placeholder="Search By Franchise Name, PO Number..." onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control fa fa-search" ref="tableSearch" id="tableSearch" name="tableSearch" />
+						<input type="text" placeholder="Search By Franchise Name,PO Number..." onChange={this.tableSearch.bind(this)} className="NOpadding-right zzero form-control fa fa-search" ref="tableSearch" id="tableSearch" name="tableSearch" />
 						<span className="input-group-addon input_status">
 						</span>
 					</div>
-				</div>
+				</div> */}
 					<div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right" data-toggle="tooltip" data-placement="top" title="Download Table Data!">
 						<ReactHTMLTableToExcel
 							id="test-table-xls-button"
@@ -427,18 +593,18 @@ class IAssureTableUM extends Component {
 												([key, value], i) => {
 													if (key === 'actions') {
 														return (
-															<th key={i} className="umDynamicHeader srpadd text-center">{value}</th>
+															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value}</th>
 														);
 													} else {
 														return (
-															<th key={i} className="umDynamicHeader srpadd text-center">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
+															<th key={i} className="umDynamicHeader srpadd textAlignLeft">{value} <span onClick={this.sort.bind(this)} id={key} className="fa fa-sort tableSort"></span></th>
 														);
 													}
 
 												}
 											)
 											:
-											<th className="umDynamicHeader srpadd text-center"></th>
+											<th className="umDynamicHeader srpadd textAlignLeft"></th>
 										}
 									</tr>
 								</thead>
@@ -446,8 +612,7 @@ class IAssureTableUM extends Component {
 									{this.state.tableData && this.state.tableData.length > 0 ?
 										this.state.tableData.map(
 											(value, i) => {
-												// console.log('log.value=====>', value.roles);
-
+												 console.log('log.value=====>', value.profileStatus);
 												return (
 													<tr key={i} className="">
 														{
@@ -459,14 +624,13 @@ class IAssureTableUM extends Component {
 																			var value2 = value1 ? value1.replace(regex, '') : '';
 																			var aN = value2.replace(this.state.reA, "");
 																			if (aN && $.type(aN) === 'string') {
-																				// var textAlign = 'textAlignLeft';
-																				var textAlign = 'text-center';
+																				var textAlign = 'textAlignLeft';
 																			} else {
 																				var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
 																				if (bN) {
-																					var textAlign = 'text-center';
+																					var textAlign = 'textAlignLeft';
 																				} else {
-																					var textAlign = 'text-center';
+																					var textAlign = 'textAlignLeft';
 																				}
 																			}
 																			var found = Object.keys(this.state.tableHeading).filter((k) => {
@@ -492,9 +656,21 @@ class IAssureTableUM extends Component {
 																:
 																<td className="textAlignCenter">
 																	<span className="pointer pointerCls">
-																			<i className="fa fa-pencil " title="Edit" id={value._id} onClick={this.edit.bind(this,value._id)} ></i>&nbsp; &nbsp;
-																			<i className="fa fa-trash redFont " id={value._id} onClick={this.deletePO.bind(this,value._id)}></i>&nbsp; &nbsp; 
-																			<i className="fa fa-eye" title="View" id={value._id} onClick={this.getViewData.bind(this,value._id)}></i>
+																	        <i className="fa fa-eye" title="View purchase order" id={value._id} onClick={this.getViewData.bind(this,value._id)}></i>&nbsp; &nbsp;
+																			{value.profileStatus === 'Order Completed'
+																			? 
+																			  <i className="fa fa-file" title="Delivery Challan for this purchase order" id={value._id} onClick={this.showDeliveryChallans.bind(this,value._id)}></i> 
+																			:
+																			null
+																			}
+																		    {value.profileStatus === "Partially Completed"
+                                                                             ? 
+																			  <span><i className="fa fa-file" title="Delivery Challan for this purchase order" id={value._id} onClick={this.showDeliveryChallans.bind(this,value._id)}></i></span>
+																			: null 
+																			}
+
+																			
+																		
 																			{/* <i className="fa fa-pencil " title="Edit" id={value._id} onClick={this.edit.bind(this,value._id)} ></i>&nbsp; &nbsp;
 																			<i className="fa fa-trash redFont " id={value._id} onClick={this.deletePO.bind(this,value._id)}></i>&nbsp; &nbsp; */}
 																			

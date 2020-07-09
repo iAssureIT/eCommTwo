@@ -279,7 +279,7 @@ class Layout extends Component  {
                                                     <Route path="/distribution/:purchaseId"                         exact strict component = { Distribution }  />
                                                     <Route path="/franchise_delivery_challan/:distributionId"       exact strict component = { FranchiseDeliveryChallan }  />
                                                     <Route path="/franchise_distribution/:orderId"                  exact strict component = { FranchiseDistribution }  />
-                                                    <Route path="/delivery_challan/:purchaseId"                 exact strict component = { DeliveryChallans }  />
+                                                    <Route path="/delivery_challan/:purchaseId"                     exact strict component = { DeliveryChallans }  />
 
                                                     
                                                     {/* Admin shopping List AdminShoppingList*/}

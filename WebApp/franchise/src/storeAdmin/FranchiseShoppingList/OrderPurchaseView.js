@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import swal from 'sweetalert';
+import $ from 'jquery';
+import jQuery from 'jquery';
 import moment from 'moment';
-
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import './print.css';
 export default class FranchiseOrderSummary extends React.Component {
 
 	constructor(props) {
@@ -15,13 +17,29 @@ export default class FranchiseOrderSummary extends React.Component {
 			viewDataID : "",
 			user_ID : localStorage.getItem("user_ID")
 		}
+		this.printTable = this.printTable.bind(this);
 	}
 
 	componentDidMount(){
 		this.getViewData(this.props.match.params.orderId);
 		var orderid = this.props.match.params.orderId;
 		console.log("ORder ID==>",orderid);
-
+		$("#table-to-xls").attr('title', 'Download Table');
+	}
+	componentWillReceiveProps(nextprops){
+		$("#table-to-xls").attr('title', 'Download Table');
+	}
+	printTable(event) {
+		// event.preventDefault();
+		$('#ActionContent').hide();
+		$('.modal').hide();
+		var DocumentContainer = document.getElementById('section-to-print');
+		var WindowObject = window.open('', 'PrintWindow', 'height=500,width=600');
+		WindowObject.document.write(DocumentContainer.innerHTML);
+		WindowObject.document.close();
+		WindowObject.focus();
+		WindowObject.print();
+		WindowObject.close();
 	}
 	getViewData(purchaseorder_id){
 		axios
@@ -50,9 +68,9 @@ export default class FranchiseOrderSummary extends React.Component {
 
 	render() {
 		return (
-				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12" id="section-to-print">
 					<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
-						<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent nopadding'>
+						<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent nopadding' >
 							 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 fstdiv">
 								<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mgtb20px">
 									<h3 className="text-center ordertitleclr">Franchise Purchase Order View</h3>
@@ -71,7 +89,7 @@ export default class FranchiseOrderSummary extends React.Component {
 							</div>	 
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mg20px">
 								<div className="table-responsive">       
-							    	<table className="table table-bordered table-striped table-hover">
+							    	<table className="table table-bordered table-striped table-hover" id="Downloadsheet">
 									    <thead className="theadcolor text-center">
 									      	<tr>
 										        <th className="text-center">Product Code</th>
@@ -110,6 +128,16 @@ export default class FranchiseOrderSummary extends React.Component {
 									</div>
 								</div>
 							</div>	
+							<div className="col-lg-2 col-md-1 col-xs-12 col-sm-12   pull-right ">
+								<button type="button" className=" mg10 tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+								<ReactHTMLTableToExcel
+									id="table-to-xls"
+									className="download-table-xls-button fa fa-download tableicons"
+									table="Downloadsheet"
+									sheet="tablexls"
+									filename={this.state.tableName}
+									buttonText="" />
+							</div>
 						</div>
 					</div>
 				</div>

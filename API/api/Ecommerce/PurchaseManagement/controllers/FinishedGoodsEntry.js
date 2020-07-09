@@ -855,7 +855,7 @@ function get_current_stock_of_franchise(itemcode){
                         balanceUnit = "Kg";
                     }else{
                         balanceUnitArray.push(item.balance);
-                        balanceUnit = item.balanceUnit;
+                        balanceUnit = item.unit;
                     }                    
                 }
             });

@@ -11,15 +11,16 @@ export default class FranchiseShoppingList extends React.Component {
 	constructor(props) {
 		super(props);
 	  	this.state = {
-          objects 				: [],
-          units 					: "",
-		    	productList 		: [],
-          currentStock 		: [],	
-         	prodStockOrder 	: [],
-	        selectedSection : "All Sections",
-	        date 						: "" ,
-	        editId 					: "" ,
-	        user_ID 				: ""
+                    objects      	: [],
+                    units 	    	: "",
+		    	    productList 	: [],
+                    currentStock 	: [],	
+         	        prodStockOrder	: [],
+	                selectedSection : "All Sections",
+	                date 			: "" ,
+	                editId 			: "" ,
+					user_ID 		: "",
+					selectedFranchise : ""
    	};
 	}
 
@@ -27,12 +28,15 @@ export default class FranchiseShoppingList extends React.Component {
 		/*this.getProductList();*/
 		this.getProductStock();
 
-		this.getFranchiseList();
+		this.getFranchiseDetails();
 
 		var editid1 	= window.location.pathname;
 		let editId 		= editid1 ? editid1.split('/')[2] : "";
-	  const user_ID = localStorage.getItem("user_ID");
+	    const user_ID = localStorage.getItem("user_ID");
 		var today 		= moment(new Date()).format("YYYY-MM-DD");
+
+
+
 		this.setState({
 				date 		: today,
 				editId 	: editId,
@@ -44,38 +48,20 @@ export default class FranchiseShoppingList extends React.Component {
 					}
 				});
 
-				var userDetails = (localStorage.getItem('userDetails'));
-				var userData = JSON.parse(userDetails);
-				const companyID = parseInt(userData.companyID);
-				this.setState({
-					user_ID: user_ID,
-					companyID: companyID
-				}, () => {
-					axios.get('/api/entitymaster/get/one/companyName/'+this.state.companyID)
-					.then((res) => {
-						// console.log("res.data in companyName==>", res.data._id);
-						var franchiseid = res.data._id;
-							this.setState({
-								selectedFranchise: franchiseid,
-							})
-					})
-					.catch((error) => {});		
-			})
 	}
 
-	getFranchiseList(){
-		axios.get('/api/entitymaster/get/franchise/')
+	getFranchiseDetails(){
+		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
+		axios.post('/api/entitymaster/get/one/comapanyDetail/',{"companyID":userDetails.companyID})
         .then((response) => {
           this.setState({
-            "franchiseList": response.data,
+            "selectedFranchise": response.data._id,
           },()=>{
-						console.log("franchiseList = ",this.state.franchiseList);
-					})
+			})
 	      })
 	      .catch((error) => {
-					console.log("Error in franchiseList = ", error);
+			console.log("Error in franchiseDetail = ", error);
 	      })
-
 	}
 
 	getEditData(){
@@ -90,6 +76,30 @@ export default class FranchiseShoppingList extends React.Component {
 					console.log("error in getEditData = ", error);        
 	      })
 	}
+/*
+	getProductList(){
+		var data = {
+            startRange: 0,
+            limitRange: 100
+        }
+        this.getCount();
+        axios.post('/api/products/get/list', data)
+            .then(prodlist => {
+				console.log("prodlist prodlist",prodlist.data);
+
+                this.setState({
+                    "productList": prodlist.data,
+                },()=>{
+					console.log("productList = ",this.state.productList);
+				})
+
+            })
+            .catch((error) => {
+				console.log("error in getProductList = ", error);
+              
+            })
+	}*/
+
 	getProductStock(){
 
       axios.get('/api/products/get/franchisestock')
@@ -116,7 +126,7 @@ export default class FranchiseShoppingList extends React.Component {
 										this.setState({
 											prodStockOrder : prodStockOrder,
 										},()=>{
-											console.log("prodStockOrder = ",this.state.prodStockOrder);
+											console.log("prodStockOrder ===> ",this.state.prodStockOrder);
 										});										
 									}
 								}
@@ -127,11 +137,15 @@ export default class FranchiseShoppingList extends React.Component {
 	}
 
 	getCurrentStock(productCode,itemCode){
+		//CurrentStock = TotalFinishedGoodsStock - DistributedFinishedGoods
+		// axios.get('/api/finishedgoodsentries/get/'+)
 		return new Promise((resolve,reject)=>{
 			resolve(1);
 		})
 
 	}
+
+
   Submit(event){
     event.preventDefault();
   	var ProdArray = []
@@ -140,11 +154,13 @@ export default class FranchiseShoppingList extends React.Component {
   			if (this.state.prodStockOrder[i].orderQty > 0) {
   				var ProdArrayelement =this.state.prodStockOrder[i];
   				ProdArray.push(ProdArrayelement);
+  				// console.log("ProdArray",ProdArray);
   			}
   		}
   	}
+
 	  const formValues1 = {
-	    franchise_id            	: this.state.selectedFranchise, 
+	    franchise_id            : this.state.selectedFranchise, 
       companyID                 : this.state.companyID, 
       orderDate                 : moment(new Date()).format("YYYY-MM-DD"), 
       orderItems                : ProdArray,
@@ -154,7 +170,7 @@ export default class FranchiseShoppingList extends React.Component {
     axios.post('/api/franchisepo/post',formValues1)
 	  	.then(function (response) {
 				var id = response.data.order_id;
-				// console.log("data in franchise_id========",id);
+				console.log("data in franchise_id========",id);
 				
 				swal("Thank You!","Your Order has been placed successfully!!")
 				this.props.history.push("/franchise-order-view/"+id);
@@ -179,7 +195,7 @@ export default class FranchiseShoppingList extends React.Component {
 			.patch('/api/franchisepo/patch/purchaseorder',formValues1)
 		  	.then(function (response) {
 		    // handle success
-		    	// console.log("Order Updated========",response.data);
+		    	console.log("Order Updated========",response.data);
 		    	swal("Thank you. Your Product Order Updated successfully.");
 		    	 // window.location.reload();
 		  	})
@@ -214,10 +230,10 @@ export default class FranchiseShoppingList extends React.Component {
 		this.setState({selectedSection : selectedValue});
 	}
 
-	// selectFranchise(event){
-	// 	var selectedValue = event.target.value;
-	// 	this.setState({selectedFranchise : selectedValue});
-	// }
+	selectFranchise(event){
+		var selectedValue = event.target.value;
+		this.setState({selectedFranchise : selectedValue});
+	}
 
 	onChageOrderDate(event){
 		var date = event.target.value;
@@ -348,7 +364,7 @@ export default class FranchiseShoppingList extends React.Component {
 														        				 value={result.orderQty} 
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
-														        			<div className="input-group-addon unitbox">
+														        		<div className="input-group-addon unitbox">
 																				<td  className=" width66h">{result.unit}</td>
 																		  	{/* <select id={"Units"+"-"+index} name={"Units"+"-"+index} 
 																		  			  value={result.unit} refs="Units" 

@@ -27,6 +27,8 @@ router.get('/get/one/entity/:userID', entityMaster.entityDetails);
 
 router.get('/get/one/companyName/:companyID', entityMaster.companyName);
 
+router.post('/get/one/comapanyDetail', entityMaster.companyDetail);
+
 router.get('/get/singlelocation/:entityID/:branchCode',entityMaster.branchCodeLocation);
 
 router.patch('/patch', entityMaster.updateEntity);

@@ -354,18 +354,24 @@ exports.franchise_Wise_order = (req,res,next)=>{
                     var i = 0;
                     var returnData = [];
                     for(i = 0 ; i < data.length ; i++){
-                        var AllUnits = ""
+                        var AllUnits = "";
+                        var DistData = [];
                         AllUnits = await franchiseentityID(data[i].franchise_id);
-                        console.log('data in AllUnits ==>',AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null);
+                        DistributionData = await franchiseDelivery(data[i]._id);
+                        DistributionData.forEach((item)=>{  
+                            DistData.push(item.supply[0]); 
+                        });
+
                         returnData.push({
-                            "_id"		      : data[i]._id,
+                            "_id"             : data[i]._id,
                             "orderNo"         : data[i].orderNo,
                             "orderDate"       : data[i].orderDate,
                             "orderItems"      : data[i].orderItems,
                             "orderItemsqty"   : data[i].orderItems.length,
-                            "franchiseName"	  : AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null,
-                            
+                            "franchiseName"   : AllUnits.length > 0 || AllUnits.length !== null ? AllUnits : null,
+                            "distributionData": DistData.length > 0 || DistData.length !== null ? DistData : null,
                         });
+                     
                     }
                     // console.log('data in returnData ==>',returnData);
                     if( i >= data.length){

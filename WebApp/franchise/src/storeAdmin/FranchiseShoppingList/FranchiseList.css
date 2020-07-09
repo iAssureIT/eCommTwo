@@ -20,12 +20,6 @@
     height: 200px;
     padding: 0;
 }
-.mglft15 {
-    margin-left: 15px;
-}
-.unitbox {
-    width: 80px !important;
-}
 .lstdiv {
     background-color: #436264;
     height: 70px;
@@ -46,9 +40,18 @@
 .mg20px {
     margin-top: 20px;
 }
+.unitbox {
+    width: 80px !important;
+}
+.pdlft85 {
+    padding-left: 85px;
+}
 .mg0 {
     margin:0px !important;
 }
+.mg10{
+    margin: 10px;
+  }
 .theadcolor {
     background-color: #436264;
     color: #fff;

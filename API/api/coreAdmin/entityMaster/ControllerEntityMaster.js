@@ -94,7 +94,6 @@ exports.listEntity = (req,res,next)=>{
                 });
 };
 exports.listEntity_franchise = (req,res,next)=>{
-    console.log("listEntity req.params = ",req.params);
     EntityMaster.find({entityType:req.params.entityType,_id:req.params.franchiseid})
                 .sort({createdAt : -1})    
                 .then(data=>{
@@ -161,8 +160,23 @@ exports.fetchLocationEntities = (req, res, next)=>{
         }); 
 };
 
+exports.companyDetail = (req, res, next)=>{
+   EntityMaster.findOne({companyID : req.body.companyID})
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+
+
 exports.companyName = (req,res,next)=>{
-    EntityMaster.findOne({companyID : req.params.companyID},{companyName:1})
+    EntityMaster.findOne({companyID : req.params.companyID})
     .exec()
     .then(data=>{
         if(data){
