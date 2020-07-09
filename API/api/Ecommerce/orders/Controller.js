@@ -43,24 +43,29 @@ exports.insert_orders = (req,res,next)=>{
             .then(franchiseObjects=>{
                 // console.log("Allowaable Pincode data ============",franchiseObjects);                 
                 if(franchiseObjects){
+                  var franchiseID;
                   var matchedFranchise = [];
                     // console.log("Pincode Length : ",franchiseObjects.length);
                     for(var franchiseObj of franchiseObjects){
                       // console.log("Pincodes:",franchiseObj.allowablePincodes.includes(pincode));
                         if(franchiseObj.allowablePincodes.includes(pincode)){
-                            var franchiseID =  franchiseObj.franchiseID;
+                            franchiseID =  franchiseObj.franchiseID;
                             matchedFranchise.push({franchiseID :franchiseID});                            
                             // console.log("matchedFranchise ===",matchedFranchise);                            
                         } 
-                    }//end for loop  
-                   
+                    }//end for loop 
+
                     if(matchedFranchise){                     
                       if(matchedFranchise.length > 1){
                         var minDisFranchise;
                         var smDis = -1;
                         var distanceList = [];
-                        var allocatedToFranchise
-                        for(var franchiseObjects of matchedFranchise){                                                  
+                        var allocatedToFranchise;
+                        var flag = false;
+                        var len=matchedFranchise.length;
+                        for(var franchiseObjects of matchedFranchise){  
+                          // for(var i=0;i<matchedFranchise.length;i++){  
+                                                                            
                             Entitymaster.findOne({_id : franchiseObjects.franchiseID})
                             .then(franchiseData =>{
                               // console.log("Franchise data:=======",franchiseData);
@@ -68,8 +73,7 @@ exports.insert_orders = (req,res,next)=>{
                                 var Flatitude  = franchiseData.locations[0].latitude;
                                 var Flongitude = franchiseData.locations[0].longitude;                                
                                 if(Flatitude && Flongitude){                                  
-                                  var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');
-                                                                   
+                                  var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   
                                   if(smDis == -1){
                                     smDis = distance;
                                     minDisFranchise = franchiseObjects;
@@ -80,19 +84,26 @@ exports.insert_orders = (req,res,next)=>{
                                 }//end if lat-long
                                 // console.log("minDisFranchise ID=",minDisFranchise);                                
                                 allocatedToFranchise = minDisFranchise.franchiseID;
-                                console.log("min distance of franchise ID=",allocatedToFranchise);                                
+                                console.log("min distance of franchise ID=",allocatedToFranchise); 
+                                // if(i === matchedFranchise.length-1){
+                                //   flag === "true";  
+                                // }                                 
+                                                                                     
                               }
                             })                           
                           } //end for
-                          saveOrderdata(allocatedToFranchise);
+                        
+                          saveOrderdata(allocatedToFranchise);                        
                       }else{
                       console.log("single franchise available==========");
                        var allocatedToFranchise = franchiseID; 
                        saveOrderdata(allocatedToFranchise);
                       }
-                        // insert orders details and allocate franchise ID to orders
-                       function saveOrderdata(allocatedToFranchise){
-                        console.log("inside allocate franchise Id - saveOrderData function");  
+
+                      // insert orders details and allocate franchise ID to orders
+                      function saveOrderdata(allocatedToFranchise){
+                        console.log("allocatedToFranchise==========",allocatedToFranchise);
+                        console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),
                         "orderID"              : Math.round(new Date().getTime()/1000),
@@ -136,16 +147,8 @@ exports.insert_orders = (req,res,next)=>{
                               }
                           ],
                         });                                 
-
-                    
-                                         
-                     Orders.findOne({"orderID" : autogenerateOrderId})
-                     .then(orderData =>{ 
-                        if(orderData){
-                            console.log("OrderId already available ================",orderData);
-                        }else{
-                            console.log("order Id not available");
-                            order.save()
+                           //save order and send notifications to customer 
+                           order.save()
                             .then(orderdata=>{        
                                 console.log("1.Inside order response",orderdata);
                                 var header = "<table><tbody><tr><td align='center' width='100%'><a><img src='http://http://anashandicrafts.iassureit.com/images/anasLogo.png' style='width:25%'></a></td></tr></table>";
@@ -319,15 +322,7 @@ exports.insert_orders = (req,res,next)=>{
                                     "message": "Order Placed Successfully.",
                                     "order_ID" : orderdata._id
                                 });
-                            })
-                    
-                        }
-                     })
-
-                     //past code here
-
-                    //save order and send notifications to customer 
-                    
+                            })                                   
                     
 
                     }//end saveOrderData
