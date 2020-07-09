@@ -128,7 +128,7 @@ class AllowablePincodes extends Component {
                                 <div className="">
                                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 paddingZeroo">
                                         <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                                            <h4 className="">Franchise Allowable Pincodes</h4>
+                                            <h4 className="">Allowable Pincodes</h4>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                                             <br/>
