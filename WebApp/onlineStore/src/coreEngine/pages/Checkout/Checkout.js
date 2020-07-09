@@ -1187,7 +1187,7 @@ class Checkout extends Component {
                                             </div>
                                         </div>
                                         <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
-                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
+                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>   
                                             <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
                                                 <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
                                                 {
