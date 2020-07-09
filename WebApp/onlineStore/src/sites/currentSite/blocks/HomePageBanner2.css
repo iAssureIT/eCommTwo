@@ -32,6 +32,7 @@
     cursor: pointer;
     /* box-shadow: 0px 8px 33px 0px rgba(0, 0, 0, 0.13); */
     box-shadow: 8px 16px 32px 0px rgba(0, 0, 0, 0.13);
+    z-index: 100;
     border:solid 2px #333;
     background-color: #fff;
     height: 200px;
@@ -43,6 +44,9 @@
     /* border: solid 2px; */
     /* background-color: #fff; */
     height: 200px;
+}
+.imageBlock .zoomImg{
+    border: solid 1px #aaa !important;
 }
 .imgTitle {
     color: #333;

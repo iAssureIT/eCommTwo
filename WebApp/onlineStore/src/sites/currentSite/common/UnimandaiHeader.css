@@ -401,7 +401,7 @@ button.button_search {
     text-transform: uppercase;
     /* text-align: center; */
     /* width: 130px; */
-    border: solid 2px #555 !important;
+    border: solid 1px #999 !important;
     border-left: 0px !important;
     padding: 5px 8px;
     border-radius: 4px;
@@ -413,7 +413,7 @@ button.button_search {
     z-index: 99;
 }
 .searchBox input{
-    border:solid 2px #555 !important;
+    border:solid 1px #999 !important;
     /* padding-left: 0px !important; */
     padding-right: 0px !important;
     

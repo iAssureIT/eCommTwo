@@ -109,6 +109,8 @@ class ProductViewEcommerce extends Component {
 		});
 	}
 	getProductData(){
+		var availableSize = [];
+		var availableSizes = [];
 		axios.get("/api/products/get/productcode/" + this.state.productData.productCode)
 		.then((response) => {
 			let mymap = new Map(); 
@@ -127,12 +129,21 @@ class ProductViewEcommerce extends Component {
 				mymap.set(el.color, el._id); 
 				return true; 
 			}); 
-			
+			console.log('unique', unique);
+			if(unique[0].size){
+				availableSize.push(unique[0].size*1);
+				availableSize.push(unique[0].size*2);
+				availableSize.push(unique[0].size*4);
+				unique[0].availableSizes = availableSize;
+				// console.log("unique =======",availableSizes);    
+			  }
+
 			console.log('unique', unique);
 			this.setState({
 				relatedProductArray : unique,
 				productSizeArray 	: unique,
 			})
+			// console.log("productSizeArray===",this.state.productSizeArray);
 		})
 		.catch((error) => {
 			console.log('error', error);
@@ -145,7 +156,7 @@ class ProductViewEcommerce extends Component {
 				return (a.color).toUpperCase() === (this.state.selectedColor).toUpperCase()
 			})
 
-			console.log('pc', response.data);
+			// console.log('pc', response.data);
 			this.setState({
 				productSizeArray : x
 			})
@@ -396,7 +407,7 @@ class ProductViewEcommerce extends Component {
 			  reviewAverage : response.data[0].reviewAvg
 		  })
 		})
-		.catch((error) => {
+		.catch((error) => { 
 		  console.log('error', error);
 		})
 	}
@@ -445,6 +456,8 @@ class ProductViewEcommerce extends Component {
 	}
 	render() {
 		const props = { width: 400, height: 350, zoomWidth: 750, offset: { vertical: 0, horizontal: 30 }, zoomLensStyle: 'cursor: zoom-in;', zoomStyle: 'z-index:1000;background-color:#fff; height:500px;width:750px;box-shadow: 0 4px 20px 2px rgba(0,0,0,.2);border-radius: 8px;', img: this.state.selectedImage ? this.state.selectedImage : notavailable };
+		// console.log("render  this.state.productSizeArray:===",this.state.productSizeArray);
+		// const props = { width: 400, height: 350, zoomWidth: 750, offset: { vertical: 0, horizontal: 30 }, zoomLensStyle: 'cursor: zoom-in;', zoomStyle: 'z-index:1000;background-color:#fff; height:500px;width:750px;box-shadow: 0 4px 20px 2px rgba(0,0,0,.2);border-radius: 8px;', img: this.state.selectedImage ? this.state.selectedImage : "/images/notavailable.jpg" };
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 mb20 boxBorder">
 				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50">
@@ -598,37 +611,36 @@ class ProductViewEcommerce extends Component {
 											}
 											{this.state.productData.availableQuantity > 0 ?
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+													<div className="col-lg-12 col-md-12 col-sm-12">
 													
-													{this.state.productSizeArray && this.state.productSizeArray.length>0?
+													{/* {Array.isArray(this.state.productSizeArray) && this.state.productSizeArray.length>0?
 														this.state.productSizeArray.map((a,i)=>{
-															if(a.size){		
-																if(i === 0){
-																	return(
-																		<div>
-																			<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt15 detailtitle">Size</label>
-																			{/* <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 NOpaddingLeft">
-																				<label className="size col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-																					<input title="Please select size first." checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onChange={this.setNewSizeProduct.bind(this)}/>
-																					<span title={a.size} className="checkmark col-lg-12 col-md-12 col-sm-12 col-xs-12">{a.size}</span>
-																				</label>
-																			</div> */}
-																		</div>
-																	);
-																}else{
-																	return(
-																		<div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 NOpaddingLeft">
-																			<label className="size col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-																				<input title="Please select size first." checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onChange={this.setNewSizeProduct.bind(this)}/>
-																				<span title={a.size} className="checkmark col-lg-12 col-md-12 col-sm-12 col-xs-12">{a.size}</span>
-																			</label>
-																		</div>
-																	);
-																}	
+															if(a.size){																	
+																	return(	
+																	<div>												
+																		<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt15 detailtitle">Select Size </label>
+																	{	Array.isArray(a.availableSizes).length>0 ?
+																			a.availableSizes.map((size,index)=>{
+																			return(
+																				<div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 NOpaddingLeft">
+																					<label className="size col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+																						<input title="Please select size first." checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onChange={this.setNewSizeProduct.bind(this)}/>
+																						<span title={a.size} className="checkmark col-lg-12 col-md-12 col-sm-12 col-xs-12">{a.availableSize}&nbsp;{a.unit}</span>
+																					</label>
+																				</div>
+																			);
+																			})
+																		:null									
+																			
+																	}
+																	</div>
+																	);																	
 															}
 														})
 														:
 														null
-													}
+													} */}
+													</div>
 													<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding colorError">
 														<label id="size"></label>
 													</div>

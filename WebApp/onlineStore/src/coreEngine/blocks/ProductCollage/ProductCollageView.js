@@ -41,22 +41,19 @@ class ProductCollageView extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    // console.log("componentWillReceiveProps:",nextProps.products);
+    
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
-        var availableSizes = [];
-        // console.log("available sizes: ====", nextProps.products[i].size);
-        // console.log("available unit: ====", nextProps.products[i].unit);
-        if(nextProps.products[i].size){
+        var availableSizes = [];       
+        if(nextProps.products[i].size){ 
           availableSizes.push(nextProps.products[i].size*1);
           availableSizes.push(nextProps.products[i].size*2);
           availableSizes.push(nextProps.products[i].size*4); 
-          nextProps.products[i].availableSizes = availableSizes;
-          // console.log("availableSizes=======",availableSizes);    
+          nextProps.products[i].availableSizes = availableSizes;            
         }
     }
   }
-    // console.log("componentWillReceiveProp products===:",nextProps.products);
+    
     this.setState({
       products: nextProps.products,
       masterLimitProducts: nextProps.products,
@@ -172,7 +169,7 @@ class ProductCollageView extends Component {
     })
   }
 
-  addtocart(event) {
+  addtocart(event) { 
     event.preventDefault();
     var productCode = event.target.getAttribute('productCode');
     var clr = event.target.getAttribute('color');
