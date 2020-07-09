@@ -500,8 +500,8 @@ export default class PurchaseManagement extends React.Component {
 
 	onChangePoNum(event){
 		event.preventDefault();
-		event.target.value = event.target.value.replace(/[PO+]/g, ''); //replace all $ with empty string
-		event.target.value = 'PO' + event.target.value; //prepend $ to the input value
+		event.target.value = event.target.value.replace(/[PR+]/g, ''); //replace all $ with empty string
+		event.target.value = 'PR' + event.target.value; //prepend $ to the input value
 		var {name,value} = event.target;
 
 		this.setState({ 
@@ -729,8 +729,8 @@ export default class PurchaseManagement extends React.Component {
 									</div>
 									<div  className="row NOpadding mtop20"> 
 										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
-											<label >Purchase No <i className="redFont">*</i></label>
-											<input type="text" placeholder="Enter Purchase No"  className="form-control"  value={this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.onChangePoNum.bind(this)} id="purchaseNumber"/>
+											<label >Purchase Receipt Number <i className="redFont">*</i></label>
+											<input type="text" placeholder="Enter Purchase Receipt Number"  className="form-control"  value={this.state.purchaseNumber} name="purchaseNumber" refs="purchaseNumber" onChange={this.onChangePoNum.bind(this)} id="purchaseNumber"/>
 										</div>
 										<div className="form-group col-lg-8 col-md-8 col-xs-12 col-sm-12 mbt25">
 											<label >Details</label>

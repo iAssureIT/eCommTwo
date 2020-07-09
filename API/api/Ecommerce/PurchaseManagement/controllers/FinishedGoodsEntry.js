@@ -916,14 +916,19 @@ exports.get_product_current_stock_report = (req, res, next)=>{
                         var i = 0;
                         var returnData = [];
                         var DistData = [];
+                        var franchiseName = '';
                         for(i = 0 ; i < data.length ; i++){
                         var currentStock =  await get_current_stock_of_franchise(data[i].itemCode); 
                         var Franchise =  await getFranchise(data[i].franchise_id); 
+
+                        if(Franchise){     
+                           franchiseName =  Franchise.companyName
+                        }
                         var franchiseDetails =                        
                             returnData.push({
                                 "_id"             : data[i]._id,
                                 "franchise_id"    : data[i].franchise_id,
-                                "franchiseName"   : Franchise.companyName,
+                                "franchiseName"   : franchiseName,
                                 "purchaseLocation": data[i].purchaseLocation,
                                 "itemCode"        : data[i].itemCode,
                                 "productCode"     : data[i].productCode,

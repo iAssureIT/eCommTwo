@@ -120,12 +120,12 @@ export default class FranchiseCurrentStock extends React.Component {
                     
             });
 
-            var data =  [...new Map(tableData.map(item => [item['itemCode'], item] && [item['franchiseId'], item])).values()]
+            // var data =  [...new Map(tableData.map(item => [item['itemCode'], item])).values()]
             
 			this.setState({
-				tableData : data,          
+				tableData : tableData,          
 			},()=>{
-                console.log("tableData",data);
+                console.log("tableData",tableData);
                 this.getFranchiseList();
 			})
 		})

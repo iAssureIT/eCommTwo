@@ -263,11 +263,11 @@ exports.generate_purchase_number = (req, res, next)=>{
         .exec()
         .then(data=>{
             if(data){
-                 const PONum= data.purchaseNumber.replace('PO','');
+                 const PONum= data.purchaseNumber.replace('PR','');
                  const number = Number(PONum) + Number(1);
-                 PurchaseNumber = "PO" + number;
+                 PurchaseNumber = "PR" + number;
              }else{
-                 PurchaseNumber = "PO" + 1;
+                 PurchaseNumber = "PR" + 1;
              }
             res.status(200).json(PurchaseNumber);
         })

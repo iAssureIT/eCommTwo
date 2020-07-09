@@ -149,6 +149,9 @@ export default class FranchiseDeliveryChallan extends React.Component {
                 FranchiseDeliveryId : this.state.FranchiseDeliveryId,
             }
 
+            console.log("data",data);
+
+
             if(attribute == "accepted"){
                 
                 this.setState({
@@ -269,7 +272,7 @@ export default class FranchiseDeliveryChallan extends React.Component {
                                                         <td>{result.orderedQty} {result.orderedUnit}</td>
                                                         <td>{result.suppliedQty} {result.suppliedUnit}</td>
                                                         <td>
-                                                        <button onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'btn btn-success btn-sm inactiveAccept ' + ( result.status === "deliveryAccepted" ? "Accepted" : "NotClicked" )}>Accept</button>
+                                                        <button onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted" || result.status == "deliveryCompleted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'btn btn-success btn-sm inactiveAccept ' + ( result.status === "deliveryAccepted" || result.status == "deliveryCompleted" ? "Accepted" : "NotClicked" )}>Accept</button>
                                                         <button data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={' btn btn-warning btn-sm ' + ( result.status === "deliveryRejected" ? " rejected" : "NotClicked" )}>Reject</button>
                                                         {/* <i onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; */}
                                                         {/* <i data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={'fa fa-times-circle prodCheckboxDim ' + ( result.status === "deliveryRejected" ? "prodCheckboxDimSelected rejected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i> */}
@@ -304,9 +307,9 @@ export default class FranchiseDeliveryChallan extends React.Component {
 																			</div>
 																			<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                                                 {this.state.rejectRemark ?
-																				<button onClick={this.delete.bind(this)} id={(result.itemCode).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} data-dismiss="modal">DELETE</button>
+																				<button onClick={this.delete.bind(this)} id={(result.itemCode).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} data-dismiss="modal">REJECT</button>
                                                                                 : 
-                                                                                <button onClick={this.delete.bind(this)} id={(result.itemCode).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1 disabled"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} >DELETE</button>
+                                                                                <button onClick={this.delete.bind(this)} id={(result.itemCode).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1 disabled"  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} >REJECT</button>
                                                                                 }
 																			</div>
 																		</div>

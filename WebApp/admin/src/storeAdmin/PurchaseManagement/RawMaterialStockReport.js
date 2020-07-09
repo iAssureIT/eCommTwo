@@ -26,8 +26,6 @@ export default class RawMaterialStockReport extends React.Component {
 						           },
 		             "tableHeading"     : {
 						Date            : 'Date',
-						itemCode 		: "Item Code",
-		        		productCode     : "Product Code",
 						productName     : "Product Name",
 						UnitRate        : "Rate Per Unit",
 						OpeningStock    : 'Opening Stock',

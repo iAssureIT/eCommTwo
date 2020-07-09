@@ -91,6 +91,7 @@ exports.update_delivery_attribute = (req,res,next)=>{
     }else{
         remark = '';
     }
+ 
     getData();
     async function getData(){
         FranchiseDelivery.updateOne(
@@ -99,8 +100,7 @@ exports.update_delivery_attribute = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-            if(data.nModified == 1){
-                if(req.body.attribute == "deliveryAccepted"){
+                if(req.body.attribute == "deliveryAccepted" || req.body.attribute == "deliveryCompleted"){
                     //if accepted insert into frinchise goods
                     var updateFinishedGoods = update_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
                 }
@@ -113,11 +113,7 @@ exports.update_delivery_attribute = (req,res,next)=>{
                 res.status(200).json({
                     "message": "Success",
                 });
-            }else{
-                res.status(401).json({
-                    "message": "franchise delivery not found"
-                });
-            }
+          
         })
         .catch(err =>{
             console.log(err);

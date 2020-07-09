@@ -29,11 +29,11 @@ export default class FinishedGoods extends React.Component {
 					},
 		            "tableHeading"     : {
 		                Date            : "Date",
-		        		productName     : "Product Name – Product Code - Item Code",
-						InwardStock  	: "Finished Goods",
+						productName     : "Product Name – Product Code - Item Code",
 						OutwardStock    : "Raw Material",
+						InwardStock  	: "Finished Goods",
+						Weight          : "Wt Per Unit",
 						Quantity        : "Quantity",
-						Weight          : "Weight",
 						Scrap           : "Scrap",
 						actions        	: 'Action',
 					},
@@ -52,12 +52,12 @@ export default class FinishedGoods extends React.Component {
 						productName     : "Product Name – Product Code - Item Code",
 						productCode     : "Product Code",
 						itemCode        : "Item Code",
+						OutwardStock    : "Raw Material",
 						InwardStock  	: "Finished Goods",
 						InwardUnit      : "Inward Unit",
-						OutwardStock    : "Raw Material",
 						OutwardUnit     : "Raw Material Unit",
-						Quantity        : "Quantity",
 						Weight          : "Weight",
+						Quantity        : "Quantity",
 						UnitWt          : "Unit Weight",
 						Scrap           : "Scrap",
 						ScrapUnit       : "Scrap Unit"
@@ -67,12 +67,12 @@ export default class FinishedGoods extends React.Component {
 						productName     : "Product Name – Product Code - Item Code",
 						productCode     : "Product Code",
 						itemCode        : "Item Code",
+						OutwardStock    : "Raw Material",
 						InwardStock  	: "Finished Goods",
 						InwardUnit      : "Inward Unit",
-						OutwardStock    : "Raw Material",
 						OutwardUnit     : "Raw Material Unit",
-						Quantity        : "Quantity",
 						Weight          : "Weight",
+						Quantity        : "Quantity",
 						UnitWt          : "Unit Weight",
 						Scrap           : "Scrap",
 						ScrapUnit       : "Scrap Unit",
@@ -169,7 +169,14 @@ export default class FinishedGoods extends React.Component {
 			  finishedBy:{
 				required:true,
 				noSpace:true
+			  },
+			  finishedGoodsUnit:{
+				required:true,
+			  },
+			  fgUnitQtyforFG:{
+				required:true,
 			  }
+
 			},
 			errorPlacement: function (error, element) {
 			  if (element.attr("name") === "Date") {
@@ -206,7 +213,9 @@ export default class FinishedGoods extends React.Component {
 			  if (element.attr("name") === "fgUnitWt") {
 				error.insertAfter(".WeightPerUnitDiv");
 			  }
-			  
+			  if (element.attr("name") === "finishedGoodsUnit" || element.attr("name") === "fgUnitQtyforFG") {
+				error.insertAfter(".WtForFgDiv");
+			  }
 			  
 			}
 		});
@@ -278,10 +287,10 @@ export default class FinishedGoods extends React.Component {
 							_id                  : a._id,
 							Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
 							productName 	     : a.productName ? a.productName +' - '+ a.ProductCode +' - '+ a.ItemCode: "" ,
-							InwardStock          : a.fgInwardQty ? a.fgInwardQty +' '+ a.fgInwardUnit : 0,
 							OutwardStock         : a.OutwardRawMaterial ? a.OutwardRawMaterial +' '+ a.OutwardUnit : 0,
-							Quantity             : a.fgTotalQty ? a.fgTotalQty : 0,
+							InwardStock          : a.fgInwardQty ? a.fgInwardQty +' '+ a.fgInwardUnit : 0,
 							Weight               : a.fgUnitQty ? a.fgUnitQty +' '+ a.fgUnitWt : 0,
+							Quantity             : a.fgTotalQty ? a.fgTotalQty : 0,
 							Scrap                : a.scrapQty ? a.scrapQty +' '+ a.scrapUnit : 0 
 						}
 					})
@@ -315,10 +324,10 @@ export default class FinishedGoods extends React.Component {
 							_id                  : a._id,
 							Date   				 : a.Date ? moment(a.Date).format("DD-MMM-YYYY") : "",
 							productName 	     : a.productName ? a.productName +' - '+ a.ProductCode +' - '+ a.ItemCode: "" ,
-							InwardStock          : a.fgInwardQty ? a.fgInwardQty +' '+ a.fgInwardUnit : 0,
 							OutwardStock         : a.OutwardRawMaterial ? a.OutwardRawMaterial +' '+ a.OutwardUnit : 0,
-							Quantity             : a.fgTotalQty ? a.fgTotalQty : 0,
+							InwardStock          : a.fgInwardQty ? a.fgInwardQty +' '+ a.fgInwardUnit : 0,
 							Weight               : a.fgUnitQty ? a.fgUnitQty +' '+ a.fgUnitWt : 0,
+							Quantity             : a.fgTotalQty ? a.fgTotalQty : 0,
 							Scrap                : a.scrapQty ? a.scrapQty +' '+ a.scrapUnit : 0 
 						}
 					})
@@ -635,7 +644,6 @@ export default class FinishedGoods extends React.Component {
 
 	console.log("errorMsg",this.state.errorMsg);
 	  if ($('#finishedGoodsInwardForm').valid()) {
-		console.log("in if ");
 		if(productDatalist !== null && productDatalist.length > 0){
 			if(this.state.errorMsg !== "Valid"){
 				// swal("if");
@@ -682,6 +690,8 @@ export default class FinishedGoods extends React.Component {
 				productName:''
 			})
 		}
+	 }else{
+		swal("Please check fields contaning astrick(*) are required.");
 	 }
 	}
 	update(event){
@@ -761,12 +771,12 @@ export default class FinishedGoods extends React.Component {
 				"productName"         : a.productName         ? a.productName        : '-',
 				"productCode"         : a.ProductCode         ? a.ProductCode        : '-',
 				"itemCode"            : a.ItemCode            ? a.ItemCode              : '-',
+				"OutwardStock"        : a.OutwardRawMaterial  ? a.OutwardRawMaterial : '-',
 				"InwardStock"         : a.fgInwardQty         ? a.fgInwardQty        : '-',
 				"InwardUnit"          : a.fgInwardUnit        ? a.fgInwardUnit       : '-',
-				"OutwardStock"        : a.OutwardRawMaterial  ? a.OutwardRawMaterial : '-',
 				"OutwardUnit"         : a.OutwardUnit         ? a.OutwardUnit        : '-',
-				"Quantity"            : a.fgTotalQty          ? a.fgTotalQty         : '-',
 				"Weight"              : a.fgUnitQty           ? a.fgUnitQty          : '-',
+				"Quantity"            : a.fgTotalQty          ? a.fgTotalQty         : '-',
 				"UnitWt"              : a.fgUnitWt            ? a.fgUnitWt           : '-',
 				"Scrap"               : a.scrapQty            ? a.scrapQty           : '-',
 				"ScrapUnit"           : a.scrapUnit           ? a.scrapUnit           : '-',
@@ -779,12 +789,12 @@ export default class FinishedGoods extends React.Component {
 			  "productName"         : a.productName         ? a.productName        : '-',
 			  "productCode"         : a.ProductCode         ? a.ProductCode        : '-',
 			  "itemCode"            : a.itemCode            ? a.itemCode              : '-',
+			  "OutwardStock"        : a.OutwardRawMaterial  ? a.OutwardRawMaterial : '-', 
 			  "InwardStock"         : a.fgInwardQty         ? a.fgInwardQty        : '-',
 			  "InwardUnit"          : a.fgInwardQty         ? a.fgInwardQty        : '-',
-			  "OutwardStock"        : a.OutwardRawMaterial  ? a.OutwardRawMaterial : '-',
 			  "OutwardUnit"         : a.OutwardUnit         ? a.OutwardUnit        : '-',
-			  "Quantity"            : a.fgTotalQty          ? a.fgTotalQty         : '-',
 			  "Weight"              : a.fgUnitQty           ? a.fgUnitQty          : '-',
+			  "Quantity"            : a.fgTotalQty          ? a.fgTotalQty         : '-',
 			  "UnitWt"              : a.fgUnitWt            ? a.fgUnitWt           : '-',
 			  "Scrap"               : a.scrapQty            ? a.scrapQty           : '-',
 			  "ScrapUnit"           : a.scrapUnit           ? a.scrapUnit           : '-',
@@ -1154,8 +1164,8 @@ export default class FinishedGoods extends React.Component {
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label >Outward From Raw Material <i className="redFont">*</i></label>
 											<div className="outwardRawMatDiv">
-												<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.OutwardRawMaterial} name="OutwardRawMaterial" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
-												<select id="OutwardUnit"  name="OutwardUnit" value={this.state.OutwardUnit} refs="OutwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
+												<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.OutwardRawMaterial} name="OutwardRawMaterial" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
+												<select id="OutwardUnit"  name="OutwardUnit" value={this.state.OutwardUnit} refs="OutwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-6 col-md-6 col-xs-4 col-sm-4 h34">
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -1176,8 +1186,8 @@ export default class FinishedGoods extends React.Component {
 											<label>Weight Per Finished Product Unit<i className="redFont">*</i></label>
 											<div className="WeightPerUnitDiv">
 												{/* onChangefgTotalQty called bcoz both are for same calculation */}
-												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.onChangefgUnitQty.bind(this)} id="fgUnitQty" min="1"/>
-												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.onChangefgUnitQty.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" >
+												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.onChangefgUnitQty.bind(this)} id="fgUnitQty" min="1"/>
+												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.onChangefgUnitQty.bind(this)}  className="col-lg-6 col-md-6 col-xs-4 col-sm-4 h34" >
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -1199,8 +1209,8 @@ export default class FinishedGoods extends React.Component {
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label>Total Weight For finished Goods</label>
 											<div className="WtForFgDiv">
-												<input type="number" placeholder="Enter Weight" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.fgUnitQtyforFG} name="fgUnitQtyforFG" refs="wtforFG" onChange={this.onFgWeightChange.bind(this)} id="fgUnitQtyforFG" min="0"/>
-												<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.onFgWeightChange.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34" >
+												<input type="number" placeholder="Enter Weight" className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.fgUnitQtyforFG} name="fgUnitQtyforFG" refs="wtforFG" onChange={this.onFgWeightChange.bind(this)} id="fgUnitQtyforFG" min="0"/>
+												<select id="finishedGoodsUnit"  name="finishedGoodsUnit" value={this.state.finishedGoodsUnit} refs="finishedGoodsUnit" onChange={this.onFgWeightChange.bind(this)}  className="col-lg-6 col-md-6 col-xs-4 col-sm-4 h34" >
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -1219,8 +1229,8 @@ export default class FinishedGoods extends React.Component {
 											<label>Scrap Material</label>
 											<div className="scrapMaterialDiv">
 												{/* onBlur={this.weightConverter.bind(this)} */}
-												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-8 col-md-9 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.onChangeScrap.bind(this)} id="scrapQty" min="0" />
-												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.onChangeScrap.bind(this)}  className="col-lg-4 col-md-3 col-xs-4 col-sm-4 h34">
+												<input type="number" placeholder="Enter scrapQty" className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.scrapQty} name="scrapQty" refs="scrapQty" onChange={this.onChangeScrap.bind(this)} id="scrapQty" min="0" />
+												<select id="scrapUnit"  name="scrapUnit" value={this.state.scrapUnit} refs="scrapUnit" onChange={this.onChangeScrap.bind(this)}  className="col-lg-6 col-md-6 col-xs-4 col-sm-4 h34">
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
@@ -1250,7 +1260,7 @@ export default class FinishedGoods extends React.Component {
 									}
 									</div>
 								</form>
-								<div className="mtop25">
+								<div className="row">
 										<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12">
 											<label>Date:</label>
 											<input type="Date" placeholder="1234" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.filterChange.bind(this)} id="filterByDate"/>
@@ -1272,7 +1282,7 @@ export default class FinishedGoods extends React.Component {
 											</select>
 										</div>
 								</div>
-								<div className="mtop25">
+								<div className="row">
 									<IAssureTable
 										tableHeading={this.state.tableHeading}
 										twoLevelHeader={this.state.twoLevelHeader} 
@@ -1284,6 +1294,7 @@ export default class FinishedGoods extends React.Component {
 						       </div>
 							</div>
 							<div id="report" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop25 tab-pane fade in active" >
+								<div className="row">
 									<div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 reports-select-date-fromto">
 										<div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 reports-select-date-from1">
 										    <label>From Date</label>
@@ -1314,7 +1325,9 @@ export default class FinishedGoods extends React.Component {
 											null
 										}
 										</select>
-									</div>
+									  </div>
+								</div>
+								<div className="row">
 									<IAssureTable
 										tableHeading={this.state.tableHeading}
 										twoLevelHeader={this.state.twoLevelHeader} 
@@ -1323,6 +1336,7 @@ export default class FinishedGoods extends React.Component {
 										getData={this.getData.bind(this)}
 										tableObjects={this.state.tableObjects}
 									/>
+								</div>
 						       </div>
 							<div id="bulk" className="col-lg-12 col-md-12 col-xs-12 col-sm-12 tab-pane fade in">
 								<div className="row outerForm">
