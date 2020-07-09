@@ -627,15 +627,15 @@ class Checkout extends Component {
                     "district" : this.state.district,
                     "city": this.state.city,
                     "stateCode": this.state.stateCode,
-                    "state": this.state.state,
-                    "countryCode": this.state.countryCode,
-                    "country": this.state.country,
+                    "state"       : this.state.state,
+                    "countryCode" : this.state.countryCode,
+                    "country"     : this.state.country,
                     "mobileNumber": this.state.mobileNumber,
-                    "addType": this.state.addType,
-                    "latitude" : this.state.latitude,
-                    "longitude": this.state.longitude,
+                    "addType"     : this.state.addType,
+                    "latitude"    : this.state.latitude,
+                    "longitude"   : this.state.longitude,
                 }
-                // console.log("inside if address values====",addressValues);     
+                console.log("inside if address values====",addressValues);     
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     // console.log("addressValues:===",addressValues);
@@ -914,11 +914,11 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn paymentMethodTitle">PAYMENT METHOD <span className="required">*</span></div>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input name="payMethod" type="radio" value="Cash On Delivery" className="col-lg-1 col-md-1 col-sm-2 col-xs-2" />
+                                            <input name="payMethod" type="radio" value="Cash On Delivery" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true"/>
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input disabled name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2" />
+                                            <input disabled name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
@@ -938,7 +938,7 @@ class Checkout extends Component {
                                                 this.state.deliveryAddress.map((data, index) => {
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <input type="radio" value={data._id} name="checkoutAddess" required /> &nbsp;
+                                                            <input type="radio" value={data._id} name="checkoutAddess" required  className="codRadio"/> &nbsp;
                                                             <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br/>
                                                             <span className="checkoutADDCss">Name : {data.name}.</span> <br/>
                                                             {data.addressLine2}, {data.addressLine1}, 
@@ -1180,11 +1180,13 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
-                                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 shippingtimes">
-                                            <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" />  &nbsp;
-                                            <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
+                                        <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
+                                            <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
+                                            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 termsWrapper">
+                                                <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
+                                            </div>
                                         </div>
-                                        <div className="col-lg-5 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
+                                        <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
                                             <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
                                             <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
                                                 <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>

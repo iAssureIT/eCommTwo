@@ -150,6 +150,7 @@
     /* overflow: hidden; */
 }
 .termsNconditionsmodal{
+    margin-top: -10px;
     cursor: pointer;
 }
 .listStyle li{
@@ -165,6 +166,17 @@
 }
 .checkoutADDCss{
     word-break: break-word;
+}
+.codRadio{
+    height: 15px !important;
+    width: 15px !important;
+}
+.termsWrapper{
+    margin-top: 3px;
+}
+.acceptTerms{
+    height: 20px;
+    width: 20px;
 }
 /* .checkoutAddess{
     height: 15px !important;

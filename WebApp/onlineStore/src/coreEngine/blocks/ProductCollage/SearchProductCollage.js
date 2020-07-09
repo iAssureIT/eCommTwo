@@ -419,14 +419,15 @@ class SearchProductCollage extends Component {
                 }
                 return (
                   <div className="item col-lg-3 col-md-3 col-sm-3 col-xs-3" key={index}>
-                    <a href={"/productdetails/" + data.productUrl + "/" + data._id}>
+                    {/* <a href={"/productdetails/" + data.productUrl + "/" + data._id}> */}
                       <div className="">
                         <div className="card">
                           <div className="item-top">
                             <div className="productImg">
                               <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
                               {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
-                              <a href="/" className="product photo product-item-photo collage" tabIndex="-1">
+                              {/* <a href="/" className="product photo product-item-photo collage" tabIndex="-1"> */}
+                              <a href={"/productdetails/" + data.productUrl + "/" + data._id} className="product photo product-item-photo collage" tabIndex="-1">
                                 <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImage" />
                               </a>
                             </div>
@@ -448,7 +449,7 @@ class SearchProductCollage extends Component {
                                                           size === 1000?
                                                           <option className="" value={size}>{size}KG</option>
                                                           :
-                                                          data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                          data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="Pounch" ?
                                                             <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
                                                           :
                                                           <option className="" value={size}>{size}{data.unit}</option>                                                        
@@ -513,7 +514,7 @@ class SearchProductCollage extends Component {
                           </div>
                         </div>
                       </div>
-                    </a>
+                    {/* </a> */}
                   </div>
                 );
               })
@@ -543,6 +544,7 @@ class SearchProductCollage extends Component {
               </div>
             </div>
           </div>
+
           <div id="loginFormModal" className="modal in">
                 <div className="modal-dialog">                                        
                     <div className="modal-content loginModalContent">                            
