@@ -8,16 +8,9 @@ import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getCartData, searchProductAction,getForm} from '../../actions/index';
 import $                          from "jquery";
-import cartImg                    from "../../../sites/currentSite/images/icon-cart.png";
-import searchModalImg             from "../../../sites/currentSite/images/icon-search.png";
-import LoginModal                 from "../../common/LoginModal/LoginModal.js";
 import Login          from '../../systemSecurity/Login.js';
 import SignUp         from '../../systemSecurity/SignUp.js';
 import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
-import AskPincode     from '../../blocks/AskPincode/AskPincode.js';
-
-import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
-import iconUserHeader  from "../../../sites/currentSite/images/icon-user-header.png";
 import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
 import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
@@ -329,8 +322,8 @@ componentWillMount() {
           messageData: {
             "type": "outpage",
             "icon": "fa fa-check-circle",
-            "message": "&nbsp; " + response.data.message,
-            "className": "success",
+            "message" : response.data.message,
+            "class": "danger",
             "autoDismiss": true
           }
         })
@@ -339,14 +332,9 @@ componentWillMount() {
             messageData: {},
           })
         }, 3000);
-
-        // this.getCartData();
         this.getCompanyDetails();
-
       })
-      .catch((error) => {
-        // console.log('error', error);
-      })
+      .catch((error) => {})
   }
 
 loginPage(event){
@@ -405,9 +393,9 @@ loginPage(event){
     const user_ID = localStorage.getItem("user_ID");
     return (
       <div className="homecontentwrapper">
-        <Message messageData={this.state.messageData} />
         <header className="col-lg-12 headerflow">            
           <div className="row">
+          <Message messageData={this.state.messageData} />
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip"></div>
             {/* <div id="topbar" className="topheadbar">
                 <div className="container headerContainer">
@@ -649,10 +637,10 @@ loginPage(event){
                                             <div className="col-lg-12 text-center">
                                               {/* <div className="row"> */}
                                                 {/* <div className="col-lg-4"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div> */}
-                                                <div className="col-lg-2"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
-                                                <div className="col-lg-2"><p className="row"><b> {data.quantity}</b></p></div>
-                                                <div className="col-lg-2"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
-                                                <div className="col-lg-2"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
+                                                <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
+                                                <div className="col-lg-3"><p className="row"><b> {data.quantity}</b></p></div>
+                                                <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
+                                                <div className="col-lg-3 pull-right"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
                                               {/* </div> */}
                                             </div>
                                           </div>

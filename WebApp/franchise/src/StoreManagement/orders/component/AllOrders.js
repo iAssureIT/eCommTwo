@@ -26,6 +26,7 @@ export default class AllOrders extends Component{
   getOrders(){
     var userDetails = (localStorage.getItem('userDetails'));
     var userData = JSON.parse(userDetails);
+    console.log("userData.companyID===>",userData.companyID)
     axios.get("/api/entitymaster/get/one/companyName/"+userData.companyID)
     .then((resdata)=>{
       // console.log("resdata===>",resdata.data._id)

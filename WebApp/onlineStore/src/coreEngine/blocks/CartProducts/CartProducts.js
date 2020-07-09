@@ -519,7 +519,7 @@ class CartProducts extends Component{
                         </div>
                         : 
                         <div className="col-lg-12 textAlignCenter">
-                          <img src={notavailable} alt="" />
+                          <img src={emptyCartImg} alt="" />
                           
                         </div>   
                     }

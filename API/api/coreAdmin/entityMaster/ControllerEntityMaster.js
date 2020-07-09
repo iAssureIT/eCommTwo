@@ -93,6 +93,20 @@ exports.listEntity = (req,res,next)=>{
                     });
                 });
 };
+exports.listEntity_franchise = (req,res,next)=>{
+    console.log("listEntity req.params = ",req.params);
+    EntityMaster.find({entityType:req.params.entityType,_id:req.params.franchiseid})
+                .sort({createdAt : -1})    
+                .then(data=>{
+                    // console.log("listEntity data = ",data);
+                    res.status(200).json(data);
+                })
+                .catch(err =>{
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+};
 
 exports.countEntity = (req,res,next)=>{
     EntityMaster.find({entityType:req.params.entityType}).count()       

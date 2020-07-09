@@ -42,8 +42,14 @@ class AllowablePincodes extends Component {
     }
 
     getEntityList(){
+        var userDetails = (localStorage.getItem('userDetails'));
+        var userData = JSON.parse(userDetails);
+        axios.get("/api/entitymaster/get/one/companyName/"+userData.companyID)
+        .then((resdata)=>{
+        console.log("resdata===>",resdata.data._id)
         var entityType = "franchise";
-        axios.get("/api/entitymaster/get/"+entityType)
+        var franchiseid = resdata.data._id;
+        axios.get("/api/entitymaster/get/one/"+entityType+franchiseid)
 
 			.then((response) => {
 				if(response){
@@ -69,6 +75,9 @@ class AllowablePincodes extends Component {
             })            			
 			.catch((error) => {
 			})
+        })            			
+        .catch((error) => {
+        })
     }
     handleChange(event) {
         // event.preventDefault();

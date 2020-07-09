@@ -9,6 +9,8 @@ router.post('/post', entityMaster.insertEntity);
 
 router.get('/get/:entityType',entityMaster.listEntity);
 
+router.get('/get/one/:entityType/:franchiseid',entityMaster.listEntity_franchise);
+
 router.get('/get/count/:entityType',entityMaster.countEntity);
 
 router.post('/get/filterEntities',entityMaster.filterEntities);

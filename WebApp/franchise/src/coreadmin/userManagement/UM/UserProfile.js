@@ -330,6 +330,7 @@ class EditUserProfile extends Component {
 															<input type="text" disabled className="formFloatingLabels form-control  newinputbox" ref="companyID" name="companyID" id="companyID" data-text="companyID" onChange={this.handleChange} value={this.state.companyID}
 																placeholder="Company ID" />
 														</div>
+														
 													</div>
 												</div>
 												<div className="form-margin col-lg-12 col-sm-12 col-xs-12 col-md-12 pull-right">
