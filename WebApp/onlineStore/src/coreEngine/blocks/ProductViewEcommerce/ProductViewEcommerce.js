@@ -609,7 +609,7 @@ class ProductViewEcommerce extends Component {
 												:
 												null
 											}
-											<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt15 detailtitle">Select Size </label>
+											{/* <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt15 detailtitle">Select Size </label> */}
 											{this.state.productData.availableQuantity > 0 ?
 												<div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 													<div className="col-lg-12 col-md-12 col-sm-12 row">
@@ -621,7 +621,7 @@ class ProductViewEcommerce extends Component {
 																	return(	
 																	<div>												
 																		{/* <input title="Please select size first." checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onChange={this.setNewSizeProduct.bind(this)}/> */}
-																		<span title={a.size} checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onClick={this.setNewSizeProduct.bind(this,a._id)} className="checkmark mg15 row col-lg-4 col-md-12 col-sm-12 col-xs-12">{a.size}&nbsp;{a.unit}</span>
+																		{/* <span title={a.size} checked={this.state.selectedSize === a.size ? true : false} value={a.size} name="size" type="radio" id={a._id} onClick={this.setNewSizeProduct.bind(this,a._id)} className="checkmark mg15 row col-lg-4 col-md-12 col-sm-12 col-xs-12">{a.size}&nbsp;{a.unit}</span> */}
 																	{/* {	
 																		Array.isArray(a.availableSizes).length>0 ?
 																			a.availableSizes.map((size,index)=>{
