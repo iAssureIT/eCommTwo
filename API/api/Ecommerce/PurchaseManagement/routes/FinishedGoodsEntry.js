@@ -25,6 +25,9 @@ router.get('/get/filedetails/:fileName' ,FinishedGoodsEntryController.filedetail
 
 router.post('/post/getReportOfFinishedGoods',FinishedGoodsEntryController.get_finished_goods_report);
 
+router.post('/post/getProductCurrentStockReport',FinishedGoodsEntryController.get_product_current_stock_report);
+
+
 /* Bulk upload code end */
 
 /*

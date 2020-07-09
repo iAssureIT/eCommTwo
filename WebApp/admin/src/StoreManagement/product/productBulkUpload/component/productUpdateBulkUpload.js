@@ -258,7 +258,7 @@ class UpdateProductBulkUpload extends Component {
                                    // ?
                                        <BulkUploadComponent 
                                             url="api/products/post/bulkUploadProductUpdate" 
-                                            fileurl={this.state.fileurl}
+                                            fileurl="../BulkUploadTemplates/Product Update Template.xlsx"
                                             fileDetailUrl="/api/products/get/filedetails/"
                                             requiredData={requiredData}
                                         />   

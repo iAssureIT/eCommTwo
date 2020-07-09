@@ -238,10 +238,15 @@ exports.raw_material_current_stock = (req,res,next) => {
             });
 
             let totalBalance = balanceUnitArray.reduce(function(prev, current) {
-                finalArray.push({"totalStock":prev + +current,"StockUnit":balanceUnit})
+                finalArray.push({"totalStock":current,"StockUnit":balanceUnit})
                 return finalArray;
             }, 0);
-           res.status(200).json(totalBalance);   
+
+            var sum = 0;
+            finalArray.forEach(function(obj){
+              sum += obj.totalStock;
+            });
+           res.status(200).json({"totalStock":sum,"StockUnit":balanceUnit});   
        
     })
     .catch(err =>{
@@ -673,6 +678,112 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
     })            
 }
 
+function get_opening_stock_of_raw(itemCode,id,date){
+    var date = moment(date).tz('Asia/Kolkata').startOf('day');
+    console.log("Dddd",
+                 {itemCode : itemCode,
+                  balance: { $gt: 0 },
+                  purchaseDate: { '$lte':  date}
+                 }
+                );
+ return new Promise(function(resolve,reject){ 
+     PurchaseEntry.find({
+                  itemCode : itemCode,
+                  _id: {$ne: id},
+                  balance: { $gt: 0 },
+                  createdAt: {
+                     $lte: moment(date).endOf('day').toDate()
+                  }
+              })
+     .then(data=>{
+            var balanceArray = [];
+            var balanceUnitArray = [];
+            var balanceUnit;
+            var finalArray = [];
+            data.filter(function(item,index){
+                balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+            });
+
+            balanceArray.filter(function(item,index){
+                if(item.balanceUnit === "Kg"){
+                    balanceUnitArray.push(item.balance);
+                    balanceUnit = "Kg"
+                }else{
+                    if(item.balanceUnit == "Gm"){
+                        var converToKG = item.balance/1000;
+                        balanceUnitArray.push(converToKG);
+                        //converted to kg so balanceunit is kg only
+                        balanceUnit = "Kg";
+                    }else{
+                        balanceUnitArray.push(item.balance);
+                        balanceUnit = item.balanceUnit;
+                    }                    
+                }
+            });
+
+            let totalBalance = balanceUnitArray.reduce(function(prev, current) {
+                finalArray.push({"totalStock":current,"StockUnit":balanceUnit})
+                return finalArray;
+            }, 0);
+            var sum = 0;
+            finalArray.forEach(function(obj){
+              sum += obj.totalStock;
+            });
+            resolve(sum);
+       
+    })
+    .catch(err =>{
+        reject(err);
+    }); 
+   })
+}
+
+function get_current_stock_of_raw(itemcode){
+     return new Promise(function(resolve,reject){ 
+     PurchaseEntry.find({itemCode : itemcode,balance: { $gt: 0 }})
+     .then(data=>{
+            var balanceArray = [];
+            var balanceUnitArray = [];
+            var balanceUnit;
+            var finalArray = [];
+            data.filter(function(item,index){
+                balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+            });
+
+            balanceArray.filter(function(item,index){
+                if(item.balanceUnit === "Kg"){
+                    balanceUnitArray.push(item.balance);
+                    balanceUnit = "Kg"
+                }else{
+                    if(item.balanceUnit == "Gm"){
+                        var converToKG = item.balance/1000;
+                        balanceUnitArray.push(converToKG);
+                        //converted to kg so balanceunit is kg only
+                        balanceUnit = "Kg";
+                    }else{
+                        balanceUnitArray.push(item.balance);
+                        balanceUnit = item.balanceUnit;
+                    }                    
+                }
+            });
+
+            let totalBalance = balanceUnitArray.reduce(function(prev, current) {
+                finalArray.push({"totalStock":current,"StockUnit":balanceUnit})
+                return finalArray;
+            }, 0);
+            var sum = 0;
+            finalArray.forEach(function(obj){
+              sum += obj.totalStock;
+            });
+            resolve({"totalStock":sum,"StockUnit":balanceUnit});
+       
+    })
+    .catch(err =>{
+        reject(err);
+    }); 
+   })
+}
+
 
 
 exports.get_purchase_entry_report = (req, res, next)=>{
@@ -680,8 +791,6 @@ exports.get_purchase_entry_report = (req, res, next)=>{
     const startDate = moment(req.body.fromDate).tz('Asia/Kolkata').startOf('day');
     const endDate =  moment(req.body.toDate).tz('Asia/Kolkata').endOf('day');
 
-    console.log("startDate",startDate);
-    console.log("endDate",endDate);
     if(req.body.itemcode != undefined && req.body.itemcode != ""){
         PurchaseEntry.find({ 
             purchaseDate: { '$gte': startDate, '$lt': endDate},
@@ -690,7 +799,43 @@ exports.get_purchase_entry_report = (req, res, next)=>{
         .sort({createdAt:-1})      
         .exec()
         .then(data=>{
-           res.status(200).json(data);   
+            main();
+             async function main(){
+                        var i = 0;
+                        var returnData = [];
+                        var DistData = [];
+                        for(i = 0 ; i < data.length ; i++){
+
+                        var currentStock =  await get_current_stock_of_raw(data[i].itemCode);
+                            returnData.push({
+                                "_id"             : data[i]._id,
+                                "purchaseDate"    : data[i].purchaseDate,
+                                "purchaseStaff"   : data[i].purchaseStaff,
+                                "purchaseStaff"   : data[i].purchaseStaff,
+                                "purchaseLocation": data[i].purchaseLocation,
+                                "itemCode"        : data[i].itemCode,
+                                "productCode"     : data[i].productCode,
+                                "productName"     : data[i].productName,
+                                "quantity"        : data[i].quantity,
+                                "unit"            : data[i].unit,
+                                "amount"          : data[i].amount,
+                                "unitRate"        : data[i].unitRate,
+                                "unitOfMeasurement": data[i].unitOfMeasurement,
+                                "Details"          : data[i].Details,
+                                "purchaseNumber"   : data[i].purchaseNumber,
+                                "balance"          : data[i].balance,
+                                "balanceUnit"      : data[i].balanceUnit,
+                                "totalStock"       : currentStock.totalStock,
+                                "StockUnit"        : currentStock.StockUnit,
+                                "openingStock"     : currentStock.totalStock - data[i].quantity,
+                                "createdAt"        : data[i].createdAt,
+                            });
+                        }
+                        if( i >= data.length){
+                            res.status(200).json(returnData);
+                        }
+                }
+          
         })
         .catch(err =>{
             console.log(err);
@@ -700,14 +845,51 @@ exports.get_purchase_entry_report = (req, res, next)=>{
         });
     }else{
     
-         PurchaseEntry.find({ 
+        PurchaseEntry.find({ 
             purchaseDate: { '$gte': startDate, '$lt': endDate},
         })
-        .sort({createdAt:-1})      
+        // .sort({createdAt:-1})      
         .exec()
         .then(data=>{
-           res.status(200).json(data);   
-        })
+             main();
+             async function main(){
+                        var i = 0;
+                        var returnData = [];
+                        var DistData = [];
+                        for(i = 0 ; i < data.length ; i++){
+
+                        var currentStock =  await get_current_stock_of_raw(data[i].itemCode);
+                         var openingStock =  await get_opening_stock_of_raw(data[i].itemCode,data[i]._id,data[i].purchaseDate);
+                        // console.log("openingStock",openingStock);
+                            returnData.push({
+                                "_id"             : data[i]._id,
+                                "purchaseDate"    : data[i].purchaseDate,
+                                "purchaseStaff"   : data[i].purchaseStaff,
+                                "purchaseStaff"   : data[i].purchaseStaff,
+                                "purchaseLocation": data[i].purchaseLocation,
+                                "itemCode"        : data[i].itemCode,
+                                "productCode"     : data[i].productCode,
+                                "productName"     : data[i].productName,
+                                "quantity"        : data[i].quantity,
+                                "unit"            : data[i].unit,
+                                "amount"          : data[i].amount,
+                                "unitRate"        : data[i].unitRate,
+                                "unitOfMeasurement": data[i].unitOfMeasurement,
+                                "Details"          : data[i].Details,
+                                "purchaseNumber"   : data[i].purchaseNumber,
+                                "balance"          : data[i].balance,
+                                "balanceUnit"      : data[i].balanceUnit,
+                                "totalStock"       : currentStock.totalStock,
+                                "StockUnit"        : currentStock.StockUnit,
+                                "openingStock"     : openingStock,
+                                "createdAt"        : data[i].createdAt,
+                            });
+                        }
+                        if( i >= data.length){
+                            res.status(200).json(returnData);
+                        }
+                }
+            })
         .catch(err =>{
             console.log(err);
             res.status(500).json({

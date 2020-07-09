@@ -67,35 +67,25 @@ export default class FranchiseDistribution extends React.Component {
 						var total = [];
 						franchisePurOrders.data.DistributionData.forEach(item => {
 							if(franchisePurOrders.data.orderItems[j].itemCode == item.itemCode){
-								console.log("abc",item.itemCode,Number(item.suppliedQty));
-								total[j] = Number(total) + Number(item.suppliedQty)
-							// total = Number(total) + Number(item.suppliedQty);
+								total.push({"itemCode":item.itemCode,"suppliedQty":item.suppliedQty})
 							}else{
 
 							}
 						});
-
-						// console.log("total",total);
-											
+						franchisePurOrders.data.orderItems[j].alreadySupplied = total.reduce((a, b) => +a + +b.suppliedQty, 0);
+					
 						if(franchisePurOrders.data.DistributionData[j]){
 								if(franchisePurOrders.data.DistributionData[j].itemCode == franchisePurOrders.data.orderItems[j].itemCode){
 									if(franchisePurOrders.data.orderItems[j].orderQty === franchisePurOrders.data.DistributionData[j].suppliedQty){
-										// franchisePurOrders.data.orderItems.splice(j,1);
-										franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
 										franchisePurOrders.data.orderItems[j].alreadySuppliedUnit = franchisePurOrders.data.DistributionData[j].suppliedUnit;
 									}else{
-										franchisePurOrders.data.orderItems[j].alreadySupplied = total;
 										franchisePurOrders.data.orderItems[j].alreadySuppliedUnit = franchisePurOrders.data.DistributionData[j].suppliedUnit;
 									}
 								}else{
-									 franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
 									 franchisePurOrders.data.orderItems[j].alreadySuppliedUnit = franchisePurOrders.data.DistributionData[j].suppliedUnit;
 
 								}
-						}else{
-							franchisePurOrders.data.orderItems[j].alreadySupplied = 0;
 						}
-						
 						
 						franchisePurOrders.data.orderItems[j].franchiseId = franchisePurOrders.data.franchise_id;
 						franchisePurOrders.data.orderItems[j].supply = 0;
@@ -108,13 +98,13 @@ export default class FranchiseDistribution extends React.Component {
 						 return value.companyName;
 					});
 
-				
-					// DistributionData.splice(DistributionData.findIndex(e => e.alreadySupplied == e.orderQty),1);
-
-					console.log("alreadySupplied",DistributionData	);
-
-					
-					
+					for (var i = 0; i < DistributionData.length; i++){
+					   console.log(DistributionData[i].alreadySupplied,DistributionData[i].orderQty);
+					   if (DistributionData[i].alreadySupplied === DistributionData[i].orderQty) { 
+						DistributionData.splice(i, 1);
+						   break;
+					   }
+					}
 
 					this.setState({
 						"DistributionData"  : DistributionData,
@@ -122,7 +112,6 @@ export default class FranchiseDistribution extends React.Component {
 						"orderDate"         : moment(franchisePurOrders.data.orderDate).format("YYYY-MM-DD"),
 						"selectedFranchise" : franchise_id
 					},()=>{
-						console.log("totalAlreadySupplied",DistributionData);
 						this.getFooterTotal();
 					 });
 			})
@@ -438,7 +427,7 @@ export default class FranchiseDistribution extends React.Component {
 													// console.log("render map",result); // style={{fontWeight:'bold'}}
 													return( 
 																<tr key={index}>
-																	<td>{result.productName} <br/><small>{result.itemCode} - {result.productCode}</small></td>
+																	<td>{result.productName} <br/><small>{result.productCode} - {result.itemCode}</small></td>
 													                <td>{result.currentStock} {result.currentStockUnit}</td>
 													                <td>{result.orderQty} {result.unit}</td>
 													                <td>{result.alreadySupplied} {result.alreadySuppliedUnit}</td>

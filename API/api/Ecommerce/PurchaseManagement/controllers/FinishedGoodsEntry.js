@@ -7,8 +7,9 @@ const Products      = require('../../products/Model');
 const FailedRecords = require('../../failedRecords/Model');
 const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
 const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
+const franchisegoods = require('../../distributionManagement/Model');
+const Entitymaster          = require('../../../coreAdmin/entityMaster/ModelEntityMaster.js');
 const moment = require('moment-timezone');
-
 
 exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                 getData();
@@ -637,10 +638,14 @@ var raw_material_current_stock = async (data) => {
                 });
 
                 let totalBalance = balanceUnitArray.reduce(function(prev, current) {
-                    finalArray.push({"totalStock":prev + +current,"StockUnit":balanceUnit})
-                    return finalArray;
+                  finalArray.push({"totalStock":current,"StockUnit":balanceUnit})
+                  return finalArray;
                 }, 0);
-                resolve(totalBalance);           
+                var sum = 0;
+                finalArray.forEach(function(obj){
+                  sum += obj.totalStock;
+                });
+                resolve({"totalStock":sum,"StockUnit":balanceUnit});          
         })
          .catch(err =>{ reject(err); });
         }
@@ -790,7 +795,7 @@ exports.get_finished_goods_report = (req, res, next)=>{
     const startDate = moment(req.body.fromDate).tz('Asia/Kolkata').startOf('day');
     const endDate =  moment(req.body.toDate).tz('Asia/Kolkata').endOf('day');
 
-    var selector = {};
+
     if(req.body.itemcode != undefined && req.body.itemcode != ""){
         FinishedGoodsEntry.find({ 
             Date: { '$gte': startDate, '$lt': endDate },
@@ -825,6 +830,123 @@ exports.get_finished_goods_report = (req, res, next)=>{
     }
 };
 
+
+function get_current_stock_of_franchise(itemcode){
+     return new Promise(function(resolve,reject){ 
+     franchisegoods.find({itemCode : itemcode,balance: { $gt: 0 }})
+     .then(data=>{
+            var balanceArray = [];
+            var balanceUnitArray = [];
+            var balanceUnit;
+            var finalArray = [];
+            data.filter(function(item,index){
+                balanceArray.push({"balance" :item.balance,"unit":item.unit});
+            });
+
+            balanceArray.filter(function(item,index){
+                if(item.unit === "Kg"){
+                    balanceUnitArray.push(item.balance);
+                    balanceUnit = "Kg"
+                }else{
+                    if(item.unit == "Gm"){
+                        var converToKG = item.balance/1000;
+                        balanceUnitArray.push(converToKG);
+                        //converted to kg so balanceunit is kg only
+                        balanceUnit = "Kg";
+                    }else{
+                        balanceUnitArray.push(item.balance);
+                        balanceUnit = item.balanceUnit;
+                    }                    
+                }
+            });
+
+            let totalBalance = balanceUnitArray.reduce(function(prev, current) {
+                finalArray.push({"totalStock":current,"StockUnit":balanceUnit})
+                return finalArray;
+            }, 0);
+            var sum = 0;
+            finalArray.forEach(function(obj){
+              sum += obj.totalStock;
+            });
+            resolve({"totalStock":sum,"StockUnit":balanceUnit});
+       
+    })
+    .catch(err =>{
+        reject(err);
+    }); 
+   })
+}
+
+function getFranchise(id){
+     return new Promise(function(resolve,reject){ 
+            Entitymaster.findOne({_id : id})
+                .then(franchiseData =>{
+                   resolve(franchiseData);
+                })
+                 .catch(err =>{
+                   reject(err);
+                }); 
+
+     })
+ }
+
+ 
+
+
+
+exports.get_product_current_stock_report = (req, res, next)=>{
+    var selector = {};
+    if(req.body.itemcode){
+        selector = {"itemCode" : req.body.itemcode}
+    }
+
+    if(req.body.franchiseId){
+       selector = {"franchise_id" : req.body.franchiseId}
+    }
+
+    if(req.body.itemcode && req.body.franchiseId){
+        selector = {"itemCode" : req.body.itemcode,"franchise_id" : req.body.franchiseId}
+    }
+   
+        franchisegoods.find(selector)
+        .exec()
+        .then(data=>{
+            main();
+             async function main(){
+                        var i = 0;
+                        var returnData = [];
+                        var DistData = [];
+                        for(i = 0 ; i < data.length ; i++){
+                        var currentStock =  await get_current_stock_of_franchise(data[i].itemCode); 
+                        var Franchise =  await getFranchise(data[i].franchise_id); 
+                        var franchiseDetails =                        
+                            returnData.push({
+                                "_id"             : data[i]._id,
+                                "franchise_id"    : data[i].franchise_id,
+                                "franchiseName"   : Franchise.companyName,
+                                "purchaseLocation": data[i].purchaseLocation,
+                                "itemCode"        : data[i].itemCode,
+                                "productCode"     : data[i].productCode,
+                                "productName"     : data[i].productName,
+                                "totalStock"      : currentStock.totalStock,
+                                "StockUnit"       : currentStock.StockUnit,
+                                "createdAt"       : data[i].createdAt,
+                            });
+                        }
+
+                      
+                         res.status(200).json(returnData);
+                }
+          
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+  
+};
 /*Code by madhuri*/
 
 

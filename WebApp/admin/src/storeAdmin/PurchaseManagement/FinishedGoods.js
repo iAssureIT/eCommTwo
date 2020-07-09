@@ -497,12 +497,12 @@ export default class FinishedGoods extends React.Component {
 	getCurrentStock(){
 		    axios.get('/api/purchaseEntry/get/RawMaterialCurrentStock/'+this.state.ItemCode)
 		    .then(response => {
-				// console.log("getCurrentStock",response.data);
+				console.log("getCurrentStock",response.data);
 				if(response.data){
 					this.setState({
-						CurrentStock     : response.data[0].totalStock ? response.data[0].totalStock : 0,
-						CurrentStockUnit : response.data[0].StockUnit  ? response.data[0].StockUnit  : "",
-						OutwardUnit      : response.data[0].StockUnit  ? response.data[0].StockUnit  : "",
+						CurrentStock     : response.data.totalStock ? response.data.totalStock : 0,
+						CurrentStockUnit : response.data.StockUnit  ? response.data.StockUnit  : "",
+						OutwardUnit      : response.data.StockUnit  ? response.data.StockUnit  : "",
 					},()=>{
 						
 					});
@@ -1330,7 +1330,7 @@ export default class FinishedGoods extends React.Component {
 										url="/api/finishedGoodsEntry/finishedGoodsBulkUpload" 
 										// data={{"purchaseNumber" : this.state.purchaseNumber}} 
 										uploadedData={this.uploadedData} 
-										fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
+										fileurl="../BulkUploadTemplates/Finish Goods Inward Template.xlsx"
 										fileDetailUrl={this.state.fileDetailUrl}
 										getFileDetails={this.getFileDetails}
 										getData={this.getData.bind(this)}

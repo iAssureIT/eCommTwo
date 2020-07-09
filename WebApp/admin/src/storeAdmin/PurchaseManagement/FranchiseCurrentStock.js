@@ -5,8 +5,7 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
 
-export default class RawMaterialStockReport extends React.Component {
-
+export default class FranchiseCurrentStock extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
@@ -25,14 +24,11 @@ export default class RawMaterialStockReport extends React.Component {
 						            apply  : false,
 						           },
 		             "tableHeading"     : {
-						Date            : 'Date',
-						itemCode 		: "Item Code",
-		        		productCode     : "Product Code",
-						productName     : "Product Name",
-						UnitRate        : "Rate Per Unit",
-						OpeningStock    : 'Opening Stock',
-		                StockAddedToday : 'Stock Added Today',
-		                totalStock      : 'Total Stock',	 
+					
+                        productName         : "Product Name",
+                        franchiseName       : "Franchise Name",
+                        totalStock          : 'Total Stock',	 
+                      
 					},
 					"tableObjects" 		: {
 						deleteMethod              : 'delete',
@@ -55,7 +51,10 @@ export default class RawMaterialStockReport extends React.Component {
 					reportFilterData    : {},
 					filterByProduct     : 'Select Product',
 					fromDate            : moment(new Date()).format("YYYY-MM-DD"),
-					toDate              : moment(new Date()).format("YYYY-MM-DD"),
+                    toDate              : moment(new Date()).format("YYYY-MM-DD"),
+                    franchiseList       : [],
+                    selectedFranchise   : 'Show All',
+
 			      	
       };
 	}
@@ -65,7 +64,7 @@ export default class RawMaterialStockReport extends React.Component {
 		this.getproducts();
 		var serchByDate = moment(new Date()).format("YYYY-MM-DD");
 		// console.log("today",today);
-		this.getReportBetweenDates();
+        this.getCurrentStockReport();
 		var editId = this.props.match.params.purchaseId;
 
 	}
@@ -90,48 +89,46 @@ export default class RawMaterialStockReport extends React.Component {
 				});
 	}
 	
-	getReportBetweenDates(){
+	getCurrentStockReport(){
 		var reportFilterData = this.state.reportFilterData;
 		if(this.state.filterByProduct !== "Select Product"){
 			reportFilterData.itemcode = this.state.filterByProduct;
 		}else{
 			delete reportFilterData["itemcode"];
-		}
-		reportFilterData.fromDate = this.state.fromDate;
-		reportFilterData.toDate = this.state.toDate;
+        }
 
+        if(this.state.selectedFranchise !== "Show All"){
+			reportFilterData.franchiseId = this.state.selectedFranchise;
+		}else{
+			delete reportFilterData["franchiseId"];
+        }
+        
 		console.log("reportFilterData",reportFilterData);
 
 		axios
-		.post('/api/purchaseentry/post/getReportOfPurchaseEntry/',reportFilterData)
+		.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
 		.then((response)=>{
-			
+			console.log("response",response);
 			var tableData = response.data.map((a, i) => {
-				// var stock = this.getTotalSTock(a.itemCode);
-			// console.log("stock",stock);
 					return {
 						_id                  : a._id,
-						Date   				 : a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
-						// itemCode             : a.itemCode     ? a.itemCode     : "",
-						// productCode          : a.productCode  ? a.productCode  : "",
-						productName 	     : a.productName  ? a.productName +' - '+ a.productCode +' - '+ a.itemCode: "" ,
-						UnitRate             : a.unitRate     ? a.unitRate +' <i class="fa fa-rupee" style="font-size": "small"></i> / '+a.unitOfMeasurement     : 0,
-						OpeningStock         : a.openingStock  ? a.openingStock : 0,
-						StockAddedToday      : a.quantity     ? a.quantity +' '+a.unit     : 0,
+                        productName 	     : a.productName  ? a.productName +' - '+ a.productCode +' - '+ a.itemCode: "" ,
+                        franchiseName          : a.franchiseName ? a.franchiseName :'',
 						totalStock           : a.totalStock    ? a.totalStock +' '+ a.StockUnit : 0,
 						
-					}
+                    }
+                    
+            });
+
+            var data =  [...new Map(tableData.map(item => [item['itemCode'], item] && [item['franchiseId'], item])).values()]
+            
+			this.setState({
+				tableData : data,          
+			},()=>{
+                console.log("tableData",data);
+                this.getFranchiseList();
 			})
-					
-
-				
-
-				this.setState({
-				  tableData 		: tableData,          
-				},()=>{
-					console.log("tableData",tableData);
-				})
-				})
+		})
 		.catch((error)=>{
 			console.log("error = ", error);              
 		}); 
@@ -186,7 +183,7 @@ export default class RawMaterialStockReport extends React.Component {
 		this.setState({ 
 		  [name]:value,
 		},()=>{
-		  this.getReportBetweenDates();
+		  this.getCurrentStockReport(value);
 		 });
 	  }
    /* Filters end*/
@@ -199,7 +196,7 @@ export default class RawMaterialStockReport extends React.Component {
        this.setState({
            [name] : event.target.value,
        },()=>{
-		   this.getReportBetweenDates();
+		   this.getCurrentStockReport();
 	   });
     }
     handleToChange(event){
@@ -210,39 +207,38 @@ export default class RawMaterialStockReport extends React.Component {
        this.setState({
           [name] : event.target.value,
        },()=>{
-		  this.getReportBetweenDates();
+		  this.getCurrentStockReport();
 	   });
     }
 
-
+    getFranchiseList(){
+		axios.get('/api/entitymaster/get/franchise/')
+        .then((response) => {
+          this.setState({
+            "franchiseList": response.data,
+          },()=>{
+						// console.log("franchiseList = ",this.state.franchiseList);
+					})
+	      })
+	      .catch((error) => {
+					console.log("Error in franchiseList = ", error);
+	      })
+    }
+    
 	render() {
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                            <h4 className="">Raw Material Stock Report</h4>
+                            <h4 className="">Franchise Current Stock</h4>
                         </div>
 						
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						    <div className="col-lg-6 col-md-6 col-xs-12 col-sm-12 reports-select-date-fromto">
-								<div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 reports-select-date-from1">
-									<label>From Date</label>
-									<div className="reports-select-date-from3">
-										<input onChange={this.handleFromChange.bind(this)} name="fromDate" ref="fromDateCustomised" value={this.state.fromDate} type="date" className="reportsDateRef form-control" placeholder=""  />
-									</div>
-								</div>
-								<div className="col-lg-3 col-md-3 col-xs-12 col-sm-12 reports-select-date-to1">
-									<label>To Date</label>
-									<div className="reports-select-date-to3">
-										<input onChange={this.handleToChange.bind(this)} name="toDate" ref="toDateCustomised" value={this.state.toDate} type="date" className="reportsDateRef form-control" placeholder=""   />
-									</div>
-								</div>
-							</div>
-							<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
-									<label>Product Name:</label>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  mtop25">
+							<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
+									<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Product</label>
 									<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
-									<option value="Select Product" disabled="">Select Product</option>
+									<option value="Select Product" disabled="">-- Select --</option>
 									{
 										this.state.productArray && this.state.productArray.length > 0 ?
 											this.state.productArray.map((data, i)=>{
@@ -255,12 +251,30 @@ export default class RawMaterialStockReport extends React.Component {
 									}
 									</select>
 							</div>
+                            <div className="col-lg-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 ">
+				 			<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left labelform">Select Franchise</label>
+							<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="selectedFranchise" name="selectedFranchise" value={this.state.selectedFranchise} onChange={this.filterChange.bind(this)} >
+								<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+								<option value="all" name="roleListDDOption">Show All</option>
+								{
+									this.state.franchiseList && this.state.franchiseList.length > 0 ?
+										this.state.franchiseList.map((data, index) => {
+											// console.log("companyDropdown==>",data);
+											return (
+												<option key={index} value={data._id}>{data.companyName}</option>
+											);
+										})
+										:
+										<option value='user'>User</option>
+								}
+							</select>
+				</div> 
 							<IAssureTable
 								tableHeading={this.state.tableHeading}
 								twoLevelHeader={this.state.twoLevelHeader} 
 								dataCount={this.state.dataCount}
 								tableData={this.state.tableData}
-								getData={this.getReportBetweenDates.bind(this)}
+								getData={this.getCurrentStockReport.bind(this)}
 								tableObjects={this.state.tableObjects}
 							/>			
 							</div>

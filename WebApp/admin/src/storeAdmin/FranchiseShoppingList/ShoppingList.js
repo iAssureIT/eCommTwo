@@ -372,6 +372,8 @@ class IAssureTableUM extends Component {
 	      })
 	}
 	selectedFranchise(event){
+		let index = event.target.selectedIndex;
+		let label = event.target[index].text;
 		var selectedValue = event.target.value;
 		var keywordSelectedValue = selectedValue.split('$')[0];
 		console.log('keywordSelectedValue A==>>>', keywordSelectedValue);
@@ -402,7 +404,7 @@ class IAssureTableUM extends Component {
 												a.status = "Partially Completed";
 											}
 										}else{
-											// a.status = "Pending"
+											 a.status = "Pending"
 										}
 									}else{
 										a.status = "Pending"
@@ -418,14 +420,14 @@ class IAssureTableUM extends Component {
 								orderDate		: moment(a.orderDate).format("ddd, DD-MMM-YYYY"),
 								franchisename	: a.franchiseName.length > 0 ? a.franchiseName[0].companyName : null,
 								orderedqty		: a.orderItems.length.toString(),
-								profileStatus	: a.status,
+								profileStatus	: a.status != undefined ? a.status : "Pending",
 							}
 						})
 						this.setState({
 							tableData: tableData,
 						})
 					}).catch((error) => {
-						swal(" ", "Sorry there is no data of " + selectedValue, "");
+						swal(" ", "Sorry there is no data of " + label, "");
 					});
 		}
 	}
@@ -456,7 +458,7 @@ class IAssureTableUM extends Component {
 											a.status = "Partially Completed";
 										}
 									}else{
-										// a.status = "Pending"
+										 a.status = "Pending"
 									}
 								}else{
 									a.status = "Pending"

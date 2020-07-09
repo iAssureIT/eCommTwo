@@ -326,7 +326,7 @@ class AddNewBulkProduct extends Component {
                                    // (this.state.preferences==="MarketPlace" && this.state.vendor &&  this.state.fileurl) || 
                                    // ?
                                        <BulkUploadComponent url="api/products/post/bulkUploadProduct" 
-                                                            fileurl={this.state.fileurl}
+                                                            fileurl="../BulkUploadTemplates/Product Insert Template.xlsx"
                                                             fileDetailUrl="/api/products/get/filedetails/"
                                                             requiredData={requiredData}
                                         />   

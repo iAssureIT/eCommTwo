@@ -445,8 +445,7 @@ export default class PurchaseManagement extends React.Component {
         [name]:value,
  
       },()=>{
-		//this.getData();
-
+		this.getData();
       });
     }
 
@@ -901,7 +900,7 @@ export default class PurchaseManagement extends React.Component {
 										url="/api/purchaseentry/raw_material_bulk_upload" 
 										data={{"purchaseNumber" : this.state.purchaseNumber}} 
 										uploadedData={this.uploadedData} 
-										fileurl="https://iassureitlupin.s3.ap-south-1.amazonaws.com/bulkupload/Create+Family.xlsx"
+										fileurl="../BulkUploadTemplates/Raw material Inward Template.xlsx"
 										fileDetailUrl={this.state.fileDetailUrl}
 										getFileDetails={this.getFileDetails}
 										getData={this.getData.bind(this)}
