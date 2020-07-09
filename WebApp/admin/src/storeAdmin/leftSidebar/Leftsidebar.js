@@ -272,7 +272,7 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
                 <li className="noPadLR">
-                  <a href="/Franchise-product-stock" data-id="/Franchise-product-stock" title="Franchise Order Summary" onClick={this.activeMenu.bind(this)}>
+                  <a href="/franchise-product-stock" data-id="/franchise-product-stock" title="Franchise Order Summary" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
                     <span className="sidebarMenuTitle">Franchise Product Stock</span>
                   </a>

@@ -273,7 +273,7 @@ class Layout extends Component  {
                                                     <Route path="/raw-material-stock-report"                        exact strict component={ RawMaterialStockReport } />
                                                     <Route path="/purchase-management/:purchaseId"                  exact strict component = { PurchaseManagement }  />
                                                     <Route path="/finished-goods"                                   exact strict component={FinishedGoods} />
-                                                    <Route path="/Franchise-product-stock"                          exact strict component={FranchiseCurrentStock} />
+                                                    <Route path="/franchise-product-stock"                          exact strict component={FranchiseCurrentStock} />
                                                     <Route path="/finished-goods/:finishedGoodId"                   exact strict component={FinishedGoods} />
                                                     <Route path="/distribution"                                     exact strict component={ Distribution } />
                                                     <Route path="/distribution/:purchaseId"                         exact strict component = { Distribution }  />
