@@ -641,6 +641,7 @@ loginPage(event){
                                                 <div className="col-lg-3"><p className="row"><b> {data.quantity}</b></p></div>
                                                 <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
                                                 <div className="col-lg-3 pull-right"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
+
                                               {/* </div> */}
                                             </div>
                                           </div>

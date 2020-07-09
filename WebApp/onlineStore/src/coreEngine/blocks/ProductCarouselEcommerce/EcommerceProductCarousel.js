@@ -81,7 +81,6 @@ class EcommerceProductCarousel extends Component {
     const websiteModel = localStorage.getItem("websiteModel");      
     const showLoginAs = localStorage.getItem("showLoginAs");      
     this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
-
   }
   
   addtocart(event) {
