@@ -52,7 +52,7 @@ class ProductModalViewEcommerce extends Component {
   	getData(productID){
   		axios.get("/api/products/get/one/"+productID)
             .then((response)=>{
-            	// console.log("product info---->",response);
+            	// console.log("product info---->",response.data);
               this.setState({ 
                   productData : response.data,
                   quanityLimit : response.data.availableQuantity

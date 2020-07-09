@@ -31,16 +31,20 @@ exports.insert_orders = (req,res,next)=>{
   User.findOne({"_id":req.body.user_ID})
   .exec()
   .then(data=>{     
+    
     Adminpreference.findOne()
     .then(preferenceData =>{
         if(preferenceData.websiteModel === "FranchiseModel"){
           var autogenerateOrderId = Math.round(new Date().getTime()/1000);
-          console.log("inside adminpreferences, Address===",autogenerateOrderId);
+          // console.log("inside adminpreferences, Address===",autogenerateOrderId);
           var pincode = req.body.deliveryAddress.pincode;
           if(pincode){
+
             Allowablepincode.find()
             .exec()
             .then(franchiseObjects=>{
+                main();
+                async function main(){
                 // console.log("Allowaable Pincode data ============",franchiseObjects);                 
                 if(franchiseObjects){
                   var franchiseID;
@@ -63,47 +67,19 @@ exports.insert_orders = (req,res,next)=>{
                         var allocatedToFranchise;
                         var flag = false;
                         var len=matchedFranchise.length;
-                        for(var franchiseObjects of matchedFranchise){  
-                          // for(var i=0;i<matchedFranchise.length;i++){  
-                                                                            
-                            Entitymaster.findOne({_id : franchiseObjects.franchiseID})
-                            .then(franchiseData =>{
-                              // console.log("Franchise data:=======",franchiseData);
-                              if(franchiseData){
-                                var Flatitude  = franchiseData.locations[0].latitude;
-                                var Flongitude = franchiseData.locations[0].longitude;                                
-                                if(Flatitude && Flongitude){                                  
-                                  var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   
-                                  if(smDis == -1){
-                                    smDis = distance;
-                                    minDisFranchise = franchiseObjects;
-                                  }else if(distance < smDis){
-                                    smDis = distance;
-                                    minDisFranchise = franchiseObjects;                                    
-                                  }                                  
-                                }//end if lat-long
-                                // console.log("minDisFranchise ID=",minDisFranchise);                                
-                                allocatedToFranchise = minDisFranchise.franchiseID;
-                                console.log("min distance of franchise ID=",allocatedToFranchise); 
-                                // if(i === matchedFranchise.length-1){
-                                //   flag === "true";  
-                                // }                                 
-                                                                                     
-                              }
-                            })                           
-                          } //end for
-                        
+                        allocatedToFranchise = await allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise);
+                        // console.log("allocatedToFranchise available==========>",allocatedToFranchise);
                           saveOrderdata(allocatedToFranchise);                        
                       }else{
-                      console.log("single franchise available==========");
+                      // console.log("single franchise available==========");
                        var allocatedToFranchise = franchiseID; 
                        saveOrderdata(allocatedToFranchise);
                       }
 
                       // insert orders details and allocate franchise ID to orders
                       function saveOrderdata(allocatedToFranchise){
-                        console.log("allocatedToFranchise==========",allocatedToFranchise);
-                        console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
+                        // console.log("allocatedToFranchise==========",allocatedToFranchise);
+                        // console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),
                         "orderID"              : Math.round(new Date().getTime()/1000),
@@ -328,7 +304,9 @@ exports.insert_orders = (req,res,next)=>{
                     }//end saveOrderData
                   }//end if franchiseID
                 }     
+              }
             })
+          
           }// end if pincode
           
         }else{
@@ -559,6 +537,7 @@ exports.insert_orders = (req,res,next)=>{
         }//end else preference
         
     })//end preference .then()
+    
     .catch(error =>{
       console.log('error while getting preferences:', error);
       res.status(500).json({
@@ -574,6 +553,41 @@ exports.insert_orders = (req,res,next)=>{
       });
   });
 
+  function allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise) {    
+    for(var franchiseObjects of matchedFranchise){  
+      return new Promise(function(resolve,reject){
+      // for(var i=0;i<matchedFranchise.length;i++){  
+            // console.log("franchiseObjects.franchiseID=====>",franchiseObjects.franchiseID);                                
+            var minDisFranchise;
+            var smDis = -1;               
+        Entitymaster.findOne({_id : franchiseObjects.franchiseID})
+        .then(franchiseData =>{
+          // console.log("Franchise data:=======",franchiseData);
+          if(franchiseData){
+            var Flatitude  = franchiseData.locations[0].latitude;
+            var Flongitude = franchiseData.locations[0].longitude;                                
+            if(Flatitude && Flongitude){                                  
+              var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   
+              if(smDis == -1){
+                smDis = distance;
+                minDisFranchise = franchiseObjects;
+              }else if(distance < smDis){
+                smDis = distance;
+                minDisFranchise = franchiseObjects;                                    
+              }                                  
+            }//end if lat-long
+            allocatedToFranchise = minDisFranchise.franchiseID;
+            // console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
+            resolve(allocatedToFranchise);
+            // if(i === matchedFranchise.length-1){
+            //   flag === "true";  
+            // }                                 
+                                                                 
+          }
+        })                           
+        })                           
+      } //end for
+  }
   function findDistance(lat1, lon1, lat2, lon2, unit) {    
     if ((lat1 == lat2) && (lon1 == lon2)) {
       return 0;
