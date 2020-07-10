@@ -404,7 +404,7 @@ class ProductCollageView extends Component {
         <div className="row">
           {
             Array.isArray(this.state.products) && this.state.products.length > 0 ? 
-            Array.isArray(this.state.products) && this.state.products.map((data, index) => {
+            Array.isArray(this.state.products) && this.state.products.map((data, index) => {                
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 var wishClass = '';
                 var tooltipMsg = '';
@@ -416,20 +416,18 @@ class ProductCollageView extends Component {
                   tooltipMsg = 'Add To Wishlist';
                 }
                 return (
+                  
                   <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={index}>
-
                     <div className="">
                       <div className="card">
                         <div className="item-top">
                           <div className="productImg">
                             <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
                             {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
-
                             <a className="product photo product-item-photo collage" tabIndex="-1" href={"/productdetails/" + data.productUrl + "/" + data._id}>
                               <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImg" />
                             </a>
                           </div>
-
                           <div className="productDetails">
                             {
                               this.state['sizeCollage' + data._id] === true ?
@@ -440,7 +438,8 @@ class ProductCollageView extends Component {
                                     this.state['relatedProductArray' + data._id] && this.state['relatedProductArray' + data._id].length > 0 ?
                                       this.state['relatedProductArray' + data._id].map((a, i) => {
                                         if (a.size) {
-                                          return (                                            
+                                          return (    
+                                              i === 0 ?                                        
                                               <div className="selectSizeBox">                                                
                                                 <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
                                                 <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
@@ -468,7 +467,9 @@ class ProductCollageView extends Component {
                                                     <span className="disscountedPer">({data.discountPercent}% Off)</span>
                                                   </div>
                                                 }
-                                              </div>                                            
+                                              </div>   
+                                            :
+                                            null                                         
                                           );
                                         }
                                       })
@@ -532,7 +533,9 @@ class ProductCollageView extends Component {
 
                   </div>
                 );
+
               })
+
               :
 
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

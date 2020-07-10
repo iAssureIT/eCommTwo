@@ -72,9 +72,7 @@ class SearchProductCollage extends Component {
       var recentCartData    = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
       var productCartData   = recentCartData.filter((a) => a.product_ID === id);
       var quantityAdded     = productCartData.length > 0 ? productCartData[0].quantity : 0;
-      // if(localStorage.getItem('websiteModel')==="FranchiseModel"{
-
-      // }
+      
       const formValues = {
         "user_ID": userid,
         "product_ID": event.target.id,
@@ -413,7 +411,7 @@ class SearchProductCollage extends Component {
                 if (x && x.length > 0) {
                   var wishClass = '';
                   var tooltipMsg = 'Remove from wishlist';
-                } else {
+                }else {
                   // var wishClass = '-o';
                   // var tooltipMsg = 'Add to wishlist';
                 }
@@ -442,6 +440,7 @@ class SearchProductCollage extends Component {
                                         this.state['relatedProductArray' + data._id].map((a, i) => {
                                           if (a.size) {
                                             return (
+                                              i===0?
                                               <div className="selectSizeBox">                                                
                                                 <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
                                                 <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
@@ -454,8 +453,7 @@ class SearchProductCollage extends Component {
                                                             <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
                                                           :
                                                           <option className="" value={size}>{size}{data.unit}</option>                                                        
-                                                      )
-                                                      
+                                                      )                                                      
                                                     })
                                                   }
                                                 </select>
@@ -470,6 +468,7 @@ class SearchProductCollage extends Component {
                                                   </div>
                                                 }
                                               </div> 
+                                              :null
                                             );
                                           }
                                         })

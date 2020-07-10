@@ -179,8 +179,8 @@ class SearchProduct extends Component {
 
 						</ul>
 					</div>
-					{/* <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<div className="forSearchDiv">
+					 <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						{/*<div className="forSearchDiv">
 						</div>
 						<br />
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nb-brand">
@@ -206,9 +206,9 @@ class SearchProduct extends Component {
 
 							}
 
-						</div>
-					</div> */}
-					<div className="col-lg-12 col-md-12 col-sm-9 col-xs-9">
+						</div>*/}
+					</div> 
+					<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 
 						<div className="tab-content">
 							<div id="products" className="tab-pane fade in active">
