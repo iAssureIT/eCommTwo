@@ -24,7 +24,8 @@ import SideMenu from 'react-native-side-menu';
 import StepIndicator from 'react-native-step-indicator';
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/MyOrdersstyles.js';
 import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
@@ -306,6 +307,6 @@ export default class OrderDetails extends React.Component{
     }
   }
 }
-
+ 
 
 

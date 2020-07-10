@@ -57,7 +57,7 @@ export default StyleSheet.create({
   },
   superparent:{
     flex:1,
-    // backgroundColor:'#f1f1f1',
+    backgroundColor:'#f1f1f1',
   },
   placeonvw:{
     flex:1,marginBottom:"30%"
@@ -169,7 +169,8 @@ export default StyleSheet.create({
     flexDirection:'row',marginTop:20,paddingRight:10
   },
   orderstatustxt:{
-    fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#666',marginBottom:15
+    fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#666',marginBottom:15,
+    marginTop: 10,
   },
   ordervwbtn:{
     flex:0.5,borderRadius:3,shadowColor: '#fff',
@@ -185,7 +186,9 @@ export default StyleSheet.create({
     elevation: 5,
   },
   orderstatus:{
-    backgroundColor:'#fff',marginTop:15,paddingHorizontal:15,paddingVertical:15,borderWidth:1,borderColor:'#f1f1f1',    shadowColor: '#000',
+    backgroundColor:'#fff',marginTop:15,paddingHorizontal:15,
+    paddingVertical:15,borderWidth:1,borderColor:'#f1f1f1',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -195,11 +198,9 @@ export default StyleSheet.create({
     flex:1,marginBottom:'30%'
   },
   buttonRED:{
-   
     backgroundColor: colors.buttonRED,
     height: 45,
     width:"100%",
-
   },
   buttonConfirm:{
    
@@ -212,6 +213,12 @@ export default StyleSheet.create({
     color: colors.buttonText,
     fontFamily:"Montserrat-Regular",
     fontSize:13,
+  },
+  ordercancelled:{
+    color: 'red',
+    fontFamily:"Montserrat-SemiBold",
+    fontSize:14,
+    justifyContent : "center"
   },
   buttonText:{
     color: colors.buttonText,

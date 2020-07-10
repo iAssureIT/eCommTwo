@@ -4,6 +4,7 @@ const window = Dimensions.get('window');
 
 export default StyleSheet.create({
 bannerWrapper:{
-	borderWidth:1,borderColor:'#ccc',backgroundColor:'#ccc',height:180,width:'100%'
+	borderWidth:1,borderColor:'#ccc',
+	backgroundColor:'#ccc',height:180,
 },
 });

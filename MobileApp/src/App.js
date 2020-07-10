@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import HomeStack from "./config/routes.js";
 import AuthStack  from "./config/routes.js";
 import settings from "./config/settings.js";
+import Footer from "../src/ScreenComponents/Footer/UniFooter.js";
 import SplashScreen from 'react-native-splash-screen';
 // import axios                from './config/axios.js';
 import {
@@ -30,6 +31,7 @@ export default class App extends Component {
   render() {
     return (
       <HomeStackContainer />
+      
     );
   }
 }

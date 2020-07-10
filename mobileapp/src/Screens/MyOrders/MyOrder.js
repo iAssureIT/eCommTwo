@@ -4,28 +4,20 @@ import {
   ScrollView,
   Text,
   View,
-  BackHandler,
-  Dimensions,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  ImageBackground,
   Image,
-  TextInput,
   Alert,
   AsyncStorage
 
 } from 'react-native';
-
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Drawer from 'react-native-drawer';
+import BouncingPreloader from 'react-native-bouncing-preloader';
 import Modal from "react-native-modal";
-import { TextField } from 'react-native-material-textfield';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
-import SideMenu from 'react-native-side-menu';
 import StepIndicator from 'react-native-step-indicator';
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/MyOrdersstyles.js';
 import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
@@ -119,7 +111,7 @@ export default class MyOrder extends React.Component {
   openControlPanel = () => {
     this._drawer.open()
   }
-  confirmcancelorderbtn=() => {
+  confirmcancelorderbtn = () => {
     var formValues = {
       "orderID": this.state.cancelorderid,
       "userid": this.state.user_id,
@@ -142,7 +134,7 @@ export default class MyOrder extends React.Component {
   cancelorderbtn = (id) => {
     this.setState({
       cancelordermodal: true,
-      cancelorderid : id,
+      cancelorderid: id,
     });
   }
 
@@ -198,96 +190,127 @@ export default class MyOrder extends React.Component {
               <View style={styles.formWrapper}>
                 <View style={styles.parent}>
                   {
-                    this.state.myorders && this.state.myorders.length > 0 ?
-                      this.state.myorders.map((item, i) => {
-                        return (
-                          <View style={styles.prodinfoparent}>
-                            <View style={styles.orderid}><Text style={styles.orderidinfo}>Order ID : {item.orderID}</Text></View>
-                            {
-                              item.products && item.products.length > 0 ?
-                                item.products.map((pitem, index) => {
-                                  console.log("pitem===>", pitem);
-                                  return (
-                                    <View >
-                                      <View style={styles.prodorderdets}>
-                                        <View style={styles.flx3}>
-                                          <Text style={styles.proddets}>Product :</Text>
-                                          <Text style={styles.proddets}>Quantity :</Text>
-                                          <Text style={styles.proddets}>Price :</Text>
-
-                                        </View>
-                                        <View style={styles.flx3}>
-                                          <Text style={styles.prodinfo}>{pitem.productName}</Text>
-                                          <Text style={styles.prodinfo}> {pitem.quantity} kg </Text>
-
-                                          <View style={{ flexDirection: 'row', marginRight: 10, marginTop: 3 }}>
-                                            <Icon
-                                              name="rupee"
-                                              type="font-awesome"
-                                              size={15}
-                                              color="#388e3c"
-                                              iconStyle={styles.iconrps}
-                                            />
-                                            <Text style={styles.pricenum}>{pitem.originalPrice}</Text>
+                    this.state.myorders ?
+                      this.state.myorders && this.state.myorders.length > 0 ?
+                        this.state.myorders.map((item, i) => {
+                          // console.log("item===>", item.deliveryStatus[1].status);
+                          return (
+                            <View style={styles.prodinfoparent}>
+                              <View style={styles.orderid}><Text style={styles.orderidinfo}>Order ID : {item.orderID}</Text></View>
+                              {
+                                item.products && item.products.length > 0 ?
+                                  item.products.map((pitem, index) => {
+                                    console.log("pitem===>", pitem);
+                                    return (
+                                      <View >
+                                        <View style={styles.prodorderdets}>
+                                          <View style={styles.flx3}>
+                                            <Text style={styles.proddets}>Product :</Text>
+                                            <Text style={styles.proddets}>Quantity :</Text>
+                                            <Text style={styles.proddets}>Price :</Text>
 
                                           </View>
-                                        </View>
-                                        <View style={styles.imgvw}>
-                                          <Image
-                                            style={styles.img15}
-                                            source={{ uri: pitem.productImage[0] }}
-                                          // source= {require("../../AppDesigns/currentApp/images/15.png")}
-                                          />
-                                        </View>
-                                      </View>
-                                      <View style={styles.orderstatus}>
-                                        <Text style={styles.orderstatustxt}>Order Status</Text>
-                                        <StepIndicator
-                                          customStyles={thirdIndicatorStyles}
-                                          currentPosition={this.state.currentPosition}
-                                          labels={labels}
-                                          dateTime={dateTime}
-                                          stepCount={4}
-                                        />
-                                      </View>
-                                      <View style={styles.cancelbtn}>
-                                        <View style={styles.cancelvwbtn}>
-                                          <TouchableOpacity>
-                                            <Button
-                                              onPress={() => this.cancelorderbtn(item._id)}
-                                              titleStyle={styles.buttonText}
-                                              title="CANCEL"
-                                              buttonStyle={styles.buttonRED}
-                                              containerStyle={styles.buttonContainer2}
+                                          <View style={styles.flx3}>
+                                            <Text style={styles.prodinfo}>{pitem.productName}</Text>
+                                            <Text style={styles.prodinfo}> {pitem.quantity} kg </Text>
+
+                                            <View style={{ flexDirection: 'row', marginRight: 10, marginTop: 3 }}>
+                                              <Icon
+                                                name="rupee"
+                                                type="font-awesome"
+                                                size={15}
+                                                color="#388e3c"
+                                                iconStyle={styles.iconrps}
+                                              />
+                                              <Text style={styles.pricenum}>{pitem.originalPrice}</Text>
+
+                                            </View>
+                                          </View>
+                                          <View style={styles.imgvw}>
+                                            <Image
+                                              style={styles.img15}
+                                              source={{ uri: pitem.productImage[0] }}
+                                            // source= {require("../../AppDesigns/currentApp/images/15.png")}
                                             />
-                                          </TouchableOpacity>
+                                          </View>
                                         </View>
-                                        <View style={styles.ordervwbtn}>
-                                          <TouchableOpacity>
-                                            <Button
-                                              // onPress={()=>this.props.navigation.navigate('OrderDetails')}
-                                              titleStyle={styles.buttonText1}
-                                              title="ORDER DETAILS"
-                                              buttonStyle={styles.buttonGreen}
-                                              containerStyle={styles.buttonContainer2}
-                                            />
-                                          </TouchableOpacity>
-                                        </View>
+                                        {item && item.deliveryStatus && 
+                                          item.deliveryStatus[item.deliveryStatus.length - 1].status !== 'Cancelled' ?
+                                            <View style={styles.orderstatus}>
+                                              <Text style={styles.orderstatustxt}>Order Status</Text>
+                                              <StepIndicator
+                                                customStyles={thirdIndicatorStyles}
+                                                currentPosition={this.state.currentPosition}
+                                                labels={labels}
+                                                dateTime={dateTime}
+                                                stepCount={4}
+                                              />
+                                            </View>
+                                            :
+                                            <View style={styles.orderstatus}>
+                                              <Text style={styles.ordercancelled}>Order Cancelled</Text>
+                                            </View>
+
+                                        }
+                                        {item && item.deliveryStatus && 
+                                          item.deliveryStatus[item.deliveryStatus.length - 1].status !== 'Cancelled' ?
+                                            <View style={styles.cancelbtn}>
+                                              <View style={styles.cancelvwbtn}>
+                                                <TouchableOpacity>
+                                                  <Button
+                                                    onPress={() => this.cancelorderbtn(item._id)}
+                                                    titleStyle={styles.buttonText}
+                                                    title="CANCEL"
+                                                    buttonStyle={styles.buttonRED}
+                                                    containerStyle={styles.buttonContainer2}
+                                                  />
+                                                </TouchableOpacity>
+                                              </View>
+                                              <View style={styles.ordervwbtn}>
+                                                <TouchableOpacity>
+                                                  <Button
+                                                    // onPress={()=>this.props.navigation.navigate('OrderDetails')}
+                                                    titleStyle={styles.buttonText1}
+                                                    title="ORDER DETAILS"
+                                                    buttonStyle={styles.buttonGreen}
+                                                    containerStyle={styles.buttonContainer2}
+                                                  />
+                                                </TouchableOpacity>
+                                              </View>
+                                            </View>
+                                            :
+                                            null
+                                        }
                                       </View>
-                                    </View>
 
-                                  );
-                                })
-                                : null
-                            }
+                                    );
+                                  })
+                                  : null
+                              }
 
-                          </View>
+                            </View>
 
-                        )
-                      })
+                          )
+                        })
+                        
                       :
-                      <View style={{ alignItems: 'center', marginTop: '10%' }}>
-                        <Text>No products available!</Text>
+                      <View style={{ flex: 1, alignItems: 'center', marginTop: '90%' }}>
+                        <BouncingPreloader
+                            icons={[
+                              require("../../AppDesigns/currentApp/images/bellpaper.png"),
+                              require("../../AppDesigns/currentApp/images/carrot.png"),
+                              require("../../AppDesigns/currentApp/images/mangooo.png"),
+                              require("../../AppDesigns/currentApp/images/tomato.png"),
+                            ]}
+                            leftRotation="-680deg"
+                            rightRotation="360deg"
+                            speed={2000} />
+                      </View>
+                      :
+                      <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
+                        <Image
+                          source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
+                        />
                       </View>
                   }
 

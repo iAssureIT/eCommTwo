@@ -12,22 +12,15 @@ import {
   Image,
   TextInput,
   Alert,
-  Picker,
-  Keyboard,
-  Modal
 } from 'react-native';
 
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Drawer from 'react-native-drawer';
-import { TextField } from 'react-native-material-textfield';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
-import SideMenu from 'react-native-side-menu';
-import StarRating from 'react-native-star-rating';
-
+import Modal from "react-native-modal";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
-// import HeaderBar4 from '../../ScreenComponents/HeaderBar4/HeaderBar4.js';
+import BouncingPreloader from 'react-native-bouncing-preloader';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Cartstyles.js';
 import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
@@ -35,9 +28,7 @@ import Loading from '../../ScreenComponents/Loading/Loading.js';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import Counter from "react-native-counters";
-import NumericInput from 'react-native-numeric-input'
 
-const window = Dimensions.get('window');
 
 export default class CartComponent extends React.Component {
   constructor(props) {
@@ -55,7 +46,8 @@ export default class CartComponent extends React.Component {
       companyInfo: "",
       totaloriginalprice: 0,
       cartProduct: "",
-
+      removefromcart: false,
+      wishlisted: false,
       shippingCharges: 0,
       quantityAdded: 0,
       totalIndPrice: 0,
@@ -65,22 +57,36 @@ export default class CartComponent extends React.Component {
 
   componentDidMount() {
     const product_ID = this.props.navigation.getParam('product_ID', 'No product_ID');
-    const user_ID = this.props.navigation.getParam('user_ID', 'No user_ID');
-    // console.log('product_ID-------------------------->', product_ID);
-    console.log('user_ID-------------------------->', user_ID);
+    const userId = this.props.navigation.getParam('user_ID', 'No user_ID');
+    console.log('user_ID-------------------------->', userId);
+    console.log('product_ID-------------------------->', product_ID);
+    // this.getCartData(userId, product_ID);
+    // AsyncStorage.multiGet(['user_id', 'token'])
+    //   .then((data) => {
+    //     userId = data[0][1],
+    //       this.setState({
+    //         product_ID: product_ID,
+    //         userId: userId,
+    //       }, () => {
+    //         // console.log('userId', this.state.userId)
+    //         this.getCartData(this.state.user_ID, this.state.product_ID);
+    //         console.log('user_ID-------------------------->', this.state.userId);
+    //       })
+    //   })
+    // console.log('user_ID-------------------------->', user_ID);
     this.setState({
       product_ID: product_ID,
-      user_ID: user_ID
+      userId: userId
     }, () => {
-      this.getCartData(this.state.user_ID, this.state.product_ID);
+      this.getCartData(this.state.userId, this.state.product_ID);
     })
   }
 
   getCartData() {
     axios
-      .get('/api/Carts/get/cartproductlist/' + userId)
+      .get('/api/Carts/get/cartproductlist/' + this.state.userId)
       .then((response) => {
-        console.log("Item size==>", response.data[0].cartItems.length);
+        // console.log("Item size cart itemsss==>", response.data[0].cartItems[0].quantity);
         this.setState({
           subtotalitems: response.data[0].cartItems.length,
           cartData: response.data[0].cartItems,
@@ -95,30 +101,58 @@ export default class CartComponent extends React.Component {
         console.log('error', error);
       })
   }
-  DeleteItem(cartitemid) {
+  DeleteItem() {
     const formValues = {
-      "user_ID": this.state.user_ID,
-      "cartItem_ID": cartitemid,
+      "user_ID": this.state.userId,
+      "cartItem_ID": this.state.cartitemid,
     }
     console.log('formValues----->', formValues);
     axios.patch("/api/carts/remove", formValues)
       .then((response) => {
-        Alert.alert(
-          "Product Deleted from Cart",
-          "",
-          [
-            { text: "OK", onPress: () => console.log("OK Pressed") }
-          ],
-          { cancelable: false }
-        );
-        this.getCartData(this.state.user_ID, this.state.product_ID);
+        this.setState({
+          removefromcart: false,
+        })
+        this.getCartData(this.state.userId, this.state.product_ID);
+      })
+  }
+  DeleteItemfromcart(cartitemid) {
+    this.setState({
+      removefromcart: true,
+      cartitemid: cartitemid,
+
+    })
+  }
+  addtowishlist = (productid) => {
+    const wishValues = {
+      "user_ID": this.state.userId,
+      "product_ID": productid,
+    }
+    // console.log("wishValuess==>", wishValues);
+    axios.post('/api/wishlist/post', wishValues)
+      .then((response) => {
+        // console.log(" response wishValuess==>", response.data);
+        this.setState({
+          wishlisted: true,
+        });
+        const formValues = {
+          "user_ID": this.state.userId,
+          "cartItem_ID": productid,
+        }
+        axios.patch("/api/carts/remove" ,formValues)
+        .then((response)=>{
+          this.getCartData(this.state.userId, this.state.product_ID);
+        })
+        .catch((error)=>{
+            console.log('error', error);
+        })
+      })
+      .catch((error) => {
+        console.log('error', error);
       })
   }
   gettotalcount() {
-    let totalcount = 0
-    var resdata = this.state.cartData
-    var numberofprod = this.state.number
-
+    let totalcount = 0;
+    var resdata = this.state.cartData;
     resdata.filter((value) => {
       totalcount = totalcount + value.productDetail.originalPrice;
     });
@@ -135,7 +169,7 @@ export default class CartComponent extends React.Component {
       product_ID: product_ID,
       user_ID: user_ID
     }, () => {
-      this.getCartData(this.state.user_ID, this.state.product_ID);
+      this.getCartData(this.state.userId, this.state.product_ID);
     })
   }
 
@@ -156,15 +190,37 @@ export default class CartComponent extends React.Component {
   openControlPanel = () => {
     this._drawer.open()
   }
-  onChange(id, number, type) {
-    console.log(id, number, type) // 1, + or -
-    console.log("number ==>", number)
-    console.log("type ==>", type)
-    var carqty = {};
-    this.setState({
-      number: parseInt(number),
-      plusminustype: type
-    });
+  onChange(product_ID, number, type) {
+    console.log(product_ID, number, type) // 1, + or -
+    const quantity = parseInt(number);
+    // console.log("quantity ==>", quantity)
+    // const quantityAdded = quantity+1;
+    console.log("quantityAdded ==>", quantity)
+    const formValues = {
+      "user_ID"       : this.state.userId,
+      "product_ID"    : product_ID,
+      "quantityAdded" : quantity,
+    }
+    console.log('for cart on change==>', formValues);
+    axios.patch("/api/carts/quantity", formValues)
+      .then((response) => {
+        this.getCartData(this.state.userId, this.state.product_ID);
+        console.log("response ==>", response.data)
+        // console.log("response ==>", formValues.quantityAdded)
+          this.setState({
+            incresecartnum : formValues.quantityAdded
+          })
+      })
+      .catch((error) => {
+        console.log('error', error);
+      })
+      
+
+    // var carqty = {};
+    // this.setState({
+    //   number: parseInt(number),
+    //   plusminustype: type
+    // });
   }
   searchUpdated(text) {
     this.setState({ searchText: text });
@@ -192,103 +248,127 @@ export default class CartComponent extends React.Component {
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" >
               <View style={styles.formWrapper}>
                 <View style={styles.cartdetails}>
-                 
+
                   {
-                    this.state.cartData && this.state.cartData.length > 0 ?
-                      this.state.cartData.map((item, i) => {
-                        console.log("item ==>", item);
-                        return (
+                    this.state.cartData ?
+                      this.state.cartData && this.state.cartData.length > 0 ?
+                        this.state.cartData.map((item, i) => {
+                          console.log("item ==>", item.productDetail);
+                          return (
 
-                          <View key={i}>
-                           {/* <Text style={styles.details}>Details: </Text> */}
-                          <View key={i} style={styles.proddetails}>
-                            <View style={styles.flxdir}>
-                              <View style={styles.flxpd}>
-                                <Image
-                                  style={styles.imgwdht}
-                                  source={{ uri: item.productDetail.productImage[0] }}
-                                />
-                              </View>
-                              <View style={styles.flxmg}>
-                                <Text style={styles.productname}>{item.productDetail.productName}</Text>
-                                <View style={styles.productdets}>
-                                  {/* <Icon
-                                      name="rupee"
-                                      type="font-awesome"
-                                      size={11}
-                                      color="#666"
-                                      iconStyle={styles.iconstyle}
-                                      /> */}
-                                  <Text style={styles.proddetprice}>Select Quantity</Text>
-                                </View>
-                                <Counter start={1}
-                                  buttonStyle={{
-                                    borderColor: '#80c21c',
-                                    borderWidth: 1,
-                                  }}
-                                  buttonTextStyle={{
-                                    color: '#80c21c',
-
-                                  }}
-                                  countTextStyle={{
-                                    color: '#80c21c',
-                                  }}
-                                  onChange={this.onChange.bind(this, item._id)} />
-                                {/* <NumericInput 
-                                  value={this.state.value} 
-                                  onChange=id,{value => this.setState({value})} 
-                                  onLimitReached={(isMax,msg) => console.log(isMax,msg)}
-                                  totalWidth={100} 
-                                  totalHeight={30} 
-                                  iconSize={25}
-                                  step={1}
-                                  valueType='real'
-                                  rounded 
-                                  textColor='#80c21c' 
-                                  iconStyle={{ color: 'white' }} 
-                                  rightButtonBackgroundColor='#80c21c' 
-                                  leftButtonBackgroundColor='#80c21c'/> */}
-
-                              </View>
-                              <View style={styles.flxmg2}>
-                                <View style={styles.proddeletes}>
-                                  <Icon
-                                    onPress={() => this.DeleteItem(item._id)}
-                                    name="delete"
-                                    type="AntDesign"
-                                    size={18}
-                                    color="#ff4444"
-                                    iconStyle={styles.iconstyle}
-                                  />
-                                </View>
-                                {
-                                  item.productDetail.availableQuantity > 0 ?
-                                    <View style={styles.productdetsprice}>
+                            <View key={i}>
+                              <View key={i} style={styles.proddetails}>
+                                <View style={styles.flxdir}>
+                                  <View style={styles.flxpd}>
+                                   {item.productDetail.productImage.length > 0 ?
+                                      <Image
+                                      style={styles.imgwdht}
+                                      source={{ uri: item.productDetail.productImage[0] }}
+                                      />
+                                      :
+                                      <Image
+                                      style={styles.imgwdht}
+                                      source={require("../../AppDesigns/currentApp/images/notavailable.jpg")}
+                                      />
+                                   }
+                                   
+                                  </View>
+                                  <View style={styles.flxmg}>
+                                    <Text style={styles.productname}>{item.productDetail.productName}</Text>
+                                    <View style={styles.productdets}>
                                       <Icon
                                         name="rupee"
                                         type="font-awesome"
-                                        size={16}
+                                        size={11}
                                         color="#666"
                                         iconStyle={styles.iconstyle}
                                       />
-                                      <Text id={item._id} value={this.state['quantityAdded|' + item._id]} style={styles.proprice}>{item.productDetail.discountedPrice}</Text>
-                                      {/* <Text style={styles.proprice}>1200</Text> */}
+                                      <Text style={styles.proddetprice}>{item.productDetail.discountedPrice} {item.productDetail.unit}</Text>
                                     </View>
-                                    :
-                                    <Text style={styles.totaldata}>SOLD OUT</Text>
-                                }
+                                    {/* <Text style={styles.proddetprice}>Select Quantity</Text> */}
+                                    <Counter start={item.quantity} min={1}
+                                      buttonStyle={{
+                                        borderColor: '#80c21c',
+                                        borderWidth: 1,
+                                        borderRadius: 25,
+                                        width: 20,
+                                        height: 10
+                                      }}
+                                      buttonTextStyle={{
+                                        color: '#80c21c',
+                                      }}
+                                      countTextStyle={{
+                                        color: '#80c21c',
+                                      }}
+                                      size={5}
+                                      
+                                      onChange={this.onChange.bind(this, item.productDetail._id)} />
+                                  </View>
+                                  <View style={styles.flxmg2}>
+
+                                    <View style={styles.proddeletes}>
+                                      <TouchableOpacity style={[styles.flx1, styles.wishlisthrt]} onPress={() => this.addtowishlist(item._id)} >
+                                        <Icon size={20} name='heart-o' type='font-awesome' color='#80c21c' style={{ backgroundColor: "red" }} />
+                                      </TouchableOpacity>
+                                      <Icon
+                                        onPress={() => this.DeleteItemfromcart(item._id)}
+                                        name="delete"
+                                        type="AntDesign"
+                                        size={18}
+                                        color="#ff4444"
+                                        iconStyle={styles.iconstyle}
+                                      />
+
+                                    </View>
+                                    {
+                                      item.productDetail.availableQuantity > 0 ?
+                                        <View style={styles.productdetsprice}>
+                                          <Icon
+                                            name="rupee"
+                                            type="font-awesome"
+                                            size={16}
+                                            color="#666"
+                                            iconStyle={styles.iconstyle}
+                                          />
+                                          <Text id={item._id} value={this.state['quantityAdded|' + item._id]} style={styles.proprice}>
+                                            {/* {item.productDetail.discountedPrice * item.size } */}
+                                            { item.productDetail.size > 0 ?
+                                                  item.productDetail.discountedPrice * item.quantity
+                                              :
+                                                  item.productDetail.discountedPrice 
+                                            } 
+                                          </Text>
+                                          {/* <Text style={styles.proprice}>1200</Text> */}
+                                        </View>
+                                        :
+                                        <Text style={styles.totaldata}>SOLD OUT</Text>
+                                    }
+                                  </View>
+                                </View>
                               </View>
                             </View>
-                          </View>
-                          </View>
-                        )
-                      })
+                          )
+                        })
+                        :
+                        <View style={{ flex: 1, alignItems: 'center', marginTop: '90%' }}>
+                        <BouncingPreloader
+                            icons={[
+                              require("../../AppDesigns/currentApp/images/bellpaper.png"),
+                              require("../../AppDesigns/currentApp/images/carrot.png"),
+                              require("../../AppDesigns/currentApp/images/mangooo.png"),
+                              require("../../AppDesigns/currentApp/images/tomato.png"),
+                            ]}
+                            leftRotation="-680deg"
+                            rightRotation="360deg"
+                            speed={2000} />
+                      </View>
                       :
-                      <View style={{ flex:1,alignItems: 'center', marginTop: '10%' }}>
-                          <Image
-                            source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
-                            />
-                        </View>
+                      
+                      <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
+                      <Image
+                        source={require("../../AppDesigns/currentApp/images/saleimage.png")}
+                      />
+                    </View>
                   }
 
                   {
@@ -331,7 +411,7 @@ export default class CartComponent extends React.Component {
                         <View style={styles.margTp20}>
                           <TouchableOpacity >
                             <Button
-                              onPress={() => this.props.navigation.navigate('AddressDefaultComp', { userID: this.state.user_ID })}
+                              onPress={() => this.props.navigation.navigate('AddressDefaultComp', { userID: this.state.userId })}
                               title={"PROCEED TO CHECKOUT"}
                               buttonStyle={styles.button1}
                               containerStyle={styles.buttonContainer1}
@@ -339,21 +419,117 @@ export default class CartComponent extends React.Component {
                           </TouchableOpacity>
                         </View>
                       </View>
-                    :
-                    null
+                      :
+                      null
                   }
 
-                    </View>
-              		</View>
-            	</ScrollView>
+                </View>
+              </View>
+            </ScrollView>
 
-              <Footer />
-            </View>
+            <Footer />
+            <Modal isVisible={this.state.removefromcart}
+              onBackdropPress={() => this.setState({ removefromcart: false })}
+              coverScreen={true}
+              hideModalContentWhileAnimating={true}
+              style={{ paddingHorizontal: '5%', zIndex: 999 }}
+              animationOutTiming={500}>
+              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
+                <View style={{ justifyContent: 'center', backgroundColor: "transparent", width: 60, height: 60, borderRadius: 30, overflow: 'hidden' }}>
+                  <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
+                </View>
+                <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 15, textAlign: 'center', marginTop: 20 }}>
+                  Are you sure you want to remove this from cart?
+              </Text>
+                <View style={styles.cancelbtn}>
+                  <View style={styles.cancelvwbtn}>
+                    <TouchableOpacity>
+                      <Button
+                        onPress={() => this.setState({ removefromcart: false })}
+                        titleStyle={styles.buttonText}
+                        title="NO"
+                        buttonStyle={styles.buttonRED}
+                        containerStyle={styles.buttonContainer2}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.ordervwbtn}>
+                    <TouchableOpacity>
+                      <Button
+                        onPress={() => this.DeleteItem()}
+                        titleStyle={styles.buttonText1}
+                        title="Yes"
+                        buttonStyle={styles.buttonGreen}
+                        containerStyle={styles.buttonContainer2}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+
+            <Modal isVisible={this.state.wishlisted}
+              onBackdropPress={() => this.setState({ wishlisted: false })}
+              coverScreen={true}
+              hideModalContentWhileAnimating={true}
+              style={{ paddingHorizontal: '5%', zIndex: 999 }}
+              animationOutTiming={500}>
+              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
+                <View style={{ justifyContent: 'center', backgroundColor: "transparent", width: 60, height: 60, borderRadius: 30, overflow: 'hidden' }}>
+                  <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
+                </View>
+                <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 15, textAlign: 'center', marginTop: 20 }}>
+                  Product is added to wishlist.
+                </Text>
+                <View style={styles.cancelbtn}>
+                  <View style={styles.cancelvwbtn}>
+                    <TouchableOpacity>
+                    <Button
+                        onPress={() => this.setState({ wishlisted: false })}
+                        titleStyle={styles.buttonText1}
+                        title="OK"
+                        buttonStyle={styles.buttonGreen}
+                        containerStyle={styles.buttonContainer2}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+            {/* <Modal isVisible={this.state.wishlisted}
+              onBackdropPress={() => this.setState({ wishlisted: false })}
+              coverScreen={true}
+              hideModalContentWhileAnimating={true}
+              style={{ paddingHorizontal: '5%', zIndex: 999 }}
+              animationOutTiming={500}>
+              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
+                <View style={{ justifyContent: 'center', }}>
+                  <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
+                </View>
+                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
+                  Product is added to wishlist.
+                </Text>
+                <View style={styles.yesmodalbtn}>
+                  <View style={styles.ordervwbtn}>
+                    <TouchableOpacity>
+                      <Button
+                        onPress={() => this.setState({ wishlisted: false })}
+                        titleStyle={styles.buttonText1}
+                        title="OK"
+                        buttonStyle={styles.buttonGreen}
+                        containerStyle={styles.buttonContainer2}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal> */}
+          </View>
         </React.Fragment>
-          );  
-        }
-      }
+      );
     }
-    
-    
-    
+  }
+}
+
+
+

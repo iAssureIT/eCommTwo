@@ -6,8 +6,8 @@ const window = Dimensions.get('window');
 
 export default StyleSheet.create({
   container:{
-    backgroundColor: '#fff',
     minHeight:'100%',
+    backgroundColor: '#fff',
     width: window.width,
     justifyContent:"center"
   },
@@ -59,8 +59,6 @@ export default StyleSheet.create({
     ...Platform.select({
       ios:{
         justifyContent:'center',
-        
-
       },
       android : {
         justifyContent:'center'
@@ -76,7 +74,7 @@ export default StyleSheet.create({
     fontFamily:"Montserrat-Regular",
   },
   loginopacity:{
-    width: '100%', backgroundColor:'#fff',marginTop:20,borderColor:"#ccc",shadowColor: '#000',
+    width: '100%', backgroundColor:'#fff',borderColor:"#ccc",shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,

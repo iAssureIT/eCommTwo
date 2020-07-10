@@ -25,7 +25,8 @@ import BannerComponent from '../../ScreenComponents/BannerComponent/BannerCompon
 import MenuCarouselSection from '../../ScreenComponents/Section/MenuCarouselSection.js';
 import FeatureProductComponent from'../../ScreenComponents/FeatureProductComponent/FeatureProductComponent.js';
 import FlashComponent from'../../ScreenComponents/FlashComponent/FlashComponent.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 // import styles from './Dashboardstyles.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Dashboardstyles.js';
@@ -158,18 +159,17 @@ export default class Dashboard extends React.Component{
       return (
         
         <Drawer
-          ref={(ref) => this._drawer = ref}
-          content={
-            <Notification 
-              navigate          = {this.props.navigation.navigate} 
-              updateCount       = {()=>this.updateCount.bind(this)}  
-              closeControlPanel = {()=>this.closeControlPanel.bind(this)} 
-            />
-          }
-          side="right"
+          // ref={(ref) => this._drawer = ref}
+          // content={
+          //   <Notification 
+          //     navigate          = {this.props.navigation.navigate} 
+          //     updateCount       = {()=>this.updateCount.bind(this)}  
+          //     closeControlPanel = {()=>this.closeControlPanel.bind(this)} 
+          //   />
+          // }
+          // side="left"
           >
           <SideMenu disableGestures={true} openMenuOffset={300} menu={menu} isOpen={this.state.isOpen}  onChange={isOpen => this.updateMenuState(isOpen)} >
-        {/* <React.Fragment> */}
             <HeaderBar2 
               navigate={navigate}
               toggle={()=>this.toggle.bind(this)} 

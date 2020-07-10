@@ -55,22 +55,22 @@ export default  class HeaderBar4 extends ValidationComponent {
     console.log(this.props)
     return (
       <Header 
-        backgroundColor={'transparent'}
-        placement="left"
+        backgroundColor={'#80c21c'}
+        // placement="left"
         leftContainerStyle={{backgroundColor:'transparent',paddingHorizontal:15}}
         centerContainerStyle={{backgroundColor:'transparent',paddingLeft:0,paddingRight:0,paddingTop:0}}
         rightContainerStyle={{backgroundColor:'transparent',paddingHorizontal:15}}
         leftComponent={
                   <TouchableOpacity onPress={()=>  this.props.goBack(null)}>
                     <View style={{justifyContent:'center',alignItems:'center',marginTop:10,alignSelf:'center'}}>
-                      <Icon size={30} name='keyboard-arrow-left' type='MaterialIcons' color='#333' />
+                      <Icon size={30} name='keyboard-arrow-left' type='MaterialIcons' color='#fff' />
                     </View>
                   </TouchableOpacity>
         }
-        centerComponent={ <Text style={[{fontSize:18,color:'#333',fontFamily:"Montserrat-SemiBold",textAlign:'center',alignSelf:'center',marginTop:8}]}>{headerTitle}</Text>}
+        centerComponent={ <Text style={[{fontSize:18,color:'#fff',fontFamily:"Montserrat-SemiBold",textAlign:'center',alignSelf:'center',marginTop:8}]}>{headerTitle}</Text>}
      
        
-        containerStyle={{paddingTop:0,paddingLeft:0,paddingRight:0,backgroundColor:'#fff'}}
+        containerStyle={{paddingTop:0,paddingLeft:0,paddingRight:0,backgroundColor:'#80c21c'}}
       />
       
     );

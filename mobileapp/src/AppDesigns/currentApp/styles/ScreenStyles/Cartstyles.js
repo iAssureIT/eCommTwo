@@ -8,8 +8,12 @@ export default StyleSheet.create({
     // backgroundColor: colors.button2,
     height: 40,
     backgroundColor:'#fff'
-// 
-    // width:"80%",
+  },
+  furitloader:{
+    // backgroundColor: colors.button2,
+    width : "50%",
+    // height: 40,
+    // marginTop : 50,
   },
   buttonText2:{
     color: colors.buttonText2,
@@ -125,6 +129,32 @@ superparent:{
     shadowRadius: 2,
     elevation: 1,
   },
+  cancelbtn:{
+    flexDirection:'row',marginTop:20,paddingRight:10
+  },
+  buttonRED:{
+    backgroundColor: colors.buttonRED,
+    height: 45,
+    width:"100%",
+  },
+  ordervwbtn:{
+    flex:0.5,borderRadius:3,shadowColor: '#fff',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonGreen:{
+    backgroundColor: colors.buttonGreen,
+    height: 45,
+    width:"100%",
+  },
+  cancelvwbtn:{
+    flex:0.5,marginRight:10,borderRadius:3,shadowColor: '#fff',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    elevation: 5,
+  },
   mvtolist:{
     flex:0.8,borderRadius:3,
     borderWidth:1,borderColor:"#ccc",
@@ -183,10 +213,18 @@ superparent:{
     // textDecorationLine: 'line-through',
     fontSize:17,fontFamily:"Montserrat-SemiBold",
   },
+  proddeletes:{
+    flexDirection:'row',
+  },
+  wishlisthrt:{
+    marginTop:0,
+    padding:5,
+  },
 
   proddetails:{
     borderWidth:1,borderColor:'#f1f1f1',
-    backgroundColor:"#fff",height:120,
+    backgroundColor:"#fff",
+    height:130,
     borderRadius:5,marginTop:10,
   },
   buttonContainer1:{

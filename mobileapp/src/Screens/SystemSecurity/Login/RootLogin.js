@@ -11,7 +11,6 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-
 import AsyncStorage                 from '@react-native-community/async-storage';
 import Modal                        from "react-native-modal";
 import ValidationComponent          from "react-native-form-validator";

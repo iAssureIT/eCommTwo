@@ -19,6 +19,13 @@ export default StyleSheet.create({
         top:6,
         paddingLeft:2,
     },
+    otpvopacity:{
+        width: '100%', backgroundColor:'#fff',borderColor:"#ccc",shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 8,
+      },
     button:{
         width:'100%',
         backgroundColor: colors.button,
@@ -41,13 +48,6 @@ export default StyleSheet.create({
     },
     otpvsubtitle:{
         fontSize: 17, fontFamily: 'Montserrat-Regular' 
-    },
-    otpvimgvw:{
-        width: '100%', backgroundColor:'#fff',marginTop:80,borderColor:"#ccc",shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 8,
     },
     buttonText:{
         color: colors.buttonText,

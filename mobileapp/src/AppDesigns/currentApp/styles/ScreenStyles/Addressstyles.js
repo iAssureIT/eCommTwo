@@ -56,6 +56,23 @@ export default StyleSheet.create({
     height: 45,
     width:"100%",
   },
+  buttonGreen:{
+    backgroundColor: colors.buttonGreen,
+    height: 45,
+    width:"100%",
+  },
+  buttonContainer2:{
+    ...Platform.select({
+      ios:{
+        justifyContent:'center',
+    
+      },
+      android : {
+        alignItems:'center',
+        
+      }
+    })
+  },
   buttondis:{
     backgroundColor: "#ccc",
     height: 45,
@@ -162,7 +179,7 @@ export default StyleSheet.create({
   },
   buttonTextEDIT:{
     color: colors.buttonText,
-    fontFamily:"Montserrat-Regular",
+    fontFamily:"Montserrat-SemiBold",
     textTransform: 'uppercase',
     fontSize:13
 
@@ -277,13 +294,16 @@ export default StyleSheet.create({
     paddingHorizontal:15
   },
   padhr18:{
-    paddingHorizontal:50
+    paddingHorizontal:22
   },
   orderpadhr18:{
     paddingHorizontal:10
   },
   addcmpbtn:{
-    flex:0.5,paddingHorizontal:0
+    flex:1,marginBottom:5,
+  },
+  continuebtn:{
+    flex:1,marginBottom:50,
   },
   addcmpchkbx:{
     backgroundColor:'#fff',marginTop:0,marginBottom:15,
@@ -298,13 +318,14 @@ export default StyleSheet.create({
   proddeletes:{
     alignItems: "flex-end",
     marginTop:14,
-    paddingRight: 10,
+    paddingRight: 5,
+    // backgroundColor: "red"
   },
   chkvw:{
-    flex:0.2,
+    flex:0.1,
   },
   nameofcontact:{
-    flex:0.7,
+    flex:0.9,
   },
   addchkbx:{
     flexDirection:'row',paddingHorizontal:2,paddingVertical:2,
@@ -320,7 +341,7 @@ export default StyleSheet.create({
   },
   addname:{
     fontSize:13,fontFamily:"Montserrat-SemiBold",marginTop:15,
-    flex:0.7,alignItems:"flex-start",
+    flex:0.7,alignItems:"flex-start",marginLeft:15,
   },
   address:{
     fontSize:13,fontFamily:"Montserrat-Regular",color:'#666'

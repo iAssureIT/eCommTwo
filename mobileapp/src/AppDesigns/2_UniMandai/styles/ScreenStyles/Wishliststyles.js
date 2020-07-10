@@ -105,13 +105,13 @@ export default StyleSheet.create({
   },
   button: {
     marginRight: 10,
-    backgroundColor: colors.buttonORANGE,
+    backgroundColor: colors.buttonGreen,
     height: 35,
 
   },
   buttonText: {
     color: colors.buttonText,
-    fontFamily: "Montserrat-Regular",
+    fontFamily: "Montserrat-SemiBold",
     fontSize: 11,
 
   },

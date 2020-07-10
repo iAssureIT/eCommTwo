@@ -59,7 +59,7 @@ export default  class HeaderBar3 extends ValidationComponent {
     return (
         <View style={{ "borderBottomWidth": 1,
                         "borderBottomColor": "#ebebeb",
-                        "backgroundColor": "#fff",
+                        "backgroundColor": "#80c21c",
                         elevation:4,
                         "boxShadow": "10px 5px 5px black"}}>
             <Header 
@@ -71,19 +71,19 @@ export default  class HeaderBar3 extends ValidationComponent {
                 leftComponent={
                   <TouchableOpacity onPress={()=>  this.props.goBack(null)}>
                     <View style={{justifyContent:'center',alignItems:'center',marginTop:10,alignSelf:'center'}}>
-                      <Icon size={30} name='keyboard-arrow-left' type='MaterialIcons' color='#333' />
+                      <Icon size={30} name='keyboard-arrow-left' type='MaterialIcons' color='#fff' />
                     </View>
                   </TouchableOpacity>
             }
 
             
-            centerComponent={ <Text style={[{fontSize:18,color:'#333',fontFamily:"Montserrat-SemiBold",textAlign:'center',alignSelf:'center',marginTop:8}]}>{headerTitle}</Text>}
+            centerComponent={ <Text style={[{fontSize:18,color:'#fff',fontFamily:"Montserrat-SemiBold",textAlign:'center',alignSelf:'center',marginTop:8}]}>{headerTitle}</Text>}
             
             rightComponent={
                 <View style={{flexDirection:'row'}}>
                     <TouchableOpacity>
                       <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',marginTop:10,alignSelf:'center',marginRight:20}}>
-                        <Icon name="bell-o" type="font-awesome" size={23}  color="#333" style={styles.bellIcon}/>
+                        <Icon name="bell-o" type="font-awesome" size={23}  color="#fff" style={styles.bellIcon}/>
                         <Text style={styles.notificationText}>{0}</Text>
                       </View>
                     </TouchableOpacity>
@@ -94,9 +94,9 @@ export default  class HeaderBar3 extends ValidationComponent {
                     </View>*/}
                 </View>
             }
-            containerStyle={{paddingTop:0,paddingLeft:0,paddingRight:0,backgroundColor:'#fff'}}
+            containerStyle={{paddingTop:0,paddingLeft:0,paddingRight:0,backgroundColor:'#80c21c'}}
             />
-             { <View style={{paddingHorizontal:15,marginBottom:30,}}>
+             {/* { <View style={{paddingHorizontal:15,marginBottom:30,}}>
                 <SearchBar
                   placeholder         = 'Search for Product, Brands and More'
                   containerStyle      = {styles.searchContainer}
@@ -105,7 +105,7 @@ export default  class HeaderBar3 extends ValidationComponent {
                   onChangeText        = {this.updateSearch}
                   value               = {this.state.searchText}
                 />
-              </View>}
+              </View>} */}
          </View>
     );
   }

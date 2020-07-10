@@ -9,7 +9,8 @@ export default StyleSheet.create({
     flex: 1
   },
   superparent: {
-    flex: 1, backgroundColor: '#f1f1f1'
+    flex: 1,
+    //  backgroundColor: '#f1f1f1'
   },
   parent: {
     backgroundColor: '#fff', 
@@ -38,14 +39,15 @@ export default StyleSheet.create({
     paddingVertical: 10,
   },
   prodtitle: {
-    fontSize: 12, fontFamily: "Montserrat-SemiBold", color: '#333'
+    fontSize: 12, fontFamily: "Montserrat-SemiBold", color: '#333',textAlign:'center',
   },
   prodname: {
     flex: 1, fontSize: 13, flexWrap: "wrap", fontFamily: "Montserrat-Regular", color: '#666', paddingVertical: 5
   },
   rs: {
     flexDirection: "row", 
-    marginTop: 3
+    marginTop: 3,
+    justifyContent:"center",
   },
   rsicn: {
     marginTop: 5, 
@@ -54,6 +56,7 @@ export default StyleSheet.create({
   rsprice: {
     textDecorationLine: 'line-through', 
     fontSize: 12, 
+    alignItems:'center',
     fontFamily: "Montserrat-SemiBold", 
     marginLeft: 10
   },
@@ -66,9 +69,18 @@ export default StyleSheet.create({
   },
   wishlist: {
     backgroundColor: "#f1f1f1", 
-    width: 160, borderWidth: 1, 
+    width: 160,
+    borderWidth: 1, 
     borderColor: '#f1f1f1', 
     flexDirection: 'row',
+  },
+  proddets:{
+    width:'100%',flexDirection:'row',flexWrap:'wrap',marginBottom:'15%'
+  },
+  wishlisthrt:{
+    position:'absolute',
+    bottom:"5%",
+    top: 10,left:140
   },
   vwwishlist: {
     width: '100%', flexDirection: 'row', 
@@ -79,7 +91,8 @@ export default StyleSheet.create({
     flex: 1, marginBottom: "30%"
   },
   imageMenuWraper: {
-    borderWidth: 1, borderColor: '#f1f1f1', 
+    borderWidth: 1,
+     borderColor: '#f1f1f1', 
     borderRadius: 5, width: 150, height: 85, 
     backgroundColor: '#ccc', marginRight: 15
   },

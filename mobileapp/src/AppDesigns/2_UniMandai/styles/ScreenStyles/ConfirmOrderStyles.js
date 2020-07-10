@@ -34,10 +34,11 @@ export default StyleSheet.create({
     fontSize:12,fontFamily:"Montserrat-SemiBold",color:'#c10000'
   },
   imgvw:{
-    flex:0.4,backgroundColor:'#f1f1f1',borderWidth:1,borderColor:'#f1f1f1',height:150,
+    flex:0.4,backgroundColor:'#f1f1f1',
+    borderWidth:1,borderColor:'#f1f1f1',height:80,
   },
   imgstyle:{
-    width: "100%",height:150
+    width: "100%",height:80
   },
   deleveryvw:{
     backgroundColor:'#f1f1f1',borderWidth:1,borderColor:'#f1f1f1',height:45,marginTop:'5%'

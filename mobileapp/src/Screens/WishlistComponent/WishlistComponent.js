@@ -9,12 +9,13 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import Drawer from 'react-native-drawer';
+import BouncingPreloader from 'react-native-bouncing-preloader';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
 import Modal from "react-native-modal";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-import Footer from '../../ScreenComponents/Footer/Footer.js';
+// import Footer from '../../ScreenComponents/Footer/Footer.js';
+import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js';
 import axios from 'axios';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Wishliststyles.js';
@@ -227,20 +228,12 @@ export default class WishlistComponent extends React.Component {
     });
   }
 
-
-
   searchUpdated(text) {
     this.setState({ searchText: text });
   }
 
   render() {
     const { navigate, dispatch, goBack } = this.props.navigation;
-    const menu = <Menu navigate={navigate} isOpen={this.state.isOpen} />;
-    if (this.props.loading) {
-      return (
-        <Loading />
-      );
-    } else {
       return (
         <React.Fragment>
           <HeaderBar5
@@ -254,21 +247,30 @@ export default class WishlistComponent extends React.Component {
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" >
               <View style={styles.formWrapper}>
                 <View style={styles.parent}>
-
-                  <View style={styles.vwwishlist}>
+                  <View style={styles.proddets}>
                     {
-                      this.state.products && this.state.products.length > 0 ?
+                      this.state.products ?
+                        this.state.products && this.state.products.length > 0 ?
                         this.state.products.map((item, i) => {
                           console.log("item from wishlist==>",item)
                           return (
-
                             <View key={i} style={styles.width160}>
                               <View style={[styles.wishlist, (i % 2 == 0 ? {} : { marginLeft: 12 })]}>
-
-                                <Image
-                                  source={{ uri: item.productImage[0] }}
+                                {item.productImage.length> 0 ?
+                                 <Image
+                                 source={{ uri: item.productImage[0] }}
+                                 style={styles.catimg}
+                               />
+                                  :
+                                  <Image
+                                  source={require("../../AppDesigns/currentApp/images/notavailable.jpg")}
                                   style={styles.catimg}
                                 />
+                                }
+                                {/* <Image
+                                  source={{ uri: item.productImage[0] }}
+                                  style={styles.catimg}
+                                /> */}
                                 <Text style={styles.peroff}> {item.discountPercent}% OFF</Text>
                                 <View style={[styles.iconvw, (i % 2 == 0 ? { right: 20, top: -5 } : { right: 20, top: -5 })]}>
                                   <TouchableOpacity onPress={() => this.removefromwishlist(item.wishlist_ID)}>
@@ -278,8 +280,6 @@ export default class WishlistComponent extends React.Component {
                               </View>
                               <View style={styles.padvert}>
                                 <Text numberOfLines={1} style={[styles.prodtitle, (i % 2 == 0 ? {} : { marginLeft: 12 })]}>{item.productName}</Text>
-                                {/* <Text numberOfLines={1} style={[styles.prodname, (i % 2 == 0 ? {} : { marginLeft: 12 })]}>{item.productDetail.productName}</Text> */}
-
                                 <View style={[styles.rs, (i % 2 == 0 ? { marginLeft: 5 } : { marginLeft: 15 })]}>
                                   <View style={styles.rs}>
                                     <Icon
@@ -318,10 +318,24 @@ export default class WishlistComponent extends React.Component {
                           )
                         })
                         :
-                        <View style={{ flex:1,alignItems: 'center', marginTop: '10%' }}>
+                        <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
                           <Image
                             source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
-                            />
+                          />
+                        </View>
+                      :
+                      
+                          <View style={{ flex: 1, alignItems: 'center', marginTop: '100%' }}>
+                          <BouncingPreloader
+                              icons={[
+                                require("../../AppDesigns/currentApp/images/bellpaper.png"),
+                                require("../../AppDesigns/currentApp/images/carrot.png"),
+                                require("../../AppDesigns/currentApp/images/mangooo.png"),
+                                require("../../AppDesigns/currentApp/images/tomato.png"),
+                              ]}
+                              leftRotation="-680deg"
+                              rightRotation="360deg"
+                              speed={2000} />
                         </View>
                     }
                   </View>
@@ -361,7 +375,6 @@ export default class WishlistComponent extends React.Component {
         </React.Fragment>
       );
     }
-  }
 }
 
 
