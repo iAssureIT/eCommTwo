@@ -474,7 +474,8 @@ class Ecommercenewproductcaro extends Component {
                                               this.state['relatedProductArray' + data._id] && this.state['relatedProductArray' + data._id].length > 0 ?
                                                 this.state['relatedProductArray' + data._id].map((a, i) => {
                                                   if (a.size) {
-                                                    return (                                            
+                                                    return (     
+                                                      i === 0?                                        
                                                         <div className="selectSizeBox">                                                          
                                                           <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
                                                           <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
@@ -503,7 +504,8 @@ class Ecommercenewproductcaro extends Component {
                                                               <span className="disscountedPer">({data.discountPercent}% Off)</span>
                                                             </div>
                                                           }
-                                                        </div>                                            
+                                                        </div>  
+                                                      :null                                          
                                                     );
                                                   }
                                                 })

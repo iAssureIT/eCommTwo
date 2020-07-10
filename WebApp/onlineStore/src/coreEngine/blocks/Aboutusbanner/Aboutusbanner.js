@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../../../sites/currentSite/blocks/Aboutusbanner.css";
-import Aboutus_Banner from '../../../sites/currentSite/images/aboutbaner.png';
+import Aboutus_Banner from '../../../sites/currentSite/images/About_us_Banner.png';
 
 export default class Aboutusbanner extends Component {
 	constructor(props){

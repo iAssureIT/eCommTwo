@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import $, { post } from 'jquery';
 import axios from 'axios';
 import jQuery from 'jquery';
-import {ntc} from '../../ntc/ntc.js';
-import Address              from '../Address/Address.js';
+import { ntc } from '../../ntc/ntc.js';
+import Address from '../Address/Address.js';
 import _ from 'underscore';
 import SmallBanner from '../../blocks/SmallBanner/SmallBanner.js';
 import Message from '../../blocks/Message/Message.js';
@@ -14,12 +14,12 @@ import 'bootstrap/js/tab.js';
 import Loader from "../../common/loader/Loader.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {getCartData} from '../../actions/index';
+import { getCartData } from '../../actions/index';
 import "../../../sites/currentSite/pages/Checkout.css";
-import checkoutBanner from  "../../../sites/currentSite/images/checkout.png";
+import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
-import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
-  
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+
 class Checkout extends Component {
     constructor(props) {
         super(props);
@@ -34,6 +34,7 @@ class Checkout extends Component {
             shippingCharges: 0,
             quantityAdded: 0,
             totalIndPrice: 0,
+            addressId: "",
             bannerData: {
                 title: "CHECKOUT",
                 breadcrumb: 'Checkout',
@@ -43,8 +44,8 @@ class Checkout extends Component {
             comment: false,
             giftOption: false,
             deliveryAddress: [],
-            pincodeExists:true,
-            addressLine1 : "",
+            pincodeExists: true,
+            addressLine1: "",
             "startRange": 0,
             "limitRange": 10,
         }
@@ -55,23 +56,23 @@ class Checkout extends Component {
     }
     gettimes(startRange, limitRange) {
         axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
-          .then((response) => {
-            // console.log('gettimes ===> ', response.data);
-            this.setState({
-                gettimes: response.data
+            .then((response) => {
+                // console.log('gettimes ===> ', response.data);
+                this.setState({
+                    gettimes: response.data
+                })
             })
-          })
-          .catch((error) => {
-            console.log('error', error);
-          });
-      }
+            .catch((error) => {
+                console.log('error', error);
+            });
+    }
     componentDidMount() {
         this.getCartData();
         this.gettimes(this.state.startRange, this.state.limitRange);
         this.getUserAddress();
         this.validation();
     }
-    validation(){
+    validation() {
         $.validator.addMethod("regxusername", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Name should only contain letters.");
@@ -112,11 +113,11 @@ class Checkout extends Component {
         $("#checkout").validate({
             rules: {
                 username: {
-                    regxusername : /^[A-Za-z][A-Za-z0-9\-\s]*$/,
+                    regxusername: /^[A-Za-z][A-Za-z0-9\-\s]*$/,
                     required: true,
                 },
                 mobileNumber: {
-                    regxmobileNumber : /^([7-9][0-9]{9})$/,
+                    regxmobileNumber: /^([7-9][0-9]{9})$/,
                     required: true,
                 },
                 email: {
@@ -124,7 +125,7 @@ class Checkout extends Component {
                 },
                 addressLine1: {
                     required: true,
-                    regxaddressLine : /^[A-Za-z0-9_@./#&+-]/,
+                    regxaddressLine: /^[A-Za-z0-9_@./#&+-]/,
                 },
                 // addressLine2: {
                 //     required: true,
@@ -148,11 +149,11 @@ class Checkout extends Component {
                 },
                 city: {
                     required: true,
-                    regxcity : /^[A-Za-z][A-Za-z\-\s]*$/,
+                    regxcity: /^[A-Za-z][A-Za-z\-\s]*$/,
                 },
                 pincode: {
                     required: true,
-                    regxpincode : /^[1-9][0-9]{5}$/,
+                    regxpincode: /^[1-9][0-9]{5}$/,
                 },
                 addType: {
                     required: true,
@@ -169,51 +170,51 @@ class Checkout extends Component {
                 }
             },
             errorPlacement: function (error, element) {
-              if (element.attr("name") === "username") {
-                error.insertAfter("#username");
-              }
-              if (element.attr("name") === "mobileNumber") {
-                error.insertAfter("#mobileNumber");
-              }
-              if (element.attr("name") === "email") {
-                error.insertAfter("#email");
-              }
-              if (element.attr("name") === "addressLine1") {
-                error.insertAfter("#addressLine1");
-              }
-            //   if (element.attr("name") === "addressLine2") {
-            //     error.insertAfter("#addressLine2");
-            //   }
-              if (element.attr("name") === "countryCode") {
-                error.insertAfter("#country");
-              }
-              if (element.attr("name") === "stateCode") {
-                error.insertAfter("#state");
-              }
-            //   if (element.attr("name") === "block") {
-            //     error.insertAfter("#block");
-            //   }
-            if (element.attr("name") === "district") {
-                error.insertAfter("#district");
-            }
-              if (element.attr("name") === "city") {
-                error.insertAfter("#city");
-              }
-              if (element.attr("name") === "pincode") {
-                error.insertAfter("#pincode");
-              }
-              if (element.attr("name") === "addType") {
-                error.insertAfter("#addType");
-              }
-              if (element.attr("name") === "payMethod") {
-                error.insertAfter("#payMethod");
-              }
-              if (element.attr("name") === "termsNconditions") {
-                error.insertAfter("#termsNconditions");
-              }
-              if (element.attr("name") === "checkoutAddess") {
-                error.insertAfter("#checkoutAddess");
-              }
+                if (element.attr("name") === "username") {
+                    error.insertAfter("#username");
+                }
+                if (element.attr("name") === "mobileNumber") {
+                    error.insertAfter("#mobileNumber");
+                }
+                if (element.attr("name") === "email") {
+                    error.insertAfter("#email");
+                }
+                if (element.attr("name") === "addressLine1") {
+                    error.insertAfter("#addressLine1");
+                }
+                //   if (element.attr("name") === "addressLine2") {
+                //     error.insertAfter("#addressLine2");
+                //   }
+                if (element.attr("name") === "countryCode") {
+                    error.insertAfter("#country");
+                }
+                if (element.attr("name") === "stateCode") {
+                    error.insertAfter("#state");
+                }
+                //   if (element.attr("name") === "block") {
+                //     error.insertAfter("#block");
+                //   }
+                if (element.attr("name") === "district") {
+                    error.insertAfter("#district");
+                }
+                if (element.attr("name") === "city") {
+                    error.insertAfter("#city");
+                }
+                if (element.attr("name") === "pincode") {
+                    error.insertAfter("#pincode");
+                }
+                if (element.attr("name") === "addType") {
+                    error.insertAfter("#addType");
+                }
+                if (element.attr("name") === "payMethod") {
+                    error.insertAfter("#payMethod");
+                }
+                if (element.attr("name") === "termsNconditions") {
+                    error.insertAfter("#termsNconditions");
+                }
+                if (element.attr("name") === "checkoutAddess") {
+                    error.insertAfter("#checkoutAddess");
+                }
             }
         });
     }
@@ -279,10 +280,10 @@ class Checkout extends Component {
             .then((response) => {
                 console.log('userData res', response.data.deliveryAddress);
                 this.setState({
-                    "deliveryAddress"   : response.data.deliveryAddress,
-                    "username"          : response.data.profile.fullName,
-                    "mobileNumber"      : response.data.profile.mobile,
-                    "email"             : response.data.profile.email
+                    "deliveryAddress": response.data.deliveryAddress,
+                    "username": response.data.profile.fullName,
+                    "mobileNumber": response.data.profile.mobile,
+                    "email": response.data.profile.email
                 });
             })
             .catch((error) => {
@@ -297,27 +298,27 @@ class Checkout extends Component {
             this.handlePincode(event.target.value);
         }
     }
-    handlePincode(pincode){
-        
+    handlePincode(pincode) {
+
         if (pincode !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + pincode)
-            .then((response) => {
-                
-                if ($("[name='pincode']").valid()) {
-                    if (response.data[0].Status === 'Success' ) {
-                        this.setState({pincodeExists : true})
-                    }else{
-                        this.setState({pincodeExists : false})
+                .then((response) => {
+
+                    if ($("[name='pincode']").valid()) {
+                        if (response.data[0].Status === 'Success') {
+                            this.setState({ pincodeExists: true })
+                        } else {
+                            this.setState({ pincodeExists: false })
+                        }
+                    } else {
+                        this.setState({ pincodeExists: true })
                     }
-                }else{
-                    this.setState({pincodeExists : true})
-                }
-            })
-            .catch((error) => {
-                console.log('error', error);
-            })
-        }else{
-            this.setState({pincodeExists : true})
+                })
+                .catch((error) => {
+                    console.log('error', error);
+                })
+        } else {
+            this.setState({ pincodeExists: true })
         }
     }
     Removefromcart(event) {
@@ -331,18 +332,18 @@ class Checkout extends Component {
         }
         axios.patch("/api/carts/remove", formValues)
             .then((response) => {
-               this.setState({
-                  messageData : {
-                    "type" : "outpage",
-                    "icon" : "fa fa-check-circle",
-                    "message" : "&nbsp; "+response.data.message,
-                    "class": "success",
-                    "autoDismiss" : true
-                  }
+                this.setState({
+                    messageData: {
+                        "type": "outpage",
+                        "icon": "fa fa-check-circle",
+                        "message": "&nbsp; " + response.data.message,
+                        "class": "success",
+                        "autoDismiss": true
+                    }
                 })
                 setTimeout(() => {
                     this.setState({
-                        messageData   : {},
+                        messageData: {},
                     })
                 }, 3000);
                 // swal(response.data.message);
@@ -354,7 +355,7 @@ class Checkout extends Component {
                 console.log('error', error);
             })
     }
-   
+
     grandtotalFunction(cartItemsMoveMain) {
         // console.log('cart', cartItemsMoveMain);
         var taxes = [];
@@ -569,179 +570,179 @@ class Checkout extends Component {
             "payMethod": payMethod,
             "user_ID": localStorage.getItem('user_ID')
         }
-        var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i)=>{
+        var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i) => {
             return a.productDetail.availableQuantity <= 0;
         })
-        if(soldProducts.length > 0){
+        if (soldProducts.length > 0) {
             this.setState({
-                messageData : {
-                  "type"    : "outpage",
-                  "icon"    : "fa fa-exclamation-circle",
-                  "message" : "&nbsp; Please remove sold out products from cart to proceed to checkout.",
-                  "class"   : "warning",
-                  "autoDismiss" : true
+                messageData: {
+                    "type": "outpage",
+                    "icon": "fa fa-exclamation-circle",
+                    "message": "&nbsp; Please remove sold out products from cart to proceed to checkout.",
+                    "class": "warning",
+                    "autoDismiss": true
                 }
-              })
-              setTimeout(() => {
-                  this.setState({
-                      messageData   : {},
-                  })
-              }, 6000);
-        }else{
+            })
+            setTimeout(() => {
+                this.setState({
+                    messageData: {},
+                })
+            }, 6000);
+        } else {
             if (this.state.deliveryAddress && this.state.deliveryAddress.length > 0) {
                 // console.log("Inside delivery address available");
                 var deliveryAddress = this.state.deliveryAddress.filter((a, i) => {
-                                                                    return a._id === checkoutAddess
-                                                                })
+                    return a._id === checkoutAddess
+                })
                 // console.log("Delivery address:",deliveryAddress);
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
-                    "name"          : deliveryAddress.length > 0 ? deliveryAddress[0].name      : "",
-                    "email"         : deliveryAddress.length > 0 ? deliveryAddress[0].email     : "",
-                    "mobileNumber"  : deliveryAddress.length > 0 ? deliveryAddress[0].mobileNumber : "",
-                    "addType"       : deliveryAddress.length > 0 ? deliveryAddress[0].addType   : "",
-                    "addressLine1"  : deliveryAddress.length > 0 ? deliveryAddress[0].addressLine1 : "",
-                    "addressLine2"  : deliveryAddress.length > 0 ? deliveryAddress[0].addressLine2 : "",
-                    "pincode"       : deliveryAddress.length > 0 ? deliveryAddress[0].pincode   : "",
-                    "area"          : deliveryAddress.length > 0 ? deliveryAddress[0].area      : "",
-                    "city"          : deliveryAddress.length > 0 ? deliveryAddress[0].city      : "",
-                    "district"      : deliveryAddress.length > 0 ? deliveryAddress[0].district  : "",
-                    "stateCode"     : deliveryAddress.length > 0 ? deliveryAddress[0].stateCode : "",
-                    "state"         : deliveryAddress.length > 0 ? deliveryAddress[0].state     : "",
-                    "countryCode"   : deliveryAddress.length > 0 ? deliveryAddress[0].countryCode   : "",
-                    "country"       : deliveryAddress.length > 0 ? deliveryAddress[0].country   : "",
-                    "latitude"      : deliveryAddress.length > 0 ? deliveryAddress[0].latitude  : "",
-                    "longitude"     : deliveryAddress.length > 0 ? deliveryAddress[0].longitude : "",
-                } 
+                    "name": deliveryAddress.length > 0 ? deliveryAddress[0].name : "",
+                    "email": deliveryAddress.length > 0 ? deliveryAddress[0].email : "",
+                    "mobileNumber": deliveryAddress.length > 0 ? deliveryAddress[0].mobileNumber : "",
+                    "addType": deliveryAddress.length > 0 ? deliveryAddress[0].addType : "",
+                    "addressLine1": deliveryAddress.length > 0 ? deliveryAddress[0].addressLine1 : "",
+                    "addressLine2": deliveryAddress.length > 0 ? deliveryAddress[0].addressLine2 : "",
+                    "pincode": deliveryAddress.length > 0 ? deliveryAddress[0].pincode : "",
+                    "area": deliveryAddress.length > 0 ? deliveryAddress[0].area : "",
+                    "city": deliveryAddress.length > 0 ? deliveryAddress[0].city : "",
+                    "district": deliveryAddress.length > 0 ? deliveryAddress[0].district : "",
+                    "stateCode": deliveryAddress.length > 0 ? deliveryAddress[0].stateCode : "",
+                    "state": deliveryAddress.length > 0 ? deliveryAddress[0].state : "",
+                    "countryCode": deliveryAddress.length > 0 ? deliveryAddress[0].countryCode : "",
+                    "country": deliveryAddress.length > 0 ? deliveryAddress[0].country : "",
+                    "latitude": deliveryAddress.length > 0 ? deliveryAddress[0].latitude : "",
+                    "longitude": deliveryAddress.length > 0 ? deliveryAddress[0].longitude : "",
+                }
                 // console.log("inside if address values====",addressValues);               
-            }else{
+            } else {
                 // console.log("inside else new address");
                 addressValues = {
-                    "user_ID"   : localStorage.getItem('user_ID'),
+                    "user_ID": localStorage.getItem('user_ID'),
                     "name": this.state.username,
                     "email": this.state.email,
                     "addressLine1": this.state.addressLine1,
                     "addressLine2": this.state.addressLine2,
                     "pincode": this.state.pincode,
                     "area": this.state.area,
-                    "district" : this.state.district,
+                    "district": this.state.district,
                     "city": this.state.city,
                     "stateCode": this.state.stateCode,
-                    "state"       : this.state.state,
-                    "countryCode" : this.state.countryCode,
-                    "country"     : this.state.country,
+                    "state": this.state.state,
+                    "countryCode": this.state.countryCode,
+                    "country": this.state.country,
                     "mobileNumber": this.state.mobileNumber,
-                    "addType"     : this.state.addType,
-                    "latitude"    : this.state.latitude,
-                    "longitude"   : this.state.longitude,
+                    "addType": this.state.addType,
+                    "latitude": this.state.latitude,
+                    "longitude": this.state.longitude,
                 }
-                console.log("inside if address values====",addressValues);     
+                console.log("inside if address values====", addressValues);
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     // console.log("addressValues:===",addressValues);
                     axios.patch('/api/ecommusers/patch/address', addressValues)
-                    .then((response) => {
-                        $('.fullpageloader').hide();
-                        this.setState({
-                            messageData : {
-                                "type" : "outpage",
-                                "icon" : "fa fa-check-circle",
-                                "message" : "&nbsp; "+response.data.message,
-                                "class": "success",
-                                "autoDismiss" : true
-                            }
-                        })
-                        setTimeout(() => {
+                        .then((response) => {
+                            $('.fullpageloader').hide();
                             this.setState({
-                                messageData   : {},
+                                messageData: {
+                                    "type": "outpage",
+                                    "icon": "fa fa-check-circle",
+                                    "message": "&nbsp; " + response.data.message,
+                                    "class": "success",
+                                    "autoDismiss": true
+                                }
                             })
-                        }, 3000);
-                        this.getUserAddress();
-                    })
-                    .catch((error) => {
-                        console.log('error', error);
-                    });
+                            setTimeout(() => {
+                                this.setState({
+                                    messageData: {},
+                                })
+                            }, 3000);
+                            this.getUserAddress();
+                        })
+                        .catch((error) => {
+                            console.log('error', error);
+                        });
                 }
             }
             // console.log('pls');
             axios.patch('/api/carts/payment', formValues)
-            .then((response) => {
+                .then((response) => {
 
-            })
-            .catch((error) => {
-                console.log('error', error);
-            })
-            if ($('#checkout').valid() && this.state.pincodeExists) {
-
-                axios.patch('/api/carts/address', addressValues)
-                .then(async (response) => {
-                    // console.log("Response After inserting address to cart===",response);
-                    await this.props.fetchCartData();
-                    var cartItems = this.props.recentCartData[0].cartItems.map((a, i)=>{
-                        return{
-                            "product_ID"        : a.productDetail._id,
-                            "productName"       : a.productDetail.productName,
-                            "discountPercent"   : a.productDetail.discountPercent,
-                            "discountedPrice"   : a.productDetail.discountedPrice,
-                            "originalPrice"     : a.productDetail.originalPrice,
-                            "color"             : a.productDetail.color,
-                            "size"              : a.productDetail.size,
-                            "currency"          : a.productDetail.currency,
-                            "quantity"          : a.quantity,
-                            "subTotal"          : a.subTotal,
-                            "saving"            : a.saving,
-                            "productImage"      : a.productDetail.productImage,
-                            "section_ID"        : a.productDetail.section_ID,
-                            "section"           : a.productDetail.section,
-                            "category_ID"       : a.productDetail.category_ID,
-                            "category"          : a.productDetail.category,
-                            "subCategory_ID"    : a.productDetail.subCategory_ID,
-                            "subCategory"       : a.productDetail.subCategory,
-                            "vendor_ID"         : a.productDetail.vendor_ID
-                        }
-                    })
-                    // console.log("this.props.recentCartData[0].deliveryAddress = ",this.props.recentCartData[0].deliveryAddress,);
-                    var orderData = {
-                        user_ID         : localStorage.getItem('user_ID'),
-                        cartItems       : cartItems,
-                        shippingtime    : this.state.shippingtiming,
-                        total           : this.props.recentCartData[0].total,
-                        cartTotal       : this.props.recentCartData[0].cartTotal,
-                        discount        : this.props.recentCartData[0].discount,
-                        cartQuantity    : this.props.recentCartData[0].cartQuantity,
-                        deliveryAddress : this.props.recentCartData[0].deliveryAddress,
-                        paymentMethod   : this.props.recentCartData[0].paymentMethod
-                    }
-                    // console.log("Order Data:--->",orderData);
-                    axios.post('/api/orders/post', orderData)
-                    .then((result) => {
-                        this.props.fetchCartData();
-                        this.setState({
-                            messageData : {
-                            "type" : "outpage",
-                            "icon" : "fa fa-check-circle",
-                            "message" : "Order Placed Successfully ",
-                            "class": "success",
-                            "autoDismiss" : true
-                            }
-                        })
-                        setTimeout(() => {
-                            this.setState({
-                                messageData   : {},
-                            })
-                        }, 3000);
-                        this.props.history.push('/payment/' + result.data.order_ID);
-                    })
-                    .catch((error) => {
-                        console.log("return to checkout");
-                        console.log(error);
-                    })
                 })
                 .catch((error) => {
                     console.log('error', error);
                 })
+            if ($('#checkout').valid() && this.state.pincodeExists) {
 
-                
+                axios.patch('/api/carts/address', addressValues)
+                    .then(async (response) => {
+                        // console.log("Response After inserting address to cart===",response);
+                        await this.props.fetchCartData();
+                        var cartItems = this.props.recentCartData[0].cartItems.map((a, i) => {
+                            return {
+                                "product_ID": a.productDetail._id,
+                                "productName": a.productDetail.productName,
+                                "discountPercent": a.productDetail.discountPercent,
+                                "discountedPrice": a.productDetail.discountedPrice,
+                                "originalPrice": a.productDetail.originalPrice,
+                                "color": a.productDetail.color,
+                                "size": a.productDetail.size,
+                                "currency": a.productDetail.currency,
+                                "quantity": a.quantity,
+                                "subTotal": a.subTotal,
+                                "saving": a.saving,
+                                "productImage": a.productDetail.productImage,
+                                "section_ID": a.productDetail.section_ID,
+                                "section": a.productDetail.section,
+                                "category_ID": a.productDetail.category_ID,
+                                "category": a.productDetail.category,
+                                "subCategory_ID": a.productDetail.subCategory_ID,
+                                "subCategory": a.productDetail.subCategory,
+                                "vendor_ID": a.productDetail.vendor_ID
+                            }
+                        })
+                        // console.log("this.props.recentCartData[0].deliveryAddress = ",this.props.recentCartData[0].deliveryAddress,);
+                        var orderData = {
+                            user_ID: localStorage.getItem('user_ID'),
+                            cartItems: cartItems,
+                            shippingtime: this.state.shippingtiming,
+                            total: this.props.recentCartData[0].total,
+                            cartTotal: this.props.recentCartData[0].cartTotal,
+                            discount: this.props.recentCartData[0].discount,
+                            cartQuantity: this.props.recentCartData[0].cartQuantity,
+                            deliveryAddress: this.props.recentCartData[0].deliveryAddress,
+                            paymentMethod: this.props.recentCartData[0].paymentMethod
+                        }
+                        // console.log("Order Data:--->",orderData);
+                        axios.post('/api/orders/post', orderData)
+                            .then((result) => {
+                                this.props.fetchCartData();
+                                this.setState({
+                                    messageData: {
+                                        "type": "outpage",
+                                        "icon": "fa fa-check-circle",
+                                        "message": "Order Placed Successfully ",
+                                        "class": "success",
+                                        "autoDismiss": true
+                                    }
+                                })
+                                setTimeout(() => {
+                                    this.setState({
+                                        messageData: {},
+                                    })
+                                }, 3000);
+                                this.props.history.push('/payment/' + result.data.order_ID);
+                            })
+                            .catch((error) => {
+                                console.log("return to checkout");
+                                console.log(error);
+                            })
+                    })
+                    .catch((error) => {
+                        console.log('error', error);
+                    })
+
+
             }
         }
     }
@@ -760,27 +761,27 @@ class Checkout extends Component {
             "state": this.refs.modalstate.value,
             "country": this.refs.modalcountry.value,
             "mobileNumber": this.refs.modalmobileNumber.value,
-            "addType"     : this.refs.modaladdType.value,
-            "latititude"  : this.state.latititude,
-            "longitude"   : this.state.longitude,
+            "addType": this.refs.modaladdType.value,
+            "latititude": this.state.latititude,
+            "longitude": this.state.longitude,
         }
-        console.log("modal addressValues:",addressValues);
-    
+        console.log("modal addressValues:", addressValues);
+
         if ($('#modalAddressForm').valid()) {
 
             axios.patch('/api/ecommusers/patch/address', post)
                 .then((response) => {
                     this.setState({
-                      messageData : {
-                        "type" : "outpage",
-                        "icon" : "fa fa-check-circle",
-                        "message" : "&nbsp; "+response.data.message,
-                        "class": "success",
-                      }
+                        messageData: {
+                            "type": "outpage",
+                            "icon": "fa fa-check-circle",
+                            "message": "&nbsp; " + response.data.message,
+                            "class": "success",
+                        }
                     })
                     setTimeout(() => {
                         this.setState({
-                            messageData   : {},
+                            messageData: {},
                         })
                     }, 3000);
                     this.getUserAddress();
@@ -805,87 +806,87 @@ class Checkout extends Component {
         $(".toast-warning").removeClass('toast');
     }
     handleChangePlaces = address => {
-        this.setState({ addressLine1 : address});
+        this.setState({ addressLine1: address });
     };
-    selectedTimings(event){
-		var selectedValue = event.target.value;
+    selectedTimings(event) {
+        var selectedValue = event.target.value;
         var keywordSelectedValue = selectedValue.split('$')[0];
         // console.log("keywordSelectedValue==>",keywordSelectedValue);
-        axios.get('/api/time/get/one/'+keywordSelectedValue)
-        .then((response) => {
-          var shippingtime = response.data.fromtime+"-"+response.data.totime;
-        //   console.log('shippingtiming ===> ', shippingtime);
-          this.setState({ shippingtiming : shippingtime});
-        })
-        .catch((error) => {
-          console.log('error', error);
-        });
-       
+        axios.get('/api/time/get/one/' + keywordSelectedValue)
+            .then((response) => {
+                var shippingtime = response.data.fromtime + "-" + response.data.totime;
+                //   console.log('shippingtiming ===> ', shippingtime);
+                this.setState({ shippingtiming: shippingtime });
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+
     }
-    handleSelect = address => {    
+    handleSelect = address => {
         geocodeByAddress(address)
-        .then((results) =>{
-            if(results){
-                // console.log("result ===",results);
-                // console.log("result ===",results);
-            for (var i = 0; i < results[0].address_components.length; i++) {
-                for (var b = 0; b < results[0].address_components[i].types.length; b++) {
-                    switch (results[0].address_components[i].types[b]) {
-                        case 'sublocality_level_1':
-                            var area = results[0].address_components[i].long_name;
-                            // console.log("area===",area);
-                            break;
-                        case 'sublocality_level_2':
-                            area = results[0].address_components[i].long_name;
-                            break;
-                        case 'locality':
-                            var city = results[0].address_components[i].long_name;
-                            // console.log("area===",city);
-                            break;
-                        case 'administrative_area_level_1':
-                            var state = results[0].address_components[i].long_name;
-                            var stateCode = results[0].address_components[i].short_name;
-                            break;
-                        case 'administrative_area_level_2':
-                            var district = results[0].address_components[i].long_name;
-                            break;
-                        case 'country':
-                            var country = results[0].address_components[i].long_name;
-                            var countryCode = results[0].address_components[i].short_name;
-                            break;
-                        case 'postal_code':
-                            var pincode = results[0].address_components[i].long_name;
-                            break;
-                        default :
-                        break;
+            .then((results) => {
+                if (results) {
+                    // console.log("result ===",results);
+                    // console.log("result ===",results);
+                    for (var i = 0; i < results[0].address_components.length; i++) {
+                        for (var b = 0; b < results[0].address_components[i].types.length; b++) {
+                            switch (results[0].address_components[i].types[b]) {
+                                case 'sublocality_level_1':
+                                    var area = results[0].address_components[i].long_name;
+                                    // console.log("area===",area);
+                                    break;
+                                case 'sublocality_level_2':
+                                    area = results[0].address_components[i].long_name;
+                                    break;
+                                case 'locality':
+                                    var city = results[0].address_components[i].long_name;
+                                    // console.log("area===",city);
+                                    break;
+                                case 'administrative_area_level_1':
+                                    var state = results[0].address_components[i].long_name;
+                                    var stateCode = results[0].address_components[i].short_name;
+                                    break;
+                                case 'administrative_area_level_2':
+                                    var district = results[0].address_components[i].long_name;
+                                    break;
+                                case 'country':
+                                    var country = results[0].address_components[i].long_name;
+                                    var countryCode = results[0].address_components[i].short_name;
+                                    break;
+                                case 'postal_code':
+                                    var pincode = results[0].address_components[i].long_name;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     }
+
+                    this.setState({
+                        area: area,
+                        city: city,
+                        district: district,
+                        state: state,
+                        country: country,
+                        pincode: pincode,
+                        stateCode: stateCode,
+                        countryCode: countryCode
+                    })
+                    // console.log("setstate:", this.state.latLng);
                 }
-            }
-        
-            this.setState({
-                area       : area,
-                city       : city,
-                district   : district,
-                state      : state,
-                country    :country,
-                pincode    : pincode,
-                stateCode  :stateCode,
-                countryCode:countryCode
-            }) 
-            // console.log("setstate:", this.state.latLng);
-            }  
-          
-        })        
-        .catch(error => console.error('Error', error));
+
+            })
+            .catch(error => console.error('Error', error));
 
         geocodeByAddress(address)
-        .then(results => getLatLng(results[0]))
-        .then(({ lat, lng }) =>{            
-            this.setState({'latitude' : lat});
-            this.setState({'longitude' : lng});
-            // console.log('Successfully got latitude and longitude', { lat, lng });
-        });           
-          this.setState({ addressLine1 : address});
+            .then(results => getLatLng(results[0]))
+            .then(({ lat, lng }) => {
+                this.setState({ 'latitude': lat });
+                this.setState({ 'longitude': lng });
+                // console.log('Successfully got latitude and longitude', { lat, lng });
+            });
+        this.setState({ addressLine1: address });
     }; //end google api   
     camelCase(str) {
         return str
@@ -894,36 +895,46 @@ class Checkout extends Component {
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ');
     }
-    opDones(){
+    opDones() {
         this.getUserAddress();
     }
-    checkDelevery(event){
-        event.preventDefault();
+    checkDelevery(event) {
+        // event.preventDefault();
         var target = event.target.pincode;
-        var id     = event.target.id;
-       const pincode =  event.target.getAttribute('pincode');
-        console.log("target:",pincode);
-        axios.get("/api/allowablepincode/checkpincode/"+pincode)
-        .then((response)=>{
-            if(response){          
-                if(response.data.message !== "Delivery Available"){ 
-                   console.log("Delevery not possible on this address"); 
-                //    $('#'+id).show();
-                }               
-            }
-        });
+        var id = event.target.value;        
+        console.log("addressId =", id);
+        $('.notAvailable').hide();
+        const pincode = event.target.getAttribute('pincode');
+        console.log("target:", pincode);
+        this.setState({
+            "addressId": id,
+        })
+        axios.get("/api/allowablepincode/checkpincode/" + pincode)
+            .then((response) => {
+                if (response) {
+                    if (response.data.message !== "Delivery Available") {
+                        console.log("Delevery not possible on this address");
+                        $('#' + id).show();
+                        $(".placeOrder").attr("disabled", true);
+                    }else{
+                        $('#' + id).hide();
+                        $(".placeOrder").attr("disabled", false);
+                    }
+                }
+            });
 
 
     }
     render() {
+        console.log("this.state.addressId=", this.state.addressId);
         return (
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{backgroundColor:"#ffffff"}}>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{ backgroundColor: "#ffffff" }}>
                 <Message messageData={this.state.messageData} />
                 <div className="row">
-                    <Loader type="fullpageloader" /> 
-                    <Address opDone={this.opDones.bind(this)}/>
-                    <SmallBanner bannerData={this.state.bannerData} />                    
-                
+                    <Loader type="fullpageloader" />
+                    <Address opDone={this.opDones.bind(this)} />
+                    <SmallBanner bannerData={this.state.bannerData} />
+
                     <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                         <form id="checkout">
                             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -932,7 +943,7 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn paymentMethodTitle">PAYMENT METHOD <span className="required">*</span></div>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input name="payMethod" type="radio" value="Cash On Delivery" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true"/>
+                                            <input name="payMethod" type="radio" value="Cash On Delivery" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
@@ -946,30 +957,32 @@ class Checkout extends Component {
                                 </div>
                                 {
                                     this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">                                            
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn shippingAddressTitle">SHIPPING ADDRESS <span className="required">*</span></div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <label id="checkoutAddess"></label>
                                             </div>
-                                            {   this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
+                                            {this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
                                                 this.state.deliveryAddress.map((data, index) => {
+                                                    console.log("checked ==", this.state.addressId === data._id);
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div>
-                                                            {/* <input type="radio" value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)}  className="codRadio"/> &nbsp; */}
-                                                            <input type="radio" value={data._id} name="checkoutAddess" pincode={data.pincode} required className="codRadio"/> &nbsp;
-                                                            <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br/>
-                                                            <span className="checkoutADDCss">Name : {data.name}.</span> <br/>
-                                                            {data.addressLine2}, {data.addressLine1}, 
-                                                            Pincode - {data.pincode}. <br/>
-                                                            Email: {data.email} <br/>Mobile: {data.mobileNumber} <br/><br/></span> 
+
+                                                            <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)} className="codRadio" /> &nbsp;
+                                                            {/* <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)} className="codRadio"/> &nbsp; */}
+                                                            <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br />
+                                                                <span className="checkoutADDCss">Name : {data.name}.</span> <br />
+                                                                {data.addressLine2}, {data.addressLine1},
+                                                            Pincode - {data.pincode}. <br />
+                                                            Email: {data.email} <br />Mobile: {data.mobileNumber} <br /><br /></span>
                                                         </div>
                                                     );
                                                 })
                                                 :
                                                 null
                                             }
-                                            
+
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
                                                 <button className="btn modalBtn anasBtn" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
                                             </div>
@@ -995,47 +1008,47 @@ class Checkout extends Component {
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">House No/Office No <span className="required">*</span></label>
                                                 <input type="text" ref="addressLine2" name="addressLine2" id="addressLine2" value={this.state.addressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                             </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >                                            
-                                            <PlacesAutocomplete value={this.state.addressLine1}
-                                                onChange={this.handleChangePlaces}
-                                                onSelect={this.handleSelect}
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
+                                                <PlacesAutocomplete value={this.state.addressLine1}
+                                                    onChange={this.handleChangePlaces}
+                                                    onSelect={this.handleSelect}
                                                 >
-                                                {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                                                    <div>
-                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>    
-                                                    <input
-                                                        {...getInputProps({
-                                                        placeholder: 'Start typing ...',
-                                                        className: 'location-search-input col-lg-12 form-control errorinputText',
-                                                        id:"addressLine1",
-                                                        name:"addressLine1"
-                                                        })}
-                                                    />
-                                                    <div className="autocomplete-dropdown-container SearchListContainer">
-                                                        {loading && <div>Loading...</div>}
-                                                        {suggestions.map(suggestion => {
-                                                        const className = suggestion.active
-                                                            ? 'suggestion-item--active'
-                                                            : 'suggestion-item';
-                                                        // inline style for demonstration purpose
-                                                        const style = suggestion.active
-                                                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                                                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                                                        return (
-                                                            <div
-                                                            {...getSuggestionItemProps(suggestion, {
-                                                                className,
-                                                                style,
-                                                            })}
-                                                            >
-                                                            <span>{suggestion.description}</span>
+                                                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                                        <div>
+                                                            <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>
+                                                            <input
+                                                                {...getInputProps({
+                                                                    placeholder: 'Start typing ...',
+                                                                    className: 'location-search-input col-lg-12 form-control errorinputText',
+                                                                    id: "addressLine1",
+                                                                    name: "addressLine1"
+                                                                })}
+                                                            />
+                                                            <div className="autocomplete-dropdown-container SearchListContainer">
+                                                                {loading && <div>Loading...</div>}
+                                                                {suggestions.map(suggestion => {
+                                                                    const className = suggestion.active
+                                                                        ? 'suggestion-item--active'
+                                                                        : 'suggestion-item';
+                                                                    // inline style for demonstration purpose
+                                                                    const style = suggestion.active
+                                                                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                                    return (
+                                                                        <div
+                                                                            {...getSuggestionItemProps(suggestion, {
+                                                                                className,
+                                                                                style,
+                                                                            })}
+                                                                        >
+                                                                            <span>{suggestion.description}</span>
+                                                                        </div>
+                                                                    );
+                                                                })}
                                                             </div>
-                                                            );
-                                                            })}
                                                         </div>
-                                                        </div>
-                                                )}
-                                            </PlacesAutocomplete>
+                                                    )}
+                                                </PlacesAutocomplete>
                                             </div>
                                             {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address Line 1 <span className="required">*</span></label>
@@ -1089,8 +1102,8 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
                                                 <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                                {this.state.pincodeExists ? null : <label style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}
-                                            </div> 
+                                                {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
+                                            </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address type <span className="required">*</span></label>
                                                 <select id="addType" name="addType" ref="addType" value={this.state.addType} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
@@ -1119,16 +1132,16 @@ class Checkout extends Component {
                                         <tbody>
                                             {
                                                 this.props.recentCartData && this.props.recentCartData.length > 0 ?
-                                                this.props.recentCartData[0].cartItems.map((data, index) => {
-                                                        
+                                                    this.props.recentCartData[0].cartItems.map((data, index) => {
+
                                                         return (
                                                             <tr key={'cartData' + index}>
                                                                 {/* <td><span className="fa fa-times-circle-o crossOrder" id={data._id} onClick={this.Removefromcart.bind(this)}></span></td> */}
                                                                 <td><img className="img img-responsive orderImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} /></td>
                                                                 <td>
                                                                     <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productDetail.productName}</h5></a>
-                                                                    
-                                                                    {data.productDetail.discountPercent  ?
+
+                                                                    {data.productDetail.discountPercent ?
                                                                         <div className="col-lg-12 col-md-12 NOpadding">
                                                                             <span className="cartOldprice"><i className="fa fa-inr cartOldprice"></i>{data.productDetail.originalPrice}</span> &nbsp; &nbsp;
                                                                             <span className="cartPrice"><i className="fa fa-inr"></i>{data.productDetail.discountedPrice}</span> &nbsp; &nbsp;
@@ -1138,37 +1151,37 @@ class Checkout extends Component {
                                                                         <span className="price"><i className="fa fa-inr"></i> &nbsp;{data.productDetail.originalPrice}</span>
                                                                     }
                                                                     <div>
-                                                                    {data.productDetail.color ?<span className="cartColor">Color : <span style={{backgroundColor : data.productDetail.color, padding: '0px 5px'}}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span>: null}
-                                                                {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp; {data.productDetail.unit}</span>: null}
+                                                                        {data.productDetail.color ? <span className="cartColor">Color : <span style={{ backgroundColor: data.productDetail.color, padding: '0px 5px' }}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span> : null}
+                                                                        {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp; {data.productDetail.unit}</span> : null}
                                                                     </div>
                                                                 </td>
                                                                 <td className="textAlignRight">
-                                                                {
-                                                                    data.productDetail.availableQuantity > 0 ?
-                                                                    // <span className="productPrize textAlignRight"><i className={"fa fa-" + data.productDetail.currency}></i> &nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
-                                                                    <span className="productPrize textAlignRight"><i className="fa fa-inr"></i>&nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
-                                                                    :
-                                                                    <span>-</span>
-                                                                }
+                                                                    {
+                                                                        data.productDetail.availableQuantity > 0 ?
+                                                                            // <span className="productPrize textAlignRight"><i className={"fa fa-" + data.productDetail.currency}></i> &nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
+                                                                            <span className="productPrize textAlignRight"><i className="fa fa-inr"></i>&nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
+                                                                            :
+                                                                            <span>-</span>
+                                                                    }
                                                                 </td>
                                                                 <td className="textAlignRight">
-                                                                {
-                                                                data.productDetail.availableQuantity > 0 ?
-                                                                    <span className=" textAlignRight">{data.quantity}</span>
-                                                                    :
-                                                                    <span className="textAlignCenter sold">SOLD OUT</span>
-                                                                }
+                                                                    {
+                                                                        data.productDetail.availableQuantity > 0 ?
+                                                                            <span className=" textAlignRight">{data.quantity}</span>
+                                                                            :
+                                                                            <span className="textAlignCenter sold">SOLD OUT</span>
+                                                                    }
                                                                 </td>
                                                                 <td className="textAlignRight">
-                                                                {
-                                                                    data.productDetail.availableQuantity > 0 ?
-                                                                    <span className="productPrize textAlignRight">
-                                                                        <i className="fa fa-inr"></i>
-                                                                        {/* {data.productDetail.currency} */}
+                                                                    {
+                                                                        data.productDetail.availableQuantity > 0 ?
+                                                                            <span className="productPrize textAlignRight">
+                                                                                <i className="fa fa-inr"></i>
+                                                                                {/* {data.productDetail.currency} */}
                                                                         &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
-                                                                    :
-                                                                    <span>-</span>
-                                                                }
+                                                                            :
+                                                                            <span>-</span>
+                                                                    }
                                                                 </td>
                                                             </tr>
                                                         );
@@ -1182,13 +1195,13 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Cart Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Discount:</span>                                        
-                                        <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">
-                                             {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount>=1 ? this.props.recentCartData[0].discount:0.00 }</span> : "0.00"}
-                                        </span>
+                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Discount:</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">
+                                        {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"}
+                                    </span>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Order Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
                                     <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Delivery Charges:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
-                                    
+
 
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
@@ -1206,7 +1219,7 @@ class Checkout extends Component {
                                             </div>
                                         </div>
                                         <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
-                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>   
+                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>
                                             <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
                                                 <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
                                                 {
@@ -1220,7 +1233,7 @@ class Checkout extends Component {
                                                         <option value='user'>No Timings available</option>
                                                 }
                                             </select>
-                                        </div> 
+                                        </div>
                                         <div className="modal col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 checkoutAddressModal" id="termsNconditionsmodal" role="dialog">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
@@ -1239,7 +1252,7 @@ class Checkout extends Component {
                                                     </div>
                                                     <div className="modal-footer checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                         <button type="button" className="btn btn-warning" data-dismiss="modal">Cancel</button>
-                                                            
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1247,7 +1260,7 @@ class Checkout extends Component {
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                                         <div id="termsNconditions col-lg-6 col-md-12"></div>
-                                     
+
                                     </div>
                                     {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
                                             <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
@@ -1265,28 +1278,28 @@ class Checkout extends Component {
                                                 }
                                             </select>
                                         </div> */}
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
-                                        </div>
-                                    
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
+                                    </div>
+
                                 </div>
                             </div>
                         </form>
-                        
+
                     </div>
                 </div>
             </div>
         );
     }
 }
-const mapStateToProps = (state)=>{
-    return {      
-      recentCartData :  state.recentCartData
+const mapStateToProps = (state) => {
+    return {
+        recentCartData: state.recentCartData
     }
-  }
+}
 const mapDispachToProps = (dispatch) => {
     // console.log("getCartData====",getCartData);
-  return  bindActionCreators({ fetchCartData: getCartData}, dispatch)
+    return bindActionCreators({ fetchCartData: getCartData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispachToProps)(Checkout);
