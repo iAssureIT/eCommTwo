@@ -185,3 +185,10 @@
     display: none;
     padding-left: 0px;
 }
+.DeliveryNotPoss{
+    color: #f00;
+    font-size: 12px;
+    margin-bottom: 5px;
+    display: none;
+    padding-left: 0px;
+}

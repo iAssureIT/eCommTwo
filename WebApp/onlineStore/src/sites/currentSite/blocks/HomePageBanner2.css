@@ -37,9 +37,11 @@
     background-color: #fff;
     height: 200px;
 }
+
 .zoomImg:hover{
     transform: scale(1.1);
 }
+
 .imageBlock{
     /* border: solid 2px; */
     /* background-color: #fff; */

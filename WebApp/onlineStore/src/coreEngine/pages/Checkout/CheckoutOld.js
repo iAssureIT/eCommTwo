@@ -19,6 +19,7 @@ import "../../../sites/currentSite/pages/Checkout.css";
 import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import swal from 'sweetalert';
 
 class Checkout extends Component {
     constructor(props) {
@@ -295,23 +296,7 @@ class Checkout extends Component {
             [event.target.name]: event.target.value
         })
         if (event.target.name === 'pincode') {
-            if(localStorage.getItem('websiteModel'==="FranchiseModel")){
-                axios.get("/api/allowablepincode/checkpincode/" + event.target.value)
-                .then((response) => {
-                    if (response) {
-                        if (response.data.message !== "Delivery Available") {
-                            console.log("Delevery not possible on this address");
-                            $('.DeliveryNotPoss').show();
-                            $(".placeOrder").attr("disabled", true);
-                        }else{
-                            $('.DeliveryNotPoss').hide();
-                            $(".placeOrder").attr("disabled", false);
-                        }
-                    }
-                });
-            }
             this.handlePincode(event.target.value);
-            
         }
     }
     handlePincode(pincode) {
@@ -577,6 +562,7 @@ class Checkout extends Component {
             giftOption: this.state.giftOption === true ? false : true
         })
     }
+    //place order function
     placeOrder(event) {
         event.preventDefault();
         var addressValues = {};
@@ -656,38 +642,170 @@ class Checkout extends Component {
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     // console.log("addressValues:===",addressValues);
-                    axios.patch('/api/ecommusers/patch/address', addressValues)
-                        .then((response) => {
-                            $('.fullpageloader').hide();
+                    
+                    //check if webSite model is FranchiseModel
+                    if(localStorage.getItem('websiteModel') === "FranchiseModel"){
+                    axios.get("/api/allowablepincode/checkpincode/" + formValues.pincode)
+                    .then((response) => {
+                    if (response) {
+                        if (response.data.message !== "Delivery Available") {
+                            console.log("Delivery not possible on this address");
                             this.setState({
                                 messageData: {
                                     "type": "outpage",
                                     "icon": "fa fa-check-circle",
-                                    "message": "&nbsp; " + response.data.message,
-                                    "class": "success",
-                                    "autoDismiss": true
+                                    "message": "&nbsp; " +"Sorry!! Delivery is not possible on this address.",
+                                    "class": "danger",
                                 }
                             })
-                            setTimeout(() => {
+                            $('.fullpageloader').css("display","none");
+                            // swal({
+                            //     text : "Delivery is not possible on this address"
+                            // })  
+                            // window.location.reload();
+                                                 
+                            // $('#' + id).show();
+                            // $(".placeOrder").attr("disabled", true);
+
+                        }else{
+                            axios.patch('/api/ecommusers/patch/address', addressValues)
+                            .then((response) => {
+                                $('.fullpageloader').hide();
                                 this.setState({
-                                    messageData: {},
+                                    messageData: {
+                                        "type": "outpage",
+                                        "icon": "fa fa-check-circle",
+                                        "message": "&nbsp; " + response.data.message,
+                                        "class": "success",
+                                        "autoDismiss": true
+                                    }
                                 })
-                            }, 3000);
-                            this.getUserAddress();
+                                setTimeout(() => {
+                                    this.setState({
+                                        messageData: {},
+                                    })
+                                }, 3000);
+                                this.getUserAddress();
+                            })
+                            .catch((error) => {
+                                console.log('error', error);
+                            });
+
+                            //insert data into cart
+                            axios.patch('/api/carts/payment', formValues)
+                        .then((response) => {
+
                         })
                         .catch((error) => {
                             console.log('error', error);
-                        });
-                }
-            }
-            // console.log('pls');
-            axios.patch('/api/carts/payment', formValues)
-                .then((response) => {
+                        })
+                        if ($('#checkout').valid() && this.state.pincodeExists) {
 
+                            axios.patch('/api/carts/address', addressValues)
+                                .then(async (response) => {
+                                    // console.log("Response After inserting address to cart===",response);
+                                    await this.props.fetchCartData();
+                                    var cartItems = this.props.recentCartData[0].cartItems.map((a, i) => {
+                                        return {
+                                            "product_ID": a.productDetail._id,
+                                            "productName": a.productDetail.productName,
+                                            "discountPercent": a.productDetail.discountPercent,
+                                            "discountedPrice": a.productDetail.discountedPrice,
+                                            "originalPrice": a.productDetail.originalPrice,
+                                            "color": a.productDetail.color,
+                                            "size": a.productDetail.size,
+                                            "currency": a.productDetail.currency,
+                                            "quantity": a.quantity,
+                                            "subTotal": a.subTotal,
+                                            "saving": a.saving,
+                                            "productImage": a.productDetail.productImage,
+                                            "section_ID": a.productDetail.section_ID,
+                                            "section": a.productDetail.section,
+                                            "category_ID": a.productDetail.category_ID,
+                                            "category": a.productDetail.category,
+                                            "subCategory_ID": a.productDetail.subCategory_ID,
+                                            "subCategory": a.productDetail.subCategory,
+                                            "vendor_ID": a.productDetail.vendor_ID
+                                        }
+                                    })
+                                    // console.log("this.props.recentCartData[0].deliveryAddress = ",this.props.recentCartData[0].deliveryAddress,);
+                                    var orderData = {
+                                        user_ID: localStorage.getItem('user_ID'),
+                                        cartItems: cartItems,
+                                        shippingtime: this.state.shippingtiming,
+                                        total: this.props.recentCartData[0].total,
+                                        cartTotal: this.props.recentCartData[0].cartTotal,
+                                        discount: this.props.recentCartData[0].discount,
+                                        cartQuantity: this.props.recentCartData[0].cartQuantity,
+                                        deliveryAddress: this.props.recentCartData[0].deliveryAddress,
+                                        paymentMethod: this.props.recentCartData[0].paymentMethod
+                                    }
+                                    // console.log("Order Data:--->",orderData);
+                                    axios.post('/api/orders/post', orderData)
+                                        .then((result) => {
+                                            this.props.fetchCartData();
+                                            this.setState({
+                                                messageData: {
+                                                    "type": "outpage",
+                                                    "icon": "fa fa-check-circle",
+                                                    "message": "Order Placed Successfully ",
+                                                    "class": "success",
+                                                    "autoDismiss": true
+                                                }
+                                            })
+                                            setTimeout(() => {
+                                                this.setState({
+                                                    messageData: {},
+                                                })
+                                            }, 3000);
+                                            this.props.history.push('/payment/' + result.data.order_ID);
+                                        })
+                                        .catch((error) => {
+                                            console.log("return to checkout");
+                                            console.log(error);
+                                        })
+                                })
+                                .catch((error) => {
+                                    console.log('error', error);
+                                })
+                        }//end if pincodeExit
+
+                        }//end else delivery is possible
+                    }//end response
+                });
+            }//end websiteModel if
+            else{
+                axios.patch('/api/ecommusers/patch/address', addressValues)
+                .then((response) => {
+                    $('.fullpageloader').hide();
+                    this.setState({
+                        messageData: {
+                            "type": "outpage",
+                            "icon": "fa fa-check-circle",
+                            "message": "&nbsp; " + response.data.message,
+                            "class": "success",
+                            "autoDismiss": true
+                        }
+                    })
+                    setTimeout(() => {
+                        this.setState({
+                            messageData: {},
+                        })
+                    }, 3000);
+                    this.getUserAddress();
                 })
                 .catch((error) => {
                     console.log('error', error);
-                })
+                });
+
+                //insert data into cart
+                axios.patch('/api/carts/payment', formValues)
+            .then((response) => {
+
+            })
+            .catch((error) => {
+                console.log('error', error);
+            })
             if ($('#checkout').valid() && this.state.pincodeExists) {
 
                 axios.patch('/api/carts/address', addressValues)
@@ -757,11 +875,17 @@ class Checkout extends Component {
                     .catch((error) => {
                         console.log('error', error);
                     })
+            }//end if pincodeExit
+            }//end else
+                    
+                }
+            
+            
+            }//end else soldProducts.length
 
+        }//end soldProducts.length
+    }//end place order
 
-            }
-        }
-    }
     saveModalAddress(event) {
         event.preventDefault();
         this.modalvalidation();
@@ -1118,7 +1242,6 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
                                                 <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                                <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
                                                 {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
