@@ -106,7 +106,7 @@ export default class RawMaterialStockReport extends React.Component {
 			
 			var tableData = response.data.map((a, i) => {
 				// var stock = this.getTotalSTock(a.itemCode);
-			// console.log("stock",stock);
+			 console.log("stock",response.data);
 					return {
 						_id                  : a._id,
 						Date   				 : a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",

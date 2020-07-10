@@ -17,6 +17,7 @@ class WebsiteModel extends Component {
             "SingleOwner"      : "",
             "askPincodeYes"    : "",
             "askPincodeNo"     : "",
+            "websiteModel"     : ""
 
         };
         
@@ -26,69 +27,21 @@ class WebsiteModel extends Component {
     }
 
     componentWillMount() {
-        
-        // axios.get("/api/adminpreference/get")
-        // .then(preferences =>{
-        // if(preferences.data){
-        //         console.log("preferences value:",preferences.data[0]);
-        //         var askpincodeToUser = preferences.data[0].askPincodeToUser;
-        //         console.log("askpincodeToUser:",preferences.data[0].askPincodeToUser);
-        //         this.setState({
-        //             'editId' : preferences.data[0]._id,
-        //         })
-        //        if(preferences.data[0].websiteModel === "FranchiseModel"){                   
-        //            this.setState({
-        //             'franchise' : 'checked',
-        //         })
-        //            if(this.state.franchise){
-        //             console.log("1.this.state.franchise:",this.state.franchise);
-        //            }
-                   
-        //        }else if(preferences.data[0].websiteModel === "MarketPlace"){                        
-                    
-        //             this.setState({
-        //                 'marketplace' : 'checked',
-        //             })
-        //             console.log("2.this.state.marketPlace:",this.state.marketplace);
-        //        }else if(preferences.data[0].websiteModel === "SingleOwner"){                        
-        //             this.setState({
-        //                 'SingleOwner': 'checked',
-        //             })
-        //             console.log("3.this.state.SingleOwner:",this.state.SingleOwner);
-        //        }else if(preferences.data[0].askPincodeToUser === "true"){                        
-                    
-        //             this.setState({
-        //                 'askPincodeYes': 'checked',
-        //             })
-        //             if(this.state.askPincodeYes){
-        //                 console.log("this.state.askPincodeYes:",this.state.askPincodeYes);
-        //             }
-                   
-        //         }else if(preferences.data[0].askPincodeToUser === "false"){                    
-     
-        //             this.setState({
-        //                 'askPincodeNo': 'checked',
-        //             })
-        //             console.log("this.state.askPincodeNo:",this.state.askPincodeNo);
-        //         }else if(preferences.data[0].showLoginAs === "modal"){                    
-     
-        //             this.setState({
-        //                 'modalYes': 'checked',
-        //             })
-                    
-        //         }else if(preferences.data[0].showLoginAs === "loginPage"){                    
-     
-        //             this.setState({
-        //                 'loginYes': 'checked',
-        //             })
-                    
-        //         }          
-            
-        //     }
-        // })
-        // .catch(error=>{
-        //     console.log("Error in preferences = ", error);
-        // })
+        axios.get("/api/adminpreference/get")
+        .then(preferences =>{
+        if(preferences.data){
+                var askpincodeToUser = preferences.data[0].askPincodeToUser;
+                this.setState({
+                    'editId'           : preferences.data[0]._id,
+                    'websiteModel'     : preferences.data[0].websiteModel,
+                    'askPincodeToUser' : preferences.data[0].askPincodeToUser,
+                    'showLoginAs'      : preferences.data[0].showLoginAs,
+                })        
+            }
+        })
+        .catch(error=>{
+            console.log("Error in preferences = ", error);
+        })
     }  
     
     handleChange(event) {
@@ -148,19 +101,19 @@ class WebsiteModel extends Component {
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Select Website Model <span><i className="astrick">*</i></span></div>
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">                                                        
                                                         <input name="websiteModel" type="radio" value="SingleOwner" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                        onClick={this.handleChange.bind(this)} />                                                        
+                                                         checked={this.state.websiteModel == "SingleOwner"} onClick={this.handleChange.bind(this)} />                                                        
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Single Owner website</span>
                                                     </div>
 
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">                                                    
                                                         <input name="websiteModel" type="radio" value="MarketPlace" className=" webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                        onClick={this.handleChange.bind(this)} />                                                     
+                                                        checked={this.state.websiteModel == "MarketPlace"} onClick={this.handleChange.bind(this)} />                                                     
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Multi vendor Marketplace</span>
                                                     </div>
 
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper">                                            
                                                         <input name="websiteModel" type="radio" value="FranchiseModel" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                        onClick={this.handleChange.bind(this)} />                                                     
+                                                        checked={this.state.websiteModel == "FranchiseModel"}  onClick={this.handleChange.bind(this)} />                                                     
                                                         <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Franchise Model</span>
                                                     </div>
                                                 </div>
@@ -168,12 +121,12 @@ class WebsiteModel extends Component {
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">Ask Pincode To User on Homepage Launch <span><i className="astrick">*</i></span></div>
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">                                                    
                                                             <input name="askPincodeToUser" type="radio" value="Yes" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                             onClick={this.handleChange.bind(this)} />                                                        
+                                                             checked={this.state.askPincodeToUser == "Yes"} onClick={this.handleChange.bind(this)} />                                                        
                                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Yes</span>
                                                     </div>
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">                                                    
                                                             <input name="askPincodeToUser" type="radio" value="No" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                            onClick={this.handleChange.bind(this)} />                                                        
+                                                             checked={this.state.askPincodeToUser == "No"} onClick={this.handleChange.bind(this)} />                                                        
                                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">No</span>
                                                     </div>
                                                 </div>
@@ -181,12 +134,12 @@ class WebsiteModel extends Component {
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">For login show seprate page or modal <span><i className="astrick">*</i></span></div>
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
                                                             <input name="showLoginAs" type="radio" value="modal" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                            onClick={this.handleChange.bind(this)} />
+                                                             checked={this.state.showLoginAs == "modal"} onClick={this.handleChange.bind(this)} />
                                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Show Modal</span>
                                                     </div>  
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
                                                             <input name="showLoginAs" type="radio" value="loginPage" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                            onClick={this.handleChange.bind(this)} />
+                                                             checked={this.state.showLoginAs == "loginPage"} onClick={this.handleChange.bind(this)} />
                                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10 modelLabel">Show Login Page</span>
                                                     </div>                                                   
                                                 </div>
