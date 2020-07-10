@@ -469,7 +469,7 @@ class EcommerceProductCarousel extends Component {
                                                       i === 0 ?
                                                       <div className="selectSizeBox">                                                          
                                                           <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
-                                                          <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
+                                                          <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onChange={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
                                                             { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
                                                                 return(
                                                                     size === 1000?
