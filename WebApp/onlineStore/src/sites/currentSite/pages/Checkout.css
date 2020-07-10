@@ -183,3 +183,10 @@
     width: 15px !important;
     margin-top: 5px !important;
 } */
+
+.notAvailable{
+    color: #f00;
+    font-size: 12px;
+    margin-bottom: 5px;
+    display: none;
+}

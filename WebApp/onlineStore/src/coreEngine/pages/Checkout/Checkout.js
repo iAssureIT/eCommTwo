@@ -897,6 +897,24 @@ class Checkout extends Component {
     opDones(){
         this.getUserAddress();
     }
+    checkDelevery(event){
+        event.preventDefault();
+        var target = event.target.pincode;
+        var id     = event.target.id;
+       const pincode =  event.target.getAttribute('pincode');
+        console.log("target:",pincode);
+        axios.get("/api/allowablepincode/checkpincode/"+pincode)
+        .then((response)=>{
+            if(response){          
+                if(response.data.message !== "Delivery Available"){ 
+                   console.log("Delevery not possible on this address"); 
+                //    $('#'+id).show();
+                }               
+            }
+        });
+
+
+    }
     render() {
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{backgroundColor:"#ffffff"}}>
@@ -928,8 +946,7 @@ class Checkout extends Component {
                                 </div>
                                 {
                                     this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">
-                                            
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">                                            
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn shippingAddressTitle">SHIPPING ADDRESS <span className="required">*</span></div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <label id="checkoutAddess"></label>
@@ -938,7 +955,9 @@ class Checkout extends Component {
                                                 this.state.deliveryAddress.map((data, index) => {
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <input type="radio" value={data._id} name="checkoutAddess" required  className="codRadio"/> &nbsp;
+                                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div>
+                                                            {/* <input type="radio" value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)}  className="codRadio"/> &nbsp; */}
+                                                            <input type="radio" value={data._id} name="checkoutAddess" pincode={data.pincode} required className="codRadio"/> &nbsp;
                                                             <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br/>
                                                             <span className="checkoutADDCss">Name : {data.name}.</span> <br/>
                                                             {data.addressLine2}, {data.addressLine1}, 
@@ -1249,7 +1268,6 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
                                         </div>
-
                                     
                                 </div>
                             </div>
