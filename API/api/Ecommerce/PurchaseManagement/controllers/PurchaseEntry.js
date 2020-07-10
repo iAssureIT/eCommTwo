@@ -806,6 +806,8 @@ exports.get_purchase_entry_report = (req, res, next)=>{
                         var DistData = [];
                         for(i = 0 ; i < data.length ; i++){
                         var currentStock =  await get_current_stock_of_raw(data[i].itemCode);
+                        var openingStock =  await get_opening_stock_of_raw(data[i].itemCode,data[i]._id,data[i].purchaseDate);
+
                             returnData.push({
                                 "_id"             : data[i]._id,
                                 "purchaseDate"    : data[i].purchaseDate,
@@ -826,7 +828,7 @@ exports.get_purchase_entry_report = (req, res, next)=>{
                                 "balanceUnit"      : data[i].balanceUnit,
                                 "totalStock"       : currentStock.totalStock,
                                 "StockUnit"        : currentStock.StockUnit,
-                                "openingStock"     : currentStock.totalStock - data[i].quantity,
+                                "openingStock"     : openingStock,
                                 "createdAt"        : data[i].createdAt,
                             });
                         }
@@ -858,7 +860,6 @@ exports.get_purchase_entry_report = (req, res, next)=>{
                         for(i = 0 ; i < data.length ; i++){
                          var currentStock =  await get_current_stock_of_raw(data[i].itemCode);
                          var openingStock =  await get_opening_stock_of_raw(data[i].itemCode,data[i]._id,data[i].purchaseDate);
-                         console.log("openingStock",openingStock);
                             returnData.push({
                                 "_id"             : data[i]._id,
                                 "purchaseDate"    : data[i].purchaseDate,

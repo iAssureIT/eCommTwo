@@ -103,10 +103,8 @@ export default class RawMaterialStockReport extends React.Component {
 		axios
 		.post('/api/purchaseentry/post/getReportOfPurchaseEntry/',reportFilterData)
 		.then((response)=>{
-			
 			var tableData = response.data.map((a, i) => {
-				// var stock = this.getTotalSTock(a.itemCode);
-			 console.log("stock",response.data);
+
 					return {
 						_id                  : a._id,
 						Date   				 : a.purchaseDate ? moment(a.purchaseDate).format("DD-MMM-YYYY") : "",
@@ -119,10 +117,8 @@ export default class RawMaterialStockReport extends React.Component {
 						totalStock           : a.totalStock    ? a.totalStock +' '+ a.StockUnit : 0,
 						
 					}
-			})
-					
 
-				
+			})
 
 				this.setState({
 				  tableData 		: tableData,          
