@@ -677,20 +677,20 @@ loginPage(event){
                                 <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
                               </div>
                               {
-                              this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0 ?  
+                              this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0  &&  this.state.minvalueshipping <= this.props.recentCartData[0].total?  
                                 <div className="col-lg-6 NOpaddingRight">
-                                {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
+                                {/* {  ? */}
                                   <a href={user_ID ? "/checkout" : "/login"}><div className="btn cartdropbtn_un col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
-                                  :
-                                  <a><div className="btn notcheckout col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
-                                }
-                                 {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
+                                  {/* : */}
+                                  {/* <a><div className="btn notcheckout col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a> */}
+                                {/* } */}
+                                 {/* {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
                                 null
                                 :
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
                                     <span className="minpurchasehead">You can't checkout.Minimum order should be ₹  {this.state.minvalueshipping} to Checkout & Place Order.</span>
                                 </div>
-                                }
+                                } */}
                                 </div>
                                 : "" 
                               }                      
