@@ -10,36 +10,46 @@ exports.getfranchisestock = (req,res,next)=>{
                     .aggregate([
                         {"$match" : {"balance" : {"$gt" : 0 } } },
                         {"$group" : {
-                                    "_id": {"prodcode" : "$ProductCode", "itemcode" : "$ItemCode"},
+                                    "_id": {"prodcode" : "$ProductCode", "itemcode" : "$ItemCode","fgUnitQty" : "$fgUnitQty","fgUnitWt" : "$fgUnitWt"},
                                     "total": {$sum: "$balance"}
                          }}
                     ])
                     .then(finGoods=>{
+<<<<<<< Updated upstream
                         console.log("finGoods =====> ",finGoods);
+=======
+>>>>>>> Stashed changes
                         var franchiseStock = [];
 
                         products.forEach((element)=>{
                             let pCode = element.productCode ;
                             let iCode = element.itemCode ;
                             let currentStock = 0;
-
+                            let fgUnitQty = '';
+                            let fgUnitWt = '';
                             //Search in finGoods array
                             let obj = finGoods.find(o => o._id.prodcode === pCode && o._id.itemcode === iCode);
+                            
                             if(typeof obj !== "undefined"){
-                                console.log(" obj = ",obj);
+                                // console.log("if obj = ",obj._id.fgUnitQty);
                                 currentStock = obj.total;
+                                fgUnitQty    = obj._id.fgUnitQty;
+                                fgUnitWt     = obj._id.fgUnitWt;
                             }
 
                             franchiseStock.push({
-                                                    productCode: pCode,
-                                                    itemCode : iCode,
-                                                    productName : element.productName,
-                                                    currentStock : currentStock, 
-                                                    unit: element.unit,
-                                                    section: element.section,
-                                                    category : element.category,
-                                                    subcategory : element.subcategory,
-                                                });
+                                                productCode  : pCode,
+                                                itemCode     : iCode,
+                                                productName  : element.productName,
+                                                currentStock : currentStock, 
+                                                unit         : element.unit,
+                                                section      : element.section,
+                                                category     : element.category,
+                                                subcategory  : element.subcategory,
+                                                fgUnitQty    : fgUnitQty,
+                                                fgUnitWt     : fgUnitWt
+                            });
+
 
                         });
 

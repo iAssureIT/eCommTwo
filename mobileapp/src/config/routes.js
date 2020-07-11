@@ -205,54 +205,46 @@ const AuthStack = createStackNavigator({
 
   Login: {
     screen: Login,
-    headerMode : "none",
     navigationOptions: {
-      header:null,
+      headerShown: false
     }
   },
   ResetPassword: {
     screen: ResetPassword,
     navigationOptions: {
-      header:null,
-      // headerShown: false
+      headerShown: false
     }
   },
 
   OTPVerification: {
     screen: OTPVerification,
     navigationOptions: {
-      header:null,
-      // headerShown: false
+      headerShown: false
     }
   },
 
   ForgotPassword: {
     screen: ForgotPassword,
     navigationOptions: {
-      header:null,
-      // headerShown: false
+      headerShown: false
     }
   },
   ForgotPasswordOTP: {
     screen: ForgotPasswordOTP,
     navigationOptions: {
-      header:null,
-      // headerShown: false
+      headerShown: false
     }
   },
   Signup: {
     screen: Signup,
     navigationOptions: {
-      header:null,
-      
-      // headerShown: false
+      headerShown: false
     }
   },
   OTPVerification: {
     screen: OTPVerification,
     navigationOptions: {
-      header:null,
-      // headerShown: false
+      headerShown: false
     }
   },
 
