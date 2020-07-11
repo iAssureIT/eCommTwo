@@ -410,7 +410,7 @@ class Address extends Component {
             }
         }else{ 
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
-                // console.log('else form deliveryAddressID', formValues);
+                console.log('else form deliveryAddressID', formValues);
                 axios.get("/api/allowablepincode/checkpincode/" + formValues.pincode)
                 .then((response) => {
                     if (response) {

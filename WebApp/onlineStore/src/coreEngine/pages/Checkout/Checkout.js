@@ -273,6 +273,7 @@ class Checkout extends Component {
             });
         }
     }
+
     getUserAddress() {
         var user_ID = localStorage.getItem('user_ID');
         axios.get("/api/ecommusers/" + user_ID)
@@ -1007,15 +1008,17 @@ class Checkout extends Component {
                                         :
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn shippingAddressTitle">SHIPPING ADDRESS</div>
-
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
+                                                <button className="btn modalBtn anasBtn" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
+                                            </div>
+                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
                                                 <input type="text" maxLength="50" ref="username" name="username" id="username" value={this.state.username} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Mobile Number <span className="required">*</span></label>
                                                 <input placeholder="Eg. 9876543210" maxLength="10" type="text" ref="mobileNumber" name="mobileNumber" id="mobileNumber" value={this.state.mobileNumber} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                                {/* <span className="col-lg-2 col-md-2 col-sm-1 col-xs-1  orderConfirmation fa fa-question-circle-o NOpadding" title="For delivery questions."></span> */}
+                                               
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Email <span className="required">*</span></label>
@@ -1066,56 +1069,7 @@ class Checkout extends Component {
                                                         </div>
                                                     )}
                                                 </PlacesAutocomplete>
-                                            </div>
-                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address Line 1 <span className="required">*</span></label>
-                                                <input type="text" minLength="10" ref="addressLine1" name="addressLine1" id="addressLine1" value={this.state.addressLine1} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address Line 2 </label>
-                                                <input type="text" ref="addressLine2" name="addressLine2" id="addressLine2" value={this.state.addressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Country <span className="required">*</span></label>
-                                                <select ref="country" name="countryCode" id="country" value={this.state.countryCode} onChange={this.handleChangeCountry.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
-                                                    <option value="Select Country">Select Country</option>
-                                                    <option value="IN">India</option>
-                                                </select>
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">State <span className="required">*</span></label>
-                                                <select ref="state" name="stateCode" id="state" value={this.state.stateCode} onChange={this.handleChangeState.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
-                                                    <option value="Select State">Select State</option>
-                                                    {
-                                                        this.state.stateArray && this.state.stateArray.length > 0 ?
-                                                        this.state.stateArray.map((stateData, index)=>{
-                                                            return(      
-                                                                <option key={index} value={stateData.stateCode}>{this.camelCase(stateData.stateName)}</option>
-                                                            );
-                                                            }
-                                                        ) : ''
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">District <span className="required">*</span></label>
-                                                <select ref="district" name="district" id="district" value={this.state.district} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
-                                                    <option value="Select District">Select District</option>
-                                                    {  
-                                                        this.state.districtArray && this.state.districtArray.length > 0 ?
-                                                        this.state.districtArray.map((districtdata, index)=>{
-                                                            return(      
-                                                                <option  key={index} value={districtdata.districtName}>{this.camelCase(districtdata.districtName)}</option>
-                                                            );
-                                                            }
-                                                        ) : ''
-                                                        }
-                                                </select>
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">City <span className="required">*</span></label>
-                                                <input type="text" ref="city" name="city" id="city" value={this.state.city} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                            </div> */}
+                                            </div>                                           
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
                                                 <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
@@ -1130,7 +1084,9 @@ class Checkout extends Component {
                                                     <option value="Relative">Relative (All day delivery)</option>
                                                     <option value="Friend">Friend (All day delivery)</option>
                                                 </select>
-                                            </div>
+                                            </div> */}
+
+
                                         </div>
                                 }
                             </div>
