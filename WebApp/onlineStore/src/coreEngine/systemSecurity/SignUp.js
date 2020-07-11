@@ -186,6 +186,7 @@ class SignUp extends Component {
 													roles		: response.data.userDetails.roles,
 													token		: response.data.userDetails.token,
 												}
+												console.log("userDetails:===",userDetails);
 												var previousUrl = localStorage.getItem('previousUrl');
 												if (previousUrl !== null) {
 													// console.log("previousUrl=====", previousUrl);
@@ -197,7 +198,7 @@ class SignUp extends Component {
 														// console.log("Port======", port);
 														var previousUrl_split = previousUrl.split(port);
 													}
-																										
+													console.log('pincode:',response.data.userDetails.pincode);												
 													localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
@@ -211,7 +212,8 @@ class SignUp extends Component {
 													} else {														
 														this.props.history.push(previousUrl_split[1]);
 													}
-												} else {													
+												} else {	
+													console.log('pincode:',response.data.userDetails.pincode);												
 													localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
