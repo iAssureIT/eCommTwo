@@ -68,11 +68,9 @@ exports.update_PurchaseEntry = (req,res,next)=>{
             { _id:req.params.purchaseID},  
             {
                 $set:{
-                    purchaseDate              : req.body.purchaseDate,
+                    purchaseDate              : moment(req.body.purchaseDate).tz('Asia/Kolkata').startOf('day'),
                     purchaseStaff             : req.body.purchaseStaff,
                     purchaseLocation          : req.body.purchaseLocation,
-                    productId                 : req.body.productId,
-                    itemId                    : req.body.itemId,
                     productName               : req.body.productName,
                     productCode               : req.body.productCode,
                     itemCode                  : req.body.itemCode,
@@ -83,8 +81,10 @@ exports.update_PurchaseEntry = (req,res,next)=>{
                     Details                   : req.body.Details,
                     purchaseNumber            : req.body.purchaseNumber,
                     unitOfMeasurement         : req.body.unitOfMeasurement,
-                    createdBy                 : req.body.createdBy,
-                    createdAt                 : new Date()
+                    balance                   : req.body.quantity,
+                    balanceUnit               : req.body.unit,
+                    // createdBy                 : req.body.createdBy,
+                    // createdAt                 : new Date()
                 }
             }
         )

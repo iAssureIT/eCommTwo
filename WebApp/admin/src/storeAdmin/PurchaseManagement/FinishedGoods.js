@@ -247,17 +247,17 @@ export default class FinishedGoods extends React.Component {
         axios.get('/api/finishedGoodsEntry/get/one/'+id)
         .then((response)=>{
             this.setState({
-					"Date"         		: response.data.Date ,
+					"Date"         		: moment( response.data.Date).format("YYYY-MM-DD") ,
 			      	"ItemCode"     		: response.data.ItemCode,
 			      	"productName"  		: response.data.productName,
 			      	"PackagefgUnitQty"	: response.data.PackagefgUnitQty,
 			      	"fgTotalQty"     	: response.data.fgTotalQty,
 					"Unit"         		: response.data.Unit,
 					"CurrentStock"      : response.data.CurrentStock,
-					"OutwardRawMaterial": response.data.OutwardStock,
+					"OutwardRawMaterial": response.data.OutwardRawMaterial,
 					"OutwardUnit"       : response.data.OutwardUnit,
 					"fgUnitQty"         : response.data.fgUnitQty,
-					"fgUnitWt"          : response.data.fgUnitQtyPerUnit,
+					"fgUnitWt"          : response.data.fgUnitWt,
 					"fgTotalQty" 	    : response.data.fgTotalQty,
 					"fgUnitQtyforFG"    : response.data.fgInwardQty,
 					"finishedGoodsUnit" : response.data.fgInwardQty,

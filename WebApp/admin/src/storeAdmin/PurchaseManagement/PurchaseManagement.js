@@ -282,6 +282,10 @@ export default class PurchaseManagement extends React.Component {
          $("#addNewPurchaseOrder").validate().resetForm();
         axios.get('/api/purchaseentry/get/one/'+id)
         .then((response)=>{
+			var itemCode    = response.data.itemCode;
+			var productCode = response.data.productCode;
+			var	productName = response.data.productName;
+			var completeProductName = productName + " - " +productCode+" - "+itemCode;
             this.setState({
                 "amount"         	: response.data.amount ,
 		        "purchaseDate" 		: moment(response.data.purchaseDate).format("YYYY-MM-DD"),
@@ -296,6 +300,7 @@ export default class PurchaseManagement extends React.Component {
 		      	"product" 		    : response.data.productName,
 				"Units" 			: response.data.unit,
 				"UnitOfMeasurement" : response.data.unitOfMeasurement ? response.data.unitOfMeasurement : 'Kg',
+				"completeProductName" : completeProductName
 			});
             
         })
@@ -673,7 +678,7 @@ export default class PurchaseManagement extends React.Component {
             axios.patch('/api/purchaseentry/patch/'+this.state.editId,formValues)
             .then((response)=>{
                 this.props.history.push('/purchase-management');
-                swal(response.data.message);
+                swal("Purchase Entry updated successfully.");
                 this.getData(this.state.startRange, this.state.limitRange);
                 this.setState({
                     "amount"         	: "" ,
