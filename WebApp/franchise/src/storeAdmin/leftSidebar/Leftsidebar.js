@@ -193,7 +193,12 @@ export default class Leftsidebar extends Component{
                     </li>                
                   </ul>
                 </li>
-
+                {/* <li>
+                  <a href="/franchise-billing">
+                    <i className="fa fa-money" /> 
+                    Billing
+                  </a>
+                </li>        */}
                 <li className="sidebarMenuText">
                   <a href="#Report" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-line-chart" />

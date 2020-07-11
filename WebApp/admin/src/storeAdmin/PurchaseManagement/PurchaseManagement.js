@@ -3,11 +3,12 @@ import './PurchaseManagement.css';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import swal from 'sweetalert';
 import axios from 'axios';
-import jQuery from 'jquery';
+import jQuery, { isNumeric } from 'jquery';
 import $ from 'jquery';
 import moment from 'moment';
 import Loader from '../loader/Loader.js'; 
 import BulkUpload   from "../bulkupload/BulkUpload.js";
+import { isNumber } from 'underscore';
 export default class PurchaseManagement extends React.Component {
 
 	constructor(props) {
@@ -126,6 +127,10 @@ export default class PurchaseManagement extends React.Component {
 			//return this.optional(element) || moment(value,"MM/DD/YYYY").isValid();
 		}, "Please enter a valid date in the format MM/DD/YYYY");
 
+		$.validator.addMethod("validPoNum", function(value, element) {
+			return (/^-{0,1}\d+$/.test(value.replace(/[PR+]/g, '')));
+		}, "Please enter a valid Purchase order Number");
+
 		jQuery.validator.setDefaults({
 			debug: true,
 			success: "valid"
@@ -143,7 +148,8 @@ export default class PurchaseManagement extends React.Component {
 			  },
 			  purchaseNumber: {
 				required: true,	
-				noSpace: true			
+				noSpace: true,
+				validPoNum : true
 			  },
 			  purchaseStaff:{
 				required: true,
@@ -500,10 +506,15 @@ export default class PurchaseManagement extends React.Component {
 
 	onChangePoNum(event){
 		event.preventDefault();
-		event.target.value = event.target.value.replace(/[PR+]/g, ''); //replace all $ with empty string
-		event.target.value = 'PR' + event.target.value; //prepend $ to the input value
-		var {name,value} = event.target;
+		var val = event.target.value.replace(/[PR+]/g, '');
+		if(/^-{0,1}\d+$/.test(val)){
+			event.target.value = event.target.value.replace(/[PR+]/g, ''); //replace all $ with empty string
+		    event.target.value = 'PR' + event.target.value; //prepend $ to the input value
+		}else{
+			event.target.value = 'PR'; //replace all $ with empty string
+		}
 
+		var {name,value} = event.target;
 		this.setState({ 
 			[name]:value,
 		},()=>{

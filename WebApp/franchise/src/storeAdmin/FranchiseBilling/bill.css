@@ -1,0 +1,49 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Create three equal columns that floats next to each other */
+  .column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+    }
+  }
+
+  .button{
+    background: #3c8dbc;
+    color: #fff;
+    text-transform: uppercase;
+    border: 1px solid #999!important;
+    border-left: 0!important;
+    padding: 5px 8px;
+    border-radius: 4px;
+    position: absolute;
+    right: 1px;
+    top: 0;
+    height: 34px;
+    transition: all .4s ease 0s;
+    z-index: 99;
+  }
+
+  .sectionDiv{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 6px;
+  }
+
+  
+
+  
