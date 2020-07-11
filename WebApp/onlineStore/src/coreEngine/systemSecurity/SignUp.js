@@ -203,6 +203,7 @@ class SignUp extends Component {
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
 													localStorage.setItem("roles", response.data.roles);
+													localStorage.setItem("pincode", response.data.pincode);
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
 													swal('Congratulations! You have been successfully Login, Now you can place your order.');
 													window.location.reload();
@@ -217,6 +218,7 @@ class SignUp extends Component {
 													localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
+													localStorage.setItem("pincode", response.data.pincode);
 													localStorage.setItem("roles", response.data.roles);
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
 													// this.props.history.push("/");
