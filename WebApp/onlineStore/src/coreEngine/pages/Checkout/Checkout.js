@@ -262,7 +262,6 @@ class Checkout extends Component {
                 });
             }
 
-
             this.setState({
                 "productCartData": cartData.cartItems,
                 "productData": cartData,
@@ -307,7 +306,6 @@ class Checkout extends Component {
         });
     }
 }
-
     
     handleChange(event) {
         this.setState({
@@ -318,7 +316,7 @@ class Checkout extends Component {
             this.handlePincode(event.target.value);
         }
     }
-    handlePincode(pincode) {
+        handlePincode(pincode) {
 
         if (pincode !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + pincode)

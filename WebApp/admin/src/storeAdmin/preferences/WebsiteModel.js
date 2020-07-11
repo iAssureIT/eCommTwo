@@ -69,7 +69,7 @@ class WebsiteModel extends Component {
                         // console.log("response after insert webapp:",response.data.message); 
                         swal({
                             text : response.data.message
-                        })               
+                        })              
                       
                     })
                     .catch((error)=>{

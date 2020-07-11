@@ -1,9 +1,9 @@
 .aboutusbanner{
     background-image: url("/images/aboutbaner.png");
-    background-size: 100% 100% !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
-    height: 400px;
+    height: 300px;
+    background-size: 100% 100% !important;
   }
   
   .aboutbread{

@@ -10,9 +10,10 @@ class Aboutuspage extends Component {
     super(props);
       this.state = {
       };
+    }
 
-    }  
     componentDidMount() {
+      
     }  
   render() {
     return (
@@ -20,9 +21,9 @@ class Aboutuspage extends Component {
           <div className="row">
             <Aboutusbanner />
             <Aboutusmultistore />
-            <Aboutusteam />
-            <Aboutushistory />
-            <Aboutusclient />
+            {/* <Aboutusteam /> */}
+            {/* <Aboutushistory /> */}
+            {/* <Aboutusclient /> */}
           </div>
         </div>
     );
