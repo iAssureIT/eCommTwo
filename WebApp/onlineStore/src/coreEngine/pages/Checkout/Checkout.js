@@ -1002,14 +1002,14 @@ class Checkout extends Component {
                                             }
 
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
-                                                <button className="btn modalBtn anasBtn" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
+                                                <button className="btn modalBtn anasBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
                                             </div>
                                         </div>
                                         :
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn shippingAddressTitle">SHIPPING ADDRESS</div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
-                                                <button className="btn modalBtn anasBtn" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
+                                                <button className="btn modalBtn anasBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
                                             </div>
                                             {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
