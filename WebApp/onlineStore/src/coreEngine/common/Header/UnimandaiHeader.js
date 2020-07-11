@@ -413,16 +413,16 @@ loginPage(event){
           <Message messageData={this.state.messageData} />
           <AskPincode />
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip">
-            {localStorage.getItem('pincode') ?
+            {/* {localStorage.getItem('pincode') ?
               <div className="col-lg-12 pull-right">
-                {localStorage.getItem('status') === 'NotAllow'?
+                {localStorage.getItem('status') === 'NotAllow'?                
                   <div className = "col-lg-3  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
                 :
                   <div className = "col-lg-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
                 }
               </div>
             :null
-            }          
+            }           */}
           </div>
 
             <div className="col-lg-12 firstDiv">

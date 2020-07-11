@@ -198,7 +198,7 @@ class SignUp extends Component {
 														var previousUrl_split = previousUrl.split(port);
 													}
 													console.log('pincode:',response.data.userDetails.pincode);												
-													localStorage.setItem("pincode", response.data.userDetails.pincode);
+													// localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
 													localStorage.setItem("roles", response.data.roles);
