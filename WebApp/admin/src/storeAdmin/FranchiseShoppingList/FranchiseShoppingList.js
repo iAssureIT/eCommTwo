@@ -41,7 +41,7 @@ export default class FranchiseShoppingList extends React.Component {
 				editId 	: editId,
 				user_ID : user_ID,
 			},()=>{
-					console.log("editId = ",this.state.editId);
+					// console.log("editId = ",this.state.editId);
 					if(typeof this.state.editId !== 'undefined'){
 						this.getEditData();
 					}
@@ -55,7 +55,7 @@ export default class FranchiseShoppingList extends React.Component {
           this.setState({
             "franchiseList": response.data,
           },()=>{
-						console.log("franchiseList = ",this.state.franchiseList);
+						// console.log("franchiseList = ",this.state.franchiseList);
 					})
 	      })
 	      .catch((error) => {
@@ -72,7 +72,7 @@ export default class FranchiseShoppingList extends React.Component {
 						})
 	      })
 	      .catch((error) => {
-					console.log("error in getEditData = ", error);        
+					// console.log("error in getEditData = ", error);        
 	      })
 	}
 /*
@@ -103,7 +103,7 @@ export default class FranchiseShoppingList extends React.Component {
 
       axios.get('/api/products/get/franchisestock')
           .then(franchisestock => {
-          	  console.log("franchisestock = ",franchisestock.data);
+          	  console.log("franchisestock =====> ",franchisestock.data);
 							var prodStockOrder = [];
 							if(franchisestock.data.length > 0){
 									for (var i = 0; i<franchisestock.data.length; i++) {
@@ -112,6 +112,7 @@ export default class FranchiseShoppingList extends React.Component {
 										var itemCode 		= franchisestock.data[i].itemCode;
 
 										obj.productCode 	= productCode;
+										obj.fgUnitQty 		= franchisestock.data[i].fgUnitQty;
 										obj.itemCode 			= itemCode;
 										obj.productName 	= franchisestock.data[i].productName;
 										obj.currentStock 	= franchisestock.data[i].currentStock;
@@ -125,7 +126,7 @@ export default class FranchiseShoppingList extends React.Component {
 										this.setState({
 											prodStockOrder : prodStockOrder,
 										},()=>{
-											console.log("prodStockOrder ===> ",this.state.prodStockOrder);
+											// console.log("prodStockOrder ===> ",this.state.prodStockOrder);
 										});										
 									}
 								}
@@ -194,7 +195,7 @@ export default class FranchiseShoppingList extends React.Component {
 			.patch('/api/franchisepo/patch/purchaseorder',formValues1)
 		  	.then(function (response) {
 		    // handle success
-		    	console.log("Order Updated========",response.data);
+		    	// console.log("Order Updated========",response.data);
 		    	swal("Thank you. Your Product Order Updated successfully.");
 		    	 // window.location.reload();
 		  	})
@@ -314,7 +315,7 @@ export default class FranchiseShoppingList extends React.Component {
 									    	Array.isArray(this.state.prodStockOrder) && this.state.prodStockOrder.length > 0
 									    	? 
 									    		this.state.prodStockOrder.map((result, index)=>{
-														console.log("Result of prodstock==>",result);
+														// console.log("Result of prodstock==>",result);
 													return( 
 													this.state.selectedSection ?
 														result.section === this.state.selectedSection ? 
@@ -365,7 +366,7 @@ export default class FranchiseShoppingList extends React.Component {
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
 														        		<div className="input-group-addon unitbox">
-																				{/* <td  className=" width66h">{result.orderQty}</td> */}
+																				<td  className=" width66h">{result.fgUnitQty}</td>
 																				<td  className=" width66h">{result.unit}</td>
 																				
 																		  	{/* <select id={"Units"+"-"+index} name={"Units"+"-"+index} 

@@ -111,7 +111,7 @@ export default class FranchiseShoppingList extends React.Component {
 										var obj = {};
 										var productCode = franchisestock.data[i].productCode;
 										var itemCode 		= franchisestock.data[i].itemCode;
-
+										obj.fgUnitQty 		= franchisestock.data[i].fgUnitQty;
 										obj.productCode 	= productCode;
 										obj.itemCode 			= itemCode;
 										obj.productName 	= franchisestock.data[i].productName;
@@ -365,6 +365,7 @@ export default class FranchiseShoppingList extends React.Component {
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
 														        		<div className="input-group-addon unitbox">
+																				<td  className=" width66h">{result.fgUnitQty}</td>
 																				<td  className=" width66h">{result.unit}</td>
 																		  	{/* <select id={"Units"+"-"+index} name={"Units"+"-"+index} 
 																		  			  value={result.unit} refs="Units" 
