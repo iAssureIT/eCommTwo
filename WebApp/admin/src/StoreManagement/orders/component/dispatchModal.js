@@ -175,7 +175,7 @@ class dispatchModal extends Component{
                       <form className="dispatchForm" onSubmit={this.addDispatchDetails.bind(this)} id={this.props.orderId}>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       
-                      <div className="row inputrow">
+                      {/* <div className="row inputrow">
                           <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                           <div className="form-group">
                               <br/>
@@ -197,7 +197,7 @@ class dispatchModal extends Component{
                               </div>
                           </div>
                           </div>
-                      </div>
+                      </div> */}
                       <div className="row inputrow">
                           <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                           <div className="form-group">
