@@ -177,7 +177,7 @@ class Login extends Component {
             localStorage.setItem("roles", response.data.roles);
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
             
-            axios.get("/api/entitymaster/get/one/companyName/"+response.data.userDetails.companyID)
+            axios.get("/api/entitymaster/get/companyName/"+response.data.userDetails.companyID)
             .then(entity=>{
               axios.get("/api/adminPreference/get")
                   .then(preference =>{

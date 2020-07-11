@@ -176,6 +176,7 @@ exports.companyDetail = (req, res, next)=>{
 
 
 exports.companyName = (req,res,next)=>{
+    console.log("req.params.companyID===>",req.params.companyID);
     EntityMaster.findOne({companyID : req.params.companyID})
     .exec()
     .then(data=>{

@@ -25,7 +25,9 @@ router.get('/get/one/:entityID', entityMaster.singleEntity);
 
 router.get('/get/one/entity/:userID', entityMaster.entityDetails);
 
-router.get('/get/one/companyName/:companyID', entityMaster.companyName);
+// router.get('/get/one/companyName/:companyID', entityMaster.companyName);
+
+router.get('/get/companyName/:companyID', entityMaster.companyName);
 
 router.post('/get/one/comapanyDetail', entityMaster.companyDetail);
 

@@ -693,7 +693,6 @@ class Checkout extends Component {
                     console.log('error', error);
                 })
             if ($('#checkout').valid() && this.state.pincodeExists) {
-
                 axios.patch('/api/carts/address', addressValues)
                     .then(async (response) => {
                         // console.log("Response After inserting address to cart===",response);

@@ -26,7 +26,7 @@ export default class PackedOrdersList extends Component{
   getOrders(){
     var userDetails = (localStorage.getItem('userDetails'));
     var userData = JSON.parse(userDetails);
-    axios.get("/api/entitymaster/get/one/companyName/"+userData.companyID)
+    axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
       console.log("resdata===>",resdata.data._id)
       axios.get("/api/orders/get/orderlist/Packed/"+resdata.data._id)

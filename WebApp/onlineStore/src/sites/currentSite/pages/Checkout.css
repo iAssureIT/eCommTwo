@@ -143,6 +143,11 @@
 .placeOrder{
     border-radius: 25px;
 }
+.notplaceOrder{
+    border-radius: 25px;
+    background-color: #999 !important;
+    
+}
 .required{
     color: red !important;
 }

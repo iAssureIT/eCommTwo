@@ -89,10 +89,12 @@ export default class Header2 extends Component{
     var userDetails = JSON.parse(localStorage.getItem("userDetails")) ;
     const Token     = userDetails.token;
     
-    // console.log("userDetails = ", userDetails);
 
     if(Token){
-      axios.get('/api/entitymaster/get/one/companyName/1')
+      var comapanyname = parseInt(1)
+    console.log("comapanyname ====>>>>>>>>> ", comapanyname);
+
+      axios.get('/api/entitymaster/get/companyName/'+comapanyname)
           .then(companyDetails=>{
               // console.log("companyDetails = ", companyDetails.data);
               this.setState({

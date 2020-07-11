@@ -273,7 +273,7 @@ class CreateUser extends Component {
   createUser(event) {
     event.preventDefault();
     if ($('#userInfo').valid()) {
-      axios.get('/api/entitymaster/get/one/companyName/' + this.state.companyID)
+      axios.get('/api/entitymaster/get/companyName/' + this.state.companyID)
         .then((response) => {
           var companyName = response.data.companyName;
           this.setState({
@@ -378,7 +378,7 @@ class CreateUser extends Component {
   }
   myFunction() {
     // console.log(" this.state.companyID==>>", this.state.companyID)
-    axios.get('/api/entitymaster/get/one/companyName/' + this.state.companyID)
+    axios.get('/api/entitymaster/get/companyName/' + this.state.companyID)
       .then((response) => {
         var companyName = response.data.companyName;
         console.log(" companynamewithid ComapnyName==>>", companyName)
@@ -397,7 +397,7 @@ class CreateUser extends Component {
   }
   companynamewithid() {
     console.log(" this.state.companyID==>>", this.state.companyID)
-    axios.get('/api/entitymaster/get/one/companyName/' + this.state.companyID)
+    axios.get('/api/entitymaster/get/companyName/' + this.state.companyID)
       .then((response) => {
 
         var companyName = response.data.companyName;

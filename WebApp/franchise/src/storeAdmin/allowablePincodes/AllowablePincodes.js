@@ -44,12 +44,14 @@ class AllowablePincodes extends Component {
     getEntityList(){
         var userDetails = (localStorage.getItem('userDetails'));
         var userData = JSON.parse(userDetails);
-        axios.get("/api/entitymaster/get/one/companyName/"+userData.companyID)
+        axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
         .then((resdata)=>{
-        console.log("resdata===>",resdata.data._id)
+        
         var entityType = "franchise";
         var franchiseid = resdata.data._id;
-        axios.get("/api/entitymaster/get/one/"+entityType+franchiseid)
+        console.log("entityType===>",entityType)
+        console.log("franchiseid===>",franchiseid)
+        axios.get("/api/entitymaster/get/one/"+entityType+'/'+franchiseid)
 
 			.then((response) => {
 				if(response){
@@ -98,7 +100,6 @@ class AllowablePincodes extends Component {
     submit(event){
         event.preventDefault();    
                 var formValues = this.state.allowablePincodes         
-                
                  console.log('formValues', formValues);
                 if($("#allowablePincodeId").valid()){        
                     axios.post('/api/allowablepincode/post', formValues)

@@ -234,7 +234,7 @@ class CreateUser extends Component {
     // this.companynamewithid();
     if ($('#userInfo').valid()) {
       console.log(" this.state.companyID==>>",this.state.companyID)
-    axios.get('/api/entitymaster/get/one/companyName/'+this.state.companyID)
+    axios.get('/api/entitymaster/get/companyName/'+this.state.companyID)
       .then((response) => {
 
         var companyName = response.data.companyName;
@@ -340,7 +340,7 @@ class CreateUser extends Component {
   myFunction(){
     
     console.log(" this.state.companyID==>>",this.state.companyID)
-    axios.get('/api/entitymaster/get/one/companyName/'+this.state.companyID)
+    axios.get('/api/entitymaster/get/companyName/'+this.state.companyID)
       .then((response) => {
 
         var companyName = response.data.companyName;
@@ -360,7 +360,7 @@ class CreateUser extends Component {
   }
   // companynamewithid(){
   //   console.log(" this.state.companyID==>>",this.state.companyID)
-  //   axios.get('/api/entitymaster/get/one/companyName/'+this.state.companyID)
+  //   axios.get('/api/entitymaster/get/companyName/'+this.state.companyID)
   //     .then((response) => {
 
   //       var companyName = response.data.companyName;
