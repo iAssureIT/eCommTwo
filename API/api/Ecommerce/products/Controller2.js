@@ -15,10 +15,7 @@ exports.getfranchisestock = (req,res,next)=>{
                          }}
                     ])
                     .then(finGoods=>{
-<<<<<<< Updated upstream
                         console.log("finGoods =====> ",finGoods);
-=======
->>>>>>> Stashed changes
                         var franchiseStock = [];
 
                         products.forEach((element)=>{
