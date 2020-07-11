@@ -64,6 +64,7 @@ exports.user_signup_user = (req, res, next) => {
 														email: emailId.toLowerCase(),
 														mobile: req.body.mobNumber,
 														companyID: req.body.companyID,
+														pincode: req.body.pincode,
 														companyName: req.body.companyName,
 														department	: req.body.department,
 														designation	: req.body.designation,

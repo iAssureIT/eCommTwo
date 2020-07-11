@@ -15,7 +15,7 @@ exports.getfranchisestock = (req,res,next)=>{
                          }}
                     ])
                     .then(finGoods=>{
-                        console.log("finGoods = ",finGoods);
+                        console.log("finGoods =====> ",finGoods);
                         var franchiseStock = [];
 
                         products.forEach((element)=>{

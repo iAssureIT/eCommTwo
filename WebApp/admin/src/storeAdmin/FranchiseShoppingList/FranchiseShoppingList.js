@@ -314,6 +314,7 @@ export default class FranchiseShoppingList extends React.Component {
 									    	Array.isArray(this.state.prodStockOrder) && this.state.prodStockOrder.length > 0
 									    	? 
 									    		this.state.prodStockOrder.map((result, index)=>{
+														console.log("Result of prodstock==>",result);
 													return( 
 													this.state.selectedSection ?
 														result.section === this.state.selectedSection ? 
@@ -364,7 +365,9 @@ export default class FranchiseShoppingList extends React.Component {
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
 														        		<div className="input-group-addon unitbox">
+																				{/* <td  className=" width66h">{result.orderQty}</td> */}
 																				<td  className=" width66h">{result.unit}</td>
+																				
 																		  	{/* <select id={"Units"+"-"+index} name={"Units"+"-"+index} 
 																		  			  value={result.unit} refs="Units" 
 																		  			  onChange={this.setUnit.bind(this)}  

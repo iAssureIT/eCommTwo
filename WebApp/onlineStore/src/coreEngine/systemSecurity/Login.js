@@ -95,6 +95,7 @@ class Login extends Component {
               roles: response.data.userDetails.roles,
               token: response.data.userDetails.token,
             }
+            console.log("response.data.data, ===> ",response.data);
             document.getElementById("logInBtn").value = 'Sign In';
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user_ID", response.data.ID);
