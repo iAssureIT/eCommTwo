@@ -119,6 +119,7 @@ class Routes extends Component{
                 <Route path="/about-us"             exact strict component={Aboutuspage}  />
                 <Route path="/sitemap" exact strict component={SiteMap}  />
                 <Route path="/contact-us" exact strict component={ContactPage}  />
+                <Route path="/legal-notice" exact strict component={LegalNotice}  />            
               </div>
             );
             return (

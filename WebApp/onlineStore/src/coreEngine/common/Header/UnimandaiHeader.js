@@ -16,6 +16,7 @@ import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
 import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
 import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
+import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
 import AskPincode from '../../blocks/AskPincode/AskPincode.js';
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 import '../../../sites/currentSite/common/Header.css';
@@ -508,7 +509,7 @@ loginPage(event){
                     
                       <div id="loginFormModal" className="modal in">
                           <div className="modal-dialog">                                        
-                              <div className="modal-content loginModalContent">                            
+                              <div className="modal-content loginModalContent" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
                                   <div className="modal-body">   
                                   <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
                                       {this.props.formToShow === "login" ?

@@ -92,7 +92,7 @@ export default class Aboutusmultistore extends Component {
 
 							Our long-term success requires a total commitment to exceptional standards of performance and productivity, to working together effectively, and to a willingness to embrace new ideas and learn continuously.
 							To succeed also requires, we believe, the highest standards of corporate behavior towards everyone we work with, the communities we touch, and the environment on which we have an impact. This is our road to sustainable, profitable growth, creating long-term Success and Prosperity.<br/>
-							<p className="pull-right mb50">
+							<p className="pull-right mt50 mb50">
 								Thank You <br/>
 								Mandar Pawar <br/>
 								Founder, Unimandai 

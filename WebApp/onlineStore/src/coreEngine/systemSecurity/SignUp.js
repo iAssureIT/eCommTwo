@@ -186,7 +186,6 @@ class SignUp extends Component {
 													roles		: response.data.userDetails.roles,
 													token		: response.data.userDetails.token,
 												}
-												console.log("userDetails:===",userDetails);
 												var previousUrl = localStorage.getItem('previousUrl');
 												if (previousUrl !== null) {
 													// console.log("previousUrl=====", previousUrl);

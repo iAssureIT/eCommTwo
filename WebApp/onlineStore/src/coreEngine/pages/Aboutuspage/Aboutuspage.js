@@ -11,7 +11,7 @@ class Aboutuspage extends Component {
       this.state = {
       };
     }
-
+    
     componentDidMount() {
       
     }  
