@@ -18,7 +18,11 @@ catogeryvaluebg.headerflow{
   padding-top: 0px;
   height: 70px;
 }
-
+.minpurchasehead{
+  color: red !important;
+  font-size: 11px;
+  padding:0
+}
 .css-1jllj6i-control{
   display: none!important;
 }
@@ -351,6 +355,18 @@ ul.box-static-link li span {
   background-color: #80b435;
   color: #fff;
 }
+.notcheckout{
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color:red;
+  border:1px solid red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.3s !important;
+}
+
 .cartdropbtn2_un{
   border-radius: 20px;
   font-size: 15px;

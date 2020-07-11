@@ -39,6 +39,8 @@ class unimandaiHeader extends Component {
       localCategories: [],
       userData       : {},
       firstname      : '',
+      "startRange": 0,
+      "limitRange": 10,
       lastname       : '',
       formToShow     : "login",
     }  
@@ -60,11 +62,22 @@ componentWillMount() {
         sp.find('button span.search_by').html(text);
       });
     });
-
 }
-
+getshippingamount(startRange, limitRange){
+  axios.get('/api/shipping/get/list-with-limits/' + startRange + '/' + limitRange)
+  .then((response) => {
+    console.log('shippingamount = ', response.data[0].shippingcosting);
+    this.setState({
+      minvalueshipping: response.data[0].shippingcosting,
+    })
+  })
+  .catch((error) => {
+    console.log('error', error);
+  });
+}
    async componentDidMount(){
      //if websiteModel is Franchise Model then save that franchise model in localStorage
+     this.getshippingamount(this.state.startRange, this.state.limitRange);
     if(localStorage.getItem('websiteModel')=== null){
       axios.get("/api/adminPreference/get")
       .then(preference =>{
@@ -666,11 +679,22 @@ loginPage(event){
                               {
                               this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0 ?  
                                 <div className="col-lg-6 NOpaddingRight">
+                                {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
                                   <a href={user_ID ? "/checkout" : "/login"}><div className="btn cartdropbtn_un col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
+                                  :
+                                  <a><div className="btn notcheckout col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
+                                }
+                                 {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
+                                null
+                                :
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
+                                    <span className="minpurchasehead">You can't checkout.Minimum order should be ₹  {this.state.minvalueshipping} to Checkout & Place Order.</span>
+                                </div>
+                                }
                                 </div>
                                 : "" 
                               }                      
-
+                             
                             </div>
                           </ul>
                           :
