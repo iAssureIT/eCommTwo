@@ -128,7 +128,10 @@
 .cart-dropdown-menu{
     margin-top: -5px !important;
 }
-
+.box-right .cart{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
 /* megamenu css */
 .megamenuWrapper .catogeryvaluebg_un{
     background-color: #fff !important;
@@ -194,6 +197,9 @@ ul.main-nav > li:hover {
     list-style: square !important;
 }
 /* right box */
+.box-right{
+    margin-left: 20px;
+}
 .box-right .cart {
     /* margin-left: 15px;
     padding-left: 15px;
@@ -216,7 +222,7 @@ ul.main-nav > li:hover {
     text-align: center;
     position: absolute;
     bottom: 75%;
-    right: -24px;
+    right: -8px;
     font-family: "Montserrat";
     border-radius: 50%;
     background: #ff4444;

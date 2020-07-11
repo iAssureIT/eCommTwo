@@ -105,7 +105,7 @@ export default class AskPincode extends Component {
                         $('.DeliveryStatusMsg').hide();   
                         $('.NotAllowDeliveryMsg').hide();  
                         $('.marginTop').hide();  
-                        $('.addPincode').css("margin-top","20px");                     
+                        $('.addPincode').css("margin-top","50px");                     
                         localStorage.setItem("status","Allow");
                         // console.log("pincode===",localStorage.getItem('pincode'));
                                           
@@ -118,7 +118,7 @@ export default class AskPincode extends Component {
                         $('.DeliveryStatusMsg').hide();
                         $('.AllowDeliveryMsg').hide();  
                         $('.marginTop').hide(); 
-                        $('.addPincode').css("margin-top","20px");                    
+                        $('.addPincode').css("margin-top","50px");                    
                         // var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
                         // pincodeObj.status = "NotAllow";
                         localStorage.setItem("status", "NotAllow");
@@ -133,8 +133,8 @@ export default class AskPincode extends Component {
       }
       
   render() {
-    // console.log("inside askpincode");  
-    $(".modal-backdrop").hide();
+    console.log("inside askpincode");  
+    // $(".modal-backdrop").hide();
 		return (            
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12 mb50">
                 {/* { (localStorage.getItem('pincode') === null) || (localStorage.getItem('pincode') !== null && localStorage.getItem('status') === "NotAllow") || (localStorage.getItem('DeliveryStatus') === "Allowable" && localStorage.getItem('pincodeFlag')==="true" ) */}

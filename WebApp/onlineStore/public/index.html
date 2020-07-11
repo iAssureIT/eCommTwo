@@ -33,7 +33,9 @@
     
     <script>    
       $(document).ready(function(){
-          $("#myModal").modal('show');
+        if(!localStorage.getItem('pincode')){
+          $("#pincodeModal").modal('show');
+        }         
       });
    </script>
 

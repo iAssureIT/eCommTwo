@@ -290,28 +290,32 @@ class Checkout extends Component {
                 console.log('error', error);
             });
     }
+    checkPincode(pincode){        
+    if(localStorage.getItem('websiteModel'==="FranchiseModel")){
+        axios.get("/api/allowablepincode/checkpincode/" + pincode)
+        .then((response) => {
+            if (response) {
+                if (response.data.message !== "Delivery Available") {
+                    console.log("Delevery not possible on this address");
+                    $('.DeliveryNotPoss').show();
+                    $(".placeOrder").attr("disabled", true);
+                }else{
+                    $('.DeliveryNotPoss').hide();
+                    $(".placeOrder").attr("disabled", false);
+                }
+            }
+        });
+    }
+}
+
+    
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
         })
         if (event.target.name === 'pincode') {
-            if(localStorage.getItem('websiteModel'==="FranchiseModel")){
-                axios.get("/api/allowablepincode/checkpincode/" + event.target.value)
-                .then((response) => {
-                    if (response) {
-                        if (response.data.message !== "Delivery Available") {
-                            console.log("Delevery not possible on this address");
-                            $('.DeliveryNotPoss').show();
-                            $(".placeOrder").attr("disabled", true);
-                        }else{
-                            $('.DeliveryNotPoss').hide();
-                            $(".placeOrder").attr("disabled", false);
-                        }
-                    }
-                });
-            }
+            this.checkPincode(event.target.name);
             this.handlePincode(event.target.value);
-            
         }
     }
     handlePincode(pincode) {
@@ -915,7 +919,7 @@ class Checkout extends Component {
     opDones() {
         this.getUserAddress();
     }
-    checkDelevery(event) {
+    checkDelivery(event) {
         // event.preventDefault();
         var target = event.target.pincode;
         var id = event.target.value;        
@@ -930,7 +934,7 @@ class Checkout extends Component {
             .then((response) => {
                 if (response) {
                     if (response.data.message !== "Delivery Available") {
-                        console.log("Delevery not possible on this address");
+                        console.log("Delivery not possible on this address");
                         $('#' + id).show();
                         $(".placeOrder").attr("disabled", true);
                     }else{
@@ -985,7 +989,7 @@ class Checkout extends Component {
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div>
-                                                            <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)} className="codRadio" /> &nbsp;
+                                                            <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelivery.bind(this)} className="codRadio" /> &nbsp;
                                                             {/* <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)} className="codRadio"/> &nbsp; */}
                                                             <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br />
                                                                 <span className="checkoutADDCss">Name : {data.name}.</span> <br />

@@ -16,6 +16,7 @@ import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
 import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
 import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
+import AskPincode from '../../blocks/AskPincode/AskPincode.js';
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 import '../../../sites/currentSite/common/Header.css';
 // import jQuery from "jquery";
@@ -396,6 +397,7 @@ loginPage(event){
         <header className="col-lg-12 headerflow">            
           <div className="row">
           <Message messageData={this.state.messageData} />
+          <AskPincode /> 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip"></div>
             {/* <div id="topbar" className="topheadbar">
                 <div className="container headerContainer">
