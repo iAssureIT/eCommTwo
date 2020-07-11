@@ -410,92 +410,19 @@ loginPage(event){
         <header className="col-lg-12 headerflow">            
           <div className="row">
           <Message messageData={this.state.messageData} />
-          <AskPincode /> 
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip"></div>
-            {/* <div id="topbar" className="topheadbar">
-                <div className="container headerContainer">
-                    <div className="inner-topbar box">
-                        <div className="float-left">
-                            <p><img src={iconPhoneHeader} alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
-                        </div>
-                         <div className="col-lg-6 col-md-6 NOpadding">
-                              <div className="col-lg-12 col-md-12 searchBox">
-                                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
-						                      <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
-                              </div> 
-                          </div>
-                        <div className="col-lg-3 float-right">
-                            <div className="hover-menu">
-                            {user_ID 
-                            ? 
-                                <li className="dropdown">
-                                    <a className="acc" href="/account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
-                                    <ul className="col-lg-3 dropdown-menu list-menu">                                        
-                                        <li className="col-lg-12 NOpadding">
-                                            <a href="/">
-                                            <div className="row">
-                                                <div className="col-lg-2">
-                                                <div className="shortnamebk">
-                                                    <div className="">                                                    
-                                                        <div className="userinfo">{this.state.firstname}{this.state.lastname}</div>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div className="col-lg-10">
-                                                <div className="col-lg-12">
-                                                    <div className="userinfotext"><span >{this.state.userData ? this.state.userData.fullName : null}</span></div>
-                                                </div>
-                                                <div className="col-lg-12">
-                                                    <div className="useremail"><span>{this.state.userData ? this.state.userData.email : null}</span></div>
-                                                </div>
-                                                </div>
-                                            </div>
-                                            </a>
-                                        </li>                                  
-                                        <li className="col-lg-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
-                                        <li className="col-lg-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
-                                        <li className="col-lg-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
-                                        <li className="col-lg-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
-                                    </ul>
-                                </li>
-                            :
-                              <li className="dropdown">                                
-                                  <span className="  "><a href="" className="loginButton" data-toggle="modal" data-target="#loginFormModal" area-hidden ="true">Login </a></span>
-                                  <span className="  "><a href="" className="loginButton" data-toggle="modal" data-target="#pincodeModal" area-hidden ="true"><i class="fa fa-map-marker" aria-hidden="true"></i> </a></span>
-                                  <div id="loginFormModal" className="modal in">
-                                    <div className="modal-dialog">                                        
-                                        <div className="modal-content loginModalContent">                            
-                                            <div className="modal-body">   
-                                            <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
-                                                {this.state.loginForm === "true" ?
-                                                    <div className="col-lg-12 col-md-12 loginForm">
-                                                        <Login />
-                                                    </div>  
-                                                : null
-                                                }  
-                                                {this.state.signUpForm === "true" ?
-                                                    <div className="col-lg-12 col-md-12 signupForm">
-                                                        <SignUp />
-                                                    </div>  
-                                                : null
-                                                } 
-                                                {this.state.forgotPassForm === "true" ?
-                                                    <div className="col-lg-12 col-md-12 loginForm">
-                                                        <ForgotPassword />
-                                                    </div>  
-                                                : null
-                                                }                                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                  </div>                                  
-                              </li>
-                            }
-                            </div>
-                        </div>
-                    </div>
-                </div>                
-            </div>  */}
+          <AskPincode />
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip">
+            {localStorage.getItem('pincode') ?
+              <div className="col-lg-12 pull-right">
+                {localStorage.getItem('status') === 'NotAllow'?
+                  <div className = "col-lg-3  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
+                :
+                  <div className = "col-lg-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
+                }
+              </div>
+            :null
+            }          
+          </div>
 
             <div className="col-lg-12 firstDiv">
               <div className="row">           
@@ -527,8 +454,11 @@ loginPage(event){
 
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 box-right">
-                      <div className="col-lg-4 col-md-4 col-sm-4">
-                          {/* <span className="  "><a href="" className="faIcon" data-toggle="modal" data-target="#pincodeModal" area-hidden ="true"><i class="fa fa-map-marker" aria-hidden="true"></i> </a></span> */}
+                {/* <div className="col-lg-12">
+                  <div className = "col-lg-12 showPincode">{localStorage.getItem('pincode')} </div>
+                </div> */}
+                  <div>
+                      <div className="col-lg-4 col-md-4 col-sm-4">                          
                           <span className="  "><a href="" className="faIcon " data-toggle="modal" data-target="#pincodeModal" area-hidden ="true">
                             <img src={modalImg} className="icon-cart"></img>
                           </a></span>
@@ -700,7 +630,8 @@ loginPage(event){
                           :
                           null
                         }
-                    </div>                    
+                    </div> 
+                    </div>                   
                 </div>
               </div>
             </div>          

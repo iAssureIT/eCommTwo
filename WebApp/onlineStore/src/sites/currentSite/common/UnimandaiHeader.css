@@ -198,14 +198,9 @@ ul.main-nav > li:hover {
 }
 /* right box */
 .box-right{
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }
-.box-right .cart {
-    /* margin-left: 15px;
-    padding-left: 15px;
-    margin-top: 0px;
-    position: relative; */
-}
+
 .icon-cart .icon {
     display: inline-block;
     background: url(/images/unimandai/icon-cart.png) no-repeat;
@@ -445,7 +440,6 @@ button.button_search {
 .searchBox{
     /* margin-top: -7px; */
 }
-
 /* login modal css  */
 .loginModalContent{
     height: 600px;
@@ -456,6 +450,12 @@ button.button_search {
     font-weight: 500 !important;
 }
 .greenStrip{
+    padding: 5px;
     height: 30px;
     background-color: #80b435;
+}
+.showPincode{
+    margin-right: 50px;
+    color:  #fff;
+    text-align: right;
 }
