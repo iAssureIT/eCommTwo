@@ -10,19 +10,22 @@ const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfM
 const franchisegoods = require('../../distributionManagement/Model');
 const Entitymaster          = require('../../../coreAdmin/entityMaster/ModelEntityMaster.js');
 const moment = require('moment-timezone');
+var objId = mongoose.Types.ObjectId();
 
 exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                 getData();
                 async function getData(){
                     var obj = {};
+                    var fcId = objId;
                     obj.date               = req.body.Date;
                     obj.productId          = req.body.productId;
                     obj.ItemCode           = req.body.ItemCode;
                     obj.OutwardRawMaterial = req.body.OutwardRawMaterial;
                     obj.OutwardUnit        = req.body.OutwardUnit;
+                    obj.FinishGoodsId      = fcId;
 
                     const finishedGoods = new FinishedGoodsEntry({
-                        _id                       : new mongoose.Types.ObjectId(),                    
+                        _id                       : objId,                    
                         Date                      : moment(req.body.Date).tz('Asia/Kolkata').startOf('day'),
                         ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/      
                         ProductCode               : req.body.ProductCode,
@@ -82,11 +85,17 @@ exports.fetch_one = (req,res,next)=>{
         });
 };   
 exports.update_FinishedGoodsEntry = (req,res,next)=>{
+    console.log("req.body.ProductCode",req.body)
+    var finishGoodId       = req.params.purchaseID;
+    var OutwardRawMaterial = req.body.OutwardRawMaterial;
+    var OutwardUnit        = req.body.OutwardUnit;
+    var ItemCode           = req.body.ItemCode;
+    var obj = {"FinishGoodId":finishGoodId,"OutwardRawMaterial":OutwardRawMaterial,"OutwardUnit":OutwardUnit,"ItemCode":ItemCode};
     FinishedGoodsEntry.updateOne(
             { _id:req.params.purchaseID},  
             {
                 $set:{
-                    Date                      : req.body.Date,
+                    Date                      : moment(req.body.Date).tz('Asia/Kolkata').startOf('day'),
                     ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/      
                     ProductCode               : req.body.ProductCode,
                     productName               : req.body.productName,
@@ -101,22 +110,30 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
                     scrapQty                  : req.body.scrapQty,
                     scrapUnit                 : req.body.scrapUnit,
                     finishedBy                : req.body.finishedBy,
-                    createdBy                 : req.body.createdBy,
-                    createdAt                 : new Date()
+                    balance                   : req.body.OutwardRawMaterial,
+                    balanceUnit               : req.body.OutwardUnit
+                    // createdBy                 : req.body.createdBy,
+                    // createdAt                 : new Date()
                 }
             }
         )
         .exec()
         .then(data=>{
-            if(data.nModified == 1){
-                res.status(200).json({
-                    "message": "Finished Goods Entry Updated Successfully."
-                });
-            }else{
-                res.status(401).json({
-                    "message": "Finished Goods Entry Not Found"
-                });
-            }
+             main();
+             async function main(){
+                if(data.nModified == 1){
+                    var updatePurchaseEntry =  await update_purchase_entry(obj);
+
+                    res.status(200).json({
+                        "message": "Finished Goods Entry Updated Successfully."
+                    });
+                }else{
+                    res.status(401).json({
+                        "message": "Finished Goods Entry Not Found"
+                    });
+                }
+             }
+            
         })
         .catch(err =>{
             console.log(err);
@@ -125,6 +142,68 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
             });
         });
 };
+
+//update finish goods array in purchase entry
+function update_purchase_entry(obj){
+    console.log("obj.FinishGoodsId",obj.FinishGoodId,obj);
+     return new Promise(function(resolve,reject){ 
+        PurchaseEntry.find({"finishedGoodsArray.FinishGoodsId": mongoose.Types.ObjectId(obj.FinishGoodId)})
+        .then(data=>{
+            var OutwardRawMaterial = obj.OutwardRawMaterial;
+            var OutwardUnit = obj.OutwardUnit;
+            var balance     = data[0].balance;
+            var balanceUnit = data[0].balanceUnit;
+            var remain = 0;
+            var PurEntryId = 0;
+             var matchingValues = data[0].finishedGoodsArray.map(function(key){ 
+               
+                if(key.FinishGoodsId == obj.FinishGoodId){
+                    if(key.Quantity == OutwardRawMaterial && key.Unit == OutwardUnit){
+
+                    }else{
+                        remain = Number(key.Quantity) - Number(OutwardRawMaterial);
+                         //Update array of finished goods in purchase entries
+                          PurchaseEntry.findOneAndUpdate(
+                          {"finishedGoodsArray.FinishGoodsId": mongoose.Types.ObjectId(obj.FinishGoodId)},
+                          {$set: {"finishedGoodsArray.$[el].Quantity": OutwardRawMaterial,"finishedGoodsArray.$[el].Unit": OutwardUnit} },
+                          { 
+                            arrayFilters: [{ "el.FinishGoodsId": mongoose.Types.ObjectId(obj.FinishGoodId) }],
+                            new: true
+                          })
+                          .exec()
+                          .then(updata=>{
+                                //update balance in finished goods
+                                PurEntryId = updata._id;
+                                balance = Number(balance) + Number(remain);
+                                PurchaseEntry.findOneAndUpdate(
+                                  {_id:mongoose.Types.ObjectId(PurEntryId)},
+                                  {$set: {"balance": balance} },
+                                  )
+                                  .exec()
+                                  .then(data2=>{
+                                    console.log("up2 data",data2);
+                                       // resolve(1)
+                                  })
+                                  .catch(err =>{
+                                     // reject(err);
+                                  });
+                                })
+                          .catch(err =>{
+                             // reject(err);
+                          });
+                    }
+                    return key;
+                }
+             });
+              resolve(1);
+             })
+            .catch(err =>{
+                 reject(err);
+            });
+              
+        })
+ }
+
 
 exports.list_FinishedGoodsEntry = (req, res, next)=>{
     var selector = {};
@@ -148,18 +227,48 @@ exports.list_FinishedGoodsEntry = (req, res, next)=>{
 };
 
 exports.delete_FinishedGoodsEntry = (req,res,next)=>{
-    FinishedGoodsEntry.deleteOne({_id:req.params.purchaseID})
+    FinishedGoodsEntry.find({_id:req.params.purchaseID})
     .exec()
-    .then(data=>{
-        res.status(200).json({
-            "message": "Finished Goods Entry Deleted Successfully."
-        });
-    })
-    .catch(err =>{
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
+        .then(data=>{
+           //update balance of raw material
+           PurchaseEntry.findOneAndUpdate(
+                {"finishedGoodsArray.FinishGoodsId": mongoose.Types.ObjectId(req.params.purchaseID)},
+                { $inc: { "balance": data[0].OutwardRawMaterial}},
+            )
+           .then(podata=>{
+               //remove finish goods current element from array
+                PurchaseEntry.findOneAndUpdate(
+                    {"finishedGoodsArray.FinishGoodsId": mongoose.Types.ObjectId(req.params.purchaseID)},
+                    { $pull: { "finishedGoodsArray": { "FinishGoodsId": mongoose.Types.ObjectId(req.params.purchaseID)}}},
+                    { multi: true },
+                )
+               .then(podata=>{
+                  // now delete finish goods
+                    FinishedGoodsEntry.deleteOne({_id:req.params.purchaseID})
+                    .exec()
+                    .then(data=>{
+                        res.status(200).json({
+                            "message": "Finished Goods Entry Deleted Successfully."
+                        });
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+                })
+               .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({ error: err });
+                });
+
+           })
+           .catch(err =>{
+            console.log(err);
+               res.status(500).json({ error: err });
+           });
+
     });
 };
 
@@ -472,7 +581,6 @@ var insertFinishedGoodsEntry = async (data) => {
                 finishedGoods.save()
                 .then(data=>{
                     //To update raw material balance
-                    console.log("obj",obj);
                     var manageRawMaterialObj = manage_raw_material(obj);
                      if(manageRawMaterialObj){
 
@@ -541,7 +649,7 @@ var manage_raw_material = async (rawdata) => {
                          // var remainingBalance = podata[0].balance - rawdata.OutwardRawMaterial;
                          rawdata.finishedGoods = rawdata;
                          rawdata.balance = remainingBalance;
-                         finishedGoodsArray = {"Date":rawdata.date,"ItemCode":rawdata.ItemCode,"Quantity":rawdata.OutwardRawMaterial,"Unit":rawdata.OutwardUnit};
+                         finishedGoodsArray = {"FinishGoodsId":rawdata.FinishGoodsId,"Date":rawdata.date,"ItemCode":rawdata.ItemCode,"Quantity":rawdata.OutwardRawMaterial,"Unit":rawdata.OutwardUnit};
                             PurchaseEntry.update(
                             {    _id:podata[0]._id},  
                             {
@@ -559,7 +667,7 @@ var manage_raw_material = async (rawdata) => {
                         }else{
                             var remainFcQty =  rawdata.OutwardRawMaterial - podata[0].balance;
                             var remainingBalance = 0;
-                            finishedGoodsArray = {"Date":rawdata.date,"ItemCode":rawdata.ItemCode,"Quantity":podata[0].balance,"Unit":rawdata.OutwardUnit};
+                            finishedGoodsArray = {"FinishGoodsId":rawdata.FinishGoodsId,"Date":rawdata.date,"ItemCode":rawdata.ItemCode,"Quantity":podata[0].balance,"Unit":rawdata.OutwardUnit};
                             PurchaseEntry.updateOne(
                             {    _id:podata[0]._id},  
                             {
@@ -567,7 +675,7 @@ var manage_raw_material = async (rawdata) => {
                                  $push:  {'finishedGoodsArray' : finishedGoodsArray }                         
                             })
                             .then(data=>{
-                               PoUpObj = {"date":rawdata.date,"ItemCode":rawdata.ItemCode,"OutwardRawMaterial":remainFcQty,"OutwardUnit":rawdata.OutwardUnit};
+                               PoUpObj = {"date":rawdata.date,"ItemCode":rawdata.ItemCode,"OutwardRawMaterial":remainFcQty,"OutwardUnit":rawdata.OutwardUnit,"FinishGoodsId":rawdata.FinishGoodsId};
                                 if(data.nModified == 1){
                                     if(remainFcQty != 0){
                                          var updateOtherPoObj = updateOtherPo(PoUpObj);

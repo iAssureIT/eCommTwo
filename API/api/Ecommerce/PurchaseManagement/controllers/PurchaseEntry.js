@@ -680,13 +680,7 @@ var insertFailedRecords = async (invalidData,updateBadData) => {
 
 function get_opening_stock_of_raw(itemCode,id,date){
     var date = moment(date).tz('Asia/Kolkata').startOf('day');
-    console.log("Dddd",
-                 {itemCode : itemCode,
-                  balance: { $gt: 0 },
-                  purchaseDate: { '$lte':  date}
-                 }
-                );
- return new Promise(function(resolve,reject){ 
+     return new Promise(function(resolve,reject){ 
      PurchaseEntry.find({
                   itemCode : itemCode,
                   _id: {$ne: id},
@@ -695,7 +689,7 @@ function get_opening_stock_of_raw(itemCode,id,date){
                      $lte: moment(date).endOf('day').toDate()
                   }
               })
-     .then(data=>{
+           .then(data=>{
             var balanceArray = [];
             var balanceUnitArray = [];
             var balanceUnit;

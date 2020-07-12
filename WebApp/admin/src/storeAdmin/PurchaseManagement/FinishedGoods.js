@@ -253,18 +253,19 @@ export default class FinishedGoods extends React.Component {
 			      	"PackagefgUnitQty"	: response.data.PackagefgUnitQty,
 			      	"fgTotalQty"     	: response.data.fgTotalQty,
 					"Unit"         		: response.data.Unit,
-					"CurrentStock"      : response.data.CurrentStock,
 					"OutwardRawMaterial": response.data.OutwardRawMaterial,
 					"OutwardUnit"       : response.data.OutwardUnit,
 					"fgUnitQty"         : response.data.fgUnitQty,
 					"fgUnitWt"          : response.data.fgUnitWt,
 					"fgTotalQty" 	    : response.data.fgTotalQty,
 					"fgUnitQtyforFG"    : response.data.fgInwardQty,
-					"finishedGoodsUnit" : response.data.fgInwardQty,
+					"finishedGoodsUnit" : response.data.fgUnitWt,
 					"scrapQty"          : response.data.scrapQty,
 					"scrapUnit" 		: response.data.scrapUnit,
 					"finishedBy"        : response.data.finishedBy
-            });
+            },()=>{
+				this.getCurrentStock();
+			});
             
         })
         .catch((error)=>{
@@ -313,7 +314,7 @@ export default class FinishedGoods extends React.Component {
 		}
 		reportFilterData.fromDate = this.state.fromDate;
 		reportFilterData.toDate = this.state.toDate;
-		console.log("reportFilterData",this.state.filterByProduct);
+		//console.log("reportFilterData",this.state.filterByProduct);
 		axios
 		.post('/api/finishedGoodsEntry/post/getReportOfFinishedGoods/',reportFilterData)
 		.then((response)=>{
@@ -544,6 +545,9 @@ export default class FinishedGoods extends React.Component {
 					OutwardError += "  You can convert only selected Raw material stock quantity.";
 				}
 			}else{
+				if(Number(TotalFcInward) !== Number(TotalOutward)){
+					OutwardError = "Please convert all selected raw material.";
+				}
 				 OutwardError = "";
 			}
 	
@@ -590,6 +594,7 @@ export default class FinishedGoods extends React.Component {
 			}
 		}else{
 			if(TotalFcInward == this.state.OutwardRawMaterial){
+				console.log("this.state.fgUnitWt",this.state.fgUnitWt);
 				var compareVariable = this.compareVariable(this.state.fgUnitWt.toLowerCase(),finishgoodUnitWt.toLowerCase(),ScrapUnit.toLowerCase());
 				if(compareVariable){
 					OutwardError =  "";
@@ -600,6 +605,10 @@ export default class FinishedGoods extends React.Component {
 				OutwardError = this.state.CurrentStock >= this.state.OutwardRawMaterial ? "" : "You don't have enough stock to convert";
 			}
 			
+		}
+
+		if(this.state.OutwardRawMaterial > this.state.CurrentStock){
+			OutwardError = "Not enough stock to convert."
 		}
 
 		this.setState({
@@ -642,7 +651,7 @@ export default class FinishedGoods extends React.Component {
 			"finishedBy"        : this.state.finishedBy,
 		};
 
-	console.log("errorMsg",this.state.errorMsg);
+	//console.log("errorMsg",this.state.errorMsg);
 	  if ($('#finishedGoodsInwardForm').valid()) {
 		if(productDatalist !== null && productDatalist.length > 0){
 			if(this.state.errorMsg !== "Valid"){
@@ -653,7 +662,7 @@ export default class FinishedGoods extends React.Component {
 					.post('/api/finishedGoodsEntry/post',formValues1)
 					.then((response)=>{
 					// handle success
-						swal("Thank you. Your Data addeed successfully.");
+						swal("Thank you. Finished Goods addeed successfully.");
 						this.getData();
 					})
 					.catch(function (error) {
@@ -698,29 +707,28 @@ export default class FinishedGoods extends React.Component {
 		event.preventDefault();
 		this.checkValidInward();
         var formValues = {
-			 "Date" 		        : this.state.Date,
-			 "productName" 	        : this.state.productName,
-			 "ItemCode" 	        : this.state.ItemCode,
-			 "ProductCode"          : this.state.ProductCode,
-			 "CurrentStock"         : this.state.CurrentStock,
-			 "OutwardStock"         : this.state.OutwardRawMaterial,
-			 "OutwardUnit"          : this.state.OutwardUnit,
-			 "fgUnitQty"            : this.state.fgUnitQty,
-			 "fgUnitQtyPerUnit"     : this.state.fgUnitWt,
-			 "fgTotalQty" 			: this.state.fgTotalQty,
-			 "fgInwardQty"          : this.state.fgUnitQtyforFG,
-			 "fgInwardUnit"         : this.state.finishedGoodsUnit,
-			 "scrapQty"             : this.state.scrapQty,
-			 "scrapUnit" 		    : this.state.scrapUnit,
-			 "finishedBy"           : this.state.finishedBy,
+			"Date" 		        : this.state.Date,
+			"productName" 	    : this.state.productName,
+			"ItemCode" 	        : this.state.ItemCode,
+			"ProductCode"       : this.state.ProductCode,
+			"CurrentStock"      : this.state.CurrentStock,
+			"OutwardRawMaterial": this.state.OutwardRawMaterial,
+			"OutwardUnit"       : this.state.OutwardUnit,
+			"fgUnitQty"         : this.state.fgUnitQty,
+			"fgUnitWt"          : this.state.fgUnitWt,
+			"fgTotalQty" 	    : this.state.fgTotalQty,
+			"fgInwardQty"       : this.state.fgUnitQtyforFG,
+			"fgInwardUnit"      : this.state.finishedGoodsUnit,
+			"scrapQty"          : this.state.scrapQty,
+			"scrapUnit" 		: this.state.scrapUnit,
+			"finishedBy"        : this.state.finishedBy,
         }
-		if ($('#finishedGoodsInwardForm').valid()) {
-			if(this.state.errorMsg === ""){
+		if($('#finishedGoodsInwardForm').valid()) {
+			if(this.state.errorMsg === "Valid"){
 				axios.patch('/api/finishedGoodsEntry/update/'+this.state.editId,formValues)
 				.then((response)=>{
 					this.props.history.push('/finished-goods');
-					// swal(response.data.message);
-					this.getData(this.state.startRange, this.state.limitRange);
+					swal(response.data.message);
 					this.setState({
 						"date" 		        : '',
 						"ItemCode" 	        : '',
@@ -738,6 +746,9 @@ export default class FinishedGoods extends React.Component {
 						"finishedBy"        : '',
 						"editId"            : '',
 						
+					},()=>{
+						this.getReportBetweenDates();
+						this.getData(this.state.startRange, this.state.limitRange);
 					})
 				})
 				.catch((error)=>{
@@ -865,8 +876,7 @@ export default class FinishedGoods extends React.Component {
 		  },()=>{
 			this.calculateWeightPerFP();
 		  });
-	}
-	  
+	}	  
    }
 
    calculateFcByScrap(){
