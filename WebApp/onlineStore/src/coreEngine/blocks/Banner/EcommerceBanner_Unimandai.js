@@ -55,7 +55,7 @@ export default class EcommerceBanner extends Component {
 			                            dotData={true}
 									>
 									    <div className="item">
-									    	<img className="img img-responsive bannerimg" src={Background_2} alt="banner" />
+									    	<img className="img img-responsive" src={Background_2} alt="banner" />
 									    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
 									    		{/* <div className="BannerTitle NewBannerTitle"> FRESH FOOD  </div> */}
 									    		<div className="bannertext ml16">{/*We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home*/}</div>

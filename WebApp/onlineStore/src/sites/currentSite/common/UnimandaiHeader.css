@@ -1,3 +1,7 @@
+.headerWrapper{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
 .uniLogo{
     height: 90px;
     margin-top: -22px;
@@ -460,4 +464,13 @@ button.button_search {
     margin-right: 50px;
     color:  #fff;
     text-align: right;
+}
+
+@media only screen and (max-device-width: 480px) {   
+    .firstDiv{
+        min-height: auto;
+    }
+    .searchBoxWrapper{
+        margin-top:13px;
+    }
 }

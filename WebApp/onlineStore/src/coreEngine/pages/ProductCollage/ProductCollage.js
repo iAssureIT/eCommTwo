@@ -774,7 +774,7 @@ class ProductCollage extends Component {
 								<li><a href="/">{this.state.productscategoryName}</a></li>
 							</ul>
 						</div>
-						<div className="hidden-lg hidden-md col-sm-12 col-xs-12 menudiv1">
+						<div className="hidden-lg hidden-md hidden-sm hidden-xs col-sm-12 col-xs-12 menudiv1">
 							<div className="hidden-lg menudiv hidden-md col-sm-4 col-xs-4">
 								<div className="dropdown">
 									<button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Menu
@@ -866,7 +866,7 @@ class ProductCollage extends Component {
 									</ul>
 								</div>
 							</div>
-							<div className="hidden-lg  hidden-md col-sm-4 col-xs-4 pull-right">
+							<div className="hidden-lg  hidden-md hidden-sm hidden-xs col-sm-4 col-xs-4 pull-right">
 								<div className="dropdown">
 									<button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Menu1
 						   		<span className="caret"></span></button>

@@ -57,9 +57,9 @@ export default class Footer extends Component {
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerWrapper" >
         <br/>
         {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footerAnimation" style={{'background' : "url("+footerAnimationImg +")" }}></div> */}
-        <div className="container">
+       <div className="container">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer1">
-            <div className="col-lg-7 col-md-6 col-sm-6 col-xs-12 onlineShoppingWrapper">
+            <div className="col-lg-7 col-md-6 col-sm-6 col-xs-12 categoryFooterWrapper">
                 <div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Online Shopping</div>
                     <div className=" col-lg-2 col-md-4 col-sm-6 col-xs-12 hrLine"></div>
@@ -69,7 +69,7 @@ export default class Footer extends Component {
                     return(
                         index <=3 ?
                         <div className="">
-                            <div className=" col-lg-3 col-md-3 col-sm-3 sectionName">
+                            <div className=" col-lg-3 col-md-3 col-sm-3 col-xs-6 sectionName">
                                 <a className="sectionurl" href={"/section/"+data.sectionUrl+'/'+data._id} ><span>{data.section}</span></a>
                             
                             {
@@ -93,7 +93,7 @@ export default class Footer extends Component {
             </div>
             </div>
 
-            <div className="col-lg-2 col-md-3 col-sm-3 col-xs-12 onlineShoppingWrapper">
+            <div className="col-lg-2 col-md-3 col-sm-3 col-xs-12 aboutusFooterWrapper">
                 <div>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">About Us</div>
                     <div className=" col-lg-7 col-md-7 col-sm-6 col-xs-12 hrLine"></div>
@@ -112,7 +112,7 @@ export default class Footer extends Component {
             <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12 onlineShoppingWrapper">
                {/* <div className="container"></div> */}
                 <div>
-                    <div className="logo col-lg-8 col-md-8 col-sm-12">
+                    <div className="logo col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <a href="/" title="Unimandai logo ">
                             <img src={logoUnimandai} alt="images" className="footerLogoImg col-lg-12"/>
                         </a>
@@ -130,17 +130,17 @@ export default class Footer extends Component {
         </div>
         </div>
        
-        <div className="footer3">
-            <div className="container">
-            <div className="footer_bottom">
-                <div className="col-sm-4 col-md-4 col-lg-6 copyrighttxt">
+        <div className="footer3 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+           
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer_bottom">
+                <div className="col-lg-6 col-sm-12 col-md-6 col-xs-12 copyrighttxt">
                     <p>Copyright @2020 <i className="fa fa-copyright"></i> <span className="uniColor">Uni</span><span className="mandaiColor">mandai</span> All Rights Reserved.</p>
                 </div>
-                <div className="col-sm-6 col-md-6 col-lg-6 footernabbar">
+                <div className=" col-md-6 col-lg-6 col-sm-12 col-xs-12 footernabbar">
                     <span>Design & Developed by <a href="http://iassureit.com/" target="_blank"> iAssure International Technologies Pvt. Ltd. </a> Version 1.0</span>
                 </div>
             </div>
-            </div>
+            
         </div>
         </div>  
         );

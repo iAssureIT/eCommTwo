@@ -15,7 +15,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 function App() {
 	getPreferences();
   return (
-    <div className="App">
+    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 App">
 	   <Routes />
     </div>
   );

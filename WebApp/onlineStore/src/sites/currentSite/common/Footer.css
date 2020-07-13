@@ -250,7 +250,7 @@
   font-weight: 700;
 }
 .footer1 {
-  height: 240px;
+  min-height: 240px;
   background-color: #f1f1f1;
   padding-left: 0px !important;
   padding-right: 0px !important;
@@ -337,4 +337,16 @@
   text-align: center;
   margin-right: 25px;
   background-color: #80c21c;
+}
+
+@media only screen and (max-device-width: 480px) {    
+  .categoryFooterWrapper{
+    margin-bottom: 20px;
+  }
+  .aboutusFooterWrapper{
+    margin-bottom: 20px;
+}
+.copyrighttxt p{
+  font-size: 11px;
+}
 }

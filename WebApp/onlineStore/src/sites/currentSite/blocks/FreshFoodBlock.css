@@ -66,8 +66,13 @@
 }
 .zoom:hover, .zoom:active, .zoom:focus {
     transform: scale(1.2);
-    /* position: relative; */
 }
 .freshfoodImg{
     margin-top: 75px !important;
+}
+
+@media only screen and (max-device-width: 480px) {  
+    .freshFood .title-choose h3{
+        font: 700 31px/50px "Roboto Slab";
+    }
 }

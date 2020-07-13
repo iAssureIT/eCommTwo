@@ -17,10 +17,10 @@ class FreshFoodBlock extends Component{
     }
     render(){
         return(
-            <div className="container container-ver2 freshFood">
+            <div className="container freshFood">
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <img className="img-responsive hidden-table freshfoodImg" src={freshFoodImg1} alt="banner"/>            
+                        <img className="img-responsive hidden-table freshfoodImg col-sm-12 col-xs-12" src={freshFoodImg1} alt="banner"/>            
                     </div>
                     
                     <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -41,7 +41,7 @@ class FreshFoodBlock extends Component{
 
                         <div className="shippingBlock">
                             
-                            <div className="col-md-3 col-sm-3 col-xs-6">
+                            <div className="col-md-3 col-sm-3 col-xs-6 hidden-xs">
                                 {/* <div className="border">
                                     <img src={icon_shipping_2} alt="images"/>
                                     <h3>Support</h3>
@@ -62,7 +62,7 @@ class FreshFoodBlock extends Component{
                                     <p>8686 34 2020 / 8686 64 2020</p>
                                 </div>
                             </div>
-                            <div className="col-md-3 col-sm-3 col-xs-6">
+                            <div className="col-md-3 col-sm-3 col-xs-6 hidden-xs">
                                 {/* <div className="border">
                                     <img src={icon_shipping_3} alt="images"/>
                                     <h3>Help Partner</h3>

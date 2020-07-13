@@ -379,3 +379,18 @@ ul.tabs.tabs-title li {
     height: 450px;
 }
 
+@media only screen and (max-device-width: 480px) {    
+    .flatSaleBlock{
+        font: 300 29px/50px "Roboto Slab";
+    }
+    .newBlock{
+        margin-top: 100px;
+    }
+    .shopByCat{
+        font: 400 20px/40px "Roboto Slab";
+    }
+    .bigSaleWrapper{
+        height: 300px;
+    }
+
+}
