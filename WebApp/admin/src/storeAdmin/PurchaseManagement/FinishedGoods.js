@@ -547,9 +547,12 @@ export default class FinishedGoods extends React.Component {
 			}else{
 				if(Number(TotalFcInward) !== Number(TotalOutward)){
 					OutwardError = "Please convert all selected raw material.";
+				}else{
+					OutwardError = "";
 				}
-				 OutwardError = "";
+				 
 			}
+			
 	
 			if(TotalFcInward == this.state.OutwardRawMaterial){
 				var compareVariable = this.compareVariable(this.state.fgUnitWt.toLowerCase(),finishgoodUnitWt.toLowerCase(),ScrapUnit.toLowerCase());
@@ -605,6 +608,10 @@ export default class FinishedGoods extends React.Component {
 				OutwardError = this.state.CurrentStock >= this.state.OutwardRawMaterial ? "" : "You don't have enough stock to convert";
 			}
 			
+		}
+
+		if(Number(TotalFcInward) !== Number(TotalOutward)){
+			OutwardError = "Please convert all selected raw material.";
 		}
 
 		if(this.state.OutwardRawMaterial > this.state.CurrentStock){
