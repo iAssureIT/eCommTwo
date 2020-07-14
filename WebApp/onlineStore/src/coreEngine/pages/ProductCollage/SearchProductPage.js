@@ -179,7 +179,7 @@ class SearchProduct extends Component {
 
 						</ul>
 					</div>
-					 <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					 <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 hidden-xs">
 						{/*<div className="forSearchDiv">
 						</div>
 						<br />
@@ -208,10 +208,9 @@ class SearchProduct extends Component {
 
 						</div>*/}
 					</div> 
-					<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-
-						<div className="tab-content">
-							<div id="products" className="tab-pane fade in active">
+					<div className="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+						<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+							<div id="products" className="col-lg-12 col-md-12 col-sm-12 tab-pane fade in active">
 
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
 
@@ -233,7 +232,6 @@ class SearchProduct extends Component {
 										this.state.categoryDetails && this.state.categoryDetails[0] && this.state.categoryDetails.map((data, index) => {
 											return (
 												<li key={index}><a href={"/product-collage/" + data._id}>{data.category}</a>
-
 												</li>
 											);
 										})

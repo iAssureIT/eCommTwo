@@ -17,6 +17,9 @@ import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
 import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
 import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
 import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
+// import pincodeModalImg from '../../../sites/currentSite/images/loginBackground.png';
+// import pincodeModalImg from '../../../sites/currentSite/images/loginBg.png';
+
 import AskPincode from '../../blocks/AskPincode/AskPincode.js';
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 import '../../../sites/currentSite/common/Header.css';
@@ -429,10 +432,10 @@ loginPage(event){
               <div className="row">           
                 <div className="col-lg-2 col-md-2 col-sm-3 col-xs-6 header-top">
                     <div className="contaner">
-                        <div className="box col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <p className="icon-menu-mobile"><i className="fa fa-bars"></i></p>
-                            <div className="logo col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <a href="/" title="Unimandai logo">
+                        <div className="box col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ">
+                            <div className="icon-menu-mobile col-xs-1"><i className="fa fa-bars col-xs-12 NoPadding"></i></div>
+                            <div className="logo col-lg-12 col-md-12 col-sm-12 col-xs-11">
+                                <a href="/" title="Unimandai logo col-lg-12 col-xs-12 NoPadding">
                                     <img src={logoUnimandai} alt="images" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "/>
                                 </a>
                             </div>
@@ -448,7 +451,7 @@ loginPage(event){
                 </div>
                 
                 
-                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 NOpadding searchBoxWrapper">
+                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-xs NOpadding searchBoxWrapper">
                     <div className="col-lg-12 col-md-12 searchBox">
                         <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
                         <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
@@ -456,17 +459,14 @@ loginPage(event){
                 </div>
 
                           
-                <div className="col-lg-1 col-md-1 col-sm-2 col-xs-6 box-right">
-                {/* <div className="col-lg-12">
-                  <div className = "col-lg-12 showPincode">{localStorage.getItem('pincode')} </div>
-                </div> */}
-                  <div>
-                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6 ">                          
+                <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">                          
                           <span className="  "><a href="" className="faIcon " data-toggle="modal" data-target="#pincodeModal" area-hidden ="true">
                             <img src={modalImg} className="icon-cart"></img>
                           </a></span>                          
                       </div>
-                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                           {user_ID 
                             ? 
                                 <li className="dropdown">
@@ -633,7 +633,7 @@ loginPage(event){
                           null
                         }
                     </div> 
-                    </div>                   
+                  </div>                   
                 </div>
               </div>
             </div>          

@@ -26,40 +26,40 @@ export default class Aboutusmultistore extends Component {
 							</p>
 						</div>
 					</div>
-					<div className="col-lg-10 col-lg-offset-1 mt50">
-						<div className="col-lg-4">
-						  <div className="col-lg-12">
+					<div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 mt50">
+						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						  	<i className="fa fa-inbox multiicon" aria-hidden="true"></i>
 						  </div>
-						  <div className="col-lg-12">
-						  <h3><b>200+</b></h3>
-						  <h4>Products</h4>
+						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<h3><b>200+</b></h3>
+							<h4>Products</h4>
 						  </div>
 						</div>
-						<div className="col-lg-4">
-						  <div className="col-lg-12">
+						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						  	<i className="fa fa-shopping-cart multiicon" aria-hidden="true"></i>
 						  </div>
-						  <div className="col-lg-12">
-						  <h3><b>300+</b></h3>
-						  <h4>Sellers</h4>
+						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<h3><b>300+</b></h3>
+							<h4>Sellers</h4>
 						  </div>
 						</div>
-						<div className="col-lg-4">
-						  <div className="col-lg-12">
+						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						  	<i className="fa fa-globe multiicon" aria-hidden="true"></i>
 						  </div>
-						  <div className="col-lg-12">
+						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						  <h3><b>Pune</b></h3>
 						  <h4>City</h4>
 						  </div>
 						</div>
 					</div>
-					<div className="col-lg-10 col-lg-offset-1">
+					<div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 						<div className="">
-							<div className="col-lg-12">
-								<div className="col-lg-12 multistorebgimg">
-									<div className="col-lg-12 text-center multistorebgimgtext">
+							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 multistorebgimg">
+									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center multistorebgimgtext">
 										<h3 className="mb50">The Unimandai Promise</h3>
 										<p className=" textparaabout1">
 											We promise that buying fruits and vegetables from us; will be an exceptional experience.
@@ -80,9 +80,10 @@ export default class Aboutusmultistore extends Component {
 							</div> */}
 						</div>
 					</div>
-					<div className="col-lg-12">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<h3 className="mb50">Message from Founders</h3>
-						<p className="textparaabout">
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 textparaabout">
 							We are nothing without our customers. We are priceless because they choose to invest their faith in us.Their continued patronage and complete conviction in our services inspires us to seek better solutions every day. 
 							This commitment is the corner stone of our Quality Policy and we strive to achieve it by putting into place a Quality System which adheres to the Industry Standard.
 							Every employee at Unimandai is continually involved in achieving the company’s core objectives.
@@ -99,6 +100,7 @@ export default class Aboutusmultistore extends Component {
 							</p>
 							
 						</p>
+						</div>
 					</div>
 					
 				</div>

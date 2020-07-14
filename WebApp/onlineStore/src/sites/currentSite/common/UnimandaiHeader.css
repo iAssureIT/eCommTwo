@@ -473,4 +473,14 @@ button.button_search {
     .searchBoxWrapper{
         margin-top:13px;
     }
+    .icon-menu-mobile {
+        display: block;
+    }
+    .box-right{
+        margin-left: 20px;
+    }
+    .box-right .cart .cart-count{
+        bottom: 61%;
+        right: 2px;
+    }
 }
