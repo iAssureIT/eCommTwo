@@ -68,7 +68,7 @@
     transform: scale(1.2);
 }
 .freshfoodImg{
-    margin-top: 75px !important;
+    margin-top: 75px;
 }
 
 @media only screen and (max-device-width: 480px) {  
@@ -76,3 +76,19 @@
         font: 700 31px/50px "Roboto Slab";
     }
 }
+
+
+
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+  /* Styles */
+.freshfoodImg{
+    margin-top: 160px;
+}
+.freshFood .title-choose h3{
+    font: 700 35px/50px "Roboto Slab";  
+}
+
+}
+

@@ -762,7 +762,7 @@ class ProductCollage extends Component {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv">
 				<div className="row">
-					<div>
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<ul className="links">
 								<li><a href="/">Home /</a></li>
@@ -1090,7 +1090,7 @@ class ProductCollage extends Component {
 								this.state.products.length > 0 ?
 									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12" id="productDiv">
 										<br />
-										<div className="tab-content">
+										<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div id="products" className="tab-pane fade in active">
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding content">
 
@@ -1100,7 +1100,7 @@ class ProductCollage extends Component {
 																<div className="categoryName">{this.state.categoryDetails && this.state.categoryDetails.category}</div>
 															</div>
 
-															<div className="col-lg-offset-2 col-md-offset-2 col-lg-4 col-md-6 col-sm-9 col-xs-9 NoPadding">
+															<div className="col-lg-offset-2 col-md-offset-2 col-lg-4 col-md-6 col-sm-9 col-xs-7 col-xs-offset-1 NoPadding">
 																<label className="col-lg-3 col-md-6 col-sm-9 col-xs-9 NoPadding labeldiv">Sort By</label>
 																<select className="sortProducts col-lg-8 col-sm-9 col-md-8 col-xs-9 NoPadding" onChange={this.sortProducts.bind(this)}>
 																	<option className="hidden" >Relevance</option>
@@ -1111,10 +1111,10 @@ class ProductCollage extends Component {
 																</select>
 															</div>
 
-															<div className="col-lg-2 col-md-2 col-sm-3 col-xs-3 pull-right NoPadding">
+															<div className="col-lg-2 col-md-2 col-sm-3 col-xs-4 pull-right NoPadding">
 																<label className="col-lg-5 col-md-5 col-sm-10 col-xs-10 NoPadding labeldiv">Show</label>
 																{this.state.envVariable == '4_UniMandai' ?
-																	<select className="limitProducts col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding" onChange={this.limitProducts.bind(this)}>
+																	<select className="limitProducts col-lg-6 col-md-6 col-sm-6 col-xs-10 NoPadding" onChange={this.limitProducts.bind(this)}>
 																		<option value="10">50</option>
 																		<option value="20">100</option>
 																		<option value="30">150</option>

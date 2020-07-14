@@ -133,7 +133,7 @@ export default class AskPincode extends Component {
       }
       
   render() {
-    console.log("inside askpincode");  
+    // console.log("inside askpincode");  
     // $(".modal-backdrop").hide();
 		return (            
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12">

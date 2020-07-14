@@ -436,8 +436,8 @@ background-color: transparent !important;
 @media screen and (max-width: 480px) {
    .card{
     border: 1px solid #f1f2f2;
-    max-width: 270px;
-    margin: 5px;
+    /* max-width: 270px; */
+    /* margin: 5px; */
     height: 385px;
     padding: 0px;
    }   
@@ -457,8 +457,8 @@ background-color: transparent !important;
 
 .card{
     border: 1px solid #f1f2f2;
-    max-width: 270px;
-    margin: 5px;
+    /* max-width: 270px; */
+    /* margin: 5px; */
     /*height: 385px;*/
 }
 .productDetails{
@@ -748,7 +748,7 @@ background-color: transparent !important;
     font-size: 20px;
     font-weight: 700;
 }
-
+/* css for mobile */
 @media only screen and (max-device-width: 480px) {
     .customnNavButton .owl-nav button.owl-next{
         margin-left: 302px !important;
@@ -758,4 +758,14 @@ background-color: transparent !important;
     .HomePageBanner2{
         display: none;
     }
+}
+
+/* css for iPad */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+  /* Styles */
+   .customnNavButton .owl-nav button.owl-next{
+        margin-left: 650px;
+   }
 }

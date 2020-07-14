@@ -433,7 +433,7 @@ loginPage(event){
                             <p className="icon-menu-mobile"><i className="fa fa-bars"></i></p>
                             <div className="logo col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <a href="/" title="Unimandai logo">
-                                    <img src={logoUnimandai} alt="images" className="col-lg-12 col-md-12 col-sm-4 col-xs-12 "/>
+                                    <img src={logoUnimandai} alt="images" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "/>
                                 </a>
                             </div>
                         </div>

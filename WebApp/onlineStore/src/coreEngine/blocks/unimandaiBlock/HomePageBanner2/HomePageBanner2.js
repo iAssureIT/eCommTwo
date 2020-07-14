@@ -70,7 +70,7 @@ class HomePageBanner2 extends Component{
       }  
     render(){
         return(
-            <div className="col-lg-12 col-md-12 col-sm-12 HomePageBanner2">
+            <div className="col-lg-12 col-md-12 col-sm-12 hidden-sm hidden-xs HomePageBanner2">
                 <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 ">
                     <div className="row">
                         {
