@@ -213,6 +213,7 @@ exports.updateEntity = (req,res,next)=>{
                             'groupName'                 : req.body.groupName,
                             'CIN'                       : req.body.CIN,   
                             'COI'                       : req.body.COI,
+                            'companyEmail'              : req.body.companyEmail,
                             'TAN'                       : req.body.TAN,
                             'companyLogo'               : req.body.companyLogo,
                             'website'                   : req.body.website,

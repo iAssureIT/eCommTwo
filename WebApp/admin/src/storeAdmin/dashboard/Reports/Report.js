@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
-import '../dashboard.css';
+// import '../dashboard.css';
 
 class Report extends Component{
   

@@ -306,7 +306,7 @@ class BasicInfo extends Component {
         "createdBy": localStorage.getItem("user_ID")
       }
       if (this.props.match.params.entityID) {
-        
+        console.log("formValues while edit====>",formValues)
         axios.patch('/api/entitymaster/patch', formValues)
           .then((response) => {
             

@@ -28,7 +28,6 @@ export default class AllOrders extends Component{
             .then((response)=>{
               // console.log("response.data of order==>",response.data)
               var UsersArray = [];
-              
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
