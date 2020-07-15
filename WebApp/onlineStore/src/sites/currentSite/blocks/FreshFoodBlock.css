@@ -75,6 +75,9 @@
     .freshFood .title-choose h3{
         font: 700 31px/50px "Roboto Slab";
     }
+    .freshfoodImg{
+        margin-top: 0px;
+    }
 }
 
 

@@ -70,31 +70,21 @@ class HomePageBanner2 extends Component{
       }  
     render(){
         return(
-            <div className="col-lg-12 col-md-12 col-sm-12 hidden-sm hidden-xs HomePageBanner2">
+            <div className="col-lg-12 col-md-12 col-sm-12 hidden-sm HomePageBanner2">
                 <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 ">
                     <div className="row">
                         {
                             Array.isArray(this.state.sectionDetails) && this.state.sectionDetails.map((data, index) => {                                                               
                                 return (
                                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
-                                        <a className="hover-images col-lg-12" href={"/section/"+data.section+"/"+data.sectionId} >                                                              
-                                            <img className="img-responsive zoomImg col-lg-12" src={data.sectionImg} alt="banner" />                                            
+                                        <a className="hover-images col-lg-12 col-md-12 col-sm-12 col-xs-12" href={"/section/"+data.section+"/"+data.sectionId} >                                                              
+                                            <img className="img-responsive zoomImg" src={data.sectionImg} alt="banner" />                                            
                                         </a>                        
                                     </div>
                                 )
                             })
                         
                         }
-                        {/* <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
-                            <a className="hover-images col-lg-12" href="/">                                
-                                <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_2} alt="banner" />
-                            </a>                        
-                        </div>
-                        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 imageBlock">
-                            <a className="hover-images col-lg-12" href="/">                                
-                                <img className="img-responsive zoomImg col-lg-12" src={HomePageBanner2_3} alt="banner" />
-                            </a>                        
-                        </div> */}
                     </div>
                 </div>
             </div>

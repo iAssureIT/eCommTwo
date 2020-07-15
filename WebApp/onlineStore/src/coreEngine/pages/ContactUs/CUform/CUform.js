@@ -139,7 +139,7 @@ componentDidMount(){
 	                          "<br/><br/> Thank You, <br/> Support Team, <br/> www.iassureit.com " ,
 
 	      };
-	      console.log("notification",formValues1); 
+	    //   console.log("notification",formValues1); 
 	      
 	        /*axios
 	        .post('/send-email',formValues1)
@@ -259,21 +259,21 @@ componentDidMount(){
 								<div className=" col-lg-10 col-lg-offset-1 col-md-12 col-xs-12 col-sm-12">
 									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
 										<h1 className="headone"> Get in Touch</h1>
-										<p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.
-											</p>
+										{/* <p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.
+											</p> */}
 									</div>
-									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 bt20">
+									{/*<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 bt20">
 										<div className="col-lg-2 col-md-2 col-xs-2 col-sm-2">
-											{/*<img src="/images/loca.png" height="45px"/>*/}
+											
 											<img src={Map_Img} height="40px"/>
 										</div>
-										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+										 <div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Visit Us:</b> </label><br/>
 											<p>27 Division St, New York,NY 10002,USA
 											</p>
 
-										</div>
-									</div>
+										</div> 
+									</div>*/}
 								
 									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 bt20">
 										<div className="col-lg-2 col-md-2 col-xs-2 col-sm-2">
@@ -294,8 +294,7 @@ componentDidMount(){
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Phone Us:</b> </label><br/>
-											<p>+91 9036553355
-											</p>
+											<p>8686 34 2020 / 8686 64 2020</p>
 
 										</div>
 									</div>

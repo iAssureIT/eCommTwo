@@ -211,6 +211,7 @@
      }
      .bannercaro .owl-dots{
          left: 10px;
+         display: none;
      }
 }
 

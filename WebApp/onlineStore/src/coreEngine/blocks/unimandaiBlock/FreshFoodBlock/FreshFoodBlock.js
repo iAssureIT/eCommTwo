@@ -20,7 +20,7 @@ class FreshFoodBlock extends Component{
             <div className="container freshFood">
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <img className="img-responsive hidden-table freshfoodImg col-sm-12 col-xs-12" src={freshFoodImg1} alt="banner"/>            
+                        <img className="img-responsive hidden-table freshfoodImg" src={freshFoodImg1} alt="banner"/>            
                     </div>
                     
                     <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -35,7 +35,7 @@ class FreshFoodBlock extends Component{
                         <div className="align-center border-choose" style={{background: "url("+bgBorderChoose +")"}}>
 
                             <div className="images ">
-                                <img src={bgBorderCenter} alt="icon" />
+                                <img src={bgBorderCenter} className= "img-responsive" alt="icon" />
                             </div>
                         </div>
 
