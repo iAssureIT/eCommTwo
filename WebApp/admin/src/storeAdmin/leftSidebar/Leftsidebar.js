@@ -363,6 +363,13 @@ export default class AdminDashboard extends Component{
                 <span className="sidebarMenuTitle">Franchise Master</span>
               </a>
             </li>
+
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/cms/dashboard" title="cms" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-object-group" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">CMS</span>
+              </a>
+            </li>
             
           </ul>
         </section>
