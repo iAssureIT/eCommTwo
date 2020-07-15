@@ -453,7 +453,7 @@ class Ecommercenewproductcaro extends Component {
                           return (
                             <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
                               <a >
-                                <div className="">
+                                <div className=""> 
                                   <div className="card">
                                     <div className="item-top">
                                       <div className="productImg">
@@ -531,7 +531,7 @@ class Ecommercenewproductcaro extends Component {
                                                   <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> 
                                                 </div>
                                                 :
-                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
+                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                             }
                                           </div></a>
                                           <div >

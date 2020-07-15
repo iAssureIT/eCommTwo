@@ -446,10 +446,11 @@ button.button_search {
 }
 /* login modal css  */
 .loginModalContent{
-    height: 600px;
+    min-height: 500px;
+    overflow: auto;
+    padding-bottom: 20px;
     background-size: 100% 100% !important;
     background-repeat: no-repeat !important;
-
 }
 .loginModalContent .close{
     font-size: 55px !important;

@@ -433,7 +433,7 @@ loginPage(event){
                 <div className="col-lg-2 col-md-2 col-sm-3 col-xs-6 header-top">
                     <div className="contaner">
                         <div className="box col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ">
-                            <div className="icon-menu-mobile col-xs-1"><i className="fa fa-bars col-xs-12 NoPadding"></i></div>
+                            {/* <div className="icon-menu-mobile col-xs-1"><i className="fa fa-bars col-xs-12 NoPadding"></i></div> */}
                             <div className="logo col-lg-12 col-md-12 col-sm-12 col-xs-11">
                                 <a href="/" title="Unimandai logo col-lg-12 col-xs-12 NoPadding">
                                     <img src={logoUnimandai} alt="images" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "/>
@@ -510,7 +510,7 @@ loginPage(event){
                     
                       <div id="loginFormModal" className="modal in">
                           <div className="modal-dialog">                                        
-                              <div className="modal-content loginModalContent" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
+                              <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
                                   <div className="modal-body">   
                                   <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
                                       {this.props.formToShow === "login" ?

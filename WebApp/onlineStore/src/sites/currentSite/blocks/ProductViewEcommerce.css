@@ -1034,3 +1034,10 @@ position:relative;
 .backColorWhite{
     background-color: #fff !important;
 }
+
+@media only screen and (max-device-width: 480px) { 
+.adCart{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+}

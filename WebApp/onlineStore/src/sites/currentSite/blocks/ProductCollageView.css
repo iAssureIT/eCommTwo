@@ -396,3 +396,6 @@
 	/* font-size: 13px; */
 	font-weight: 400 !important;
 }
+.ProSize{
+	text-transform: uppercase;
+}

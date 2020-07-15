@@ -486,7 +486,7 @@ class EcommerceProductCarousel extends Component {
                                                           </select>
                                                           <div className="col-lg-12 col-md-12 col-sm-12 pull-left Nopadding prodName">{data.productName}</div>
                                                           {data.discountedPrice === data.originalPrice ?
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.originalPrice} &nbsp;                                                    
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.originalPrice} &nbsp;                                                     
                                                             </div>
                                                           :
                                                             <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.discountedPrice} &nbsp;
@@ -519,7 +519,7 @@ class EcommerceProductCarousel extends Component {
                                                   <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span>
                                                 </div>
                                                 :
-                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
+                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                             }
                                           </div></a>
                                           {/* <div className="product-reviews-summary">

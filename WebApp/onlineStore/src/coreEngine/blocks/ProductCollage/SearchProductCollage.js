@@ -490,7 +490,7 @@ class SearchProductCollage extends Component {
                                                                                 
                                       </div>
                                       :
-                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
+                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                   }
                                 </div>
 

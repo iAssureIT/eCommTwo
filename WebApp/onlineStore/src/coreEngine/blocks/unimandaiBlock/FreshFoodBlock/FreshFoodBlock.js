@@ -35,7 +35,7 @@ class FreshFoodBlock extends Component{
                         <div className="align-center border-choose" style={{background: "url("+bgBorderChoose +")"}}>
 
                             <div className="images ">
-                                <img src={bgBorderCenter} className= "img-responsive" alt="icon" />
+                                <img src={bgBorderCenter} className= "img-responsive col-lg-12 col-md-12 col-sm-12 col-xs-12" alt="icon" />
                             </div>
                         </div>
 
