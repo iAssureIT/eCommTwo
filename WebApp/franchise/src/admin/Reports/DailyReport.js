@@ -53,15 +53,23 @@ class DailyReport extends Component{
       startDate : this.state.currentDate,
       endDate   : this.state.currentDate
     }
-
-    axios.post("/api/orders/get/report/"+startRange+'/'+limitRange, formvalues)
-    .then((response)=>{
-      this.setState({ 
-        tableData : response.data
-      },()=>{ 
-        console.log("tableData",this.state.tableData);
+    var userDetails = (localStorage.getItem('userDetails'));
+    var userData = JSON.parse(userDetails);
+    console.log("userData.companyID===>",userData.companyID)
+    axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+    .then((resdata)=>{
+      axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
+      .then((response)=>{
+        this.setState({ 
+          tableData : response.data
+        },()=>{ 
+          console.log("tableData",this.state.tableData);
+        })
       })
-    })
+      .catch((error)=>{
+          console.log('error', error);
+      })
+      })
     .catch((error)=>{
         console.log('error', error);
     })
@@ -90,7 +98,6 @@ class DailyReport extends Component{
   }
 
   componentDidMount() {
-    
     document.getElementsByClassName('reportsDateRef').value = moment().startOf('day').format("DD/MM/YYYY") ;
     this.setState({ currentDate:moment().startOf('day').format("YYYY-MM-DD") },()=>{
       this.getCount();  

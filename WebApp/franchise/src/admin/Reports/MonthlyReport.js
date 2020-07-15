@@ -18,7 +18,6 @@ export default class MonthlyReport extends Component{
             userFullName               : "Customer Name",
             totalAmount                : "Amount",
             deliveryStatus             : "Delivery Status",
-
           },
           "tableData"           : [],
           "tableObjects"        : {
@@ -88,18 +87,27 @@ export default class MonthlyReport extends Component{
             console.log('error', error);
         })
     }
-    getData(startRange,limitRange){
+    getData(startRange,limitRange,){
         var formvalues = {
           startDate : this.state.startDate,
           endDate   : this.state.endDate
         }
-        axios.post("/api/orders/get/report/"+startRange+'/'+limitRange, formvalues)
-        .then((response)=>{
-          this.setState({ 
-            tableData : response.data
-          },()=>{ 
-            console.log("tableData",this.state.tableData);
-          })
+        var userDetails = (localStorage.getItem('userDetails'));
+        var userData = JSON.parse(userDetails);
+        console.log("userData.companyID===>",userData.companyID)
+        axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+        .then((resdata)=>{
+            axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
+            .then((response)=>{
+            this.setState({ 
+                tableData : response.data
+            },()=>{ 
+                console.log("tableData",this.state.tableData);
+            })
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            })
         })
         .catch((error)=>{
             console.log('error', error);

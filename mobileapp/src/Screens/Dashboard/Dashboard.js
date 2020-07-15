@@ -5,7 +5,7 @@ import {
   View,
   BackHandler,
   Dimensions,
-  TouchableOpacity,
+  AsyncStorage,
   KeyboardAvoidingView,
   ImageBackground,
   Image,
@@ -56,6 +56,17 @@ export default class Dashboard extends React.Component{
   }
 
   componentDidMount() {
+    AsyncStorage.multiGet(['user_id', 'token'])
+      .then((data) => {
+        userId = data[0][1]
+        console.log('userId on Dashboard===>', userId);
+        this.setState({
+          userId : userId
+      })
+      })
+      .catch((error) => {
+        console.log('error', error);
+      })
     this.getSections();
     this.exclusiveProductsData();
     this.getWishData();
@@ -180,14 +191,14 @@ export default class Dashboard extends React.Component{
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" >
               <View  style={styles.formWrapper}>
                 <View>
-                  <BannerComponent />
+                  {/* <BannerComponent /> */}
                 </View>
                 <View>
                   <MenuCarouselSection  navigate = {navigate} sections={this.state.sections} />
                 </View>
                 {
                   (this.state.featuredProducts.length > 0 ? 
-                    <FeatureProductComponent navigate = {navigate} title={'FEATURE PRODUCTS'} newProducts={this.state.featuredProducts} type={'featured'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} categories={this.state.categories}/>
+                    <FeatureProductComponent navigate = {navigate} title={'FEATURE PRODUCTS'}  newProducts={this.state.featuredProducts} type={'featured'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} userId={this.state.userId} categories={this.state.categories}/>
                     : null
                   )
                 }

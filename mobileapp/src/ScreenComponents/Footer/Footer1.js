@@ -40,7 +40,7 @@ class UniFooter extends ValidationComponent {
     // console.log('footer userId==>', this.state.userId)
             axios.get("/api/Carts/get/count/" + this.state.userId)
               .then((response) => {
-                console.log('footer response.data==>', response.data)
+                // console.log('footer response.data==>', response.data)
                 this.setState({
                   getCartCountData: response.data,
                 })

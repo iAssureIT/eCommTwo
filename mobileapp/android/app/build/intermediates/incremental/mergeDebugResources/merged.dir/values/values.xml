@@ -282,8 +282,8 @@
     <item name="launch_screen" type="layout">
         @layout/launch_screen
     </item>
-    <string name="CODE_PUSH_APK_BUILD_TIME" translatable="false">"1594398091397"</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey">bImzMO2uEF8L9Ezs7BSY2ngD1opDomXYUfhx3</string>
+    <string name="CODE_PUSH_APK_BUILD_TIME" translatable="false">"1594795491507"</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">1gS5qKRTnZ510VgAl7TG6M26YGVw4mGQMNLE6</string>
     <string name="abc_action_bar_home_description">Navigate home</string>
     <string name="abc_action_bar_up_description">Navigate up</string>
     <string name="abc_action_menu_overflow_description">More options</string>

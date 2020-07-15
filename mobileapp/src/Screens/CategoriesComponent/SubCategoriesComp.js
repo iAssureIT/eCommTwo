@@ -12,13 +12,9 @@ import {
 
 } from 'react-native';
 
-import Drawer from 'react-native-drawer';
-import { Header, Button, Icon, SearchBar } from "react-native-elements";
-import SideMenu from 'react-native-side-menu';
 import Modal from "react-native-modal";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar3 from '../../ScreenComponents/HeaderBar3/HeaderBar3.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Categoriesstyles.js';
@@ -252,10 +248,21 @@ export default class SubCategoriesComp extends React.Component {
                               <View style={styles.flx5}>
                              
                                 <View style={styles.flx1}>
-                                <Image
+                                {/* <Image
                                   source={{ uri: item.productImage[0] }}
                                   style={styles.subcatimg}
-                                />
+                                /> */}
+                                 {item.productImage.length> 0 ?
+                                      <Image
+                                        source={{ uri: item.productImage[0] }}
+                                        style={styles.subcatimg}
+                                      />
+                                    :
+                                      <Image
+                                        source={require("../../AppDesigns/currentApp/images/notavailable.jpg")}
+                                        style={styles.subcatimg}
+                                      />
+                                  }
                                  <TouchableOpacity style={[styles.flx1,styles.wishlisthrt]} onPress={() => this.addtowishlist(item._id)} >
                                    <Icon size={20} name='heart-o' type='font-awesome' color='#80c21c' style={{backgroundColor:"red"}} />
                                  </TouchableOpacity>
