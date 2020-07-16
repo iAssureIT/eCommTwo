@@ -192,7 +192,7 @@ componentWillMount() {
             formValues.loading = false;
             this.props.searchProductFun(formValues, this.state.searchResult);
           });
-        })
+        })        
         .catch((error) => {
           // console.log('error', error);
         })

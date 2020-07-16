@@ -133,7 +133,7 @@ export default class AskPincode extends Component {
       }
       
   render() {
-    console.log("inside askpincode");  
+    // console.log("inside askpincode");  
     // $(".modal-backdrop").hide();
 		return (            
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12">
@@ -142,7 +142,7 @@ export default class AskPincode extends Component {
                 ?                 */}
                     <div id="pincodeModal" className="modal in">
                         <div className="modal-dialog">
-                            <div className="modal-content pincodemodal" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
+                            <div className="modal-content pincodemodal col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
                                 <div className="modal-body">   
                                 <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.closeModal.bind(this)}>&times;</button>                       
                                     <form>                                    
@@ -154,7 +154,7 @@ export default class AskPincode extends Component {
                                                         :
                                                             <div className="marginTop"></div>
                                                         }
-                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 DeliveryStatusMsg">                                            
+                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding DeliveryStatusMsg">                                            
                                                             
                                                         </div>
                                                         <div className="pincodeChild">
@@ -165,12 +165,12 @@ export default class AskPincode extends Component {
                                                                 <span>{this.state.AllowDeliveryMsg} </span>                                                                
                                                             </div>
                                                             <div  className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>
+                                                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>
                                                             </div>
                                                             <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pincodeBtnwrapper">   
                                                                 <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">                                                 
                                                                     <input class="form-control error pull-left pinocodeInput" id="pincode" type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-6 col-xs-6 pull-left pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input>
-                                                                    <button className="col-lg-5 col-md-6 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                                    <button className="col-lg-5 col-md-6 col-sm-6 col-xs-6 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
                                                                 </div>
                                                             </div> 
                                                         </div>

@@ -72,10 +72,24 @@ export default class WishlistComponent extends React.Component {
     return error;
   }
   componentDidMount() {
-    const product_ID = this.props.navigation.getParam('product_ID', 'No product_ID');
-    const user_id = this.props.navigation.getParam('user_id', 'No user_ID');
+    // const product_ID = this.props.navigation.getParam('product_ID', 'No product_ID');
+    // const user_id = this.props.navigation.getParam('user_id', 'No user_ID');
+    // console.log("product_ID wishlist==>", product_ID);
+    // AsyncStorage.multiGet(['user_id', 'token'])
+    // .then((data) => {
+    //  var user_id = data[0][1];
     // console.log("user_id wishlist==>", user_id);
+
+    //   this.setState({
+    //     user_id: user_id,
+    //   })
+    // })
+    // .catch((error) => {
+    //   console.log('error', error);
+    // })
+    
     this.getCartData();
+    // this.getData();
   }
 
   getCartData() {
@@ -84,11 +98,12 @@ export default class WishlistComponent extends React.Component {
         userId = data[0][1],
           axios.get('/api/wishlist/get/userwishlist/' + userId)
             .then((response) => {
-              // console.log("Item size==>", response.data);
+              
               response.data.map((a, i) => {
+                // console.log("Item a.product_ID==>", a.product_ID);
                 axios.get('/api/products/get/one/' + a.product_ID)
                   .then((res) => {
-                    // console.log('data1 In Wishlist====>', res.data);
+                    console.log('data1 In Wishlist====>', res.data);
                     var products = this.state.products;
                     products.push({
                       "productName": res.data.productName,
@@ -122,6 +137,50 @@ export default class WishlistComponent extends React.Component {
       })
   }
 
+
+
+
+
+  // getData() {
+
+  //   axios.get('/api/wishlist/get/userwishlist/' + this.state.user_ID)
+  //     .then((response) => {
+        
+  //       response.data.map((a, i) => {
+  //         console.log('data1 In Wishlist====>', a.product_ID);
+  //         axios.get('/api/products/get/one/' + a.product_ID)
+  //           .then((res) => {
+  //             console.log('data1 In Wishlist====>', res.data);
+  //             var products = this.state.products;
+  //             products.push({
+  //               "productName": res.data.productName,
+  //               "originalPrice": res.data.originalPrice,
+  //               "availableQuantity": res.data.availableQuantity,
+  //               "bestSeller": res.data.bestSeller,
+  //               "brand": res.data.brand,
+  //               "category": res.data.category,
+  //               "currency": res.data.currency,
+  //               "discountPercent": res.data.discountPercent,
+  //               "discountedPrice": res.data.discountedPrice,
+  //               "productCode": res.data.productCode,
+  //               "productImage": res.data.productImage,
+  //               "product_ID": res.data._id,
+  //               "wishlist_ID": a._id
+  //             });
+  //             this.setState({
+  //               products: products
+  //             })
+  //           })
+  //           .catch((error) => {
+  //             console.log('error', error);
+  //           })
+  //       })
+  //     })
+  //     .catch((error) => {
+  //       console.log('error', error);
+  //     })
+
+  // }
   toggle() {
     let isOpen = !this.state.isOpen;
     this.setState({

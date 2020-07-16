@@ -17,6 +17,9 @@ import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
 import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
 import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
 import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
+// import pincodeModalImg from '../../../sites/currentSite/images/loginBackground.png';
+// import pincodeModalImg from '../../../sites/currentSite/images/loginBg.png';
+
 import AskPincode from '../../blocks/AskPincode/AskPincode.js';
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 import '../../../sites/currentSite/common/Header.css';
@@ -407,65 +410,63 @@ loginPage(event){
     $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");
     return (
-      <div className="homecontentwrapper">
-        <header className="col-lg-12 headerflow">            
+      <div className="headerWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow">            
           <div className="row">
           <Message messageData={this.state.messageData} />
           <AskPincode />
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip">
             {/* {localStorage.getItem('pincode') ?
-              <div className="col-lg-12 pull-right">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
                 {localStorage.getItem('status') === 'NotAllow'?                
-                  <div className = "col-lg-3  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
+                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
                 :
-                  <div className = "col-lg-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
+                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
                 }
               </div>
             :null
             }           */}
           </div>
 
-            <div className="col-lg-12 firstDiv">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 firstDiv">
               <div className="row">           
-                <div className="col-lg-2 col-md-1 col-sm-2 header-top">
+                <div className="col-lg-2 col-md-2 col-sm-3 col-xs-6 header-top">
                     <div className="contaner">
-                        <div className="box col-lg-12 col-md-12 col-sm-12">
-                            <p className="icon-menu-mobile"><i className="fa fa-bars"></i></p>
-                            <div className="logo col-lg-12 col-md-12 col-sm-12">
-                                <a href="/" title="Unimandai logo">
-                                    <img src={logoUnimandai} alt="images" className="col-lg-12"/>
+                        <div className="box col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ">
+                            {/* <div className="icon-menu-mobile col-xs-1"><i className="fa fa-bars col-xs-12 NoPadding"></i></div> */}
+                            <div className="logo col-lg-12 col-md-12 col-sm-12 col-xs-11">
+                                <a href="/" title="Unimandai logo col-lg-12 col-xs-12 NoPadding">
+                                    <img src={logoUnimandai} alt="images" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "/>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <nav>
-                    <div className="col-lg-6 col-md-6 col-sm-8 megamenuWrapper">
-                        <Megamenu />
-                    </div>
-                </nav>
                 
-                <div className="col-lg-3 col-md-3 NOpadding searchBoxWrapper">
-                              <div className="col-lg-12 col-md-12 searchBox">
-                                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
-						                      <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
-                              </div> 
+                <div className="col-lg-6 col-md-6 col-sm-9 col-xs-6 megamenuWrapper">
+                  <nav>
+                      <Megamenu />
+                  </nav>
+                </div>
+                
+                
+                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-xs NOpadding searchBoxWrapper">
+                    <div className="col-lg-12 col-md-12 searchBox">
+                        <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
+                        <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
+                    </div> 
                 </div>
 
                           
-                <div className="col-lg-1 col-md-1 col-sm-2 box-right">
-                {/* <div className="col-lg-12">
-                  <div className = "col-lg-12 showPincode">{localStorage.getItem('pincode')} </div>
-                </div> */}
-                  <div>
-                      <div className="col-lg-4 col-md-4 col-sm-4">                          
+                <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">                          
                           <span className="  "><a href="" className="faIcon " data-toggle="modal" data-target="#pincodeModal" area-hidden ="true">
                             <img src={modalImg} className="icon-cart"></img>
-                          </a></span>
-                          
+                          </a></span>                          
                       </div>
-                      <div className="col-lg-4 col-md-4 col-sm-4">
+                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                           {user_ID 
                             ? 
                                 <li className="dropdown">
@@ -509,7 +510,7 @@ loginPage(event){
                     
                       <div id="loginFormModal" className="modal in">
                           <div className="modal-dialog">                                        
-                              <div className="modal-content loginModalContent" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
+                              <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
                                   <div className="modal-body">   
                                   <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
                                       {this.props.formToShow === "login" ?
@@ -535,7 +536,7 @@ loginPage(event){
                           </div>
                         </div> 
                     
-                    <div className="col-lg-4 col-md-4 col-sm-5 dropdown faIcon cart hover-menu ">
+                    <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu ">
                       <span>  
                       {user_ID ?                      
                         <a href={user_ID ? "/cart" : null} className="icon-cart">
@@ -632,7 +633,7 @@ loginPage(event){
                           null
                         }
                     </div> 
-                    </div>                   
+                  </div>                   
                 </div>
               </div>
             </div>          

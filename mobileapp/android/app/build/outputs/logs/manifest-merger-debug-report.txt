@@ -8,6 +8,9 @@ MERGED from /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app
 MERGED from [:react-native-config] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-config/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:@react-native-community_async-storage] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/@react-native-community/async-storage/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-vector-icons] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:appcenter] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:appcenter-analytics] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter-analytics/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:appcenter-crashes] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter-crashes/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-17:12
 MERGED from [:react-native-geolocation-service] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-geolocation-service/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-gesture-handler] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
@@ -50,6 +53,10 @@ MERGED from [androidx.savedstate:savedstate:1.0.0-rc01] /Users/omkar/.gradle/cac
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8e67ccf156687763f7b4db136a897ebe/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b622965615e45d01be8240fd6d07d3df/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/34b4dc0ecd02fb103bc5f98a7278d4b1/AndroidManifest.xml:17:1-22:12
+MERGED from [com.microsoft.appcenter.reactnative:appcenter-react-native:3.1.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/ce701f54ce170b7b47217c9dbafc72eb/AndroidManifest.xml:2:1-11:12
+MERGED from [com.microsoft.appcenter:appcenter-analytics:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/ccccba8e08e24efbbc56fc20570319eb/AndroidManifest.xml:6:1-15:12
+MERGED from [com.microsoft.appcenter:appcenter-crashes:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6ef2c4b1092e85eee867e51b265690a/AndroidManifest.xml:6:1-15:12
+MERGED from [com.microsoft.appcenter:appcenter:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/58063f7f8a5ace387ff1556c5723ec58/AndroidManifest.xml:6:1-18:12
 MERGED from [com.facebook.fresco:fbcore:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8ccd16b5822dfd9bece322cee8937083/AndroidManifest.xml:2:1-9:12
 INJECTED from /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/src/debug/AndroidManifest.xml:2:1-8:12
 INJECTED from /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/src/debug/AndroidManifest.xml:2:1-8:12
@@ -75,6 +82,8 @@ uses-permission#android.permission.INTERNET
 ADDED from /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/src/main/AndroidManifest.xml:4:1-63
 MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-67
 MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-67
+MERGED from [com.microsoft.appcenter:appcenter:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/58063f7f8a5ace387ff1556c5723ec58/AndroidManifest.xml:15:5-67
+MERGED from [com.microsoft.appcenter:appcenter:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/58063f7f8a5ace387ff1556c5723ec58/AndroidManifest.xml:15:5-67
 	android:name
 		ADDED from /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/src/main/AndroidManifest.xml:4:18-60
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
@@ -173,6 +182,12 @@ MERGED from [:@react-native-community_async-storage] /Users/omkar/Documents/Reac
 MERGED from [:@react-native-community_async-storage] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/@react-native-community/async-storage/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-vector-icons] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-vector-icons] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-vector-icons/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:appcenter] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:appcenter] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:appcenter-analytics] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter-analytics/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:appcenter-analytics] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter-analytics/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:appcenter-crashes] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter-crashes/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:appcenter-crashes] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/appcenter-crashes/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-code-push] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-code-push/android/app/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-geolocation-service] /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/node_modules/react-native-geolocation-service/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
@@ -257,6 +272,14 @@ MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/omkar/.gra
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/b622965615e45d01be8240fd6d07d3df/AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/34b4dc0ecd02fb103bc5f98a7278d4b1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/34b4dc0ecd02fb103bc5f98a7278d4b1/AndroidManifest.xml:20:5-44
+MERGED from [com.microsoft.appcenter.reactnative:appcenter-react-native:3.1.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/ce701f54ce170b7b47217c9dbafc72eb/AndroidManifest.xml:7:5-9:41
+MERGED from [com.microsoft.appcenter.reactnative:appcenter-react-native:3.1.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/ce701f54ce170b7b47217c9dbafc72eb/AndroidManifest.xml:7:5-9:41
+MERGED from [com.microsoft.appcenter:appcenter-analytics:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/ccccba8e08e24efbbc56fc20570319eb/AndroidManifest.xml:11:5-13:41
+MERGED from [com.microsoft.appcenter:appcenter-analytics:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/ccccba8e08e24efbbc56fc20570319eb/AndroidManifest.xml:11:5-13:41
+MERGED from [com.microsoft.appcenter:appcenter-crashes:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6ef2c4b1092e85eee867e51b265690a/AndroidManifest.xml:11:5-13:41
+MERGED from [com.microsoft.appcenter:appcenter-crashes:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/f6ef2c4b1092e85eee867e51b265690a/AndroidManifest.xml:11:5-13:41
+MERGED from [com.microsoft.appcenter:appcenter:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/58063f7f8a5ace387ff1556c5723ec58/AndroidManifest.xml:11:5-13:41
+MERGED from [com.microsoft.appcenter:appcenter:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/58063f7f8a5ace387ff1556c5723ec58/AndroidManifest.xml:11:5-13:41
 MERGED from [com.facebook.fresco:fbcore:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8ccd16b5822dfd9bece322cee8937083/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:fbcore:2.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/8ccd16b5822dfd9bece322cee8937083/AndroidManifest.xml:5:5-7:41
 INJECTED from /Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/src/debug/AndroidManifest.xml
@@ -285,3 +308,7 @@ ADDED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.
 		ADDED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:25:13-66
 	android:name
 		ADDED from [com.google.android.gms:play-services-basement:17.0.0] /Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/AndroidManifest.xml:24:13-58
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.microsoft.appcenter:appcenter:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/58063f7f8a5ace387ff1556c5723ec58/AndroidManifest.xml:16:5-79
+	android:name
+		ADDED from [com.microsoft.appcenter:appcenter:3.2.2] /Users/omkar/.gradle/caches/transforms-2/files-2.1/58063f7f8a5ace387ff1556c5723ec58/AndroidManifest.xml:16:22-76

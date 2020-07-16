@@ -416,17 +416,16 @@ class SearchProductCollage extends Component {
                   // var tooltipMsg = 'Add to wishlist';
                 }
                 return (
-                  <div className="item col-lg-3 col-md-3 col-sm-3 col-xs-3" key={index}>
+                  <div className="item col-lg-3 col-md-3 col-sm-6 col-xs-12 NoPadding" key={index}>
                     {/* <a href={"/productdetails/" + data.productUrl + "/" + data._id}> */}
-                      <div className="">
-                        <div className="card">
-                          <div className="item-top">
-                            <div className="productImg">
+                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                          <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                            <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                               <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
                               {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
                               {/* <a href="/" className="product photo product-item-photo collage" tabIndex="-1"> */}
                               <a href={"/productdetails/" + data.productUrl + "/" + data._id} className="product photo product-item-photo collage" tabIndex="-1">
-
                                 <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImage" />
                               </a>
                             </div>
@@ -491,7 +490,7 @@ class SearchProductCollage extends Component {
                                                                                 
                                       </div>
                                       :
-                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
+                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                   }
                                 </div>
 

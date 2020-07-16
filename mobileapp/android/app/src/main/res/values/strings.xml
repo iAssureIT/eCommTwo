@@ -1,8 +1,9 @@
  <resources>
-     <!-- <string name="app_name">GangaExpress</string> -->
-     <string name="app_name">UniMandai</string>
-     <string moduleConfig="true" name="CodePushDeploymentKey">bImzMO2uEF8L9Ezs7BSY2ngD1opDomXYUfhx3</string>
+    <!-- <string name="app_name">GangaExpress</string> -->
+    <string name="app_name">UniMandai</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">1gS5qKRTnZ510VgAl7TG6M26YGVw4mGQMNLE6</string>
            
-      <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
 	<string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
  </resources>
+ 

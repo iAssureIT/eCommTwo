@@ -38,20 +38,20 @@ class EntityDetails extends Component {
   getEntitiesInfo(id){
   	axios.get("/api/entitymaster/get/one/"+id)
       .then((response)=>{
-      	console.log("entityInfo===>>>",response.data.companyName);
-      	console.log("entityInfo===>>>",response.data.companyID);
-      	console.log("entityInfo===>>>",response.data.companyEmail);
-      	console.log("entityInfo===>>>",response.data.entityType);
-      	console.log("entityInfo===>>>",response.data.groupName);
-      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
-      	console.log("response.data[0].locations,===>>>",response.data.locations,);
+      	// console.log("entityInfo===>>>",response.data.companyName);
+      	// console.log("entityInfo===>>>",response.data.companyID);
+      	// console.log("entityInfo===>>>",response.data.companyEmail);
+      	// console.log("entityInfo===>>>",response.data.entityType);
+      	// console.log("entityInfo===>>>",response.data.groupName);
+      	// console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
+      	// console.log("response.data[0].locations,===>>>",response.data.locations,);
         this.setState({
             entityInfo 	: response.data,
             contacts 		: response.data.contactPersons,
             locations 	: response.data.locations.reverse(),
             entityType 	: response.data.entityType
         },()=>{
-					console.log("entityInfo===>>>",this.state.entityInfo);
+					// console.log("entityInfo===>>>",this.state.entityInfo);
 				});
       })
       .catch((error)=>{
@@ -121,7 +121,7 @@ class EntityDetails extends Component {
   	$('#deleteEntityModal').hide(); 
   }
 	render() {
-		console.log("this.state.entityInfo==>",this.state.entityInfo)
+		// console.log("this.state.entityInfo==>",this.state.entityInfo)
     return (	
       this.state.entityInfo ? 
 		    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">

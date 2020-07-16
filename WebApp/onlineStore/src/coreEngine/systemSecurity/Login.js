@@ -14,6 +14,8 @@ import { bindActionCreators }     from 'redux';
 import {getForm,updateForm} from '../actions/index';
 
 import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
+// import signInBackgroundImg from '../../sites/currentSite/images/loginBackground.png';
+
 import SignUp from './SignUp.js';
 
 class Login extends Component {

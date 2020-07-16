@@ -54,6 +54,7 @@ import TermsAndCondition                         from '../pages/TermsAndConditio
 import LegalNotice                               from '../pages/LeagalNotice/LeagalNotice.js';
 import SiteMap                                   from '../pages/SiteMap/SiteMap.js';
 
+import MasterPage                from '../MasterPage/MasterPage.js';
 
 /*unimandai static blocks*/
 
@@ -104,6 +105,9 @@ class Routes extends Component{
                 <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
                 <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />
                 
+                <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> 
+                
+                
                 <Route path="/profile"              exact strict component={ Edituser } />
                 <Route path="/payment/:order_ID"            exact strict component={ Payment } />
                 <Route path="/wishlist"            exact strict component={ Wishlist } />
@@ -127,7 +131,9 @@ class Routes extends Component{
               <Router>
                 <UnimandaiHeader />
                 <Switch>
-                  <Route path="/" component={ WebLayout } />
+                    <Route path="/" component={ WebLayout } />
+                    {/*<Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> */}
+
                 </Switch>
                 <Footer_Unimandai />
               </Router>

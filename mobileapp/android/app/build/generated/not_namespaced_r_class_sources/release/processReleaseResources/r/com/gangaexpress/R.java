@@ -2835,19 +2835,23 @@ public final class R {
     public static final int redbox_top_border_background=0x7f06008e;
     public static final int src_appdesigns_currentapp_images_15=0x7f06008f;
     public static final int src_appdesigns_currentapp_images_background=0x7f060090;
-    public static final int src_appdesigns_currentapp_images_img11=0x7f060091;
-    public static final int src_appdesigns_currentapp_images_img22=0x7f060092;
-    public static final int src_appdesigns_currentapp_images_img33=0x7f060093;
-    public static final int src_appdesigns_currentapp_images_loader=0x7f060094;
-    public static final int src_appdesigns_currentapp_images_logo=0x7f060095;
-    public static final int src_appdesigns_currentapp_images_noproduct=0x7f060096;
-    public static final int src_appdesigns_currentapp_images_paymentmethod=0x7f060097;
-    public static final int src_appdesigns_currentapp_images_saleimage=0x7f060098;
-    public static final int src_appdesigns_currentapp_images_user=0x7f060099;
-    public static final int src_appdesigns_currentapp_images_white_logo=0x7f06009a;
-    public static final int src_appdesigns_currentapp_images_white_name=0x7f06009b;
-    public static final int tooltip_frame_dark=0x7f06009c;
-    public static final int tooltip_frame_light=0x7f06009d;
+    public static final int src_appdesigns_currentapp_images_bellpaper=0x7f060091;
+    public static final int src_appdesigns_currentapp_images_carrot=0x7f060092;
+    public static final int src_appdesigns_currentapp_images_img11=0x7f060093;
+    public static final int src_appdesigns_currentapp_images_img22=0x7f060094;
+    public static final int src_appdesigns_currentapp_images_img33=0x7f060095;
+    public static final int src_appdesigns_currentapp_images_logo=0x7f060096;
+    public static final int src_appdesigns_currentapp_images_mangooo=0x7f060097;
+    public static final int src_appdesigns_currentapp_images_noproduct=0x7f060098;
+    public static final int src_appdesigns_currentapp_images_notavailable=0x7f060099;
+    public static final int src_appdesigns_currentapp_images_paymentmethod=0x7f06009a;
+    public static final int src_appdesigns_currentapp_images_saleimage=0x7f06009b;
+    public static final int src_appdesigns_currentapp_images_tomato=0x7f06009c;
+    public static final int src_appdesigns_currentapp_images_user=0x7f06009d;
+    public static final int src_appdesigns_currentapp_images_white_logo=0x7f06009e;
+    public static final int src_appdesigns_currentapp_images_white_name=0x7f06009f;
+    public static final int tooltip_frame_dark=0x7f0600a0;
+    public static final int tooltip_frame_light=0x7f0600a1;
   }
   public static final class id {
     public static final int ALT=0x7f070000;

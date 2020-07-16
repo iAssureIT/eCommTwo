@@ -1674,6 +1674,39 @@ exports.get_reports_count = (req,res,next)=>{
         });
 };
 
+exports.get_reports_franchise = (req,res,next)=>{
+  console.log("req.body.franchiseID==>",req.body.franchiseID)
+    Orders.find({
+      allocatedToFranchise : ObjectId(req.params.franchiseID),
+      createdAt: {
+        $gte:  moment(req.body.startDate).startOf('day').toDate(),
+        $lte:  moment(req.body.endDate).endOf('day').toDate()
+      }
+    }).sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+          
+          var allData = data.map((x, i)=>{
+            //console.log(x)
+            return {
+                "_id"                   : x._id,
+                "orderID"               : (x.orderID).toString(),
+                "cratedAt"              : moment(x.createdAt).format("DD/MM/YYYY hh:mm a"),
+                "userFullName"          : x.userFullName,
+                "totalAmount"           : (x.total).toString(),
+                "deliveryStatus"        : x.deliveryStatus[x.deliveryStatus.length-1].status
+            }
+          })
+          res.status(200).json(allData.slice(req.params.startRange, req.params.limitRange));
+          //  res.status(200).json(allData);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
 exports.get_reports = (req,res,next)=>{
     Orders.find({
       createdAt: {

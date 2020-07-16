@@ -47,6 +47,8 @@ router.post('/get/report-count',orderController.get_reports_count);
 
 router.post('/get/report/:startRange/:limitRange',orderController.get_reports);
 
+router.post('/get/report/:franchiseID/:startRange/:limitRange',orderController.get_reports_franchise);
+
 router.post('/get/category-wise-report-count',orderController.get_category_reports_count);
 
 router.post('/get/category-wise-report/:startRange/:limitRange',orderController.get_category_reports);

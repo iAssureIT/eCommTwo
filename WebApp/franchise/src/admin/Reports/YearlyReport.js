@@ -40,7 +40,7 @@ export default class YearlyReport extends Component{
     }
 
     componentDidMount(){
-        
+       
         this.setState({
             selectedYear : moment().format('Y'),
             startDate   : moment().startOf('year').format('YYYY-MM-DD'),
@@ -49,6 +49,7 @@ export default class YearlyReport extends Component{
             ()=>{
             this.getCount();
             this.getData(this.state.startRange, this.state.limitRange )    
+            
         }) 
         this.handleChange = this.handleChange.bind(this);
         
@@ -77,18 +78,30 @@ export default class YearlyReport extends Component{
             console.log('error', error);
         })
     }
-    getData(startRange,limitRange){
+    getData(startRange,limitRange,){
         var formvalues = {
           startDate : this.state.startDate,
           endDate   : this.state.endDate
         }
-        axios.post("/api/orders/get/report/"+startRange+'/'+limitRange, formvalues)
-        .then((response)=>{
-          this.setState({ 
-            tableData : response.data
-          },()=>{ 
-            //console.log("tableData",this.state.tableData);
-          })
+        // console.log("companyID response.data==>",companyID);
+        var userDetails = (localStorage.getItem('userDetails'));
+        var userData = JSON.parse(userDetails);
+        console.log("userData.companyID===>",userData.companyID)
+        axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+        .then((resdata)=>{
+            axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
+            .then((response)=>{
+            console.log("companyID response.data==>",response.data);
+
+            this.setState({ 
+                tableData : response.data
+            },()=>{ 
+                //console.log("tableData",this.state.tableData);
+            })
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            })
         })
         .catch((error)=>{
             console.log('error', error);

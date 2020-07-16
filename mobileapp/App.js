@@ -10,10 +10,11 @@ import Config                 from "react-native-config";
 
 const HomeStackContainer = createAppContainer(HomeStack);
 const AuthStackContainer = createAppContainer(AuthStack);
-console.log("Config.API_KEY==>" ,Config.API_URL);
+// console.log("Config.API_KEY==>" ,Config.API_URL);
+// axios.defaults.baseURL = 'http://localhost:3066/';
 axios.defaults.baseURL = 'http://qaunimandaiapi.iassureit.com/';
 // axios.defaults.baseURL    = Config.API_URL;
-console.log("axios.defaults.baseURL",axios.defaults.baseURL);
+console.log("axios.defaults.baseURL===>",axios.defaults.baseURL);
 class App extends Component {
   constructor(props) {
     super(props);

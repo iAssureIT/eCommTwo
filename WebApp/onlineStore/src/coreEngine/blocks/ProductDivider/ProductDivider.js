@@ -29,7 +29,7 @@ export default class ProductDivider extends Component {
 					Array.isArray(this.state.categoriesImg) && this.state.categoriesImg.map((data,index)=>{
 						if (index < 8 ) {
 						return(
-							<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6" key={index}>
+							<div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={index}>
 				                <a href={"/section/"+ data.section.replace(/\s+/g, '-').toLowerCase() +'/'+data.section_ID} >
 				                <div className="block">
 				                    <a className="image divimgprod" href={"/section/"+data.sectionUrl+'/'+data.section_ID} target="_blank" rel="noopener noreferrer"> 

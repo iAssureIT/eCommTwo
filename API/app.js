@@ -8,9 +8,11 @@
 	const fs 							= require('fs');
 
 // Routes - CMS
-const blockRoutes 					= require('./api/cms/routes/blocks.js');
-const pageRoutes 					= require('./api/cms/routes/pages.js');
-
+/*const blockRoutes 					= require('./api/cms/routes/blocks.js');
+const pageRoutes 					= require('./api/cms/routes/pages.js');*/
+const blockRoutes 					= require('./api/cms/blocks/routes.js');
+const pageRoutes 					= require('./api/cms/pages/routes.js');
+const blogRoutes 					= require('./api/cms/blogs/routes.js');
 
 // console.log("globalVariable.dbname",dbname);
 	mongoose.connect('mongodb://localhost/'+globalVariable.dbname,{
@@ -168,6 +170,7 @@ const pageRoutes 					= require('./api/cms/routes/pages.js');
 	//================ CMS ==================
 	app.use("/api/blocks",blockRoutes);
 	app.use("/api/pages",pageRoutes);
+	app.use('/api/blogs',blogRoutes);
 
 
 	app.post('/send-email', (req, res)=> {

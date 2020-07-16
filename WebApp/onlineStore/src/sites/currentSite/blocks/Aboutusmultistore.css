@@ -12,8 +12,8 @@
 .textparaabout{
 	line-height: 20px;
 	/*color: #999;*/
-	padding-left: 128px;
-	padding-right: 126px;
+	/* padding-left: 128px; */
+	/* padding-right: 126px; */
 	text-align: justify;
 	margin-bottom: 50px;
 }

@@ -337,8 +337,8 @@ class CartProducts extends Component{
                         this.props.recentCartData.length > 0 &&  this.props.recentCartData[0].cartItems.length > 0? 
                         <div className="col-lg-12 col-sm-12 col-xs-12 NOpadding">
                             
-                            <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 cartProduct">
-                                <table className="table table-responsive cartProductTable">
+                            <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 table-responsive cartProduct">
+                                <table className="table cartProductTable">
                                     <thead>
                                         <tr>
                                             <th>ITEMS</th>

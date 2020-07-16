@@ -1,3 +1,7 @@
+.headerWrapper{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
 .uniLogo{
     height: 90px;
     margin-top: -22px;
@@ -442,10 +446,11 @@ button.button_search {
 }
 /* login modal css  */
 .loginModalContent{
-    height: 600px;
+    min-height: 500px;
+    overflow: auto;
+    padding-bottom: 20px;
     background-size: 100% 100% !important;
     background-repeat: no-repeat !important;
-
 }
 .loginModalContent .close{
     font-size: 55px !important;
@@ -460,4 +465,23 @@ button.button_search {
     margin-right: 50px;
     color:  #fff;
     text-align: right;
+}
+
+@media only screen and (max-device-width: 480px) {   
+    .firstDiv{
+        min-height: auto;
+    }
+    .searchBoxWrapper{
+        margin-top:13px;
+    }
+    .icon-menu-mobile {
+        display: block;
+    }
+    .box-right{
+        margin-left: 20px;
+    }
+    .box-right .cart .cart-count{
+        bottom: 61%;
+        right: 2px;
+    }
 }

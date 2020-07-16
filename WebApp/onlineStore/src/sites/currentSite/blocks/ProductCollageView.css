@@ -1,8 +1,10 @@
 .card{
 	border: 1px solid #f1f2f2;
-	max-width: 270px;
-	margin: 5px;
-	/*height: 336px;*/
+	/* max-width: 270px; */
+	/* margin: 5px; */
+	margin-top: 5px;
+	margin-bottom: 5px;
+	height: 336px;
 }
 .productDetails{
 	padding-bottom: 15px;
@@ -11,7 +13,6 @@
 .item-top{
 	text-align: center;
 }
-
 .productImg{
 	overflow: hidden;
 	height: 185px;
@@ -351,7 +352,7 @@
 .productDetails .sizeCollage{
 	bottom:6px;
 	padding: 5px 10px;
-	max-width: 82.5%;
+	/* max-width: 82.5%; */
 	height: 130px;
     position: absolute;
 	z-index: 100;
@@ -394,4 +395,7 @@
 	color: #ea8800;
 	/* font-size: 13px; */
 	font-weight: 400 !important;
+}
+.ProSize{
+	text-transform: uppercase;
 }

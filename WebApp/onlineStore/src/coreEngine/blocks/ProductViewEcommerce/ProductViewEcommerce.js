@@ -468,13 +468,34 @@ class ProductViewEcommerce extends Component {
 				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50">
 					<div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 stickyDiv">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageContainer imgCont">
-							<div className="prod-detail-slider prod-detail-filpCommon">
-								<div id="react-app" className={"item img-responsiveProduct"}>
+							<div className="prod-detail-slider prod-detail-filpCommon ">
+								<div id="react-app" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs item img-responsiveProduct">
 									<ReactImageZoom {...props} />
 								</div>
 							</div>
 						</div>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageContainer mt50">
+						{/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  mt50 hidden-lg hidden-md hidden-sm">
+						{
+							this.state.productData && this.state.productData.productImage && this.state.productData.productImage.length > 0 ?
+								this.state.productData.productImage.map((data, index) => {
+									
+									// if (!_.isEmpty(data)) {
+									return (
+										<div key={index} className="item col-lg-12 col-md-12 col-sm-12 col-xs-12 "  >
+											<div className="row">
+												{
+													data && <img data-index={index} id="change-image" onClick={this.changeImage} src={data} className="img-responsive" alt="default" />
+												}
+											</div>
+										</div>
+									);
+									// }
+								})
+								:
+								null
+						}
+						</div> */}
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageContainer mt50 hidden-xs">
 							<div className="">
 								<OwlCarousel
 									className="owl-theme productview"
@@ -493,7 +514,7 @@ class ProductViewEcommerce extends Component {
 													<div key={index} className="item col-lg-12 col-md-12 col-sm-12 col-xs-12 miniImagesInNew"  >
 														<div className="row">
 															{
-																data && <img data-index={index} id="change-image" onClick={this.changeImage} src={data} alt="default" />
+																data && <img data-index={index} id="change-image" onClick={this.changeImage} src={data} className="img-responsive" alt="default" />
 															}
 														</div>
 													</div>
@@ -548,10 +569,10 @@ class ProductViewEcommerce extends Component {
 								</div>
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 adCart ">
 									<div className="row spc">
-										<form id="productView" className="col-lg-7 col-md-7 col-sm-7 col-xs-7 NOpadding">
+										<form id="productView" className="col-lg-7 col-md-7 col-sm-12 col-xs-12 NOpadding">
 										{
                                             this.state.productData.availableQuantity > 0 ?
-												<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 NOpadding">
+												<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 NOpadding">
 													<div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 qtyInput" id="totalQuanity">
 														1
 													</div>

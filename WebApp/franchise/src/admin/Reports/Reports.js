@@ -64,7 +64,7 @@ class Reports extends Component{
                 <div className="row">
                   <div className="box">
                     <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                      <h4 className="NOpadding-right">Reports</h4>
+                      <h4 className="NOpadding-right">Sales Reports</h4>
                     </div>
                   
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTop11">

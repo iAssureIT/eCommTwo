@@ -9,6 +9,7 @@ import {
 import { Header, Icon, SearchBar } from 'react-native-elements';
 import ValidationComponent from "react-native-form-validator";
 // import styles from "./styles.js";
+import axios              from 'axios'; 
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/HeaderBar2Styles.js';
 import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Search from 'react-native-search-box';
@@ -36,6 +37,21 @@ export default class HeaderBars2 extends ValidationComponent {
         count: parseInt(nextProps.count)
       })
     }
+  }
+  componentDidMount(){
+    axios.get("/api/sections/get/get_megamenu_list")
+    .then((response)=>{
+     if(response.data){
+      // console.log("section data===",response.data.categoryData); 
+      this.setState({ 
+          categoryData : response.data
+      })
+      // console.log("megamenu section Data: ",this.state.categoryData);
+    }
+    })
+    .catch((error)=>{
+        console.log('error', error);
+    })
   }
   updateSearch = searchText => {
     this.setState({ searchText });
@@ -108,9 +124,33 @@ export default class HeaderBars2 extends ValidationComponent {
           />
         </View>
 
-        <View style={{ paddingHorizontal: 15, marginBottom: 30, }}>
+
+
+
+
+
+
+
+
+        {
+            this.state.categoryData && this.state.categoryData.map((data,index)=>{
+              console.log("categoryData data===>",data.section);
+                return(
+                  // <View style={{ paddingHorizontal: 5, marginBottom: 30, }}>
+                      <View style={{ flexDirection: 'row', flex: 1 }}>
+                        <View style={styles.iconOuterWrapper}>
+                          <TouchableOpacity onPress={() => this.HomeNavigate()} >
+                            <Text style={styles.footerTitle}>{data.section}</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                  // </View>
+                );
+            })
+        }
+        {/* <View style={{ paddingHorizontal: 15, marginBottom: 30, }}>
           <View style={{ flexDirection: 'row', flex: 1 }}>
-            <View style={styles.iconOuterWrapper}>
+            <View style={styles.iconOut erWrapper}>
               <TouchableOpacity onPress={() => this.HomeNavigate()} >
                 <Text style={styles.footerTitle}>Fruits</Text>
               </TouchableOpacity>
@@ -135,7 +175,7 @@ export default class HeaderBars2 extends ValidationComponent {
             </View>
 
           </View>
-        </View>
+        </View> */}
 
       </View>
     );

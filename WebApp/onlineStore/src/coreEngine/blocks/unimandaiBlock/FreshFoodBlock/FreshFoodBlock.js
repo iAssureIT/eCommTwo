@@ -17,7 +17,7 @@ class FreshFoodBlock extends Component{
     }
     render(){
         return(
-            <div className="container container-ver2 freshFood">
+            <div className="container freshFood">
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <img className="img-responsive hidden-table freshfoodImg" src={freshFoodImg1} alt="banner"/>            
@@ -35,34 +35,34 @@ class FreshFoodBlock extends Component{
                         <div className="align-center border-choose" style={{background: "url("+bgBorderChoose +")"}}>
 
                             <div className="images ">
-                                <img src={bgBorderCenter} alt="icon" />
+                                <img src={bgBorderCenter} className= "img-responsive col-lg-12 col-md-12 col-sm-12 col-xs-12" alt="icon" />
                             </div>
                         </div>
 
                         <div className="shippingBlock">
                             
-                            <div className="col-md-3 col-sm-3 col-xs-6">
+                            <div className="col-lg-3 col-md-3 col-sm-5 hidden-sm col-xs-6 hidden-xs">
                                 {/* <div className="border">
                                     <img src={icon_shipping_2} alt="images"/>
                                     <h3>Support</h3>
                                     <p>LIFE TIME SUPPORT 24/7</p>
                                 </div> */}
                             </div>
-                            <div className="col-md-3 col-sm-3 col-xs-6">
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                 <div className="border">
                                     <img src={icon_shipping_1} alt="images"/>
                                     <h3>Free Shipping</h3>
                                     <p>ON ORDER OVER <span>&#x20B9;</span> 200</p>
                                 </div>
                             </div>
-                            <div className="col-md-3 col-sm-3 col-xs-6">
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                                 <div className="border">
                                     <img src={icon_shipping_4} alt="images"/>
                                     <h3>Contact With Us</h3>
                                     <p>8686 34 2020 / 8686 64 2020</p>
                                 </div>
                             </div>
-                            <div className="col-md-3 col-sm-3 col-xs-6">
+                            <div className="col-lg-3 col-md-3 col-sm-3 hidden-sm col-xs-6 hidden-xs">
                                 {/* <div className="border">
                                     <img src={icon_shipping_3} alt="images"/>
                                     <h3>Help Partner</h3>

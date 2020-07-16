@@ -36,6 +36,10 @@ export default class AllOrders extends Component{
                   var totalQuantity = response.data[i].cartQuantity;
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
+                  var productarr = [];
+                  for(let j in response.data[i].products){
+                      productarr.push(response.data[i].products[j].productName +' '+response.data[i].products[j].quantity )
+                  }
                   var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
                   var status = response.data[i].status;
                   var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
@@ -46,7 +50,8 @@ export default class AllOrders extends Component{
                   UserArray.push(orderID);
                   UserArray.push(allocatedToFranchise);
                   UserArray.push(userFullName);
-                  UserArray.push(totalQuantity);
+                  // UserArray.push(totalQuantity);
+                  UserArray.push(productarr.toString());
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
                   UserArray.push(createdAt);
                   UserArray.push({status : status, deliveryStatus : deliveryStatus});

@@ -6,21 +6,25 @@ import { withRouter }             from 'react-router-dom';
 import Message                    from '../../blocks/Message/Message.js'; 
 import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
-import {getCartData, searchProductAction} from '../../actions/index';
+import {getCartData, searchProductAction,getForm} from '../../actions/index';
 import $                          from "jquery";
-import cartImg                    from "../../../sites/currentSite/images/icon-cart.png";
-import searchModalImg             from "../../../sites/currentSite/images/icon-search.png";
+import Login          from '../../systemSecurity/Login.js';
+import SignUp         from '../../systemSecurity/SignUp.js';
+import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
+import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
+import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
+import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
+import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
+import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
+import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
+// import pincodeModalImg from '../../../sites/currentSite/images/loginBackground.png';
+// import pincodeModalImg from '../../../sites/currentSite/images/loginBg.png';
 
-import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
-import iconUserHeader from "../../../sites/currentSite/images/icon-user-header.png";
-import logoUnimandai from "../../../sites/currentSite/images/logoUnimandai.png";
-// import iconPhoneHeader from "../../../sites/currentSite/images/icon-phone-header.png";
-
+import AskPincode from '../../blocks/AskPincode/AskPincode.js';
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
-
-// import './Header.css';
+import '../../../sites/currentSite/common/Header.css';
 // import jQuery from "jquery";
-
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
 
 class unimandaiHeader extends Component {
@@ -39,7 +43,10 @@ class unimandaiHeader extends Component {
       localCategories: [],
       userData       : {},
       firstname      : '',
-      lastname       : ''
+      "startRange": 0,
+      "limitRange": 10,
+      lastname       : '',
+      formToShow     : "login",
     }  
     
     if (window.location.pathname !== "/searchProducts") {
@@ -47,9 +54,10 @@ class unimandaiHeader extends Component {
       localStorage.removeItem("searchstr");
     }
 }
+
 componentWillMount() {
-      $(document).ready(function(e){
       
+      $(document).ready(function(e){      
       $('.search-panel li a').on('click', function(e){
         var sp = $(this).closest('.search-panel');
         var to = $(this).html();
@@ -58,11 +66,22 @@ componentWillMount() {
         sp.find('button span.search_by').html(text);
       });
     });
-
 }
-
+getshippingamount(startRange, limitRange){
+  axios.get('/api/shipping/get/list-with-limits/' + startRange + '/' + limitRange)
+  .then((response) => {
+    console.log('shippingamount = ', response.data[0].shippingcosting);
+    this.setState({
+      minvalueshipping: response.data[0].shippingcosting,
+    })
+  })
+  .catch((error) => {
+    console.log('error', error);
+  });
+}
    async componentDidMount(){
      //if websiteModel is Franchise Model then save that franchise model in localStorage
+     this.getshippingamount(this.state.startRange, this.state.limitRange);
     if(localStorage.getItem('websiteModel')=== null){
       axios.get("/api/adminPreference/get")
       .then(preference =>{
@@ -126,7 +145,6 @@ componentWillMount() {
 
   }
 
-
   componentWillReceiveProps(nextProps) {
     // var categoryArray = [];
     // var categoryDetails = [];
@@ -155,6 +173,7 @@ componentWillMount() {
 
   }
 
+  
   unique(arr, prop) {
     return arr.map(function (e) { return e[prop]; }).filter(function (e, i, a) {
       return i === a.indexOf(e);
@@ -321,8 +340,8 @@ componentWillMount() {
           messageData: {
             "type": "outpage",
             "icon": "fa fa-check-circle",
-            "message": "&nbsp; " + response.data.message,
-            "className": "success",
+            "message" : response.data.message,
+            "class": "danger",
             "autoDismiss": true
           }
         })
@@ -331,14 +350,9 @@ componentWillMount() {
             messageData: {},
           })
         }, 3000);
-
-        // this.getCartData();
         this.getCompanyDetails();
-
       })
-      .catch((error) => {
-        // console.log('error', error);
-      })
+      .catch((error) => {})
   }
 
 loginPage(event){
@@ -393,30 +407,72 @@ loginPage(event){
       })
   }
   render() {
+    $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");
     return (
-      <div className="homecontentwrapper">
-        <Message messageData={this.state.messageData} />
-        <header className="col-lg-12 headerflow">            
+      <div className="headerWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow">            
           <div className="row">
-            <div id="topbar" className="topheadbar">
-                <div className="container headerContainer">
-                    <div className="inner-topbar box">
-                        <div className="float-left">
-                            <p><img src={iconPhoneHeader} alt="icon"/>&nbsp; Call us&nbsp; <span> 070-7782-9137</span></p>
+          <Message messageData={this.state.messageData} />
+          <AskPincode />
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip">
+            {/* {localStorage.getItem('pincode') ?
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
+                {localStorage.getItem('status') === 'NotAllow'?                
+                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
+                :
+                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
+                }
+              </div>
+            :null
+            }           */}
+          </div>
+
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 firstDiv">
+              <div className="row">           
+                <div className="col-lg-2 col-md-2 col-sm-3 col-xs-6 header-top">
+                    <div className="contaner">
+                        <div className="box col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ">
+                            <div className="icon-menu-mobile col-xs-1"><i className="fa fa-bars col-xs-12 NoPadding"></i></div>
+                            <div className="logo col-lg-12 col-md-12 col-sm-12 col-xs-11">
+                                <a href="/" title="Unimandai logo col-lg-12 col-xs-12 NoPadding">
+                                    <img src={logoUnimandai} alt="images" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "/>
+                                </a>
+                            </div>
                         </div>
-                         <div className="col-lg-8 col-md-8 NOpadding">
-                              <div className="col-lg-12 col-md-12 searchBox">
-                                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
-						                      <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
-                              </div> 
-                          </div>
-                        <div className="col-lg-2 float-right">
-                            <div className="hover-menu">
-                            {user_ID 
-                            ?    
+                    </div>
+                </div>
+
+                
+                <div className="col-lg-6 col-md-6 col-sm-9 col-xs-6 megamenuWrapper">
+                  <nav>
+                      <Megamenu />
+                  </nav>
+                </div>
+                
+                
+                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-xs NOpadding searchBoxWrapper">
+                    <div className="col-lg-12 col-md-12 searchBox">
+                        <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
+                        <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
+                    </div> 
+                </div>
+
+                          
+                <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
+                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">                          
+                          <span className="  "><a href="" className="faIcon " data-toggle="modal" data-target="#pincodeModal" area-hidden ="true">
+                            <img src={modalImg} className="icon-cart"></img>
+                          </a></span>                          
+                      </div>
+                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                          {user_ID 
+                            ? 
                                 <li className="dropdown">
-                                    <a className="acc" href="/account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>
+                                    <span className="  "><a href="" className="faIcon" area-hidden ="true">                         
+                                    <img src={loginActiveIconImg} className="icon-cart"></img>
+                                </a></span>
                                     <ul className="col-lg-3 dropdown-menu list-menu">                                        
                                         <li className="col-lg-12 NOpadding">
                                             <a href="/">
@@ -446,82 +502,60 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
-                              <li className="dropdown">
-                                  <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a></span>
-                                  {/* <span className="  "><a href="/login" className="loginButton" area-hidden ="true">Login </a>| &nbsp;<a href="/signup" className="loginButton" area-hidden ="true">Signup </a></span> */}
-                              </li>
-                            // <li className="dropdown">
-                            //     <a className="acc" href="login" title="My Account" area-hidden ="true"><img src={iconUserHeader} alt="icon"/>&nbsp;MY ACCOUNT</a>                           
-                            //     <ul className="dropdown-menu logout-list-menu">
-                            //       <li className="col-lg-12 col-md-12 col-sm-12">
-                            //         <div className="welcomeTxt">Welcome</div>
-                            //         <p>To access account and manage orders</p>
-                            //         <div className="borderTop"></div>
-                            //         <span className=" pull-left signInOutBtn"><a href="/login"><b> SIGN IN</b> </a></span>
-                            //         <span className=" pull-right signInOutBtn"><a href="/signup"><b>SIGN UP</b></a></span>
-                            //       </li>
-                            //     </ul>
-                            // </li>
-
-
-                            }
-                            </div>
-                        </div>
-                    </div>
-                </div>                
-            </div> 
-
-            <div className="col-lg-12 firstDiv">
-              <div className="row">              
-                
-                <div className="col-lg-2 col-md-2 col-sm-2 header-top">
-                    <div className="contaner">
-                        <div className="box col-lg-12 col-md-12 col-sm-12">
-                            <p className="icon-menu-mobile"><i className="fa fa-bars"></i></p>
-                            <div className="logo col-lg-12 col-md-12 col-sm-12">
-                                <a href="/" title="Unimandai logo">
-                                    <img src={logoUnimandai} alt="images" className="col-lg-12"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <nav>
-                    <div className="col-lg-8 col-md-8 col-sm-8 megamenuWrapper">
-                        <Megamenu />
-                    </div>
-                </nav>
-
-
-                          
-                <div className="col-lg-1 col-md-1 col-sm-2 box-right">
-                    {/* <div className="col-lg-5 col-md-5 col-sm-5 search" id="searchModal" data-toggle="modal" data-target=".searchModal">
-                      <img src={searchModalImg} className="search"></img>                      
-                    </div> */}
-
-                   {/* Search modal */}
-                    {/* <div className="modal bs-example-modal-lg in searchModal" aria-hidden="false">
-                        <div className="modal-dialog modal-lg">
-                            <div className="modal-content popup-search">
-                                <button type="button" className="close" data-dismiss="modal"><i className="fa fa-times" aria-hidden="true"></i></button>
-                                <div className="modal-body search-modal-body">
-                                    <div className="input-group">
-                                        <input type="text" className="form-control control-search" placeholder="Search and hit enter..."/>
-                                        <button className="button_search" type="button">Search</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-
-                    <div className="col-lg-5 col-md-5 col-sm-5 dropdown cart hover-menu ">                        
-                        <a href={user_ID ? "/cart" : "/login"} className="icon-cart">
-                            <img src={cartImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>                            
+                            <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" area-hidden ="true">                            
+                              <img src={loginIconImg} className="icon-cart"></img></a>
+                            </span>
+                          }
+                      </div>
+                    
+                      <div id="loginFormModal" className="modal in">
+                          <div className="modal-dialog">                                        
+                              <div className="modal-content loginModalContent" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
+                                  <div className="modal-body">   
+                                  <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                                      {this.props.formToShow === "login" ?
+                                          <div className="col-lg-12 col-md-12 loginForm">
+                                              <Login />
+                                          </div>  
+                                      : null
+                                      }  
+                                      {this.props.formToShow === "signUp" ?
+                                          <div className="col-lg-12 col-md-12 signupForm">
+                                              <SignUp />
+                                          </div>  
+                                      : null
+                                      } 
+                                      {this.props.formToShow === "forgotPassword" ?
+                                          <div className="col-lg-12 col-md-12 loginForm">
+                                              <ForgotPassword />
+                                          </div>  
+                                      : null
+                                      }                                                                
+                                  </div>
+                              </div>
+                          </div>
+                        </div> 
+                    
+                    <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu ">
+                      <span>  
+                      {user_ID ?                      
+                        <a href={user_ID ? "/cart" : null} className="icon-cart">
+                            <img src={cartIconImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>
+                            {/* <i class="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                             </span>
                         </a>
+                        :
+                        <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal">
+                            <img src={cartIconImg} className="icon-cart"></img>
+                            {/* <i class="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
+                            <span className="cart-count">
+                                {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
+                            </span>
+                        </a>
+                      }
+                      </span>
                         {user_ID ?
                           <ul className="dropdown-menu cart-dropdown-menu" role="menu" aria-labelledby="menu1">
                             <div className="checkoutBtn">
@@ -540,24 +574,25 @@ loginPage(event){
                                     <li className="col-lg-12 cartdropheight " key={index}>
 
                                       <div className="cartdropborder">
-                                        <div className="col-lg-3 cartdropimg">
-                                          <div className="row">
-                                            <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : "../../../sites/currentSite/images/notavailable.jpg"} alt="Product Picture" />
-                                          </div>
+                                        <div className="col-lg-3">
+                                            <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="Product Picture" className="imghgt" />
                                         </div>
-                                        <div className="col-lg-9 cartdropimg">
-                                          <div className="row">
-                                            <a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><p className="cartdroptext col-lg-12" title={data.productDetail.productName}>{data.productDetail.productName}</p></a>
+                                        <div className="col-lg-9 ">
+                                          {/* <div className="row"> */}
+                                            {/* <a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}></a> */}
+                                            <div className="col-lg-12"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div>
                                             <div className="col-lg-12 text-center">
-                                              <div className="row">
-                                                <div className="col-lg-4"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
+                                              {/* <div className="row"> */}
+                                                {/* <div className="col-lg-4"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div> */}
+                                                <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
                                                 <div className="col-lg-3"><p className="row"><b> {data.quantity}</b></p></div>
                                                 <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
-                                                <div className="col-lg-2"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
-                                              </div>
+                                                <div className="col-lg-3 pull-right"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
+
+                                              {/* </div> */}
                                             </div>
                                           </div>
-                                        </div>
+                                        {/* </div> */}
                                       </div>
                                     </li>
                                   );
@@ -574,19 +609,31 @@ loginPage(event){
                                 <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
                               </div>
                               {
-                              this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0 ?  
+                              this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0  &&  this.state.minvalueshipping <= this.props.recentCartData[0].total?  
                                 <div className="col-lg-6 NOpaddingRight">
+                                {/* {  ? */}
                                   <a href={user_ID ? "/checkout" : "/login"}><div className="btn cartdropbtn_un col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
+                                  {/* : */}
+                                  {/* <a><div className="btn notcheckout col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a> */}
+                                {/* } */}
+                                 {/* {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
+                                null
+                                :
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
+                                    <span className="minpurchasehead">You can't checkout.Minimum order should be ₹  {this.state.minvalueshipping} to Checkout & Place Order.</span>
+                                </div>
+                                } */}
                                 </div>
                                 : "" 
                               }                      
-
+                             
                             </div>
                           </ul>
                           :
                           null
                         }
-                    </div>                    
+                    </div> 
+                  </div>                   
                 </div>
               </div>
             </div>          
@@ -598,14 +645,17 @@ loginPage(event){
   }
 }
 const mapStateToProps = (state) => {
+  // console.log("form state===",state);
   return {
-    searchResult: state.searchResult,
-    searchCriteria: state.searchCriteria,
-    recentCartData :  state.recentCartData
+    searchResult   : state.searchResult,
+    searchCriteria : state.searchCriteria,
+    recentCartData : state.recentCartData,
+    formToShow     : state.formToShow,
+
 
   }
 }
 const mapDispachToProps = (dispatch) => {
-  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction }, dispatch)
+  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction, formToShowValue :getForm}, dispatch)
 }
 export default connect(mapStateToProps, mapDispachToProps)(withRouter(unimandaiHeader));

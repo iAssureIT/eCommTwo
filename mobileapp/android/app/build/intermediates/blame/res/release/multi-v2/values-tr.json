@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/omkar/Documents/Reactjs/eCommTwo/MobileApp/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-tr/values-tr.xml",
+            "outputFile": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-tr/values-tr.xml",
             "map": [
                 {
                     "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/7a9c27188bb9609368e222299b6f9903/res/values-tr/values.xml",

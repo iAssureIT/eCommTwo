@@ -5,6 +5,7 @@ import AuthStack  from "./config/routes.js";
 import settings from "./config/settings.js";
 import Footer from "../src/ScreenComponents/Footer/UniFooter.js";
 import SplashScreen from 'react-native-splash-screen';
+import codePush               from 'react-native-code-push';
 // import axios                from './config/axios.js';
 import {
   ActivityIndicator,
@@ -17,7 +18,7 @@ import { createAppContainer } from 'react-navigation';
 const HomeStackContainer = createAppContainer(HomeStack);
 const AuthStackContainer = createAppContainer(AuthStack);
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
   }
@@ -41,3 +42,8 @@ export default class App extends Component {
 //   loggingIn : PropTypes.bool
 // };
 
+
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START 
+ };
+ export default codePush(codePushOptions)(App);
