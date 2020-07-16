@@ -1,6 +1,8 @@
 const mongoose	= require("mongoose");
 var ObjectId = require('mongodb').ObjectID;
 const Carts = require('../cart/Model');
+const Orders = require('../orders/Model');
+
 const _ = require('underscore');    
 exports.insert_cartid = (req,res,next)=>{
 	Carts.findOne({"user_ID": req.body.user_ID})
@@ -11,12 +13,13 @@ exports.insert_cartid = (req,res,next)=>{
                 .exec()
                 .then(productData =>{
                     if(productData){
+                        // req.body.quantity
                         Carts.updateOne(
                             {'_id':cartData._id,'cartItems.product_ID':req.body.product_ID},
                             {
                                 $inc:{
-                                    'cartItems.$.quantity':(req.body.quantity),
-                                    'cartItems.$.totalWeight':(req.body.totalWeight),
+                                    'cartItems.$.quantity':req.body.quantity,
+                                    'cartItems.$.totalWeight':req.body.totalWeight,
                                 },
                             }
                         )
@@ -43,6 +46,9 @@ exports.insert_cartid = (req,res,next)=>{
                             'product_ID' : req.body.product_ID,
                             'quantity'   : req.body.quantity,
                             'totalWeight': req.body.totalWeight,
+                            'rate'       : req.body.rate ? req.body.rate : 0,
+                            'discountPercent'   : req.body.discount ? req.body.discount : 0,
+                            'discountedPrice'       : req.body.discountedPrice ? req.body.discountedPrice : 0
                         }
                         Carts.updateOne(
                             {'_id':cartData._id},
@@ -83,6 +89,9 @@ exports.insert_cartid = (req,res,next)=>{
                     "product_ID"    : req.body.product_ID,
                     "quantity"      : req.body.quantity,
                     "totalWeight"   : req.body.totalWeight,
+                    'rate'          : req.body.rate ? req.body.rate : 0,
+                    'discountPercent'      : req.body.discount ? req.body.discount : 0,
+                    'discountedPrice'       : req.body.discountedPrice ? req.body.discountedPrice : 0
                 }];
                 const cartDetails = new Carts({
                     _id             : new mongoose.Types.ObjectId(),  
@@ -357,3 +366,80 @@ exports.add_paymentmethod_to_cart = (req, res, next)=>{
         });
     });
 };
+
+
+//code by madhuri ghute
+
+//Update products cart 
+exports.update_cart_item = (req, res, next)=>{
+     console.log("request",req);
+    Carts.updateOne(
+        {"user_ID":req.body.user_ID,'cartItems.product_ID':req.body.product_ID},
+        {
+            $set:{
+                'cartItems.$.rate'              : req.body.rate,
+                'cartItems.$.quantity'          : req.body.quantity,
+                'cartItems.$.discountPercent'   : req.body.discountPercent,
+                'cartItems.$.discountedPrice'   : req.body.discountedPrice,
+            },
+        }
+    )
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            res.status(200).json({
+                "message": "Cart Product changed successfully."
+            });
+        }else{
+            res.status(401).json({
+                "message": "Cart Not Found 1"
+            });
+        }
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+//generate bill number 
+exports.generate_bill_number = (req,res,next)=>{
+    Carts.findOne()
+        .sort('-id')
+        .exec()
+        .then(cartData =>{
+            var maxId = 1;
+            Orders.findOne()
+            .sort('-id')
+            .exec()
+            .then(orderData =>{
+                if(cartData.length >= orderData.length) {
+                   maxId = cartData.length + 1
+                }
+
+                if(orderData.length >= cartData.length) {
+                   maxId = orderData.length + 1
+                }
+
+
+                res.status(200).json(maxId); 
+                    
+            })
+            .catch(err =>{
+                res.status(500).json({
+                    error: err
+                });
+            });
+
+             res.status(200).json(maxId); 
+            // res.status(200).json(cartData); 
+            //     console.log("cartData",cartData);
+
+        })
+        .catch(err =>{
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+

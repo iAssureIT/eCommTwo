@@ -2088,3 +2088,22 @@ exports.vendorWiseOrder = (req,res,next)=>{
           });
       });
 };
+
+// exports.insert_bill_order = (req,res,next)=>{
+//   console.log("Inside bill order post",req.body); 
+//       if(req.body.cartItems.length>0){
+//         for(k=0;k<req.body.cartItems.length;k++){
+//           Products.updateOne( 
+//               {"_id": req.body.cartItems[k].product_ID},
+//               { $inc: {
+//                   "availableQuantity" : -(req.body.cartItems[k].quantity),
+//               }
+//           })
+//           .then()
+//           .catch();
+//         }
+//       }
+
+//       franchise_id
+// };
+//   

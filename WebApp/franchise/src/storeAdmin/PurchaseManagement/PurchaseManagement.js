@@ -213,7 +213,7 @@ export default class PurchaseManagement extends React.Component {
 		this.setState({purchaseLocation : valpurchaseLocation});
 
     }
-     getproducts(){
+    getproducts(){
         axios.get('/api/products/get/list')
 		.then((response) => {
             console.log('productArray---', response.data)
