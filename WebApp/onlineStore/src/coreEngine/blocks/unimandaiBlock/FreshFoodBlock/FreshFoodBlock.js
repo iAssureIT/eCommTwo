@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import "../../../../sites/currentSite/blocks/FreshFoodBlock.css";
-import freshFoodImg1   from "../../../../sites/currentSite/images/fresh_food_block.png";
+import freshFoodImg1   from "../../../../sites/currentSite/images/fresh_food_block1.png";
 // import freshFoodImg1   from "../../../../sites/currentSite/images/we_are_fresh_food_block.png"; 
 import bgBorderCenter  from "../../../../sites/currentSite/images/bg-border-center.png";
 import icon_shipping_1 from "../../../../sites/currentSite/images/icon-shipping-1.png";

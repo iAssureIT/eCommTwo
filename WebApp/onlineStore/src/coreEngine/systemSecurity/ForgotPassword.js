@@ -4,6 +4,10 @@ import jQuery from 'jquery';
 import axios from 'axios';
 import swal from 'sweetalert';
 
+import { connect } from 'react-redux';
+import { bindActionCreators }     from 'redux';
+import {getForm,updateForm} from '../actions/index';
+
 class ForgotPassword extends Component {
     constructor(props) {
         super(props);
@@ -89,6 +93,10 @@ class ForgotPassword extends Component {
             }
         });
     }
+    openSignInModal(event){
+		event.preventDefault();
+		this.props.updateFormValue("login");	
+	}
     render() {
         return (
             // <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
@@ -126,7 +134,7 @@ class ForgotPassword extends Component {
                                 </div> */}
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                                         <div className="row loginforgotpass textAlignCenter">
-                                            <a href='/login' className="">Sign In</a>
+                                            <a href='' className="" onClick={this.openSignInModal.bind(this)}>Sign In</a>
                                         </div>
                                     </div>
                                 </form>
@@ -146,4 +154,16 @@ class ForgotPassword extends Component {
     }
 }
 
-export default ForgotPassword;
+const mapStateToProps = (state) => {
+	return {
+	  formToShow     : state.formToShow,
+  
+	}
+  }
+  
+  const mapDispachToProps = (dispatch) => {
+	return  bindActionCreators({formToShow :getForm, updateFormValue: updateForm}, dispatch)
+  }
+
+  export default connect(mapStateToProps, mapDispachToProps)(ForgotPassword);
+// export default ForgotPassword;

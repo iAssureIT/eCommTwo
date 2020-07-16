@@ -485,7 +485,7 @@ class SearchProductCollage extends Component {
                                   {
                                     data.discountPercent ?
                                       <div className="col-lg-12 col-md-12 NOpadding">
-                                        <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
+                                        <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp; 
                                         <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span>&nbsp;
                                                                                 
                                       </div>

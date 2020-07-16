@@ -755,6 +755,9 @@ background-color: transparent !important;
         margin-top: -37px !important;
         opacity: 1;
     }
+    .productImg{
+        height: auto;
+    }
     
 }
 

@@ -8,12 +8,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';
 
-// import Background_2  from "../../../sites/currentSite/images/Background_2.png";
-// import Background_22  from "../../../sites/currentSite/images/Background_22.png";
-// import Background_3  from "../../../sites/currentSite/images/Background_3.png";
-
-import Background_2  from "../../../sites/currentSite/images/Fruits-1.png";
+// import Background_2  from "../../../sites/currentSite/images/Fruits-1.png";
+// import Background_22  from "../../../sites/currentSite/images/VeggiesBanner1.png";
+import Background_2  from "../../../sites/currentSite/images/Fruits1.png";
 import Background_22  from "../../../sites/currentSite/images/VeggiesBanner1.png";
+
 
 
 export default class EcommerceBanner extends Component {

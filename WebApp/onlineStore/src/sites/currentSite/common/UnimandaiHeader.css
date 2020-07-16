@@ -444,6 +444,10 @@ button.button_search {
 .searchBox{
     /* margin-top: -7px; */
 }
+.signupForm,
+.loginForm{
+    padding-bottom: 15px;
+}
 /* login modal css  */
 .loginModalContent{
     min-height: 500px;
@@ -466,7 +470,9 @@ button.button_search {
     color:  #fff;
     text-align: right;
 }
-
+.headerWrapper{
+    z-index: 1000 !important;
+}
 @media only screen and (max-device-width: 480px) {   
     .firstDiv{
         min-height: auto;
@@ -484,4 +490,147 @@ button.button_search {
         bottom: 61%;
         right: 2px;
     }
+    .greenStrip{
+        height: 15px;
+    }
 }
+
+ 
+
+/* navbar mobile view css */
+.navbarWrapper{
+    /* z-index: 1000 !important; */
+    /* background-color: #fff; */
+}
+.megamenu-top{
+    margin-top: 10px;
+    /* border-top: solid 1px #ccc; */
+
+}
+.topnav {
+    z-index: 1000;
+    overflow: hidden;
+    background-color: #fff;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 20px;
+    min-height: 90px;
+  }
+  
+  .topnav .topNavCategory {
+    float: left;
+    display: block;
+    color: #333;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .topnav .box-right{
+        margin-top: 10px;
+  }
+  .logoResponsive{
+      margin-top: 32px;
+      margin-left: 25px;
+  }
+  .menuIcon{
+      margin-top: 25px;
+      margin-right: 30px;
+  }
+  .menuIcon .fa-bars{
+      font-size: 20px;
+      color: #80b435;
+  }
+  
+  .topnav .icon {
+    display: none;
+  }
+  
+  .menuDropDown {
+    float: left;
+    overflow: hidden;
+  }
+  
+  .dropbtn .fa-caret-down{
+      margin-left: 10px;
+  }
+  .menuDropDown .dropbtn {
+    font-size: 15px;    
+    border: none;
+    outline: none;
+    color: #333;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+    border-bottom: solid 1px #ccc;
+  } 
+  .loginForm{
+      z-index: 2 !important;
+  }
+  .close{
+      z-index: 100 !important;
+  }
+  .dropdownContent {
+    display: none;
+    position: absolute;
+    /* background-color: #f9f9f9; */
+    /* min-width: 160px; */
+    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+    z-index: 1;
+  }
+  
+  .dropdownContent a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .topnav .topNavCategory:hover, .dropdown:hover .dropbtn {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  .dropdownContent a:hover {
+    background-color: #ddd;
+    color: #333;
+  }
+  
+  .menuDropDown:hover .dropdownContent {
+    display: block;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .topnav a:not(:first-child), .dropdown .dropbtn {
+      display: none;
+    }
+    .topnav a.icon {
+      float: right;
+      display: block;
+      margin-top: 10px;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .topnav.responsive {position: relative;}
+    .topnav.responsive .icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .topnav.responsive a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+    .topnav.responsive .menuDropDown {float: none;}
+    .topnav.responsive .dropdownContent {position: relative;}
+    .topnav.responsive .menuDropDown .dropbtn {
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+  }
+  

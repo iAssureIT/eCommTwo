@@ -720,7 +720,7 @@ ul.box-static-link li span {
   font-size: 11px;
   padding-left: 5px;
 }
-
+/* 
 .dropdown .dropbtn {
   font-size: 18px;
   font-weight: 600;  
@@ -770,8 +770,8 @@ ul.box-static-link li span {
 .dropdown:hover .dropdown-menu {
   display: block;
   position: relative;
-  /*background-color: #333;*/
-}
+  background-color: #333;
+} */
 .headertop{
   padding-left: 193px;
 }
@@ -782,6 +782,7 @@ ul.box-static-link li span {
   display: inline-block;
     width: 100%;
 }
+
 
 /*unimandai*/
 

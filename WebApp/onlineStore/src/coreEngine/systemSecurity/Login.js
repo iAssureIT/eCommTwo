@@ -219,8 +219,8 @@ class Login extends Component {
         // </div>    
         <div id="loginFormModal"  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">    
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12 NoPadding">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
                 <h3>Sign In</h3>
               </div>
@@ -264,7 +264,7 @@ class Login extends Component {
                   <div className="row">
                     <div className="textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10">
                       <div className="row loginforgotpass">
-                        <a href='/forgotpassword' className="" onClick={this.openForgotPasswordModal.bind(this)}>Forgot Password?</a>
+                        <a href='' className="" onClick={this.openForgotPasswordModal.bind(this)}>Forgot Password?</a>
                       </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignRight">

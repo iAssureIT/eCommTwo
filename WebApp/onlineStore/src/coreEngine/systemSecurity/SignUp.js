@@ -334,8 +334,7 @@ class SignUp extends Component {
 	}
 	openSignInModal(event){
 		event.preventDefault();
-		this.props.updateFormValue("login");
-		
+		this.props.updateFormValue("login");	
 	}
 	render() {		
 		return (
