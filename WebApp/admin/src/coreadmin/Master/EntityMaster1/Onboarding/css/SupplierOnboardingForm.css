@@ -259,9 +259,7 @@
     font-size: 13px;
     letter-spacing: 1px
 }
-.padding30{
-    padding: 0px 42px 0px 42px !important;
-}
+
 .crossbtn {
     left: 4px;
     z-index: 200;
@@ -353,19 +351,13 @@
 
 .boxul1 {
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 3%;
     flex: 1;
     font-size: 13px;
     background-color: var(--white-color);
     border: 1px solid #ddd;
-    min-height: 360px;
-    box-shadow: -4px 7px 25px -5px #ddd;
-
-}
-.boxul1:hover{
-        box-shadow: 1px 3px 6px 1px #999;
-
+    min-height: 285px;
 }
 
 .boxul {
@@ -1230,17 +1222,13 @@ select#gender option[value="others"] {
 
   .box_style{
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 3%;
     flex: 1 1;
     font-size: 13px;
     background-color: var(--white-color);
     border: 1px solid #ddd;
-    box-shadow: -4px 7px 25px -5px #ddd;
     min-height: 107px;
-  }
-  .box_style:hover{
-        box-shadow: 1px 3px 6px 1px #999;
   }
   .showMoreBtn{
     padding: 0;
@@ -1286,7 +1274,4 @@ select#gender option[value="others"] {
     position: absolute;
     top:20px;
     left: 15px;   
-}
-.MasterBudgetTitle{
-
 }

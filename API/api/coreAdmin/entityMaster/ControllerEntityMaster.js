@@ -1,8 +1,10 @@
 const mongoose  = require("mongoose");
 
 const EntityMaster = require('./ModelEntityMaster');
+const PersonMaster = require('../personMaster/ModelPersonMaster.js');
 var request = require('request-promise');
-const gloabalVariable = require('../../../nodemon.js');
+// const gloabalVariable = require('../../nodemon.js');
+const gloabalVariable = require('../../../nodemon');
 var   ObjectID          = require('mongodb').ObjectID;
 
 exports.insertEntity = (req,res,next)=>{
@@ -79,32 +81,29 @@ function getNextSequence() {
 }
 
 exports.listEntity = (req,res,next)=>{
-    // console.log("listEntity req.params = ",req.params);
-
-    EntityMaster.find({entityType:req.params.entityType})
-                .sort({createdAt : -1})    
-                .then(data=>{
-                    // console.log("listEntity data = ",data);
-                    res.status(200).json(data);
-                })
-                .catch(err =>{
-                    res.status(500).json({
-                        error: err
-                    });
-                });
+    EntityMaster.find({entityType:req.params.entityType}).sort({createdAt : -1})    
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({
+                error: err
+            });
+        });
 };
-exports.listEntity_franchise = (req,res,next)=>{
-    EntityMaster.find({entityType:req.params.entityType,_id:req.params.franchiseid})
-                .sort({createdAt : -1})    
-                .then(data=>{
-                    // console.log("listEntity data = ",data);
-                    res.status(200).json(data);
-                })
-                .catch(err =>{
-                    res.status(500).json({
-                        error: err
-                    });
-                });
+
+exports.listSupplier = (req,res,next)=>{
+    EntityMaster.find({entityType:req.params.entityType,supplierOf:req.params.company_id}).sort({createdAt : -1})    
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({
+                error: err
+            });
+        });
 };
 
 exports.countEntity = (req,res,next)=>{
@@ -122,6 +121,145 @@ exports.countEntity = (req,res,next)=>{
 };
 exports.singleEntity = (req,res,next)=>{
     EntityMaster.findOne({_id : req.params.entityID})
+    .exec()
+    .then(data=>{
+        main();
+        async function main(){
+            var k = 0 ;
+            var returnData = [];
+            if(data){
+            if(data.contactPersons && data.contactPersons.length > 0){
+                var contactData = [];
+                for(k = 0 ; k < data.contactPersons.length ; k++){
+                    var manager1Details = {
+                        Name   : "",
+                        Department  : "",
+                        Designation    : "",
+                        contactNo   : "",
+                        EmpID   : "",
+                    };
+                     var manager2Details = {
+                        Name   : "",
+                        Department  : "",
+                        Designation    : "",
+                        contactNo   : "",
+                        EmpID   : "",
+                    };
+                     var manager3Details = {
+                        Name   : "",
+                        Department  : "",
+                        Designation    : "",
+                        contactNo   : "",
+                        EmpID   : "",
+                    };
+                    // if(data.contactPersons[k].bookingApprovalRequired == 'Yes'){
+
+                      
+                    manager1Details = await getManagerDetails(data.contactPersons[k].approvingAuthorityId1,data.companyID)
+                    
+                   
+                    manager2Details = await getManagerDetails(data.contactPersons[k].approvingAuthorityId2,data.companyID)
+                    
+                   
+                    manager3Details = await getManagerDetails(data.contactPersons[k].approvingAuthorityId3,data.companyID)
+
+                       
+                    // }
+                    contactData.push({
+                        "_id"                    : data.contactPersons[k]._id,
+                        branchCode               : data.contactPersons[k].branchCode,
+                        branchName               : data.contactPersons[k].branchName,
+                        firstName                : data.contactPersons[k].firstName,
+                        workLocationId           : data.contactPersons[k].workLocationId,
+                        addEmployee              : data.contactPersons[k].addEmployee,
+                        personID                 : data.contactPersons[k].personID,
+                        lastName                 : data.contactPersons[k].lastName,
+                        departmentName           : data.contactPersons[k].departmentName,
+                        designationName          : data.contactPersons[k].designationName,
+                        phone                    : data.contactPersons[k].phone,
+                        email                    : data.contactPersons[k].email,
+                        employeeID               : data.contactPersons[k].employeeID,
+                        role                     : data.contactPersons[k].role,
+                        bookingApprovalRequired  : data.contactPersons[k].bookingApprovalRequired,
+                        profilePhoto             : data.contactPersons[k].profilePhoto,
+                        middleName               : data.contactPersons[k].middleName,
+                        DOB                      : data.contactPersons[k].DOB,
+                        altPhone                 : data.contactPersons[k].altPhone,
+                        gender                   : data.contactPersons[k].gender,
+                        whatsappNo               : data.contactPersons[k].whatsappNo,
+                        department               : data.contactPersons[k].department,
+                        empCategory              : data.contactPersons[k].empCategory,
+                        empPriority              : data.contactPersons[k].empPriority,
+                        designation              : data.contactPersons[k].designation,
+                        address                  : data.contactPersons[k].address,
+                        createUser               : data.contactPersons[k].createUser,
+                        approvingAuthorityId1    : data.contactPersons[k].approvingAuthorityId1,
+                        approvingAuthorityId2    : data.contactPersons[k].approvingAuthorityId2,
+                        approvingAuthorityId3    : data.contactPersons[k].approvingAuthorityId3,
+                        preApprovedKilometer     : data.contactPersons[k].preApprovedKilometer,
+                        preApprovedAmount        : data.contactPersons[k].preApprovedAmount,
+                        preApprovedRides         : data.contactPersons[k].preApprovedRides,
+
+                        manager1Details           : manager1Details,
+                        manager2Details           : manager2Details,
+                        manager3Details           : manager3Details,
+
+                    })
+                }
+                    
+            }
+            returnData.push({
+                        "_id"                           : data._id,
+                        supplierOf              : data.supplierOf,
+                        companyID               : data.companyID,
+                        companyName             : data.companyName,
+                        companyPhone            : data.companyPhone,
+                        companyEmail            : data.companyEmail,
+                        locations               : data.locations,
+                        entityType              : data.entityType,
+                        profileStatus           : data.profileStatus,
+                        groupName               : data.groupName,
+                        CIN                     : data.CIN,   
+                        COI                     : data.COI,
+                        TAN                     : data.TAN,
+                        companyLogo             : data.companyLogo,
+                        website                 : data.website,
+                        userID                  : data.userID,  
+                        contactData             : contactData
+                    })
+            }//data
+            res.status(200).json(returnData);
+            
+        }
+        
+        
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+function getManagerDetails(ID,companyID){
+   return new Promise(function(resolve,reject){
+        PersonMaster.findOne({"employeeId" : ID,"companyID":companyID},{"firstName":1,middleName:1,lastName:1,contactNo:1,designation:1,department:1,employeeId:1})
+             .populate('designationId')
+             .populate('departmentId')
+             .exec()
+             .then(managerDetails=>{
+                resolve(managerDetails);
+             })
+            .catch(err =>{
+                res.status(500).json({
+                    message : "manager not found.",
+                    error: err
+                   });
+            });
+    });
+}
+exports.getCompany = (req,res,next)=>{
+    EntityMaster.findOne({companyID : req.params.companyID})
     .exec()
     .then(data=>{
         res.status(200).json(data);
@@ -159,25 +297,47 @@ exports.fetchLocationEntities = (req, res, next)=>{
             res.status(500).json({ error: err });
         }); 
 };
-
-exports.companyDetail = (req, res, next)=>{
-   EntityMaster.findOne({companyID : req.body.companyID})
-    .exec()
-    .then(data=>{
-        res.status(200).json(data);
-    })
-    .catch(err =>{
-        res.status(500).json({
-            error: err
-        });
-    });
+exports.fetchContactEntities = (req, res, next)=>{
+    EntityMaster.findOne({_id : req.body.entityID})
+        .sort({createdAt : -1})
+        .skip(req.body.startRange)
+        .limit(req.body.limitRange)
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
 };
 
-
+exports.getWorkLocation = (req, res, next)=>{
+    console.log("body=>",req.body)
+    var selector = {};
+    if(req.body.company_id){
+        selector = {'_id':ObjectID(req.body.company_id)}
+    }else{
+        selector = {"entityType":req.body.entityType} 
+    }
+    console.log("selector",selector);
+    EntityMaster.aggregate([
+        { $match :selector},
+        { $unwind: "$locations" }
+        ])
+        .exec()
+        .then(data=>{
+            var locations = data.map((a, i)=>{
+                return a.locations
+             })   
+            res.status(200).json({locations});
+        })
+        .catch(err =>{
+            res.status(500).json({ error: err });
+        }); 
+};
 
 exports.companyName = (req,res,next)=>{
-    console.log("req.params.companyID===>",req.params.companyID);
-    EntityMaster.findOne({companyID : req.params.companyID})
+    EntityMaster.findOne({companyID : req.params.companyID},{companyName:1,companyLogo:1})
     .exec()
     .then(data=>{
         if(data){
@@ -192,6 +352,24 @@ exports.companyName = (req,res,next)=>{
         });
     });
 };
+
+exports.companyNameType = (req,res,next)=>{
+    EntityMaster.findOne({companyID : req.params.companyID,entityType : req.params.type},{companyID:1,companyName:1})
+    .exec()
+    .then(data=>{
+        if(data){
+            res.status(200).json(data);
+        }else{
+            res.status(200).json({message:"COMPANY_NOT_FOUND"})
+        }
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
 exports.branchCodeLocation = (req,res,next)=>{
     EntityMaster.findOne({_id : req.params.entityID, 'locations.branchCode' : req.params.branchCode})
     .exec()
@@ -213,7 +391,7 @@ exports.updateEntity = (req,res,next)=>{
                             'groupName'                 : req.body.groupName,
                             'CIN'                       : req.body.CIN,   
                             'COI'                       : req.body.COI,
-                            'companyEmail'              : req.body.companyEmail,
+                            'companyEmail'              : req.body.companyEmail, 
                             'TAN'                       : req.body.TAN,
                             'companyLogo'               : req.body.companyLogo,
                             'website'                   : req.body.website,
@@ -506,8 +684,21 @@ exports.singleContact = (req,res,next)=>{
     });
 };
 
+function camelCase(str) {
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
 exports.getAllVendors = (req,res,next)=>{
-    EntityMaster.find({"entityType":"vendor","locations.city":req.params.city})
+    var city = req.params.city;
+    var city1 = camelCase(city);
+    var city2 = city.toUpperCase();
+    var city3 = city.toLowerCase();
+    EntityMaster.find({"entityType":"vendor","locations.city":{$in:
+          [city,city1,city2,city3]}})
     .exec()
     .then(data=>{
         res.status(200).json(data);
@@ -521,6 +712,19 @@ exports.getAllVendors = (req,res,next)=>{
 
 exports.getAdminCompany = (req,res,next)=>{
     EntityMaster.find({"entityType":"appCompany"})
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+exports.getAllEntities = (req,res,next)=>{
+    EntityMaster.find({})
     .exec()
     .then(data=>{
         res.status(200).json(data);
@@ -558,6 +762,8 @@ exports.updateSingleContact = (req,res,next)=>{
                           'contactPersons.$.email'      : contactdetails.email,
                           'contactPersons.$.gender'     : contactdetails.gender,
                           'contactPersons.$.department' : contactdetails.department,
+                          'contactPersons.$.empCategory' : contactdetails.empCategory,
+                          'contactPersons.$.empPriority' : contactdetails.empPriority,
                           'contactPersons.$.designationName'    : contactdetails.designationName,
                           'contactPersons.$.designation'        : contactdetails.designation,
                           'contactPersons.$.departmentName'     : contactdetails.departmentName,
@@ -766,6 +972,34 @@ exports.CompanyfromEntities = (req, res, next)=>{
         .catch(err =>{
             res.status(500).json({ error: err });
         }); 
+};
+
+exports.countContacts = (req,res,next)=>{
+    EntityMaster.aggregate([
+        { "$match": { entityType:req.params.entityType } },
+        {
+          $group: {
+            _id: "$entityType",
+            total: { $sum: { $size: "$contactPersons"} }
+          }
+        }
+    ])
+    .exec()
+    .then(data=>{
+        if(data[0]){
+            var count = data[0].total
+        }else{
+            var count = 0
+        }
+
+            res.status(200).json({count:count});
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
 };
 
 

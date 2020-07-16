@@ -31,14 +31,16 @@ class ListOfEntities extends Component {
 			selector:{},
 			stateCode : "Select State",
 			showDetails : false,
-			view : 'Grid',
+			view : 'List',
 			district  : "Select District",
 			"pathname": window.location.pathname.split('/')[1],
 			entityType : this.props.entity ,
 			RecordsTable:[],
 			tableHeading:{
-	            companyName:"Company Name",
-	            companyEmail:"Contact Details",
+	            companyName:"Company Name & ID",
+	            groupName:"Group Name",
+	            companyEmail:"Company Email",
+	            companyPhone:"Company Contact",
 	            location:"Locations",
 	            contacts:"Contacts",
 	            actions:"Action"
@@ -53,8 +55,7 @@ class ListOfEntities extends Component {
 	          downloadApply   : true
 	      },
 	      startRange        : 0,
-      	  limitRange        : 100000,
-      	  company_id        : this.props.company_id ? this.props.company_id : '', 
+      limitRange        : 100000,
 		};
 		
 		this.handleChange = this.handleChange.bind(this);
@@ -72,21 +73,15 @@ class ListOfEntities extends Component {
 	}
 
 	componentDidMount() {
-		var getcompanyID = localStorage.getItem("company_Id")
-		var role = [];
-		role.push(localStorage.getItem("roles"));
-
+		this.getEntities();
+		this.getStates('IN');
 		this.setState({
-			roles:role,
-			entityType : this.props.entity,
-			getcompanyID:getcompanyID
+			entityType : this.props.entity
 		})
 		//by default All flter button should be active  
 		$(".allBtn").css("color", "#fff");
 		$(".allBtn").css("background", "#0275ce");
 		// axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-		this.getEntities();
-		this.getStates('IN');
 
 	}
 
@@ -110,49 +105,24 @@ class ListOfEntities extends Component {
 		}
 		axios.post('/api/entitymaster/getAll',formvalues)
 		.then((response)=>{
-
-			if (this.state.roles.indexOf("admin") == -1)
-				{
-					
-					var FilteredData =  response.data.filter(entity=>entity.supplierOf == this.state.getcompanyID)
-					var tableData = FilteredData.map((a, i)=>{
-					var locDetails = a.locations.map((l,i)=>{
-						return "<ul class='nopadding'><li><b>BranchCode</b>:"+l.branchCode+"</li><li><b>Type</b>: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
-					})
-					var contactData = a.contactPersons.map((c,i)=>{
-						return "<ul class='nopadding'><li><b>BranchCode</b>:"+c.branchCode+"</li><li><b>Name</b>:<a title='View profile' target='_blank' href='/employee-profile/'"+c.personID+">"+c.firstName+" "+c.lastName+"</a></li><li><b>Email</b>:"+c.email+"</li></ul>"
-					})
-			        return{
-			        	_id:a._id,
-			            companyName:"<a  title='View company profile'  target='_blank' href='/company-profile/"+(a.company_Id)+"'>"+a.companyName +" (" +a.companyID+")</a>"+"<br> <b>Group Name : </b>"+a.groupName,
-			            companyEmail:"<b>Email : </b>"+a.companyEmail+"<br><b>Mobile No. : </b>"+a.companyPhone,
-			            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
-			            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
-			            action:""
-			        }
-			      })
-				
-				}else{
-					var tableData = response.data.map((a, i)=>{
-					var locDetails = a.locations.map((l,i)=>{
-						return "<ul class='nopadding'><li><b>BranchCode</b>:"+l.branchCode+"</li><li><b>Type</b>: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
-					})
-					var contactData = a.contactPersons.map((c,i)=>{
-						return "<ul class='nopadding'><li><b>BranchCode</b>:"+c.branchCode+"</li><li><b>Name</b>:<a title='View profile' target='_blank' href='/employee-profile/'"+c.personID+">"+c.firstName+" "+c.lastName+"</a></li><li><b>Email</b>:"+c.email+"</li></ul>"
-					})
-			        return{
-			        	_id:a._id,
-			            companyID:a.companyID,
-			            companyName:"<a  title='View company profile'  target='_blank' href='/company-profile/"+(a.company_Id)+"'>"+a.companyName +"</a>"+"<br> <b>Group Name : </b> "+a.groupName,
-			            companyEmail:"<b>Email : </b>"+a.companyEmail+"<br><b>Mobile No. : </b>"+a.companyPhone,
-			            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
-			            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
-			            action:""
-			        }
-			      })
-				}
-
-			
+			var tableData = response.data.map((a, i)=>{
+				var locDetails = a.locations.map((l,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li><b>BranchCode</b>:"+l.branchCode+"</li><li><b>Type</b>: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
+				})
+				var contactData = a.contactPersons.map((c,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li><b>BranchCode</b>:"+c.branchCode+"</li><li><b>Name</b>:"+c.firstName+" "+c.lastName+"</li><li><b>Email</b>:"+c.email+"</li></ul>"
+				})
+	        return{
+	        	_id:a._id,
+	            companyName:"<b>Name:</b> " + (a.companyName)+ " <br><b>Company ID :</b> " + (a.companyID? a.companyID :"- NA -" ),
+	            groupName:a.groupName,
+	            companyEmail:a.companyEmail,
+	            companyPhone:a.companyPhone,
+	            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
+	            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
+	            action:""
+	        }
+	      })
           this.setState({RecordsTable:tableData,initial: 'All'})
 			
 		})
@@ -199,64 +169,37 @@ class ListOfEntities extends Component {
 	getEntities() {
 		$(".lists").removeClass("selectedSupplier")
 		axios.get("/api/entitymaster/get/count/"+this.state.entityType)
-		.then((response) => {
-
-			this.setState({
-				entityCount   : response.data.count
+			.then((response) => {
+				this.setState({
+					entityCount   : response.data.count
+				})
 			})
-		})
-		.catch((error) => {
-		})
-		var url ='';
-		if(this.state.entityType === "supplier" && this.state.company_id!==''){
-			url = "/api/entitymaster/get/list/"+this.state.entityType+"/"+this.state.company_id;
-
-		}else{
-			url = "/api/entitymaster/get/"+this.state.entityType;
-		}
-		axios.get(url)
-		.then((response) => {
-			$(".alphab").css({"color": "#000","background":"#ddd"});
-			$(".allBtn").css("color", "#fff");
-			$(".allBtn").css("background", "#0275ce");
-			if (this.state.roles.indexOf("admin") == -1)
-				{
-					this.setState({
-						entityList   : response.data.filter(entity=>entity.supplierOf == this.state.getcompanyID),
-						entityCount  : response.data.filter(entity=>entity.supplierOf == this.state.getcompanyID).length,
-						showDetails  : true,
-						initial : 'All'
-
-
-					},()=>{
-						if(this.state.entityList.length>0)
-						{
-						this.setState({
-							id:this.state.entityList[0]._id
-						})
-						document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")
-						}
-					})
-				
-				}else{
-					this.setState({
-						entityList   : response.data,
-						showDetails  : true,
-						id  			: response.data[0]._id,
-						initial : 'All'
-					},()=>{
-						if(this.state.entityList.length>0)
-						{
-						document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")
-						}
-					})
-				}
+			.catch((error) => {
+			})
 			
+		axios.get("/api/entitymaster/get/"+this.state.entityType)
 
-			// $('.selected').removeClass('selectedSupplier');
-		})
-		.catch((error) => {
-		})
+			.then((response) => {
+					console.log("entityList",response.data,this.state.entityList)
+				$(".alphab").css({"color": "#000","background":"#ddd"});
+				$(".allBtn").css("color", "#fff");
+				$(".allBtn").css("background", "#0275ce");
+				this.setState({
+					entityList   : response.data,
+					showDetails  : true,
+					id  			: response.data[0]._id,
+					initial : 'All'
+				},()=>{
+					if(this.state.entityList.length>0)
+					{
+					document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")
+				}
+				})
+
+				// $('.selected').removeClass('selectedSupplier');
+			})
+			.catch((error) => {
+			})
 	}
 	ShowForm(event) {
 		var data = $(event.currentTarget).attr('id');
@@ -384,26 +327,16 @@ class ListOfEntities extends Component {
 
 		axios.post("/api/entitymaster/get/filterEntities", selector)
 			.then((response) => {
-				console.log("response>/",response.data,this.state.roles,this.state.getcompanyID)
-				if (this.state.roles.indexOf("admin") == -1)
-				{
-					this.setState({
-						entityList   : response.data.filter(entity=>entity.supplierOf == this.state.getcompanyID),
-						showDetails  : true,
-					})
-				
-				}else{
-					this.setState({
-						entityList   : response.data,
-						showDetails  : true,
-					})
-				}
-				
-				if(this.state.entityList.length>0)
+				this.setState({
+					entityList   : response.data,
+					showDetails  : true,
+				},()=>{
+					if(this.state.entityList.length>0)
 					{
 					this.setState({ id: this.state.entityList[0]._id});
 					if(this.state.view == 'List'){document.getElementById(this.state.entityList[0]._id).classList.add("selectedSupplier")}
 				}
+				})
 				
 			})
 			.catch((error) => {
@@ -417,48 +350,25 @@ class ListOfEntities extends Component {
 
 		axios.post("/api/entitymaster/get/gridfilterEntities", selector)
 			.then((response) => {
-				if (this.state.roles.indexOf("admin") == -1)
-				{
-					
-					var FilteredData =  response.data.filter(entity=>entity.supplierOf == this.state.getcompanyID)
-					var tableData = FilteredData.map((a, i)=>{
-					var locDetails = a.locations.map((l,i)=>{
-						return "<ul class='nopadding'><li>BranchCode:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
-					})
-					var contactData = a.contactPersons.map((c,i)=>{
-						return "<ul class='nopadding'><li>BranchCode:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li><b>Email</b>:"+c.email+"</li></ul>"
-					})
-			        return{
-			        	_id:a._id,
-			            companyName:"<a  title='View company profile'  target='_blank' href='/company-profile/"+(a.company_Id)+"'>"+a.companyName +" (" +a.companyID+")</a>"+"<br> <b>Group Name : </b>"+a.groupName,
-			            companyEmail:"<b>Email : </b>"+a.companyEmail+"<br><b>Mobile No. : </b>"+a.companyPhone,
-			            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
-			            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
-			            action:""
-			        }
-			      })
-				
-				}else{
-					var tableData = response.data.map((a, i)=>{
-					var locDetails = a.locations.map((l,i)=>{
-						return "<ul class='nopadding'><li>BranchCode:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
-					})
-					var contactData = a.contactPersons.map((c,i)=>{
-						return "<ul class='nopadding'><li>BranchCode:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li><b>Email</b>:"+c.email+"</li></ul>"
-					})
-			        return{
-			        	_id:a._id,
-			        	companyID:a.companyID,
-			            companyName:"<a  title='View company profile'  target='_blank' href='/company-profile/"+(a.company_Id)+"'>"+a.companyName +"</a>"+"<br> <b>Group Name : </b>"+a.groupName,
-			            companyEmail:"<b>Email : </b>"+a.companyEmail+"<br><b>Mobile No. : </b>"+a.companyPhone,
-			            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
-			            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
-			            action:""
-			        }
-			      })
-				}
-				
-
+				var tableData = response.data.map((a, i)=>{
+				var locDetails = a.locations.map((l,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode:"+l.branchCode+"</li><li>Type: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
+				})
+				var contactData = a.contactPersons.map((c,i)=>{
+					return "<ul><li>#"+(i+1)+"</li><li>BranchCode:"+c.branchCode+"</li><li>Name:"+c.firstName+" "+c.lastName+"</li><li><b>Email</b>:"+c.email+"</li></ul>"
+				})
+		        return{
+		        	_id:a._id,
+		            companyName:a.companyName,
+		            companyID:a.companyID,
+		            groupName:a.groupName,
+		            companyEmail:a.companyEmail,
+		            companyPhone:a.companyPhone,
+		            location:locDetails && locDetails.length > 0 ? locDetails : "No Location Added Yet",
+		            contacts:contactData && contactData.length > 0 ? contactData : "No Contacts Added Yet",
+		            action:""
+		        }
+		      })
 	          this.setState({RecordsTable:tableData})
 				
 			})
@@ -482,6 +392,7 @@ class ListOfEntities extends Component {
     }
     
 	render() {
+		// console.log("entityList LISR",this.state.entityList)
 
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -498,14 +409,14 @@ class ListOfEntities extends Component {
 								</div>
 								<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 ">									
 									<div className="col-lg-2 col-md-12 col-sm-12 col-xs-12 nopadding">
-										<button type="button" className=" selectFilterBtnEL reset" onClick={this.selectFilter.bind(this)}>
+										<button type="button" className=" selectFilterBtn reset" onClick={this.selectFilter.bind(this)}>
 											<i class="fa fa-filter"></i>&nbsp;&nbsp;<b> SELECT FILTER</b>
 										</button>
 									</div>
 									
 									<h5 className="box-title2 col-lg-2 col-md-11 col-sm-11 col-xs-12 nopadding">Total Records :&nbsp;&nbsp;<b>{this.state.entityCount}</b></h5>
 									<h5 className="box-title2 col-lg-2 col-md-11 col-sm-11 col-xs-12 nopadding">Filtered :&nbsp;&nbsp;<b>{this.state.entityList.length}</b></h5>
-									<div className="col-lg-3 col-md-12 col-sm-12 col-xs-12 pull-right inLOE noPadding" >
+									<div className="col-lg-3 col-md-12 col-sm-12 col-xs-12 pull-right inLOE" >
 										<span className="blocking-span" >
 											<input type="text" name="search" className="col-lg-8 col-md-8 col-sm-8 col-xs-12 Searchusers searchEntity inputTextSearch outlinebox pull-right texttrans"
 												placeholder="Search..." onInput={this.searchEntity.bind(this)} />
@@ -537,7 +448,7 @@ class ListOfEntities extends Component {
 										</div>
 										<div className="col-lg-3 col-md-12 col-xs-12 col-sm-12">
 											<select className="form-control resetinp selheight districtsdata" ref="district" name="district" value={this.state.district}
-											onChange={this.onSelectedItemsChange.bind(this,'district')}>
+												onChange={this.onSelectedItemsChange.bind(this,'district')}>
 												<option value="Select District" disabled>Select District</option>
 												{this.state.districtArray && this.state.districtArray.length > 0 &&
 													this.state.districtArray.map((districtdata, index) => {
@@ -553,44 +464,44 @@ class ListOfEntities extends Component {
 									</div>
 
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-											<button type="button" className="btn alphab atozbtn allBtn"  id="filterallalphab" onClick={this.shortByAlpha.bind(this)} name="initial" value={this.state.initial} onChange={this.handleChange}>All</button>
-											<button type="button" className="btn alphab atozbtn" value="A" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>A</button>
-											<button type="button" className="btn alphab atozbtn" value="B" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>B</button>
-											<button type="button" className="btn alphab atozbtn" value="C" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>C</button>
-											<button type="button" className="btn alphab atozbtn" value="D" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>D</button>
-											<button type="button" className="btn alphab atozbtn" value="E" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>E</button>
-											<button type="button" className="btn alphab atozbtn" value="F" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>F</button>
-											<button type="button" className="btn alphab atozbtn" value="G" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>G</button>
-											<button type="button" className="btn alphab atozbtn" value="H" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>H</button>
-											<button type="button" className="btn alphab atozbtn" value="I" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>I</button>
-											<button type="button" className="btn alphab atozbtn" value="J" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>J</button>
-											<button type="button" className="btn alphab atozbtn" value="K" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>K</button>
-											<button type="button" className="btn alphab atozbtn" value="L" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>L</button>
-											<button type="button" className="btn alphab atozbtn" value="M" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>M</button>
-											<button type="button" className="btn alphab atozbtn" value="N" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>N</button>
-											<button type="button" className="btn alphab atozbtn" value="O" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>O</button>
-											<button type="button" className="btn alphab atozbtn" value="P" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>P</button>
-											<button type="button" className="btn alphab atozbtn" value="Q" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Q</button>
-											<button type="button" className="btn alphab atozbtn" value="R" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>R</button>
-											<button type="button" className="btn alphab atozbtn" value="S" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>S</button>
-											<button type="button" className="btn alphab atozbtn" value="T" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>T</button>
-											<button type="button" className="btn alphab atozbtn" value="U" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>U</button>
-											<button type="button" className="btn alphab atozbtn" value="V" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>V</button>
-											<button type="button" className="btn alphab atozbtn" value="W" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>W</button>
-											<button type="button" className="btn alphab atozbtn" value="X" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>X</button>
-											<button type="button" className="btn alphab atozbtn" value="Y" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Y</button>
-											<button type="button" className="btn alphab atozbtn" value="Z" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Z</button>
+											<button type="button" className="btn atozbtn alphab allBtn"  id="filterallalphab" onClick={this.shortByAlpha.bind(this)} name="initial" value={this.state.initial} onChange={this.handleChange}>All</button>
+											<button type="button" className="btn atozbtn alphab" value="A" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>A</button>
+											<button type="button" className="btn atozbtn alphab" value="B" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>B</button>
+											<button type="button" className="btn atozbtn alphab" value="C" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>C</button>
+											<button type="button" className="btn atozbtn alphab" value="D" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>D</button>
+											<button type="button" className="btn atozbtn alphab" value="E" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>E</button>
+											<button type="button" className="btn atozbtn alphab" value="F" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>F</button>
+											<button type="button" className="btn atozbtn alphab" value="G" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>G</button>
+											<button type="button" className="btn atozbtn alphab" value="H" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>H</button>
+											<button type="button" className="btn atozbtn alphab" value="I" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>I</button>
+											<button type="button" className="btn atozbtn alphab" value="J" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>J</button>
+											<button type="button" className="btn atozbtn alphab" value="K" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>K</button>
+											<button type="button" className="btn atozbtn alphab" value="L" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>L</button>
+											<button type="button" className="btn atozbtn alphab" value="M" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>M</button>
+											<button type="button" className="btn atozbtn alphab" value="N" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>N</button>
+											<button type="button" className="btn atozbtn alphab" value="O" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>O</button>
+											<button type="button" className="btn atozbtn alphab" value="P" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>P</button>
+											<button type="button" className="btn atozbtn alphab" value="Q" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Q</button>
+											<button type="button" className="btn atozbtn alphab" value="R" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>R</button>
+											<button type="button" className="btn atozbtn alphab" value="S" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>S</button>
+											<button type="button" className="btn atozbtn alphab" value="T" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>T</button>
+											<button type="button" className="btn atozbtn alphab" value="U" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>U</button>
+											<button type="button" className="btn atozbtn alphab" value="V" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>V</button>
+											<button type="button" className="btn atozbtn alphab" value="W" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>W</button>
+											<button type="button" className="btn atozbtn alphab" value="X" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>X</button>
+											<button type="button" className="btn atozbtn alphab" value="Y" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Y</button>
+											<button type="button" className="btn atozbtn alphab" value="Z" onClick={this.shortByAlpha.bind(this)} onChange={this.handleChange}>Z</button>
 									</div>
 								</div>
 
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 customTab">
 									<div className="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right">
-										<i className="fa fa-th-list fa-lg btn pull-right viewBtn  "  title="List view" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'List')} onChange={this.handleChange} aria-hidden="true"></i>
-										<i className="fa fa-th fa-lg btn viewBtn pull-right btnactive " title="Grid view" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'Grid')} onChange={this.handleChange} aria-hidden="true"></i>&nbsp;&nbsp;
+										<i className="fa fa-th fa-lg btn viewBtn pull-right" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'Grid')} onChange={this.handleChange} aria-hidden="true"></i>&nbsp;&nbsp;
+										<i className="fa fa-th-list fa-lg btn pull-right viewBtn btnactive" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'List')} onChange={this.handleChange} aria-hidden="true"></i>
 									</div>
 								</div>
 
-								{this.state.view === 'List' ?
+								{this.state.view === 'Grid' ?
 								<div className="col-lg-12"> <IAssureTable 
 			                      tableHeading={this.state.tableHeading}
 			                      dataCount={this.state.entityCount}
@@ -599,7 +510,6 @@ class ListOfEntities extends Component {
 			                      getData={this.getData.bind(this)}
 			                      id={"id"}
 			                      tableName={this.state.entityType}
-			                      showCompanyId={true}
 			                      />
 			                      </div>
 								 :
@@ -638,9 +548,9 @@ class ListOfEntities extends Component {
 										<h5>No Data Found</h5>
 									</div>
 								}
-								{ this.state.view === 'Grid' && this.state.showDetails && this.state.entityList && this.state.entityList.length > 0?
-									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdcls suppliersOneProfile commonSup noPadding" id={this.state.id}>
-										<div id={this.state.id} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
+								{ this.state.view === 'List' && this.state.showDetails && this.state.entityList && this.state.entityList.length > 0?
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pdcls suppliersOneProfile commonSup" id={this.state.id}>
+										<div id={this.state.id} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" >
 											<EntityDetails name={this.state.index} id={this.state.id} 
 											entityType={this.state.entityType} getEntities={this.getEntities.bind(this)}
 											hideForm={this.hideForm.bind(this)}/>

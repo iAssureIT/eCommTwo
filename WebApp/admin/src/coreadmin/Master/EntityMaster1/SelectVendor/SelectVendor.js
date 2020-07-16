@@ -32,7 +32,7 @@ class SelectVendor extends React.Component {
                 const user_id = localStorage.getItem("user_ID");
                 axios.get("/api/users/get/compid-locid/:user_id")
                     .then(response => {
-                         //localStorage.setItem("companyID", response.data.companyID);
+                        // localStorage.setItem("companyID", response.data.companyID);
                         localStorage.setItem("locationID", response.data.locationID);
                         var companyID  = response.data.companyID;
                         var locationID = response.data.locationID;

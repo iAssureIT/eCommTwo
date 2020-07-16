@@ -43,6 +43,7 @@ class LocationDetails extends Component {
 			'pincodeExists': true,
 			'openForm': false,
 			openFormIcon : false,
+			gmapsLoaded: false,
 			view : 'List',
 			'pathname': this.props.entity,
 			'entityID': this.props.match.params ? this.props.match.params.entityID : '',
@@ -91,15 +92,41 @@ class LocationDetails extends Component {
 		};
 		this.handleChange = this.handleChange.bind(this);
 		// this.handleChangeCountry = this.handleChangeCountry.bind(this);
-		// this.handleChangeState = this.handleChangeState.bind(this);
+	 	 this.handleChangeState = this.handleChangeState.bind(this);
 		// this.handleChangeDistrict = this.handleChangeDistrict.bind(this);
 		// this.handleChangeBlock = this.handleChangeBlock.bind(this);
 		this.camelCase = this.camelCase.bind(this)
 	}
+
+	initMap = () => {
+      this.setState({
+        gmapsLoaded: true,
+      })
+    }
+
+     getGoogleAPIKey(){
+        axios.get("/api/projectSettings/get/GOOGLE",)
+        .then((response) => {
+            this.setState({
+                googleAPIKey : response.data.googleapikey
+            },()=>{
+                window.initMap = this.initMap
+                const gmapScriptEl = document.createElement(`script`)
+                gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=`+this.state.googleAPIKey+`&libraries=places&callback=initMap`
+                document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl)
+            });
+        })
+        .catch((error) =>{
+            swal(error)
+        })
+    }
+
 	componentDidMount() {
+		this.getGoogleAPIKey()
 		this.getLocationType();
 		this.locationDetails();
 		this.getData();
+		this.getStates();
 		this.edit();
 		window.scrollTo(0, 0);
 		this.handleChange = this.handleChange.bind(this);
@@ -109,8 +136,10 @@ class LocationDetails extends Component {
 			'locationID': this.props.match.params ? this.props.match.params.locationID : '',
 		})
 
+		
 	}
 	componentWillReceiveProps(nextProps) {
+		this.getGoogleAPIKey()
 		this.edit();
 		this.getData();
 		this.setState({
@@ -300,50 +329,52 @@ class LocationDetails extends Component {
 	// 	});
 	// 	this.getStates(event.target.value.split('|')[0])
 	// }
-	// getStates(StateCode) {
-	// 	axios.get("http://locations2.iassureit.com/api/states/get/list/" + StateCode)
-	// 		.then((response) => {
-	// 			this.setState({
-	// 				stateArray: response.data
-	// 			})
-	// 			$('#Statedata').val(this.state.states);
-	// 		})
-	// 		.catch((error) => {
-	// 		})
-	// }
-	// handleChangeState(event) {
-	// 	this.setState({
-	// 		[event.target.name]: event.target.value
-	// 	});
-	// 	const target = event.target;
-	// 	const stateCode = $(target).val();
-	// 	const countryCode = $("#country").val();
-	// 	var entityID = this.state.entityID;
-	// 	axios.get('/api/entitymaster/get/one/' + entityID)
-	// 	.then((response)=>{
-	// 		console.log('loc', response.data.locations);
-	// 		var locStateCode = response.data.locations.filter((a)=>a.stateCode === stateCode.split("|")[0]);
-	// 		console.log('locStateCode', locStateCode, stateCode);
-	// 		if(locStateCode.length > 0){
-	// 			this.setState({
-	// 				'GSTIN'			: locStateCode[0].GSTIN,
-	// 				'GSTDocument'	: locStateCode[0].GSTDocument,
-	// 				'PAN'			: locStateCode[0].PAN,
-	// 				'PANDocument'	: locStateCode[0].PANDocument,
-	// 			})
-	// 		}else{
-	// 			this.setState({
-	// 				'GSTIN'			: "",
-	// 				'GSTDocument'	: [],
-	// 				'PAN'			: "",
-	// 				'PANDocument'	: [],
-	// 			})
-	// 		}
-	// 	})
-	// 	.catch((error)=>{})
-	// 	this.getDistrict(stateCode, countryCode);
+	getStates() {
+		axios.get("http://locations2.iassureit.com/api/states/get/list/IN")
+			.then((response) => {
+				this.setState({
+					stateArray: response.data
+				})
+				$('#Statedata').val(this.state.states);
+			})
+			.catch((error) => {
+			})
+	}
+	handleChangeState(event) {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+		const target = event.target;
+	    var designation = document.getElementById("states");
+    	var stateCode = designation.options[designation.selectedIndex].getAttribute("statecode");
+		//const stateCode = $(event.currentTarget).attr('statecode');
+		// const countryCode = $("#country").val();
+		var entityID = this.state.entityID;
+		axios.get('/api/entitymaster/get/one/' + entityID)
+		.then((response)=>{
+			console.log("response",response,stateCode);
+			var locStateCode = response.data[0].locations.filter((a)=>a.stateCode === stateCode);
+			console.log("locStateCode",locStateCode);
+			if(locStateCode.length > 0){
+				this.setState({
+					'GSTIN'			: locStateCode[0].GSTIN,
+					'GSTDocument'	: locStateCode[0].GSTDocument,
+					'PAN'			: locStateCode[0].PAN,
+					'PANDocument'	: locStateCode[0].PANDocument,
+				})
+			}else{
+				this.setState({
+					'GSTIN'			: "",
+					'GSTDocument'	: [],
+					'PAN'			: "",
+					'PANDocument'	: [],
+				})
+			}
+		})
+		.catch((error)=>{})
+		// this.getDistrict(stateCode, countryCode);
 
-	// }
+	}
 	// getDistrict(stateCode, countryCode) {
 	// 	axios.get("http://locations2.iassureit.com/api/districts/get/list/" + countryCode + "/" + stateCode)
 	// 		.then((response) => {
@@ -473,8 +504,8 @@ class LocationDetails extends Component {
 					'city': this.state.city,
 					'area': this.state.area,
 					'pincode': this.state.pincode,
-					'latitude':this.state.latLng.lat,
-					'longitude':this.state.latLng.lng,
+					'latitude':this.state.latLng ? this.state.latLng.lat : "",
+					'longitude':this.state.latLng ? this.state.latLng.lng : "",
 					'GSTDocument': this.state.GSTDocument,
 					'GSTIN': this.state.GSTIN ? this.state.GSTIN.toUpperCase(): this.state.GSTIN,
 					'PAN': this.state.PAN ? this.state.PAN.toUpperCase():this.state.PAN,
@@ -582,8 +613,8 @@ class LocationDetails extends Component {
 		if (locationID) {
 			axios.get('/api/entitymaster/get/one/' + entityID)
 				.then((response) => {
-					console.log("response",response);
 					var editData = response.data[0].locations.filter((a) => a._id === locationID);
+					console.log("editData",editData);
 					// this.getStates(editData[0].countryCode);
 					// this.getDistrict(editData[0].stateCode, editData[0].countryCode);
 					// this.getBlocks(editData[0].district, editData[0].stateCode, editData[0].countryCode);
@@ -744,8 +775,8 @@ class LocationDetails extends Component {
 					'district': this.state.district,
 					'city': this.state.city,
 					'area': this.state.area,
-					'latitude':this.state.latLng.lat,
-					'longitude':this.state.latLng.lng,
+					'latitude':this.state.latLng ? this.state.latLng.lat : "",
+					'longitude':this.state.latLng ? this.state.latLng.lng : "",
 					'pincode': this.state.pincode,
 					'GSTDocument': this.state.GSTDocument,
 					'PANDocument': this.state.PANDocument,
@@ -754,6 +785,7 @@ class LocationDetails extends Component {
 					
 				}
 			}
+			console.log("formValues",formValues);
 			axios.patch('/api/entitymaster/patch/updateSingleLocation', formValues)
 				.then((response) => {
 					this.setState({
@@ -813,35 +845,36 @@ class LocationDetails extends Component {
 
 			})
 	}
-	// handlePincode(event) {
-	// 	event.preventDefault();
-	// 	this.setState({
-	// 		[event.target.name]: event.target.value
-	// 	})
-	// 	console.log("event.target.name",event.target.value)
-	// 	if (event.target.value !== '') {
-	// 		axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
-	// 			.then((response) => {
-	// 				console.log("response",response)
-	// 				if ($("[name='pincode']").valid()) {
+	handlePincode(event) {
+		event.preventDefault();
+		this.setState({
+			[event.target.name]: event.target.value
+		})
+		console.log("event.target.name",event.target.value)
+		if (event.target.value !== '') {
+			axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
+				.then((response) => {
+					console.log("response",response)
+					if ($("[name='pincode']").valid()) {
 
-	// 					if (response.data[0].Status === 'Success') {
-	// 						this.setState({ pincodeExists: true })
-	// 					} else {
-	// 						this.setState({ pincodeExists: false })
-	// 					}
-	// 				} else {
-	// 					this.setState({ pincodeExists: true })
-	// 				}
+						if (response.data[0].Status === 'Success') {
+							this.setState({ pincodeExists: true })
+						} else {
+							this.setState({ pincodeExists: false })
+						}
+					} else {
+						this.setState({ pincodeExists: true })
+					}
 
-	// 			})
-	// 			.catch((error) => {
-	// 				this.setState({ pincodeExists: "NotAvailable" })
-	// 			})
-	// 	} else {
-	// 		this.setState({ pincodeExists: true })
-	// 	}
-	// }
+				})
+				.catch((error) => {
+					this.setState({ pincodeExists: "NotAvailable" })
+					console.log("No pincode Found")
+				})
+		} else {
+			this.setState({ pincodeExists: true })
+		}
+	}
 	GSTINBrowse(event) {
 		event.preventDefault();
 		var GSTDocument = [];
@@ -1112,6 +1145,8 @@ class LocationDetails extends Component {
           }
       }
 
+      console.log('state==>',state)
+
       this.setState({
         area : area,
         city : city,
@@ -1121,6 +1156,28 @@ class LocationDetails extends Component {
         pincode: pincode,
         stateCode:stateCode,
         countryCode:countryCode
+      },()=>{
+      	var entityID = this.props.match.params.entityID;
+		axios.get('/api/entitymaster/get/one/' + entityID)
+		.then((response)=>{
+			var locStateCode = response.data[0].locations.filter((a)=>a.stateCode == stateCode);
+			if(locStateCode.length > 0){
+				this.setState({
+					'GSTIN'			: locStateCode[0].GSTIN,
+					'GSTDocument'	: locStateCode[0].GSTDocument,
+					'PAN'			: locStateCode[0].PAN,
+					'PANDocument'	: locStateCode[0].PANDocument,
+				})
+			}else{
+				this.setState({
+					'GSTIN'			: "",
+					'GSTDocument'	: [],
+					'PAN'			: "",
+					'PANDocument'	: [],
+				})
+			}
+		})
+		.catch((error)=>{})
       })
 
        
@@ -1158,6 +1215,7 @@ class LocationDetails extends Component {
       // types: ['(cities)'],
       componentRestrictions: {country: "in"}
      }
+
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div className="row">
@@ -1210,7 +1268,7 @@ class LocationDetails extends Component {
 												<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12">
 													<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 														<div className="col-lg-6 col-md-6 col-sm-6 col-sm-6 locationTabs">
-															<h4 className="MasterBudgetTitle"><i className="fa fa-map-marker" aria-hidden="true"></i> Location Details</h4>
+															<h4><i className="fa fa-map-marker" aria-hidden="true"></i> Location Details</h4>
 														</div>
 														<div className="col-lg-6 col-md-6 col-sm-6 col-sm-6 locationTabs">
 															<div className="button4  pull-right" onClick={this.openForm.bind(this)}>
@@ -1230,7 +1288,7 @@ class LocationDetails extends Component {
 															<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
 																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Location Type <sup className="astrick">*</sup></label>
+																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Location Type <i className="astrick">*</i></label>
 																		<div>
 																		<select className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12 errorinputText" value={this.state.locationType} ref="locationType" name="locationType" id="locationType" onChange={this.handleChange} required>
 																			<option value="" disabled>--Select Location Type--</option>
@@ -1254,8 +1312,9 @@ class LocationDetails extends Component {
 																		<input id="Line2" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine2} ref="addressLine2" name="addressLine2" onChange={this.handleChange} />
 																	</div>
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address Line 2 <sup className="astrick">*</sup></label>
+																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address Line 2 <i className="astrick">*</i></label>
 																		{/*<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />*/}
+																		 {this.state.gmapsLoaded ?
 																		 <PlacesAutocomplete
 								                                        value={this.state.addressLine1}
 								                                        onChange={this.handleChangePlaces}
@@ -1297,10 +1356,49 @@ class LocationDetails extends Component {
 								                                          </div>
 								                                        )}
 								                                      </PlacesAutocomplete>
+								                                      :
+								                                      <input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} placeholder="GOOGLE API NOT FOUND" ref="addressLine1" name="addressLine1" onChange={this.handleChange} />
+								                                  	  }
 																	</div>
 																	
 																</div>
 																
+																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+																{/* {this.state.gmapsLoaded ?
+																	null
+																: */}
+																	<div>
+																		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
+																			<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">State <i className="astrick">*</i> {this.props.typeOption == 'Local' ? <i className="astrick">*</i> : null}
+																			</label>
+																			<select id="states" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
+																				ref="states" value={this.state.states} name="states" onChange={this.handleChangeState} >
+																				<option selected={true}>-- Select --</option>
+																				{
+																					this.state.stateArray && this.state.stateArray.length > 0 ?
+																						this.state.stateArray.map((stateData, index) => {
+																							return (
+																								<option key={index} statecode={stateData.stateCode}>{this.camelCase(stateData.stateName)}</option>
+																							);
+																						}
+																						) : ''
+																				}
+																			</select>
+																		</div>
+																		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
+																			<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">City 
+																			</label>
+																			<input type="text" id="city" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.city} ref="city" name="city" onChange={this.handleChange} />
+																		</div>
+																		<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
+																			<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Pincode <i className="astrick">*</i>
+																			</label>
+																			<input maxLength="6" onChange={this.handlePincode.bind(this)} type="text" id="pincode" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincode} ref="pincode" name="pincode" onKeyDown={this.keyPressNumber.bind(this)} />
+																		</div>
+																		<label className="errorMsg">{this.state.pincodeExists  ? null : "Please Enter valid pincode" }</label>
+																	</div>
+																{/* } */}
+																</div>
 																<div className="form-margin col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">GSTIN<i className="astrick">*</i>
@@ -1448,29 +1546,31 @@ class LocationDetails extends Component {
 												</div>
 											</form>
 										</div>
-										{/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-											<div className="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right">
+										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<div className="col-lg-2 col-md-2 col-sm-6 col-xs-12 textAlignCenter  pull-right">
 												<i className="fa fa-th fa-lg btn viewBtn" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'Grid')} onChange={this.handleChange} aria-hidden="true"></i>&nbsp;&nbsp;
-												<i className="fa fa-th-list fa-lg btn viewBtn btnactive" name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'List')} onChange={this.handleChange} aria-hidden="true"></i>
+												<i className="fa fa-th-list fa-lg btn viewBtn btnactive " name="view" ref="view" value={this.state.view} onClick={this.showView.bind(this,'List')} onChange={this.handleChange} aria-hidden="true"></i>
 											</div>
-										</div> */}
+										</div>
 
-										{/* {this.state.view === 'Grid' ? */}
-										 <IAssureTable 
-					                      tableHeading={this.state.tableHeading}
-					                      dataCount={this.state.entityCount}
-					                      tableData={this.state.RecordsTable}
-					                      tableObjects={this.state.tableObjects}
-					                      getData={this.getData.bind(this)}
-					                      id={"id"}
-					                      tableName={"Location"}
-					                      />
-										 {/* :
+										{this.state.view === 'Grid' ?
+										<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding30">
+											<IAssureTable 
+						                      tableHeading={this.state.tableHeading}
+						                      dataCount={this.state.entityCount}
+						                      tableData={this.state.RecordsTable}
+						                      tableObjects={this.state.tableObjects}
+						                      getData={this.getData.bind(this)}
+						                      id={"id"}
+						                      tableName={"Location"}
+						                    />
+					                    </div>
+										 :
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											{this.state.locationarray && this.state.locationarray.length > 0 ?
 												<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 													<div className="col-lg-12 col-md-12 col-sm-12 col-sm-12 foothd">
-														<h4 className="MasterBudgetTitle">Location Details</h4>
+														<h4>Location Details</h4>
 													</div>
 													<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" style={{"display" : "block"}}>
 														{this.state.locationarray && this.state.locationarray.length > 0 ?
@@ -1486,6 +1586,9 @@ class LocationDetails extends Component {
 																			<ul className="col-lg-10 col-md-10 col-sm-10 col-xs-10 palfclr addrbox">
 																				<li>{Suppliersdata.locationType}</li>
 																				<li>{Suppliersdata.addressLine1}</li>
+																				<li>{Suppliersdata.city ? Suppliersdata.city :""}</li>
+																				<li>{Suppliersdata.state ? Suppliersdata.state:""}</li>
+																				<li>{Suppliersdata.pincode?Suppliersdata.pincode:""}</li>
 																				{Suppliersdata.GSTIN || Suppliersdata.PAN ?
 																					<li>
 																					<button type="button" className="btn btn-link showMoreBtn" data-toggle="modal" data-target={"#exampleModal"+index}>
@@ -1605,6 +1708,7 @@ class LocationDetails extends Component {
 																								<a href={'/' + this.state.pathname + "/location-details/" + this.props.match.params.entityID + "/" + Suppliersdata._id}><i className="fa fa-pencil penmrleft" aria-hidden="true"></i>&nbsp;&nbsp;Edit</a>
 																							</li>
 																							<li name={index} data-id={Suppliersdata._id} onClick={this.deleteEntity.bind(this)} >
+																								{/*<span onClick={this.locationDelete.bind(this)} id={Suppliersdata._id}>*/}
 																								<a><i className="fa fa-trash-o" aria-hidden="true"></i> &nbsp; Delete</a>
 																							</li>
 																						</ul>
@@ -1624,7 +1728,7 @@ class LocationDetails extends Component {
 												:
 												null
 											}
-										</div> */}
+										</div>
 									 }
 									</div>
 								</section>

@@ -75,18 +75,6 @@
     font-weight: bold;
 
 }
-.contactIcon {
-    font-size: 15px;
-    margin-top: 10px;
-    border-radius: 50%;
-    text-align: center;
-    font-weight: bold;
-    display: inline-block;
-    border-radius: 60px;
-    box-shadow: 0px 0px 2px #000;
-    padding: 0.5em 0.5em
-
-}
 .dotsContainer {
     font-size: 13px;
     padding: 0px 0px 0px 0px;
@@ -133,7 +121,12 @@
     box-shadow: 0px 0px 2px #000;
     padding: 0.5em 0.7em
 }
-
+.contactIcon{
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 0px 0px 2px #000;
+    padding: 0.5em 0.5em
+}
 .levelCss{
     padding:0;
 }
