@@ -4,7 +4,7 @@ import './bill.css';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
-import jQuery, { isNumeric } from 'jquery';
+import jQuery, { isNumeric, data } from 'jquery';
 import $ from 'jquery';
 import { countBy } from 'underscore';
 import { connect } from 'react-redux';
@@ -111,6 +111,7 @@ export class Bill extends React.Component {
 			var country = '';
 		
 			if(response.data.locations){
+				response.data.locations[0].pincode = 412207;
 				franchiseLocation = response.data.locations;
 				gstNo = franchiseLocation[0].GSTIN;
 				city = franchiseLocation[0].city;
@@ -120,6 +121,7 @@ export class Bill extends React.Component {
 			this.setState({
 				"franchise_id": response.data._id,
 				"gstNo"       : gstNo,
+				"deliveryLocation" : franchiseLocation,
 				"franchiseLocation" : city +','+state+','+country,
 				
 			},()=>{
@@ -268,7 +270,10 @@ export class Bill extends React.Component {
 		var productCode = '';
 		var productName = '';
 		var completeProductName = '';
-		var id  = 0;        
+		var id  = 0;  
+		var originalPrice= 0;    
+		var discountPercent = 0;  
+		var discountedPrice = 0;
 		var productDatalist = $(".productDatalist").find("option[value='" + name + "']");
 		$(".productDatalist option").filter(function(index,item){
 			if(item.value == event.target.value){
@@ -278,6 +283,9 @@ export class Bill extends React.Component {
 				unit         = $(item).data('unit');
 				productName  = $(item).data('productname');
 				id           = $(item).data('id');
+				originalPrice = $(item).data('originalprice');
+				discountPercent = $(item).data('discountpercent');
+				discountedPrice = $(item).data('discountedprice');
 				obj.itemCode = itemCode;
 				obj.productCode = productCode;
 				obj.productName = productName;
@@ -288,11 +296,11 @@ export class Bill extends React.Component {
 		console.log("productName",productName);
 		if(productName){
 			this.setState({ 
-				"ItemCode"         : itemCode,
-				"ProductCode"      : productCode,
-				"Units"            : unit,
-				"unitOfMeasurement": unit,
-				"product"          : productName,
+				// "ItemCode"         : itemCode,
+				// "ProductCode"      : productCode,
+				// "Units"            : unit,
+				// "unitOfMeasurement": unit,
+				// "product"          : productName,
 				"completeProductName" : completeProductName,
 			 },()=>{
 				 console.log(this.state.completeProductName);
@@ -304,7 +312,7 @@ export class Bill extends React.Component {
 			   });
 		}
 
-		this.addtocart(productCode,id,unit)
+		this.addtocart(productCode,id,unit,originalPrice,discountPercent,discountedPrice)
 	}
 
 	getCartData(){
@@ -431,7 +439,10 @@ export class Bill extends React.Component {
 	  }
 
 	addtocart(productCode,id,unit,rate,discountPercent,discountedPrice) {
-		console.log("addtocart");
+		// console.log("addtocart",productCode,id,unit,rate,discountPercent,discountedPrice);
+		// this.setState({
+		// 	completeProductName : ''
+		// })
 		var productCode = productCode;
 		const userid = localStorage.getItem('user_ID');
 		var clr = '';
@@ -463,7 +474,6 @@ export class Bill extends React.Component {
 		  // this.getProductData(productCode, clr);
 		  axios.get("/api/products/get/productcode/" + productCode)
 			.then((response) => {
-			  console.log('getProductData', response.data);
 			  let mymap = new Map();
 			  var colorFilter = response.data.filter(x => {
 				return x.color === clr && x.availableQuantity > 0
@@ -608,7 +618,7 @@ export class Bill extends React.Component {
 
     proceedToCheckout(event){
 		event.preventDefault();
-		console.log("proceedToCheckout","proceedToCheckout");
+		// console.log("proceedToCheckout","proceedToCheckout");
 		const userid = localStorage.getItem('user_ID');
         event.preventDefault();
         var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i)=>{
@@ -654,6 +664,23 @@ export class Bill extends React.Component {
 					"vendor_ID": a.productDetail.vendor_ID
 				}
 			})
+			// deliveryAddress: {name: "Madhuri Ghute", email: "madhu1995ghute@gmail.com",…}
+// addType: null
+// addressLine1: "Wagholi, Pune, Maharashtra, India"
+// addressLine2: "Kharadi"
+// city: "Pune"
+// country: "India"
+// countryCode: "IN"
+// district: "Pune"
+// email: "madhu1995ghute@gmail.com"
+// latitude: 18.5807719
+// longitude: 73.9787063
+// mobileNumber: "8390541917"
+// name: "Madhuri Ghute"
+// pincode: "412207"
+// state: "Maharashtra"
+// stateCode: null
+
 			var orderData = {
 				franchise_id : this.state.franchise_id,
 				user_ID: localStorage.getItem('user_ID'),
@@ -663,8 +690,8 @@ export class Bill extends React.Component {
 				cartTotal: this.props.recentCartData[0].cartTotal,
 				discount: this.props.recentCartData[0].discount,
 				cartQuantity: this.props.recentCartData[0].cartQuantity,
-				deliveryAddress: this.props.recentCartData[0].deliveryAddress,
-				paymentMethod: this.props.recentCartData[0].paymentMethod
+				deliveryAddress: this.state.deliveryLocation,
+				paymentMethod: "Cash On Delivery"
 			}
 			// console.log("Order Data:--->",orderData);
 			axios.post('/api/orders/post', orderData)
@@ -692,7 +719,7 @@ export class Bill extends React.Component {
 				})
 			
             this.props.history.push('/checkout');
-        // }
+        //  }
 	}
 
 
@@ -788,8 +815,9 @@ export class Bill extends React.Component {
 										{
 											this.state.productArray && this.state.productArray.length > 0 ?
 												this.state.productArray.map((data, i)=>{
+
 													return(
-														<option key={i} value={data.productName} data-id={data._id} data-itemcode={data.itemCode} data-productcode={data.productCode} data-unit={data.unit} data-productname={data.productName}>{data.productName} - {data.productCode} - {data.itemCode}</option>
+														<option key={i} value={data.productName} data-id={data._id} data-originalprice={data.originalPrice} data-discountedprice={data.discountedPrice} data-discountpercent={data.discountPercent} data-itemcode={data.itemCode} data-productcode={data.productCode} data-unit={data.unit} data-productname={data.productName}>{data.productName} - {data.productCode} - {data.itemCode}</option>
 													);
 												})
 											:
