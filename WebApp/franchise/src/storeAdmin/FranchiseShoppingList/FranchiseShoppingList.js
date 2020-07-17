@@ -52,7 +52,7 @@ export default class FranchiseShoppingList extends React.Component {
 
 	getFranchiseDetails(){
 		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
-		axios.post('/api/entitymaster/get/one/comapanyDetail/',{"companyID":userDetails.companyID})
+		axios.get('/api/entitymaster/getCompany/'+userDetails.companyID)
         .then((response) => {
           this.setState({
             "selectedFranchise": response.data._id,
