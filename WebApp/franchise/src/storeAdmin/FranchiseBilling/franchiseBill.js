@@ -111,6 +111,7 @@ export class Bill extends React.Component {
 			var city = '';
 			var state = '';
 			var country = '';
+			var addressLine2 = '';
 		
 			if(response.data.locations){
 				response.data.locations[0].pincode = 412207;
@@ -119,12 +120,14 @@ export class Bill extends React.Component {
 				city = franchiseLocation[0].city;
 				state = franchiseLocation[0].state;
 				country = franchiseLocation[0].country;
+				addressLine2 = franchiseLocation[0].addressLine2;
 			}
 			this.setState({
 				"franchise_id": response.data._id,
 				"gstNo"       : gstNo,
 				"deliveryLocation" : franchiseLocation,
 				"franchiseLocation" : city +','+state+','+country,
+				"pos"       : addressLine2
 				
 			},()=>{
 		   })
@@ -676,23 +679,23 @@ export class Bill extends React.Component {
 					"vendor_ID": a.productDetail.vendor_ID
 				}
 			})
-			var deliveryLocation = {
-				"addType": null,
-				"addressLine1": "Wagholi, Pune, Maharashtra, India",
-				"addressLine2": "Kharadi",
-				"city": "Pune",
-				"country": "India",
-				"countryCode": "IN",
-				"district": "Pune",
-				"email": "madhu1995ghute@gmail.com",
-				"latitude": 18.5807719,
-				"longitude": 73.9787063,
-				"mobileNumber": "8390541917",
-				"name": "Madhuri Ghute",
-				"pincode": "412207",
-				"state": "Maharashtra",
-				"stateCode": null
-			}
+			// var deliveryLocation = {
+			// 	"addType": null,
+			// 	"addressLine1": "Wagholi, Pune, Maharashtra, India",
+			// 	"addressLine2": "Kharadi",
+			// 	"city": "Pune",
+			// 	"country": "India",
+			// 	"countryCode": "IN",
+			// 	"district": "Pune",
+			// 	"email": "madhu1995ghute@gmail.com",
+			// 	"latitude": 18.5807719,
+			// 	"longitude": 73.9787063,
+			// 	"mobileNumber": "8390541917",
+			// 	"name": "Madhuri Ghute",
+			// 	"pincode": "412207",
+			// 	"state": "Maharashtra",
+			// 	"stateCode": null
+			// }
 
 			var orderData = {
 			    billNumber : this.state.billNumber,
@@ -704,7 +707,7 @@ export class Bill extends React.Component {
 				cartTotal: total,
 				discount: this.props.recentCartData[0].discount,
 				cartQuantity: this.props.recentCartData[0].cartQuantity,
-				deliveryAddress: deliveryLocation,
+				deliveryAddress: this.state.deliveryLocation[0],
 				paymentMethod: "Cash On Delivery",
 				status       : "Paid"
 			}
@@ -930,7 +933,7 @@ export class Bill extends React.Component {
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(new Date()).format(" hh:mm a")}</small></div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: abc</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: {this.state.pos}</small></div>
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">GSTIN: {this.state.gstNo}</small></div>
 								</div>
 								<div className="row" style={{"padding": "15px"}}> 

@@ -28,7 +28,8 @@ export class printBill extends React.Component {
 				cartData              : [],
 				totalAmt              : 0,
 				billNumber            : 0,
-				orderData             : []
+                orderData             : [],
+                pos                   : ''
           };
 	}
 	
@@ -57,7 +58,8 @@ export class printBill extends React.Component {
 			var gstNo = '';
 			var city = '';
 			var state = '';
-			var country = '';
+            var country = '';
+            var addressLine2 = '';
 		
 			if(response.data.locations){
 				response.data.locations[0].pincode = 412207;
@@ -65,13 +67,15 @@ export class printBill extends React.Component {
 				gstNo = franchiseLocation[0].GSTIN;
 				city = franchiseLocation[0].city;
 				state = franchiseLocation[0].state;
-				country = franchiseLocation[0].country;
+                country = franchiseLocation[0].country;
+                addressLine2 = franchiseLocation[0].addressLine2;
 			}
 			this.setState({
 				"franchise_id": response.data._id,
 				"gstNo"       : gstNo,
 				"deliveryLocation" : franchiseLocation,
-				"franchiseLocation" : city +','+state+','+country,
+                "franchiseLocation" : city +','+state+','+country,
+                "pos"       : addressLine2
 				
 			},()=>{
                 console.log("state",this.state)
@@ -88,21 +92,18 @@ export class printBill extends React.Component {
         w.document.write($('.viewBillDiv').html());
         w.print();
         w.close();
+        // var mywindow = window.open('', 'new div', 'height=400,width=600');
+        // mywindow.document.write('<html><head><title></title>');
+        // mywindow.document.write('<link rel="stylesheet" href="./bill.css" type="text/css" />');
+        // mywindow.document.write('</head><body >');
+        // mywindow.document.write($('.viewBillDiv').html());
+        // mywindow.document.write('</body></html>');
+        // mywindow.document.close();
+        // mywindow.focus();
+        // setTimeout(function(){mywindow.print();},1000);
+        // mywindow.close();
     }
-    // printTable(event) {
-	// 	// event.preventDefault();
-	// 	$('#ActionContent').hide();
-	// 	$('.modal').hide();
-	// 	var DocumentContainer = document.getElementsByClassName('viewBillDiv');
-	// 	var WindowObject = window.open('', 'PrintWindow', 'height=500,width=600');
-	// 	WindowObject.document.write(DocumentContainer.innerHTML);
-	// 	WindowObject.document.close();
-	// 	WindowObject.focus();
-	// 	WindowObject.print();
-	// 	WindowObject.close();
-	// }
-	
-
+   
 	render() {
 		const cartItems = this.props.recentCartData;
 		let total    = 0
@@ -132,7 +133,7 @@ export class printBill extends React.Component {
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(new Date()).format(" hh:mm a")}</small></div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: abc</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: {this.state.pos}</small></div>
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">GSTIN: {this.state.gstNo}</small></div>
 								</div>
 								<div className="row" style={{"padding": "15px"}}> 

@@ -80,7 +80,7 @@ exports.insert_orders = (req,res,next)=>{
                       function saveOrderdata(allocatedToFranchise){
                         // console.log("allocatedToFranchise==========",allocatedToFranchise);
                         // console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
-                        var status = req.body.status ? req.body.status : "UnPaid";
+                        var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
                         var BillNumber = req.body.billNumber ? req.body.billNumber : 0;
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),
@@ -94,7 +94,7 @@ exports.insert_orders = (req,res,next)=>{
                         "currency"             : 'inr',
                         "cartTotal"            : req.body.cartTotal,
                         "discount"             : req.body.discount,
-                        "status"               : "UnPaid",
+                        "status"               : status,
                         "createdAt"            : new Date(),
                         "products"             : req.body.cartItems,
                         "paymentMethod"        : req.body.paymentMethod,
@@ -315,6 +315,7 @@ exports.insert_orders = (req,res,next)=>{
         }else{
           console.log("website model is not franchise model");
           //if website model !== franchiseModel
+           var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
           const order = new Orders({
             _id               : new mongoose.Types.ObjectId(),
           "orderID"           : Math.round(new Date().getTime()/1000),
@@ -325,7 +326,7 @@ exports.insert_orders = (req,res,next)=>{
           "currency"          : 'inr',
           "cartTotal"         : req.body.cartTotal,
           "discount"          : req.body.discount,
-          "status"            : "UnPaid",
+          "status"            : status,
           "createdAt"         : new Date(),
           "products"          : req.body.cartItems,
           "paymentMethod"     : req.body.paymentMethod,
