@@ -404,24 +404,26 @@ exports.update_cart_item = (req, res, next)=>{
 };
 //generate bill number 
 exports.generate_bill_number = (req,res,next)=>{
-    Carts.findOne()
-        .sort('-id')
+    Carts.count()
+        // .sort('-id')
         .exec()
         .then(cartData =>{
+            console.log("cartData",cartData);
             var maxId = 1;
-            Orders.findOne()
-            .sort('-id')
+            Orders.count()
+            // .sort('-id')
             .exec()
             .then(orderData =>{
-                if(cartData.length >= orderData.length) {
-                   maxId = cartData.length + 1
+                console.log("orderData",orderData);
+                if(cartData > orderData) {
+                   maxId = cartData + 1;
+                }else if(orderData > cartData){
+                    maxId = orderData + 1;
+                }else if(orderData == cartData){
+                    maxId = orderData + 1;
+                }else{
+                    maxId = 1;
                 }
-
-                if(orderData.length >= cartData.length) {
-                   maxId = orderData.length + 1
-                }
-
-
                 res.status(200).json(maxId); 
                     
             })
@@ -430,11 +432,6 @@ exports.generate_bill_number = (req,res,next)=>{
                     error: err
                 });
             });
-
-             res.status(200).json(maxId); 
-            // res.status(200).json(cartData); 
-            //     console.log("cartData",cartData);
-
         })
         .catch(err =>{
             res.status(500).json({

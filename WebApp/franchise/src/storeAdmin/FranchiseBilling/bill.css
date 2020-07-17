@@ -327,9 +327,18 @@
 }
 
 .printbtn{
-  font-size: -webkit-xxx-large;
-    border: 1px solid darkgray;
-    color: gray;
+  font-size: xx-large;
+  /* border: 1px solid darkgray; */
+  color: gray;
+}
+
+.viewBillBtns{
+  width: 80px;
+  height: 80px;
+  color:white;
+  background-color: #039be5 !important;
+  line-height: 60px;
+  text-align: center;
 }
 
 @media print {

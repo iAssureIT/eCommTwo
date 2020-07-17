@@ -178,7 +178,7 @@ export class Bill extends React.Component {
 		axios.get("/api/category/get/list/"+sectionId)
         .then((response)=>{
             if(response.data){
-               console.log("section SectionCategoriesData===",response.data); 
+            //    console.log("section SectionCategoriesData===",response.data); 
               this.setState({ 
 				SectionCategoriesData : response.data
               })
@@ -194,7 +194,7 @@ export class Bill extends React.Component {
 		axios.get("/api/products/get/listbycategory/"+categoryId)
         .then((response)=>{
             if(response.data){
-               console.log("product list by category===",response.data); 
+            //    console.log("product list by category===",response.data); 
               this.setState({ 
 				ProductList : response.data
               })
@@ -210,7 +210,7 @@ export class Bill extends React.Component {
 		axios.get("/api/products/get/list/"+sectionId)
         .then((response)=>{
             if(response.data){
-               console.log("product list by section ===",response.data); 
+            //    console.log("product list by section ===",response.data); 
               this.setState({ 
 				ProductList : response.data
               })
@@ -231,7 +231,7 @@ export class Bill extends React.Component {
 		axios.get("api/products/get/search/"+value)
         .then((response)=>{
             if(response.data){
-               console.log("product list by search ===",response.data); 
+            //    console.log("product list by search ===",response.data); 
               this.setState({ 
 				ProductList : response.data
               })
@@ -298,7 +298,7 @@ export class Bill extends React.Component {
 				// this.addtocart(productCode,id)
 			}
 		});
-		console.log("productName",productName);
+		
 		if(productName){
 			this.setState({ 
 				// "ItemCode"         : itemCode,
@@ -308,7 +308,7 @@ export class Bill extends React.Component {
 				// "product"          : productName,
 				"completeProductName" : completeProductName,
 			 },()=>{
-				 console.log(this.state.completeProductName);
+				
 			 });
 		}else{
 			this.setState({ 
@@ -324,7 +324,7 @@ export class Bill extends React.Component {
         const userid = localStorage.getItem('user_ID');
         axios.get("/api/carts/get/cartproductlist/"+userid)
           .then((response)=>{ 
-			console.log('cartData', response.data);
+			// console.log('cartData', response.data);
 			var totalAmt = 0;
 			if(response.data){
 				totalAmt = response.data.reduce(function(prev,current){
@@ -346,10 +346,8 @@ export class Bill extends React.Component {
 	}
 	
 	editCart(id){
-		console.log("editCart",id);
 		var showDiscount = false;
 		this.props.recentCartData[0].cartItems.map((data,index)=>{
-			console.log("data",data.productDetail._id);
 			if(data._id == id){
 				if(data.rate == 0){
 					showDiscount = true;
@@ -634,7 +632,6 @@ export class Bill extends React.Component {
 		let total    = 0
 		 if(this.props.recentCartData.length > 0){
 			total = this.props.recentCartData[0].cartItems.reduce((prev,next) => prev + next.subTotal,0);
-			console.log("totalAmt",total);
 		 }else{
 			total = 0;
 		 }

@@ -35,10 +35,8 @@ export class printBill extends React.Component {
 	
 	componentDidMount() {
         this.getFranchiseDetails();
-        console.log("this.props.match.params",this.props.match.params);
         axios.get("/api/orders/get/one/" + this.props.match.params.orderId)
           .then((response) => {
-            console.log('orderData', response.data)
             this.setState({
               orderData: response.data,
               billNumber :response.data.billNumber
@@ -51,7 +49,6 @@ export class printBill extends React.Component {
 
     getFranchiseDetails(){
         var userDetails = JSON.parse(localStorage.getItem('userDetails'));
-        console.log("companyID",userDetails.companyID);
 		axios.get('/api/entitymaster/getCompany/'+userDetails.companyID)
         .then((response) => {
 			var franchiseLocation = '';
@@ -78,7 +75,6 @@ export class printBill extends React.Component {
                 "pos"       : addressLine2
 				
 			},()=>{
-                console.log("state",this.state)
 		   })
           
 	      })
@@ -109,7 +105,6 @@ export class printBill extends React.Component {
 		let total    = 0
 		 if(this.props.recentCartData.length > 0){
 			total = this.props.recentCartData[0].cartItems.reduce((prev,next) => prev + next.subTotal,0);
-			console.log("totalAmt",total);
 		 }else{
 			total = 0;
 		 }
@@ -119,7 +114,11 @@ export class printBill extends React.Component {
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<div className="col-lg-6 col-lg-offset-3 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
+                        <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+                            <a class="btn btn-info viewBillBtns" href="/franchise-billing">New Bill</a>
+                            <button class="btn btn-info printbtn viewBillBtns fa fa-print" onClick={this.printTable.bind(this)}></button>
+                        </div>
+							<div className="col-lg-6 col-lg-offset-1 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
 							    <div className="row billLogoDiv">
 									<img className="logoImg" src="../../images/logoUnimandai.png"/>
 									<div className="address">{this.state.franchiseLocation}</div>
@@ -154,7 +153,6 @@ export class printBill extends React.Component {
 											{
                                                 this.state.orderData.products && this.state.orderData.products.length > 0 ?
                                                     this.state.orderData.products.map((data, index) => {
-													console.log("recentCartData",data,index);
 													data.subTotal = data.discountedPrice * data.quantity;
 													return(
 														<tr>
@@ -176,7 +174,7 @@ export class printBill extends React.Component {
 											</tbody>
 											<tfoot>
 												<tr>
-													{this.props.recentCartData.length > 0 ?
+													{this.state.orderData ?
 														<td colspan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
 														:
 														<td colspan="4">Items/Qty 0</td>
@@ -186,7 +184,7 @@ export class printBill extends React.Component {
 												</tr>
 												<tr>
 												<td colspan="4"></td>
-												<td className="totalNetAmount" colspan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
+												<td className="totalNetAmount" colspan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
 												</tr>
 											</tfoot>
 											</table>
@@ -202,10 +200,10 @@ export class printBill extends React.Component {
 								</div>
 		
 							</div> 
-                            <div className="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                            {/* <div className="col-lg-2 col-md-3 col-sm-4 col-xs-4">
                                 <i class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn printbtn  fa fa-print" style={{fontSize:"larger"}} onClick={this.printTable.bind(this)}></i>
                                 
-                            </div>
+                            </div> */}
 							</div>
 						 {/* </div> */}
 					</div>
