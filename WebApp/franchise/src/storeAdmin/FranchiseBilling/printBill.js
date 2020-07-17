@@ -1,5 +1,6 @@
 import React from 'react';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
+import Barcode from 'react-barcode' ;
 import './bill.css';
 import swal from 'sweetalert';
 import axios from 'axios';
@@ -92,7 +93,7 @@ export class printBill extends React.Component {
         // mywindow.document.write('<html><head><title></title>');
         // mywindow.document.write('<link rel="stylesheet" href="./bill.css" type="text/css" />');
         // mywindow.document.write('</head><body >');
-        // mywindow.document.write($('.viewBillDiv').html());
+        // mywindow.document.write($('.billPage').html());
         // mywindow.document.write('</body></html>');
         // mywindow.document.close();
         // mywindow.focus();
@@ -113,7 +114,7 @@ export class printBill extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 billPage">
                         <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                             <a class="btn btn-info viewBillBtns" href="/franchise-billing">New Bill</a>
                             <button class="btn btn-info printbtn viewBillBtns fa fa-print" onClick={this.printTable.bind(this)}></button>
@@ -125,7 +126,7 @@ export class printBill extends React.Component {
 								</div>
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span class="barcode">{this.state.billNumber}</span></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><span class="barcode">{this.state.billNumber}</span></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
 								</div>
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(new Date()).format("DD MMM YYYY")}</small></div>

@@ -341,7 +341,15 @@
   text-align: center;
 }
 
+svg{
+  max-width: 38px !important;
+    max-height: 34px !important;
+}
+
 @media print {
+  table{
+    border:1px solid red;
+  }
   .logoDiv{
     width: 10.666667% !important;
    }

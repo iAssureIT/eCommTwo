@@ -1,4 +1,5 @@
 import React from 'react';
+import Barcode from 'react-barcode' ;
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import './bill.css';
 import swal from 'sweetalert';
@@ -36,10 +37,11 @@ export class Bill extends React.Component {
 				rate   : 0,
 				showDiscount :true,
 				shippingtime          : "4 PM-5 PM",
-				deliveryLocation      : []
-          };
+				deliveryLocation      : [],
+				barcode : ''
+		  };
+		
 	}
-	
 	componentDidMount(){
 		this.props.fetchCartData();
 		this.getCategories();
@@ -258,9 +260,19 @@ export class Bill extends React.Component {
 	generateBillNumber(){
 		axios.get("/api/carts/get/generateBillNumber/")
           .then((response)=>{ 
+				
+				// const barcode = useBarcode({
+				// 	value: response.data,
+				// 	options: {
+				// 		  background: '#ccffff',
+				// 	}
+				// });
+				console.log("barcode",response.data);
 				this.setState({
-					"billNumber" : response.data
-				})
+					"billNumber" : response.data,
+					// "barcode"    : barcode
+   				});
+				
 		  })
 		  .catch((error) => {
 			
@@ -785,6 +797,8 @@ export class Bill extends React.Component {
 			total = 0;
 		 }
 		
+		
+		
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
@@ -923,7 +937,9 @@ export class Bill extends React.Component {
 								</div>
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span class="barcode">{this.state.billNumber}</span></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><span class="barcode">{this.state.billNumber}</span></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright">
+								   <Barcode value={this.state.billNumber}/>
+								   </div>
 								</div>
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(new Date()).format("DD MMM YYYY")}</small></div>

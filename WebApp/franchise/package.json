@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@createnextapp/react-barcode": "^1.1.1",
     "@material-ui/core": "^4.4.0",
     "@material-ui/icons": "^4.2.1",
     "@syncfusion/ej2-react-dropdowns": "^17.3.34",
@@ -21,6 +22,7 @@
     "jQuery": "^1.7.4",
     "jquery": "^3.5.1",
     "jquery-validation": "^1.19.1",
+    "jsbarcode": "^3.11.0",
     "l": "^0.6.0",
     "moment": "^2.24.0",
     "mui-datatables": "^2.10.1",
@@ -28,6 +30,7 @@
     "owl.carousel": "^2.3.4",
     "rc-time-picker": "^3.7.3",
     "react": "^16.8.6",
+    "react-barcode": "^1.4.0",
     "react-chartjs-2": "^2.9.0",
     "react-ckeditor-component": "^1.1.0",
     "react-dom": "^16.8.6",
