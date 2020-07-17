@@ -359,3 +359,14 @@
   .loginSignUpModalContent{
     height: 600px;
   }
+.loginSignupBtn{
+  text-align: right;
+}
+@media only screen and (max-device-width: 480px) {
+    .loginSignupBtn{
+      text-align: center;
+    }
+    .signuplink a{
+      font-size:10px;
+    }
+}

@@ -751,17 +751,20 @@ background-color: transparent !important;
 /* css for mobile */
 @media only screen and (max-device-width: 480px) {
     .customnNavButton .owl-nav button.owl-next{
-        margin-left: 302px !important;
+        margin-left: 320px !important;
         margin-top: -37px !important;
         opacity: 1;
+    }
+    .customnNavButton .owl-nav button.owl-prev{
+        margin-left: 9px;
     }
     .productImg{
         height: auto;
     }
-    .card{
-        margin-left: 25px;
+    .blockCard{
+        margin-left: 50px;
     }
-}
+} 
 
 /* css for iPad */
 @media only screen 

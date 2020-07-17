@@ -408,9 +408,7 @@ loginPage(event){
       })
   }
   removeModalBackDrop(event){
-    // console.log("inside remove backdrop");
     $(".modal-backdrop").hide();
-    // $("#pincodeModal").css("display", "block");
   }
   responsiveNav(event){
     // console.log("inside responsive nav");
@@ -485,12 +483,14 @@ loginPage(event){
                           {user_ID 
                             ? 
                                 <li className="dropdown">
-                                    <span className="  "><a href="" className="faIcon" area-hidden ="true">                         
-                                    <img src={loginActiveIconImg} className="icon-cart"></img>
-                                </a></span>
+                                    <span className="  ">
+                                      <a href="javascript:void(0);" className="faIcon">                         
+                                          <img src={loginActiveIconImg} className="icon-cart"></img>
+                                      </a>
+                                    </span>
                                     <ul className="col-lg-3 dropdown-menu list-menu">                                        
                                         <li className="col-lg-12 NOpadding">
-                                            <a href="/">
+                                            <a href="">
                                             <div className="row">
                                                 <div className="col-lg-2">
                                                 <div className="shortnamebk">
@@ -517,7 +517,7 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
-                            <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
+                            <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
                               <img src={loginIconImg} className="icon-cart"></img></a>
                             </span>
                           }
@@ -796,7 +796,7 @@ loginPage(event){
           <ResponsiveMegamenu/>   
 
           <div className=" col-sm-12 col-xs-12 NOpadding searchBoxWrapper">
-              <div className="col-sm-12 col-xs-10 col-xs-offset-1 searchBox">
+              <div className="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 searchBox">
                   <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
                   <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
               </div> 
@@ -834,50 +834,6 @@ loginPage(event){
               </div>
           </div>
         </div> 
-
- 
-          {/* <nav className="navbar navbar-inverse navbarWrapper hidden-lg hidden-md">        
-            <div className="navbar-header">
-                <button type="button" data-target="#navbarCollapse" data-toggle="collapse" className="navbar-toggle">
-                    <span className="sr-only">Toggle navigation</span>
-                    <span className="icon-bar"></span>
-                    <span className="icon-bar"></span>
-                    <span className="icon-bar"></span>
-                </button>
-                <a href="#" className="navbar-brand">
-                  Brand
-                </a>
-            </div> 
-           
-            <div id="navbarCollapse" className="collapse navbar-collapse">
-                <ul className="nav navbar-nav">
-                    <li className="active"><a href="#">Home</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li className="dropdown">
-                        <a data-toggle="dropdown" className="dropdown-toggle" href="#">Messages <b className="caret"></b></a>
-                        <ul className="dropdown-menu">
-                            <li><a href="#">Inbox</a></li>
-                            <li><a href="#">Drafts</a></li>
-                            <li><a href="#">Sent Items</a></li>
-                            <li className="divider"></li>
-                            <li><a href="#">Trash</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <form className="navbar-form navbar-left">
-                    <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Search"/>
-                        <span className="input-group-btn">
-                            <button type="button" className="btn btn-default"><span className="glyphicon glyphicon-search"></span></button>
-                        </span>
-                    </div>
-                </form>
-                <ul className="nav navbar-nav navbar-right">
-                    <li><a href="#">Login</a></li>
-                </ul>
-            </div>
-          </nav>     */}
-
       </div>
     );
   }

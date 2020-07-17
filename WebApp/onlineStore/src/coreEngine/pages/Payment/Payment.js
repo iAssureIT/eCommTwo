@@ -44,7 +44,7 @@ class Payment extends Component {
       <div className="container">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 
-          <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1  col-sm-10 col-xs-10">
+          <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1  col-sm-12 col-xs-12">
             <br />
             <br />
             <div className="alert alert-success">
@@ -56,7 +56,7 @@ class Payment extends Component {
             <h4 className="table-caption">Order Details</h4>
             <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | OrderID -  {this.state.orderData.orderID}</p>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
-              <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb50">
                 <strong className="box-title">
                   <span>Shipping Address</span>
                 </strong>
@@ -69,7 +69,7 @@ class Payment extends Component {
                   {this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.country} <br /> */}
                 </div>
               </div>
-              <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+              <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb50">
                 <strong className="box-title">
                   <span>Payment Method</span>
                 </strong>
@@ -79,7 +79,7 @@ class Payment extends Component {
                   }
                 </div>
               </div>
-              <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mb50">
                 <strong className="box-title">
                   <span>Order Summary</span>
                 </strong>
@@ -127,9 +127,8 @@ class Payment extends Component {
 
             </div>
 
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
-
-              <table className="table table-responsive orderTable">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox table-responsive">
+              <table className="table orderTable">
                 <thead>
                   <tr>
                     <th></th>

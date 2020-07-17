@@ -148,7 +148,7 @@ class EcommerceDiscountedProducts extends Component {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
           // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",
+          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal onClick={this.removeModalBackDrop.bind(this)}>Sign In</a> First.",
 
           "class": "danger",
           "autoDismiss": true
@@ -301,6 +301,9 @@ class EcommerceDiscountedProducts extends Component {
       modalIDNew: { productID: modalID, productType: this.state.productType }
     })
   }
+  removeModalBackDrop(event){
+    $(".modal-backdrop").hide();
+  }
   Closepagealert(event) {
     event.preventDefault();
     $(".toast-error").html('');
@@ -362,7 +365,7 @@ class EcommerceDiscountedProducts extends Component {
                               <a >
                                 <div className="">
                                
-                                  <div className="card"><div className="item-top">
+                                  <div className="card blockCard"><div className="item-top">
                                       <div className="productImg">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>
                                         {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null} 

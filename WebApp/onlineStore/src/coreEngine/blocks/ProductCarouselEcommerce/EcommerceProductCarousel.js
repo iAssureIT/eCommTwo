@@ -82,6 +82,9 @@ class EcommerceProductCarousel extends Component {
     const showLoginAs = localStorage.getItem("showLoginAs");      
     this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
   }
+  removeModalBackDrop(event){
+    $(".modal-backdrop").hide();
+  }
   
   addtocart(event) {
     event.preventDefault();
@@ -156,7 +159,7 @@ class EcommerceProductCarousel extends Component {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
           // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",
+          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal onClick={this.removeModalBackDrop.bind(this)}>Sign In</a> First.",
           "class": "danger",
           "autoDismiss": true
         }
@@ -447,7 +450,7 @@ class EcommerceProductCarousel extends Component {
                             <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
                               <a href="">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 NoPadding">
+                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-8 NoPadding">
                                     <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                       <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>

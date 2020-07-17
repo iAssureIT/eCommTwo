@@ -419,7 +419,7 @@ class SignUp extends Component {
 									<button id="signUpBtn" onClick={this.usersignup.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni">Sign Up</button>
 								</div>
 							}
-							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center loginforgotpass mt25">
+							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center loginforgotpass signuplink mt25">
 								<label>Already have an account?</label> &nbsp; <a href='' onClick={this.openSignInModal.bind(this)}>Sign In <b>&#8702;</b></a>
 								{/* login modal  */}
                                   <div id="loginFormModal" className="modal in">

@@ -1091,9 +1091,9 @@ class Checkout extends Component {
                                 }
                             </div>
                             <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderReviews NOpadding">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderReviews NOpadding table-responsive">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn orderReviewsTitle">ORDER REVIEWS</div>
-                                    <table className="table table-responsive orderTable">
+                                    <table className="table orderTable">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -1188,7 +1188,7 @@ class Checkout extends Component {
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
                                         <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
                                             <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
-                                            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 termsWrapper">
+                                            <div className="col-lg-10 col-md-10 col-sm-11 col-xs-11 termsWrapper">
                                                 <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
                                             </div>
                                         </div>

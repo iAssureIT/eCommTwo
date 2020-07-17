@@ -276,7 +276,7 @@ ul.main-nav > li:hover {
     text-align: left;
     margin-top: 8px !important;
     list-style: none;
-    background-color: #fff;
+    background-color: #fff !important;
     background-clip: padding-box;
     border: 1px solid #ccc;
     border: 1px solid rgba(0,0,0,.15);
@@ -348,6 +348,7 @@ ul.main-nav > li:hover {
     left: -295px !important;
     margin: -11px !important;
     min-width: 400px !important;
+    background-color: #fff !important;
 }
 .cartdropaction:hover{
     color: #80b435 !important;
@@ -498,6 +499,11 @@ button.button_search {
     .greenStrip{
         height: 15px;
     }
+    .cart-dropdown-menu{
+        left: -253px !important;
+        min-width: 392px !important;
+        margin-top: 10px !important;
+    }
 }
 @media only screen and (max-device-width: 768px) {  
 .menuDropDown .dropbtn{
@@ -601,7 +607,7 @@ button.button_search {
     text-align: left;
   }
   
-  .topnav .topNavCategory:hover, .dropdown:hover .dropbtn {
+  .topnav .topNavCategory:hover, .menuDropDown:hover .dropbtn {
     background-color: #fff;
     color: #333;
   }
@@ -614,9 +620,9 @@ button.button_search {
   .menuDropDown:hover .dropdownContent {
     display: block;
   }
-  
+   
   @media screen and (max-width: 600px) {
-    .topnav a:not(:first-child), .dropdown .dropbtn {
+    .topnav a:not(:first-child), .menuDropDown .dropbtn {
       display: none;
     }
     .topnav a.icon {

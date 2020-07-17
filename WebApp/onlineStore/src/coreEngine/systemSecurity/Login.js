@@ -262,13 +262,13 @@ class Login extends Component {
 
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
-                    <div className="textAlignLeft col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10">
+                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignment">
                       <div className="row loginforgotpass">
                         <a href='' className="" onClick={this.openForgotPasswordModal.bind(this)}>Forgot Password?</a>
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt10 textAlignRight">
-                      <div className="row loginforgotpass">                        
+                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignment mt10 ">
+                      <div className="row loginforgotpass loginSignupBtn">                        
                           <a href='' className="" onClick={this.openSignUpModal.bind(this)}>Sign Up</a>                    
                       </div>
                     </div>
