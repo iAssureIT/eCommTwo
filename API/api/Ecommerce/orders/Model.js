@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const orderSchema = mongoose.Schema({
 	_id			              : mongoose.Schema.Types.ObjectId,
     orderID                   : Number,
+    billNumber                : Number,
     user_ID                   : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     allocatedToFranchise      : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymasters' },
     emailID                   : String,
@@ -26,6 +27,7 @@ const orderSchema = mongoose.Schema({
             "originalPrice"     : Number,
             "color"             : String,
             "size"              : String,
+            "unit"              : String,
             "currency"          : String,
             "quantity"          : Number,
             "subTotal"          : Number,

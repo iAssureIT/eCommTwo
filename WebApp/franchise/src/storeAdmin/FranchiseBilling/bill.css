@@ -170,6 +170,12 @@
     border:1px solid #a9a9a94f;
     /* height: 86rem; */
   }
+
+  .viewBillDiv{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 4px;
+    border:1px solid #a9a9a94f;
+  }
   
   .logoImg{
     height: 50px;
@@ -318,4 +324,10 @@
 
 .discountInput{
   border-left: 1px solid #b2a2a2b3 !important;
+}
+
+.printbtn{
+  font-size: -webkit-xxx-large;
+    border: 1px solid darkgray;
+    color: gray;
 }

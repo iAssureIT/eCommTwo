@@ -87,6 +87,8 @@ import AllowablePincodes from './storeAdmin/allowablePincodes/AllowablePincodes.
 import PurchaseManagement  from './storeAdmin/PurchaseManagement/PurchaseManagement.js';
 import FinishedGoods       from './storeAdmin/PurchaseManagement/FinishedGoods.js';
 import Bill                from './storeAdmin/FranchiseBilling/franchiseBill.js'
+import printBill                from './storeAdmin/FranchiseBilling/printBill.js'
+
 //=============== Purchase Management =================
 
 import Distribution       from './storeAdmin/DistributionManagement/DistributionManagement.js';
@@ -213,6 +215,9 @@ class Layout extends Component  {
                           <Route path="/franchise-product-stock"                          exact strict component={FranchiseCurrentStock} />
                           {/*Billing*/}
                           <Route path="/franchise-billing"                                exact strict component={Bill} />
+                          <Route path="/view-bill/:orderId"                               exact strict component={printBill} />
+
+                          
                           { /*Order List*/}
                           <Route path="/allorders"                                        exact strict component={AllOrdersList} />
                           <Route path="/new-orders-list"                                  exact strict component={NewOrdersList} />

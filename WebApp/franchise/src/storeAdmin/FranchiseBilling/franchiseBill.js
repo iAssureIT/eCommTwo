@@ -34,7 +34,9 @@ export class Bill extends React.Component {
 				discountPercent       : 0,
 				discountedPrice       : 0,	
 				rate   : 0,
-				showDiscount :true
+				showDiscount :true,
+				shippingtime          : "4 PM-5 PM",
+				deliveryLocation      : []
           };
 	}
 	
@@ -413,7 +415,9 @@ export class Bill extends React.Component {
 		});
 		if (event.target.value !== 0) {
 		  this.setState({
-			showDiscount: false
+			showDiscount: false,
+			discountedPrice : event.target.value,
+			discountPercent : 0
 		  })
 		} else {
 		  this.setState({
@@ -422,20 +426,20 @@ export class Bill extends React.Component {
 			discountedPrice: "",
 		  })
 		}
-		var discountPercent = parseFloat(this.refs.discountPercent.value);
-		var discountedPrice = parseFloat(this.refs.discountedPrice.value);
-		console.log("discountPercent",discountPercent);
-		console.log("discountedPrice",discountedPrice);
-		if (discountPercent) {
-		  this.setState({
-			discountedPrice: parseFloat(event.target.value) - parseFloat((event.target.value * discountPercent) / 100).toFixed(2)
-		  });
-		}
-		if (discountedPrice) {
-		  this.setState({
-			discountPercent: parseFloat((event.target.value - discountedPrice / event.target.value) * 100).toFixed(2)
-		  });
-		}
+		// var discountPercent = parseFloat(this.refs.discountPercent.value);
+		// var discountedPrice = parseFloat(this.refs.discountedPrice.value);
+		// console.log("discountPercent",discountPercent);
+		// console.log("discountedPrice",discountedPrice);
+		// if (discountPercent) {
+		//   this.setState({
+		// 	discountedPrice: parseFloat(event.target.value) - parseFloat((event.target.value * discountPercent) / 100).toFixed(2)
+		//   });
+		// }
+		// if (discountedPrice) {
+		//   this.setState({
+		// 	discountPercent: parseFloat((event.target.value - discountedPrice / event.target.value) * 100).toFixed(2)
+		//   });
+		// }
 	  }
 
 	addtocart(productCode,id,unit,rate,discountPercent,discountedPrice) {
@@ -620,10 +624,17 @@ export class Bill extends React.Component {
 		event.preventDefault();
 		// console.log("proceedToCheckout","proceedToCheckout");
 		const userid = localStorage.getItem('user_ID');
-        event.preventDefault();
+		event.preventDefault();
         var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i)=>{
             return a.productDetail.availableQuantity <= 0;
 		})
+		let total    = 0
+		 if(this.props.recentCartData.length > 0){
+			total = this.props.recentCartData[0].cartItems.reduce((prev,next) => prev + next.subTotal,0);
+			console.log("totalAmt",total);
+		 }else{
+			total = 0;
+		 }
 		console.log("soldProducts",soldProducts);
         // if(soldProducts.length > 0){
         //     this.setState({
@@ -645,11 +656,12 @@ export class Bill extends React.Component {
 				return {
 					"product_ID": a.productDetail._id,
 					"productName": a.productDetail.productName,
-					"discountPercent": a.productDetail.discountPercent,
-					"discountedPrice": a.productDetail.discountedPrice,
-					"originalPrice": a.productDetail.originalPrice,
+					"discountPercent": a.discountPercent,
+					"discountedPrice": a.discountedPrice,
+					"originalPrice": a.rate,
 					"color": a.productDetail.color,
 					"size": a.productDetail.size,
+					"unit" : a.productDetail.unit,
 					"currency": a.productDetail.currency,
 					"quantity": a.quantity,
 					"subTotal": a.subTotal,
@@ -664,39 +676,43 @@ export class Bill extends React.Component {
 					"vendor_ID": a.productDetail.vendor_ID
 				}
 			})
-			// deliveryAddress: {name: "Madhuri Ghute", email: "madhu1995ghute@gmail.com",…}
-// addType: null
-// addressLine1: "Wagholi, Pune, Maharashtra, India"
-// addressLine2: "Kharadi"
-// city: "Pune"
-// country: "India"
-// countryCode: "IN"
-// district: "Pune"
-// email: "madhu1995ghute@gmail.com"
-// latitude: 18.5807719
-// longitude: 73.9787063
-// mobileNumber: "8390541917"
-// name: "Madhuri Ghute"
-// pincode: "412207"
-// state: "Maharashtra"
-// stateCode: null
+			// var deliveryLocation = {
+			// 	"addType": null,
+			// 	"addressLine1": "Wagholi, Pune, Maharashtra, India",
+			// 	"addressLine2": "Kharadi",
+			// 	"city": "Pune",
+			// 	"country": "India",
+			// 	"countryCode": "IN",
+			// 	"district": "Pune",
+			// 	"email": "madhu1995ghute@gmail.com",
+			// 	"latitude": 18.5807719,
+			// 	"longitude": 73.9787063,
+			// 	"mobileNumber": "8390541917",
+			// 	"name": "Madhuri Ghute",
+			// 	"pincode": "412207",
+			// 	"state": "Maharashtra",
+			// 	"stateCode": null
+			// }
 
 			var orderData = {
+			    billNumber : this.state.billNumber,
 				franchise_id : this.state.franchise_id,
 				user_ID: localStorage.getItem('user_ID'),
 				cartItems: cartItems,
 				shippingtime: this.state.shippingtiming,
 				total: this.props.recentCartData[0].total,
-				cartTotal: this.props.recentCartData[0].cartTotal,
+				cartTotal: total,
 				discount: this.props.recentCartData[0].discount,
 				cartQuantity: this.props.recentCartData[0].cartQuantity,
 				deliveryAddress: this.state.deliveryLocation,
-				paymentMethod: "Cash On Delivery"
+				paymentMethod: "Cash On Delivery",
+				status       : "Paid"
 			}
 			// console.log("Order Data:--->",orderData);
 			axios.post('/api/orders/post', orderData)
 				.then((result) => {
 					this.props.fetchCartData();
+					swal("Bill Created Successfully.")
 					this.setState({
 						messageData: {
 							"type": "outpage",
@@ -711,14 +727,13 @@ export class Bill extends React.Component {
 							messageData: {},
 						})
 					}, 3000);
-					// this.props.history.push('/payment/' + result.data.order_ID);
+					this.props.history.push('/view-bill/'+ result.data.order_ID);
 				})
 				.catch((error) => {
 					console.log("return to checkout");
 					console.log(error);
 				})
-			
-            this.props.history.push('/checkout');
+		
         //  }
 	}
 
@@ -990,7 +1005,7 @@ export class Bill extends React.Component {
 																					<i className="fa fa-rupee"></i>
 																					</div> 
 																					{/* onChangeRate */}
-																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.rate} name="rate" refs="rate" onChange={this.discountedPrice.bind(this)} productid={data.product_ID} id="rate" min="1" ref="originalPrice" discountPercent={data.discountPercent} discountedPrice={data.discountedPrice} required/>
+																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.rate} name="rate" refs="rate" onChange={this.percentAndPrice.bind(this)} productid={data.product_ID} id="rate" min="1" ref="originalPrice" discountPercent={data.discountPercent} discountedPrice={data.discountedPrice} required/>
 																				</div>     
 																			</div>  
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
@@ -1056,7 +1071,12 @@ export class Bill extends React.Component {
 											</ul>
 											<h5 style={{textAlign:'center',fontSize:"medium",fontWeight: 600}}>!!! Thank You !!! Visit Again !!!</h5>
 										</div>
-										<button class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" onClick={this.proceedToCheckout.bind(this)}>Checkout</button>
+										{this.props.recentCartData.length > 0 ? 
+										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" onClick={this.proceedToCheckout.bind(this)}>Checkout</button>
+										:
+										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" disabled>Checkout</button>
+	                                     }
+
 										{/* <div className="row" style={{"padding": "13px"}}>
 											<button className="btn actionBtn">Edit</button>
 											<button className="btn actionBtn">Delete</button>

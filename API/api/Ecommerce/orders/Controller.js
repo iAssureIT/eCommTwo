@@ -80,9 +80,12 @@ exports.insert_orders = (req,res,next)=>{
                       function saveOrderdata(allocatedToFranchise){
                         // console.log("allocatedToFranchise==========",allocatedToFranchise);
                         // console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
+                        var status = req.body.status ? req.body.status : "UnPaid";
+                        var BillNumber = req.body.billNumber ? req.body.billNumber : 0;
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),
                         "orderID"              : Math.round(new Date().getTime()/1000),
+                        "billNumber"          : BillNumber,
                         "user_ID"              : req.body.user_ID,
                         "allocatedToFranchise" : allocatedToFranchise,
                         "userName"             : data.profile.email,
