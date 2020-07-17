@@ -429,7 +429,7 @@ class Ecommercenewproductcaro extends Component {
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
           <div className="tab-content customTabContent">
             <div id="home" className="tab-pane fade in active ecommerceTabContent">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50 mb50">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <OwlCarousel
                     className="owl-theme customnNavButton"
@@ -453,10 +453,10 @@ class Ecommercenewproductcaro extends Component {
                           return (
                             <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
                               <a >
-                                <div className=""> 
-                                  <div className="card">
-                                    <div className="item-top">
-                                      <div className="productImg">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                  <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 NoPadding"> 
+                                    <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                                      <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>
                                         {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null} 
                                         <a href={"/productdetails/"+data.productUrl+"/" + data._id} className="product photo product-item-photo" tabIndex="-1">
@@ -539,7 +539,7 @@ class Ecommercenewproductcaro extends Component {
                                           {
                                               data.availableQuantity > 0 ?
                                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                                   <button type="submit" id={data._id} color={data.color} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
                                                       &nbsp;Add To Cart
                                                   </button>

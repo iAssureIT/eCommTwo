@@ -23,7 +23,7 @@ class FreshFoodBlock extends Component{
                         <img className="img-responsive hidden-table freshfoodImg" src={freshFoodImg1} alt="banner"/>            
                     </div>
                     
-                    <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                    <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12 freshFoodBlock">
                         <div className="title-choose align-center">
                             <h3><span>We are </span>UNICORN FRESH</h3>
                             <p>Our products are washed with ozonised water which removes fungus,

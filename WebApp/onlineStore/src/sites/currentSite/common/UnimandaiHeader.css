@@ -477,8 +477,13 @@ button.button_search {
     .firstDiv{
         min-height: auto;
     }
+    
     .searchBoxWrapper{
+        /* padding-left: 10px; */
+        /* padding-right: 10px; */
         margin-top:13px;
+        margin-left: -8px;
+        margin-right: 0px;
     }
     .icon-menu-mobile {
         display: block;
@@ -494,7 +499,15 @@ button.button_search {
         height: 15px;
     }
 }
-
+@media only screen and (max-device-width: 768px) {  
+.menuDropDown .dropbtn{
+    /* border-bottom: 0px solid #ccc !important; */
+}
+.box-right{
+    /* float: right; */
+    /* margin-right: 60px; */
+}
+}
  
 
 /* navbar mobile view css */
@@ -511,7 +524,7 @@ button.button_search {
     z-index: 1000;
     overflow: hidden;
     background-color: #fff;
-    border-bottom: solid 1px #ccc;
+    /* border-bottom: solid 1px #ccc; */
     margin-bottom: 20px;
     min-height: 90px;
   }

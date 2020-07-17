@@ -758,7 +758,9 @@ background-color: transparent !important;
     .productImg{
         height: auto;
     }
-    
+    .card{
+        margin-left: 25px;
+    }
 }
 
 /* css for iPad */

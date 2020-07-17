@@ -169,8 +169,8 @@ export default class AskPincode extends Component {
                                                             </div>
                                                             <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pincodeBtnwrapper">   
                                                                 <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">                                                 
-                                                                    <input class="form-control error pull-left pinocodeInput" id="pincode" type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-6 col-xs-6 pull-left pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input>
-                                                                    <button className="col-lg-5 col-md-6 col-sm-6 col-xs-6 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                                    <input class=" error pull-left pinocodeInput" id="pincode" type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-5 col-xs-5 pull-left pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input>
+                                                                    <button className="col-lg-5 col-md-6 col-sm-5 col-xs-5 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
                                                                 </div>
                                                             </div> 
                                                         </div>

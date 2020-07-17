@@ -793,7 +793,15 @@ loginPage(event){
             </div>
           </div>
           
-          <ResponsiveMegamenu/>       
+          <ResponsiveMegamenu/>   
+
+          <div className=" col-sm-12 col-xs-12 NOpadding searchBoxWrapper">
+              <div className="col-sm-12 col-xs-10 col-xs-offset-1 searchBox">
+                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
+                  <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
+              </div> 
+          </div>
+
         </div>
 
         <AskPincode />  
