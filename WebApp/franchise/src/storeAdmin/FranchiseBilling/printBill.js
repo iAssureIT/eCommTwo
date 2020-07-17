@@ -51,7 +51,7 @@ export class printBill extends React.Component {
     getFranchiseDetails(){
         var userDetails = JSON.parse(localStorage.getItem('userDetails'));
         console.log("companyID",userDetails.companyID);
-		axios.post('/api/entitymaster/get/one/comapanyDetail/',{"companyID":userDetails.companyID})
+		axios.get('/api/entitymaster/getCompany/'+userDetails.companyID)
         .then((response) => {
 			var franchiseLocation = '';
 			var gstNo = '';
@@ -83,12 +83,24 @@ export class printBill extends React.Component {
 	      })
     }
     
-    onPrint(){
+    printTable(){
         const w=window.open();
         w.document.write($('.viewBillDiv').html());
         w.print();
         w.close();
     }
+    // printTable(event) {
+	// 	// event.preventDefault();
+	// 	$('#ActionContent').hide();
+	// 	$('.modal').hide();
+	// 	var DocumentContainer = document.getElementsByClassName('viewBillDiv');
+	// 	var WindowObject = window.open('', 'PrintWindow', 'height=500,width=600');
+	// 	WindowObject.document.write(DocumentContainer.innerHTML);
+	// 	WindowObject.document.close();
+	// 	WindowObject.focus();
+	// 	WindowObject.print();
+	// 	WindowObject.close();
+	// }
 	
 
 	render() {
@@ -190,7 +202,7 @@ export class printBill extends React.Component {
 		
 							</div> 
                             <div className="col-lg-2 col-md-3 col-sm-4 col-xs-4">
-                                <i class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn printbtn  fa fa-print" style={{fontSize:"larger"}}></i>
+                                <i class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn printbtn  fa fa-print" style={{fontSize:"larger"}} onClick={this.printTable.bind(this)}></i>
                                 
                             </div>
 							</div>

@@ -104,7 +104,7 @@ export class Bill extends React.Component {
 	}
 	getFranchiseDetails(){
 		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
-		axios.post('/api/entitymaster/get/one/comapanyDetail/',{"companyID":userDetails.companyID})
+		axios.get('/api/entitymaster/getCompany/'+userDetails.companyID)
         .then((response) => {
 			var franchiseLocation = '';
 			var gstNo = '';
@@ -676,23 +676,23 @@ export class Bill extends React.Component {
 					"vendor_ID": a.productDetail.vendor_ID
 				}
 			})
-			// var deliveryLocation = {
-			// 	"addType": null,
-			// 	"addressLine1": "Wagholi, Pune, Maharashtra, India",
-			// 	"addressLine2": "Kharadi",
-			// 	"city": "Pune",
-			// 	"country": "India",
-			// 	"countryCode": "IN",
-			// 	"district": "Pune",
-			// 	"email": "madhu1995ghute@gmail.com",
-			// 	"latitude": 18.5807719,
-			// 	"longitude": 73.9787063,
-			// 	"mobileNumber": "8390541917",
-			// 	"name": "Madhuri Ghute",
-			// 	"pincode": "412207",
-			// 	"state": "Maharashtra",
-			// 	"stateCode": null
-			// }
+			var deliveryLocation = {
+				"addType": null,
+				"addressLine1": "Wagholi, Pune, Maharashtra, India",
+				"addressLine2": "Kharadi",
+				"city": "Pune",
+				"country": "India",
+				"countryCode": "IN",
+				"district": "Pune",
+				"email": "madhu1995ghute@gmail.com",
+				"latitude": 18.5807719,
+				"longitude": 73.9787063,
+				"mobileNumber": "8390541917",
+				"name": "Madhuri Ghute",
+				"pincode": "412207",
+				"state": "Maharashtra",
+				"stateCode": null
+			}
 
 			var orderData = {
 			    billNumber : this.state.billNumber,
@@ -704,7 +704,7 @@ export class Bill extends React.Component {
 				cartTotal: total,
 				discount: this.props.recentCartData[0].discount,
 				cartQuantity: this.props.recentCartData[0].cartQuantity,
-				deliveryAddress: this.state.deliveryLocation,
+				deliveryAddress: deliveryLocation,
 				paymentMethod: "Cash On Delivery",
 				status       : "Paid"
 			}

@@ -75,7 +75,6 @@ class FranchiseOrderSummary extends Component {
 	}
 	getData(data) {
 		data.date = moment(new Date()).format("YYYY-MM-DD");
-		console.log("sss",this.state.selectedFranchise);
 		axios.get('/api/franchisepo/get/franchiseorderlist/' + this.state.selectedFranchise, data)
 		.then((res) => {
 			var tableData = res.data.map((a, i) => {
