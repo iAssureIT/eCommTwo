@@ -344,7 +344,7 @@ class BlogsForm extends React.PureComponent{
         .then((res)=>{
           console.log('res', res.data);
                     swal("Thank you .Your Blog Created.");
-                     this.props.history.push("/cms-pages/singleblog/"+this.state.pageUrl);
+                     this.props.history.push("/cms/singleblog/"+this.state.pageUrl);
                      console.log("response = ", res.data);
                 })
                 .catch((error)=>{

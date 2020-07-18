@@ -277,7 +277,7 @@ class Viewpage extends React.Component {
 												// console.log("componentTemp",componentTemp);
 												return(
 													<Suspense fallback={<div>Loading...</div>} key={index}>
-														{/*<i className="fa fa-trash deletbtnIcon pull-right" id={block_id} onClick={this.deleteBlocks.bind(this)}></i>*/}
+														<i className="fa fa-trash deletbtnIcon pull-right" id={block_id} onClick={this.deleteBlocks.bind(this)}></i>
 														<i className="fa fa-pencil editIcon pull-right" id={Block_id} onClick={this.editBlock.bind(this)} data-toggle="modal" data-target="#editBlockFormM"></i>
 											    		<NewPageComponent block_id={Block_id}/>
 											    	</Suspense>

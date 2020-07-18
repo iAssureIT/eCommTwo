@@ -291,7 +291,7 @@ class Checkout extends Component {
             });
     }
     checkPincode(pincode){        
-    if(localStorage.getItem('websiteModel'==="FranchiseModel")){
+        if(localStorage.getItem('websiteModel')==="FranchiseModel"){
         axios.get("/api/allowablepincode/checkpincode/" + pincode)
         .then((response) => {
             if (response) {
@@ -307,14 +307,15 @@ class Checkout extends Component {
         });
     }
 }
-    
+
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
         })
         if (event.target.name === 'pincode') {
-            this.checkPincode(event.target.name);
             this.handlePincode(event.target.value);
+            this.checkPincode(event.target.value);
+
         }
     }
         handlePincode(pincode) {
@@ -875,6 +876,7 @@ class Checkout extends Component {
                                     break;
                                 case 'postal_code':
                                     var pincode = results[0].address_components[i].long_name;
+                                    this.checkPincode(pincode);
                                     break;
                                 default:
                                     break;
@@ -944,8 +946,7 @@ class Checkout extends Component {
 
 
     }
-    render() {
-        console.log("this.state.addressId=", this.state.addressId);
+    render() {        
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{ backgroundColor: "#ffffff" }}>
                 <Message messageData={this.state.messageData} />
@@ -1008,10 +1009,10 @@ class Checkout extends Component {
                                         :
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn shippingAddressTitle">SHIPPING ADDRESS</div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
+                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
                                                 <button className="btn modalBtn anasBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
-                                            </div>
-                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                            </div> */}
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
                                                 <input type="text" maxLength="50" ref="username" name="username" id="username" value={this.state.username} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                             </div>
@@ -1070,11 +1071,17 @@ class Checkout extends Component {
                                                     )}
                                                 </PlacesAutocomplete>
                                             </div>                                           
+                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
+                                                <input type="number" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} max="6" onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
+                                                {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
+                                            </div> */}
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
                                                 <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                                <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
                                                 {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
+                                                <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address type <span className="required">*</span></label>
@@ -1084,7 +1091,7 @@ class Checkout extends Component {
                                                     <option value="Relative">Relative (All day delivery)</option>
                                                     <option value="Friend">Friend (All day delivery)</option>
                                                 </select>
-                                            </div> */}
+                                            </div>
 
 
                                         </div>

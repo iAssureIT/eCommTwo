@@ -203,7 +203,7 @@ export default class ViewBlock_3 extends React.Component {
 												return(
 													<Suspense fallback={<div>Loading...</div>} key={index}>
 														<div className="">
-															{/*<i className="fa fa-trash deletIcon pull-right fsm15" id={block_id} onClick={this.deleteblock.bind(this)}></i>&nbsp;&nbsp;&nbsp;&nbsp;*/}
+															<i className="fa fa-trash deletIcon pull-right fsm15" id={block_id} onClick={this.deleteblock.bind(this)}></i>&nbsp;&nbsp;&nbsp;&nbsp;
 														</div>
 															<br/>
 											    		<NewPageComponent block_id={block_id}/>

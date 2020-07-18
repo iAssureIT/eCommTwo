@@ -17,16 +17,17 @@ import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
 import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
 import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
+// import pincodeModalImg from '../../../sites/currentSite/images/modalBack.jpg';
 import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
+
 // import pincodeModalImg from '../../../sites/currentSite/images/loginBackground.png';
 // import pincodeModalImg from '../../../sites/currentSite/images/loginBg.png';
 
 import AskPincode from '../../blocks/AskPincode/AskPincode.js';
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
 import '../../../sites/currentSite/common/Header.css';
-// import jQuery from "jquery";
-import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
-
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
 class unimandaiHeader extends Component {
   constructor(props){
@@ -57,7 +58,18 @@ class unimandaiHeader extends Component {
 }
 
 componentWillMount() {
-      
+  //get current location of user
+  if (navigator.geolocation) { //check if geolocation is available
+    navigator.geolocation.getCurrentPosition(function(position){
+      console.log(position);
+      if(position){
+        $.get( "http://maps.googleapis.com/maps/api/geocode/json?latlng="+ position.coords.latitude + "," + position.coords.longitude +"&sensor=false", function(data) {
+          console.log(data);
+        })
+      }
+    });   
+  }  
+  
       $(document).ready(function(e){      
       $('.search-panel li a').on('click', function(e){
         var sp = $(this).closest('.search-panel');
@@ -395,7 +407,7 @@ loginPage(event){
         console.log('error', error);
       })
   }
-  
+
   getHotProduct() {
     axios.get("/api/products/get/hotproduct")
       .then((response) => {
@@ -550,8 +562,7 @@ loginPage(event){
                               <p className="categoryDetails"><b>Cart Details</b></p>
                             </div>
                               <p className="col-lg-3 mb20"><b>{this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}</b> item(s)</p>
-                              <div className="col-lg-9 text-right">Subtotal : <i className="fa fa-inr"></i> {this.props.recentCartData.length>0 ? this.props.recentCartData[0].total : 0}</div>
-                              
+                              <div className="col-lg-9 text-right">Subtotal : <i className="fa fa-inr"></i> {this.props.recentCartData.length>0 ? this.props.recentCartData[0].total : 0}</div>                              
                             </div>
                             <div className={this.props.recentCartData.length > 0 ? "dropScroll": ""}>
                             {
@@ -591,7 +602,6 @@ loginPage(event){
                             }
                             </div>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropborder">
-
                               <div className="col-lg-6 NOpaddingLeft">
                                 <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
                               </div>
@@ -687,20 +697,19 @@ loginPage(event){
                             }
                         </div>                      
                        
-                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu ">
+                      {/* <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu "> */}
+                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 faIcon cart hover-menu ">
                         <span>  
                         {user_ID ?                      
                           <a href={user_ID ? "/cart" : null} className="icon-cart">
-                              <img src={cartIconImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>
-                              {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
+                              <img src={cartIconImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>                             
                               <span className="cart-count">
                                   {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                               </span>
                           </a>
                           :
                           <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)}>
-                              <img src={cartIconImg} className="icon-cart"></img>
-                              {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
+                              <img src={cartIconImg} className="icon-cart"></img>                              
                               <span className="cart-count">
                                   {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                               </span>

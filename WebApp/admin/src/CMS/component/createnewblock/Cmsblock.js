@@ -843,8 +843,7 @@ class CmsBlock extends Component {
                     												</div>
               														}
               												    {   
-                                            this.state.rBlocksSubTitle === ""
-                                            ?
+                                           
                                                  this.state.parsed.rBlocksSubTitle === ""
                                                   ? null
                                                   :
@@ -855,8 +854,7 @@ class CmsBlock extends Component {
                                                     </div>
                                                   </div>
 
-                                            : ""
-                                                 
+                                              
               														}
               											
               											

@@ -83,6 +83,7 @@ class EcommerceProductCarousel extends Component {
     this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
   }
   removeModalBackDrop(event){
+    console.log("inside modal");
     $(".modal-backdrop").hide();
   }
   
@@ -157,7 +158,7 @@ class EcommerceProductCarousel extends Component {
       this.setState({
         messageData: {
           "type": "outpage",
-          "icon": "fa fa-exclamation-circle",
+          "icon": "fa fa-exclamation-circle", 
           // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
           "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal onClick={this.removeModalBackDrop.bind(this)}>Sign In</a> First.",
           "class": "danger",

@@ -179,7 +179,8 @@ class Routes extends Component{
             <Route path="/address"            exact strict component={ Login } />
             <Route path="/contact-us" exact strict component={ContactPage}  />
             <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
-            <Route path="/legal-notice" exact strict component={LegalNotice}  />            
+            <Route path="/legal-notice" exact strict component={LegalNotice}  /> 
+            <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } />            
             
           </div>
         );

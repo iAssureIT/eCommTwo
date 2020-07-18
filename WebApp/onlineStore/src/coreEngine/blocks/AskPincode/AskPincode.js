@@ -105,7 +105,7 @@ export default class AskPincode extends Component {
                         $('.DeliveryStatusMsg').hide();   
                         $('.NotAllowDeliveryMsg').hide();  
                         $('.marginTop').hide();  
-                        $('.addPincode').css("margin-top","50px");                     
+                        $('.addPincode').css("margin-top","40px");                     
                         localStorage.setItem("status","Allow");
                         // console.log("pincode===",localStorage.getItem('pincode'));
                                           
@@ -118,7 +118,7 @@ export default class AskPincode extends Component {
                         $('.DeliveryStatusMsg').hide();
                         $('.AllowDeliveryMsg').hide();  
                         $('.marginTop').hide(); 
-                        $('.addPincode').css("margin-top","50px");                    
+                        $('.addPincode').css("margin-top","40px");                    
                         // var pincodeObj = JSON.parse(localStorage.getItem("pincodData"));
                         // pincodeObj.status = "NotAllow";
                         localStorage.setItem("status", "NotAllow");
@@ -131,18 +131,17 @@ export default class AskPincode extends Component {
             })
         
       }
+      validatePIN (pin) {
+        return /^(\d{4}|\d{6})$/.test(pin);
+    }
       
-  render() {
-    // console.log("inside askpincode");  
+  render() {  
     // $(".modal-backdrop").hide();
 		return (            
-			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12">
-                {/* { (localStorage.getItem('pincode') === null) || (localStorage.getItem('pincode') !== null && localStorage.getItem('status') === "NotAllow") || (localStorage.getItem('DeliveryStatus') === "Allowable" && localStorage.getItem('pincodeFlag')==="true" ) */}
-                {/* { (localStorage.getItem('pincode') === null) || (localStorage.getItem('pincode') !== null && localStorage.getItem('status') === "NotAllow") || (localStorage.getItem('DeliveryStatus') === "Allowable" && localStorage.getItem('pincodeFlag')==="true" )
-                ?                 */}
+			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12">                
                     <div id="pincodeModal" className="modal in">
                         <div className="modal-dialog">
-                            <div className="modal-content pincodemodal col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
+                            <div className="modal-content pincodemodal col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
                                 <div className="modal-body">   
                                 <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.closeModal.bind(this)}>&times;</button>                       
                                     <form>                                    
@@ -167,10 +166,18 @@ export default class AskPincode extends Component {
                                                             <div  className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                 <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>
                                                             </div>
-                                                            <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pincodeBtnwrapper">   
-                                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">                                                 
-                                                                    <input class=" error pull-left pinocodeInput" id="pincode" type="text" id="pincode" className="col-lg-5 col-md-5 col-sm-5 col-xs-5 pull-left pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input>
-                                                                    <button className="col-lg-5 col-md-6 col-sm-5 col-xs-5 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                            <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding pincodeBtnwrapper">   
+                                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+                                                                    <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                    <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                        <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                                                                        <input id="pincode" type="text" class="form-control pinocodeInput" name="pincode" placeholder="Pincode..."/>
+                                                                        {/* <input class="form-control error pinocodeInput" id="pincode" type="text" id="pincode" className="pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input> */}
+                                                                    </div>   
+                                                                    </div>                                           
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                        <button className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                                    </div>
                                                                 </div>
                                                             </div> 
                                                         </div>
