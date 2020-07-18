@@ -25,7 +25,7 @@ class viewOrder extends Component{
     }
 
     componentDidMount() {
-      console.log('orderID',this.props.match.params.orderID);
+      // console.log('orderID',this.props.match.params.orderID);
       var orderID = this.props.match.params.orderID;
       this.getOneOrder(orderID);
       this.getCompanyDetails(); 
@@ -33,8 +33,10 @@ class viewOrder extends Component{
     getOneOrder(orderID){
       axios.get("/api/orders/get/one/"+orderID)
             .then((response)=>{
+              console.log('response.data orderID ====>',response.data.deliveryAddress.mobileNumber);
               this.setState({
-                  orderData : response.data
+                  orderData : response.data,
+                  mobilenum : response.data.deliveryAddress.mobileNumber,
               })
             })
             .catch((error)=>{
@@ -95,6 +97,9 @@ class viewOrder extends Component{
                    { this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.district + ', ' +  this.state.orderData.deliveryAddress.state +', ' + this.state.orderData.deliveryAddress.pincode } <br/>
                    { this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.country } <br/>
                   </div>
+                  
+                  <strong class="box-title"> Mobile Number :</strong> <span className="box-content">{this.state.mobilenum}</span>
+                  
                 </div>
                 <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                   <strong class="box-title">
