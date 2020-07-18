@@ -141,7 +141,7 @@ export default class AskPincode extends Component {
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12">                
                     <div id="pincodeModal" className="modal in">
                         <div className="modal-dialog">
-                            <div className="modal-content pincodemodal col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
+                            <div className="modal-content pincodemodal col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
                                 <div className="modal-body">   
                                 <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.closeModal.bind(this)}>&times;</button>                       
                                     <form>                                    
@@ -176,7 +176,8 @@ export default class AskPincode extends Component {
                                                                     </div>   
                                                                     </div>                                           
                                                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                                                        <button className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn newModalBtn pull-right" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
+                                                                        <button className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn newModalBtn pull-right hidden-lg hidden-md hidden-sm" onClick={this.checkDelivery.bind(this)}>Check</button>
+                                                                        <button className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn newModalBtn pull-right hidden-xs" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
                                                                     </div>
                                                                 </div>
                                                             </div> 
