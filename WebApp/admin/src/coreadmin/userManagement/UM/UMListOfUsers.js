@@ -129,7 +129,7 @@ class UMListOfUsers extends Component {
 	getData(data) {
 		axios.post('/api/users/post/list', data)
 			.then((res) => {
-				// console.log("res.data in getdata==>", res.data);
+				console.log("res.data in getdata==>", res.data);
 				if (res.data.message == "COMPANYID_NOT_AVAILABLE") {
 					swal({
 						title: '',
@@ -140,7 +140,7 @@ class UMListOfUsers extends Component {
 						return (data.status !== 'deleted-active' && data.status !== 'deleted-blocked' && data.status !== 'deleted');
 					});
 					var tableData = tableData.map((a, i) => {
-						// console.log('tableData A==>>>', a.lastLogin);
+						console.log('tableData A==>>>', a);
 						return {
 							_id: a._id,
 							fullName: '<div class="col-lg-10 col-md-10 col-sm-6 col-xs-6 pull-left"><b>' + a.fullName + '</b>' +

@@ -155,13 +155,13 @@ class SignUp extends Component {
 			var passwordVar = this.refs.signupPassword.value;
 			var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
 			if (passwordVar === signupConfirmPasswordVar) {
-				// console.log("Before post Auth:==>",auth)
+				console.log("Before post Auth:==>",auth)
 				return (passwordVar.length >= 6) ?
 				
 					(true,
 						// document.getElementById("signUpBtn").innerHTML = 'Sign Up',
 						
-						axios.post('/api/auth/post/signup/user/otp', auth)
+						axios.post('/api/auth/post/signup/user', auth)
 							.then((response) => {
 								
 								if (response.data.message === 'USER_CREATED') {
@@ -180,7 +180,7 @@ class SignUp extends Component {
 													firstname	: response.data.userDetails.firstname,
 													lastname	: response.data.userDetails.lastname,
 													email		: response.data.userDetails.email,
-													mobile		: response.data.userDetails.mobile,
+													mobNumber		: response.data.userDetails.mobile,
 													pincode		: response.data.userDetails.pincode,
 													user_id		: response.data.userDetails.user_id,
 													roles		: response.data.userDetails.roles,
