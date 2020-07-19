@@ -94,10 +94,10 @@ class ContactDetails extends Component {
 
 		this.setState({
 			url: Url,
-			getCurrentRole : role
+			getCurrentRole : "admin"
 		},()=>{
 
-			console.log("getCurrentRole",this.state.getCurrentRole,this.state.url,localStorage.getItem("corporateUrl"));
+			// console.log("getCurrentRole",this.state.getCurrentRole,this.state.url,localStorage.getItem("corporateUrl"));
 		})
 		this.getRoles();
 		this.getAllEntites();
@@ -166,11 +166,11 @@ class ContactDetails extends Component {
 	getRoles() {
 		axios.post("/api/roles/get/list")
 		  .then((response) => {
-		  	console.log("response",response);
+		  	console.log("response rolesentity==>",response.data);
 
-			var rolesArray = response.data.filter(a=>a.rolesentity == this.props.entity)
+			
 			this.setState({
-			  rolesArray: rolesArray
+			  rolesArray: response.data
 			},()=>{
 
 			})
@@ -594,17 +594,18 @@ class ContactDetails extends Component {
 			companyName			: this.state.companyName,
 			pwd							: "welcome123",
 			role						: [ this.state.role ],
-            "status"					: this.state.role ==="corporateadmin" || this.state.role ==="vendoradmin" ? "active" :"blocked",
+      // "status"					: this.state.role ==="corporateadmin" || this.state.role ==="vendoradmin" ? "active" :"blocked",
+      "status"					: "active",
 			"emailSubject"	: "Email Verification",
 			"emailContent"	: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 		}
 		console.log("userDetails create role==>",userDetails);
-		return new Promise(function(resolve, reject){
+		// return new Promise(function(resolve, reject){
 			axios.post('/api/auth/post/signup/user', userDetails)
 			.then((response)=>{
 				console.log("response.data.ID",response.data.ID)
 				
-				resolve(response.data.ID);
+				// resolve(response.data.ID);
 				if(response.data.message === 'USER_CREATED'){
 					
 				}else{
@@ -613,7 +614,7 @@ class ContactDetails extends Component {
 				
 			})
 			.catch((error)=>{})
-		})
+		// })
 	}
 
 	savePerson = (userID)=>{
@@ -689,7 +690,7 @@ class ContactDetails extends Component {
 
 					swal({
 						title : "Contact added successfully.",
-						text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password :"+"welcome123 \n Contact also added in employee list." : ""
+						text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password :"+"welcome123 \n Contact also added in franchise list." : ""
 					});
 
 					this.setState({
@@ -763,7 +764,7 @@ class ContactDetails extends Component {
 					'departmentName'        	: this.state.departmentName,
 					'designationName'       	: this.state.designationName,
 					'empCategory'               : this.state.empCategory,
-                	'empPriority'               : this.state.empPriority,
+          'empPriority'               : this.state.empPriority,
 					'employeeID'        		: this.state.employeeID,
 					'bookingApprovalRequired' 	: this.state.bookingApprovalRequired,
 					'approvingAuthorityId1' 	: this.state.approvingAuthorityId1,
@@ -849,7 +850,7 @@ class ContactDetails extends Component {
 			companyName			: this.state.companyName,
 			pwd						: "welcome123",
 			role					: [this.state.role],
-            "status": this.state.role !=="corporateadmin" || this.state.role !=="vendoradmin" ? "blocked" :"active",
+      "status": this.state.role !=="corporateadmin" || this.state.role !=="vendoradmin" ? "blocked" :"active",
 			"emailSubject"		: "Email Verification",
 			"emailContent"		: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 		}
@@ -1212,12 +1213,9 @@ class ContactDetails extends Component {
 	getData(data){
 		this.setState({
 			'preApprovedAmount'      : data.preApprovedAmount,
-            'preApprovedRides'       : data.preApprovedRides,
-            'preApprovedKilometer'  : data.preApprovedKilometer,
-            // 'approvingAuthorityId1'     : data.approvingAuthorityId1,
-            // 'approvingAuthorityId2'     : data.approvingAuthorityId2,
-            // 'approvingAuthorityId3'     : data.approvingAuthorityId3,
-            'bookingApprovalRequired'   : data.bookingApprovalRequired,
+			'preApprovedRides'       : data.preApprovedRides,
+			'preApprovedKilometer'  : data.preApprovedKilometer,
+			'bookingApprovalRequired'   : data.bookingApprovalRequired,
 		})
 	}
 	showView(value,event){
@@ -1486,14 +1484,16 @@ class ContactDetails extends Component {
 															</div>
 															{
 															this.state.createUser ? 
-
+																	
 															<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" > 
+															{console.log("this.state.rolesArray===>",this.state.rolesArray)}
 					                                            <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding-left">Role <i className="astrick">*</i></label>
 					                                            <select className="errorinputText form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
 					                                              ref="role" name="role" id="role" value={this.state.role} onChange={this.handleChange}>
 					                                              <option value="" disabled={true}>-- Select Role --</option>
 					                                              	{this.state.rolesArray && this.state.rolesArray.length > 0 ?
 																		this.state.rolesArray.map((rolesArray, index) => {
+																			console.log("role rolesArray==>",rolesArray)
 																		return (
 																			<option key={index} value={rolesArray.role}>{rolesArray.role}</option>
 																		);

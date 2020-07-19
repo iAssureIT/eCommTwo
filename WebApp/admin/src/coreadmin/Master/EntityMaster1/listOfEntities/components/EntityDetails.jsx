@@ -17,34 +17,76 @@ class EntityDetails extends Component {
       };
    }
   componentWillReceiveProps(nextProps){
+		axios.get("/api/entitymaster/get/one/"+this.props.id)
+      .then((response)=>{
+      	console.log("entityInfo===>>>",response.data.companyName);
+      	console.log("entityInfo===>>>",response.data.companyID);
+      	console.log("entityInfo===>>>",response.data.companyEmail);
+      	console.log("entityInfo===>>>",response.data.entityType);
+      	console.log("entityInfo===>>>",response.data.groupName);
+      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
+      	console.log("response.data[0].locations,===>>>",response.data.locations,);
+        this.setState({
+            entityInfo 	: response.data,
+            contacts 		: response.data.contactPersons,
+            locations 	: response.data.locations.reverse(),
+            entityType 	: response.data.entityType
+        },()=>{
+					// console.log("entityInfo===>>>",this.state.entityInfo);
+				});
+      })
+      .catch((error)=>{
+      })
   	$("html,body").scrollTop(0);
   	this.setState({
 			id : nextProps.id
 		},()=>{
-			console.log("id",nextProps.id);
-			this.getEntitiesInfo(this.state.id)
+			// console.log("id nextProps===>>:",nextProps.id);
+			
 		})
   }
 
 	componentDidMount(){
+		// this.getEntitiesInfo(this.props.id)
+		axios.get("/api/entitymaster/get/one/"+this.props.id)
+      .then((response)=>{
+      	console.log("entityInfo===>>>",response.data.companyName);
+      	console.log("entityInfo===>>>",response.data.companyID);
+      	console.log("entityInfo===>>>",response.data.companyEmail);
+      	console.log("entityInfo===>>>",response.data.entityType);
+      	console.log("entityInfo===>>>",response.data.groupName);
+      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
+      	console.log("response.data[0].locations,===>>>",response.data.locations,);
+        this.setState({
+            entityInfo 	: response.data,
+            contacts 		: response.data.contactPersons,
+            locations 	: response.data.locations.reverse(),
+            entityType 	: response.data.entityType
+        },()=>{
+					// console.log("entityInfo===>>>",this.state.entityInfo);
+				});
+      })
+      .catch((error)=>{
+      })
 		$("html,body").scrollTop(0);
 		this.setState({
   			id : this.props.id
   		},()=>{
-			console.log("id",this.props.id);
-			this.getEntitiesInfo(this.state.id)
+			
+			
 		})
   }
   getEntitiesInfo(id){
+		console.log("id===>",id);
   	axios.get("/api/entitymaster/get/one/"+id)
       .then((response)=>{
-      	// console.log("entityInfo===>>>",response.data.companyName);
-      	// console.log("entityInfo===>>>",response.data.companyID);
-      	// console.log("entityInfo===>>>",response.data.companyEmail);
-      	// console.log("entityInfo===>>>",response.data.entityType);
-      	// console.log("entityInfo===>>>",response.data.groupName);
-      	// console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
-      	// console.log("response.data[0].locations,===>>>",response.data.locations,);
+      	console.log("entityInfo===>>>",response.data.companyName);
+      	console.log("entityInfo===>>>",response.data.companyID);
+      	console.log("entityInfo===>>>",response.data.companyEmail);
+      	console.log("entityInfo===>>>",response.data.entityType);
+      	console.log("entityInfo===>>>",response.data.groupName);
+      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
+      	console.log("response.data[0].locations,===>>>",response.data.locations,);
         this.setState({
             entityInfo 	: response.data,
             contacts 		: response.data.contactPersons,

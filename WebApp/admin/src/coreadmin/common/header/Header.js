@@ -91,12 +91,12 @@ export default class Header2 extends Component{
     
 
     if(Token){
-      var comapanyname = parseInt(1)
-    console.log("comapanyname ====>>>>>>>>> ", comapanyname);
+      var comapanyID = parseInt(1)
+    
 
-      axios.get('/api/entitymaster/get/companyName/'+comapanyname)
+      axios.get('/api/entitymaster/get/one/companyName/'+comapanyID)
           .then(companyDetails=>{
-              // console.log("companyDetails = ", companyDetails.data);
+              console.log("companyDetails = ", companyDetails.data.companyName);
               this.setState({
                   user_ID       : userDetails.user_id,
                   email         : userDetails.email,

@@ -123,6 +123,7 @@ exports.singleEntity = (req,res,next)=>{
     EntityMaster.findOne({_id : req.params.entityID})
     .exec()
     .then(data=>{
+        console.log("singleEntity===>",data)
         main();
         async function main(){
             var k = 0 ;
@@ -206,7 +207,7 @@ exports.singleEntity = (req,res,next)=>{
 
                     })
                 }
-                    
+                console.log("contactData===>",contactData)
             }
             returnData.push({
                         "_id"                           : data._id,
@@ -228,6 +229,7 @@ exports.singleEntity = (req,res,next)=>{
                         contactData             : contactData
                     })
             }//data
+            console.log("returnData===>",returnData)
             res.status(200).json(returnData);
             
         }

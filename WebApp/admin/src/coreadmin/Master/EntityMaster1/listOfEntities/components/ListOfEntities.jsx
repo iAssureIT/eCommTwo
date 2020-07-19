@@ -105,6 +105,7 @@ class ListOfEntities extends Component {
 		}
 		axios.post('/api/entitymaster/getAll',formvalues)
 		.then((response)=>{
+			console.log("entityList response.data",response.data)
 			var tableData = response.data.map((a, i)=>{
 				var locDetails = a.locations.map((l,i)=>{
 					return "<ul><li>#"+(i+1)+"</li><li><b>BranchCode</b>:"+l.branchCode+"</li><li><b>Type</b>: "+l.locationType+"</li><li><b>Address</b>: "+l.addressLine1+"</li></ul>"
