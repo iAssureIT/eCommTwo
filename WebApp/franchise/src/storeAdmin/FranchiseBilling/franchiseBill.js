@@ -38,7 +38,9 @@ export class Bill extends React.Component {
 				showDiscount :true,
 				shippingtime          : "4 PM-5 PM",
 				deliveryLocation      : [],
-				barcode : ''
+				barcode : '',
+				soldOutProductError : '',
+				itemCode : ''
 		  };
 		
 	}
@@ -366,11 +368,13 @@ export class Bill extends React.Component {
 				}
 				this.setState({
 					product_ID : data.productDetail._id,
+					itemCode : data.productDetail.itemCode,
 					quantity : data.quantity,
 					discountPercent :data.discountPercent,
 					discountedPrice : data.discountedPrice,	
 					rate   : data.rate,
 					showDiscount : showDiscount
+				},()=>{
 				})
 			}
 			
@@ -455,11 +459,67 @@ export class Bill extends React.Component {
 		// }
 	  }
 
+	
+
+	checkProductSoldOut(itemCode,productCode,id,unit,rate,discountPercent,discountedPrice,cart){
+		var reportFilterData = {};
+		reportFilterData.franchiseId = this.state.franchise_id;
+		reportFilterData.itemcode = itemCode;
+		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
+		.then((response)=>{
+			if(response.data.length > 0){
+				if(this.props.recentCartData.length > 0){
+					var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i)=>{
+						if(a.productDetail.itemCode ==  itemCode){
+						   if(response.data[0].totalStock < a.quantity){
+							   this.setState({
+								   "soldOutProductError" : "Product Sold Out"
+							   })
+							   swal(this.state.soldOutProductError);
+						   }else{
+								this.setState({
+									"soldOutProductError" : ''
+								})
+									this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
+						   }
+						}else{
+							this.setState({
+								"soldOutProductError" : ''
+							})
+								this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
+						}
+				   })
+				}else{
+					if(response.data[0].totalStock == 0){
+						console.log("soldout 2");
+						this.setState({
+							"soldOutProductError" : "Product Sold Out."
+						})
+						swal(this.state.soldOutProductError);
+					}else{
+						this.setState({
+							"soldOutProductError" : ''
+						})
+							this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
+					}
+				}
+			}
+			else{
+				console.log("soldout 3");
+				this.setState({
+					"soldOutProductError" : 'Product Sold Out.'
+				})
+				swal(this.state.soldOutProductError);
+			}
+
+		
+		})
+		.catch((error) => {
+			console.log('error', error);
+		})
+	}
+
 	addtocart(productCode,id,unit,rate,discountPercent,discountedPrice) {
-		// console.log("addtocart",productCode,id,unit,rate,discountPercent,discountedPrice);
-		// this.setState({
-		// 	completeProductName : ''
-		// })
 		var productCode = productCode;
 		const userid = localStorage.getItem('user_ID');
 		var clr = '';
@@ -718,7 +778,8 @@ export class Bill extends React.Component {
 				cartQuantity: this.props.recentCartData[0].cartQuantity,
 				deliveryAddress: this.state.deliveryLocation[0],
 				paymentMethod: "Cash On Delivery",
-				status       : "Paid"
+				status       : "Paid",
+				deliveryStatus : "Delivered & Paid"
 			}
 			// console.log("Order Data:--->",orderData);
 			axios.post('/api/orders/post', orderData)
@@ -752,6 +813,7 @@ export class Bill extends React.Component {
 
 	UpdateCartData(event){
 		event.preventDefault();
+		// this.checkProductSoldOut(this.state.itemCode,'update');
 		const userid = localStorage.getItem('user_ID');
 		const formValues = {
 			"user_ID"     	  : userid,
@@ -762,20 +824,53 @@ export class Bill extends React.Component {
 			"rate"            : this.state.rate
 
 		}
-		if($('#productsEditForm').valid()){
-			if(this.state.discountPercentError == ''){
-				axios.patch("/api/carts/updateCart" ,formValues)
-				.then((response)=>{
-					swal("Product updated successfully.")
-						this.props.fetchCartData();
-				})
-				.catch((error)=>{
-						console.log('error', error);
-				})
-	         }
+
+		var reportFilterData = {};
+		reportFilterData.franchiseId = this.state.franchise_id;
+		reportFilterData.itemcode = this.state.itemCode;
+		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
+		.then((response)=>{
+			if(response.data.length > 0){
+				if(this.props.recentCartData.length > 0){
+						   if(response.data[0].totalStock < this.state.quantity){
+							   this.setState({
+								   "soldOutProductError" : "Product Sold Out"
+							   })
+							   swal(this.state.soldOutProductError);
+						   }else{
+								this.setState({
+									"soldOutProductError" : ''
+								});
+								axios.patch("/api/carts/updateCart" ,formValues)
+								.then((response)=>{
+									swal("Product updated successfully.")
+										this.props.fetchCartData();
+								})
+								.catch((error)=>{
+										console.log('error', error);
+								})
+						    }
+				}
+			}
+		})
+		
+		
+
+		// if($('#productsEditForm').valid()){
+		// 	   if(this.state.discountPercentError == '' && this.state.soldOutProductError == ''){
+		// 			axios.patch("/api/carts/updateCart" ,formValues)
+		// 			.then((response)=>{
+		// 				swal("Product updated successfully.")
+		// 					this.props.fetchCartData();
+		// 			})
+		// 			.catch((error)=>{
+		// 					console.log('error', error);
+		// 			})
+		// 		 }
+		// 	}
 
 				 $('.close').click();
-			}
+			
 		
 	}
 
@@ -895,7 +990,7 @@ export class Bill extends React.Component {
 									   //console.log("datadata",data._id);
 									let imageUrl = data.productImage[0] ? data.productImage[0] : '../../images/notavailable.jpg';
                                     return(
-										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" onClick={this.addtocart.bind(this,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice)}>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" onClick={this.checkProductSoldOut.bind(this,data.itemCode,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice)}>
 											<div class="">
 												<div class="card">
 													<div class="item-top">
@@ -970,7 +1065,7 @@ export class Bill extends React.Component {
 											{       
 												this.props.recentCartData.length > 0 &&  this.props.recentCartData[0].cartItems.length > 0?                                      
 												Array.isArray(this.props.recentCartData) && this.props.recentCartData[0].cartItems.map((data,index)=>{
-													console.log("recentCartData",data,index);
+													//console.log("recentCartData",data,index);
 													data.subTotal = data.discountedPrice * data.quantity;
 													return(
 														<tr>

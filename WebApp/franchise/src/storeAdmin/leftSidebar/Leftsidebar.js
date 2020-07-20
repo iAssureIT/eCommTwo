@@ -199,6 +199,13 @@ export default class Leftsidebar extends Component{
                     Billing Mnanagement
                   </a>
                 </li>
+                {/* <li>
+                  <a href="/list-bills">
+                    <i className="fa fa-money" /> 
+                    All Bills
+                  </a>
+                </li> */}
+                
                 <li className="sidebarMenuText">
                   <a href="#Report" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-line-chart" />

@@ -1047,8 +1047,7 @@ exports.get_product_current_stock_report = (req, res, next)=>{
                             });
                         }
 
-                      
-                         res.status(200).json(returnData);
+                        res.status(200).json(returnData);
                 }
           
         })

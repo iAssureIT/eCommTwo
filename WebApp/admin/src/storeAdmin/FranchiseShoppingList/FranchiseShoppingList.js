@@ -110,10 +110,11 @@ export default class FranchiseShoppingList extends React.Component {
 										var obj = {};
 										var productCode = franchisestock.data[i].productCode;
 										var itemCode 		= franchisestock.data[i].itemCode;
-
+										var productId   = franchisestock.data[i].productId;
 										obj.productCode 	= productCode;
 										obj.fgUnitQty 		= franchisestock.data[i].fgUnitQty;
 										obj.itemCode 			= itemCode;
+										obj.productId 			= productId;
 										obj.productName 	= franchisestock.data[i].productName;
 										obj.currentStock 	= franchisestock.data[i].currentStock;
 										obj.section 			= franchisestock.data[i].section;	

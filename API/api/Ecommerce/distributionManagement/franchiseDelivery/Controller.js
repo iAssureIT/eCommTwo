@@ -100,15 +100,20 @@ exports.update_delivery_attribute = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-                if(req.body.attribute == "deliveryAccepted" || req.body.attribute == "deliveryCompleted"){
-                    //if accepted insert into frinchise goods
-                    var updateFinishedGoods = update_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
-                }
+                    if(data.nModified == 1){
+                       if(req.body.attribute == "deliveryAccepted" || req.body.attribute == "deliveryCompleted"){
+                            //if accepted insert into frinchise goods
+                            var updateFinishedGoods = update_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
+                       }
 
-                if(req.body.attribute == "deliveryRejected"){
-                    //if accepted insert into frinchise goods
-                    var deleteFromFinishedGoods = deletefrom_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
-                }
+                       if(req.body.attribute == "deliveryRejected"){
+                        //if accepted insert into frinchise goods
+                           var deleteFromFinishedGoods = deletefrom_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
+                       }
+                    }else{
+                         resolve(data);
+                    }
+                
 
                 res.status(200).json({
                     "message": "Success",
@@ -147,6 +152,7 @@ var update_franchise_goods = async (franchiseDcId,itemCode) => {
                         franchise_id              : franchiseData.franchise_id, 
                         franchisePO_id            : franchiseData.franchisePO_id,
                         deliveryChallanNum        : franchiseData.deliveryChallanNum,
+                        productId                 : productObj.productId,
                         productCode               : productObj.productCode,
                         itemCode                  : productObj.itemCode,
                         productName               : productObj.productName,
@@ -234,7 +240,7 @@ var manage_finished_goods = async (data,deliveryDate) => {
                   .sort({createdAt : 1})
                   .limit(1)
                   .then(fgdata=>{
-                   console.log("fgdata",obj.suppliedUnit,obj.suppliedUnit);
+                   // console.log("fgdata",obj.suppliedUnit,obj.suppliedUnit);
                    // console.log("fgdata",obj.suppliedUnit.toLowerCase(),obj.suppliedUnit);
                         if(escape(fgdata.balanceUnit).toLowerCase() == escape(obj.suppliedUnit).toLowerCase()){
                             var remainingBalance = fgdata[0].balance - obj.suppliedQty;

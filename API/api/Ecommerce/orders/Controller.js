@@ -10,9 +10,11 @@ const Adminpreference       = require('../adminPreference/Model');
 const Allowablepincode      = require('../allowablePincodes/Model');
 const Entitymaster          = require('../../coreAdmin/entityMaster/ModelEntityMaster.js');
 var   request               = require('request-promise');  
-const gloabalVariable 	    = require('../../../nodemon');
+const gloabalVariable       = require('../../../nodemon');
 const moment                = require('moment-timezone');
+const FranchiseGoods        = require('../distributionManagement/Model');
 var ObjectId                = require('mongodb').ObjectID;
+
 
 exports.insert_orders = (req,res,next)=>{
   // console.log("Inside order post",req.body); 
@@ -35,7 +37,7 @@ exports.insert_orders = (req,res,next)=>{
     Adminpreference.findOne()
     .then(preferenceData =>{
         if(preferenceData.websiteModel === "FranchiseModel"){
-          // var autogenerateOrderId = Math.round(new Date().getTime()/1000);
+          var autogenerateOrderId = Math.round(new Date().getTime()/1000);
           // console.log("inside adminpreferences, Address===",autogenerateOrderId);
           var pincode = req.body.deliveryAddress.pincode;
           if(pincode){
@@ -45,7 +47,7 @@ exports.insert_orders = (req,res,next)=>{
             .then(franchiseObjects=>{
                 main();
                 async function main(){
-                console.log("Allowaable Pincode data ============",franchiseObjects);                 
+                // console.log("Allowaable Pincode data ============",franchiseObjects);                 
                 if(franchiseObjects){
                   var franchiseID;
                   var matchedFranchise = [];
@@ -55,9 +57,9 @@ exports.insert_orders = (req,res,next)=>{
                         if(franchiseObj.allowablePincodes.includes(pincode)){
                             franchiseID =  franchiseObj.franchiseID;
                             matchedFranchise.push({franchiseID :franchiseID});                            
-                            console.log("matchedFranchise ===",matchedFranchise);                            
+                            // console.log("matchedFranchise ===",matchedFranchise);                            
                         } 
-                    }//end for loop  
+                    }//end for loop 
 
                     if(matchedFranchise){                     
                       if(matchedFranchise.length > 1){
@@ -67,250 +69,255 @@ exports.insert_orders = (req,res,next)=>{
                         var allocatedToFranchise;
                         var flag = false;
                         var len=matchedFranchise.length;
-                        console.log("franchiseObjects,matchedFranchise,minDisFranchise available==========>",franchiseObjects,matchedFranchise,minDisFranchise);
                         allocatedToFranchise = await allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise);
-                        console.log("allocatedToFranchise available==========>",allocatedToFranchise);
+                        // console.log("allocatedToFranchise available==========>",allocatedToFranchise);
                           saveOrderdata(allocatedToFranchise);                        
                       }else{
-                      
+                      // console.log("single franchise available==========");
                        var allocatedToFranchise = franchiseID; 
                        saveOrderdata(allocatedToFranchise);
                       }
 
+                      //insert into franchise goods
+                      for (var i=0;i<=req.body.cartItems.length;i++) {
+                         console.log("inside for cartitems",req.body.cartItems[i]);
+                        var productId = req.body.cartItems[i].product_ID; 
+                       
+                        var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
+                        var obj = {"orderNum":Math.round(new Date().getTime()/1000),"orderDate":new Date(),"orderQty":req.body.cartItems[i].quantity,"Unit":req.body.cartItems[i].unit, "orderDeliveryStatus":status}
+                        var franchiseGoodsOrder =   await addOrderToFranchiseGoods(productId,obj,matchedFranchise);
+                      }
+                    
 
                       // insert orders details and allocate franchise ID to orders
-  function saveOrderdata(allocatedToFranchise){
-    console.log("allocatedToFranchise==========",allocatedToFranchise);
-    // console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
-    var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
-    var BillNumber = req.body.billNumber ? req.body.billNumber : 0;
-    console.log("BillNumber available==========",BillNumber);                        
-    console.log("status available==========",status);                        
-    const order = new Orders({
-      _id                  : new mongoose.Types.ObjectId(),
-    "orderID"              : Math.round(new Date().getTime()/1000),
-    "billNumber"          : BillNumber,
-    "user_ID"              : req.body.user_ID,
-    "allocatedToFranchise" : allocatedToFranchise,
-    "userName"             : data.profile.email,
-    "userFullName"         : data.profile.fullName,
-    "total"                : req.body.total,
-    "currency"             : 'inr',
-    "cartTotal"            : req.body.cartTotal,
-    "discount"             : req.body.discount,
-    "status"               : status,
-    "createdAt"            : new Date(),
-    "products"             : req.body.cartItems,
-    "paymentMethod"        : req.body.paymentMethod,
-    "shippingtime"         : req.body.shippingtime,
-    "productLength"        : req.body.cartItems.length,
-    "cartQuantity"         : req.body.cartQuantity,
-    'deliveryAddress'      : {
-                            "name"            : req.body.deliveryAddress.name,
-                            "email"           : req.body.deliveryAddress.email,
-                            "addressLine1"    : req.body.deliveryAddress.addressLine1,
-                            "addressLine2"    : req.body.deliveryAddress.addressLine2,
-                            "pincode"         : req.body.deliveryAddress.pincode,
-                            "city"            : req.body.deliveryAddress.city,
-                            "state"           : req.body.deliveryAddress.state,
-                            "stateCode"       : req.body.deliveryAddress.stateCode,
-                            "mobileNumber"    : req.body.deliveryAddress.mobileNumber,
-                            "district"        : req.body.deliveryAddress.district,
-                            "country"         : req.body.deliveryAddress.country,
-                            "countryCode"     : req.body.deliveryAddress.countryCode,
-                            "addType"         : req.body.deliveryAddress.addType,
-                            "latitude"        : req.body.deliveryAddress.latitude,
-                            "longitude"       : req.body.deliveryAddress.longitude,
-                          },
-      "deliveryStatus"   : [
-          {
-            "status"            : "New Order",
-            "Date"              : new Date(),
-            "Userid"            : req.body.user_ID,
-          }
-      ],
-    });                                 
-       //save order and send notifications to customer 
-       console.log("order available==========",order);
-       order.save()
-        .then(orderdata=>{        
-            console.log("1.Inside order response",orderdata);
-            var header = "<table><tbody><tr><td align='center' width='100%'><a><img src='http://http://anashandicrafts.iassureit.com/images/anasLogo.png' style='width:25%'></a></td></tr></table>";
-            var body = "";
-            var footer = "<table width='100%' bgcolor='#232f3e' height='50'><tbody><tr><td>"
-            footer += "<span style='color:#fff'>AnasHandicraft Copyright <i class='fa fa-copyright'></i> 2019 - 2020. All Rights Reserved.</span>";
-            footer += "<span style='float:right;color:#fff'>anashandicraft@gmail.com</span></td></tr></tbody></table>"
-            
-            var mailSubject, mailText, smsText;
-            Masternotifications.findOne({"templateType":"Email","templateName":"Order Placed Successfully"})
-                .exec()
-                .then((maildata)=>{
-                  
-                  if (maildata) {
-                    mailSubject = maildata.subject != '' ? maildata.subject : "Your order is placed successfully.";
-                      var variables = {
-                        "username"      : data.profile.fullName
-                      }
-                    
-                      var content = maildata.content;
-                      if(content.indexOf('[') > -1 ){
-                        var wordsplit = content.split('[');
-                      }
-              
-                      var tokens = [];
-                      var n = 0;
-                      for(i=0;i<wordsplit.length;i++){
-                        if(wordsplit[i].indexOf(']') > -1 ){
-                          tokensArr = wordsplit[i].split(']');
-                          tokens[n] = tokensArr[0];
-                          n++;
-                        }
-                      }
-                      var numOfVar = Object.keys(variables).length;
-              
-                      for(i=0; i<numOfVar; i++){
-                        var tokVar = tokens[i].substr(1,tokens[i].length-2);
-                        content = content.replace(tokens[i],variables[tokens[i]]);
-                      }
-                      content = content.split("[").join(" ");
-                      content = content.split("]").join(" ");
-  
-                      body += "<table><tr><td>"+content+"</td></tr></table>";
-                      body += "<tr><b><p>Your order will be sent to:</p></b>";
+                      function saveOrderdata(allocatedToFranchise){
+                        // console.log("allocatedToFranchise==========",allocatedToFranchise);
+                        // console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
+                        var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
+                        var BillNumber = req.body.billNumber ? req.body.billNumber : 0;
+                        const order = new Orders({
+                          _id                  : new mongoose.Types.ObjectId(),
+                        "orderID"              : Math.round(new Date().getTime()/1000),
+                        "billNumber"          : BillNumber,
+                        "user_ID"              : req.body.user_ID,
+                        "allocatedToFranchise" : allocatedToFranchise,
+                        "userName"             : data.profile.email,
+                        "userFullName"         : data.profile.fullName,
+                        "total"                : req.body.total,
+                        "currency"             : 'inr',
+                        "cartTotal"            : req.body.cartTotal,
+                        "discount"             : req.body.discount,
+                        "status"               : status,
+                        "createdAt"            : new Date(),
+                        "products"             : req.body.cartItems,
+                        "paymentMethod"        : req.body.paymentMethod,
+                        "shippingtime"         : req.body.shippingtime,
+                        "productLength"        : req.body.cartItems.length,
+                        "cartQuantity"         : req.body.cartQuantity,
+                        'deliveryAddress'      : {
+                                                "name"            : req.body.deliveryAddress.name,
+                                                "email"           : req.body.deliveryAddress.email,
+                                                "addressLine1"    : req.body.deliveryAddress.addressLine1,
+                                                "addressLine2"    : req.body.deliveryAddress.addressLine2,
+                                                "pincode"         : req.body.deliveryAddress.pincode,
+                                                "city"            : req.body.deliveryAddress.city,
+                                                "state"           : req.body.deliveryAddress.state,
+                                                "stateCode"       : req.body.deliveryAddress.stateCode,
+                                                "mobileNumber"    : req.body.deliveryAddress.mobileNumber,
+                                                "district"        : req.body.deliveryAddress.district,
+                                                "country"         : req.body.deliveryAddress.country,
+                                                "countryCode"     : req.body.deliveryAddress.countryCode,
+                                                "addType"         : req.body.deliveryAddress.addType,
+                                                "latitude"        : req.body.deliveryAddress.latitude,
+                                                "longitude"       : req.body.deliveryAddress.longitude,
+                                              },
+                          "deliveryStatus"   : [
+                              {
+                                "status"            : req.body.deliveryStatus ? req.body.deliveryStatus : "New Order",
+                                "Date"              : new Date(),
+                                "Userid"            : req.body.user_ID,
+                              }
+                          ],
+                        });                                 
+                           //save order and send notifications to customer 
+                           order.save()
+                            .then(orderdata=>{        
+                                console.log("1.Inside order response",orderdata);
+                                var header = "<table><tbody><tr><td align='center' width='100%'><a><img src='http://http://anashandicrafts.iassureit.com/images/anasLogo.png' style='width:25%'></a></td></tr></table>";
+                                var body = "";
+                                var footer = "<table width='100%' bgcolor='#232f3e' height='50'><tbody><tr><td>"
+                                footer += "<span style='color:#fff'>AnasHandicraft Copyright <i class='fa fa-copyright'></i> 2019 - 2020. All Rights Reserved.</span>";
+                                footer += "<span style='float:right;color:#fff'>anashandicraft@gmail.com</span></td></tr></tbody></table>"
+                                
+                                var mailSubject, mailText, smsText;
+                                Masternotifications.findOne({"templateType":"Email","templateName":"Order Placed Successfully"})
+                                    .exec()
+                                    .then((maildata)=>{
+                                      
+                                      if (maildata) {
+                                        mailSubject = maildata.subject != '' ? maildata.subject : "Your order is placed successfully.";
+                                          var variables = {
+                                            "username"      : data.profile.fullName
+                                          }
+                                        
+                                          var content = maildata.content;
+                                          if(content.indexOf('[') > -1 ){
+                                            var wordsplit = content.split('[');
+                                          }
+                                  
+                                          var tokens = [];
+                                          var n = 0;
+                                          for(i=0;i<wordsplit.length;i++){
+                                            if(wordsplit[i].indexOf(']') > -1 ){
+                                              tokensArr = wordsplit[i].split(']');
+                                              tokens[n] = tokensArr[0];
+                                              n++;
+                                            }
+                                          }
+                                          var numOfVar = Object.keys(variables).length;
+                                  
+                                          for(i=0; i<numOfVar; i++){
+                                            var tokVar = tokens[i].substr(1,tokens[i].length-2);
+                                            content = content.replace(tokens[i],variables[tokens[i]]);
+                                          }
+                                          content = content.split("[").join(" ");
+                                          content = content.split("]").join(" ");
                       
-                      body += "<p style='margin:0'>"+orderdata.deliveryAddress.name+"</p>";
-                      body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine1+"</p>";
-                      if (orderdata.deliveryAddress.addressLine2) {
-                          body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine2+"</p>";
-                      }
-                      body += "<p style='margin:0'>"+orderdata.deliveryAddress.city+" "+orderdata.deliveryAddress.district +" "+orderdata.deliveryAddress.state+" "+orderdata.deliveryAddress.pincode+"</p>";
-                      body += "<p style='margin:0'>"+orderdata.deliveryAddress.country+"</p></tr>";
-                      body += "</tbody></table>";
-  
-                      body += "<h3>Order Details</h3>";
-                      body += "<table width='100%' style='border-top:1px solid #333'><thead align='left'><tr><th>Product Name</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody>";
+                                          body += "<table><tr><td>"+content+"</td></tr></table>";
+                                          body += "<tr><b><p>Your order will be sent to:</p></b>";
+                                          
+                                          body += "<p style='margin:0'>"+orderdata.deliveryAddress.name+"</p>";
+                                          body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine1+"</p>";
+                                          if (orderdata.deliveryAddress.addressLine2) {
+                                              body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine2+"</p>";
+                                          }
+                                          body += "<p style='margin:0'>"+orderdata.deliveryAddress.city+" "+orderdata.deliveryAddress.district +" "+orderdata.deliveryAddress.state+" "+orderdata.deliveryAddress.pincode+"</p>";
+                                          body += "<p style='margin:0'>"+orderdata.deliveryAddress.country+"</p></tr>";
+                                          body += "</tbody></table>";
                       
-                      cartArray.map((productdata,index)=>{
-  
-                        body += "<tr><td>"+productdata.productName+"</td><td>"+productdata.discountedPrice+"</td><td>"+productdata.quantity+"</td><td>"+productdata.total+"</td></tr>";
-                      })
+                                          body += "<h3>Order Details</h3>";
+                                          body += "<table width='100%' style='border-top:1px solid #333'><thead align='left'><tr><th>Product Name</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody>";
+                                          
+                                          cartArray.map((productdata,index)=>{
                       
-                      body += "</tbody></table><br>";
-  
-                  }else{
-                    mailSubject = "Your order is placed successfully.";
-                    body += "<table><tr><td><h3>Dear "+data.profile.fullName+", </h3>\n";
-                    body += "<p>Thank you for your order. We’ll send a confirmation when your order ships.</p></tr>";
+                                            body += "<tr><td>"+productdata.productName+"</td><td>"+productdata.discountedPrice+"</td><td>"+productdata.quantity+"</td><td>"+productdata.total+"</td></tr>";
+                                          })
+                                          
+                                          body += "</tbody></table><br>";
+                      
+                                      }else{
+                                        mailSubject = "Your order is placed successfully.";
+                                        body += "<table><tr><td><h3>Dear "+data.profile.fullName+", </h3>\n";
+                                        body += "<p>Thank you for your order. We’ll send a confirmation when your order ships.</p></tr>";
+                                        
+                                        body += "<tr><b><p>Your order will be sent to:</p></b>";
+                                        body += "<p style='margin:0'>"+orderdata.deliveryAddress.name+"</p>";
+                                        body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine1+"</p>";
+                                        if (orderdata.deliveryAddress.addressLine2) {
+                                          body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine2+"</p>";
+                                        }
+                                        body += "<p style='margin:0'>"+orderdata.deliveryAddress.city+" "+orderdata.deliveryAddress.district +" "+orderdata.deliveryAddress.state+" "+orderdata.deliveryAddress.pincode+"</p>";
+                                        body += "<p style='margin:0'>"+orderdata.deliveryAddress.country+"</p></tr>";
+                                        body += "</tbody></table>";
+                      
+                                        body += "<h3>Order Details</h3>";
+                                        body += "<table width='100%' style='border-top:1px solid #333'><thead align='left'><tr><th>Product Name</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody>";
+                                        
+                                        req.body.cartItems.map((productdata,index)=>{
+                      
+                                          body += "<tr><td>"+productdata.productName+"</td><td>"+productdata.discountedPrice+"</td><td>"+productdata.quantity+"</td><td>"+productdata.subTotal+"</td></tr>";
+                                        })
+                                        
+                                        
+                                        body += "</tbody></table><br>";
+                                        
+                                      }
+                                      //body += footer;
+                                      // console.log('body',body)
+                                      // request({
+                                      //     "method"    : "POST",
+                                      //     "url"       : "http://localhost:" + gloabalVariable.PORT + "/send-email",
+                                      //     "body"      :   {
+                                      //                         "email"     : data.profile.emailId,
+                                      //                         "subject"   : mailSubject,
+                                      //                         "text"      : mailSubject,
+                                      //                         "mail"      : body 
+                                      //                         //"mail"      : 'Hello '+data.profile.fullName+','+'\n'+mailText,
+                                      //                         // "mail"      : 'Hello '+data.profile.fullName+','+'\n'+"\n <br><br>Your Order has been placed successfully and will be dispached soon."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team GangaExpress',
+                                      //                     },
+                                      //     "json"      : true,
+                                      //     "headers"   : { "User-Agent": "Test App" }
+                                      //   })
+                                      //   .then((sentemail)=>{
+                                      //       res.header("Access-Control-Allow-Origin","*");
+                                      //       res.status(200).json({ "message": 'Order placed successfully' });
+                                      //   })
+                                      //   .catch((err) =>{
+                                      //     console.log('e', error);
+                                      //       res.status(500).json({
+                                      //           error: err
+                                      //       });
+                                      //   }); 
+                                    })
+                                    .catch()          
+                                
+                                
+                                // request({
+                                //   "method"    : "POST",
+                                //   "url"       : "http://localhost:"+gloabalVariable.PORT+"/send-email",
+                                //   "body"      :  {
+                                //                       "email"     : "iassureitmail@gmail.com",
+                                //                       "subject"   : 'Order Placed Successfully',
+                                //                       "text"      : "WOW Its done",
+                                //                       "mail"      : 'Hello '+'Admin'+','+'\n'+"\n <br><br>You have an order placed by "+data.profile.fullName+"."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team AnasHandicraft',
+                                //                 },
+                                //   "json"      : true,
+                                //   "headers"   : {
+                                //                   "User-Agent": "Test App"
+                                //               }
+                                // })
+                                // .then((sentemail)=>{
+                                //     res.header("Access-Control-Allow-Origin","*");
+                                //     res.status(200).json({message:"Mail Sent successfully"});
+                                // })
+                                // .catch((err) =>{
+                                //     res.status(500).json({
+                                //         error: err
+                                //     });
+                                // });
+                                Carts.findOne({"user_ID":req.body.user_ID})
+                                .exec()
+                                .then(userCart=>{
+                                    if(userCart){
+                                        Carts.updateOne(
+                                            {"_id": userCart._id},
+                                            { $set: {
+                                            "cartItems" : [],
+                                            "cartTotal" : 0
+                                            }
+                                        })
+                                        .exec()
+                                        .catch(error=>{
+                                            res.status(500).json({
+                                                error1: error
+                                            });
+                                        })
+                                    }
+                                })
+                                .catch(error=>{
+                                  console.log('error', error);
+                                    res.status(500).json({
+                                        error2: error
+                                    });
+                                })
+                                res.status(200).json({
+                                    "message": "Order Placed Successfully.",
+                                    "order_ID" : orderdata._id
+                                });
+                            })                                   
                     
-                    body += "<tr><b><p>Your order will be sent to:</p></b>";
-                    body += "<p style='margin:0'>"+orderdata.deliveryAddress.name+"</p>";
-                    body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine1+"</p>";
-                    if (orderdata.deliveryAddress.addressLine2) {
-                      body += "<p style='margin:0'>"+orderdata.deliveryAddress.addressLine2+"</p>";
-                    }
-                    body += "<p style='margin:0'>"+orderdata.deliveryAddress.city+" "+orderdata.deliveryAddress.district +" "+orderdata.deliveryAddress.state+" "+orderdata.deliveryAddress.pincode+"</p>";
-                    body += "<p style='margin:0'>"+orderdata.deliveryAddress.country+"</p></tr>";
-                    body += "</tbody></table>";
-  
-                    body += "<h3>Order Details</h3>";
-                    body += "<table width='100%' style='border-top:1px solid #333'><thead align='left'><tr><th>Product Name</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody>";
-                    
-                    req.body.cartItems.map((productdata,index)=>{
-  
-                      body += "<tr><td>"+productdata.productName+"</td><td>"+productdata.discountedPrice+"</td><td>"+productdata.quantity+"</td><td>"+productdata.subTotal+"</td></tr>";
-                    })
-                    
-                    
-                    body += "</tbody></table><br>";
-                    
-                  }
-                  //body += footer;
-                  // console.log('body',body)
-                  // request({
-                  //     "method"    : "POST",
-                  //     "url"       : "http://localhost:" + gloabalVariable.PORT + "/send-email",
-                  //     "body"      :   {
-                  //                         "email"     : data.profile.emailId,
-                  //                         "subject"   : mailSubject,
-                  //                         "text"      : mailSubject,
-                  //                         "mail"      : body 
-                  //                         //"mail"      : 'Hello '+data.profile.fullName+','+'\n'+mailText,
-                  //                         // "mail"      : 'Hello '+data.profile.fullName+','+'\n'+"\n <br><br>Your Order has been placed successfully and will be dispached soon."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team GangaExpress',
-                  //                     },
-                  //     "json"      : true,
-                  //     "headers"   : { "User-Agent": "Test App" }
-                  //   })
-                  //   .then((sentemail)=>{
-                  //       res.header("Access-Control-Allow-Origin","*");
-                  //       res.status(200).json({ "message": 'Order placed successfully' });
-                  //   })
-                  //   .catch((err) =>{
-                  //     console.log('e', error);
-                  //       res.status(500).json({
-                  //           error: err
-                  //       });
-                  //   }); 
-                })
-                .catch()          
-            
-            
-            // request({
-            //   "method"    : "POST",
-            //   "url"       : "http://localhost:"+gloabalVariable.PORT+"/send-email",
-            //   "body"      :  {
-            //                       "email"     : "iassureitmail@gmail.com",
-            //                       "subject"   : 'Order Placed Successfully',
-            //                       "text"      : "WOW Its done",
-            //                       "mail"      : 'Hello '+'Admin'+','+'\n'+"\n <br><br>You have an order placed by "+data.profile.fullName+"."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team AnasHandicraft',
-            //                 },
-            //   "json"      : true,
-            //   "headers"   : {
-            //                   "User-Agent": "Test App"
-            //               }
-            // })
-            // .then((sentemail)=>{
-            //     res.header("Access-Control-Allow-Origin","*");
-            //     res.status(200).json({message:"Mail Sent successfully"});
-            // })
-            // .catch((err) =>{
-            //     res.status(500).json({
-            //         error: err
-            //     });
-            // });
-            Carts.findOne({"user_ID":req.body.user_ID})
-            .exec()
-            .then(userCart=>{
-                if(userCart){
-                    Carts.updateOne(
-                        {"_id": userCart._id},
-                        { $set: {
-                        "cartItems" : [],
-                        "cartTotal" : 0
-                        }
-                    })
-                    .exec()
-                    .catch(error=>{
-                        res.status(500).json({
-                            error1: error
-                        });
-                    })
-                }
-            })
-            .catch(error=>{
-              console.log('error', error);
-                res.status(500).json({
-                    error2: error
-                });
-            })
-            res.status(200).json({
-                "message": "Order Placed Successfully.",
-                "order_ID" : orderdata._id
-            });
-        })                                   
 
-}//end saveOrderData
-
-                    
+                    }//end saveOrderData
                   }//end if franchiseID
                 }     
               }
@@ -562,7 +569,7 @@ exports.insert_orders = (req,res,next)=>{
           error3: err
       });
   });
-  
+
   function allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise) {    
     for(var franchiseObjects of matchedFranchise){  
       return new Promise(function(resolve,reject){
@@ -587,7 +594,7 @@ exports.insert_orders = (req,res,next)=>{
               }                                  
             }//end if lat-long
             allocatedToFranchise = minDisFranchise.franchiseID;
-            console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
+            // console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
             resolve(allocatedToFranchise);
             // if(i === matchedFranchise.length-1){
             //   flag === "true";  
@@ -2132,21 +2139,133 @@ exports.vendorWiseOrder = (req,res,next)=>{
       });
 };
 
-// exports.insert_bill_order = (req,res,next)=>{
-//   console.log("Inside bill order post",req.body); 
-//       if(req.body.cartItems.length>0){
-//         for(k=0;k<req.body.cartItems.length;k++){
-//           Products.updateOne( 
-//               {"_id": req.body.cartItems[k].product_ID},
-//               { $inc: {
-//                   "availableQuantity" : -(req.body.cartItems[k].quantity),
-//               }
-//           })
-//           .then()
-//           .catch();
-//         }
-//       }
+function addOrderToFranchiseGoods(productId,obj,franchise_id) {   
+  console.log("ItemCodeobj",productId,obj,franchise_id);
+      return new Promise(function(resolve,reject){
+             FranchiseGoods.find({productId : productId,balance: { $gt: 0 },franchise_id:franchise_id})
+              .sort({createdAt : 1})
+              .limit(1)
+              .then(fgdata=>{
+                console.log("fgdata",fgdata);
+                    if(fgdata[0].unit.toLowerCase() == obj.Unit.toLowerCase()){
+                            var remainingBalance = fgdata[0].balance - obj.orderQty;
+                    }else{
+                            //if units are different
+                            if((fgdata[0].unit.toLowerCase() == 'kg' || fgdata[0].unit.toLowerCase() == 'kilogram') && (obj.Unit.toLowerCase() == "gm" || obj.Unit.toLowerCase() == "gram")){
+                                //convert raw material gram to kg formula kg=gm/1000
+                               var convertToKg            = obj.orderQty/1000;
+                               obj.orderQty = convertToKg;
+                               obj.Unit        = fgdata[0].unit
+                               var remainingBalance       = fgdata[0].balance - convertToKg;          
+                            }
+                            if((fgdata[0].unit.toLowerCase() == 'gm' || fgdata[0].unit.toLowerCase() == 'gram') && (obj.Unit.toLowerCase() == "kg" || obj.Unit.toLowerCase() == "kilogram")){
+                                //convert raw material kg to gram formula g=kg*1000
+                                var convertToGram          = obj.orderQty*1000;
+                                obj.orderQty = convertToGram;
+                                obj.Unit        = fgdata[0].unit
+                                var remainingBalance       = fgdata[0].balance - convertToGram;
+                            }
+                            if(fgdata[0].unit.toLowerCase() == "kg" &&  obj.Unit.toLowerCase() == "kilogram"){
+                               var remainingBalance = fgdata[0].balance - obj.orderQty;
+                            }
 
-//       franchise_id
-// };
-//   
+                             if(fgdata[0].Unit.toLowerCase() == "gm" &&  obj.Unit.toLowerCase() == "gram"){
+                               var remainingBalance = fgdata[0].balance - obj.orderQty;
+                            }
+
+                             if(fgdata[0].unit.toLowerCase() !== "kg" ||  obj.Unit.toLowerCase() !== "gram"){
+                               var remainingBalance = fgdata[0].balance - obj.orderQty;
+                            }
+                    }
+
+                    // compare and update raw material stock
+                       if(fgdata[0].balance >= obj.orderQty){
+                         // var remainingBalance = fgdata[0].balance - obj.Quantity;
+                         obj.finishedGoods = obj;
+                         obj.balance = remainingBalance;
+
+                         orders = {"orderNum":obj.orderNum,"orderDate":obj.orderDate,"ProductId":productId,"orderQty":obj.orderQty,"Unit":obj.Unit};
+                            FranchiseGoods.update(
+                            {    _id:fgdata[0]._id},  
+                            {
+                                 $set:   {'balance': remainingBalance} ,
+                                 $push:  {'orders' : orders }                         
+                            })
+                                .then(data=>{
+                                    if(data.nModified == 1){
+                                        resolve(data);
+                                    }else{
+                                        resolve(data);
+                                    }
+                                })
+                                .catch(err =>{ reject(err); });
+                        }else{
+                            var remainFcQty =  obj.orderQty - fgdata[0].balance;
+                            var remainingBalance = 0;
+                            orders = {"orderNum":obj.orderNum,"orderDate":obj.orderDate,"ProductId":productId,"orderQty":fgdata[0].balance,"Unit":obj.Unit};
+                            FranchiseGoods.updateOne(
+                            {    _id:fgdata[0]._id},  
+                            {
+                                 $set:   {'balance': remainingBalance} ,
+                                 $push:  {'orders' : orders }                         
+                            })
+                            .then(data=>{
+                               PoUpObj = {"orderNum":obj.orderNum,"orderDate":obj.orderDate,"ProductId":productId,"orderQty":remainFcQty,"Unit":obj.Unit};
+                                if(data.nModified == 1){
+                                    if(remainFcQty != 0){
+                                         var updateOtherPoObj = updateOtherFranchiseGoods(itemCode,PoUpObj);
+                                         if(updateOtherPoObj){
+
+                                         }else{
+                                            console.log("err");
+                                         }
+                                    }
+                                    resolve(data);
+                                }else{
+                                    resolve(data);
+                                }
+                            })
+                            .catch(err =>{ reject(err); });
+                            resolve(0);
+                        }
+
+
+              })
+              .catch(err =>{
+                   reject(err);
+              });
+      });
+}
+
+var updateOtherFranchiseGoods = async (itemCode,obj) => {
+    // console.log('Data',data);
+    return new Promise(function(resolve,reject){ 
+        updateOtherfgControl();
+        async function updateOtherfgControl(){
+            addOrderToFranchiseGoods(itemCode,obj)
+        }
+    })
+}
+
+
+exports.list_bill_by_user = (req,res,next)=>{
+  console.log('user_ID',req.body.userid);
+
+    Orders.find(
+      {"user_ID": ObjectId(req.body.userid),orderID:{$ne:null}
+     })   
+    .exec()
+    .then(data=>{
+      console.log('data', data);
+      res.status(200).json(data);
+    })
+    .catch(err =>{
+      console.log(err);
+      res.status(500).json({
+          error: err
+      });
+    });
+};
+
+
+

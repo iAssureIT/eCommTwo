@@ -20,6 +20,7 @@ exports.getfranchisestock = (req,res,next)=>{
 
                         products.forEach((element)=>{
                             let pCode = element.productCode ;
+                            let pId = element._id ;
                             let iCode = element.itemCode ;
                             let currentStock = 0;
                             let fgUnitQty = '';
@@ -35,6 +36,7 @@ exports.getfranchisestock = (req,res,next)=>{
                             }
 
                             franchiseStock.push({
+                                                productId    : pId,
                                                 productCode  : pCode,
                                                 itemCode     : iCode,
                                                 productName  : element.productName,

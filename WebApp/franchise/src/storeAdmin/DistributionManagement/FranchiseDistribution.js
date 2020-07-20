@@ -200,9 +200,11 @@ export default class FranchiseDistribution extends React.Component {
         event.preventDefault();
         var orderArray = [];
     	for (var i = 0; i < this.state.DistributionData.length; i++) {
+			console.log("ddddd",this.state.DistributionData[i]);
 			var obj = {};
 			if(this.state.DistributionData[i].supply > 0){
 				var remain = this.state.DistributionData[i].orderQty - this.state.DistributionData[i].supply;
+				obj.productId	    = this.state.DistributionData[i].productId;
 				obj.productCode 	= this.state.DistributionData[i].productCode;
 				obj.itemCode 		= this.state.DistributionData[i].itemCode;
 				obj.productName 	= this.state.DistributionData[i].productName;

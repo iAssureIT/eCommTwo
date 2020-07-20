@@ -110,10 +110,12 @@ export default class FranchiseShoppingList extends React.Component {
 									for (var i = 0; i<franchisestock.data.length; i++) {
 										var obj = {};
 										var productCode = franchisestock.data[i].productCode;
-										var itemCode 		= franchisestock.data[i].itemCode;
+										var itemCode 	= franchisestock.data[i].itemCode;
+										var productId   = franchisestock.data[i].productId;
 										obj.fgUnitQty 		= franchisestock.data[i].fgUnitQty;
 										obj.productCode 	= productCode;
-										obj.itemCode 			= itemCode;
+										obj.itemCode 	    = itemCode;
+										obj.productId       = productId;
 										obj.productName 	= franchisestock.data[i].productName;
 										obj.currentStock 	= franchisestock.data[i].currentStock;
 										obj.section 			= franchisestock.data[i].section;	
@@ -129,6 +131,8 @@ export default class FranchiseShoppingList extends React.Component {
 											console.log("prodStockOrder ===> ",this.state.prodStockOrder);
 										});										
 									}
+  
+									
 								}
 					})
 					.catch(error=>{
@@ -159,8 +163,8 @@ export default class FranchiseShoppingList extends React.Component {
   		}
   	}
 
-	  const formValues1 = {
-	    franchise_id            : this.state.selectedFranchise, 
+	const formValues1 = {
+	  franchise_id            : this.state.selectedFranchise, 
       companyID                 : this.state.companyID, 
       orderDate                 : moment(new Date()).format("YYYY-MM-DD"), 
       orderItems                : ProdArray,
@@ -315,6 +319,7 @@ export default class FranchiseShoppingList extends React.Component {
 									    	Array.isArray(this.state.prodStockOrder) && this.state.prodStockOrder.length > 0
 									    	? 
 									    		this.state.prodStockOrder.map((result, index)=>{
+													console.log("prodStockOrder",result);
 													return( 
 													this.state.selectedSection ?
 														result.section === this.state.selectedSection ? 

@@ -372,7 +372,7 @@ exports.add_paymentmethod_to_cart = (req, res, next)=>{
 
 //Update products cart 
 exports.update_cart_item = (req, res, next)=>{
-     console.log("request",req);
+     // console.log("request",req);
     Carts.updateOne(
         {"user_ID":req.body.user_ID,'cartItems.product_ID':req.body.product_ID},
         {

@@ -73,4 +73,8 @@ router.get('/get/subCategoryRevenue',orderController.subCategoryRevenue);
 
 router.get('/get/vendorWiseOrder',orderController.subCategoryRevenue);
 
+
+router.post('/get/getBillsByUser/',orderController.list_bill_by_user);
+
+
 module.exports = router; 

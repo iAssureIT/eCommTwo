@@ -20,7 +20,6 @@ exports.insert_franchise_goods = (req,res,next)=>{
                     orderedDate               : req.body.orderedDate,
                     createdBy                 : req.body.createdBy,
                     createdAt                 : new Date()
-
                 });
                 franchiseGoods.save()
                 .then(data=>{
@@ -70,7 +69,7 @@ function generate_delivery_Challan() {
              }else{
                  dc_challan = "DC" + 1;
              }
-             console.log("generate_delivery_Challan",resolve);
+             //console.log("generate_delivery_Challan",resolve);
              resolve(dc_challan);
             
         })
