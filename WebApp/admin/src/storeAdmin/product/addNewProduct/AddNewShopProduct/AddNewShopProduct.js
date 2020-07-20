@@ -577,7 +577,7 @@ class AddNewShopProduct extends Component {
         }
       }
     }
-    console.log("this.refs.vendor.value.split('|')[2]==>",this.state.vendor);
+    // console.log("this.refs.vendor.value.split('|')[2]==>",this.state.vendor);
     // console.log("this.refs.vendor.value.split('|')[1]==>",this.refs.vendor.value.split('|')[1]);
     var formValues = {
       "vendor_ID"         : this.state.vendor_ID,
@@ -604,6 +604,7 @@ class AddNewShopProduct extends Component {
       "originalPrice"     : this.state.originalPrice,
       "discountPercent"   : this.state.discountPercent ? this.state.discountPercent : "0" ,
       "size"              : this.refs.size.value,
+      "unit"              : this.refs.unit.value, 
       "color"             : this.state.color,
       "discountedPrice"   : this.state.discountedPrice ? this.state.discountedPrice : this.state.originalPrice,
       "availableQuantity" : this.refs.availableQuantity.value,
@@ -612,6 +613,8 @@ class AddNewShopProduct extends Component {
       "featured"          : productFeatured,
       "exclusive"         : productExclusive,
     }
+
+    console.log("formValues",formValues);
     if ($('#addNewShopProduct').valid()) {
       if (this.state.discountPercentError === "") {
         axios.patch('/api/products/patch', formValues)
@@ -943,7 +946,7 @@ class AddNewShopProduct extends Component {
                                   <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields">
                                     <label>Unit <i className="redFont">*</i> </label>
                                     {/*<div className="input-group" id="subCategory">*/}
-                                    <select className="form-control allProductSubCategories"  name="unit" id="unit" ref="subCategory" value={this.state.unit} onChange={this.handleChange.bind(this)}>
+                                    <select className="form-control allProductSubCategories"  name="unit" id="unit" ref="unit" value={this.state.unit} onChange={this.handleChange.bind(this)}>
                                       <option selected defaultValue="">Select Unit</option>
                                       {this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
                                         this.state.unitOfMeasurementArray.map((data, index) => {

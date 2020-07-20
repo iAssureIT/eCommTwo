@@ -524,6 +524,7 @@ class AddNewShopProduct extends Component {
       "originalPrice": this.state.originalPrice,
       "discountPercent": this.state.discountPercent ? this.state.discountPercent : "0" ,
       "size": this.refs.size.value,
+      "unit": this.refs.unit.value, 
       "color": this.state.color,
       "discountedPrice": this.state.discountedPrice ? this.state.discountedPrice : this.state.originalPrice,
       "availableQuantity": this.refs.availableQuantity.value,
@@ -532,6 +533,7 @@ class AddNewShopProduct extends Component {
       "featured": productFeatured,
       "exclusive": productExclusive,
     }
+
     if ($('#addNewShopProduct').valid()) {
       if (this.state.discountPercentError === "") {
         axios.patch('/api/products/patch', formValues)
