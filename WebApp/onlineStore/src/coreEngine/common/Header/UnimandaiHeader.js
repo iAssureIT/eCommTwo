@@ -216,6 +216,33 @@ getshippingamount(startRange, limitRange){
     }
     
   }
+  // searchProducts() {
+  //   // if (this.state.catArray.length === 0 && $('.headersearch').val() !== '') {
+  //     var searchstr = this.refs.tableSearch.value.trim();
+  //     console.log("searchstr==>",searchstr)
+  //     if(searchstr){
+  //       var formValues = {
+  //         "searchstr": searchstr,
+  //         "loading": true
+  //       }
+  //       this.props.searchProductFun(formValues, this.state.searchResult);
+  //       axios.get("/api/products/get/search/" + searchstr)
+  //         .then((response) => {
+  //           formValues.loading = false;
+  //           this.setState({ searchResult: response.data }, () => {
+  //             this.props.searchProductFun(formValues, this.state.searchResult);
+  //           });
+  //         })
+  //         .catch((error) => {})
+  //       this.props.history.push("/searchProducts");
+  //     }else{
+  //       this.props.history.push("/");
+  //     }
+      
+  //   // }
+
+  // }
+
   searchProducts() {
     // if (this.state.catArray.length > 0) {
     //   var searchstr = $('.headersearch').val()
@@ -270,6 +297,7 @@ getshippingamount(startRange, limitRange){
     }
 
   }
+
 
   async signOut(event) {
     event.preventDefault();
@@ -475,13 +503,19 @@ loginPage(event){
                   </nav>
                 </div>
                 
-                
                 <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-xs NOpadding searchBoxWrapper">
+                    <div className="col-lg-12 col-md-12 searchBox">
+                        <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
+                        <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
+                    </div> 
+                </div>
+
+                {/* <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 hidden-xs NOpadding searchBoxWrapper">
                     <div className="col-lg-12 col-md-12 searchBox">
                         <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
                         <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
                     </div> 
-                </div>
+                </div> */}
 
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  

@@ -7,13 +7,12 @@ import 'bootstrap/js/tab.js';
 import S3FileUpload from 'react-s3';
 import { withRouter } from 'react-router-dom';
 import OneFieldForm             from '../../../OneFieldForm/OneFieldForm.js';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng
-} from "react-places-autocomplete";
+// import PlacesAutocomplete, {
+//   geocodeByAddress,
+//   getLatLng
+// } from "react-places-autocomplete";
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import IAssureTable           from "../../../../IAssureTable/IAssureTable.jsx";
-
-
 
 class LocationDetails extends Component {
 	constructor(props) {
@@ -1106,6 +1105,7 @@ class LocationDetails extends Component {
 	}
 
 	handleChangePlaces = address => {
+		console.log("address in handle change=>",address)
 	    this.setState({ addressLine1 : address});
 	};
 
@@ -1315,47 +1315,89 @@ class LocationDetails extends Component {
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address Line 2 <i className="astrick">*</i></label>
 																		{/*<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />*/}
 																		 {this.state.gmapsLoaded ?
-																		 <PlacesAutocomplete
-								                                        value={this.state.addressLine1}
-								                                        onChange={this.handleChangePlaces}
-								                                        onSelect={this.handleSelect}
-								                                        searchOptions={searchOptions}
-								                                      >
-								                                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-								                                          <div>
-								                                            <input
-								                                              {...getInputProps({
-								                                                placeholder: 'Search Address ...',
-								                                                className: 'location-search-input col-lg-12 form-control errorinputText',
-								                                                id:"addressLine1",
-								                                                name:"addressLine1"
-								                                              })}
-								                                            />
-								                                            <div className={this.state.addressLine1 ? "autocomplete-dropdown-container SearchListContainer" : ""}>
-								                                              {loading && <div>Loading...</div>}
-								                                              {suggestions.map(suggestion => {
-								                                                const className = suggestion.active
-								                                                  ? 'suggestion-item--active'
-								                                                  : 'suggestion-item';
-								                                                // inline style for demonstration purpose
-								                                                const style = suggestion.active
-								                                                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-								                                                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-								                                                return (
-								                                                  <div
-								                                                    {...getSuggestionItemProps(suggestion, {
-								                                                      className,
-								                                                      style,
-								                                                    })}
-								                                                  >
-								                                                    <span>{suggestion.description}</span>
-								                                                  </div>
-								                                                );
-								                                              })}
-								                                            </div>
-								                                          </div>
-								                                        )}
-								                                      </PlacesAutocomplete>
+																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
+																<PlacesAutocomplete value={this.state.addressLine1}
+																		onChange={this.handleChangePlaces}
+																		onSelect={this.handleSelect}
+																>
+																		{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+																				<div>
+																						{/* <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label> */}
+																						<input
+																								{...getInputProps({
+																										placeholder: 'Start typing ...',
+																										className: 'location-search-input col-lg-12 form-control errorinputText',
+																										id: "addressLine1",
+																										name: "addressLine1"
+																								})}
+																						/>
+																						<div className="autocomplete-dropdown-container SearchListContainer">
+																								{loading && <div>Loading...</div>}
+																								{suggestions.map(suggestion => {
+																										const className = suggestion.active
+																												? 'suggestion-item--active'
+																												: 'suggestion-item';
+																										// inline style for demonstration purpose
+																										const style = suggestion.active
+																												? { backgroundColor: '#fafafa', cursor: 'pointer' }
+																												: { backgroundColor: '#ffffff', cursor: 'pointer' };
+																										return (
+																												<div
+																														{...getSuggestionItemProps(suggestion, {
+																																className,
+																																style,
+																														})}
+																												>
+																														<span>{suggestion.description}</span>
+																												</div>
+																										);
+																								})}
+																						</div>
+																				</div>
+																		)}
+																</PlacesAutocomplete>
+														</div>        
+																		//  <PlacesAutocomplete
+								                    //                     value={this.state.addressLine1}
+								                    //                     onChange={this.handleChangePlaces}
+								                    //                     onSelect={this.handleSelect}
+								                    //                     searchOptions={searchOptions}
+								                    //                   >
+								                    //                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+								                    //                       <div>
+								                    //                         <input
+								                    //                           {...getInputProps({
+								                    //                             placeholder: 'Search Address ...',
+								                    //                             className: 'location-search-input col-lg-12 form-control errorinputText',
+								                    //                             id:"addressLine1",
+								                    //                             name:"addressLine1"
+								                    //                           })}
+								                    //                         />
+								                    //                         <div className={this.state.addressLine1 ? "autocomplete-dropdown-container SearchListContainer" : ""}>
+								                    //                           {loading && <div>Loading...</div>}
+								                    //                           {suggestions.map(suggestion => {
+								                    //                             const className = suggestion.active
+								                    //                               ? 'suggestion-item--active'
+								                    //                               : 'suggestion-item';
+								                    //                             // inline style for demonstration purpose
+								                    //                             const style = suggestion.active
+								                    //                               ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+								                    //                               : { backgroundColor: '#ffffff', cursor: 'pointer' };
+								                    //                             return (
+								                    //                               <div
+								                    //                                 {...getSuggestionItemProps(suggestion, {
+								                    //                                   className,
+								                    //                                   style,
+								                    //                                 })}
+								                    //                               >
+								                    //                                 <span>{suggestion.description}</span>
+								                    //                               </div>
+								                    //                             );
+								                    //                           })}
+								                    //                         </div>
+								                    //                       </div>
+								                    //                     )}
+								                    //                   </PlacesAutocomplete>
 								                                      :
 								                                      <input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} placeholder="GOOGLE API NOT FOUND" ref="addressLine1" name="addressLine1" onChange={this.handleChange} />
 								                                  	  }

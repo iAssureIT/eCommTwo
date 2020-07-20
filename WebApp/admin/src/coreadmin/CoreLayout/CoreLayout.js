@@ -12,13 +12,9 @@ import Chart from '../dashboard/chart1/chart.js'
 import CenterwiseBudget from '../dashboard/chart1/CenterwiseBudget.js'
 import monthwiseCharts from '../dashboard/chart1/monthwiseCharts.js'
 
-import Header from '../common/header/Header.js'
 import ViewAllNotification from '../common/header/ViewAllNotifications.js'
-import Footer from '../common/footer/Footer.js'
-// import Dashboard from '../dashboard/Dashboard.js'
+
 import ComingSoon from '../dashboard/ComingSoon.js'
-import DashboardNew from '../dashboard/DashboardNew.js'
-import Leftsidebar from '../common/leftSidebar/Leftsidebar.js';
 import UMListOfUsers from '../userManagement/UM/UMListOfUsers.js';
 import DeletedUsers from '../userManagement/UM/DeletedUsers.js';
 

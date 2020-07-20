@@ -150,12 +150,12 @@ class GoogleApiKey extends Component {
               </div>
               
               <div className=" col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
-                {
-                    this.state.googleapikey === "" ?
+                {/* {
+                    this.state.googleapikey === "" ? */}
                         <button className="col-lg-3 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn button3 topMargin outlinebox" type="submit" onClick={this.submit.bind(this)} >Submit</button>
-                    :
+                    {/* :
                         <button className="col-lg-3 col-md-2 col-xs-12 col-sm-12 col-xs-12 pull-right btn button3 topMargin outlinebox" type="update" onClick={this.update.bind(this)} >Update</button>
-                }
+                } */}
                 
               </div>
             </form>

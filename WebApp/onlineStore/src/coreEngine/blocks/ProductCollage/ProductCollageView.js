@@ -214,25 +214,25 @@ class ProductCollageView extends Component {
           this.setState({
             ['relatedProductArray' + id]: unique
           })
-          if (unique.length > 0) {
-            if (unique.length === 1) {
-              if (unique[0].size) {
-                this.setState({
-                  ['sizeCollage' + id]: true
-                })
-              } else {
-                this.addCart(formValues, quantityAdded, availableQuantity);
-              }
-            } else if (unique.length > 1) {
-              this.setState({
-                ['sizeCollage' + id]: true
-              })
-            } else {
-              this.addCart(formValues, quantityAdded, availableQuantity);
-            }
-          } else {
-            this.addCart(formValues, quantityAdded, availableQuantity);
-          }
+          // if (unique.length > 0) {
+          //   if (unique.length === 1) {
+          //     if (unique[0].size) {
+          //       this.setState({
+          //         ['sizeCollage' + id]: true
+          //       })
+          //     } else {
+          //       this.addCart(formValues, quantityAdded, availableQuantity);
+          //     }
+          //   } else if (unique.length > 1) {
+          //     this.setState({
+          //       ['sizeCollage' + id]: true
+          //     })
+          //   } else {
+          //     this.addCart(formValues, quantityAdded, availableQuantity);
+          //   }
+          // } else {
+          //   this.addCart(formValues, quantityAdded, availableQuantity);
+          // }
         })
         .catch((error) => {
           console.log('error', error);
@@ -428,7 +428,7 @@ class ProductCollageView extends Component {
                             </a>
                           </div>
                           <div className="productDetails col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                            {
+                            {/* {
                               this.state['sizeCollage' + data._id] === true ?
                                 <div className="sizeCollage col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                   
@@ -478,7 +478,7 @@ class ProductCollageView extends Component {
                                 </div>
                                 :
                                 null
-                            }
+                            } */}
 
                             <div className="innerDiv">
                               <div className="product-brand" title={data.brand}>{data.brand}</div>
@@ -499,7 +499,25 @@ class ProductCollageView extends Component {
                               </div>
                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                  
+                                <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                {/* <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span> */}
+                                  <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit}  onClick={this.submitCart.bind(this)}  name="size" aria-invalid="false">
+                                    { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
+                                        return(
+                                            size === 1000?
+                                            <option className="" value={size}>{size}KG</option>
+                                            :
+                                            data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                              <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                            :
+                                            <option className="" value={size}>{size}{data.unit}</option>                                                        
+                                        )
+                                        
+                                      })
+                                    }
+                                  </select>
+                                  </div>
+                                  <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                   {
                                     localStorage.getItem("websiteModel")=== "FranchiseModel"?
                                     <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
@@ -513,6 +531,7 @@ class ProductCollageView extends Component {
                                       :
                                       <div className="outOfStock">Sold Out</div>
                                   }
+                                  </div>
                                     
                                    {/* { data.availableQuantity > 0 ?
                                       <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">

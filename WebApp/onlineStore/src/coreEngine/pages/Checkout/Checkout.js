@@ -10,7 +10,7 @@ import Message from '../../blocks/Message/Message.js';
 import 'jquery-validation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
-import 'bootstrap/js/tab.js';
+import 'bootstrap/js/tab.js'; 
 import Loader from "../../common/loader/Loader.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

@@ -54,10 +54,14 @@ exports.insert_orders = (req,res,next)=>{
                     // console.log("Pincode Length : ",franchiseObjects.length);
                     for(var franchiseObj of franchiseObjects){
                       // console.log("Pincodes:",franchiseObj.allowablePincodes.includes(pincode));
-                        if(franchiseObj.allowablePincodes.includes(pincode)){
-                            franchiseID =  franchiseObj.franchiseID;
+                        if(franchiseObj.allowablePincodes.includes(pincode) ){
+                          franchiseID =  franchiseObj.franchiseID;
+                          if(franchiseID !== undefined){
                             matchedFranchise.push({franchiseID :franchiseID});                            
-                            // console.log("matchedFranchise ===",matchedFranchise);                            
+                            console.log("matchedFranchise ===",matchedFranchise);  
+                          }
+                            // franchiseID =  franchiseObj.franchiseID;
+                                                  
                         } 
                     }//end for loop 
 
@@ -69,6 +73,7 @@ exports.insert_orders = (req,res,next)=>{
                         var allocatedToFranchise;
                         var flag = false;
                         var len=matchedFranchise.length;
+                        console.log("Before allocatedToFranchise available==========>",franchiseObjects);
                         allocatedToFranchise = await allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise);
                         // console.log("allocatedToFranchise available==========>",allocatedToFranchise);
                           saveOrderdata(allocatedToFranchise);                        
@@ -316,15 +321,92 @@ exports.insert_orders = (req,res,next)=>{
                                 });
                             })                                   
                     
-
+                         
                     }//end saveOrderData
                   }//end if franchiseID
                 }     
               }
+              // function allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise) {    
+              //   for(var franchiseObjects of matchedFranchise){  
+              //     return new Promise(function(resolve,reject){
+              //     // for(var i=0;i<matchedFranchise.length;i++){  
+              //           // console.log("franchiseObjects.franchiseID=====>",franchiseObjects.franchiseID);                                
+              //           var minDisFranchise;
+              //           var smDis = -1;               
+              //       Entitymaster.findOne({_id : franchiseObjects.franchiseID})
+              //       .then(franchiseData =>{
+              //         // console.log("Franchise data:=======",franchiseData);
+              //         if(franchiseData){
+              //           var Flatitude  = franchiseData.locations[0].latitude;
+              //           var Flongitude = franchiseData.locations[0].longitude;                                
+              //           if(Flatitude && Flongitude){                                  
+              //             var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   
+              //             if(smDis == -1){
+              //               smDis = distance;
+              //               minDisFranchise = franchiseObjects;
+              //             }else if(distance < smDis){
+              //               smDis = distance;
+              //               minDisFranchise = franchiseObjects;                                    
+              //             }                                  
+              //           }//end if lat-long
+            
+              //           allocatedToFranchise = minDisFranchise.franchiseID; 
+              //           console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
+              //           resolve(allocatedToFranchise);
+              //           // if(i === matchedFranchise.length-1){
+              //           //   flag === "true";  
+              //           // }                                 
+                                                                             
+              //         }
+              //       })                           
+              //       })                           
+              //     } //end for
+              // }
+              function allocatefranchisebeforesave(franchiseObjects,matchedFranchise) {    
+                console.log("franchiseObjects.franchiseID=====>",franchiseObjects);    
+                for(var franchiseObjects of matchedFranchise){  
+                  return new Promise(function(resolve,reject){
+                  // for(var i=0;i<matchedFranchise.length;i++){  
+                                                    
+                        var minDisFranchise;
+                        var smDis = -1;               
+                    Entitymaster.findOne({_id : franchiseObjects.franchiseID})
+                    .then(franchiseData =>{
+                      console.log("latitude data:=======",franchiseData.locations[0].latitude);
+                      console.log("longitude data:=======",franchiseData.locations[0].longitude);
+                      if(franchiseData){
+                        var Flatitude  = franchiseData.locations[0].latitude;
+                        var Flongitude = franchiseData.locations[0].longitude;     
+                      console.log("longitude && Flongitude:=======",Flatitude,Flongitude);
+
+                        if(Flatitude && Flongitude){                                  
+                          var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   
+                          if(smDis == -1){
+                            smDis = distance;
+                            minDisFranchise = franchiseObjects;
+                          }else if(distance < smDis){
+                            smDis = distance;
+                            minDisFranchise = franchiseObjects;                                    
+                          }                                  
+                        }//end if lat-long
+                      console.log("minDisFranchise.franchiseID data:=======",minDisFranchise);
+            
+                        allocatedToFranchise = minDisFranchise.franchiseID; 
+                        console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
+                        resolve(allocatedToFranchise);
+                        // if(i === matchedFranchise.length-1){
+                        //   flag === "true";  
+                        // }                                 
+                                                                             
+                      }
+                    })                           
+                    })                           
+                  } //end for
+              }
             })
           
           }// end if pincode
-          
+             
         }else{
           console.log("website model is not franchise model");
           //if website model !== franchiseModel
@@ -569,43 +651,43 @@ exports.insert_orders = (req,res,next)=>{
           error3: err
       });
   });
-
-  function allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise) {    
-    for(var franchiseObjects of matchedFranchise){  
-      return new Promise(function(resolve,reject){
-      // for(var i=0;i<matchedFranchise.length;i++){  
-            // console.log("franchiseObjects.franchiseID=====>",franchiseObjects.franchiseID);                                
-            var minDisFranchise;
-            var smDis = -1;               
-        Entitymaster.findOne({_id : franchiseObjects.franchiseID})
-        .then(franchiseData =>{
-          // console.log("Franchise data:=======",franchiseData);
-          if(franchiseData){
-            var Flatitude  = franchiseData.locations[0].latitude;
-            var Flongitude = franchiseData.locations[0].longitude;                                
-            if(Flatitude && Flongitude){                                  
-              var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   
-              if(smDis == -1){
-                smDis = distance;
-                minDisFranchise = franchiseObjects;
-              }else if(distance < smDis){
-                smDis = distance;
-                minDisFranchise = franchiseObjects;                                    
-              }                                  
-            }//end if lat-long
-
-            allocatedToFranchise = minDisFranchise.franchiseID; 
-            console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
-            resolve(allocatedToFranchise);
-            // if(i === matchedFranchise.length-1){
-            //   flag === "true";  
-            // }                                 
-                                                                 
-          }
-        })                           
-        })                           
-      } //end for
-  }
+function allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise) {    
+                              for(var franchiseObjects of matchedFranchise){  
+                                return new Promise(function(resolve,reject){
+                                // for(var i=0;i<matchedFranchise.length;i++){  
+                                      // console.log("franchiseObjects.franchiseID=====>",franchiseObjects.franchiseID);                                
+                                      var minDisFranchise;
+                                      var smDis = -1;               
+                                  Entitymaster.findOne({_id : franchiseObjects.franchiseID})
+                                  .then(franchiseData =>{
+                                    // console.log("Franchise data:=======",franchiseData);
+                                    if(franchiseData){
+                                      var Flatitude  = franchiseData.locations[0].latitude;
+                                      var Flongitude = franchiseData.locations[0].longitude;                                
+                                      if(Flatitude && Flongitude){                                  
+                                        var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   
+                                        if(smDis == -1){
+                                          smDis = distance;
+                                          minDisFranchise = franchiseObjects;
+                                        }else if(distance < smDis){
+                                          smDis = distance;
+                                          minDisFranchise = franchiseObjects;                                    
+                                        }                                  
+                                      }//end if lat-long
+                          
+                                      allocatedToFranchise = minDisFranchise.franchiseID; 
+                                      console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
+                                      resolve(allocatedToFranchise);
+                                      // if(i === matchedFranchise.length-1){
+                                      //   flag === "true";  
+                                      // }                                 
+                                                                                           
+                                    }
+                                  })                           
+                                  })                           
+                                } //end for
+                            }
+ 
   function findDistance(lat1, lon1, lat2, lon2, unit) {    
     if ((lat1 == lat2) && (lon1 == lon2)) {
       return 0;
@@ -624,7 +706,7 @@ exports.insert_orders = (req,res,next)=>{
       dist = dist * 60 * 1.1515;
       if (unit=="K") { dist = dist * 1.609344 }
       if (unit=="N") { dist = dist * 0.8684 }
-      console.log("distance========",dist);
+      // console.log("distance========",dist);
       return dist;
     }
   }
@@ -684,7 +766,7 @@ exports.list_franchise_order = (req,res,next)=>{
         .sort({createdAt:-1})      
         .exec()
         .then(data=>{
-          console.log("allocatedToFranchise===>>>",data);
+          // console.log("allocatedToFranchise===>>>",data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -700,7 +782,7 @@ exports.list_order = (req,res,next)=>{
         .sort({createdAt:-1})      
         .exec()
         .then(data=>{
-          console.log("allocatedToFranchise===>>>",data);
+          // console.log("allocatedToFranchise===>>>",data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -817,7 +899,7 @@ exports.list_orderby_status = (req,res,next)=>{
     .sort({createdAt:-1})      
         .exec()
         .then(data=>{
-          console.log("allocatedToFranchise===>>>",data);
+          // console.log("allocatedToFranchise===>>>",data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -911,19 +993,6 @@ exports.list_order_with_limits = (req,res,next)=>{
         });
     });
 };
-// exports.list_order_with_limits = (req,res,next)=>{
-//     Orders.find({}).sort({createdAt:-1})
-//     .exec()
-//     .then(data=>{
-//         res.status(200).json(data);
-//     })
-//     .catch(err =>{
-//         console.log(err);
-//         res.status(500).json({
-//             error: err
-//         });
-//     });
-// };
 exports.count_order = (req,res,next)=>{
     Orders.find({})
     .exec()
@@ -967,18 +1036,6 @@ exports.delete_order = (req,res,next)=>{
 };
  
 exports.updateDeliveryStatus = (req,res,next)=>{
-
-  /*Masternotifications.findOne({"templateType":"SMS","templateName":"Order Delivered"})
-  .exec()
-  .then((smsdata)=>{
-      var textcontent = smsdata.content;                              
-      var regex = new RegExp(/(<([^>]+)>)/ig);
-      var textcontent = smsdata.content.replace(regex, '');
-      textcontent   = textcontent.replace(/\&nbsp;/g, '');
-      DeliverySmsText = textcontent;
-  })
-  .catch()*/
-
     var status = req.body.status == "Delivered & Paid" ? "Paid" : "UnPaid";
     console.log(req.body.status);
 
