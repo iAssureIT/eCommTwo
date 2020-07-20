@@ -593,8 +593,9 @@ exports.insert_orders = (req,res,next)=>{
                 minDisFranchise = franchiseObjects;                                    
               }                                  
             }//end if lat-long
-            allocatedToFranchise = minDisFranchise.franchiseID;
-            // console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
+
+            allocatedToFranchise = minDisFranchise.franchiseID; 
+            console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
             resolve(allocatedToFranchise);
             // if(i === matchedFranchise.length-1){
             //   flag === "true";  
