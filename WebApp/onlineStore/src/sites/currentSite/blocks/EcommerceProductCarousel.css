@@ -720,19 +720,22 @@ background-color: transparent !important;
 }
 .homeCart{
     margin-top: 5px;
-    padding: 6px 14px;
+    padding: 0px 14px;
     font-weight: bold;
     font-size: 12px;
     border: 1px solid #80b435;
-    border-radius: 15px;
+    border-radius: 5px;
     color: #80b435;
+    height: 30px;
     background: #fff;
 }
 .homeCart:hover{
     background: #80b435;
     color: #fff;
 }
-
+.marathiName{
+    font-family: 'kruti';
+}
 .wishIcon{
     margin-top: 5px;
     padding: 6px 6px;

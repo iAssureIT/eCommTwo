@@ -362,6 +362,13 @@
 	/* background: #fbfafa; */
 	transition: all 0.4s ease-out;
 }
+.homeCart{
+	/* margin-top: 0px !important; */
+	border-radius: 5px !important;
+}
+.btnWrap{
+	margin-top: 10px;
+}
 .sizeCollage span{
 	font-size: 12px;
 	margin-bottom: 5px;
@@ -375,8 +382,10 @@
 	border-color: #80b435 !important;
 	border:solid 1px #80b435 !important;
 	font-weight: 400 !important;
-	/* width: 65%; */
-	height: 32px;
+	border-radius: 5px;
+	background-color: #fff;
+	height: 30px;
+	margin-left: -3px;
 }
 .selectSizeBox .Nopadding{
 	padding-left: 0px !important ;

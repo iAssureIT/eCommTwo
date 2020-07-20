@@ -116,6 +116,7 @@ class HomePage extends Component {
     getCategories(){
       axios.get("/api/category/get/list")
       .then((response)=>{
+        console.log("Category response:",response.data);
         this.setState({
           categories : response.data
         })

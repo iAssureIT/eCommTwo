@@ -156,21 +156,25 @@ class Ecommercenewproductcaro extends Component {
           console.log('error', error);
         })
     } else {
-      this.setState({
-        messageData: {
-          "type": "outpage",
-          "icon": "fa fa-exclamation-circle",
-          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.", 
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal onClick={this.removeModalBackDrop.bind(this)}>Sign In</a> First.",
-          "class": "danger",
-          "autoDismiss": true 
-        }
-      })
-      setTimeout(() => {
+      if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
+        $('#loginFormModal').show();
+        }else{
         this.setState({
-          messageData: {},
+          messageData: {
+            "type": "outpage",
+            "icon": "fa fa-exclamation-circle",
+            "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "class": "warning",
+            "autoDismiss": true
+          }
         })
-      }, 3000);
+        setTimeout(() => {
+          this.setState({
+            messageData: {},
+          })
+        }, 3000);
+      }
     }
   }
 
@@ -346,21 +350,25 @@ class Ecommercenewproductcaro extends Component {
       })
     }
     else {
-      this.setState({
-        messageData : {
-          "type" : "outpage",
-          "icon" : "fa fa-exclamation-circle",
-          "message" : this.state.showLoginAs ==="modal"? "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First." : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",          
-          // "message" : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "class": "warning",
-          "autoDismiss" : true
-        }
-      })
-      setTimeout(() => {
+      if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
+        $('#loginFormModal').show();
+        }else{
         this.setState({
-            messageData   : {},
+          messageData: {
+            "type": "outpage",
+            "icon": "fa fa-exclamation-circle",
+            "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "class": "warning",
+            "autoDismiss": true
+          }
         })
-    }, 3000);
+        setTimeout(() => {
+          this.setState({
+            messageData: {},
+          })
+        }, 3000);
+      }
     }
   }
   getCategoryID(event) {
@@ -523,7 +531,7 @@ class Ecommercenewproductcaro extends Component {
                                         <div className="innerDiv">
                                           
                                           <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="product-brand" title={data.brand}>{data.brand}</div></a>
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="product-item-link" title={data.productName}>{data.productName}</div></a>
+                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="product-item-link" title={data.productName}>{data.productName}&nbsp;(<span className="marathiName">{data.shortDescription}</span>)</div></a> 
                                           <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="col-lg-12 col-md-12 NOpadding">
                                             {
                                               data.discountPercent ?

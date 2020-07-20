@@ -13,7 +13,7 @@ export default class ProductDivider extends Component {
   	componentWillReceiveProps(nextProps){
   		
   		this.setState({categoriesImg:nextProps.categories},()=>{
-  			
+  			console.log("Category Data:",this.state.categoriesImg);
   		});
       // this.changeProductCateWise(categoryID, type);
     } 
@@ -30,9 +30,10 @@ export default class ProductDivider extends Component {
 						if (index < 8 ) {
 						return(
 							<div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={index}>
-				                <a href={"/section/"+ data.section.replace(/\s+/g, '-').toLowerCase() +'/'+data.section_ID} >
+				                {/* <a href={"/section/"+ data.section.replace(/\s+/g, '-').toLowerCase() +'/'+data.section_ID} > */}
+								<a href={"/category/"+ data.categoryUrl.replace(/\s+/g, '-').toLowerCase() +'/'+data.section_ID +'/'+data._id} >
 				                <div className="block">
-				                    <a className="image divimgprod" href={"/section/"+data.sectionUrl+'/'+data.section_ID} target="_blank" rel="noopener noreferrer"> 
+				                    <a className="image divimgprod" href={"/category/"+ data.categoryUrl.replace(/\s+/g, '-').toLowerCase() +'/'+data.section_ID +'/'+data._id} target="_blank" rel="noopener noreferrer"> 
 										{data.categoryImage
 										?
 										<img src={data.categoryImage} alt="home banner" className="divImage"/>
