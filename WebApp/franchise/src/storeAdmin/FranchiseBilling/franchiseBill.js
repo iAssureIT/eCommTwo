@@ -40,11 +40,16 @@ export class Bill extends React.Component {
 				deliveryLocation      : [],
 				barcode : '',
 				soldOutProductError : '',
-				itemCode : ''
+				itemCode : '',
+				showFullScreen : false
 		  };
 		
 	}
 	componentDidMount(){
+		$('.leftsidebarbackgroundcolor').hide();
+		$('#headerid').css('width',"100% !important");
+		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
+		$('#dashbordid').removeClass('dashboardeffect');
 		this.props.fetchCartData();
 		this.getCategories();
 		this.getSections();
@@ -195,7 +200,8 @@ export class Bill extends React.Component {
 	}
 
 	getProductListByCategory(categoryId){
-		axios.get("/api/products/get/listbycategory/"+categoryId)
+		var franchiseId = this.state.franchise_id;
+		axios.get("/api/products/get/franchiselistbycategory/"+categoryId+'/'+franchiseId)
         .then((response)=>{
             if(response.data){
             //    console.log("product list by category===",response.data); 
@@ -211,7 +217,7 @@ export class Bill extends React.Component {
 	}
 
 	getProductListBySection(sectionId){
-		axios.get("/api/products/get/list/"+sectionId)
+		axios.get("/api/products/get/franchiseProductlist/"+sectionId+'/'+this.state.franchise_id)
         .then((response)=>{
             if(response.data){
             //    console.log("product list by section ===",response.data); 
@@ -260,19 +266,11 @@ export class Bill extends React.Component {
 	}
 
 	generateBillNumber(){
-		axios.get("/api/carts/get/generateBillNumber/")
+		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
+		axios.get("/api/carts/get/generateBillNumber/"+userDetails.companyID)
           .then((response)=>{ 
-				
-				// const barcode = useBarcode({
-				// 	value: response.data,
-				// 	options: {
-				// 		  background: '#ccffff',
-				// 	}
-				// });
-				console.log("barcode",response.data);
 				this.setState({
 					"billNumber" : response.data,
-					// "barcode"    : barcode
    				});
 				
 		  })
@@ -465,6 +463,7 @@ export class Bill extends React.Component {
 		var reportFilterData = {};
 		reportFilterData.franchiseId = this.state.franchise_id;
 		reportFilterData.itemcode = itemCode;
+		console.log("checkProductSoldOut called");
 		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
 		.then((response)=>{
 			if(response.data.length > 0){
@@ -472,6 +471,7 @@ export class Bill extends React.Component {
 					var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i)=>{
 						if(a.productDetail.itemCode ==  itemCode){
 						   if(response.data[0].totalStock < a.quantity){
+							console.log("soldout 1");
 							   this.setState({
 								   "soldOutProductError" : "Product Sold Out"
 							   })
@@ -500,7 +500,7 @@ export class Bill extends React.Component {
 						this.setState({
 							"soldOutProductError" : ''
 						})
-							this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
+						this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
 					}
 				}
 			}
@@ -511,8 +511,6 @@ export class Bill extends React.Component {
 				})
 				swal(this.state.soldOutProductError);
 			}
-
-		
 		})
 		.catch((error) => {
 			console.log('error', error);
@@ -574,6 +572,7 @@ export class Bill extends React.Component {
 			  })
 			  // console.log('unique', unique);
 			  if (unique.length > 0) {
+				console.lof("unique.length",unique.length);
 				if (unique.length === 1) {
 				  if (unique[0].size) {
 					this.setState({
@@ -618,6 +617,8 @@ export class Bill extends React.Component {
 
 
 	  addCart(formValues, quantityAdded, availableQuantity) {
+		console.log("in addCart 625 ==========>",formValues, quantityAdded, availableQuantity);
+
 		if (quantityAdded >= availableQuantity) {
 		  this.setState({
 			messageData: {
@@ -853,24 +854,7 @@ export class Bill extends React.Component {
 				}
 			}
 		})
-		
-		
-
-		// if($('#productsEditForm').valid()){
-		// 	   if(this.state.discountPercentError == '' && this.state.soldOutProductError == ''){
-		// 			axios.patch("/api/carts/updateCart" ,formValues)
-		// 			.then((response)=>{
-		// 				swal("Product updated successfully.")
-		// 					this.props.fetchCartData();
-		// 			})
-		// 			.catch((error)=>{
-		// 					console.log('error', error);
-		// 			})
-		// 		 }
-		// 	}
-
-				 $('.close').click();
-			
+		$('.close').click();
 		
 	}
 
@@ -881,6 +865,39 @@ export class Bill extends React.Component {
 			[name] : value 
 		})
 	}
+
+	openFullscreen() {
+		this.setState({
+			showFullScreen :true
+		});
+		// var elem = document.documentElement;
+		var elem = document.documentElement;
+		console.log("elem",document.documentElement);
+		if (elem.requestFullscreen) {
+		  elem.requestFullscreen();
+		} else if (elem.mozRequestFullScreen) { /* Firefox */
+		  elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+		  elem.webkitRequestFullscreen();
+		} else if (elem.msRequestFullscreen) { /* IE/Edge */
+		  elem.msRequestFullscreen();
+		}
+	  }
+
+	closeFullscreen() {
+		this.setState({
+			showFullScreen :false
+		})
+		if (document.exitFullscreen) {
+		  document.exitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+		  document.mozCancelFullScreen();
+		} else if (document.webkitExitFullscreen) {
+		  document.webkitExitFullscreen();
+		} else if (document.msExitFullscreen) {
+		  document.msExitFullscreen();
+		}
+	  }
 
 	render() {
 		const cartItems = this.props.recentCartData;
@@ -896,45 +913,19 @@ export class Bill extends React.Component {
 		
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
-					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
-						{/* <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
-							<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-								 <img className="col-lg-2 col-md-2 col-xs-12 col-sm-12 headerflow logoDiv" src="../../images/iAssureIT_logo.png" style={{"width":"70px"}}></img>
-                             <div className="col-lg-5 col-md-5 col-xs-12 col-sm-12 headerflow" style={{"display": "inline-flex"}}>            
-                                 <input type="text" name="searchText" value={this.state.searchText} className="form-control col-lg-2 col-md-2" placeholder="Search and hit enter..." onChange={this.getProductBySearch.bind(this)}/>
-                                 <button className="input-group button_search button"  type="button"><i className="fa fa-search"></i></button>
-                             </div>
-                             <div className="col-lg-5 col-md-5 col-xs-12 col-sm-12 headerflow" style={{"display": "inline-flex","float": "right"}}>            
-								 <input list="product" type="text" refs="product" className="form-control" placeholder="Item Code..." value={this.state.completeProductName}  onChange={this.onSearchItemCode.bind(this)} name="completeProductName" autocomplete="off"/> 
-									<datalist id="product" name="product" className="productDatalist">
-										{
-											this.state.productArray && this.state.productArray.length > 0 ?
-												this.state.productArray.map((data, i)=>{
-													return(
-														<option key={i} value={data.productName} data-id={data._id} data-itemcode={data.itemCode} data-productcode={data.productCode} data-unit={data.unit} data-productname={data.productName}>{data.productName} - {data.productCode} - {data.itemCode}</option>
-													);
-												})
-											:
-											<option>No products available</option>
-										}
-									</datalist>
-                                 <button className="input-group button_add button button" type="button"><i className="fa fa-plus"></i></button>
-                             </div>
-			 			</div>
-						</div> */}
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{"marginTop": "25px"}}>
-							<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 topLogoDiv">
-							<img className="" src="../../images/logoUnimandai.png"/>
-
-							   {/* <img className="col-lg-2 col-md-2 col-xs-12 col-sm-12 headerflow logoDiv" src="../../images/iAssureIT_logo.png" style={{"width":"70px"}}></img> */}
-							</div>
-							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-							     <input type="text" name="searchText" value={this.state.searchText} className="form-control col-lg-2 col-md-2" placeholder="Search and hit enter..." onChange={this.getProductBySearch.bind(this)}/>
+				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap mainDiv">
+					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent '>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{"marginTop": "25px","padding-bottom":"5px"}}>
+							{this.state.showFullScreen === false ? 
+							<button className="btn fullScreenBtn col-lg-1 col-md-1 col-sm-6 col-xs-12" onClick={this.openFullscreen.bind(this)}>Full Screen <i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+							: <button className="btn fullScreenBtn col-lg-1 col-md-1 col-sm-6 col-xs-12" onClick={this.closeFullscreen.bind(this)}>Exit Screen <i class="fa fa-window-close" aria-hidden="true"></i></button>
+						    }
+							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 searchProduct">
+							     <input type="text" name="searchText" value={this.state.searchText} className="form-control col-lg-2 col-md-2 " placeholder="Search Product..." onChange={this.getProductBySearch.bind(this)}/>
                                  <button className="input-group button_search button"  type="button"><i className="fa fa-search"></i></button>
 							</div>
-							<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 itemCodeDiv">
-							    <input list="product" type="text" refs="product" className="form-control" placeholder="Item Code..." value={this.state.completeProductName}  onChange={this.onSearchItemCode.bind(this)} name="completeProductName" autocomplete="off"/> 
+							<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding itemCodeDiv">
+							    <input list="product" type="text" refs="product" className="form-control" placeholder="Search by Itemcode..." value={this.state.completeProductName}  onChange={this.onSearchItemCode.bind(this)} name="completeProductName" autocomplete="off"/> 
 								<datalist id="product" name="product" className="productDatalist">
 										{
 											this.state.productArray && this.state.productArray.length > 0 ?
@@ -953,7 +944,7 @@ export class Bill extends React.Component {
 						</div>
 						
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 sectionDiv">
+							<div className="col-lg-1 col-md-1 col-sm-12 col-xs-12 sectionDiv">
 								<h4>Section</h4>
 								<ul className="main-nav textAlignCenter">            
                                  {
@@ -987,12 +978,14 @@ export class Bill extends React.Component {
 								{
 								   Array.isArray(this.state.ProductList) > 0 ?
                                    Array.isArray(this.state.ProductList) && this.state.ProductList.map((data,index)=>{
-									   //console.log("datadata",data._id);
-									let imageUrl = data.productImage[0] ? data.productImage[0] : '../../images/notavailable.jpg';
+									   //console.log("datadata",data._id); notavailable.jpg
+									let imageUrl = data.productImage[0] ? data.productImage[0] : '../../images/demoimg.png';
+									// let soldOut  = data.availableQuantity > 0 ? '' : "soldOutProduct";
+									// console.log("soldOut",data.availableQuantity);
                                     return(
-										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" onClick={this.checkProductSoldOut.bind(this,data.itemCode,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice)}>
-											<div class="">
-												<div class="card">
+										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" id={data.availableQuantity > 0 ? '' : "soldOutProduct"} onClick={this.addtocart.bind(this,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice)}>
+											<div class="col-lg-12 card">
+												{/* <div class="card"> */}
 													<div class="item-top">
 														<div class="productImg">
 															<a class="product photo product-item-photo collage" tabindex="-1">
@@ -1013,7 +1006,7 @@ export class Bill extends React.Component {
 														</div>
 														</div>
 													</div>
-												</div>
+												{/* </div> */}
 											</div>
 										</div>
 											
@@ -1050,13 +1043,14 @@ export class Bill extends React.Component {
 										<table class="table table-borderless">
 											<thead>
 												<tr>
+												<th scope="col"></th>
 												<th scope="col">ITEM</th>
 												<th scope="col">QTY</th>
-												<th scope="col">UNIT RATE</th>
+												<th scope="col">RATE</th>
 												{/* <th scope="col">CGST AMT</th>
 												<th scope="col">RATE CGST</th> */}
 												<th scope="col">DISCOUNT</th>
-												<th scope="col">DIS PRICE</th>
+												{/* <th scope="col">DIS PRICE</th> */}
 												<th scope="col">AMT</th>
 												<th scope="col"></th>
 												</tr>
@@ -1069,19 +1063,15 @@ export class Bill extends React.Component {
 													data.subTotal = data.discountedPrice * data.quantity;
 													return(
 														<tr>
+															<td><span className="fa fa-times trashIcon" id={data._id} onClick={this.Removefromcart.bind(this)}><a href="/" style={{color:"#337ab7"}} > </a></span></td>
 															<td>{data.productDetail.productName}</td>
 															<td> 
-																{/* <span className="minusQuantity fa fa-minus" id={data.productDetail._id} size={data.productDetail.size} unit={data.productDetail.unit} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} onClick={this.cartquantitydecrease.bind(this)}></span>&nbsp;
-																<span className="inputQuantity">{this.state['quantityAdded|'+data._id] ? this.state['quantityAdded|'+data._id] : data.quantity}</span>&nbsp;
-																<span className="plusQuantity fa fa-plus" size={data.productDetail.size} unit={data.productDetail.unit} productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity}  onClick={this.cartquantityincrease.bind(this)}></span><br/> */}
-													              <small>{data.quantity} {data.productDetail.unit}</small>
+													            <small>{data.quantity} {data.productDetail.unit}</small>
 															</td>
-															<td><i className="fa fa-inr"></i>{data.rate}</td>
-															<td><i class="fa fa-percent"></i>{data.discountPercent}</td>
-															<td><i className="fa fa-inr"></i>{data.discountedPrice}</td>
-															<td><i className="fa fa-inr"></i>{data.subTotal}</td>
+															<td>{data.rate}</td>
+															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
+															<td>{data.subTotal}</td>
 															<td> 
-																<span className="fa fa-trash trashIcon" id={data._id} onClick={this.Removefromcart.bind(this)}><a href="/" style={{color:"#337ab7"}} > </a></span>
 																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
 																{/* <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
 																Launch demo modal
@@ -1144,6 +1134,10 @@ export class Bill extends React.Component {
 																				</div>     
 																			</div>  
 																		</div>
+																		<div class="row">
+																			<br/>
+																			<h4>Subtotal : <i className="fa fa-rupee"></i> {(this.state.discountedPrice) * (this.state.quantity)}</h4>
+																		</div>
 																	</div>
 																	<div class="modal-footer">
 																		<button type="button" class="btn btn-primary" onClick={this.UpdateCartData.bind(this)}>Submit</button>
@@ -1162,15 +1156,15 @@ export class Bill extends React.Component {
 											<tfoot>
 												<tr>
 													{this.props.recentCartData.length > 0 ?
-														<td colspan="4">Items/Qty {this.props.recentCartData[0].cartItems.length}</td>
+														<td colspan="5">Items/Qty {this.props.recentCartData[0].cartItems.length}</td>
 														:
-														<td colspan="4">Items/Qty 0</td>
+														<td colspan="5">Items/Qty 0</td>
 													}
 
 													<td colspan="2">Total: <i className="fa fa-inr"></i> {total}</td>
 												</tr>
 												<tr>
-												<td colspan="4"></td>
+												<td colspan="5"></td>
 												<td className="totalNetAmount" colspan="2">Net: <i className="fa fa-inr"></i> {total}</td>
 												</tr>
 											</tfoot>
@@ -1185,7 +1179,7 @@ export class Bill extends React.Component {
 										{this.props.recentCartData.length > 0 ? 
 										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" onClick={this.proceedToCheckout.bind(this)}>Checkout</button>
 										:
-										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" disabled>Checkout</button>
+										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn button" disabled>Checkout</button>
 	                                     }
 
 										{/* <div className="row" style={{"padding": "13px"}}>

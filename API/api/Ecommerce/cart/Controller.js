@@ -404,6 +404,7 @@ exports.update_cart_item = (req, res, next)=>{
 };
 //generate bill number 
 exports.generate_bill_number = (req,res,next)=>{
+    var franchiseId = req.params.companyId;
     Carts.count()
         // .sort('-id')
         .exec()
@@ -414,6 +415,8 @@ exports.generate_bill_number = (req,res,next)=>{
             // .sort('-id')
             .exec()
             .then(orderData =>{
+                let calenderYear = new Date().getFullYear();
+
                 console.log("orderData",orderData);
                 if(cartData > orderData) {
                    maxId = cartData + 1;
@@ -424,7 +427,10 @@ exports.generate_bill_number = (req,res,next)=>{
                 }else{
                     maxId = 1;
                 }
-                res.status(200).json(maxId); 
+                let str = maxId.toString().padStart(5, "0");
+
+                let billNum = franchiseId + calenderYear + str;
+                res.status(200).json(billNum); 
                     
             })
             .catch(err =>{

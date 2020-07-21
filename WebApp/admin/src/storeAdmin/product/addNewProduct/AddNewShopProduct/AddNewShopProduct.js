@@ -225,7 +225,7 @@ class AddNewShopProduct extends Component {
       },
       errorPlacement: function (error, element) {
         if (element.attr("name") === "category") {
-          error.insertAfter("#category");
+          error.insertAfter("#categoryDiv");
         }
         if (element.attr("name") === "subCategory") {
           error.insertAfter("#subCategory");
@@ -854,7 +854,7 @@ class AddNewShopProduct extends Component {
                                       }
                                     </select>
                                   </div>
-                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields">
+                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields" id="categoryDiv">
                                     <label>Category <i className="redFont">*</i></label>
                                     {/*<div className="input-group" id="category">*/}
                                     <select onChange={this.showRelevantSubCategories.bind(this)} value={this.state.category} name="category" className="form-control allProductCategories" aria-describedby="basic-addon1" id="category" ref="category">

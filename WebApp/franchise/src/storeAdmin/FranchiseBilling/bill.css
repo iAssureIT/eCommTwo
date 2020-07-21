@@ -71,22 +71,32 @@
     padding-bottom: 2px;
   }
   .cardBorder{
-    border:1px solid #6b5e5e6b;
-    padding: 2px;
-    margin: 9px;
+    /* border:1px solid #6b5e5e6b; */
+    /* padding: 2px; */
+    /* margin: 9px; */
+    margin-bottom: 10px;
     height: 146px;
-    width: 120px;
-    background-color: white;
+    /* width: 120px; */
+    /* background-color: white; */
     cursor: pointer;
+    padding: 10px;
     /* background-size: cover;
     background-position: center;
     height: 100px; */
+  }
+
+ .fullScreenBtn{
+   background: #3c8dbc;
+   color: #fff;
+   margin-right: 10px;
+   margin: 1px !important;
   }
 
   .card{
     /* margin: 5px; */
     /* border: 1px solid #f1f2f2; */
     max-width: 270px;
+    background-color: white;
     /* margin: 5px; */ 
   }
   .productImg {
@@ -106,21 +116,25 @@
   }
 
   .productDiv{
-    padding-left: 22px;
+    padding-right: 0px;
     height: 86rem;
+    width: 54%;
   }
+
+  .searchProduct{width: 57%};
 
   @media (min-width: 1200px){
     .sectionDiv {
-      width: 11.666667% !important;
+      /* width: 11.666667% !important; */
       height: 86rem;    
     }
   }
 
   .box{
-    height: 88px !important ;
+    height: 90px !important ;
     box-sizing: border-box;
     padding: 6px !important;
+    margin-bottom: 15px !important;
   }
 
   .section .content :hover {
@@ -228,6 +242,7 @@
   }
 
   table{
+    font-size: smaller;
     margin-top: 10px; 
     margin-bottom: 50% !important;
   }
@@ -238,7 +253,7 @@
 
   .checkoutBtn{
     color: #fff;
-    background-color: #039be5 !important;
+    background: #3c8dbc !important;
   }
 
   .actionBtn{
@@ -294,10 +309,15 @@
   }
 
   .totalNetAmount{
-    /* font-size: larger; */
+    font-size: larger;
     font-weight: 600;
   }
 
+  #soldOutProduct{
+    opacity: 0.6;
+    cursor: no-drop;
+    /* display: none; */
+  }
   .checkoutBtn{
     margin:0 !important
   }
@@ -344,6 +364,18 @@
 svg{
   max-width: 38px !important;
     max-height: 34px !important;
+}
+
+.headerbackgroundcolor{
+  width:100% !important;
+}
+
+#dashbordid {
+  width: 100%!important;
+}
+
+.button:hover {
+  padding-right: 25px;
 }
 
 @media print {
@@ -444,7 +476,7 @@ svg{
     height: 86rem;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    background: #80808021;
+    background:#a9a9a921;
   }
   .ListProduct::-webkit-scrollbar { /* WebKit */
     width: 0;

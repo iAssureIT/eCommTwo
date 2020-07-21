@@ -128,11 +128,14 @@ router.get('/get/attributesbycategory/:categoryID', productController.getattribu
 router.get('/get/attributesbysubcategory/:subCategoryID', productController.getattributesbysubcategory);
 
 
-
-
-//==================================================
+//================================================== for franchise
 
 router.get('/get/franchisestock', productStock.getfranchisestock);
+
+router.get('/get/franchiselistbycategory/:categoryID/:franchiseId',productController.franchise_list_productby_category);
+
+router.get('/get/franchiseProductlist/:sectionID/:franchiseId',productController.franchise_list_productby_section);
+
 
 // router.get('/get/warehousestock', productStock.getwarehousestock);
 

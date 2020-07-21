@@ -196,7 +196,7 @@ export default class Leftsidebar extends Component{
                 <li>
                   <a href="/franchise-billing">
                     <i className="fa fa-money" /> 
-                    Billing Mnanagement
+                    Billing Management
                   </a>
                 </li>
                 {/* <li>
