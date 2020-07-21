@@ -13,88 +13,40 @@ class EntityDetails extends Component {
       super(props);
       this.state = {
       	id : this.props.id,
-      	entityInfo : {},
       };
    }
   componentWillReceiveProps(nextProps){
-		axios.get("/api/entitymaster/get/one/"+this.props.id)
-      .then((response)=>{
-      	console.log("entityInfo===>>>",response.data.companyName);
-      	console.log("entityInfo===>>>",response.data.companyID);
-      	console.log("entityInfo===>>>",response.data.companyEmail);
-      	console.log("entityInfo===>>>",response.data.entityType);
-      	console.log("entityInfo===>>>",response.data.groupName);
-      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
-      	console.log("response.data[0].locations,===>>>",response.data.locations,);
-        this.setState({
-            entityInfo 	: response.data,
-            contacts 		: response.data.contactPersons,
-            locations 	: response.data.locations.reverse(),
-            entityType 	: response.data.entityType
-        },()=>{
-					// console.log("entityInfo===>>>",this.state.entityInfo);
-				});
-      })
-      .catch((error)=>{
-      })
   	$("html,body").scrollTop(0);
   	this.setState({
 			id : nextProps.id
 		},()=>{
-			// console.log("id nextProps===>>:",nextProps.id);
-			
+			console.log("id",nextProps.id);
+			this.getEntitiesInfo(this.state.id)
 		})
   }
 
 	componentDidMount(){
-		// this.getEntitiesInfo(this.props.id)
-		axios.get("/api/entitymaster/get/one/"+this.props.id)
-      .then((response)=>{
-      	console.log("entityInfo===>>>",response.data.companyName);
-      	console.log("entityInfo===>>>",response.data.companyID);
-      	console.log("entityInfo===>>>",response.data.companyEmail);
-      	console.log("entityInfo===>>>",response.data.entityType);
-      	console.log("entityInfo===>>>",response.data.groupName);
-      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
-      	console.log("response.data[0].locations,===>>>",response.data.locations,);
-        this.setState({
-            entityInfo 	: response.data,
-            contacts 		: response.data.contactPersons,
-            locations 	: response.data.locations.reverse(),
-            entityType 	: response.data.entityType
-        },()=>{
-					// console.log("entityInfo===>>>",this.state.entityInfo);
-				});
-      })
-      .catch((error)=>{
-      })
 		$("html,body").scrollTop(0);
+		var role = localStorage.getItem("roles");
+
 		this.setState({
-  			id : this.props.id
+  			id : this.props.id,
+  			role:role
   		},()=>{
-			
-			
+			console.log("id",this.props.id);
+			this.getEntitiesInfo(this.state.id)
 		})
   }
   getEntitiesInfo(id){
-		console.log("id===>",id);
   	axios.get("/api/entitymaster/get/one/"+id)
       .then((response)=>{
-      	console.log("entityInfo===>>>",response.data.companyName);
-      	console.log("entityInfo===>>>",response.data.companyID);
-      	console.log("entityInfo===>>>",response.data.companyEmail);
-      	console.log("entityInfo===>>>",response.data.entityType);
-      	console.log("entityInfo===>>>",response.data.groupName);
-      	console.log("response.data[0].contactData,===>>>",response.data.contactPersons,);
-      	console.log("response.data[0].locations,===>>>",response.data.locations,);
+      	console.log("entityInfo",response)
         this.setState({
-            entityInfo 	: response.data,
-            contacts 		: response.data.contactPersons,
-            locations 	: response.data.locations.reverse(),
-            entityType 	: response.data.entityType
-        },()=>{
-					// console.log("entityInfo===>>>",this.state.entityInfo);
-				});
+            entityInfo 	: response.data[0],
+            contacts 		: response.data[0].contactData,
+            locations 	: response.data[0].locations.reverse(),
+            entityType 	: response.data[0].entityType
+        });
       })
       .catch((error)=>{
       })
@@ -163,7 +115,6 @@ class EntityDetails extends Component {
   	$('#deleteEntityModal').hide(); 
   }
 	render() {
-		// console.log("this.state.entityInfo==>",this.state.entityInfo)
     return (	
       this.state.entityInfo ? 
 		    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
@@ -173,7 +124,7 @@ class EntityDetails extends Component {
 					    	<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 blueBack ">
 					    		<div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
 						    		<div className="col-lg-2 col-md-4 col-sm-4 col-xs-4 companyLogoImageView noPadding">
-											<img src={this.state.entityInfo.companyLogo && this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className="logoimg"></img>
+											<img src={this.state.entityInfo.companyLogo && this.state.entityInfo.companyLogo.length > 0?this.state.entityInfo.companyLogo[0]:"/images/noImagePreview.png"} className=""></img>
 						    		</div>
 					    		</div>
 					    		<div className="col-lg-1 col-md-4 col-sm-4 col-xs-4 noPadding pull-right marginTop12 textAlignCenter">{this.state.entityInfo.profileStatus == "New"?<span className="newProfile" title="New Company Profile">New </span>:<span className="approvedProfile" title="Company Profile Approved">Approved </span>}</div>
@@ -183,21 +134,61 @@ class EntityDetails extends Component {
 					    		<div className="col-lg-12 col-md-4 col-sm-4 col-xs-4 orgHeadview">
 					    			<label><a target="_blank" title="view company profile" href={"/company-profile/"+this.state.entityInfo._id}>{this.state.entityInfo.companyName}</a></label>&nbsp;&nbsp;<span>( Company ID: <b>{this.state.entityInfo.companyID}</b> )</span>
 					    		</div>
-						    	<div className="col-lg-1 col-md-2 col-sm-2 col-xs-2 editOptionView pull-right noPadding">
+					    		<div className=" dropdown col-lg-1 col-md-1 col-sm-1 col-xs-1 NOpadding  marginTop12">
+									<div className=" dotsContainerEL col-lg-8 col-md-8 col-sm-8 col-xs-8">
+										<i className="fa fa-ellipsis-h" aria-hidden="true"></i>
+							    		<div className="dropdown-content dropdown-contentEL">
+											<ul className="pdcls ulbtm">
+												<li id={this.state.entityInfo._id} title="Edit" data-index data-id={this.state.entityInfo._id} onClick={this.editBasicform.bind(this)}>
+													<a><i className="fa fa-pencil "aria-hidden="true"></i>&nbsp;&nbsp;Edit</a>
+												</li>
+												<li id={this.state.entityInfo._id}  title="Delete" data-index data-id={this.state.entityInfo._id} onClick={this.deleteEntity.bind(this)}>
+													<a><i className="fa fa-trash" aria-hidden="true"></i>&nbsp;&nbsp;Delete</a>
+												</li>
+												{this.state.role.indexOf("admin")>-1?
+												<div>
+												<li id={this.state.entityInfo._id}  title="Add Employee" >
+													<a href={"/"+this.state.entityType +"/employee/lists"}><i className="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add Employee</a>
+												</li>
+												{this.state.entityType === "corporate"  ?
+												<li id={this.state.entityInfo._id}  title="Add Guest">
+													<a href="/guest/lists"><i className="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Add Guest</a>
+												</li>
+												:
+												null
+												}
+												<li id={this.state.entityInfo._id}  title="Add Contract" >
+													<a href="/contract-management"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;&nbsp;Add Contract</a>
+												</li>
+												</div>
+												:
+												null
+												}
+											</ul>
+										</div>
+									</div>
+								</div>
+						    	{/*<div className="col-lg-1 col-md-2 col-sm-2 col-xs-2 editOptionView pull-right noPadding">
 						    		<div id={this.state.entityInfo._id} className=" col-lg-6 noPadding"  title="Edit" data-index data-id={this.state.entityInfo._id} onClick={this.editBasicform.bind(this)}>	
 									    <i className="fa fa-pencil "  aria-hidden="true" ></i>
 									  </div>
 									  <div id={this.state.entityInfo._id} className="col-lg-6 noPadding"  title="delete" data-index data-id={this.state.entityInfo._id} onClick={this.deleteEntity.bind(this)}>	
 									    <i className="fa fa-trash "  aria-hidden="true" ></i>
 									  </div>
-						    	</div>
+						    	</div>*/}
 					    		<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
 					    			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding listLI">
 											<li><i className="fa fa-envelope changeColor " aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.companyEmail}</li>
 											<li><i className="fa fa-phone changeColor" aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.companyPhone}</li>
 											<li><i className="fa fa-globe changeColor " aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.website ? this.state.entityInfo.website :" - "}</li>
 										</ul>
-					    		</div>	   
+					    		</div>
+					    		<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+					    			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding listLI">
+											<li>CIN&nbsp; : <b>{this.state.entityInfo.CIN? this.state.entityInfo.CIN :" - "}</b>&nbsp;&nbsp;&nbsp;{this.state.entityInfo.COI && this.state.entityInfo.COI.length > 0 ? <a target="_blank" href={this.state.entityInfo.COI[0]}><img src={this.state.entityInfo.COI[0]} title="Click to view COI document" className="coiImage"></img></a>:""}</li>
+											<li>TAN&nbsp; : <b>{this.state.entityInfo.TAN ? this.state.entityInfo.TAN : " - "}</b></li>
+										</ul>
+					    		</div>				   
 						    </div>				   
 						  </div>
 						</div>
@@ -217,11 +208,11 @@ class EntityDetails extends Component {
 						        				<li><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<b> {locationArr.locationType}</b></li>
 						        				<i className="textAlignLeft noPadding changeColor col-lg-1 width18px" aria-hidden="true"></i> <li className="col-lg-10 noPadding">#{(locationArr.addressLine2 ? locationArr.addressLine2 +" , "  : "")+locationArr.addressLine1 } ,</li>
 						        				{ locationArr.GSTIN ?
-						        					<li title="GSTIN Number" className="col-lg-12 noPadding"><i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp; <b>GSTIN:</b>&nbsp;&nbsp;&nbsp;{ locationArr.GSTIN}</li>
+						        					<li title="GSTIN Number" className="col-lg-12 noPadding"><i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp; <b>GSTIN </b><br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ locationArr.GSTIN}</li>
 						        					:null
 						        				}
 						        				{ locationArr.PAN?
-						        					<li title="PAN Number"  className="col-lg-12 noPadding"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp; <b>PAN:</b>&nbsp;&nbsp;&nbsp;{ locationArr.PAN}</li>
+						        					<li title="PAN Number"  className="col-lg-12 noPadding"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp; <b>PAN</b><br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ locationArr.PAN}</li>
 						        					:null
 						        				}
 								        	</ul>
@@ -311,46 +302,47 @@ class EntityDetails extends Component {
 						        			<li><i className="fa fa-envelope " aria-hidden="true" ></i>&nbsp;&nbsp;{contact.email}</li>
 													<li><i className="fa fa-mobile "></i> &nbsp;&nbsp;{contact.phone ? contact.phone : " - "}</li>
 							        	</ul>
-							        	{/* <div className="col-lg-12 col-md-6 col-sm-6 col-xs-6 noPadding">
-							        		<label className="bookingReq">Booking Approval Required : </label>&nbsp;{contact.bookingApprovalRequired}
-							        	{
-							        		contact.bookingApprovalRequired=="Yes" ?
-							        		<div>
-								        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
-								        			<label className="">Approving Authority 1  </label>
-								        			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
-									        			<li>Emp ID :&nbsp;{contact.manager1Details ? contact.manager1Details.employeeId:" -NA- " }</li>
-									        			<li>Name :&nbsp;{contact.manager1Details?contact.manager1Details.firstName + " " + contact.manager1Details.lastName:"-NA- "}</li>
-																<li>Mobile :&nbsp;{contact.manager1Details?contact.manager1Details.contactNo:"-NA- "}</li>
-																<li>Department :&nbsp;{contact.manager1Details ? (contact.manager1Details.departmentId?contact.manager1Details.departmentId.department:"-NA- " ):" -NA- "}</li>
-																<li>Designation :&nbsp;{contact.manager1Details ? (contact.manager1Details.designationId?contact.manager1Details.designationId.designation:"-NA- " ):" -NA- "}</li>
-										        	</ul>
-								        		</div>
-								        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
-								        			<label className="">Approving Authority 2  </label>
-								        			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
-									        			<li>Emp ID :&nbsp;{contact.manager2Details ? contact.manager2Details.employeeId:"- NA -" }</li>
-									        			<li>Name :&nbsp;{contact.manager2Details?contact.manager2Details.firstName + " " + contact.manager2Details.lastName:""}</li>
-																<li>Mobile :&nbsp;{contact.manager2Details?contact.manager2Details.contactNo:""}</li>
-																<li>Department :&nbsp;{contact.manager2Details ? (contact.manager2Details.departmentId?contact.manager2Details.departmentId.department:"" ):" -NA- "}</li>
-																<li>Designation :&nbsp;{contact.manager2Details ? (contact.manager2Details.designationId?contact.manager2Details.designationId.designation:"" ):" -NA- "}</li>
-										        	</ul>
-										        </div>
-								        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
-								        			<label className="">Approving Authority 3  </label>
-								        				<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
-									        			<li>Emp ID :&nbsp;{contact.manager3Details ? contact.manager3Details.employeeId:"- NA -" }</li>
-									        			<li>Name :&nbsp;{contact.manager3Details?contact.manager3Details.firstName + " " + contact.manager3Details.lastName:"- NA -"}</li>
-																<li>Mobile :&nbsp;{contact.manager3Details?contact.manager3Details.contactNo:"- NA -"}</li>
-																<li>Department :&nbsp;{contact.manager3Details ? (contact.manager3Details.departmentId?contact.manager3Details.departmentId.department:"- NA -" ):" -NA- "}</li>
-																<li>Designation :&nbsp;{contact.manager3Details ? (contact.manager3Details.designationId?contact.manager3Details.designationId.designation:"- NA -" ):" -NA- "}</li>
-										        	</ul>
-										        </div>
+							        	{this.state.entityInfo.entityType === "corporate"?
+							        	<div className="col-lg-12 col-md-6 col-sm-6 col-xs-6 noPadding">
+							        	<label className="bookingReq">Booking Approval Required : </label>&nbsp;{contact.bookingApprovalRequired}
+							        	
+						        		<div>
+							        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
+							        			<label className="">Approving Authority 1  </label>
+							        			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
+								        			<li>Emp ID :&nbsp;{contact.manager1Details ? contact.manager1Details.employeeId:" -NA- " }</li>
+								        			<li>Name :&nbsp;{contact.manager1Details?contact.manager1Details.firstName + " " + contact.manager1Details.lastName:"-NA- "}</li>
+															<li>Mobile :&nbsp;{contact.manager1Details?contact.manager1Details.contactNo:"-NA- "}</li>
+															<li>Department :&nbsp;{contact.manager1Details ? (contact.manager1Details.departmentId?contact.manager1Details.departmentId.department:"-NA- " ):" -NA- "}</li>
+															<li>Designation :&nbsp;{contact.manager1Details ? (contact.manager1Details.designationId?contact.manager1Details.designationId.designation:"-NA- " ):" -NA- "}</li>
+									        	</ul>
 							        		</div>
-							        		:
-							        		null
+							        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
+							        			<label className="">Approving Authority 2  </label>
+							        			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
+								        			<li>Emp ID :&nbsp;{contact.manager2Details ? contact.manager2Details.employeeId:"- NA -" }</li>
+								        			<li>Name :&nbsp;{contact.manager2Details?contact.manager2Details.firstName + " " + contact.manager2Details.lastName:""}</li>
+															<li>Mobile :&nbsp;{contact.manager2Details?contact.manager2Details.contactNo:""}</li>
+															<li>Department :&nbsp;{contact.manager2Details ? (contact.manager2Details.departmentId?contact.manager2Details.departmentId.department:"" ):" -NA- "}</li>
+															<li>Designation :&nbsp;{contact.manager2Details ? (contact.manager2Details.designationId?contact.manager2Details.designationId.designation:"" ):" -NA- "}</li>
+									        	</ul>
+									        </div>
+							        		<div className="col-lg-4 col-md-6 col-sm-6 col-xs-6 NOpadding-left">
+							        			<label className="">Approving Authority 3  </label>
+							        				<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 locationULContact noPadding">
+								        			<li>Emp ID :&nbsp;{contact.manager3Details ? contact.manager3Details.employeeId:"- NA -" }</li>
+								        			<li>Name :&nbsp;{contact.manager3Details?contact.manager3Details.firstName + " " + contact.manager3Details.lastName:"- NA -"}</li>
+															<li>Mobile :&nbsp;{contact.manager3Details?contact.manager3Details.contactNo:"- NA -"}</li>
+															<li>Department :&nbsp;{contact.manager3Details ? (contact.manager3Details.departmentId?contact.manager3Details.departmentId.department:"- NA -" ):" -NA- "}</li>
+															<li>Designation :&nbsp;{contact.manager3Details ? (contact.manager3Details.designationId?contact.manager3Details.designationId.designation:"- NA -" ):" -NA- "}</li>
+									        	</ul>
+									        </div>
+						        		</div>
+
+							        	
+							        	</div>	
+							        	:null
 							        	}
-							        	</div>	 */}
 											</div>
 										);
 									})

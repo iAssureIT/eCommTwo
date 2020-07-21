@@ -2,15 +2,15 @@ const mongoose  = require("mongoose");
 
 const EntityMaster = require('./ModelEntityMaster');
 const PersonMaster = require('../personMaster/ModelPersonMaster.js');
-var request = require('request-promise');
+// var request = require('request-promise');
 // const gloabalVariable = require('../../nodemon.js');
-const gloabalVariable = require('../../../nodemon');
 var   ObjectID          = require('mongodb').ObjectID;
 
 exports.insertEntity = (req,res,next)=>{
     insertEntityFun();
     async function insertEntityFun(){
-        var getnext = await getNextSequence()
+        var getnext = await getNextSequence(req.body.entityType)
+        if(req.body.entityType == 'corporate'){var str = "C"+parseInt(getnext)}else if(req.body.entityType == 'vendor'){var str = "V"+parseInt(getnext)}else{var str = 1}
 
         EntityMaster.findOne({  
                             companyName               : req.body.companyName,
@@ -29,7 +29,8 @@ exports.insertEntity = (req,res,next)=>{
                     supplierOf                : req.body.supplierOf,
                     entityType                : req.body.entityType,
                     profileStatus             : req.body.profileStatus,
-                    companyID                 : getnext ? getnext : 1, 
+                    companyNo                 : getnext ? getnext : 1,
+                    companyID                 : str ? str : 1, 
                     companyName               : req.body.companyName,
                     groupName                 : req.body.groupName,
                     CIN                       : req.body.CIN,   
@@ -60,13 +61,14 @@ exports.insertEntity = (req,res,next)=>{
     
 };
 
-function getNextSequence() {
+function getNextSequence(entityType) {
     return new Promise((resolve,reject)=>{
-    EntityMaster.findOne().sort({companyID:-1})       
+    EntityMaster.findOne({entityType:entityType})    
+        .sort({companyNo : -1})   
         .exec()
         .then(data=>{
             if (data) { 
-                var seq = data.companyID;
+                var seq = data.companyNo;
                 seq = seq+1;
                 resolve(seq) 
             }else{
@@ -93,7 +95,7 @@ exports.listEntity = (req,res,next)=>{
         });
 };
 exports.listEntity_franchise = (req,res,next)=>{
-    EntityMaster.find({entityType:req.params.entityType,_id : req.params.franchiseId}).sort({createdAt : -1})    
+    EntityMaster.find({entityType:req.params.entityType,_id:req.params.franchiseId}).sort({createdAt : -1})    
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -135,7 +137,6 @@ exports.singleEntity = (req,res,next)=>{
     EntityMaster.findOne({_id : req.params.entityID})
     .exec()
     .then(data=>{
-        console.log("singleEntity===>",data)
         main();
         async function main(){
             var k = 0 ;
@@ -219,7 +220,7 @@ exports.singleEntity = (req,res,next)=>{
 
                     })
                 }
-                console.log("contactData===>",contactData)
+                    
             }
             returnData.push({
                         "_id"                           : data._id,
@@ -241,7 +242,6 @@ exports.singleEntity = (req,res,next)=>{
                         contactData             : contactData
                     })
             }//data
-            console.log("returnData===>",returnData)
             res.status(200).json(returnData);
             
         }
@@ -351,10 +351,11 @@ exports.getWorkLocation = (req, res, next)=>{
 };
 
 exports.companyName = (req,res,next)=>{
-    // EntityMaster.findOne({companyID : req.params.companyID},{companyName:1,companyLogo:1})
-    EntityMaster.findOne({companyID : req.params.companyID},{companyName:1})
+    console.log("req.params.companyID==>",req.params.companyID);
+    EntityMaster.findOne({companyID : req.params.companyID},{companyName:1,companyLogo:1})
     .exec()
     .then(data=>{
+        // console.log("req.params.companyID==>",data);
         if(data){
             res.status(200).json(data);
         }else{
@@ -406,7 +407,6 @@ exports.updateEntity = (req,res,next)=>{
                             'groupName'                 : req.body.groupName,
                             'CIN'                       : req.body.CIN,   
                             'COI'                       : req.body.COI,
-                            'companyEmail'              : req.body.companyEmail, 
                             'TAN'                       : req.body.TAN,
                             'companyLogo'               : req.body.companyLogo,
                             'website'                   : req.body.website,

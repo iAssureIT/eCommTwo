@@ -45,15 +45,15 @@ class AllowablePincodes extends Component {
     getEntityList(){
         var userDetails = (localStorage.getItem('userDetails'));
         var userData = JSON.parse(userDetails);
-        console.log("userData.companyID===>",userData.companyID)
+        // console.log("userData.companyID===>",userData.companyID)
 
         axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
         .then((resdata)=>{
         
         var entityType = "franchise";
         var franchiseid = resdata.data._id;
-        console.log("entityType===>",entityType)
-        console.log("franchiseid===>",franchiseid)
+        // console.log("entityType===>",entityType)
+        // console.log("franchiseid===>",franchiseid)
         axios.get("/api/entitymaster/get/one/"+entityType+'/'+franchiseid)
 
 			.then((response) => {

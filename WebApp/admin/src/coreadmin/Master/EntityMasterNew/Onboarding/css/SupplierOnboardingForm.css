@@ -259,7 +259,9 @@
     font-size: 13px;
     letter-spacing: 1px
 }
-
+.padding30{
+    padding: 0px 42px 0px 42px !important;
+}
 .crossbtn {
     left: 4px;
     z-index: 200;
@@ -351,13 +353,19 @@
 
 .boxul1 {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 3%;
     flex: 1;
     font-size: 13px;
     background-color: var(--white-color);
     border: 1px solid #ddd;
-    min-height: 285px;
+    min-height: 360px;
+    box-shadow: -4px 7px 25px -5px #ddd;
+
+}
+.boxul1:hover{
+        box-shadow: 1px 3px 6px 1px #999;
+
 }
 
 .boxul {
@@ -453,8 +461,17 @@
     margin-top: 5px;
     padding: 3px 0 2px 0;
     border-radius: 50%;
+    cursor: pointer;
 
-    /* border:1px solid #aaa; */
+}
+.dotsContainerEL{
+    text-align: center;
+    margin-top: 5px;
+    padding: 4px 0 2px 0;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+
 }
 
 .locationIcon {
@@ -821,6 +838,19 @@
     margin-top: -3px!important;
     min-width:92px !important;
 }
+.dropdown-contentEL {
+    margin-top: 0px!important;
+    min-width: 130px !important;
+    font-size: 11px !important;
+    right: -15px!important;
+    text-align: left !important;
+    padding: 10px 10px 10px 10px;
+}
+.dropdown-contentEL ul>li {
+    margin-bottom: 5px !important;
+   
+}
+
 
 .CancelButtonSwal {
     background: var(--white-background)!important;
@@ -1222,13 +1252,17 @@ select#gender option[value="others"] {
 
   .box_style{
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 3%;
     flex: 1 1;
     font-size: 13px;
     background-color: var(--white-color);
     border: 1px solid #ddd;
+    box-shadow: -4px 7px 25px -5px #ddd;
     min-height: 107px;
+  }
+  .box_style:hover{
+        box-shadow: 1px 3px 6px 1px #999;
   }
   .showMoreBtn{
     padding: 0;
@@ -1274,4 +1308,7 @@ select#gender option[value="others"] {
     position: absolute;
     top:20px;
     left: 15px;   
+}
+.MasterBudgetTitle{
+
 }

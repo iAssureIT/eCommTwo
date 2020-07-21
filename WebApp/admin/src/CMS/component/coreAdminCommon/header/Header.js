@@ -21,61 +21,7 @@ export default class Header2 extends Component{
     
     }
   }
-  // componentDidMount(){
-  //   if ( !$('body').hasClass('adminLte')) {
-  //     var adminLte = document.createElement("script");
-  //     adminLte.type="text/javascript";
-  //     adminLte.src = "/js/adminLte.js";
-  //     $("body").append(adminLte);
-  //   }
-  //   $("html,body").scrollTop(0);
 
-  //   //======= User Details ==========
-  //   var userDetails = JSON.parse(localStorage.getItem("userDetails")) ;
-  //   const Token     = userDetails.token;
-    
-  //   // console.log("userDetails = ", userDetails);
-
-  //   if(Token){
-  //     axios.get('/api/entitymaster/get/one/companyName/1')
-  //         .then(companyDetails=>{
-  //             // console.log("companyDetails = ", companyDetails.data);
-  //             this.setState({
-  //                 user_ID       : userDetails.user_id,
-  //                 email         : userDetails.email,
-  //                 profileImage  : userDetails.image,
-  //                 fullname      : userDetails.firstName+' '+userDetails.lastName,
-  //                 companyID     : userDetails.companyID,
-  //                 companyName   : companyDetails.data.companyName,
-  //               },()=>{
-  //                 // console.log("this.state.fullname = ",this.state.fullname);
-  //               });
-
-  //         //======= Notification Unread Count ==========
-  //         axios.get('/api/notifications/get/list/Unread/'+userDetails.user_id)
-  //             .then(notifications => {
-
-  //             this.setState({
-  //                 inAppNotifications: notifications.data ,
-  //                 inAppNotificationsCount    : notifications.data.length
-  //               });
-
-  //             })
-  //             .catch(error => {
-  //               console.log("Error in /api/notifications/get/list/Unread/ = ",error);
-  //             })
-
-  //         })
-  //         .catch(error => {
-  //           console.log("Error in /api/notifications/get/list/Unread/ = ",error);
-  //         });
-
-  //   }else{
-  //     this.props.history.push("/login");
-  //   }
-
-
-  // }
   componentDidMount(){
     if ( !$('body').hasClass('adminLte')) {
       var adminLte = document.createElement("script");
@@ -92,11 +38,11 @@ export default class Header2 extends Component{
 
     if(Token){
       var comapanyname = parseInt(1)
-    console.log("comapanyname ====>>>>>>>>> ", comapanyname);
+    // console.log("comapanyname ====>>>>>>>>> ", comapanyname);
 
       axios.get('/api/entitymaster/get/companyName/'+comapanyname)
           .then(companyDetails=>{
-              // console.log("companyDetails = ", companyDetails.data);
+              console.log("companyDetails ====> ", companyDetails.data);
               this.setState({
                   user_ID       : userDetails.user_id,
                   email         : userDetails.email,

@@ -14,9 +14,9 @@ class BookingRequired extends React.Component {
             'preApprovedAmount'      : props && props.editData != null ? props.editData.preApprovedAmount :0,
             'preApprovedRides' : props && props.editData != null ? props.editData.preApprovedRides : 0,
             'preApprovedKilometer' : props && props.editData != null ? props.editData.preApprovedKilometer : 0,
-            'approvingAuthorityId1'     : props && props.editData != null ? props.editData.approvingAuthorityId1 :'',
-            'approvingAuthorityId2'     : props && props.editData != null ? props.editData.approvingAuthorityId2 :'',
-            'approvingAuthorityId3'     : props && props.editData != null ? props.editData.approvingAuthorityId3 :'',
+            // 'approvingAuthorityId1'     : props && props.editData != null ? props.editData.approvingAuthorityId1 :'',
+            // 'approvingAuthorityId2'     : props && props.editData != null ? props.editData.approvingAuthorityId2 :'',
+            // 'approvingAuthorityId3'     : props && props.editData != null ? props.editData.approvingAuthorityId3 :'',
             'bookingApprovalRequired'   : props && props.editData != null ? props.editData.bookingApprovalRequired :"No",
         };
         this.handleChange = this.handleChange.bind(this)
@@ -46,9 +46,9 @@ class BookingRequired extends React.Component {
                 'preApprovedKilometer'     : this.state.preApprovedKilometer,
                 'preApprovedAmount'         : this.state.preApprovedAmount,
                 'preApprovedRides'          : this.state.preApprovedRides,
-                'approvingAuthorityId1'     : this.state.approvingAuthorityId1,
-                'approvingAuthorityId2'     : this.state.approvingAuthorityId2,
-                'approvingAuthorityId3'     : this.state.approvingAuthorityId3,
+                // 'approvingAuthorityId1'     : this.state.approvingAuthorityId1,
+                // 'approvingAuthorityId2'     : this.state.approvingAuthorityId2,
+                // 'approvingAuthorityId3'     : this.state.approvingAuthorityId3,
                 'bookingApprovalRequired'   : this.state.bookingApprovalRequired,
             }
             this.props.getData(data);
@@ -80,9 +80,9 @@ class BookingRequired extends React.Component {
                 'preApprovedKilometer'     : this.state.preApprovedKilometer,
                 'preApprovedAmount'         : this.state.preApprovedAmount,
                 'preApprovedRides'          : this.state.preApprovedRides,
-                'approvingAuthorityId1'     : this.state.approvingAuthorityId1,
-                'approvingAuthorityId2'     : this.state.approvingAuthorityId2,
-                'approvingAuthorityId3'     : this.state.approvingAuthorityId3,
+                // 'approvingAuthorityId1'     : this.state.approvingAuthorityId1,
+                // 'approvingAuthorityId2'     : this.state.approvingAuthorityId2,
+                // 'approvingAuthorityId3'     : this.state.approvingAuthorityId3,
                 'bookingApprovalRequired'   : val,
             }
             this.props.getData(data);
@@ -122,7 +122,7 @@ class BookingRequired extends React.Component {
                 
             
         </div>
-        <div className="form-margin bookingApproval col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+        {/*<div className="form-margin bookingApproval col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                 
             {
                 this.state.bookingApprovalRequired === "Yes" ? 
@@ -152,7 +152,7 @@ class BookingRequired extends React.Component {
                 null
             
             }
-        </div>
+        </div>*/}
         <div className="form-margin bookingApproval col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                 
             {

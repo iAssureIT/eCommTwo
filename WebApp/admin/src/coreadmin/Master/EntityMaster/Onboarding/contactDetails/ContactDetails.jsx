@@ -1657,7 +1657,7 @@ class ContactDetails extends Component {
 	            preApprovedLimits    : "PreApproved Limits",
 	             actions:"Action"
 	          },
-	           tableObjects : {
+	    tableObjects : {
 	          paginationApply : false,
 	          searchApply     : false,
 	          editUrl         : '/corporate'+'/contact-details/'+this.props.match.params.entityID,
@@ -1666,11 +1666,11 @@ class ContactDetails extends Component {
 	          downloadApply   : true
 	      },
 
-	        startRange        : 0,
-            limitRange        : 100000,
-		
-            "editId": this.props.match.params ? this.props.match.params.fieldID : '',
-            "IdToDelete" : "",
+			startRange        : 0,
+			limitRange        : 100000,
+
+			"editId": this.props.match.params ? this.props.match.params.fieldID : '',
+			"IdToDelete" : "",
 			'listOfEmpID'               : [],
 			'isBookingRequired'         : this.props.bookingRequired,
 			"pathname"					: this.props.entity,
@@ -2148,14 +2148,15 @@ class ContactDetails extends Component {
 				if ($('#ContactDetail').valid()) {
 					if(this.state.createUser === true && this.state.listOfEmpID.indexOf(this.state.employeeID) === -1){
 						formValues.contactDetails.userID = await this.createUser();
-						formValues.contactDetails.personID = await this.savePerson(formValues.contactDetails.userID);
+						// formValues.contactDetails.personID = await this.savePerson(formValues.contactDetails.userID);
+						this.saveContact(formValues);
 						var formValues1 = {
 						userID: formValues.contactDetails.userID,
-						role: "employee",
+						role: "franchise",
 						}
 						console.log("formValues1==>",formValues1);
-						if(this.state.pathname === "corporate" && (this.state.role === "manager" || this.state.role === "corporateadmin" ))
-						{
+						// if(this.state.pathname === "corporate" && (this.state.role === "manager" || this.state.role === "corporateadmin" ))
+						// {
 							axios
 							.patch('/api/users/patch/role/assign/' + formValues1.userID, formValues1)
 							.then(
@@ -2165,7 +2166,7 @@ class ContactDetails extends Component {
 								console.log("error",error);
 
 							});
-						}
+						// }
 						var sendData = {
 				              "event": "Contact Created", //Event Name
 				              "toUser_id": formValues.contactDetails.userID, //To user_id(ref:users)
@@ -2188,7 +2189,7 @@ class ContactDetails extends Component {
 		                  })
 		                  .catch((error) => { console.log('notification error: ',error)})
 					}
-					this.saveContact(formValues);
+					
 				} else {
 					$(event.target).parent().parent().parent().find('.errorinputText .error:first').focus();
 				}
@@ -2197,27 +2198,44 @@ class ContactDetails extends Component {
 			main();
 	}
 	createUser = ()=>{
-		var userDetails = {
-			firstname				: this.state.firstName,
-			lastname				: this.state.lastName,
-			mobNumber				: this.state.phone,
-			email						: this.state.email,
-			companyID				: this.state.companyID,
-			companyName			: this.state.companyName,
-			pwd							: "welcome123",
-			role						: [ this.state.role ],
-      // "status"					: this.state.role ==="corporateadmin" || this.state.role ==="vendoradmin" ? "active" :"blocked",
-      "status"					: "active",
-			"emailSubject"	: "Email Verification",
-			"emailContent"	: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+		// var userDetails = {
+		// 	firstname				: this.state.firstName,
+		// 	lastname				: this.state.lastName,
+		// 	mobNumber				: this.state.phone,
+		// 	email						: this.state.email,
+		// 	companyID				: this.state.companyID,
+		// 	companyName			: this.state.companyName,
+		// 	pwd							: "Welcome@123",
+		// 	role						: [ this.state.role ],
+    //   // "status"					: this.state.role ==="corporateadmin" || this.state.role ==="vendoradmin" ? "active" :"blocked",
+    //   "status"					: "active",
+		// 	"emailSubject"	: "Email Verification",
+		// 	"emailContent"	: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+		// }
+		const formValues = {
+			"firstname": this.state.firstName,
+			"lastname": this.state.lastName,
+			"email": this.state.email,
+			"mobNumber": (this.state.phone).replace("-", ""),
+			"pwd": "Welcome@123",
+			"role": this.state.role,
+			"department": this.state.department,
+			"designation": this.state.designation,
+			"cityName": this.state.cityName,
+			"states": this.state.states,
+			"companyID": this.state.companyID,
+			"companyName": this.state.companyName,
+			"status": "active",
 		}
-		console.log("userDetails create role==>",userDetails);
-		// return new Promise(function(resolve, reject){
-			axios.post('/api/auth/post/signup/user', userDetails)
+		
+		return new Promise(function(resolve, reject){
+			console.log("userDetails create role==>",formValues);
+			// axios.post('/api/auth/post/signup/user', formValues)
+			axios.post('/api/auth/post/signup/user', formValues)
 			.then((response)=>{
 				console.log("response.data.ID",response.data.ID)
 				
-				// resolve(response.data.ID);
+				resolve(response.data.ID);
 				if(response.data.message === 'USER_CREATED'){
 					
 				}else{
@@ -2226,61 +2244,61 @@ class ContactDetails extends Component {
 				
 			})
 			.catch((error)=>{})
-		// })
+		})
 	}
 
-	savePerson = (userID)=>{
-		console.log("userID",userID);
-		if(userID){
-			var userDetails = {
-				type                    : "employee",
-				companyID				: this.state.companyID,
-				company_Id				: this.state.entityID,
-				companyName 		    : this.state.companyName,
-				workLocation            : this.state.workLocation,
-				workLocationId          : this.state.workLocationId,
-				branchCode              : this.state.branchCode,
-				firstName               : this.state.firstName,
-				middleName              : this.state.middleName ? this.state.middleName : "",
-				lastName                : this.state.lastName,
-				DOB                     : this.state.DOB ? this.state.DOB : "",
-				gender                  : this.state.gender ? this.state.gender : "",
-				contactNo               : this.state.phone,
-				altContactNo            : this.state.altPhone,
-				email                   : this.state.email,
-				whatsappNo              : this.state.whatsappNo ? this.state.whatsappNo : "",
+	// savePerson = (userID)=>{
+	// 	console.log("userID",userID);
+	// 	if(userID){
+	// 		var userDetails = {
+	// 			type                    : "franchise",
+	// 			companyID				: this.state.companyID,
+	// 			company_Id				: this.state.entityID,
+	// 			companyName 		    : this.state.companyName,
+	// 			workLocation            : this.state.workLocation,
+	// 			workLocationId          : this.state.workLocationId,
+	// 			branchCode              : this.state.branchCode,
+	// 			firstName               : this.state.firstName,
+	// 			middleName              : this.state.middleName ? this.state.middleName : "",
+	// 			lastName                : this.state.lastName,
+	// 			DOB                     : this.state.DOB ? this.state.DOB : "",
+	// 			gender                  : this.state.gender ? this.state.gender : "",
+	// 			contactNo               : this.state.phone,
+	// 			altContactNo            : this.state.altPhone,
+	// 			email                   : this.state.email,
+	// 			whatsappNo              : this.state.whatsappNo ? this.state.whatsappNo : "",
 				
-				profilePhoto            : this.state.profilePhoto ? this.state.profilePhoto : "",
-				empCategory             : this.state.empCategory ? this.state.empCategory : "",
-	            empPriority             : this.state.empPriority ? this.state.empPriority : "",
-				employeeId              : this.state.employeeID,
-				userId 					: userID,
-				status					: "Active",
-				bookingApprovalRequired : this.state.bookingApprovalRequired,
-				approvingAuthorityId1   : this.state.approvingAuthorityId1,
-				approvingAuthorityId2   : this.state.approvingAuthorityId2,
-				approvingAuthorityId3   : this.state.approvingAuthorityId3,
-				preApprovedRides  		: this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedRides : "",
-				preApprovedKilometer   : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedKilometer : "",
-				preApprovedAmount       : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedAmount : "",
-			}
-			if(this.state.departmentName)
-			{
-				userDetails.departmentId  = this.state.department;
-				userDetails.designationId = this.state.designation;
+	// 			profilePhoto            : this.state.profilePhoto ? this.state.profilePhoto : "",
+	// 			empCategory             : this.state.empCategory ? this.state.empCategory : "",
+	//             empPriority             : this.state.empPriority ? this.state.empPriority : "",
+	// 			employeeId              : this.state.employeeID,
+	// 			userId 					: userID,
+	// 			status					: "Active",
+	// 			bookingApprovalRequired : this.state.bookingApprovalRequired,
+	// 			approvingAuthorityId1   : this.state.approvingAuthorityId1,
+	// 			approvingAuthorityId2   : this.state.approvingAuthorityId2,
+	// 			approvingAuthorityId3   : this.state.approvingAuthorityId3,
+	// 			preApprovedRides  		: this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedRides : "",
+	// 			preApprovedKilometer   : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedKilometer : "",
+	// 			preApprovedAmount       : this.state.bookingApprovalRequired === "Yes" ? this.state.preApprovedAmount : "",
+	// 		}
+	// 		if(this.state.departmentName)
+	// 		{
+	// 			userDetails.departmentId  = this.state.department;
+	// 			userDetails.designationId = this.state.designation;
 			
 
-			}
-		  console.log("userDetails",userDetails)
-		  return new Promise(function(resolve, reject){
-			axios.post('/api/personmaster/post' ,userDetails)
-			.then((response) => {
-				resolve(response.data.PersonId);
-			})
-			.catch((error) => {})
-		  })
-		}
-	}
+	// 		}
+	// 	  console.log("userDetails",userDetails)
+	// 	  return new Promise(function(resolve, reject){
+	// 		axios.post('/api/personmaster/post' ,userDetails)
+	// 		.then((response) => {
+	// 			resolve(response.data.PersonId);
+	// 		})
+	// 		.catch((error) => {})
+	// 	  })
+	// 	}
+	// }
 
 	saveContact = (formValues)=>{
 		if(this.state.listOfEmpID.indexOf(this.state.employeeID)>-1)
@@ -2302,7 +2320,7 @@ class ContactDetails extends Component {
 
 					swal({
 						title : "Contact added successfully.",
-						text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password :"+"welcome123 \n Contact also added in franchise list." : ""
+						text : this.state.createUser ? "Login credentials created and emailed to user. \n LoginID : "+this.state.email+" \n Default Password :"+"Welcome@123 \n Contact also added in franchise list." : ""
 					});
 
 					this.setState({
@@ -2460,9 +2478,10 @@ class ContactDetails extends Component {
 			companyID			: this.state.companyID,
 			email					: this.state.email,
 			companyName			: this.state.companyName,
-			pwd						: "welcome123",
+			pwd						: "Welcome@123",
 			role					: [this.state.role],
-      "status": this.state.role !=="corporateadmin" || this.state.role !=="vendoradmin" ? "blocked" :"active",
+      // "status": this.state.role !=="corporateadmin" || this.state.role !=="vendoradmin" ? "blocked" :"active",
+      "status": "active",
 			"emailSubject"		: "Email Verification",
 			"emailContent"		: "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
 		}
