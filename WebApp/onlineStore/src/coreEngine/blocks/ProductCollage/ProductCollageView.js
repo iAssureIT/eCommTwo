@@ -11,10 +11,6 @@ import Message from '../Message/Message.js';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../actions/index';
 import { size } from 'underscore';
-import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
-import Login          from '../../systemSecurity/Login.js';
-import SignUp         from '../../systemSecurity/SignUp.js';
-import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 const user_ID = localStorage.getItem("user_ID");
 
 class ProductCollageView extends Component {
@@ -134,8 +130,7 @@ class ProductCollageView extends Component {
         messageData: {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
-          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
           "class": "warning",
           "autoDismiss": true
         }
@@ -214,25 +209,25 @@ class ProductCollageView extends Component {
           this.setState({
             ['relatedProductArray' + id]: unique
           })
-          // if (unique.length > 0) {
-          //   if (unique.length === 1) {
-          //     if (unique[0].size) {
-          //       this.setState({
-          //         ['sizeCollage' + id]: true
-          //       })
-          //     } else {
-          //       this.addCart(formValues, quantityAdded, availableQuantity);
-          //     }
-          //   } else if (unique.length > 1) {
-          //     this.setState({
-          //       ['sizeCollage' + id]: true
-          //     })
-          //   } else {
-          //     this.addCart(formValues, quantityAdded, availableQuantity);
-          //   }
-          // } else {
-          //   this.addCart(formValues, quantityAdded, availableQuantity);
-          // }
+          if (unique.length > 0) {
+            if (unique.length === 1) {
+              if (unique[0].size) {
+                this.setState({
+                  ['sizeCollage' + id]: true
+                })
+              } else {
+                this.addCart(formValues, quantityAdded, availableQuantity);
+              }
+            } else if (unique.length > 1) {
+              this.setState({
+                ['sizeCollage' + id]: true
+              })
+            } else {
+              this.addCart(formValues, quantityAdded, availableQuantity);
+            }
+          } else {
+            this.addCart(formValues, quantityAdded, availableQuantity);
+          }
         })
         .catch((error) => {
           console.log('error', error);
@@ -246,9 +241,7 @@ class ProductCollageView extends Component {
         messageData: {
           "type": "outpage",
           "icon": "fa fa-exclamation-circle",
-          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
-          
+          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
           "class": "danger",
           "autoDismiss": true
         }
@@ -404,7 +397,7 @@ class ProductCollageView extends Component {
         <div className="row">
           {
             Array.isArray(this.state.products) && this.state.products.length > 0 ? 
-            Array.isArray(this.state.products) && this.state.products.map((data, index) => {                
+            Array.isArray(this.state.products) && this.state.products.map((data, index) => {
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 var wishClass = '';
                 var tooltipMsg = '';
@@ -415,20 +408,23 @@ class ProductCollageView extends Component {
                   wishClass = '-o';
                   tooltipMsg = 'Add To Wishlist';
                 }
-                return (                  
+                return (
                   <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={index}>
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                      <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 col-xs-offset-2 NOpadding">
-                        <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                          <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+
+                    <div className="">
+                      <div className="card">
+                        <div className="item-top">
+                          <div className="productImg">
                             <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
                             {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
+
                             <a className="product photo product-item-photo collage" tabIndex="-1" href={"/productdetails/" + data.productUrl + "/" + data._id}>
-                              <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImg" />
+                              <img src={data.productImage[0] ? data.productImage[0] : '/images/notavailable.jpg'} alt="ProductImg" />
                             </a>
                           </div>
-                          <div className="productDetails col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                          {
+
+                          <div className="productDetails">
+                            {
                               this.state['sizeCollage' + data._id] === true ?
                                 <div className="sizeCollage col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                   
@@ -437,8 +433,8 @@ class ProductCollageView extends Component {
                                     this.state['relatedProductArray' + data._id] && this.state['relatedProductArray' + data._id].length > 0 ?
                                       this.state['relatedProductArray' + data._id].map((a, i) => {
                                         if (a.size) {
-                                          return (    
-                                              i === 0 ?                                        
+                                          return (   
+                                            i === 0 ?                                         
                                               <div className="selectSizeBox">                                                
                                                 <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
                                                 <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
@@ -467,8 +463,8 @@ class ProductCollageView extends Component {
                                                   </div>
                                                 }
                                               </div>   
-                                            :
-                                            null                                         
+                                              :
+                                              null                                         
                                           );
                                         }
                                       })
@@ -478,7 +474,7 @@ class ProductCollageView extends Component {
                                 </div>
                                 :
                                 null
-                            } 
+                            }
 
                             <div className="innerDiv">
                               <div className="product-brand" title={data.brand}>{data.brand}</div>
@@ -491,33 +487,14 @@ class ProductCollageView extends Component {
                                       <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
                                     </div>
                                     :
-                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
                                 }
                               </div>
 
                               <div >
                               </div>
                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                {/* <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
-                                  <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit}  onClick={this.submitCart.bind(this)}  name="size" aria-invalid="false">
-                                    { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
-                                        return(
-                                            size === 1000?
-                                            <option className="" value={size}>{size}KG</option>
-                                            :
-                                            data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                              <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                            :
-                                            <option className="" value={size}>{size}{data.unit}</option>                                                        
-                                        )
-                                        
-                                      })
-                                    }
-                                  </select>
-                                  </div> */}
-                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                                  
                                   {
                                     localStorage.getItem("websiteModel")=== "FranchiseModel"?
                                     <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
@@ -531,7 +508,6 @@ class ProductCollageView extends Component {
                                       :
                                       <div className="outOfStock">Sold Out</div>
                                   }
-                                  </div>
                                     
                                    {/* { data.availableQuantity > 0 ?
                                       <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
@@ -548,12 +524,9 @@ class ProductCollageView extends Component {
                         </div>
                       </div>
                     </div>
-
                   </div>
                 );
-
               })
-
               :
 
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -580,33 +553,6 @@ class ProductCollageView extends Component {
               </div>
             </div>
           </div>
-          <div id="loginFormModal" className="modal in">
-                <div className="modal-dialog">                                        
-                    <div className="modal-content loginModalContent">                            
-                        <div className="modal-body">   
-                        <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
-                            {this.props.formToShow === "login" ?
-                                <div className="col-lg-12 col-md-12 loginForm">
-                                    <Login />
-                                </div>  
-                            : null
-                            }  
-                            {this.props.formToShow === "signUp" ?
-                                <div className="col-lg-12 col-md-12 signupForm">
-                                    <SignUp />
-                                </div>  
-                            : null
-                            } 
-                            {this.props.formToShow === "forgotPassword" ?
-                                <div className="col-lg-12 col-md-12 loginForm">
-                                    <ForgotPassword />
-                                </div>  
-                            : null
-                            }                                                                
-                        </div>
-                    </div>
-                </div>
-              </div>
         </div>
       </div>
     );
