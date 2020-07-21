@@ -9,6 +9,8 @@ router.post('/post', entityMaster.insertEntity);
 
 router.get('/get/:entityType',entityMaster.listEntity);
 
+router.get('/get/one/:entityType/:franchiseId',entityMaster.listEntity_franchise);
+
 router.get('/countContacts/:entityType',entityMaster.countContacts);
 
 router.get('/getCompany/:companyID',entityMaster.getCompany);
@@ -29,7 +31,8 @@ router.get('/get/one/:entityID', entityMaster.singleEntity);
 
 router.get('/get/one/entity/:userID', entityMaster.entityDetails);
 
-router.get('/get/one/companyName/:companyID', entityMaster.companyName);
+// router.get('/get/one/companyName/:companyID', entityMaster.companyName);
+router.get('/get/companyName/:companyID', entityMaster.companyName);
 
 router.get('/get/one/companyNameType/:companyID/:type', entityMaster.companyNameType);
 

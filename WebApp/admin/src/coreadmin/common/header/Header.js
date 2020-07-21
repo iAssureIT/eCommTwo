@@ -85,16 +85,22 @@ export default class Header2 extends Component{
     }
     $("html,body").scrollTop(0);
 
+    this.userdata();
+
+
+  }
+  userdata(){
     //======= User Details ==========
     var userDetails = JSON.parse(localStorage.getItem("userDetails")) ;
     const Token     = userDetails.token;
     
 
     if(Token){
-      var comapanyID = parseInt(1)
+      // var comapanyID = parseInt(1)
     
+      console.log("userData.userDetails===>",userDetails.companyID)
 
-      axios.get('/api/entitymaster/get/one/companyName/'+comapanyID)
+      axios.get('/api/entitymaster/get/companyName/1')
           .then(companyDetails=>{
               console.log("companyDetails = ", companyDetails.data.companyName);
               this.setState({
@@ -130,10 +136,9 @@ export default class Header2 extends Component{
     }else{
       this.props.history.push("/login");
     }
-
-
   }
   componentWillReceiveProps(nextProps){
+    this.userdata();
     const user_ID = localStorage.getItem("user_ID");
     axios.get('/api/notifications/get/list/Unread/'+user_ID)
       .then(notifications => {

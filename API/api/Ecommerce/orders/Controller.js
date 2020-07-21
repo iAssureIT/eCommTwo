@@ -58,7 +58,7 @@ exports.insert_orders = (req,res,next)=>{
                           franchiseID =  franchiseObj.franchiseID;
                           if(franchiseID !== undefined){
                             matchedFranchise.push({franchiseID :franchiseID});                            
-                            console.log("matchedFranchise ===",matchedFranchise);  
+                            // console.log("matchedFranchise ===",matchedFranchise);  
                           }
                             // franchiseID =  franchiseObj.franchiseID;
                                                   
@@ -73,7 +73,7 @@ exports.insert_orders = (req,res,next)=>{
                         var allocatedToFranchise;
                         var flag = false;
                         var len=matchedFranchise.length;
-                        console.log("Before allocatedToFranchise available==========>",franchiseObjects);
+                        // console.log("Before allocatedToFranchise available==========>",franchiseObjects);
                         allocatedToFranchise = await allocatefranchisebeforesave(franchiseObjects,matchedFranchise,minDisFranchise);
                         // console.log("allocatedToFranchise available==========>",allocatedToFranchise);
                           saveOrderdata(allocatedToFranchise);                        
@@ -85,7 +85,7 @@ exports.insert_orders = (req,res,next)=>{
 
                       //insert into franchise goods
                       for (var i=0;i<=req.body.cartItems.length;i++) {
-                         console.log("inside for cartitems",req.body.cartItems[i]);
+                        //  console.log("inside for cartitems",req.body.cartItems[i]);
                         var productId = req.body.cartItems[i].product_ID; 
                        
                         var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
@@ -363,7 +363,7 @@ exports.insert_orders = (req,res,next)=>{
               //     } //end for
               // }
               function allocatefranchisebeforesave(franchiseObjects,matchedFranchise) {    
-                console.log("franchiseObjects.franchiseID=====>",franchiseObjects);    
+                // console.log("franchiseObjects.franchiseID=====>",franchiseObjects);    
                 for(var franchiseObjects of matchedFranchise){  
                   return new Promise(function(resolve,reject){
                   // for(var i=0;i<matchedFranchise.length;i++){  
@@ -372,12 +372,12 @@ exports.insert_orders = (req,res,next)=>{
                         var smDis = -1;               
                     Entitymaster.findOne({_id : franchiseObjects.franchiseID})
                     .then(franchiseData =>{
-                      console.log("latitude data:=======",franchiseData.locations[0].latitude);
-                      console.log("longitude data:=======",franchiseData.locations[0].longitude);
+                      // console.log("latitude data:=======",franchiseData.locations[0].latitude);
+                      // console.log("longitude data:=======",franchiseData.locations[0].longitude);
                       if(franchiseData){
                         var Flatitude  = franchiseData.locations[0].latitude;
                         var Flongitude = franchiseData.locations[0].longitude;     
-                      console.log("longitude && Flongitude:=======",Flatitude,Flongitude);
+                      // console.log("longitude && Flongitude:=======",Flatitude,Flongitude);
 
                         if(Flatitude && Flongitude){                                  
                           var distance = findDistance(Flatitude,Flongitude,req.body.deliveryAddress.latitude,req.body.deliveryAddress.longitude,'K');                                                                   

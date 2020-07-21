@@ -92,6 +92,18 @@ exports.listEntity = (req,res,next)=>{
             });
         });
 };
+exports.listEntity_franchise = (req,res,next)=>{
+    EntityMaster.find({entityType:req.params.entityType,_id : req.params.franchiseId}).sort({createdAt : -1})    
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            res.status(500).json({
+                error: err
+            });
+        });
+};
 
 exports.listSupplier = (req,res,next)=>{
     EntityMaster.find({entityType:req.params.entityType,supplierOf:req.params.company_id}).sort({createdAt : -1})    
@@ -339,7 +351,8 @@ exports.getWorkLocation = (req, res, next)=>{
 };
 
 exports.companyName = (req,res,next)=>{
-    EntityMaster.findOne({companyID : req.params.companyID},{companyName:1,companyLogo:1})
+    // EntityMaster.findOne({companyID : req.params.companyID},{companyName:1,companyLogo:1})
+    EntityMaster.findOne({companyID : req.params.companyID},{companyName:1})
     .exec()
     .then(data=>{
         if(data){

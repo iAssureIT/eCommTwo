@@ -23,7 +23,8 @@ class AllowablePincodes extends Component {
     }  
     
     componentWillReceiveProps(nextProps) {
-        
+        this.getEntityList();
+        this.getAllowablePincode();
     }
     getAllowablePincode(){
         axios.get("/api/allowablepincode/get")
@@ -33,7 +34,7 @@ class AllowablePincodes extends Component {
 					this.setState({
 						allowablePincodeList  : response.data,												
                     });
-                    console.log("list=======",this.state.allowablePincodeList);
+                    // console.log("list=======",this.state.allowablePincodeList);
                 }
             })			
 			.catch((error) => {
@@ -44,6 +45,8 @@ class AllowablePincodes extends Component {
     getEntityList(){
         var userDetails = (localStorage.getItem('userDetails'));
         var userData = JSON.parse(userDetails);
+        console.log("userData.companyID===>",userData.companyID)
+
         axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
         .then((resdata)=>{
         
