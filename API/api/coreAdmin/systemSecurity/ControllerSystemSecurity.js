@@ -457,7 +457,7 @@ exports.check_userID_EmailOTP = (req, res, next) => {
 					{
 						$set: {
 							"profile.otpEmail": 0,
-							"profile.status": "blocked"
+							"profile.status": "active"
 						}
 					}
 				)
