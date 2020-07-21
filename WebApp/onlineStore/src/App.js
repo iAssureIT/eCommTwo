@@ -27,7 +27,9 @@ function getPreferences(){
 	axios.get("/api/adminpreference/get")
 	.then(preferences =>{
 		var askpincodeToUser = preferences.data[0].askPincodeToUser;
-		localStorage.setItem('preferences',askpincodeToUser);	
+		localStorage.setItem('preferences',askpincodeToUser);
+		localStorage.setItem("websiteModel",preferences.data[0].websiteModel);      
+		localStorage.setItem("showLoginAs",preferences.data[0].showLoginAs); 
 		// localStorage.setItem('preferences', JSON.stringify(preferences));
 	})
 	.catch(error=>{

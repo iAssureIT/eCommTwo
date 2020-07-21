@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProductCollageView from '../../blocks/ProductCollage/ProductCollageView.js';
+// import ProductCollageView from '../../blocks/ProductCollage/ProductCollageTest.js';
 import SearchProductPage from '../../../sites/currentSite/pages/SearchProductPage.css';
 import $ from 'jquery';
 import InputRange from 'react-input-range';

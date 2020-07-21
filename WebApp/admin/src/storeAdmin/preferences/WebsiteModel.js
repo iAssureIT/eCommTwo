@@ -131,7 +131,7 @@ class WebsiteModel extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 askPincodeToUser NOpadding">
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">For login show seprate page or modal <span><i className="astrick">*</i></span></div>
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 websiteTitle">For login show separate page or modal <span><i className="astrick">*</i></span></div>
                                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 webmodelInputWrapper ">
                                                             <input name="showLoginAs" type="radio" value="modal" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
                                                              checked={this.state.showLoginAs === "modal"} onClick={this.handleChange.bind(this)} />

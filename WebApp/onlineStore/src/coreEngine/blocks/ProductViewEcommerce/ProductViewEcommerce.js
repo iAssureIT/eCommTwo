@@ -135,7 +135,7 @@ class ProductViewEcommerce extends Component {
 				availableSize.push(unique[0].size*2);
 				availableSize.push(unique[0].size*4);
 				unique[0].availableSizes = availableSize;
-				console.log("unique =======",availableSizes);    
+				   
 			  }
 
 			// console.log('unique', unique);
@@ -189,8 +189,7 @@ class ProductViewEcommerce extends Component {
 	}
 	
 	addtocart(event) {
-		event.preventDefault();
-		
+		event.preventDefault();		
 		if(user_ID){
 			if($("#productView").valid()){
 				var id = event.target.id;
@@ -249,28 +248,28 @@ class ProductViewEcommerce extends Component {
 		}else{
 		  var previousUrl = window.location.href;
 			localStorage.setItem("previousUrl",previousUrl);
-			this.showloginmodal()
-		  this.setState({
-			messageData : {
-			  "type" : "outpage",
-			  "icon" : "fa fa-exclamation-circle",
-			//   "message" : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-			  "message" : this.state.showLoginAs ==="modal"? "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First." : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-			  "class": "danger",
-			  "autoDismiss" : true
+			if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
+				$('#loginFormModal').show();
+				}else{
+				this.setState({
+				  messageData: {
+					"type": "outpage",
+					"icon": "fa fa-exclamation-circle",
+					"message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+					// "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+					"class": "warning",
+					"autoDismiss": true
+				  }
+				})
+				setTimeout(() => {
+				  this.setState({
+					messageData: {},
+				  })
+				}, 3000);
 			}
-		  })
-		  setTimeout(() => {
-			this.setState({
-				messageData   : {},
-			})
-		  }, 3000);
 		}
 	}
-	showloginmodal(){
-		// this.state.showLoginAs ==="modal"? 
-		// "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First." : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-	}
+	
 	addtowishlist(event) {
 		event.preventDefault();
 		var user_ID = localStorage.getItem('user_ID');
@@ -313,23 +312,25 @@ class ProductViewEcommerce extends Component {
 		} else {
 			var previousUrl = window.location.href;
       		localStorage.setItem("previousUrl",previousUrl);
-			this.setState({
-				messageData: {
+			  if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
+				$('#loginFormModal').show();
+				}else{
+				this.setState({
+				  messageData: {
 					"type": "outpage",
 					"icon": "fa fa-exclamation-circle",
-					// "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-					// "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",     
-					"message" : this.state.showLoginAs ==="modal"? "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First." : "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-
+					"message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+					// "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
 					"class": "warning",
 					"autoDismiss": true
-				}
-			})
-			setTimeout(() => {
-				this.setState({
-					messageData: {},
+				  }
 				})
-			}, 3000);
+				setTimeout(() => {
+				  this.setState({
+					messageData: {},
+				  })
+				}, 3000);
+			}
 		}
 
 	}
@@ -462,6 +463,7 @@ class ProductViewEcommerce extends Component {
 		})
 	}
 	render() {
+		console.log("product data: --",this.state.productData);
 		const props = { width: 400, height: 350, zoomWidth: 750, offset: { vertical: 0, horizontal: 30 }, zoomLensStyle: 'cursor: zoom-in;', zoomStyle: 'z-index:1000;background-color:#fff; height:500px;width:750px;box-shadow: 0 4px 20px 2px rgba(0,0,0,.2);border-radius: 8px;', img: this.state.selectedImage ? this.state.selectedImage : notavailable };
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 mb20 boxBorder">
@@ -546,9 +548,31 @@ class ProductViewEcommerce extends Component {
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div className="row">
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb15">
-											<span className="priceEcommerceNew" ><i className="fa fa-inr"></i>&nbsp;{this.state.productData.discountedPrice}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											{this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr">&nbsp; {this.state.productData.originalPrice}</i></span> : null} &nbsp; &nbsp;
-											{this.state.productData.discountPercent ?<span className="discountPercent">{this.state.productData.discountPercent}% off</span>: null}
+											{localStorage.getItem('websiteModel')==="FranchiseModel"?
+												<div>
+													{this.state.productData.unit === "Box" || this.state.productData.unit === "Wrap" || this.state.productData.unit === "Pack" || this.state.productData.unit==="pounch" ?
+														<span className="priceEcommerceNew" ><i className="fa fa-inr"></i>&nbsp;{this.state.productData.discountedPrice}&nbsp;-&nbsp;{this.state.productData.unit} of {this.state.productData.size}&nbsp; </span>												
+													:
+													<span className="priceEcommerceNew" ><i className="fa fa-inr"></i>&nbsp;{this.state.productData.discountedPrice}&nbsp;-&nbsp;{this.state.productData.size}&nbsp;{this.state.productData.unit} </span>												
+													}													
+													{this.state.productData.unit === "Box" || this.state.productData.unit === "Wrap" || this.state.productData.unit === "Pack" || this.state.productData.unit==="pounch" ?
+														this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.unit} of {this.state.productData.size}&nbsp;</span> : null
+													:
+													this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.size}&nbsp;{this.state.productData.unit}</span> : null
+													}
+												</div>
+											:
+												<div>
+														this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.size}&nbsp;{this.state.productData.unit}</span> : null
+														<span className="priceEcommerceNew" ><i className="fa fa-inr"></i>&nbsp;{this.state.productData.discountedPrice}&nbsp;-&nbsp;{this.state.productData.size}&nbsp;{this.state.productData.unit}&nbsp; </span>												
+														{this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr">&nbsp; {this.state.productData.originalPrice}&nbsp;{this.state.productData.size}&nbsp;{this.state.productData.unit}</i></span> : null} &nbsp; &nbsp;
+														{this.state.productData.discountPercent ?<span className="discountPercent">{this.state.productData.discountPercent}% off</span>: null}
+												</div>
+												
+											}
+											
+
+											
 										</div>
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 											{this.state.reviewAverage ?<div> <div className="col-lg-1 col-md-1 product-reviews-summary ratebox">{this.state.reviewAverage} &nbsp;<i className="fa fa-star"></i></div> &nbsp; {this.state.reviewData.length} ratings and reviews</div> : null}
@@ -678,12 +702,10 @@ class ProductViewEcommerce extends Component {
 												</div>
 												:
 												null
-											}
-											
+											}										
 
 										</form>
 									</div>
-
 								</div>
 
 							</div>

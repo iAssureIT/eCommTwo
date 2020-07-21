@@ -129,24 +129,25 @@ class SearchProductCollage extends Component {
     } else {
       var previousUrl = window.location.href;
       localStorage.setItem("previousUrl",previousUrl);
-      // console.log("previousUrl===",previousUrl);
-      // console.log("localstorage previousUrl===",localStorage.getItem('previousUrl'));
-      this.setState({
-        messageData: {
-          "type": "outpage",
-          "icon": "fa fa-exclamation-circle",
-          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
-
-          "class": "danger",
-          "autoDismiss": true
-        }
-      })
-      setTimeout(() => {
+      if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
+        $('#loginFormModal').show();
+        }else{
         this.setState({
-          messageData: {},
+          messageData: {
+            "type": "outpage",
+            "icon": "fa fa-exclamation-circle",
+            "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "class": "warning",
+            "autoDismiss": true
+          }
         })
-      }, 3000);
+        setTimeout(() => {
+          this.setState({
+            messageData: {},
+          })
+        }, 3000);
+      }
     }
   }
   addCart(formValues, quantityAdded, availableQuantity) {
@@ -316,21 +317,25 @@ class SearchProductCollage extends Component {
         })
     }
     else {
-      this.setState({
-        messageData: {
-          "type": "outpage",
-          "icon": "fa fa-exclamation-circle",
-          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",
-          "class": "warning",
-          "autoDismiss": true
-        }
-      })
-      setTimeout(() => {
+      if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
+        $('#loginFormModal').show();
+        }else{
         this.setState({
-          messageData: {},
+          messageData: {
+            "type": "outpage",
+            "icon": "fa fa-exclamation-circle",
+            "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "class": "warning",
+            "autoDismiss": true
+          }
         })
-      }, 3000);
+        setTimeout(() => {
+          this.setState({
+            messageData: {},
+          })
+        }, 3000);
+      }
     }
   }
 
@@ -480,7 +485,7 @@ class SearchProductCollage extends Component {
                               }
                               <div className="innerDiv">
                                 <div className="product-brand" title={data.brand}>{data.brand}</div>
-                                <div className=" product-item-link" title={data.productName}>{data.productName}</div>
+                                <div className=" product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>)</div>
                                 <div className="col-lg-12 col-md-12 NOpadding">
                                   {
                                     data.discountPercent ?

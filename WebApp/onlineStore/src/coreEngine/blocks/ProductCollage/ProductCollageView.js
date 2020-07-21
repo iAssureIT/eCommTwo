@@ -11,6 +11,10 @@ import Message from '../Message/Message.js';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../actions/index';
 import { size } from 'underscore';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
+import Login          from '../../systemSecurity/Login.js';
+import SignUp         from '../../systemSecurity/SignUp.js';
+import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 const user_ID = localStorage.getItem("user_ID");
 
 class ProductCollageView extends Component {
@@ -37,7 +41,7 @@ class ProductCollageView extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    
+    console.log("nextProps:==",nextProps);
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
         var availableSizes = [];       
@@ -126,20 +130,25 @@ class ProductCollageView extends Component {
     else {
       var previousUrl = window.location.href;
       localStorage.setItem("previousUrl",previousUrl);
-      this.setState({
-        messageData: {
-          "type": "outpage",
-          "icon": "fa fa-exclamation-circle",
-          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "class": "warning",
-          "autoDismiss": true
-        }
-      })
-      setTimeout(() => {
+      if(localStorage.getItem('websiteModel') && localStorage.getItem('websiteModel')==='FranchiseModel'){
+        $('#loginFormModal').show();
+        }else{
         this.setState({
-          messageData: {},
+          messageData: {
+            "type": "outpage",
+            "icon": "fa fa-exclamation-circle",
+            // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "class": "warning",
+            "autoDismiss": true
+          }
         })
-      }, 3000);
+        setTimeout(() => {
+          this.setState({
+            messageData: {},
+          })
+        }, 3000);
+      }
     }
   }
 
@@ -176,9 +185,7 @@ class ProductCollageView extends Component {
       var recentCartData    = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
       var productCartData   = recentCartData.filter((a) => a.product_ID === id);
       var quantityAdded     = productCartData.length > 0 ? productCartData[0].quantity : 0;
-      // if(localStorage.getItem('websiteModel')==="FranchiseModel"{
-
-      // }
+      
       const formValues = {
         "user_ID": userid,
         "product_ID": event.target.id,
@@ -237,24 +244,31 @@ class ProductCollageView extends Component {
       localStorage.setItem("previousUrl",previousUrl);
       // console.log("previousUrl===",previousUrl);
       // console.log("localstorage previousUrl===",localStorage.getItem('previousUrl'));
-      this.setState({
-        messageData: {
-          "type": "outpage",
-          "icon": "fa fa-exclamation-circle",
-          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "class": "danger",
-          "autoDismiss": true
-        }
-      })
-      setTimeout(() => {
+      if(localStorage.getItem('websiteModel') && localStorage.getItem('websiteModel')==='FranchiseModel'){
+        $('#loginFormModal').show();
+        }else{
         this.setState({
-          messageData: {},
+          messageData: {
+            "type": "outpage",
+            "icon": "fa fa-exclamation-circle",
+            // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            
+            "class": "danger",
+            "autoDismiss": true
+          }
         })
-      }, 3000);
+        setTimeout(() => {
+          this.setState({
+            messageData: {},
+          })
+        }, 3000);
+      }//end else
     }
   }
   
   addCart(formValues, quantityAdded, availableQuantity) {
+    console.log("inside addCart");
     if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
       axios.post('/api/carts/post', formValues)
         .then((response) => {
@@ -275,8 +289,8 @@ class ProductCollageView extends Component {
             })
           }, 3000);
 
-          console.log("changrCartCount:",response.data.cartCount);
-          this.props.changeCartCount(response.data.cartCount);
+          // console.log("changrCartCount:",response.data.cartCount);
+          // this.props.changeCartCount(response.data.cartCount);
 
         })
         .catch((error) => {
@@ -299,11 +313,12 @@ class ProductCollageView extends Component {
         })
       }, 3000);
     } else {
-      // console.log("addCart formValues===",formValues);
+      console.log("addCart formValues===",formValues);
       axios.post('/api/carts/post', formValues)
         .then((response) => {
+          console.log("Response changeCartCount:",response);
           this.props.fetchCartData();
-          // console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
               "type": "outpage",
@@ -319,7 +334,7 @@ class ProductCollageView extends Component {
             })
           }, 3000);
           // console.log("changrCartCount:",response.data.cartCount);
-          this.props.changeCartCount(response.data.cartCount);
+          // this.props.changeCartCount(response.data.cartCount);
 
         })
         .catch((error) => {
@@ -331,12 +346,16 @@ class ProductCollageView extends Component {
 
   submitCart(event) {
     var id = event.target.id;
+    console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
-      var selectedSize = event.target.value;
+      var selectedSize = $('#'+id+"-size").val();
+      // var selectedSize = event.target.value;
+      console.log("selectedSize:",selectedSize);
       var size = event.target.getAttribute('mainSize');
+      console.log("size:",size);
       var unit = event.target.getAttribute('unit');
-    }
-    
+      console.log("unit:",unit);
+    }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
     var currProId = event.target.getAttribute('currPro');
@@ -368,7 +387,7 @@ class ProductCollageView extends Component {
           "totalWeight"  : totalWeight,
         }
       }
-      
+
     }else{      
       formValues = {
         "user_ID": userid,
@@ -381,14 +400,17 @@ class ProductCollageView extends Component {
     this.setState({
       ['sizeCollage' + currProId]: false
     })
-  }
-
+  } 
 
   closeSize(event) {
     var id = event.target.id;
     this.setState({
       ['sizeCollage' + id]: false
     })
+  }
+  colseModal(event){
+    console.log("inside close");
+    $('#loginFormModal').hide();
   }
   render(){
     return (
@@ -397,7 +419,7 @@ class ProductCollageView extends Component {
         <div className="row">
           {
             Array.isArray(this.state.products) && this.state.products.length > 0 ? 
-            Array.isArray(this.state.products) && this.state.products.map((data, index) => {
+            Array.isArray(this.state.products) && this.state.products.map((data, index) => {                
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 var wishClass = '';
                 var tooltipMsg = '';
@@ -408,77 +430,22 @@ class ProductCollageView extends Component {
                   wishClass = '-o';
                   tooltipMsg = 'Add To Wishlist';
                 }
-                return (
+                return (                  
                   <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={index}>
-
-                    <div className="">
-                      <div className="card">
-                        <div className="item-top">
-                          <div className="productImg">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                      <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 col-xs-offset-2 NOpadding">
+                        <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                          <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                             <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
                             {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
-
                             <a className="product photo product-item-photo collage" tabIndex="-1" href={"/productdetails/" + data.productUrl + "/" + data._id}>
-                              <img src={data.productImage[0] ? data.productImage[0] : '/images/notavailable.jpg'} alt="ProductImg" />
+                              <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImg" />
                             </a>
                           </div>
-
-                          <div className="productDetails">
-                            {
-                              this.state['sizeCollage' + data._id] === true ?
-                                <div className="sizeCollage col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  
-                                  <i className="fa fa-times pull-right" id={data._id} onClick={this.closeSize.bind(this)}></i>
-                                  {
-                                    this.state['relatedProductArray' + data._id] && this.state['relatedProductArray' + data._id].length > 0 ?
-                                      this.state['relatedProductArray' + data._id].map((a, i) => {
-                                        if (a.size) {
-                                          return (   
-                                            i === 0 ?                                         
-                                              <div className="selectSizeBox">                                                
-                                                <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
-                                                <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
-                                                  { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
-                                                      return(
-                                                          size === 1000?
-                                                          <option className="" value={size}>{size}KG</option>
-                                                          :
-                                                          data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                            <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                          :
-                                                          <option className="" value={size}>{size}{data.unit}</option>                                                        
-                                                      )
-                                                      
-                                                    })
-                                                  }
-                                                </select>
-                                                <div className="col-lg-12 col-md-12 col-sm-12 pull-left Nopadding prodName">{data.productName}</div>
-                                                {data.discountedPrice === data.originalPrice ?
-                                                  <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.originalPrice} &nbsp;                                                    
-                                                  </div>
-                                                :
-                                                  <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.discountedPrice} &nbsp;
-                                                    <span className="discountedPrice">Rs.{data.originalPrice}</span>&nbsp;
-                                                    <span className="disscountedPer">({data.discountPercent}% Off)</span>
-                                                  </div>
-                                                }
-                                              </div>   
-                                              :
-                                              null                                         
-                                          );
-                                        }
-                                      })
-                                      :
-                                      null
-                                  }
-                                </div>
-                                :
-                                null
-                            }
-
+                          <div className="productDetails col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                            
                             <div className="innerDiv">
                               <div className="product-brand" title={data.brand}>{data.brand}</div>
-                              <div className="product-item-link" title={data.productName}>{data.productName}</div>
+                              <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
                               <div className="col-lg-12 col-md-12 NOpadding">
                                 {
                                   data.discountPercent ?
@@ -487,7 +454,7 @@ class ProductCollageView extends Component {
                                       <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
                                     </div>
                                     :
-                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
+                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                 }
                               </div>
 
@@ -497,25 +464,39 @@ class ProductCollageView extends Component {
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                                  
                                   {
                                     localStorage.getItem("websiteModel")=== "FranchiseModel"?
-                                    <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
-                                        &nbsp;Add To Cart
+                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
+                                        <div className="selectSizeBox col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding ">                                                                              
+                                        <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
+                                          { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
+                                              return( 
+                                                  size === 1000?
+                                                  // <option className="" value={size}>{size}KG</option>
+                                                  <option className="" value={size}> 1 KG</option>
+                                                  :
+                                                  data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                    <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                  :
+                                                  <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
+                                              )                                                        
+                                            })
+                                          }
+                                        </select>                                     
+                                      </div>   
+                                    
+                                    {/* <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)}  */}
+                                    <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} currPro={data._id} mainSize={data.size} unit={data.unit}  onClick={this.submitCart.bind(this)} 
+                                      title="Add to Cart" className="col-lg-6 col-md-6 col-sm-6 col-xs-6 homeCart fa fa-shopping-cart">                                                                         
+                                         &nbsp;Add
                                     </button>
+                                    </div>
                                     :
                                     data.availableQuantity > 0 ?
-                                      <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
+                                      <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart pull-right">
                                         &nbsp;Add To Cart
                                       </button>
                                       :
                                       <div className="outOfStock">Sold Out</div>
-                                  }
-                                    
-                                   {/* { data.availableQuantity > 0 ?
-                                      <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
-                                        &nbsp;Add To Cart
-                                      </button>
-                                      :
-                                      <div className="outOfStock">Sold Out</div>
-                                   } */}
+                                  }                                
 
                                 </div>
                               </div>
@@ -524,9 +505,12 @@ class ProductCollageView extends Component {
                         </div>
                       </div>
                     </div>
+
                   </div>
                 );
+
               })
+
               :
 
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -553,6 +537,33 @@ class ProductCollageView extends Component {
               </div>
             </div>
           </div>
+          <div id="loginFormModal" className="modal in">
+                <div className="modal-dialog">                                        
+                    <div className="modal-content loginModalContent">                            
+                        <div className="modal-body">   
+                        <button type="button" className="close"  data-dismiss="modal" onClick={this.colseModal.bind(this)} aria-hidden="true">&times;</button>                                                            
+                            {this.props.formToShow === "login" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <Login />
+                                </div>  
+                            : null
+                            }  
+                            {this.props.formToShow === "signUp" ?
+                                <div className="col-lg-12 col-md-12 signupForm">
+                                    <SignUp />
+                                </div>  
+                            : null
+                            } 
+                            {this.props.formToShow === "forgotPassword" ?
+                                <div className="col-lg-12 col-md-12 loginForm">
+                                    <ForgotPassword />
+                                </div>  
+                            : null
+                            }                                                                
+                        </div>
+                    </div>
+                </div>
+              </div>
         </div>
       </div>
     );
