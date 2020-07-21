@@ -4,7 +4,6 @@ const masternotificationSchema = mongoose.Schema({
 	_id			 : mongoose.Schema.Types.ObjectId,
     templateType : String,	
     event        : String,	
-    templateName : String,	
 	role		 : String,
 	company 	 : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymasters' },
 	subject      : String,

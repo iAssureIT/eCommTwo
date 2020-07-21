@@ -299,7 +299,7 @@ exports.user_signup_user_otp = (req, res, next) => {
 																	}
 																})
 																.then(source => {
-																	res.status(200).json({ message: "USER_CREATED", ID: result._id })
+																	res.status(200).json({ message: "USER_CREATED", ID: result._id,result })
 																})
 																.catch(err => {
 																	console.log(err);

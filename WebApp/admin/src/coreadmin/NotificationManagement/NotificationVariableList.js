@@ -46,6 +46,18 @@ class NotificationVariableList extends Component {
 					          							<td></td>
 				          							</tr>
 				          							<tr>
+					          							<td>CompanyName</td>
+					          							<td></td>
+				          							</tr>
+				          							<tr>
+					          							<td>Password</td>
+					          							<td></td>
+				          							</tr>
+				          							<tr>
+					          							<td>sendUrl</td>
+					          							<td></td>
+				          							</tr>
+				          							<tr>
 					          							<td>EmployeeID</td>
 					          							<td></td>
 				          							</tr>

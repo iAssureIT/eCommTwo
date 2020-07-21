@@ -11,7 +11,7 @@ import Chart1 from '../dashboard/chart1/chart1.js'
 import Chart from '../dashboard/chart1/chart.js'
 import CenterwiseBudget from '../dashboard/chart1/CenterwiseBudget.js'
 import monthwiseCharts from '../dashboard/chart1/monthwiseCharts.js'
-
+import EventToken from '../NotificationManagement/EventToken.js';
 import ViewAllNotification from '../common/header/ViewAllNotifications.js'
 
 import ComingSoon from '../dashboard/ComingSoon.js'
@@ -165,7 +165,7 @@ class CoreLayout extends Component {
 
                 <Route path="/technicalMaster/location-type" exact strict component={LocationType} />
                 <Route path="/technicalMaster/location-type/:fieldID" exact strict component={LocationType} />
-
+                <Route path="/EventToken" component={EventToken} exact />
                 { /* Entity Management */}
                 {/* <Route path="/:entity/basic-details" exact strict component={BasicInfo} />
                 <Route path="/:entity/basic-details/:entityID" exact strict component={BasicInfo} />

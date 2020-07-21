@@ -815,6 +815,24 @@
     border-radius: 10px;
 }
 
+/*.fade.in {
+opacity: 1 !important;
+}
+
+.modal.in .modal-dialog {
+-webkit-transform: translate(0, 0) !important;
+-o-transform: translate(0, 0) !important;
+transform: translate(0, 0) !important;
+}
+
+.modal-backdrop .fade .in {
+opacity: 0.5 !important;
+}
+
+.modal-backdrop.fade {
+opacity: 0.5 !important;
+}
+*/
 .notifTabs {
     text-align: center;
     margin-bottom: 3em;
@@ -1093,7 +1111,7 @@
 
 .showTokens{
     display: none;
-    text-align: center;
+    /*text-align: center;*/
     border: 1px solid #eee;
     padding: 2%;
 }

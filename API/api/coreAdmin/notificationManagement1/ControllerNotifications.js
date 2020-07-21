@@ -41,20 +41,6 @@ exports.list_notification = (req,res,next)=>{
             });
         });
 }
-exports.alllist_notification = (req,res,next)=>{
-    Notifications.find({toUserId:req.params.userID})
-        .sort({createdAt : -1})
-        .exec()
-        .then(data=>{
-            res.status(200).json(data);
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-}
 
 exports.detail_notification = (req,res,next)=>{
     Notifications.findOne({_id:req.params.notification_ID})
@@ -87,31 +73,6 @@ exports.update_notification = (req,res,next)=>{
         .then(data=>{
             console.log('data ',data);
             if(data){
-                res.status(200).json("Notifications Updated");
-            }else{
-                res.status(401).json("Notifications Found");
-            }
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
-}
-exports.update_status = (req,res,next)=>{
-    Notifications.updateMany(
-            { toUserId:req.params.userID},  
-            {
-                $set:{
-                    status    : req.params.status, 
-                }
-            },
-        )
-        .exec()
-        .then(data=>{
-            console.log('data ',data);
-            if(data.nModified == 1){
                 res.status(200).json("Notifications Updated");
             }else{
                 res.status(401).json("Notifications Found");

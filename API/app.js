@@ -44,22 +44,23 @@ const blogRoutes 					= require('./api/cms/blogs/routes.js');
 	//========== Core Admin ===================
 
 	const systemRoutes			   	    = require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
-	const usersRoutes			   		= require("./api/coreAdmin/userManagement/RoutesUsers.js");
-	const rolesRoutes			   		= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
+	const usersRoutes			   				= require("./api/coreAdmin/userManagement/RoutesUsers.js");
+	const rolesRoutes			   				= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
 	const companySettingRoutes	 		= require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
 	const notificationRoutes	   		= require("./api/coreAdmin/notificationManagement/RoutesMasterNotification.js");
 	const projectSettingsurl 	   		= require("./api/coreAdmin/projectSettings/RoutesProjectSettings.js");
 	// const preferenceurl 		   = require("./api/coreAdmin/routes/preference");
 	const locationTypeMasterRoutes 	= require("./api/coreAdmin/locationTypeMaster/RoutesLocationTypeMaster.js");
-
+	// const EventTokenRoutes	= require("./coreAdmin/EventTokenMaster/RoutesEventTokenMaster.js");
+	const EventTokenRoutes		= require("./api/coreAdmin/EventTokenMaster/RoutesEventTokenMaster.js");
 	//========== eCommerce Operations ===========
-	const eCommUsersRoutes          = require("./api/Ecommerce/eCommSystemSecurity/Routes");
+	const eCommUsersRoutes    = require("./api/Ecommerce/eCommSystemSecurity/Routes");
 	const productsRoutes			= require("./api/Ecommerce/products/Routes"); 
 	const categoryRoutes			= require("./api/Ecommerce/categories/Routes"); 
 	const ordersRoutes				= require("./api/Ecommerce/orders/Routes"); 
 	const cartsRoutes					= require("./api/Ecommerce/cart/Routes"); 
 	const wishlistRoutes			= require("./api/Ecommerce/wishlist/Routes"); 
-
+	
 	const SectionRoutes			  = require("./api/Ecommerce/sections/Routes"); 
 	const ShippingRoutes			= require("./api/Ecommerce/ShippingManagement/Routes"); 
 	const TimingRoutes			  = require("./api/Ecommerce/TimeManagement/Routes"); 
@@ -144,7 +145,7 @@ const blogRoutes 					= require('./api/cms/blogs/routes.js');
 	// app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
 	app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
 
-
+	app.use("/api/EventToken", 		EventTokenRoutes);
 	//=========== Franchisemaster ==============
 	app.use("/api/purchaseentry", PurchaseEntry);
 	app.use("/api/finishedGoodsEntry", FinishedGoodsEntry);

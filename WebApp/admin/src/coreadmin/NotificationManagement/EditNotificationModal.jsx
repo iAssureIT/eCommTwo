@@ -14,6 +14,7 @@ class EditNotificationModal extends Component{
 		super(props);
 		this.state = {
 	    'event' 		    : props.data ? props.data.event : '',
+	    'templateName' 		    : props.data ? props.data.templateName : '',
 	    'templateType' 		: props.data ? props.data.templateType : '',
 		'role'		: props.data ? props.data.role : '',
 		'company'		: props.data && props.data.company != null ? props.data.company : 'All',
@@ -26,8 +27,10 @@ class EditNotificationModal extends Component{
 	   	emailTemplatesList 			: "",
 		notificationTemplatesList 	: "",
 		smsTemplatesList 			: "",
+		tokens 			: "",
 		roleArray:[],
-		companyArray:[]
+		companyArray:[],
+		eventArray:[],
 	  };
 
 	    this.handleChange = this.handleChange.bind(this);
@@ -36,21 +39,34 @@ class EditNotificationModal extends Component{
 	componentDidMount() {
         this.getRoles();
         this.getCompany();
+        this.getAllEvents();
     }
 
 	componentWillReceiveProps(nextProps){
 		this.getRoles();
         this.getCompany();
+        this.getAllEvents();
 		this.setState({
 			'event' 		    : nextProps.data.event,
+			'templateName' 		    : nextProps.data.templateName,
 			'templateType' 		: nextProps.data.templateType,
 			'role'		: nextProps.data.role,
 			'status'		: nextProps.data.status,
 			'company'		: nextProps.data.company,
 			'subject'			: nextProps.data.subject,
 			'content'			: nextProps.data.content,
-		});
+		},()=>{this.getTokens(this.state.event)});
 	}
+
+	getTokens(event){
+		axios.get('/api/EventToken/get/token/'+this.state.event)
+		.then((response)=>{
+			this.setState({
+				tokens : response.data
+			})
+		})
+	}
+
 
 	handleChange(event){
 	  const target = event.target;
@@ -60,11 +76,15 @@ class EditNotificationModal extends Component{
 	  });
 	}
 
-
-	deleteEmailTemplate(event){
-	
-	}
-
+ getAllEvents() {
+	    axios.post('/api/EventToken/list')
+	      .then((response) => {
+	        this.setState({
+	          eventArray: response.data
+	        })
+	      }).catch(function (error) {
+	      });
+    }
 	getRoles() {
         var data = {
 	      "startRange": 0,
@@ -80,7 +100,7 @@ class EditNotificationModal extends Component{
 	      });
     }
     getCompany() {
-	    axios.get('/api/entitymaster/get/corporate')
+	    axios.get('/api/entitymaster/getAllEntities')
 	      .then((response) => {
 	        this.setState({
 	          companyArray: response.data
@@ -236,32 +256,16 @@ class EditNotificationModal extends Component{
                                                 <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Event <sup className="astrick">*</sup></label>
                                                 <select id="event" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" disabled="disabled" value={this.state.event} ref="event" name="event" >
                                                     <option disabled value="">--Select Event--</option>
-                                                    <option value="Sign Up">Sign Up</option>
-                                                    <option value="Contact Created">Contact Created</option>
-													<option value="Forgot Password">Forgot Password</option>
-													<option value="User Activated">User Activated</option>
-													<option value="User Blocked">User Blocked</option>
-													<option value="TripBooking">Trip Booking</option>
-													<option value="ManagerApproval">Manager Approval</option>
-													<option value="ManagerRejection">Manager Rejection</option>
-													<option value="TripAllocatedToVendor">Trip Allocated to Vendor</option>
-													<option value="Vendor allocates (Car + Driver)">Vendor allocates (Car + Driver)</option>
-													<option value="Informs Corporate Employee">Informs Corporate Employee</option>
-													<option value="Trip Started">Trip Started</option>
-													<option value="Reached Pick up point">Reached Pick up point</option>
-													<option value="OTP Verified & Trip begins">OTP Verified & Trip begins</option>
-													<option value="Reached Destination">Reached Destination</option>
-													<option value="Returned back & Trip-End-OTP">Returned back & Trip-End-OTP</option>
-													<option value="EndTrip">End Trip</option>
-													<option value="GenerateInvoice">Generate Bill / Invoice</option>
-													<option value="EmployeeCancelsTrip">Employee Cancels Trip</option>
-													<option value="AdminCancelsTrip">Admin Cancels Trip</option>
-													<option value="VendorCancelsTrip">Vendor Cancels Trip</option>
-													<option value="VendorAcceptsTrip">Vendor Accepts Booking</option>
-													<option value="VendorRejectsTrip">Vendor Rejects Booking</option>
-													<option value="DriverApproved">Driver Approved Booking</option>
-													<option value="DriverRejected">Driver Rejected Booking</option>
-													<option value="Vendor Changes Driver">Vendor Changes Driver</option>
+                                                    <option disabled value="">--Select Event--</option>
+			                                                        {this.state.eventArray && this.state.eventArray.length > 0 ?
+			                                                        	this.state.eventArray.map((data,index)=>{
+			                                                        		return(
+			                                                        			<option value={data.event+'-'+data.templateName}>{data.templateName}</option>
+			                                                        		)
+			                                                        	})
+			                                                        	:
+			                                                        	<option disabled>No Event Added Yet</option>
+			                                                        }
                                                 </select>   
                                             </div>
 											<div className="col-md-3">
@@ -320,7 +324,7 @@ class EditNotificationModal extends Component{
 										</div>
 
 										<div className=" rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12 showTokens">
-											WORK IN PROGRESS
+											{this.state.tokens ? this.state.tokens : "No Tokens Added Yet"}
 										</div>
 										<div className="rowPadding col-lg-12 col-md-12 col-xs-12 col-sm-12">
 											<div className="form-group">

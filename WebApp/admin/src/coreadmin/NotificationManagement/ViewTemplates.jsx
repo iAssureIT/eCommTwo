@@ -36,6 +36,9 @@ class ViewTemplates extends Component {
 			smsTemplates: {},
 			selector: {},
 			event:"",
+			eventName:"",
+			tokens:"",
+			template:"",
 			filterEvent:"",
 			formerrors: {
 				message: '',
@@ -45,6 +48,7 @@ class ViewTemplates extends Component {
 			role:"",
 			filterRole:"",
 			roleArray:[],
+			eventArray:[],
 			status:"active",
 			filterStatus:"",
 			company:"All",
@@ -73,21 +77,11 @@ class ViewTemplates extends Component {
 		this.getSmsData = this.getSmsData.bind(this);
 
 	}
-		handleChange(event) {
-
-		const datatype = event.target.getAttribute('data-text');
-		const { name, value } = event.target;
-		let formerrors = this.state.formerrors;
-		this.setState({
-			formerrors,
-			[name]: value
-		});
-	}
-
 
 	componentDidMount() {
         this.getRoles();
         this.getCompany();
+        this.getAllEvents();
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("token");
 		$("html,body").scrollTop(0);
 		this.getData();
@@ -108,7 +102,7 @@ class ViewTemplates extends Component {
 		}, "Please select the template Type ");*/
 		    $("#newTemplateForm").validate({
 		      rules: {
-		        event: {
+		        eventName: {
                     required: true,
                     regxEvent: ""
                 },
@@ -137,8 +131,8 @@ class ViewTemplates extends Component {
        /* if (element.attr("name") == "templateType"){
           error.insertAfter("#templateType");
         } */
-        if (element.attr("name") == "event") {
-                    error.insertAfter("#event");
+        if (element.attr("name") == "eventName") {
+                    error.insertAfter("#eventName");
                 }
         if (element.attr("name") == "templateName"){
           error.insertAfter("#templateName");
@@ -168,8 +162,44 @@ class ViewTemplates extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		this.getData();
+		this.getAllEvents();
 		this.getFilteredTemplate(this.state.selector);
 	}
+
+	handleEventChange(event) {
+		this.setState({template:""})
+		const { name, value } = event.target;
+		let formerrors = this.state.formerrors;
+		var str = value ; 
+		var finalStr = str.split("-");
+		var event = finalStr[0];
+		var template = finalStr[1];
+		this.setState({
+			formerrors,
+			[name]: value,
+			event: event,
+			template: template
+		},()=>{this.getTokens(event)});
+	}
+
+	getTokens(event){
+		axios.get('/api/EventToken/get/token/'+event)
+		.then((response)=>{
+			this.setState({
+				tokens : response.data
+			})
+		})
+	}
+
+	handleChange(event) {
+		const { name, value } = event.target;
+		let formerrors = this.state.formerrors;
+		this.setState({
+			formerrors,
+			[name]: value
+		});
+	}
+
 	getRoles() {
         var data = {
 	      "startRange": 0,
@@ -185,11 +215,21 @@ class ViewTemplates extends Component {
 	      });
     }
     getCompany() {
-	    axios.get('/api/entitymaster/get/corporate')
+	    axios.get('/api/entitymaster/getAllEntities')
 	      .then((response) => {
 	        this.setState({
 	          companyArray: response.data
 	        }, () => {
+	        })
+	      }).catch(function (error) {
+	      });
+    }
+
+    getAllEvents() {
+	    axios.post('/api/EventToken/list')
+	      .then((response) => {
+	        this.setState({
+	          eventArray: response.data
 	        })
 	      }).catch(function (error) {
 	      });
@@ -260,7 +300,7 @@ class ViewTemplates extends Component {
 				var companyId = response.data.company ;
 				axios.get('/api/entitymaster/get/one/'+companyId)
 				.then((res)=>{
-					this.setState({companyname : res.data.companyName})
+					this.setState({companyname : res.data[0].companyName})
 				})
 				.catch((error)=>{console.log(error)})
 			}
@@ -325,7 +365,7 @@ class ViewTemplates extends Component {
 				var companyId = response.data.company ;
 				axios.get('/api/entitymaster/get/one/'+companyId)
 				.then((res)=>{
-					this.setState({companyname : res.data.companyName})
+					this.setState({companyname : res.data[0].companyName})
 				})
 				.catch((error)=>{console.log(error)})
 			}
@@ -348,7 +388,7 @@ class ViewTemplates extends Component {
 				var companyId = response.data.company ;
 				axios.get('/api/entitymaster/get/one/'+companyId)
 				.then((res)=>{
-					this.setState({companyname : res.data.companyName})
+					this.setState({companyname : res.data[0].companyName})
 				})
 				.catch((error)=>{console.log(error)})
 			}
@@ -473,6 +513,7 @@ class ViewTemplates extends Component {
 					var formValues = {
 						"event":event,
 						"templateType": templateType,
+						"templateName": this.state.template,
 						"role": role,
 						"status":status,
 						"company":company,
@@ -530,6 +571,7 @@ class ViewTemplates extends Component {
 					var formValues = {
 						"event":event,
 						"templateType": templateType,
+						"templateName": this.state.template,
 						"role": role,
 						"status":status,
 						"company":company,
@@ -584,6 +626,7 @@ class ViewTemplates extends Component {
 					var formValues = {
 						"event":event,
 						"templateType": templateType,
+						"templateName": this.state.template,
 						"role": role,
 						"status":status,
 						"company":company,
@@ -755,6 +798,12 @@ class ViewTemplates extends Component {
       })
     }
 
+    showModal(event){
+    	event.preventDefault();
+    	$('#createNotifyModal').show()
+
+    }
+
 
 	render() {
 		const {formerrors} = this.state;
@@ -795,11 +844,11 @@ class ViewTemplates extends Component {
 										<section className="">
 											<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 												<div className="col-lg-3 col-md-3  col-sm-6 col-xs-12" id="createmodalcl">
-													<button className="addexamform addForm clickforhideshow col-lg-12 col-md-12 col-sm-12 col-xs-12 " data-toggle="modal" data-target="#createNotifyModal"><i className="fa fa-plus" aria-hidden="true"></i><b> &nbsp;&nbsp;&nbsp;Add Template</b></button>
+													<button className="addexamform addForm clickforhideshow col-lg-12 col-md-12 col-sm-12 col-xs-12 " data-toggle="modal" data-target="#createNotifyModal" onClick={this.showModal.bind(this)}><i className="fa fa-plus" aria-hidden="true"></i><b> &nbsp;&nbsp;&nbsp;Add Template</b></button>
 												</div>
 												
 											</div>
-											<div className="modal modalHide col-lg-12 col-md-12 col-sm-12 col-xs-12 overflowHiddenxy" id="createNotifyModal" tabIndex="-1" role="dialog" aria-labelledby="createNotifyModal" aria-hidden="true">
+											<div className="modal col-lg-12 col-md-12 col-sm-12 col-xs-12 overflowHiddenxy" id="createNotifyModal" tabIndex="-1" role="dialog" aria-labelledby="createNotifyModal" aria-hidden="true">
 												<div className="modal-dialog modal-lg" role="document">
 													<div className="modal-content modalContent col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 														<div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -823,34 +872,18 @@ class ViewTemplates extends Component {
 															<div className="col-md-12 NOpadding rowPadding">
 															<div className="col-md-3">
 																<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Event <sup className="astrick">*</sup></label>
-			                                                    <select id="event" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.event} ref="event" name="event" onChange={this.handleChange.bind(this)}>
+			                                                    <select id="eventName" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.eventName} ref="eventName" name="eventName" onChange={this.handleEventChange.bind(this)}>
 			                                                        <option disabled value="">--Select Event--</option>
-			                                                        <option value="Sign Up">Sign Up</option>
-			                                                        <option value="Contact Created">Contact Created</option>
-																	<option value="Forgot Password">Forgot Password</option>
-																	<option value="User Activated">User Activated</option>
-																	<option value="User Blocked">User Blocked</option>
-																	<option value="TripBooking">Trip Booking</option>
-																	<option value="ManagerApproval">Manager Approval</option>
-																	<option value="ManagerRejection">Manager Rejection</option>
-																	<option value="TripAllocatedToVendor">Trip Allocated to Vendor</option>
-																	<option value="Vendor allocates (Car + Driver)">Vendor allocates (Car + Driver)</option>
-																	<option value="Informs Corporate Employee">Informs Corporate Employee</option>
-																	<option value="Trip Started">Trip Started</option>
-																	<option value="Reached Pick up point">Reached Pick up point</option>
-																	<option value="OTP Verified & Trip begins">OTP Verified & Trip begins</option>
-																	<option value="Reached Destination">Reached Destination</option>
-																	<option value="Returned back & Trip-End-OTP">Returned back & Trip-End-OTP</option>
-																	<option value="EndTrip">End Trip</option>
-																	<option value="GenerateInvoice">Generate Bill / Invoice</option>
-																	<option value="EmployeeCancelsTrip">Employee Cancels Trip</option>
-																	<option value="AdminCancelsTrip">Admin Cancels Trip</option>
-																	<option value="VendorCancelsTrip">Vendor Cancels Trip</option>
-																	<option value="VendorAcceptsTrip">Vendor Accepts Booking</option>
-																	<option value="VendorRejectsTrip">Vendor Rejects Booking</option>
-																	<option value="DriverApproved">Driver Approved Booking</option>
-																	<option value="DriverRejected">Driver Rejected Booking</option>
-																	<option value="Vendor Changes Driver">Vendor Changes Driver</option>
+			                                                        {this.state.eventArray && this.state.eventArray.length > 0 ?
+			                                                        	this.state.eventArray.map((data,index)=>{
+			                                                        		return(
+			                                                        			<option value={data.event+'-'+data.templateName}>{data.templateName}</option>
+			                                                        		)
+			                                                        	})
+			                                                        	:
+			                                                        	<option disabled>No Event Added Yet</option>
+			                                                        }
+			                                                       
 			                                                    </select>   
 															</div>
 															<div className="col-md-3">
@@ -915,7 +948,7 @@ class ViewTemplates extends Component {
 																	</div>
 
 																	<div className=" rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12 showTokens">
-																		WORK IN PROGRESS
+																		{this.state.tokens ? this.state.tokens : "No Tokens Added Yet"}
 																	</div>
 
 																	<div className="NOpadding rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -933,7 +966,7 @@ class ViewTemplates extends Component {
 																	</div>
 
 																	<div className=" rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12 showTokens">
-																		WORK IN PROGRESS
+																		{this.state.tokens ? this.state.tokens : "No Tokens Added Yet"}
 																	</div>
 																    <div className="NOpadding rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																		<div className="form-group">
@@ -950,7 +983,7 @@ class ViewTemplates extends Component {
 																	</div>
 
 																	<div className=" rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12 showTokens">
-																		WORK IN PROGRESS
+																		{this.state.tokens ? this.state.tokens : "No Tokens Added Yet"}
 																	</div>
 																    <div className="NOpadding rowPadding col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																		<div className="form-group">
@@ -1020,7 +1053,10 @@ class ViewTemplates extends Component {
 	                                                        <option disabled value="">--Select Event--</option>
 	                                                        <option value="Sign Up">Sign Up</option>
 	                                                        <option value="Contact Created">Contact Created</option>
-															<option value="Forgot Password">Forgot Password</option>
+			                                                <option value="Company Profile Approved">Company Profile Approved</option>															
+			                                                <option value="Contract Approved">Contract Approved</option>
+			                                                <option value="Approving Authority Change">Approving Authority Change</option>
+			                                                <option value="Forgot Password">Forgot Password</option>
 															<option value="User Activated">User Activated</option>
 															<option value="User Blocked">User Blocked</option>
 															<option value="TripBooking">Trip Booking</option>

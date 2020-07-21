@@ -42,7 +42,7 @@ export default class TemplateRow extends Component{
 									<i className="fa fa-book iconCss " aria-hidden="true"></i>
 								</span>  
 								<span className="col-lg-10 emailSpan" id={templateData._id}>
-									{templateData.role} - {templateData.event}
+									{templateData.role} - {templateData.templateName}
 								</span>
 							</li>
 						);
