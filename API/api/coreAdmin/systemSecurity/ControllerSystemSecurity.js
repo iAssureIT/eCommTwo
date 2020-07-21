@@ -285,29 +285,29 @@ exports.user_signup_user_otp = (req, res, next) => {
 													user.save()
 														.then(result => {
 															if (result) {
-																request({
-																	"method": "POST",
-																	"url": "http://localhost:" + globalVariable.port + "/send-email",
-																	"body": {
-																		email: req.body.email,
-																		subject: req.body.emailSubject,
-																		text: req.body.emailContent + " Your OTP is " + emailOTP,
-																	},
-																	"json": true,
-																	"headers": {
-																		"User-Agent": "Test Agent"
-																	}
-																})
-																.then(source => {
+																// request({
+																// 	"method": "POST",
+																// 	"url": "http://localhost:" + globalVariable.port + "/send-email",
+																// 	"body": {
+																// 		email: req.body.email,
+																// 		subject: req.body.emailSubject,
+																// 		text: req.body.emailContent + " Your OTP is " + emailOTP,
+																// 	},
+																// 	"json": true,
+																// 	"headers": {
+																// 		"User-Agent": "Test Agent"
+																// 	}
+																// })
+																// .then(source => {
 																	res.status(200).json({ message: "USER_CREATED", ID: result._id,result })
-																})
-																.catch(err => {
-																	console.log(err);
-																	res.status(500).json({
-																		message: "Failed to Send Email",
-																		error: err
-																	});
-																});
+																// })
+																// .catch(err => {
+																// 	console.log(err);
+																// 	res.status(500).json({
+																// 		message: "Failed to Send Email",
+																// 		error: err
+																// 	});
+																// });
 															}else {
 																res.status(200).json({ message: "USER_NOT_CREATED" })
 															}
