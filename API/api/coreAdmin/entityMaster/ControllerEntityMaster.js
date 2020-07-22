@@ -10,7 +10,7 @@ exports.insertEntity = (req,res,next)=>{
     insertEntityFun();
     async function insertEntityFun(){
         var getnext = await getNextSequence(req.body.entityType)
-        if(req.body.entityType == 'corporate'){var str = "C"+parseInt(getnext)}else if(req.body.entityType == 'vendor'){var str = "V"+parseInt(getnext)}else{var str = 1}
+        // if(req.body.entityType == 'corporate'){var str = "C"+parseInt(getnext)}else if(req.body.entityType == 'vendor'){var str = "V"+parseInt(getnext)}else{var str = 1}
 
         EntityMaster.findOne({  
                             companyName               : req.body.companyName,
@@ -30,7 +30,8 @@ exports.insertEntity = (req,res,next)=>{
                     entityType                : req.body.entityType,
                     profileStatus             : req.body.profileStatus,
                     companyNo                 : getnext ? getnext : 1,
-                    companyID                 : str ? str : 1, 
+                    // companyID                 : str ? str : 1, 
+                    companyID                 : getnext ? getnext : 1, 
                     companyName               : req.body.companyName,
                     groupName                 : req.body.groupName,
                     CIN                       : req.body.CIN,   
