@@ -13,12 +13,11 @@ export default class ProductDivider extends Component {
   	componentWillReceiveProps(nextProps){
   		
   		this.setState({categoriesImg:nextProps.categories},()=>{
-  			console.log("Category Data:",this.state.categoriesImg);
+  			// console.log("Category Data:",this.state.categoriesImg);
   		});
       // this.changeProductCateWise(categoryID, type);
     } 
-  render() {
-  	 
+  render() {  	 
 		return (
 		<div className="col-lg-12 col-md-12 col-ms-12 col-xs-12 flatSale">	
 			<div className="col-lg-12 col-md-12 col-ms-12 col-xs-12">

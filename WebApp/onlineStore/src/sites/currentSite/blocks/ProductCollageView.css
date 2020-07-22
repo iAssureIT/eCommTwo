@@ -4,7 +4,7 @@
 	/* margin: 5px; */
 	margin-top: 5px;
 	margin-bottom: 5px;
-	height: 336px;
+	height: 315px;
 }
 .productDetails{
 	padding-bottom: 15px;
@@ -368,6 +368,15 @@
 }
 .btnWrap{
 	margin-top: 10px;
+}
+.productInnerWrap{
+	transition: 0.4s ease;
+
+}
+.productInnerWrap:hover{
+	border-bottom: solid 2px #80b435;
+	transition: 0.4s ease;
+
 }
 .sizeCollage span{
 	font-size: 12px;

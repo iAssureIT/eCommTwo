@@ -657,8 +657,7 @@ loginPage(event){
 
 
         {/* for mobile and Tab only */} 
-        <div className="topnav hidden-lg hidden-md" id="myTopnav">   
-           {/* <AskPincode /> */}
+        <div className="topnav hidden-lg hidden-md" id="myTopnav">            
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip"></div>
           <div className="col-sm-12 col-xs-12 NoPadding">
             <div className=" col-sm-2 col-xs-4 logoResponsive">
@@ -713,9 +712,9 @@ loginPage(event){
                                 <img src={loginIconImg} className="icon-cart"></img></a>
                               </span>
                             }
-                        </div>                      
+                        </div>                     
                        
-                      {/* <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu "> */}
+                      
                       <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 faIcon cart hover-menu ">
                         <span>  
                         {user_ID ?                      
@@ -756,21 +755,19 @@ loginPage(event){
                                               <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="Product Picture" className="imghgt" />
                                           </div>
                                           <div className="col-lg-9 ">
-                                            {/* <div className="row"> */}
-                                              {/* <a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}></a> */}
+                                            
                                               <div className="col-lg-12"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div>
                                               <div className="col-lg-12 text-center">
-                                                {/* <div className="row"> */}
-                                                  {/* <div className="col-lg-4"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div> */}
+                                               
                                                   <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
                                                   <div className="col-lg-3"><p className="row"><b> {data.quantity}</b></p></div>
                                                   <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
                                                   <div className="col-lg-3 pull-right"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
 
-                                                {/* </div> */}
+                                                
                                               </div>
                                             </div>
-                                          {/* </div> */}
+                                          
                                         </div>
                                       </li>
                                     );
@@ -789,18 +786,9 @@ loginPage(event){
                                 {
                                 this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0  &&  this.state.minvalueshipping <= this.props.recentCartData[0].total?  
                                   <div className="col-lg-6 NOpaddingRight">
-                                  {/* {  ? */}
+                                  
                                     <a href={user_ID ? "/checkout" : "/login"}><div className="btn cartdropbtn_un col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a>
-                                    {/* : */}
-                                    {/* <a><div className="btn notcheckout col-lg-12 checkoutBtn" title="Checkout">CHECKOUT</div></a> */}
-                                  {/* } */}
-                                  {/* {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
-                                  null
-                                  :
-                                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">
-                                      <span className="minpurchasehead">You can't checkout.Minimum order should be ₹  {this.state.minvalueshipping} to Checkout & Place Order.</span>
-                                  </div>
-                                  } */}
+                                    
                                   </div>
                                   : "" 
                                 }                      
@@ -822,12 +810,12 @@ loginPage(event){
           
           <ResponsiveMegamenu/>   
 
-          <div className=" col-sm-12 col-xs-12 NOpadding searchBoxWrapper">
+          {/* <div className=" col-sm-12 col-xs-12 NOpadding searchBoxWrapper">
               <div className="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 searchBox">
                   <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
                   <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
               </div> 
-          </div>
+          </div> */}
         </div>
       </div>
     );

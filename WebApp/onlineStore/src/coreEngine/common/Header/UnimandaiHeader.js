@@ -216,33 +216,6 @@ getshippingamount(startRange, limitRange){
     }
     
   }
-  // searchProducts() {
-  //   // if (this.state.catArray.length === 0 && $('.headersearch').val() !== '') {
-  //     var searchstr = this.refs.tableSearch.value.trim();
-  //     console.log("searchstr==>",searchstr)
-  //     if(searchstr){
-  //       var formValues = {
-  //         "searchstr": searchstr,
-  //         "loading": true
-  //       }
-  //       this.props.searchProductFun(formValues, this.state.searchResult);
-  //       axios.get("/api/products/get/search/" + searchstr)
-  //         .then((response) => {
-  //           formValues.loading = false;
-  //           this.setState({ searchResult: response.data }, () => {
-  //             this.props.searchProductFun(formValues, this.state.searchResult);
-  //           });
-  //         })
-  //         .catch((error) => {})
-  //       this.props.history.push("/searchProducts");
-  //     }else{
-  //       this.props.history.push("/");
-  //     }
-      
-  //   // }
-
-  // }
-
   searchProducts() {
     // if (this.state.catArray.length > 0) {
     //   var searchstr = $('.headersearch').val()
@@ -273,6 +246,7 @@ getshippingamount(startRange, limitRange){
 
     //   this.props.history.push("/searchProducts");
     // }
+    console.log("inside search");
     if (this.state.catArray.length === 0 && $('.headersearch').val() !== '') {
       var searchstr = this.refs.tableSearch.value.trim();
       if(searchstr){
@@ -838,12 +812,12 @@ loginPage(event){
           
           <ResponsiveMegamenu/>   
 
-          <div className=" col-sm-12 col-xs-12 NOpadding searchBoxWrapper">
+          {/* <div className=" col-sm-12 col-xs-12 NOpadding searchBoxWrapper">
               <div className="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 searchBox">
                   <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
                   <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
               </div> 
-          </div>
+          </div> */}
 
         </div>
 

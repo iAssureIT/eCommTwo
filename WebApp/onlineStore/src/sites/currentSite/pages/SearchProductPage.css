@@ -21,6 +21,9 @@
   border-radius: 25px;
 
 }
+.categoriesContainerEcommerce li{
+  height: 35px;
+}
 .links{
   padding: 0;
 }

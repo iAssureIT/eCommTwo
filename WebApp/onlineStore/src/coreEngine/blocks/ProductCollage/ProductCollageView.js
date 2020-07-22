@@ -130,15 +130,15 @@ class ProductCollageView extends Component {
     else {
       var previousUrl = window.location.href;
       localStorage.setItem("previousUrl",previousUrl);
-      if(localStorage.getItem('websiteModel') && localStorage.getItem('websiteModel')==='FranchiseModel'){
+      if(localStorage.getItem('showLoginAs')==="modal"){
         $('#loginFormModal').show();
         }else{
         this.setState({
           messageData: {
             "type": "outpage",
             "icon": "fa fa-exclamation-circle",
-            // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-            "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
             "class": "warning",
             "autoDismiss": true
           }
@@ -244,15 +244,15 @@ class ProductCollageView extends Component {
       localStorage.setItem("previousUrl",previousUrl);
       // console.log("previousUrl===",previousUrl);
       // console.log("localstorage previousUrl===",localStorage.getItem('previousUrl'));
-      if(localStorage.getItem('websiteModel') && localStorage.getItem('websiteModel')==='FranchiseModel'){
+      if(localStorage.getItem('showLoginAs')==="modal"){
         $('#loginFormModal').show();
         }else{
         this.setState({
           messageData: {
             "type": "outpage",
             "icon": "fa fa-exclamation-circle",
-            // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-            "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
             
             "class": "danger",
             "autoDismiss": true
@@ -344,7 +344,7 @@ class ProductCollageView extends Component {
   }//end else websiteModel
   }
 
-  submitCart(event) {
+  submitCart(event) { 
     var id = event.target.id;
     console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
@@ -354,7 +354,7 @@ class ProductCollageView extends Component {
       var size = event.target.getAttribute('mainSize');
       console.log("size:",size);
       var unit = event.target.getAttribute('unit');
-      console.log("unit:",unit);
+      // console.log("unit:",unit);
     }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
@@ -433,7 +433,7 @@ class ProductCollageView extends Component {
                 return (                  
                   <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={index}>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                      <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 col-xs-offset-2 NOpadding">
+                      <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 col-xs-offset-2 productInnerWrap NOpadding">
                         <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                           <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                             <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
@@ -442,7 +442,7 @@ class ProductCollageView extends Component {
                               <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImg" />
                             </a>
                           </div>
-                          <div className="productDetails col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                            
+                          <div className="productDetails  col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                            
                             <div className="innerDiv">
                               <div className="product-brand" title={data.brand}>{data.brand}</div>
                               <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
@@ -457,9 +457,7 @@ class ProductCollageView extends Component {
                                     <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                 }
                               </div>
-
-                              <div >
-                              </div>
+                              
                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                                  
                                   {
@@ -508,9 +506,7 @@ class ProductCollageView extends Component {
 
                   </div>
                 );
-
               })
-
               :
 
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

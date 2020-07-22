@@ -36,6 +36,7 @@ import MyOrders_Unimandai                        from '../pages/MyOrders/MyOrder
 import ShipmentTracking                          from '../pages/ShipmentTracking/ShipmentTracking.js';
 import ProductDetailsEcommerce                   from '../pages/ProductDetailsEcommerce/ProductDetailsEcommerce.js';
 import SearchProduct                             from '../pages/ProductCollage/SearchProductPage.js';
+// import ProductCollage                            from '../pages/ProductCollage/ProductCollageOld.js';
 import ProductCollage                            from '../pages/ProductCollage/ProductCollage.js';
 
 import Payment                                   from '../pages/Payment/Payment.js';
