@@ -253,7 +253,7 @@ export default class FranchiseShoppingList extends React.Component {
 		// console.log("productList render = ",this.state.productList);
 
 		return (
-				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+				<div  className="col-lg-10 col-lg-offset-2 col-md-12 col-xs-12 col-sm-12">
 					<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 						<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 							<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">

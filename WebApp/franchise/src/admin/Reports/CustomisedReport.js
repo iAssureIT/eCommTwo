@@ -191,7 +191,7 @@ export default class CustomisedReport extends Component{
     render(){
         if(!this.props.loading){
             return( 
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
                     <div className="sales-report-main-class">
                         <div className="reports-select-date-boxmain">
                             <div className="reports-select-date-boxsec">
