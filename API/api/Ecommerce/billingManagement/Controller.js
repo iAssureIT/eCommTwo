@@ -10,7 +10,6 @@ var   ObjectId        = require('mongodb').ObjectID;
 const franchisegoods = require('../distributionManagement/Model');
 
 
-console.log("entitymasters",EntityMaster);
 exports.list_products_by_category = (req,res,next)=>{
     Products.find({category_ID : req.params.categoryID, "status": "Publish"})
     .exec()
