@@ -160,10 +160,11 @@ exports.list_product = (req,res,next)=>{
 };
 
 exports.getCompany = (req,res,next)=>{
+  console.log("companyID",req.params.companyID);
    EntityMaster.findOne({"companyID":10})
     .exec()
     .then(data=>{
-      console.log("data",data)
+      console.log("companyID data",data)
         res.status(200).json(data);
     })
     .catch(err =>{

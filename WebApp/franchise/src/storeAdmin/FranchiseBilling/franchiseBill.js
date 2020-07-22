@@ -137,8 +137,10 @@ export class Bill extends React.Component {
 				country = franchiseLocation[0].country;
 				addressLine2 = franchiseLocation[0].addressLine2;
 			}
+
+			// response.data._id ? response.data._id : "5f06f58c67c0b03c2c4faed6",
 			this.setState({
-				"franchise_id": response.data._id ? response.data._id : "5f06f58c67c0b03c2c4faed6",
+				"franchise_id": response.data._id,
 				"gstNo"       : gstNo,
 				"deliveryLocation" : franchiseLocation,
 				"franchiseLocation" : city +','+state+','+country,
@@ -207,7 +209,8 @@ export class Bill extends React.Component {
 	}
 
 	getProductListByCategory(categoryId){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
+		// ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6"
+		var franchiseId = this.state.franchise_id ;
 		axios.get("/api/billingmaster/get/listbycategory/"+categoryId+'/'+franchiseId)
         .then((response)=>{
             if(response.data){
@@ -224,7 +227,8 @@ export class Bill extends React.Component {
 	}
 
 	getProductListBySection(sectionId){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
+		// ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6"
+		var franchiseId = this.state.franchise_id ;
 
 		axios.get("/api/billingmaster/get/list/"+sectionId+'/'+franchiseId)
         .then((response)=>{
@@ -263,7 +267,8 @@ export class Bill extends React.Component {
 	}
 
 	getproducts(){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
+		//  ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
+		var franchiseId = this.state.franchise_id;
         axios.get('/api/billingmaster/get/list/'+franchiseId)
 		.then((response) => {
 			this.setState({
@@ -470,7 +475,8 @@ export class Bill extends React.Component {
 	
 
 	checkProductSoldOut(itemCode,productCode,id,unit,rate,discountPercent,discountedPrice,cart){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
+		// ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
+		var franchiseId = this.state.franchise_id;
 		var reportFilterData = {};
 		reportFilterData.franchiseId = franchiseId;
 		reportFilterData.itemcode = itemCode;
@@ -772,7 +778,7 @@ export class Bill extends React.Component {
 
 			var orderData = {
 			    billNumber : this.state.billNumber,
-				franchise_id : this.state.franchise_id ? this.state.franchise_id : "5f06f58c67c0b03c2c4faed6",
+				franchise_id : this.state.franchise_id,
 				user_ID: localStorage.getItem('user_ID'),
 				cartItems: cartItems,
 				shippingtime: this.state.shippingtiming,
