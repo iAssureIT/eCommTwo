@@ -146,7 +146,7 @@ export class printBill extends React.Component {
                             <button class="btn btn-info printbtn viewBillBtns fa fa-print" onClick={this.printTable.bind(this)}></button>
 							{/* <a class="btn btn-info reTurnBill viewBillBtns" href="/return-products">Return Bill</a> */}
                         </div>
-							<div className="col-lg-6 col-lg-offset-1 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
 							    <div className="row billLogoDiv">
 									<img className="logoImg" src="../../images/logoUnimandai.png"/>
 									<div className="address">{this.state.franchiseLocation}</div>

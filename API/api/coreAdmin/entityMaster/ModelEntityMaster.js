@@ -5,7 +5,7 @@ const entitySchema = mongoose.Schema({
     supplierOf                : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymaster' },
     entityType                : String,
     companyNo                 : Number,
-    companyID                 : String, 
+    companyID                 : Number, 
     companyName               : String,
     groupName                 : String,
     CIN                       : String,   
@@ -102,4 +102,6 @@ const entitySchema = mongoose.Schema({
                                 ]
 });
 
-module.exports = mongoose.model('entitymasters',entitySchema);
+ module.exports = mongoose.model('entitymasters',entitySchema);
+
+//module.exports = mongoose.model('entitymasters', entitySchema, 'entitymasters');

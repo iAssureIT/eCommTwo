@@ -34,14 +34,16 @@ export class Bill extends React.Component {
 				quantity              : 0,
 				discountPercent       : 0,
 				discountedPrice       : 0,	
-				rate   : 0,
-				showDiscount :true,
+				rate                  : 0,
+				showDiscount          : true,
 				shippingtime          : "4 PM-5 PM",
 				deliveryLocation      : [],
-				barcode : '',
-				soldOutProductError : '',
-				itemCode : '',
-				showFullScreen : false
+				barcode               : '',
+				soldOutProductError   : '',
+				itemCode              : '',
+				showFullScreen        : false,
+				checkoutClicked       : false
+				
 		  };
 		//   this.escFunction = this.escFunction.bind(this);
 		
@@ -49,6 +51,7 @@ export class Bill extends React.Component {
 
 	
 	componentDidMount(){
+		this.getFranchiseDetails();
 		$('.leftsidebarbackgroundcolor').hide();
 		$('#headerid').css('width',"100% !important");
 		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
@@ -57,7 +60,6 @@ export class Bill extends React.Component {
 		this.getCategories();
 		this.getSections();
 		this.getproducts();
-		this.getFranchiseDetails();
 		this.generateBillNumber();
 		$('#sidebarCollapse').click();
 		this.getCartData();
@@ -122,32 +124,33 @@ export class Bill extends React.Component {
 		axios.get('/api/billingmaster/getCompany/'+userDetails.companyID)
         .then((response) => {
 			var franchiseLocation = '';
+			var franchiseId = '';
 			var gstNo = '';
 			var city = '';
 			var state = '';
 			var country = '';
 			var addressLine2 = '';
-		
-			if(response.data.locations){
-				response.data.locations[0].pincode = 412207;
-				franchiseLocation = response.data.locations;
-				gstNo = franchiseLocation[0].GSTIN;
-				city = franchiseLocation[0].city;
-				state = franchiseLocation[0].state;
-				country = franchiseLocation[0].country;
-				addressLine2 = franchiseLocation[0].addressLine2;
-			}
+			response.data.map(function(val,ind){
+                franchiseId       = val._id;
+				franchiseLocation = val.locations;
+				gstNo             = franchiseLocation[ind].GSTIN;
+				city              = franchiseLocation[ind].city;
+				state             = franchiseLocation[ind].state;
+				country           = franchiseLocation[ind].country;
+				addressLine2      = franchiseLocation[ind].addressLine2;
+			})
 
-			// response.data._id ? response.data._id : "5f06f58c67c0b03c2c4faed6",
+			
 			this.setState({
-				"franchise_id": response.data._id,
-				"gstNo"       : gstNo,
-				"deliveryLocation" : franchiseLocation,
+				"franchise_id"      : franchiseId,
+				"gstNo"             : gstNo,
+				"deliveryLocation"  : franchiseLocation,
 				"franchiseLocation" : city +','+state+','+country,
-				"pos"       : addressLine2
+				"pos"               : addressLine2
 				
 			},()=>{
-				
+				console.log("franchiseId",franchiseId);
+
 		   })
           
 	      })
@@ -227,10 +230,7 @@ export class Bill extends React.Component {
 	}
 
 	getProductListBySection(sectionId){
-		// ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6"
-		var franchiseId = this.state.franchise_id ;
-
-		axios.get("/api/billingmaster/get/list/"+sectionId+'/'+franchiseId)
+		axios.get("/api/billingmaster/get/list/"+sectionId+'/'+this.state.franchise_id)
         .then((response)=>{
             if(response.data){
             //    console.log("product list by section ===",response.data); 
@@ -267,9 +267,7 @@ export class Bill extends React.Component {
 	}
 
 	getproducts(){
-		//  ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
-		var franchiseId = this.state.franchise_id;
-        axios.get('/api/billingmaster/get/list/'+franchiseId)
+        axios.get('/api/billingmaster/get/list/'+this.state.franchise_id)
 		.then((response) => {
 			this.setState({
 				productArray: response.data
@@ -475,7 +473,6 @@ export class Bill extends React.Component {
 	
 
 	checkProductSoldOut(itemCode,productCode,id,unit,rate,discountPercent,discountedPrice,cart){
-		// ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
 		var franchiseId = this.state.franchise_id;
 		var reportFilterData = {};
 		reportFilterData.franchiseId = franchiseId;
@@ -705,9 +702,10 @@ export class Bill extends React.Component {
 
     proceedToCheckout(event){
 		event.preventDefault();
-		// console.log("proceedToCheckout","proceedToCheckout");
+		this.setState({
+			"checkoutClicked" : true
+		})
 		const userid = localStorage.getItem('user_ID');
-		event.preventDefault();
         var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i)=>{
             return a.productDetail.availableQuantity <= 0;
 		})
@@ -717,23 +715,6 @@ export class Bill extends React.Component {
 		 }else{
 			total = 0;
 		 }
-		console.log("soldProducts",soldProducts);
-        // if(soldProducts.length > 0){
-        //     this.setState({
-        //         messageData : {
-        //           "type" : "outpage",
-        //           "icon" : "fa fa-exclamation-circle",
-        //           "message" : "&nbsp; Please remove sold out products from cart to proceed to checkout.",
-        //           "class": "warning",
-        //           "autoDismiss" : true
-        //         }
-        //       })
-        //       setTimeout(() => {
-        //           this.setState({
-        //               messageData   : {},
-        //           })
-        //       }, 6000);
-        // }else{
 			var cartItems = this.props.recentCartData[0].cartItems.map((a, i) => {
 				return {
 					"product_ID": a.productDetail._id,
@@ -1177,7 +1158,7 @@ export class Bill extends React.Component {
 											</ul>
 											<h5 style={{textAlign:'center',fontSize:"medium",fontWeight: 600}}>!!! Thank You !!! Visit Again !!!</h5>
 										</div>
-										{this.props.recentCartData.length > 0 ? 
+										{this.props.recentCartData.length > 0 && this.state.checkoutClicked === false ? 
 										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" onClick={this.proceedToCheckout.bind(this)}>Checkout</button>
 										:
 										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" disabled>Checkout</button>
