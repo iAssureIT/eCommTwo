@@ -24,7 +24,6 @@ router.patch('/address', cartController.add_address_to_cart);
 router.patch('/payment', cartController.add_paymentmethod_to_cart);
 
 //code by madhuri ghute
-router.get('/get/generateBillNumber/:companyId', cartController.generate_bill_number);
 
 router.patch('/updateCart', cartController.update_cart_item);
 

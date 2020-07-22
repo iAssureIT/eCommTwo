@@ -43,11 +43,8 @@ export class Bill extends React.Component {
 				itemCode : '',
 				showFullScreen : false
 		  };
-		//   this.escFunction = this.escFunction.bind(this);
 		
 	}
-
-	
 	componentDidMount(){
 		$('.leftsidebarbackgroundcolor').hide();
 		$('#headerid').css('width',"100% !important");
@@ -102,24 +99,21 @@ export class Bill extends React.Component {
 			  }
 		   }
 		})
-
-		
 	}
-	
 	componentWillReceiveProps(nextProps) {
+		//console.log("nextProps",nextProps.recentCartData);
 		this.setState({
 			cartData:nextProps.recentCartData,
 			cartItems : nextProps.recentCartData.cartItems,
 			cartQuantity : nextProps.recentCartData.cartQuantity,
 			total : nextProps.recentCartData.total,
 		},()=>{
+			//console.log("state",this.state);
 		})
 	}
-
-	
 	getFranchiseDetails(){
 		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
-		axios.get('/api/billingmaster/getCompany/'+userDetails.companyID)
+		axios.get('/api/entitymaster/getCompany/'+userDetails.companyID)
         .then((response) => {
 			var franchiseLocation = '';
 			var gstNo = '';
@@ -138,14 +132,13 @@ export class Bill extends React.Component {
 				addressLine2 = franchiseLocation[0].addressLine2;
 			}
 			this.setState({
-				"franchise_id": response.data._id ? response.data._id : "5f06f58c67c0b03c2c4faed6",
+				"franchise_id": response.data._id,
 				"gstNo"       : gstNo,
 				"deliveryLocation" : franchiseLocation,
 				"franchiseLocation" : city +','+state+','+country,
 				"pos"       : addressLine2
 				
 			},()=>{
-				
 		   })
           
 	      })
@@ -207,8 +200,8 @@ export class Bill extends React.Component {
 	}
 
 	getProductListByCategory(categoryId){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
-		axios.get("/api/billingmaster/get/listbycategory/"+categoryId+'/'+franchiseId)
+		var franchiseId = this.state.franchise_id;
+		axios.get("/api/products/get/franchiselistbycategory/"+categoryId+'/'+franchiseId)
         .then((response)=>{
             if(response.data){
             //    console.log("product list by category===",response.data); 
@@ -224,9 +217,7 @@ export class Bill extends React.Component {
 	}
 
 	getProductListBySection(sectionId){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
-
-		axios.get("/api/billingmaster/get/list/"+sectionId+'/'+franchiseId)
+		axios.get("/api/products/get/franchiseProductlist/"+sectionId+'/'+this.state.franchise_id)
         .then((response)=>{
             if(response.data){
             //    console.log("product list by section ===",response.data); 
@@ -263,8 +254,7 @@ export class Bill extends React.Component {
 	}
 
 	getproducts(){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
-        axios.get('/api/billingmaster/get/list/'+franchiseId)
+        axios.get('/api/products/get/list')
 		.then((response) => {
 			this.setState({
 				productArray: response.data
@@ -277,7 +267,7 @@ export class Bill extends React.Component {
 
 	generateBillNumber(){
 		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
-		axios.get("/api/billingmaster/get/generateBillNumber/"+userDetails.companyID)
+		axios.get("/api/carts/get/generateBillNumber/"+userDetails.companyID)
           .then((response)=>{ 
 				this.setState({
 					"billNumber" : response.data,
@@ -470,9 +460,8 @@ export class Bill extends React.Component {
 	
 
 	checkProductSoldOut(itemCode,productCode,id,unit,rate,discountPercent,discountedPrice,cart){
-		var franchiseId = this.state.franchise_id ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6";
 		var reportFilterData = {};
-		reportFilterData.franchiseId = franchiseId;
+		reportFilterData.franchiseId = this.state.franchise_id;
 		reportFilterData.itemcode = itemCode;
 		console.log("checkProductSoldOut called");
 		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
@@ -528,20 +517,17 @@ export class Bill extends React.Component {
 		})
 	}
 
-	addtocart(productCode,id,unit,rate,discountPercent,discountedPrice,availableQuantity) {
-		if(availableQuantity == 0){
-			swal("Product Sold Out");
-		}
+	addtocart(productCode,id,unit,rate,discountPercent,discountedPrice) {
 		var productCode = productCode;
 		const userid = localStorage.getItem('user_ID');
 		var clr = '';
 		if (userid) {
 		  var id = id;
 		  const userid = localStorage.getItem('user_ID');
+		  var availableQuantity = 999999;
 		  var recentCartData = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
 		  var productCartData = recentCartData.filter((a) => a.product_ID === id);
-		  var quantityAdded = productCartData.length > 0 ? productCartData[0].quantity : 1;
-		  var availableQuantity = availableQuantity;
+		  var quantityAdded = productCartData.length > 0 ? productCartData[0].quantity : 0;
 		  var productRate = rate;
 		  var discountPercent = discountPercent;
 		  var discountedPrice = discountedPrice;
@@ -550,8 +536,7 @@ export class Bill extends React.Component {
 			  productRate = productCartData[0].rate ? productCartData[0].rate : rate;
 			  discountPercent = productCartData[0].discount ? productCartData[0].discount : discountPercent;
 			  discountedPrice = productCartData[0].discountedPrice ? productCartData[0].discountedPrice : discountedPrice;
-			  availableQuantity = productCartData[0].availableQuantity;
-			}
+		  }
 		  const formValues = {
 			"user_ID"     : userid,
 			"product_ID"  : id,
@@ -561,7 +546,7 @@ export class Bill extends React.Component {
 			"discount"    :	discountPercent,
 			"discountedPrice" : discountedPrice
 		  }
-
+		  // this.getProductData(productCode, clr);
 		  axios.get("/api/products/get/productcode/" + productCode)
 			.then((response) => {
 			  let mymap = new Map();
@@ -585,10 +570,22 @@ export class Bill extends React.Component {
 			  this.setState({
 				['relatedProductArray' + id]: unique
 			  })
+			  // console.log('unique', unique);
 			  if (unique.length > 0) {
+				console.lof("unique.length",unique.length);
 				if (unique.length === 1) {
+				  if (unique[0].size) {
+					this.setState({
+					  ['sizeCollage' + id]: true
+					})
+				  } else {
 					this.addCart(formValues, quantityAdded, availableQuantity);
+				  }
 				} else if (unique.length > 1) {
+				  this.setState({
+					['sizeCollage' + id]: true
+				  })
+				} else {
 				  this.addCart(formValues, quantityAdded, availableQuantity);
 				}
 			  } else {
@@ -772,7 +769,7 @@ export class Bill extends React.Component {
 
 			var orderData = {
 			    billNumber : this.state.billNumber,
-				franchise_id : this.state.franchise_id ? this.state.franchise_id : "5f06f58c67c0b03c2c4faed6",
+				franchise_id : this.state.franchise_id,
 				user_ID: localStorage.getItem('user_ID'),
 				cartItems: cartItems,
 				shippingtime: this.state.shippingtiming,
@@ -830,7 +827,6 @@ export class Bill extends React.Component {
 		}
 
 		var reportFilterData = {};
-
 		reportFilterData.franchiseId = this.state.franchise_id;
 		reportFilterData.itemcode = this.state.itemCode;
 		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
@@ -874,9 +870,7 @@ export class Bill extends React.Component {
 		this.setState({
 			showFullScreen :true
 		});
-		$('#headerid').hide();
-		$('.dashboardeffect').css('top',0);
-		
+		// var elem = document.documentElement;
 		var elem = document.documentElement;
 		console.log("elem",document.documentElement);
 		if (elem.requestFullscreen) {
@@ -891,8 +885,6 @@ export class Bill extends React.Component {
 	  }
 
 	closeFullscreen() {
-		$('#headerid').show();
-		$('.dashboardeffect').css('top','');
 		this.setState({
 			showFullScreen :false
 		})
@@ -960,7 +952,7 @@ export class Bill extends React.Component {
                                     return(
                                         <li key={index} className="section top-level-link">
 											<div class="box" onClick={this.getSectionCategories.bind(this,data._id)} style={{"backgroundImage": "url(" + "../images/fruits.jpg" + ")","background-size": "100% 100%"}}>
-												<div class="sectionContent" id={data._id} style={{"color":"white"}}>
+												<div class="content" id={data._id} style={{"color":"white"}}>
 													<h6 class="sectiontitle">{data.section}</h6>
 												</div>
 												<div class="folder"></div>
@@ -972,23 +964,26 @@ export class Bill extends React.Component {
                                 </ul> 
 							</div>
 							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 productDiv">
-							    <ul className="row nav nav-pills">
-									<li className="active col-lg-3 col-md-3 col-sm-4 col-xs-12 NOpadding"><a data-toggle="pill" href="#all" onClick={this.getProductListBySection.bind(this,this.state.section_ID)}>All</a></li>
+							    <ul class="nav nav-pills">
+									<li class="active"><a data-toggle="pill" href="#all" onClick={this.getProductListBySection.bind(this,this.state.section_ID)}>All</a></li>
 									{
 									Array.isArray(this.state.SectionCategoriesData) && this.state.SectionCategoriesData.map((data,index)=>{
 										return(
-											<li className="col-lg-3 col-md-3 col-sm-4 col-xs-12 NOpadding"><a data-toggle="pill" href={data.category} onClick={this.getProductListByCategory.bind(this,data._id)}>{data.category}</a></li>
+											<li><a data-toggle="pill" href={data.category} onClick={this.getProductListByCategory.bind(this,data._id)}>{data.category}</a></li>
 										)
 									})
 									}
 								</ul>
 								<div className="row ListProduct">
 								{
-								   Array.isArray(this.state.ProductList) && this.state.ProductList.length > 0 ?
+								   Array.isArray(this.state.ProductList) > 0 ?
                                    Array.isArray(this.state.ProductList) && this.state.ProductList.map((data,index)=>{
-								   let imageUrl = data.productImage[0] ? data.productImage[0] : 'images/demoimg.png';
+									   //console.log("datadata",data._id); notavailable.jpg
+									let imageUrl = data.productImage[0] ? data.productImage[0] : '../../images/demoimg.png';
+									// let soldOut  = data.availableQuantity > 0 ? '' : "soldOutProduct";
+									// console.log("soldOut",data.availableQuantity);
                                     return(
-										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" id={data.availableQuantity > 0 && data.availableQuantity !== undefined ? 'activeProducts' : 'deactiveProducts'} onClick={this.addtocart.bind(this,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice,data.availableQuantity)}>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" id={data.availableQuantity > 0 ? '' : "soldOutProduct"} onClick={this.addtocart.bind(this,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice)}>
 											<div class="col-lg-12 card">
 												{/* <div class="card"> */}
 													<div class="item-top">
@@ -1052,8 +1047,11 @@ export class Bill extends React.Component {
 												<th scope="col">ITEM</th>
 												<th scope="col">QTY</th>
 												<th scope="col">RATE</th>
+												{/* <th scope="col">CGST AMT</th>
+												<th scope="col">RATE CGST</th> */}
 												<th scope="col">DISCOUNT</th>
-												<th scope="col">AMOUNT</th>
+												{/* <th scope="col">DIS PRICE</th> */}
+												<th scope="col">AMT</th>
 												<th scope="col"></th>
 												</tr>
 											</thead>
@@ -1097,6 +1095,7 @@ export class Bill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					    <small>{data.productDetail.unit}</small>
 																					</div> 
+																					{/* onChangeCartQuantity */}
 																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.quantity} prevValue={data.quantity} name="quantity" refs="quantity" onChange={this.onChangeEditVal.bind(this)} id="quantity" min="1" size={data.productDetail.size} unit={data.productDetail.unit} productid={data.product_ID} id={data.productDetail._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.productDetail.availableQuantity} required/>
 																				</div>     
 																			</div>  
@@ -1106,13 +1105,17 @@ export class Bill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					<i className="fa fa-rupee"></i>
 																					</div> 
+																					{/* onChangeRate */}
 																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.rate} name="rate" refs="rate" onChange={this.percentAndPrice.bind(this)} productid={data.product_ID} id="rate" min="1" ref="originalPrice" discountPercent={data.discountPercent} discountedPrice={data.discountedPrice} required/>
 																				</div>     
 																			</div>  
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
 																				<label className="control-label statelabel locationlabel" >Discount <i className="redFont">*</i></label>
 																				<div className="input-group inputBox-main  new_inputbx amountDiv" >
+																					{/* onChangeDiscountedPrice */}
 																					<input max={100} disabled={this.state.showDiscount} value={this.state.discountPercent} onChange={this.discountedPrice.bind(this)} placeholder="Discount Percent" id="discountPercent" name="discountPercent" type="number" className="form-control  availableQuantityNew" aria-describedby="basic-addon1" ref="discountPercent" />
+
+																					{/* <input type="number" placeholder="" className="form-control new_inputbx1" disabled={this.state.showDiscount} value={this.state.discountPercent} productid={data.product_ID} originalPrice={data.rate} name="discountPercent" refs="discountPercent" onChange={this.discountedPrice.bind(this)}  id="discountPercent" min="0" required/> */}
 																					<div className="input-group-addon inputIcon discountInput">
 																						<i className="fa fa-percent"></i>
 																					</div> 
@@ -1124,6 +1127,8 @@ export class Bill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					<i className="fa fa-rupee"></i>
 																					</div> 
+																					{/* onChangeDiscountPercent */}
+																					{/* <input type="number" placeholder="" className="form-control new_inputbx1" disabled={this.state.showDiscount} value={this.state.discountedPrice} productid={data.product_ID} originalPrice={this.state.rate}name="discountedPrice" refs="discountedPrice"  id="discountedPrice" onChange={this.discountPercent.bind(this)} max={this.state.rate} min="1" required/> */}
 																					<input max={this.state.rate} disabled={this.state.showDiscount} onChange={this.discountPercent.bind(this)} value={this.state.discountedPrice} id="discountedPrice" name="discountedPrice" type="number" className="form-control  selectdropdown" placeholder="Discounted Price" aria-describedby="basic-addon1" ref="discountedPrice"  max={this.state.rate} min="1"/>
 
 																				</div>     
@@ -1174,9 +1179,13 @@ export class Bill extends React.Component {
 										{this.props.recentCartData.length > 0 ? 
 										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" onClick={this.proceedToCheckout.bind(this)}>Checkout</button>
 										:
-										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn" disabled>Checkout</button>
+										<button className="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn checkoutBtn button" disabled>Checkout</button>
 	                                     }
 
+										{/* <div className="row" style={{"padding": "13px"}}>
+											<button className="btn actionBtn">Edit</button>
+											<button className="btn actionBtn">Delete</button>
+										</div> */}
 									</form>
 								</div>
 		

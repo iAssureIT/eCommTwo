@@ -402,47 +402,4 @@ exports.update_cart_item = (req, res, next)=>{
         });
     });
 };
-//generate bill number 
-exports.generate_bill_number = (req,res,next)=>{
-    var franchiseId = req.params.companyId;
-    Carts.count()
-        // .sort('-id')
-        .exec()
-        .then(cartData =>{
-            console.log("cartData",cartData);
-            var maxId = 1;
-            Orders.count()
-            // .sort('-id')
-            .exec()
-            .then(orderData =>{
-                let calenderYear = new Date().getFullYear();
-
-                console.log("orderData",orderData);
-                if(cartData > orderData) {
-                   maxId = cartData + 1;
-                }else if(orderData > cartData){
-                    maxId = orderData + 1;
-                }else if(orderData == cartData){
-                    maxId = orderData + 1;
-                }else{
-                    maxId = 1;
-                }
-                let str = maxId.toString().padStart(5, "0");
-
-                let billNum = franchiseId + calenderYear + str;
-                res.status(200).json(billNum); 
-                    
-            })
-            .catch(err =>{
-                res.status(500).json({
-                    error: err
-                });
-            });
-        })
-        .catch(err =>{
-            res.status(500).json({
-                error: err
-            });
-        });
-};
 

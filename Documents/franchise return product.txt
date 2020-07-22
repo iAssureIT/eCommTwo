@@ -1,0 +1,31 @@
+1)return bill view should be same as view bill with return and edit buttons.
+2)add return product button on view bill
+3)return type ---- 
+	
+  i)whole product return
+    onclick return whole product will be returned
+
+  ii)Partial return
+   change discount,quantity,rate of saled product.
+   Rate should saled rate of that product.
+
+ Order colletion 
+  1)Add new array of returned product in order collection
+
+4)show returned products below bill table as returned products.
+
+5)Add customer while billing.It will be existing or  new
+ customer details
+ Name,Mobile,Email & Address
+
+ collection --
+ create new collection for customers
+
+ add selected customer id in orders table
+
+ 
+
+
+
+
+   

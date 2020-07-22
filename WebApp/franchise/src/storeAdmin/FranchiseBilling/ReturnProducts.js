@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../redux/actions/index';
 
-export class printBill extends React.Component {
+export class returnBill extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
@@ -93,16 +93,7 @@ export class printBill extends React.Component {
         w.document.write($('.viewBillDiv').html());
         w.print();
         w.close();
-        // var mywindow = window.open('', 'new div', 'height=400,width=600');
-        // mywindow.document.write('<html><head><title></title>');
-        // mywindow.document.write('<link rel="stylesheet" href="./bill.css" type="text/css" />');
-        // mywindow.document.write('</head><body >');
-        // mywindow.document.write($('.billPage').html());
-        // mywindow.document.write('</body></html>');
-        // mywindow.document.close();
-        // mywindow.focus();
-        // setTimeout(function(){mywindow.print();},1000);
-        // mywindow.close();
+       
 	}
 	
 	editCart(id){
@@ -144,7 +135,7 @@ export class printBill extends React.Component {
                         <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                             <a class="btn btn-info viewBillBtns" href="/franchise-billing">New Bill</a>
                             <button class="btn btn-info printbtn viewBillBtns fa fa-print" onClick={this.printTable.bind(this)}></button>
-							{/* <a class="btn btn-info reTurnBill viewBillBtns" href="/return-products">Return Bill</a> */}
+							<a class="btn btn-info reTurnBill viewBillBtns" href="/return-product" style={{display:"none"}}>Return Bill</a>
                         </div>
 							<div className="col-lg-6 col-lg-offset-1 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
 							    <div className="row billLogoDiv">
@@ -174,7 +165,7 @@ export class printBill extends React.Component {
 												<th scope="col">RATE</th>
 												<th scope="col">DISCOUNT</th>
 												<th scope="col">AMOUNT</th>
-												{/* <th scope="col"></th> */}
+												<th scope="col"></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -191,10 +182,10 @@ export class printBill extends React.Component {
 															<td>{data.originalPrice}</td>
 															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
-															{/* <td>
+															<td>
 																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
 																<i class="fa fa-undo" aria-hidden="true"></i>
-						 									</td> */}
+						 									</td>
 													</tr>
 													)
 												})
@@ -247,4 +238,4 @@ const mapStateToProps = (state) => {
   const mapDispachToProps = (dispatch) => {
 	return  bindActionCreators({ fetchCartData: getCartData }, dispatch)
   }
-  export default connect(mapStateToProps, mapDispachToProps)(printBill);
+  export default connect(mapStateToProps, mapDispachToProps)(returnBill);

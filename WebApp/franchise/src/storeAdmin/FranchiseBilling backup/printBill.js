@@ -35,10 +35,6 @@ export class printBill extends React.Component {
 	}
 	
 	componentDidMount() {
-		$('.leftsidebarbackgroundcolor').hide();
-		$('#headerid').css('width',"100% !important");
-		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
-		$('#dashbordid').removeClass('dashboardeffect');
         this.getFranchiseDetails();
         axios.get("/api/orders/get/one/" + this.props.match.params.orderId)
           .then((response) => {
@@ -103,29 +99,7 @@ export class printBill extends React.Component {
         // mywindow.focus();
         // setTimeout(function(){mywindow.print();},1000);
         // mywindow.close();
-	}
-	
-	editCart(id){
-		var showDiscount = false;
-		this.props.recentCartData[0].cartItems.map((data,index)=>{
-			if(data._id == id){
-				if(data.rate == 0){
-					showDiscount = true;
-				}
-				this.setState({
-					product_ID : data.productDetail._id,
-					itemCode : data.productDetail.itemCode,
-					quantity : data.quantity,
-					discountPercent :data.discountPercent,
-					discountedPrice : data.discountedPrice,	
-					rate   : data.rate,
-					showDiscount : showDiscount
-				},()=>{
-				})
-			}
-			
-		});
-	}
+    }
    
 	render() {
 		const cartItems = this.props.recentCartData;
@@ -144,7 +118,6 @@ export class printBill extends React.Component {
                         <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
                             <a class="btn btn-info viewBillBtns" href="/franchise-billing">New Bill</a>
                             <button class="btn btn-info printbtn viewBillBtns fa fa-print" onClick={this.printTable.bind(this)}></button>
-							{/* <a class="btn btn-info reTurnBill viewBillBtns" href="/return-products">Return Bill</a> */}
                         </div>
 							<div className="col-lg-6 col-lg-offset-1 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
 							    <div className="row billLogoDiv">
@@ -171,10 +144,10 @@ export class printBill extends React.Component {
 												<tr>
 												<th scope="col">ITEM</th>
 												<th scope="col">QTY</th>
-												<th scope="col">RATE</th>
+												<th scope="col">UNIT RATE</th>
 												<th scope="col">DISCOUNT</th>
+												<th scope="col">DIS PRICE</th>
 												<th scope="col">AMOUNT</th>
-												{/* <th scope="col"></th> */}
 												</tr>
 											</thead>
 											<tbody>
@@ -188,13 +161,11 @@ export class printBill extends React.Component {
 															<td> 
 													              <small>{data.quantity} {data.unit}</small>
 															</td>
-															<td>{data.originalPrice}</td>
-															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
-															<td>{data.subTotal}</td>
-															{/* <td>
-																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
-																<i class="fa fa-undo" aria-hidden="true"></i>
-						 									</td> */}
+															<td><i className="fa fa-inr"></i>{data.originalPrice}</td>
+															<td><i class="fa fa-percent"></i>{data.discountPercent}</td>
+															<td><i className="fa fa-inr"></i>{data.discountedPrice}</td>
+															<td><i className="fa fa-inr"></i>{data.subTotal}</td>
+															
 													</tr>
 													)
 												})
@@ -230,7 +201,12 @@ export class printBill extends React.Component {
 								</div>
 		
 							</div> 
+                            {/* <div className="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                                <i class="col-md-12 col-lg-12 col-xs-12 col-sm-12 btn printbtn  fa fa-print" style={{fontSize:"larger"}} onClick={this.printTable.bind(this)}></i>
+                                
+                            </div> */}
 							</div>
+						 {/* </div> */}
 					</div>
 				</div>
 			</div>
