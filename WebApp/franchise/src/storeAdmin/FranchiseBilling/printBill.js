@@ -39,8 +39,10 @@ export class printBill extends React.Component {
 	
 	componentDidMount() {
 		$('.leftsidebarbackgroundcolor').hide();
-		$('#headerid').css('width',"100% !important");
-		$('#headerid').attr('style',"width : 100% !important");
+		$('#headerid').hide();
+		$('#dashbordid').css('top',0);
+		// $('#headerid').css('width',"100% !important");
+		// $('#headerid').attr('style',"width : 100% !important");
 		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
 		$('#dashbordid').removeClass('dashboardeffect');
 		this.getFranchiseDetails();
@@ -99,16 +101,6 @@ export class printBill extends React.Component {
         w.document.write($('.viewBillDiv').html());
         w.print();
         w.close();
-        // var mywindow = window.open('', 'new div', 'height=400,width=600');
-        // mywindow.document.write('<html><head><title></title>');
-        // mywindow.document.write('<link rel="stylesheet" href="./bill.css" type="text/css" />');
-        // mywindow.document.write('</head><body >');
-        // mywindow.document.write($('.billPage').html());
-        // mywindow.document.write('</body></html>');
-        // mywindow.document.close();
-        // mywindow.focus();
-        // setTimeout(function(){mywindow.print();},1000);
-        // mywindow.close();
 	}
 	
 	editCart(id){
@@ -141,7 +133,6 @@ export class printBill extends React.Component {
 		});
 		$('#headerid').hide();
 		$('#dashbordid').css('top',0);
-		
 		var elem = document.documentElement;
 		console.log("elem",document.documentElement);
 		if (elem.requestFullscreen) {
@@ -220,7 +211,7 @@ export class printBill extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
-					{this.state.showReturnProductDiv === false ? 
+					{this.state.showReturnProductDiv === true  ? 
 						<div className="row">
 						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding mtop20">
 							    <input list="selectBillNumber" type="text" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autocomplete="off"/> 
@@ -250,7 +241,9 @@ export class printBill extends React.Component {
 						    }
                             <a class="btn btn-info viewBillBtns" href="/franchise-billing" title="Create New Bill">New Bill</a>
                             <button class="btn btn-info printbtn viewBillBtns fa fa-print" title="Print Bill" onClick={this.printTable.bind(this)}></button>
-							<a class="btn btn-info reTurnBill viewBillBtns" onClick={this.onClickReturnProducts.bind(this)} title="return Products">Return Bill</a> 
+						
+							{/* <a class="btn btn-info reTurnBill viewBillBtns" onClick={this.onClickReturnProducts.bind(this)} title="return Products">Return Bill</a>  */}
+							
 							{/* href="/return-products" */}
                         </div>
 						    {/* View bill div start */}

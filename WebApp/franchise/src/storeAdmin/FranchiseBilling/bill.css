@@ -88,6 +88,10 @@
    margin: 1px !important;
   }
 
+  .optionBtns{
+    display: flex;
+  }
+
   .card{
     max-width: 270px;
     background-color: white;

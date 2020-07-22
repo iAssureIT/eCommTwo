@@ -53,8 +53,10 @@ export class Bill extends React.Component {
 	componentDidMount(){
 		this.getFranchiseDetails();
 		$('.leftsidebarbackgroundcolor').hide();
-		$('#headerid').css('width',"100% !important");
-		$('#headerid').attr('style',"width : 100% !important");
+		// $('#headerid').css('width',"100% !important");
+		// $('#headerid').attr('style',"width : 100% !important");
+		$('#headerid').hide();
+		$('#dashbordid').css('top',0);
 		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
 		$('#dashbordid').removeClass('dashboardeffect');
 		this.props.fetchCartData();
@@ -869,8 +871,6 @@ export class Bill extends React.Component {
 	  }
 
 	closeFullscreen() {
-		$('#headerid').show();
-		$('.dashboardeffect').css('top','');
 		this.setState({
 			showFullScreen :false
 		})
@@ -902,11 +902,13 @@ export class Bill extends React.Component {
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap mainDiv">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent '>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{"marginTop": "25px","padding-bottom":"5px"}}>
-					 	    {/* <a className="fa fa-home" href="/dashboard" title="Go to Homepage"></a> */}
-							{this.state.showFullScreen === false ? 
-							<button className="btn fullScreenBtn col-lg-1 col-md-1 col-sm-6 col-xs-12" onClick={this.openFullscreen.bind(this)}>Full Screen <i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
-							: <button className="btn fullScreenBtn col-lg-1 col-md-1 col-sm-6 col-xs-12" onClick={this.closeFullscreen.bind(this)}>Exit Screen <i class="fa fa-window-close" aria-hidden="true"></i></button>
-						    }
+					 	    <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 optionBtns">
+								<a className="btn fullScreenBtn" href="/dashboard" title="Go to Homepage"><i class="fa fa-home" aria-hidden="true"></i></a>
+								{this.state.showFullScreen === false ? 
+								<button className="btn fullScreenBtn" title="Open Fullscreen" onClick={this.openFullscreen.bind(this)}><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
+								: <button className="btn fullScreenBtn" title="Close Fullscreen" onClick={this.closeFullscreen.bind(this)}><i class="fa fa-window-close" aria-hidden="true"></i></button>
+								}
+							</div>
 							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 searchProduct">
 							     <input type="text" name="searchText" value={this.state.searchText} className="form-control col-lg-2 col-md-2 " placeholder="Search Product..." onChange={this.getProductBySearch.bind(this)}/>
                                  <button className="input-group button_search button"  type="button"><i className="fa fa-search"></i></button>
