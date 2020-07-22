@@ -30,13 +30,15 @@ export class returnBill extends React.Component {
 				totalAmt              : 0,
 				billNumber            : 0,
                 orderData             : [],
-                pos                   : ''
+				pos                   : '',
+				showFullScreen        : false
           };
 	}
 	
 	componentDidMount() {
 		$('.leftsidebarbackgroundcolor').hide();
 		$('#headerid').css('width',"100% !important");
+		$('#headerid').attr('style',"width : 100% !important");
 		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
 		$('#dashbordid').removeClass('dashboardeffect');
         this.getFranchiseDetails();
@@ -93,7 +95,16 @@ export class returnBill extends React.Component {
         w.document.write($('.viewBillDiv').html());
         w.print();
         w.close();
-       
+        // var mywindow = window.open('', 'new div', 'height=400,width=600');
+        // mywindow.document.write('<html><head><title></title>');
+        // mywindow.document.write('<link rel="stylesheet" href="./bill.css" type="text/css" />');
+        // mywindow.document.write('</head><body >');
+        // mywindow.document.write($('.billPage').html());
+        // mywindow.document.write('</body></html>');
+        // mywindow.document.close();
+        // mywindow.focus();
+        // setTimeout(function(){mywindow.print();},1000);
+        // mywindow.close();
 	}
 	
 	editCart(id){
@@ -117,6 +128,44 @@ export class returnBill extends React.Component {
 			
 		});
 	}
+
+	
+	openFullscreen() {
+		this.setState({
+			showFullScreen :true
+		});
+		$('#headerid').hide();
+		$('#dashbordid').css('top',0);
+		
+		var elem = document.documentElement;
+		console.log("elem",document.documentElement);
+		if (elem.requestFullscreen) {
+		  elem.requestFullscreen();
+		} else if (elem.mozRequestFullScreen) { /* Firefox */
+		  elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+		  elem.webkitRequestFullscreen();
+		} else if (elem.msRequestFullscreen) { /* IE/Edge */
+		  elem.msRequestFullscreen();
+		}
+	}
+
+	closeFullscreen() {
+		$('#headerid').show();
+		$('#dashbordid').css('top','');
+		this.setState({
+			showFullScreen :false
+		})
+		if (document.exitFullscreen) {
+		  document.exitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+		  document.mozCancelFullScreen();
+		} else if (document.webkitExitFullscreen) {
+		  document.webkitExitFullscreen();
+		} else if (document.msExitFullscreen) {
+		  document.msExitFullscreen();
+		}
+	}
    
 	render() {
 		const cartItems = this.props.recentCartData;
@@ -129,15 +178,19 @@ export class returnBill extends React.Component {
 		
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
-					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 billPage">
+				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap">
+					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding billPage">
                         <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
-                            <a class="btn btn-info viewBillBtns" href="/franchise-billing">New Bill</a>
-                            <button class="btn btn-info printbtn viewBillBtns fa fa-print" onClick={this.printTable.bind(this)}></button>
-							<a class="btn btn-info reTurnBill viewBillBtns" href="/return-product" style={{display:"none"}}>Return Bill</a>
+						    <a className="btn btn-info printbtn viewBillBtns fa fa-home" href="/dashboard" title="Go to Homepage"></a>
+						    {this.state.showFullScreen === false ? 
+							<button className="btn btn-info printbtn viewBillBtns fa fa-arrows-alt" title="Open Fullscreen" onClick={this.openFullscreen.bind(this)}></button>
+							: <button className="btn btn-info printbtn viewBillBtns fa fa-window-close" title="Close Fullscreen"  onClick={this.closeFullscreen.bind(this)}></button>
+						    }
+                            <a class="btn btn-info viewBillBtns" href="/franchise-billing" title="Create New Bill">New Bill</a>
+                            <button class="btn btn-info printbtn viewBillBtns fa fa-print" title="Print Bill" onClick={this.printTable.bind(this)}></button>
                         </div>
-							<div className="col-lg-6 col-lg-offset-1 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
 							    <div className="row billLogoDiv">
 									<img className="logoImg" src="../../images/logoUnimandai.png"/>
 									<div className="address">{this.state.franchiseLocation}</div>
@@ -165,7 +218,7 @@ export class returnBill extends React.Component {
 												<th scope="col">RATE</th>
 												<th scope="col">DISCOUNT</th>
 												<th scope="col">AMOUNT</th>
-												<th scope="col"></th>
+												{/* <th scope="col"></th> */}
 												</tr>
 											</thead>
 											<tbody>
@@ -182,10 +235,10 @@ export class returnBill extends React.Component {
 															<td>{data.originalPrice}</td>
 															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
-															<td>
+															{/* <td>
 																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
 																<i class="fa fa-undo" aria-hidden="true"></i>
-						 									</td>
+						 									</td> */}
 													</tr>
 													)
 												})

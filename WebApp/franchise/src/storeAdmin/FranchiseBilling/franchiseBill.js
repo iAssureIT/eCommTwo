@@ -194,6 +194,9 @@ export class Bill extends React.Component {
 	}
 
 	getSectionCategories(sectionId){
+		$('.nav-pills').find('.active').removeClass('active');
+		$('.nav-pills .all').parent().addClass('active');
+		$('.sectiontitle').removeClass('active');
 		$('.sectiontitle').removeClass('active');
 		$('#'+sectionId).find('.sectiontitle').addClass('active');
 		this.setState({
@@ -744,24 +747,7 @@ export class Bill extends React.Component {
 					"vendor_ID": a.productDetail.vendor_ID
 				}
 			})
-			// var deliveryLocation = {
-			// 	"addType": null,
-			// 	"addressLine1": "Wagholi, Pune, Maharashtra, India",
-			// 	"addressLine2": "Kharadi",
-			// 	"city": "Pune",
-			// 	"country": "India",
-			// 	"countryCode": "IN",
-			// 	"district": "Pune",
-			// 	"email": "madhu1995ghute@gmail.com",
-			// 	"latitude": 18.5807719,
-			// 	"longitude": 73.9787063,
-			// 	"mobileNumber": "8390541917",
-			// 	"name": "Madhuri Ghute",
-			// 	"pincode": "412207",
-			// 	"state": "Maharashtra",
-			// 	"stateCode": null
-			// }
-
+			
 			var orderData = {
 			    billNumber : this.state.billNumber,
 				franchise_id : this.state.franchise_id,
@@ -965,7 +951,7 @@ export class Bill extends React.Component {
 							</div>
 							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 productDiv">
 							    <ul className="row nav nav-pills">
-									<li className="active col-lg-3 col-md-3 col-sm-4 col-xs-12 NOpadding"><a data-toggle="pill" href="#all" onClick={this.getProductListBySection.bind(this,this.state.section_ID)}>All</a></li>
+									<li className="active col-lg-3 col-md-3 col-sm-4 col-xs-12 NOpadding"><a data-toggle="pill" class="all" href="#all" onClick={this.getProductListBySection.bind(this,this.state.section_ID)}>All</a></li>
 									{
 									Array.isArray(this.state.SectionCategoriesData) && this.state.SectionCategoriesData.map((data,index)=>{
 										return(

@@ -161,11 +161,22 @@ exports.list_product = (req,res,next)=>{
 };
 
 exports.getCompany = (req,res,next)=>{
-  console.log("companyID",req.params.companyID);
-   EntityMaster.find({"companyID":10})
+  EntityMaster.find({"companyID":req.params.companyID})
     .exec()
     .then(data=>{
-      console.log("companyID data",data)
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+exports.getListBill = (req,res,next)=>{
+  Orders.find({allocatedToFranchise:req.params.franchise_id,billNumber:{ $exists: true, $ne: null }})
+    .exec()
+    .then(data=>{
         res.status(200).json(data);
     })
     .catch(err =>{

@@ -31,7 +31,9 @@ export class printBill extends React.Component {
 				billNumber            : 0,
                 orderData             : [],
 				pos                   : '',
-				showFullScreen        : false
+				showFullScreen        : false,
+				showReturnProductDiv  : false,
+				getBillNumbers        :''
           };
 	}
 	
@@ -41,7 +43,8 @@ export class printBill extends React.Component {
 		$('#headerid').attr('style',"width : 100% !important");
 		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
 		$('#dashbordid').removeClass('dashboardeffect');
-        this.getFranchiseDetails();
+		this.getFranchiseDetails();
+	 	// this.getBillNumbers();
         axios.get("/api/orders/get/one/" + this.props.match.params.orderId)
           .then((response) => {
             this.setState({
@@ -82,6 +85,7 @@ export class printBill extends React.Component {
                 "pos"       : addressLine2
 				
 			},()=>{
+				this.getBillNumbers();
 		   })
           
 	      })
@@ -123,6 +127,7 @@ export class printBill extends React.Component {
 					rate   : data.rate,
 					showDiscount : showDiscount
 				},()=>{
+					
 				})
 			}
 			
@@ -166,7 +171,42 @@ export class printBill extends React.Component {
 		  document.msExitFullscreen();
 		}
 	}
+
+	onClickReturnProducts(event){
+		event.preventDefault();
+		this.setState({
+			showReturnProductDiv : true
+		})
+	}
+
+	getBillNumbers(){
+        axios.get('/api/billingmaster/get/billnumberlist/'+this.state.franchise_id)
+		.then((response) => {
+			this.setState({
+				billNumbersArray: response.data
+			})
+		})
+		.catch((error) => {
+			
+		})
+	}
+
+	onSearchBillNumber(event){
+		event.preventDefault();
+		axios.get("/api/orders/get/one/" + event.target.value)
+		.then((response) => {
+		  this.setState({
+			orderData: response.data,
+			billNumber :response.data.billNumber
+		  })
+		})
+		.catch((error) => {
+		  console.log('error', error);
+		})
+	}
    
+
+
 	render() {
 		const cartItems = this.props.recentCartData;
 		let total    = 0
@@ -180,6 +220,27 @@ export class printBill extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
+					{this.state.showReturnProductDiv === false ? 
+						<div className="row">
+						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding mtop20">
+							    <input list="selectBillNumber" type="text" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autocomplete="off"/> 
+								<datalist id="selectBillNumber" name="selectBillNumber" className="billDatalist">
+										{
+											this.state.billNumbersArray && this.state.billNumbersArray.length > 0 ?
+												this.state.billNumbersArray.map((data, i)=>{
+													return(
+														<option key={i} value={data.orderID} billnumber={data.billnumber} data-id={data._id} data-orderid={data.orderId}>{data.billNumber}</option>
+													);
+												})
+											:
+											<option>No Bills available</option>
+										}
+								</datalist>
+                                <button className="input-group button_add button button" type="button"><i className="fa fa-plus"></i></button>
+						</div>
+						
+						</div>
+						: null}
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding billPage">
                         <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
 						    <a className="btn btn-info printbtn viewBillBtns fa fa-home" href="/dashboard" title="Go to Homepage"></a>
@@ -189,8 +250,11 @@ export class printBill extends React.Component {
 						    }
                             <a class="btn btn-info viewBillBtns" href="/franchise-billing" title="Create New Bill">New Bill</a>
                             <button class="btn btn-info printbtn viewBillBtns fa fa-print" title="Print Bill" onClick={this.printTable.bind(this)}></button>
-							{/* <a class="btn btn-info reTurnBill viewBillBtns" href="/return-products">Return Bill</a> */}
+							<a class="btn btn-info reTurnBill viewBillBtns" onClick={this.onClickReturnProducts.bind(this)} title="return Products">Return Bill</a> 
+							{/* href="/return-products" */}
                         </div>
+						    {/* View bill div start */}
+							{this.state.showReturnProductDiv === false ? 
 							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
 							    <div className="row billLogoDiv">
 									<img className="logoImg" src="../../images/logoUnimandai.png"/>
@@ -237,8 +301,8 @@ export class printBill extends React.Component {
 															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
 															{/* <td>
-																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
-																<i class="fa fa-undo" aria-hidden="true"></i>
+																{/* <span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
+																<i class="fa fa-undo" aria-hidden="true"></i> 
 						 									</td> */}
 													</tr>
 													)
@@ -273,8 +337,96 @@ export class printBill extends React.Component {
 										
 									</form>
 								</div>
-		
 							</div> 
+							: 
+							/* View Bill div end */
+							/* Return product div start */
+							
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
+							    <div className="row billLogoDiv">
+									<img className="logoImg" src="../../images/logoUnimandai.png"/>
+									<div className="address">{this.state.franchiseLocation}</div>
+								</div>
+								<div className="row">
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span class="barcode">{this.state.billNumber}</span></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
+								</div>
+								<div className="row">
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(new Date()).format("DD MMM YYYY")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(new Date()).format(" hh:mm a")}</small></div>
+								</div>
+								<div className="row">
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: {this.state.pos}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">GSTIN: {this.state.gstNo}</small></div>
+								</div>
+								<div className="row" style={{"padding": "15px"}}> 
+									<form className="productsEditForm" id="productsEditForm">
+									<div className="table-responsive">
+										<table class="table table-borderless">
+											<thead>
+												<tr>
+												<th scope="col">ITEM</th>
+												<th scope="col">QTY</th>
+												<th scope="col">RATE</th>
+												<th scope="col">DISCOUNT</th>
+												<th scope="col">AMOUNT</th>
+												{/* <th scope="col"></th> */}
+												</tr>
+											</thead>
+											<tbody>
+											{
+                                                this.state.orderData.products && this.state.orderData.products.length > 0 ?
+                                                    this.state.orderData.products.map((data, index) => {
+													data.subTotal = data.discountedPrice * data.quantity;
+													return(
+														<tr>
+															<td>{data.productName}</td>
+															<td> 
+													              <small>{data.quantity} {data.unit}</small>
+															</td>
+															<td>{data.originalPrice}</td>
+															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
+															<td>{data.subTotal}</td>
+															<td>
+																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
+																<i class="fa fa-undo" aria-hidden="true"></i>
+						 									</td>
+													</tr>
+													)
+												})
+												:
+												null
+											} 
+											</tbody>
+											<tfoot>
+												<tr>
+													{this.state.orderData ?
+														<td colspan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
+														:
+														<td colspan="4">Items/Qty 0</td>
+													}
+
+													<td colspan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
+												</tr>
+												<tr>
+												<td colspan="4"></td>
+												<td className="totalNetAmount" colspan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
+												</tr>
+											</tfoot>
+											</table>
+										</div>
+										<div className="row" style={{"padding": "13px"}}>
+											<ul className="declaration"><b>Declaration</b>
+												<li>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
+											</ul>
+											<h5 style={{textAlign:'center',fontSize:"medium",fontWeight: 600}}>!!! Thank You !!! Visit Again !!!</h5>
+										</div>
+										
+									</form>
+								</div>
+							</div> 
+							}
+							{/* return bill div end */}
 							</div>
 					</div>
 				</div>

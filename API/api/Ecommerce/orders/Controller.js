@@ -100,7 +100,7 @@ exports.insert_orders = (req,res,next)=>{
                         // console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
                         var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
                         //for franchise instore bill
-                        var billFranchise = req.body.franchise_id ? req.body.franchise_id : allocatedToFranchise;
+                        var billFranchise = req.body.franchise_id ? req.body.franchise_id : '';
                         var BillNumber = req.body.billNumber ? req.body.billNumber : 0;
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),

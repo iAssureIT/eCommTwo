@@ -18,4 +18,7 @@ router.get('/get/list/:franchiseId',billController.list_product);
 //get franchise details
 router.get('/getCompany/:companyID',billController.getCompany);
 
+//list bills
+router.get('/get/billnumberlist/:franchiseId',billController.getListBill);
+
 module.exports = router;
