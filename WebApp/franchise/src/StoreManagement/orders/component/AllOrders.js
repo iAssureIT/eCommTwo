@@ -29,7 +29,7 @@ export default class AllOrders extends Component{
     console.log("userData.companyID===>",userData.companyID)
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
-      // console.log("resdata===>",resdata.data._id)
+      console.log("resdata===>",resdata.data._id)
       axios.get("/api/orders/get/franchisewise/list/"+resdata.data._id)
             .then((response)=>{
               console.log("resdata===>",response.data)
