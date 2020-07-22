@@ -1062,52 +1062,6 @@ exports.updateDeliveryStatus = (req,res,next)=>{
                     if(data.nModified == 1){
                       if(status == 'Paid'){
 
-                            request({
-                             "method"    : "POST",
-                             "url"       : "http://localhost:"+gloabalVariable.PORT+"/send-email",
-                             "body"      :  {
-                                                 "email"     : "priyanka.kale@iassureit.com",
-                                                 "subject"   : 'Order delivered Successfully',
-                                                 "text"      : "WOW Its done",
-                                                 "mail"      : 'Hello '+'Admin'+','+'\n'+"\n <br><br>Order delivered successfully."+"<b></b>"+'\n'+'\n'+' </b><br><br>\nRegards,<br>Team GangaExpress',
-                                            },
-                             "json"      : true,
-                             "headers"   : {
-                                             "User-Agent": "Test App"
-                                         }
-                            })
-                            .then((sentemail)=>{
-                                res.header("Access-Control-Allow-Origin","*");
-                                res.status(200).json({message:"Mail Sent successfully"});
-                            })
-                            .catch((err) =>{
-                                res.status(500).json({
-                                    error: err
-                                });
-                            });
-                           
-                            /*const client2 = new plivo.Client('MAMZU2MWNHNGYWY2I2MZ', 'MWM1MDc4NzVkYzA0ZmE0NzRjMzU2ZTRkNTRjOTcz');
-                            const sourceMobile2 = "+919923393733";
-                            var text2 = "Dear Admin, "+'\n'+"Order delivered successfully.\n";
-                           
-                            client2.messages.create(
-                             src=sourceMobile2,
-                             dst= '+919049711725',
-                             text=text2
-                            ).then((result)=> {
-                                // console.log("src = ",src," | DST = ", dst, " | result = ", result);
-                                res.status(200).json({
-                                    message:"Order dilivered Successfully"
-                                });
-                            })
-                            .catch(otpError=>{
-                                // console.log("otpError",otpError);
-                                return res.status(501).json({
-                                     message: "Some Issue Occured While Placing Your Order",
-                                     error: otpError
-                                });
-                            });*/
-
 
                             Orders.findOne({_id:req.body.orderID})
                             .exec()

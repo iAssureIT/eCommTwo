@@ -29,7 +29,8 @@ export default class NewOrdersList extends Component{
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
       console.log("resdata===>",resdata.data._id)
-      axios.get("/api/orders/get/orderlist/New Order/"+resdata.data._id)
+      var neworder = "New Order"
+      axios.get("/api/orders/get/orderlist/"+neworder+'/'+resdata.data._id)
             .then((response)=>{
               var UsersArray = [];
                 for (let i = 0; i < response.data.length; i++) {
