@@ -54,6 +54,7 @@ export class Bill extends React.Component {
 		this.getFranchiseDetails();
 		$('.leftsidebarbackgroundcolor').hide();
 		$('#headerid').css('width',"100% !important");
+		$('#headerid').attr('style',"width : 100% !important");
 		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
 		$('#dashbordid').removeClass('dashboardeffect');
 		this.props.fetchCartData();
@@ -116,6 +117,10 @@ export class Bill extends React.Component {
 			total : nextProps.recentCartData.total,
 		},()=>{
 		})
+	}
+
+	onClickCollapse(event){
+		alert("test");
 	}
 
 	
@@ -892,7 +897,7 @@ export class Bill extends React.Component {
 		} else if (document.msExitFullscreen) {
 		  document.msExitFullscreen();
 		}
-	  }
+	}
 
 	render() {
 		const cartItems = this.props.recentCartData;
@@ -911,6 +916,7 @@ export class Bill extends React.Component {
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap mainDiv">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent '>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{"marginTop": "25px","padding-bottom":"5px"}}>
+					 	    {/* <a className="fa fa-home" href="/dashboard" title="Go to Homepage"></a> */}
 							{this.state.showFullScreen === false ? 
 							<button className="btn fullScreenBtn col-lg-1 col-md-1 col-sm-6 col-xs-12" onClick={this.openFullscreen.bind(this)}>Full Screen <i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
 							: <button className="btn fullScreenBtn col-lg-1 col-md-1 col-sm-6 col-xs-12" onClick={this.closeFullscreen.bind(this)}>Exit Screen <i class="fa fa-window-close" aria-hidden="true"></i></button>
@@ -937,7 +943,6 @@ export class Bill extends React.Component {
                                 <button className="input-group button_add button button" type="button"><i className="fa fa-plus"></i></button>
 							</div>
 						</div>
-						
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<div className="col-lg-1 col-md-1 col-sm-12 col-xs-12 sectionDiv">
 								<h4>Section</h4>
@@ -973,7 +978,7 @@ export class Bill extends React.Component {
 								{
 								   Array.isArray(this.state.ProductList) && this.state.ProductList.length > 0 ?
                                    Array.isArray(this.state.ProductList) && this.state.ProductList.map((data,index)=>{
-								   let imageUrl = data.productImage[0] ? data.productImage[0] : 'images/demoimg.png';
+								   let imageUrl = data.productImage[0] ? data.productImage[0] : 'images/notavailable.jpg';
                                     return(
 										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" id={data.availableQuantity > 0 && data.availableQuantity !== undefined ? 'activeProducts' : 'deactiveProducts'} onClick={this.addtocart.bind(this,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice,data.availableQuantity)}>
 											<div class="col-lg-12 card">

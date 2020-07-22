@@ -90,7 +90,7 @@ exports.insert_orders = (req,res,next)=>{
                        
                         var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
                         var obj = {"orderNum":Math.round(new Date().getTime()/1000),"orderDate":new Date(),"orderQty":req.body.cartItems[i].quantity,"Unit":req.body.cartItems[i].unit, "orderDeliveryStatus":status}
-                        var franchiseGoodsOrder =   await addOrderToFranchiseGoods(productId,obj,matchedFranchise);
+                        var franchiseGoodsOrder =   await addOrderToFranchiseGoods(productId,obj,req.body.franchise_id);
                       }
                     
 
@@ -99,13 +99,15 @@ exports.insert_orders = (req,res,next)=>{
                         // console.log("allocatedToFranchise==========",allocatedToFranchise);
                         // console.log("inside saveOrderData allocate franchise Id - saveOrderData function");  
                         var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
+                        //for franchise instore bill
+                        var billFranchise = req.body.franchise_id ? req.body.franchise_id : allocatedToFranchise;
                         var BillNumber = req.body.billNumber ? req.body.billNumber : 0;
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),
                         "orderID"              : Math.round(new Date().getTime()/1000),
                         "billNumber"          : BillNumber,
                         "user_ID"              : req.body.user_ID,
-                        "allocatedToFranchise" : allocatedToFranchise,
+                        "allocatedToFranchise" : allocatedToFranchise ? allocatedToFranchise : billFranchise,
                         "userName"             : data.profile.email,
                         "userFullName"         : data.profile.fullName,
                         "total"                : req.body.total,
@@ -2198,7 +2200,7 @@ exports.vendorWiseOrder = (req,res,next)=>{
 };
 
 function addOrderToFranchiseGoods(productId,obj,franchise_id) {   
-  console.log("ItemCodeobj",productId,obj,franchise_id);
+  console.log("ItemCodeobj",franchise_id);
       return new Promise(function(resolve,reject){
              FranchiseGoods.find({productId : productId,balance: { $gt: 0 },franchise_id:franchise_id})
               .sort({createdAt : 1})
