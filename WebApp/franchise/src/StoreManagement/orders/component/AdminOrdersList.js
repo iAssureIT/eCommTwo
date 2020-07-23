@@ -55,8 +55,23 @@ class AdminOrdersList extends Component{
     }
     componentWillReceiveProps(nextProps){
         if(nextProps){
+          var ProductList = [];
+          nextProps.allProductsArray.filter(function(item,index){
+              if(ProductList.length > 0){
+                var i = ProductList.findIndex(x => x.product_ID == item.product_ID);
+                if(i <= -1){
+                  ProductList.push(item);
+                }       
+              }else{
+                ProductList.push(item);
+              }
+                
+            return null;
+          });	
             this.setState({
                 "data": nextProps.data,
+                "allProductsArray" : nextProps.allProductsArray,
+                "filteredProductArray" : ProductList
             });
         }
     }
@@ -184,6 +199,25 @@ class AdminOrdersList extends Component{
         this.getOrdersBetweenDates();
       });
 
+    }
+
+    onProductChange(event){
+      event.preventDefault();
+      const {name,value} = event.target;
+      var total = 0;
+      let productQty = this.state.allProductsArray.reduce(function(prev, current) {
+        if(new String(current.product_ID).valueOf() == new String(value).valueOf()){
+          total = total + current.quantity
+        }
+      }, 0); 
+
+      this.setState({ 
+        [name]:value,
+        "productQty" : total
+      },()=>{
+
+      });
+      
     }
 
     getOrdersBetweenDates(){
@@ -596,6 +630,31 @@ class AdminOrdersList extends Component{
                                   <option value="Delivery Initiated">Delivery Initiated</option>
                                   <option value="Delivered & Paid">Delivered & Paid</option>                                </select>
                             </div>
+                        </div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                           <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                            <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Product</label>
+                                <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="product" name="product" value={this.state.product} onChange={this.onProductChange.bind(this)} >
+                                  <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+                                  {
+                                    this.state.filteredProductArray && this.state.filteredProductArray.length > 0 ?
+                                      this.state.filteredProductArray.map((data, i)=>{
+                                        return(
+                                        <option key={i} value={data.product_ID}>{data.productName}</option>
+                                        );
+                                      })
+                                    :
+                                    null
+                                  }
+                                </select>
+                            </div>
+                            {this.state.productQty ?
+                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12" style={{"padding-top": "28px"}}>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                  Quantity : {this.state.productQty}
+                                </div>
+                            </div>
+                            : null}
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

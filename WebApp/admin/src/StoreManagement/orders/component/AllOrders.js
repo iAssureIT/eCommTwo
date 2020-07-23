@@ -15,7 +15,8 @@ export default class AllOrders extends Component{
   constructor(props) {
    super(props);
     this.state = {
-      "data" : [] 
+      "data" : [],
+      "allProductsArray" :[]
     }
     this.getOrders = this.getOrders.bind(this);
   }
@@ -28,6 +29,7 @@ export default class AllOrders extends Component{
             .then((response)=>{
               console.log("response.data of order==>",response.data)
               var UsersArray = [];
+              var allProductsArray = [];
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
@@ -39,6 +41,7 @@ export default class AllOrders extends Component{
                   var totalAmount = response.data[i].total;
                   var productarr = [];
                   for(let j in response.data[i].products){
+                      allProductsArray.push(response.data[i].products[j]);
                       productarr.push(response.data[i].products[j].productName +' '+response.data[i].products[j].quantity )
                   }
                   var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
@@ -62,8 +65,11 @@ export default class AllOrders extends Component{
                   UsersArray.push(UserArray);
                 }
 
+                console.log("UsersArray",UsersArray);
+
                 this.setState({
-                  data: UsersArray
+                  data: UsersArray,
+                  allProductsArray : allProductsArray
                 });
 
                 this.setState({
@@ -79,7 +85,7 @@ export default class AllOrders extends Component{
   render(){
     return(
       <div>
-      <AdminOrdersList tableTitle={'All Orders'} data={this.state.data} getOrdersFun={this.getOrders}/>
+      <AdminOrdersList tableTitle={'All Orders'} data={this.state.data} allProductsArray={this.state.allProductsArray} getOrdersFun={this.getOrders}/>
       </div>
       );
     
