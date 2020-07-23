@@ -22,16 +22,16 @@ class AdminOrdersList extends Component{
                 "orderData":[],
                 "orderId": '',
                 // "notificationData" :Meteor.subscribe("notificationTemplate"),
-                "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
-                "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
+                "fromDate"     :'',
+                "toDate"       : '',
                 "status"  : ''
             };
         } else{
             this.state = {
                 "orderData":[],
                 "orderId": '',
-                "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
-                "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
+                "fromDate"     : '',
+                "toDate"       : '',
                 "status"  : ''
             };
         }

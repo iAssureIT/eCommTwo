@@ -21,8 +21,8 @@ class AdminOrdersList extends Component{
             this.state = {
                 "orderData":[],
                 "orderId": '',
-                "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
-                "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
+                "fromDate"     : '',
+                "toDate"       : '',
                 "FranchiseArray" : [],
                 "selectedFranchise" : '',
                 "status"  : ''
@@ -32,8 +32,8 @@ class AdminOrdersList extends Component{
             this.state = {
                 "orderData":[],
                 "orderId": '',
-                "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
-                "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
+                "fromDate"     : '',
+                "toDate"       : '',
                 "FranchiseArray" : [],
                 "selectedFranchise" : '',
                 "status"  : ''

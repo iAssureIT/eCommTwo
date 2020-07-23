@@ -765,6 +765,7 @@ exports.list_franchise_order = (req,res,next)=>{
 
     Orders.find({allocatedToFranchise : ObjectId(req.params.franchiseID)})
         // .populate("allocatedToFranchise")
+        .populate("allocatedToFranchise")
         .sort({createdAt:-1})      
         .exec()
         .then(data=>{
@@ -1710,10 +1711,12 @@ exports.get_reports_franchise = (req,res,next)=>{
     Orders.find({
       allocatedToFranchise : ObjectId(req.params.franchiseID),
       createdAt: {
-        $gte:  moment(req.body.startDate).startOf('day').toDate(),
-        $lte:  moment(req.body.endDate).endOf('day').toDate()
+        $gte:  moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+        $lte:  moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate()
       }
-    }).sort({createdAt:-1})      
+    })
+    .populate("allocatedToFranchise")
+    .sort({createdAt:-1})      
         .exec()
         .then(data=>{
           
@@ -1739,12 +1742,15 @@ exports.get_reports_franchise = (req,res,next)=>{
         });
 };
 exports.get_reports = (req,res,next)=>{
+   console.log("get reports data",req.body.startDate,req.body.endDate);
     Orders.find({
       createdAt: {
-        $gte:  moment(req.body.startDate).startOf('day').toDate(),
-        $lte:  moment(req.body.endDate).endOf('day').toDate()
+        $gte:  moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+        $lte:  moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate()
       }
-    }).sort({createdAt:-1})      
+    })
+    .populate("allocatedToFranchise")
+    .sort({createdAt:-1})      
         .exec()
         .then(data=>{
           // var allData = data.map((x, i)=>{
@@ -1757,7 +1763,7 @@ exports.get_reports = (req,res,next)=>{
           //   //     "status"        : x.deliveryStatus[x.deliveryStatus.length-1].status
           //   // }
           // })
-          // console.log("get reports data",allData);
+        console.log("get reports data",data);
           // res.status(200).json(allData.slice(req.params.startRange, req.params.limitRange));
          res.status(200).json(data);
         })
