@@ -635,6 +635,7 @@ exports.user_login_using_email = (req, res, next) => {
 													email: user.profile.email,
 													phone: user.profile.phone,
 													city: user.profile.city,
+													deliveryAddress: user.deliveryAddress,
 													pincode: user.profile.pincode,
 													companyID: user.profile.companyID,
 													locationID: user.profile.locationID,
