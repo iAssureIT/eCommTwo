@@ -26,7 +26,7 @@ export default class AllOrders extends Component{
   getOrders(){
       axios.post("/api/orders/get/get_orders")
             .then((response)=>{
-              // console.log("response.data of order==>",response.data)
+              console.log("response.data of order==>",response.data)
               var UsersArray = [];
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
@@ -34,6 +34,7 @@ export default class AllOrders extends Component{
                   var allocatedToFranchise = response.data[i].allocatedToFranchise ?response.data[i].allocatedToFranchise.companyName : null;
                   var userFullName = response.data[i].userFullName;
                   var totalQuantity = response.data[i].cartQuantity;
+                  var shippingtime = response.data[i].shippingtime;
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
                   var productarr = [];
@@ -51,6 +52,7 @@ export default class AllOrders extends Component{
                   UserArray.push(allocatedToFranchise);
                   UserArray.push(userFullName);
                   // UserArray.push(totalQuantity);
+                  UserArray.push(shippingtime);
                   UserArray.push(productarr.toString());
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
                   UserArray.push(createdAt);

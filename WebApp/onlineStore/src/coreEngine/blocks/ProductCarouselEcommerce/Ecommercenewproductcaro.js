@@ -494,6 +494,7 @@ class Ecommercenewproductcaro extends Component {
                     {
                       Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 ?
                         Array.isArray(this.state.newProducts) && this.state.newProducts.map((data, index) => {
+                          // console.log("featuredproductsloading =========>", data.shortDescription);
                           var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                           if(x && x.length > 0){
                             var wishClass = '';
@@ -617,7 +618,7 @@ class Ecommercenewproductcaro extends Component {
                                                 </div>
                                                 :
                                                 <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - Pack Of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
-                                            }
+                                            } 
                                           </div>
                                           
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">

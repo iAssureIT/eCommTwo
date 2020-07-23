@@ -33,6 +33,7 @@ export default class ApprovedOrdersList extends Component{
                   var allocatedToFranchise = response.data[i].allocatedToFranchise ?response.data[i].allocatedToFranchise.companyName : null;
                   var userFullName = response.data[i].userFullName;
                   var totalQuantity = response.data[i].totalQuantity;
+                  
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
                   var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");

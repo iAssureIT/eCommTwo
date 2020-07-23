@@ -466,6 +466,8 @@ class ProductCollageView extends Component {
           {
             Array.isArray(this.state.products) && this.state.products.length > 0 ? 
             Array.isArray(this.state.products) && this.state.products.map((data, index) => {                
+              
+
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 var wishClass = '';
                 var tooltipMsg = '';
@@ -488,7 +490,7 @@ class ProductCollageView extends Component {
                               <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImg" />
                             </a>
                           </div>
-                          <div className="productDetails  col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                            
+                          <div className="productDetails  col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                             
                             <div className="innerDiv">
                               <div className="product-brand" title={data.brand}>{data.brand}</div>
                               <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
