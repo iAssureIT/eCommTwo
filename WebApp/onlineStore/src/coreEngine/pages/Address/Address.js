@@ -201,8 +201,7 @@ class Address extends Component {
             this.handlePincode(event.target.value);
         }
     }
-    handlePincode(pincode){
-        
+    handlePincode(pincode){        
         if (pincode !== '') {
             axios.get("https://api.postalpincode.in/pincode/" +pincode)
             .then((response) => {

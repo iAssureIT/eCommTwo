@@ -73,9 +73,23 @@ class Ecommercenewproductcaro extends Component {
       for(var i=0;i<nextProps.newProducts.length;i++){      
           var availableSizes = [];         
           if(nextProps.newProducts[i].size){
-            availableSizes.push(nextProps.newProducts[i].size*1);
-            availableSizes.push(nextProps.newProducts[i].size*2);
-            availableSizes.push(nextProps.newProducts[i].size*4); 
+            availableSizes.push(
+              {
+                "productSize": nextProps.newProducts[i].size*1,
+                "packSize"   :1,
+              },
+              {
+                "productSize": nextProps.newProducts[i].size*2,
+                "packSize"   :2,
+              },
+              {
+                "productSize": nextProps.newProducts[i].size*4,
+                "packSize"   :4,
+              },
+            )
+            // availableSizes.push(nextProps.newProducts[i].size*1);
+            // availableSizes.push(nextProps.newProducts[i].size*2);
+            // availableSizes.push(nextProps.newProducts[i].size*4); 
             nextProps.newProducts[i].availableSizes = availableSizes;           
           }
       }
@@ -613,16 +627,16 @@ class Ecommercenewproductcaro extends Component {
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
                                                     <div className="selectSizeBox col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding ">                                                                              
                                                     <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
-                                                      { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
-                                                          return( 
-                                                              size === 1000?
-                                                              // <option className="" value={size}>{size}KG</option>
-                                                              <option className="" value={size}> 1 KG</option>
-                                                              :
-                                                              data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                                <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                              :
-                                                              <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
+                                                    { Array.isArray(data.availableSizes) && data.availableSizes.map((availablesize, index) => {
+                                                        return( 
+                                                          <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
+                                                              // size === 1000?                                                              
+                                                              // <option className="" value={size}> 1 KG</option>
+                                                              // :
+                                                              // data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                              //   <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                              // :
+                                                              // <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
                                                           )                                                        
                                                         })
                                                       }

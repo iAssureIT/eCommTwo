@@ -93,12 +93,13 @@ componentWillMount() {
                   return(
                     <li key={index} className="top-level-link">
                       <a className="mega-menu" href={"/section/"+data.sectionUrl+'/'+data._id}><span>{data.section}</span></a>
+                      {data.categorylist.length > 0 ?
                       <div className="col-lg-4 col-md-4 sub-menu-block textAlignLeft">
                         <div className="row">
                           <div className="col-md-3 col-lg-3 col-sm-3 megamenusubwidth">
                           <ul className="sub-menu-head">
                             {
-                              data.categorylist.map((cateoryDetails,catindex)=>{                                
+                             data.categorylist.map((cateoryDetails,catindex)=>{                                
                                 // if(!cateoryDetails.subCategory.length > 0){
                                   return(
                                     <div key={catindex} className="col-md-12 col-lg-12 col-sm-12 megamenusubwidth1">
@@ -146,6 +147,8 @@ componentWillMount() {
                           </div>                           */}
                         </div>
                       </div>
+                      :null
+                      }
                     </li>
                     );
                  })

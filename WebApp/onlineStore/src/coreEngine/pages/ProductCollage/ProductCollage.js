@@ -904,8 +904,8 @@ class ProductCollage extends Component {
 						{/*for lg and md*/} 
 						{
 							// Array.isArray(this.state.categoryDetails.length) > 1 ?
-							Array.isArray(this.state.categoryDetails) && this.state.categoryDetails.length > 1 ?
-								<div className="col-lg-3 col-md-3">									
+							Array.isArray(this.state.categoryDetails) && this.state.categoryDetails.length > 0 ?
+								<div className="col-lg-3 col-md-3 filterWrapper">									
 									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
 										<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
