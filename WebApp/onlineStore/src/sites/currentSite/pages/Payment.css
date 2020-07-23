@@ -77,6 +77,11 @@ table > tfoot > tr > td:last-of-type {
 .actbtns{
 	float: right;
 }
+.brdrbtmpayment{
+    border-bottom: 1px solid #80b435;
+    margin-bottom: 10px;
+    padding-top: 10px;
+}
 .actbtns button{
     left: 0;
     bottom: 0;

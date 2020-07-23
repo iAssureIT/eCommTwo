@@ -54,7 +54,7 @@ class Payment extends Component {
             <br />
             <br />
             <h4 className="table-caption">Order Details</h4>
-            <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | OrderID -  {this.state.orderData.orderID}</p>
+            <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | OrderID -  {this.state.orderData.orderID}    <span className="pull-right">Shipping Time : {this.state.orderData.shippingtime}</span></p>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb50">
                 <strong className="box-title">
@@ -90,14 +90,12 @@ class Payment extends Component {
                   </div>
                   <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Shipping:  </span></div>
-                    {/*<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-" + this.state.orderData.currency}> Free</i></span> </div>*/}
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span>Free</span> </div>
                   </div>
-                  <div>
+                  {/* <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Time:  </span></div>
-                    {/*<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-" + this.state.orderData.currency}> Free</i></span> </div>*/}
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span>{this.state.orderData.shippingtime}</span><br/> </div>
-                  </div>
+                  </div> */}
                   <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Discount: </span></div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
@@ -110,12 +108,7 @@ class Payment extends Component {
                       <span><i className={"fa fa-" + this.state.orderData.currency}> {parseInt(this.state.orderData.total).toFixed(2)}</i></span>
                     </div>
                   </div>
-                  {/* <div>
-<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>GST ({ this.state.companyInfo.taxSettings && this.state.companyInfo.taxSettings[0].taxRating} %):  </span></div>
-<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
-<span><i className={"fa fa-"+this.state.orderData.currency}> { (this.state.orderData.cartTotal*18)/100 } </i></span> 
-</div>
-</div> */}
+                  <div className="brdrbtmpayment col-lg-12 col-md-6 col-sm-6 col-xs-6"></div>
                   <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">

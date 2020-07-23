@@ -837,7 +837,7 @@ exports.user_update_password_ID = (req,res,next)=>{
 
 exports.fetch_user_ID = (req,res,next)=>{
 	User.findOne({_id:req.params.ID})
-		.select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.image profile.clientId createdAt services.resume.loginTokens statusLog")
+		// .select("profile.firstname profile.lastname profile.status profile.companyID profile.companyName profile.fullName roles profile.email profile.mobile profile.image profile.clientId createdAt services.resume.loginTokens statusLog")
 
 		// .select("profile.firstname profile.lastname profile.status profile.fullName roles profile.email profile.mobile profile.image")
 		.exec()
@@ -854,6 +854,7 @@ exports.fetch_user_ID = (req,res,next)=>{
 					"lastname"	: data.profile.lastname,
 					"companyID"	: data.profile.companyID,
 					"companyName"	: data.profile.companyName,
+					"deliveryAddress"	: data.deliveryAddress,
 					"email"		: data.profile.email, //Mandatory 
 					"mobile" 	: data.profile.mobile,
 					"role"      : data.roles, //Mandatory
