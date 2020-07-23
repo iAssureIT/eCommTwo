@@ -2287,4 +2287,47 @@ exports.list_bill_by_user = (req,res,next)=>{
 };
 
 
+exports.get_orders_with_filters = (req,res,next)=>{
+   let selector = {};
+   let status = req.body.status ? req.body.status : '';
+   let franchiseID = req.body.franchiseID ? req.body.franchiseID : '';
+   let startDate = req.body.startDate ? moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate() : '';
+   let endDate = req.body.endDate ? moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate() : '';
+   
+   if(status !== "" && franchiseID !== "" && startDate !== "" && endDate !== ""){
+      selector ={"deliveryStatus.status" :  req.body.status,allocatedToFranchise : ObjectId(req.body.franchiseID),
+                  createdAt: {
+                      $gte:  moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+                      $lte:  moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate()
+                }
+              }
+   }else{
+
+   }
+
+   console.log("get reports data",req.body.startDate,req.body.endDate,req.body.franchiseID,req.body.status);
+    Orders.find({
+            "deliveryStatus.status" :  req.body.status,
+            allocatedToFranchise : ObjectId(req.body.franchiseID),
+            createdAt: {
+              $gte:  moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+              $lte:  moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate()
+            }
+    })
+    .populate("allocatedToFranchise")
+    .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+         console.log("get reports data",data);
+         res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+
 
