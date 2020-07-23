@@ -3,7 +3,8 @@ import axios                  from 'axios';
 // import $                  from 'jquery';
 import '../../../sites/currentSite/pages/MyOrders.css';
 import {withRouter} from 'react-router-dom';
-// import Sidebar from '../../common/Sidebar/Sidebar.js';
+import { ntc } from '../../ntc/ntc.js';
+import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import moment from 'moment';
 class ViewOrder extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class ViewOrder extends Component {
         <br/>
         <br/>
         <h4 className="table-caption">Order Details</h4>
-        <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | Order {this.state.orderData.orderID}</p>
+        <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | Order {this.state.orderData.orderID} <span className="pull-right">Shipping Time : {this.state.orderData.shippingtime}</span></p>
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
             <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
               <strong className="box-title">
@@ -96,7 +97,41 @@ class ViewOrder extends Component {
               }
               </div>
             </div>
-            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mb50">
+                <strong className="box-title">
+                  <span>Order Summary</span>
+                </strong>
+                <div className="box-content">
+                  <div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Cart Total:</span>  </div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-" + this.state.orderData.currency}> {this.state.orderData.cartTotal}</i></span> </div>
+                  </div>
+                  <div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Shipping:  </span></div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span>Free</span> </div>
+                  </div>
+                  <div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Discount: </span></div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
+                      <span><i className={"fa fa-" + this.state.orderData.currency}> {parseInt(this.state.orderData.discount).toFixed(2)}</i></span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Order Total: </span></div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
+                      <span><i className={"fa fa-" + this.state.orderData.currency}> {parseInt(this.state.orderData.total).toFixed(2)}</i></span>
+                    </div>
+                  </div>
+                  <div className="brdrbtmpayment col-lg-12 col-md-6 col-sm-6 col-xs-6"></div>
+                  <div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
+                      <span><i className={"fa fa-" + this.state.orderData.currency}> {parseInt(this.state.orderData.total).toFixed(2)}</i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {/* <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6">
               <strong className="box-title">
                 <span>Order Summary</span>
               </strong>
@@ -110,7 +145,6 @@ class ViewOrder extends Component {
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}> 0</i></span> </div>
                 </div>
                 <div>
-                  {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>GST ({ this.state.companyInfo? this.state.companyInfo.taxSettings && this.state.companyInfo.taxSettings[0].taxRating:null} %):  </span></div> */}
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>GST ({ this.state.companyInfo? this.state.companyInfo.taxName && this.state.companyInfo.taxDetails[0].taxRate:null} %):  </span></div>
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
                   <span><i className={"fa fa-"+this.state.orderData.currency}> { (this.state.orderData.cartTotal*18)/100 } </i></span> 
@@ -123,11 +157,67 @@ class ViewOrder extends Component {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
            
           </div>
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox table-responsive">
+              <table className="table orderTable">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Products Name</th>
+                    <th className="textAlignRight">Price</th>
+                    <th className="textAlignRight">Quantity</th>
+                    <th className="textAlignRight">SubTotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                      this.state.orderData.products && this.state.orderData.products.length > 0 ?
+                        this.state.orderData.products.map((data, index) => {
+                          return (
+                            <tr key={'cartData' + index}>
+                              <td><img alt="Product Image" className="img img-responsive orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
+                              <td>
+                                <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productName}</h5></a>
 
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
+                                {data.discountPercent ?
+                                  <div className="col-lg-12 col-md-12 NOpadding">
+                                    <span className="cartOldprice"><i className="fa fa-inr cartOldprice"></i>{data.originalPrice}</span> &nbsp; &nbsp;
+                                    <span className="cartPrice"><i className="fa fa-inr"></i>{data.discountedPrice}</span> &nbsp; &nbsp;
+                                    <span className="cartDiscountPercent">({data.discountPercent}%)</span>
+                                  </div>
+                                  :
+                                  <span className="price"><i className="fa fa-inr"></i>{data.originalPrice}</span>
+                                }
+                                <div>
+                                  {data.color ? <span className="cartColor">Color : <span style={{ backgroundColor: data.color, padding: '0px 5px' }}>&nbsp;</span> {ntc.name(data.color)[1]}, </span> : null}
+                                  {data.size ? <span className="cartColor">Size : {data.size}</span> : null} &nbsp;
+                                  {data.size && data.unit ? <span className="cartColor">{data.unit}</span> : null}
+                                </div>
+                              </td>
+                              <td className="textAlignRight">
+                                {/* <span className="productPrize textAlignRight"><i className={"fa fa-" + data.currency}></i> &nbsp;{parseInt(data.discountedPrice).toFixed(2)}</span> */}
+                                <span className="productPrize textAlignRight"><i className="fa fa-inr"></i> &nbsp;{parseInt(data.discountedPrice).toFixed(2)}</span>
+                              </td>
+                              <td className="textAlignRight">
+                                <span className=" textAlignRight">{data.quantity}</span>
+                              </td>
+                              <td className="textAlignRight">
+                                {/* <span className="productPrize textAlignRight"><i className={"fa fa-" + data.currency}></i> &nbsp;{parseInt(data.subTotal).toFixed(2)}</span> */}
+                                <span className="productPrize textAlignRight"><i className="fa fa-inr"></i> &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      :
+                      null
+                  }
+                </tbody>
+              </table>
+
+            </div>
+          {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
 
           {
             this.state.orderData.products && this.state.orderData.products.length > 0 ?
@@ -161,7 +251,7 @@ class ViewOrder extends Component {
                   : null
            }
             
-          </div>
+          </div> */}
           {
           /*<table className="data table table-order-items history" id="my-orders-table">
             
