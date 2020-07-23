@@ -2302,23 +2302,25 @@ exports.get_orders_with_filters = (req,res,next)=>{
                 }
               }
    }else{
-
+      if(status !== ""){
+          selector["deliveryStatus.status"] = status;
+      }else if(franchiseID !== ""){
+          selector["allocatedToFranchise"] = ObjectId(req.body.franchiseID);
+      }else if(startDate !== "" && endDate !== ""){
+          selector["createdAt"] = {
+                      $gte:  moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+                      $lte:  moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate()
+                }
+      }else{
+        selector = {};
+      }
    }
 
-   console.log("get reports data",req.body.startDate,req.body.endDate,req.body.franchiseID,req.body.status);
-    Orders.find({
-            "deliveryStatus.status" :  req.body.status,
-            allocatedToFranchise : ObjectId(req.body.franchiseID),
-            createdAt: {
-              $gte:  moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
-              $lte:  moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate()
-            }
-    })
+    Orders.find(selector)
     .populate("allocatedToFranchise")
     .sort({createdAt:-1})      
         .exec()
         .then(data=>{
-         console.log("get reports data",data);
          res.status(200).json(data);
         })
         .catch(err =>{

@@ -24,7 +24,7 @@ export default class AllOrders extends Component{
     this.getOrders();
   }    
   getOrders(){
-      axios.get("/api/orders/get/list")
+      axios.post("/api/orders/get/get_orders")
             .then((response)=>{
               // console.log("response.data of order==>",response.data)
               var UsersArray = [];

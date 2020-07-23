@@ -42,7 +42,8 @@ export class Bill extends React.Component {
 				soldOutProductError   : '',
 				itemCode              : '',
 				showFullScreen        : false,
-				checkoutClicked       : false
+				checkoutClicked       : false,
+				paymentMethod         : 'cash'
 				
 		  };
 		//   this.escFunction = this.escFunction.bind(this);
@@ -761,11 +762,10 @@ export class Bill extends React.Component {
 				discount: this.props.recentCartData[0].discount,
 				cartQuantity: this.props.recentCartData[0].cartQuantity,
 				deliveryAddress: this.state.deliveryLocation[0],
-				paymentMethod: "Cash On Delivery",
+				paymentMethod: this.state.paymentMethod,
 				status       : "Paid",
 				deliveryStatus : "Delivered & Paid"
 			}
-			// console.log("Order Data:--->",orderData);
 			axios.post('/api/orders/post', orderData)
 				.then((result) => {
 					this.props.fetchCartData();
@@ -883,6 +883,14 @@ export class Bill extends React.Component {
 		} else if (document.msExitFullscreen) {
 		  document.msExitFullscreen();
 		}
+	}
+
+	onChangePaymentMethod(paymentMethod){
+		this.setState({
+			"paymentMethod" : paymentMethod
+		},()=>{
+			console.log("paymentMethod",this.state.paymentMethod);
+		})
 	}
 
 	render() {
@@ -1144,6 +1152,16 @@ export class Bill extends React.Component {
 												</tr>
 											</tfoot>
 											</table>
+										</div>
+										<div className="row" style={{"padding": "15px"}}>
+											Payment Method : <div class="btn-group btn-group-toggle" data-toggle="buttons">
+													<label class="btn btn-secondary active" onClick={this.onChangePaymentMethod.bind(this,"cash")}>
+														<input type="radio" name="paymentmethod" id="option1" autocomplete="off" value={this.state.paymentMethod}  checked={this.state.paymentMethod == 'cash'}/> Cash
+													</label>
+													<label class="btn btn-secondary" onClick={this.onChangePaymentMethod.bind(this,"UPI")}>
+														<input type="radio" name="paymentmethod" id="option2" autocomplete="off" value={this.state.paymentMethod} checked={this.state.paymentMethod == 'UPI'}/> UPI
+													</label>
+											</div>
 										</div>
 										<div className="row" style={{"padding": "13px"}}>
 											<ul className="declaration"><b>Declaration</b>

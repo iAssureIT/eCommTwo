@@ -588,7 +588,10 @@ export class printBill extends React.Component {
 											</tfoot>
 											</table>
 										</div>
-										<div className="row" style={{"padding": "13px"}}>
+										<div className="row" style={{"padding": "15px"}}>
+												<span>Payment Method : {this.state.orderData.paymentMethod}</span>
+										</div>
+										<div className="row">
 											<ul className="declaration"><b>Declaration</b>
 												<li>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
 											</ul>

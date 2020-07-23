@@ -181,18 +181,7 @@ class AdminOrdersList extends Component{
       this.setState({ 
         [name]:value,
       },()=>{
-        if(this.state.status == "all"){
-          var fromDate = this.state.fromDate ? this.state.fromDate : null;
-          var startDate = this.state.startDate ? this.state.startDate :null;
-  
-          if(fromDate !== null && startDate !== null){
-            this.getOrdersBetweenDates();
-          }else{
-            this.getOrders();
-          }
-        }else{
-          this.getOrdersByStatus();
-        }
+        this.getOrdersBetweenDates();
       });
 
     }
@@ -201,14 +190,13 @@ class AdminOrdersList extends Component{
       var orderFilterData= {};
       orderFilterData.startDate = this.state.fromDate;
       orderFilterData.endDate = this.state.toDate;
+      orderFilterData.status = this.state.status !== 'all' ? this.state.status : '';
       var userDetails = (localStorage.getItem('userDetails'));
       var userData = JSON.parse(userDetails);
-      console.log("userData.companyID===>",userData.companyID)
       axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
       .then((resdata)=>{
-        console.log("resdata===>",resdata.data._id);
-        orderFilterData.franchiseID = resdata.data._id;
-         axios.post('/api/orders/get/report/'+resdata.data._id+'/'+this.state.fromDate+'/'+this.state.toDate,orderFilterData)
+        orderFilterData.franchiseID = resdata.data._id;;
+         axios.post('/api/orders/get/get_orders/',)
             .then((response)=>{
               var UsersArray = [];
                 for (let i = 0; i < response.data.length; i++) {
