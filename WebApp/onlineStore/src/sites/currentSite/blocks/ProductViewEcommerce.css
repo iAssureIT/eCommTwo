@@ -1,7 +1,7 @@
 .miniImagesIn{
 	height: auto;
     font-family: 'PT Sans',sans-serif !important;
-    /* background-color: #444; */
+    background-color: #444;
     margin-top: 50px;
     border: 1px solid #efefef;
     /* margin-right: 20px; */
@@ -17,9 +17,7 @@
 	height: 100%;
 	width: 100%; 
 
-}
-.mg15{
-    margin: 15px;
+
 }
 .imgCont{
      /* overflow: hidden; */
@@ -214,7 +212,7 @@
      font-weight:900;
 }
 .priceEcommerceNew{
-    color:#80b435;
+    color:#A2632C;
     font-size: 1.8rem !important;
     font-weight: 700;
     line-height: 25px;
@@ -294,7 +292,7 @@
 .miniImagesInNew{
     height: auto;
     /*font-family: 'PT Sans',sans-serif !important;*/
-    /* background-color: #444; */
+    background-color: #444;
     border: 1px solid #efefef;
     margin-bottom: 20px;
     cursor: pointer;
@@ -387,13 +385,13 @@
     padding-top: 15px;
     padding-bottom: 15px;
     border-radius: 4px;
-    border: 1px solid #80b435;
+    border: 1px solid #A2632C;
     text-align: center;
 }
 .qtyIncrease{
     cursor: pointer;
     border-radius: 4px;
-    border: 1px solid #80b435;
+    border: 1px solid #A2632C;
     padding: 5px;
     margin: 1px;
 }
@@ -401,15 +399,15 @@
     cursor: pointer;
     padding: 15px 10px;
     border-radius: 4px;
-    border: 1px solid #80b435;
-    color: #80b435;
+    border: 1px solid #A2632C;
+    color: #A2632C;
 }
 .viewWishList{
     cursor: pointer;
     padding: 15px 10px;
     border-radius: 4px;
-    border: 1px solid #80b435;
-    color: #80b435;
+    border: 1px solid #A2632C;
+    color: #A2632C;
 }
 .viewWishListActive{
     cursor: pointer;
@@ -421,7 +419,6 @@
 }
 .viewAddtoCart:hover{
     color: #A2632C;
-    border:1px solid #80b435;
 }
 .viewWishList:hover{
     color: #A2632C;
@@ -451,7 +448,7 @@
     font-weight: 900;
 }
 .viewAddtoCart:hover{
-    background: #80b435;
+    background: #A2632C;
     color: #fff;
 }
 
@@ -1008,7 +1005,7 @@ position:relative;
     height: 0;
 }
 .size input:checked ~ .checkmark {
-    border-color: #80b435;
+    border-color: #2196F3;
     color: #2196F3;
 }
 .colorBox input:checked ~ .color {
@@ -1030,14 +1027,4 @@ position:relative;
     font-size: 12px !important;
     letter-spacing: 1px;
     font-weight: 400;
-}
-.backColorWhite{
-    background-color: #fff !important;
-}
-
-@media only screen and (max-device-width: 480px) { 
-.adCart{
-    padding-left: 0px;
-    padding-right: 0px;
-}
 }

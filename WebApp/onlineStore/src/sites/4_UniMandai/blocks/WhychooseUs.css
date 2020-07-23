@@ -1,8 +1,11 @@
 .mtop25{
 	margin-top: 25px;
 }
-.ocTitle{
-	
+.whyUsDiv{
+  background-size: cover !important;
+  background-position: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  padding: 20px !important;
 }
 .newocTitle{
     color: #376bff;
@@ -13,6 +16,14 @@
     margin:auto auto;
     margin-top: -20px;
 
+}
+.whychooseUsImg{
+  margin-top: 100px;
+}
+.WhyChooseUsImg{
+  height: 500px;
+  padding-left: 0px;
+  margin-left: -80px;
 }
 
 .ocLine{
@@ -373,7 +384,7 @@
   margin-top: 50px;
 }
 .whyUsSubDiv{
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 .whyusmainDiv{
   margin-bottom: 200px;

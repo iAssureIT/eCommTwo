@@ -135,7 +135,7 @@ background-color: transparent !important;
     display: block !important;
     background: transparent !important;
     border-radius: 0px !important;
-    margin-top: -200px !important;
+    margin-top: -270px !important;
     margin-left: -19px;
     width: 25px;
     height: 32px;
@@ -150,8 +150,8 @@ background-color: transparent !important;
    display: block !important;
     background: transparent !important;
     border-radius: 0px !important;
-    margin-top: -50px;
-    margin-left: 1190px;
+    margin-top: -40px;
+    margin-left: 1255px;
     width: 25px;
     height: 32px;
     color: #000;
@@ -418,7 +418,7 @@ background-color: transparent !important;
 
 .discounttag{
     position: absolute;
-    background-color: #80b435;
+    background-color: #A2632C;
     color: #fff;
     padding: 3px 6px 3px 5px;
     left: 7.7%;
@@ -436,8 +436,8 @@ background-color: transparent !important;
 @media screen and (max-width: 480px) {
    .card{
     border: 1px solid #f1f2f2;
-    /* max-width: 270px; */
-    /* margin: 5px; */
+    max-width: 270px;
+    margin: 5px;
     height: 385px;
     padding: 0px;
    }   
@@ -457,8 +457,8 @@ background-color: transparent !important;
 
 .card{
     border: 1px solid #f1f2f2;
-    /* max-width: 270px; */
-    /* margin: 5px; */
+    max-width: 270px;
+    margin: 5px;
     /*height: 385px;*/
 }
 .productDetails{
@@ -668,7 +668,7 @@ background-color: transparent !important;
 
 }
 .product-item-link:hover{
-    color:  #80b435;
+    color:  #A2632C;
 }
 .product-brand{
     color: #555;
@@ -680,7 +680,7 @@ background-color: transparent !important;
     width: 100%;
 }
 .product-brand:hover{
-    color:  #80b435;
+    color:  #A2632C;
 }
 .producttextclass h3{
     font-size: 18px!important;
@@ -719,25 +719,20 @@ background-color: transparent !important;
     color:#A2632C;
 }
 .homeCart{
-    /* margin-top: 5px; */
-    padding: 0px 14px;
+    margin-top: 5px;
+    padding: 6px 14px;
     font-weight: bold;
     font-size: 12px;
-    border: 1px solid #80b435;
-    border-radius: 5px;
-    color: #80b435;
-    height: 30px;
+    border: 1px solid #A2632C;
+    border-radius: 15px;
+    color: #A2632C;
     background: #fff;
 }
 .homeCart:hover{
-    background: #80b435;
+    background: #A2632C;
     color: #fff;
 }
-.marathiName{
-    font-family: 'kruti';
-    font-weight: 700;
-    font-size: 15px;
-}
+
 .wishIcon{
     margin-top: 5px;
     padding: 6px 6px;
@@ -745,38 +740,11 @@ background-color: transparent !important;
     font-size: 12px;
     border: transparent;
     /* border-radius: 15px; */
-    color: #80b435;
+    color: #A2632C;
     background: transparent;
     position: absolute;
     left: 80%;
     top: 2%;
     font-size: 20px;
     font-weight: 700;
-}
-/* css for mobile */
-@media only screen and (max-device-width: 480px) {
-    .customnNavButton .owl-nav button.owl-next{
-        margin-left: 320px !important;
-        margin-top: -37px !important;
-        opacity: 1;
-    }
-    .customnNavButton .owl-nav button.owl-prev{
-        margin-left: 9px;
-    }
-    .productImg{
-        height: auto;
-    }
-    .blockCard{
-        margin-left: 50px;
-    }
-} 
-
-/* css for iPad */
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) {
-  /* Styles */
-   .customnNavButton .owl-nav button.owl-next{
-        margin-left: 650px;
-   }
 }

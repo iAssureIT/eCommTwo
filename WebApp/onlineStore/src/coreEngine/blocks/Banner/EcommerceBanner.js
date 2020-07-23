@@ -43,16 +43,16 @@ export default class EcommerceBanner extends Component {
                       dotData={true}
 									>
 									    <div className="item">
-									    	<img className="img img-responsive bannerimg" src="../../../sites/currentSite/images/banner1.png" alt="banner" />
+									    	<img className="img img-responsive bannerimg" src={require("../../../sites/currentSite/images/banner1.png")} alt="banner" />
 									    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
-									    		<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/banner1(1).png" alt="banner"  />
+									    		<img className="img img-responsive banner1upImg" src={require("../../../sites/currentSite/images/banner1(1).png")} alt="banner"  />
 									    		<div className="BannerTitle"> Anas Handicraft </div>
-									    		<img className="img img-responsive banner1downImg" src="../../../sites/currentSite/images/banner1(2).png" alt="banner"  />
+									    		<img className="img img-responsive banner1downImg" src={require("../../../sites/currentSite/images/banner1(2).png")} alt="banner"  />
 									    		<div className="bannertext">India's Largest Handicraft Furniture Mall</div>
 									    	</div>
 									    </div>
 									    <div className="item">
-									    	<img className="img img-responsive" src="../../../sites/currentSite/images/banner2.png" alt="banner" />
+									    	<img className="img img-responsive" src={require("../../../sites/currentSite/images/banner2.png")} alt="banner" />
 									    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner2AnimationImg">
 									    		<img className="img img-responsive banner2sideImg" src="../../../sites/currentSite/images/banner2(1).png" alt="banner" />
 									    	</div>
@@ -66,11 +66,11 @@ export default class EcommerceBanner extends Component {
 									    	</div>
 									    </div>
 									    <div className="item">
-									    	<img className="img img-responsive" src="../../../sites/currentSite/images/banner3.png" alt="banner"  />
+									    	<img className="img img-responsive" src={require("../../../sites/currentSite/images/banner3.png")} alt="banner"  />
 									    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
-									    		<img className="img img-responsive banner1upImg" src="../../../sites/currentSite/images/banner3(1).png" alt="banner"  />
+									    		<img className="img img-responsive banner1upImg" src={require("../../../sites/currentSite/images/banner3(1).png")} alt="banner"  />
 									    		<div className="BannerTitle"> Royal Collection </div>
-									    		<img className="img img-responsive banner1downImg" src="../../../sites/currentSite/images/banner3(2).png" alt="banner" />
+									    		<img className="img img-responsive banner1downImg" src={require("../../../sites/currentSite/images/banner3(2).png")} alt="banner" />
 									    		<div className="bannertext">At amazing disscount, door step delivery</div>
 									    	</div>
 									    </div>

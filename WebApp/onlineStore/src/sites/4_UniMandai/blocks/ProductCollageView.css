@@ -1,8 +1,10 @@
 .card{
 	border: 1px solid #f1f2f2;
-	max-width: 270px;
-	margin: 5px;
-	/*height: 336px;*/
+	/* max-width: 270px; */
+	/* margin: 5px; */
+	margin-top: 5px;
+	margin-bottom: 5px;
+	height: 336px;
 }
 .productDetails{
 	padding-bottom: 15px;
@@ -11,7 +13,6 @@
 .item-top{
 	text-align: center;
 }
-
 .productImg{
 	overflow: hidden;
 	height: 185px;
@@ -348,16 +349,62 @@
     text-align: center;
     cursor: pointer;
 }
-.sizeCollage{
-	bottom: 59px;
-	padding: 15px;
-	max-width: 84.5%;
+.productDetails .sizeCollage{
+	bottom:6px;
+	padding: 5px 10px;
+	/* max-width: 82.5%; */
+	height: 130px;
     position: absolute;
-    z-index: 100;
-	background: #fbfafa;
-	transition: all 0.2s ease-out;
+	z-index: 100;
+	border:solid 1px #80b435 !important;
+	background-color: #fff !important;
+
+	/* background: #fbfafa; */
+	transition: all 0.4s ease-out;
+}
+.homeCart{
+	/* margin-top: 0px !important; */
+	border-radius: 5px !important;
+}
+.btnWrap{
+	margin-top: 10px;
 }
 .sizeCollage span{
 	font-size: 12px;
 	margin-bottom: 5px;
+}
+.selectSizeBox{
+	text-align: left;
+}
+.availablesize{
+	text-transform: uppercase !important;
+	font-size: 12px !important;
+	border-color: #80b435 !important;
+	border:solid 1px #80b435 !important;
+	font-weight: 400 !important;
+	border-radius: 5px;
+	background-color: #fff;
+	height: 30px;
+	margin-left: -3px;
+}
+.selectSizeBox .Nopadding{
+	padding-left: 0px !important ;
+	padding-right: 0px !important;
+}
+.prodName{
+	margin-top: 7px;
+	font-size: 12px;
+}
+.selectSizeBox .discountedPrice{
+	margin-top: 7px;
+	text-decoration-line: line-through;
+	font-weight: 400 !important;
+}
+.selectSizeBox .disscountedPer{
+	color: #ea8800;
+	/* font-size: 13px; */
+	font-weight: 400 !important;
+}
+.ProSize{
+	text-transform: uppercase;
 }

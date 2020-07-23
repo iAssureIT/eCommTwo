@@ -26,6 +26,7 @@ import ForgotPassword                            from '../systemSecurity/ForgotP
 // import ResetPasswordOld                          from '../systemSecurity/ResetPasswordOld.js';
 import ResetPassword                             from '../systemSecurity/ResetPassword.js';
 import SignUp                                    from '../systemSecurity/SignUp.js';
+import SignUp_Anas                               from '../systemSecurity/SignUp_Anas.js';
 import VerifyAccount                             from '../systemSecurity/VerifyAccount.js';
 import Cart                                      from '../pages/Cart/Cart.js';
 import Checkout                                  from '../pages/Checkout/Checkout.js';
@@ -259,7 +260,7 @@ class Routes extends Component{
           <div className="skin-blue fixed sidebar-mini">    
             <Route path="/" exact strict component={ HomePage } /> 
             <Route path="/login"                    exact strict component={ Login } />
-            <Route path="/signup"                   exact strict component={ SignUp } />
+            <Route path="/signup"                   exact strict component={ SignUp_Anas } />
             <Route path="/forgotpassword"           exact strict component={ ForgotPassword } />
             <Route path="/resetpassword/:user_ID"   exact strict component={ ResetPassword } />
             <Route path="/verify-account"           exact strict component={ VerifyAccount } />

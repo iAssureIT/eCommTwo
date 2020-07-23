@@ -72,6 +72,7 @@ class BulkProductImageUpload extends Component{
                 
                 const main = async ()=>{
                     var config = await getConfig();
+                    console.log("config",config);
                     if(config){                    
                       var s3urlArray = [];
                       var imageLength = 100;

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import "../../../../sites/currentSite/blocks/HomePageBanner2.css";
 import axios from 'axios';
 
-// import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetables1.jpeg"
-// import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits1.jpg"
-// import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
+/*import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetables1.jpeg"
+import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits1.jpg"
+import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"*/
 
 import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetable blocks.png";
 import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits_blocks.png";

@@ -1,7 +1,7 @@
 .miniImagesIn{
 	height: auto;
     font-family: 'PT Sans',sans-serif !important;
-    background-color: #444;
+    /* background-color: #444; */
     margin-top: 50px;
     border: 1px solid #efefef;
     /* margin-right: 20px; */
@@ -17,7 +17,9 @@
 	height: 100%;
 	width: 100%; 
 
-
+}
+.mg15{
+    margin: 15px;
 }
 .imgCont{
      /* overflow: hidden; */
@@ -292,7 +294,7 @@
 .miniImagesInNew{
     height: auto;
     /*font-family: 'PT Sans',sans-serif !important;*/
-    background-color: #444;
+    /* background-color: #444; */
     border: 1px solid #efefef;
     margin-bottom: 20px;
     cursor: pointer;
@@ -1028,4 +1030,14 @@ position:relative;
     font-size: 12px !important;
     letter-spacing: 1px;
     font-weight: 400;
+}
+.backColorWhite{
+    background-color: #fff !important;
+}
+
+@media only screen and (max-device-width: 480px) { 
+.adCart{
+    padding-left: 0px;
+    padding-right: 0px;
+}
 }

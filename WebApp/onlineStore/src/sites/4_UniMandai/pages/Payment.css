@@ -166,7 +166,8 @@ text-align:right ! important;
 .outerbox{
 	border : 1px solid #ddd;
 	border-radius: 4px;
-	padding: 14px 18px;
+    /* padding: 14px 18px; */
+    padding-top: 50px;
 	margin:10px 0;
 }
 .orderIdButton{

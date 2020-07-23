@@ -18,9 +18,16 @@ catogeryvaluebg.headerflow{
   padding-top: 0px;
   height: 70px;
 }
-
+.minpurchasehead{
+  color: red !important;
+  font-size: 11px;
+  padding:0
+}
 .css-1jllj6i-control{
   display: none!important;
+}
+.topheadbar{
+  padding-bottom: 20px;
 }
 
 .css-1r4vtzz ,.css-48ayfv{
@@ -97,20 +104,19 @@ catogeryvaluebg.headerflow{
   text-decoration: none;
   color:#A2632C;
 }
-
-.cartvalue_un{
-    left: 18px;
-    top: 17px;
-    padding-bottom: 15px;
-    cursor: pointer;
-    font-size: 13px;
-    color: #ffffff;
-    position: absolute;
-    width: 17px;
-    height: 17px;
-    background-color: #1faf1d;
-    border-radius: 25px;
-    padding-left: 3px;
+.cartvalue_un {
+  left: 19px;
+  top: 17px;
+  padding-bottom: 15px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #ffffff;
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  background-color: #1faf1d;
+  border-radius: 25px;
+  padding-left: 6px;
 }
 
 .cartitemscss{
@@ -121,16 +127,14 @@ catogeryvaluebg.headerflow{
   color: #aaa;
 }
 
-.homecontentwrapper{
-  /*height:1000px;*/
-}
-
 .catogeryvaluebg_un{
-  background-color: #80b435;
+  background-color: #fff;
   /*margin-top: -54px;*/
    text-align: center; 
 }
-
+.mega-menu{
+  color: #333 !important;
+}
 #menu1{
   background-color: #232f3e;
   height: 50px;
@@ -234,8 +238,8 @@ catogeryvaluebg.headerflow{
 }
 
 .signinmenuul_um li {
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   /* font-size: 12px; */
   border-bottom: 1px solid #aaa;
 }
@@ -351,6 +355,18 @@ ul.box-static-link li span {
   background-color: #80b435;
   color: #fff;
 }
+.notcheckout{
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color:red;
+  border:1px solid red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.3s !important;
+}
+
 .cartdropbtn2_un{
   border-radius: 20px;
   font-size: 15px;
@@ -402,6 +418,7 @@ ul.box-static-link li span {
 }
 .cartdropheight{
   height: 100px;
+  border-bottom: 1px solid #eee;
 }
 .cartdropaction{
   font-size:18px;
@@ -433,13 +450,20 @@ ul.box-static-link li span {
 }
 
 .shortnamebk{
-  background: #A2632C;
+  background: #80b435;
     border-radius: 50%;
     height: 38px;
     width: 38px;
     padding: 10px;
 }
-
+.userinfo, .userinfotext {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.userinfo{
+  padding-top: 10px;
+}
 .userinfotext{
     color: #555;
     font-size: 12px;
@@ -455,7 +479,8 @@ ul.box-static-link li span {
     color: #FFF;
     font-size: 12px;
     font-weight: 600;
-    text-transform: capitalize;
+    text-transform: uppercase;
+    margin-top: -13px;
     /*background-color: #A2632C;*/
 
 }
@@ -465,6 +490,8 @@ ul.box-static-link li span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 25px;
+  margin-bottom: 15px;
 }
 
 /* Absolute Center Spinner */
@@ -655,7 +682,7 @@ ul.box-static-link li span {
 .firstDiv{
   height: 90px;
   border-bottom:1px solid #eee;
-  margin-top:20px;
+  /*margin-top:20px;*/
 }
 .usericon{
   font-size: 20px;
@@ -663,7 +690,8 @@ ul.box-static-link li span {
 }
 .contactNo{
   color: #80b435;
-  font-size: 18px;
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .navbar {
@@ -700,7 +728,7 @@ ul.box-static-link li span {
   outline: none;
   color: #2b2b2b;
   padding: 14px 16px;
-  background-color: inherit;
+  background-color: #fff;
   font-family: inherit;
   margin: 0;
 }
@@ -708,9 +736,9 @@ ul.box-static-link li span {
 .dropdown-content {
     display: none;
     position: absolute;
-    box-shadow: 0px 8px 33px 0px rgba(0, 0, 0, 0.13);
+    /* box-shadow: 0px 8px 33px 0px rgba(0, 0, 0, 0.13); */
     border: none;
-    padding: 10px 0px;
+    /* padding: 10px 0px; */
     opacity: 1;
     left: 0px;
     min-width: 200px;
@@ -720,11 +748,11 @@ ul.box-static-link li span {
     transition: all 0.4s ease 0s;
     top: 100%;
     background: #fff;
-    margin-top: 4px;
+    /* margin-top: 4px; */
     z-index: 1;
 }
 
-.dropdown-content a {
+/* .dropdown-content a {
   float: none;
   color: #333;
   padding: 12px 16px;
@@ -733,7 +761,7 @@ ul.box-static-link li span {
   text-align: left;
   font-size: 12px;
 
-}
+} */
 
 .dropdown-content a:hover {
   background-color: #ddd;
@@ -742,7 +770,7 @@ ul.box-static-link li span {
 .dropdown:hover .dropdown-menu {
   display: block;
   position: relative;
-  /*background-color: #333;*/
+  background-color: #333;
 }
 .headertop{
   padding-left: 193px;
@@ -754,6 +782,7 @@ ul.box-static-link li span {
   display: inline-block;
     width: 100%;
 }
+
 
 /*unimandai*/
 
@@ -795,14 +824,6 @@ ul.box-static-link li span {
 .mega-menu ul.navbar-nav li {
     text-align: left;
     padding: 0 30px;
-}
-@media (min-width: 768px)
-.navbar-nav > li {
-    float: left;
-}
-@media (min-width: 1200px)
-.mega-menu ul.navbar-nav li.level1.dropdown a {
-    position: relative;
 }
 .mega-menu ul.navbar-nav li a {
     text-transform: uppercase;
@@ -984,8 +1005,16 @@ li.level1.dropdown a {
   -webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
           animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
-
-
+.headerlia{
+  font-size: 14px;
+}
+.swal-button {
+  background-color: #80b435 !important;
+}
+.box .hover-menu a {
+  /* padding: 0px 0px !important; */
+  /* margin-bottom: 5px; */
+}
 /*.dropbtn {
   background-color: #4CAF50;
   color: white;

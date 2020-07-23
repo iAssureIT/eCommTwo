@@ -134,7 +134,7 @@
 .footer1{
   background: #f3f3f3 !important;
   padding: 30px 0;
-  margin-top: -20px;
+  /*margin-top: -20px;*/
 }
 .footer-top ul{
   list-style: none;

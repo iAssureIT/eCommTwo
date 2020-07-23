@@ -270,3 +270,6 @@ li{
 .searchtab>li >a{
   color: #333
 }
+.pagefilter button{
+  text-transform: uppercase !important;
+}

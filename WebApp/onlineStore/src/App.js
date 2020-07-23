@@ -14,11 +14,19 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 function App() {
 	getPreferences();
+	setBasicInfo();
   return (
     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 App">
 	   <Routes />
     </div>
   );
+}
+
+function setBasicInfo(){
+	console.log("Title=",document.title);
+	document.title=process.env.REACT_APP_WEBSITE_TITLE;
+
+
 }
 
 

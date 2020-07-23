@@ -44,8 +44,8 @@ const blogRoutes 					= require('./api/cms/blogs/routes.js');
 	//========== Core Admin ===================
 
 	const systemRoutes			   	    = require("./api/coreAdmin/systemSecurity/RoutesSystemSecurity.js");
-	const usersRoutes			   				= require("./api/coreAdmin/userManagement/RoutesUsers.js");
-	const rolesRoutes			   				= require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
+	const usersRoutes			   	    = require("./api/coreAdmin/userManagement/RoutesUsers.js");
+	const rolesRoutes			   	    = require("./api/coreAdmin/rolesManagement/RoutesRoles.js");
 	const companySettingRoutes	 		= require("./api/coreAdmin/companySettings/RoutesCompanySettings.js");
 	const notificationRoutes	   		= require("./api/coreAdmin/notificationManagement/RoutesMasterNotification.js");
 	const projectSettingsurl 	   		= require("./api/coreAdmin/projectSettings/RoutesProjectSettings.js");
