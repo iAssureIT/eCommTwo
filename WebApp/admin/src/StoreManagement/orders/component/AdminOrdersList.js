@@ -21,7 +21,6 @@ class AdminOrdersList extends Component{
             this.state = {
                 "orderData":[],
                 "orderId": '',
-                "filterByDate" : moment(new Date()).format("YYYY-MM-DD"),
                 "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
                 "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
                 "FranchiseArray" : [],
@@ -33,7 +32,6 @@ class AdminOrdersList extends Component{
             this.state = {
                 "orderData":[],
                 "orderId": '',
-                "filterByDate" : moment(new Date()).format("YYYY-MM-DD"),
                 "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
                 "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
                 "FranchiseArray" : [],
@@ -168,14 +166,7 @@ class AdminOrdersList extends Component{
       this.setState({orderId : id})
     }
 
-    // code for filter
-    onChangeDate(event){
-      event.preventDefault();
-      this.setState({
-        filterByDate : event.target.value
-      })
-    }
-
+    // code for filters
     handleFromChange(event){
       event.preventDefault();
       const target = event.target;
@@ -617,10 +608,6 @@ class AdminOrdersList extends Component{
                         </div>
                         <br/>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            {/* <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-											        <label>Date:</label>
-											        <input type="Date" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.onChangeDate.bind(this)} id="filterByDate"/>
-									        	</div> */}
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                               <label>From Date</label>
                               <div className="reports-select-date-from3">

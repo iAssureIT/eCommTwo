@@ -1717,19 +1717,19 @@ exports.get_reports_franchise = (req,res,next)=>{
         .exec()
         .then(data=>{
           
-          var allData = data.map((x, i)=>{
-            //console.log(x)
-            return {
-                "_id"                   : x._id,
-                "orderID"               : (x.orderID).toString(),
-                "cratedAt"              : moment(x.createdAt).format("DD/MM/YYYY hh:mm a"),
-                "userFullName"          : x.userFullName,
-                "totalAmount"           : (x.total).toString(),
-                "deliveryStatus"        : x.deliveryStatus[x.deliveryStatus.length-1].status
-            }
-          })
-          res.status(200).json(allData.slice(req.params.startRange, req.params.limitRange));
-          //  res.status(200).json(allData);
+          // var allData = data.map((x, i)=>{
+          //   //console.log(x)
+          //   return {
+          //       "_id"                   : x._id,
+          //       "orderID"               : (x.orderID).toString(),
+          //       "cratedAt"              : moment(x.createdAt).format("DD/MM/YYYY hh:mm a"),
+          //       "userFullName"          : x.userFullName,
+          //       "totalAmount"           : (x.total).toString(),
+          //       "deliveryStatus"        : x.deliveryStatus[x.deliveryStatus.length-1].status
+          //   }
+          // })
+          // res.status(200).json(allData.slice(req.params.startRange, req.params.limitRange));
+          res.status(200).json(data);
         })
         .catch(err =>{
             console.log(err);
@@ -1747,16 +1747,16 @@ exports.get_reports = (req,res,next)=>{
     }).sort({createdAt:-1})      
         .exec()
         .then(data=>{
-          var allData = data.map((x, i)=>{
-            // return {
-            //     "_id"                   : x._id,
-            //     "orderID"               : (x.orderID).toString(),
-            //     "cratedAt"              : moment(x.createdAt).format("DD/MM/YYYY hh:mm a"),
-            //     "userFullName"          : x.userFullName,
-            //     "totalAmount"           : (x.total).toString(),
-            //     "status"        : x.deliveryStatus[x.deliveryStatus.length-1].status
-            // }
-          })
+          // var allData = data.map((x, i)=>{
+          //   // return {
+          //   //     "_id"                   : x._id,
+          //   //     "orderID"               : (x.orderID).toString(),
+          //   //     "cratedAt"              : moment(x.createdAt).format("DD/MM/YYYY hh:mm a"),
+          //   //     "userFullName"          : x.userFullName,
+          //   //     "totalAmount"           : (x.total).toString(),
+          //   //     "status"        : x.deliveryStatus[x.deliveryStatus.length-1].status
+          //   // }
+          // })
           // console.log("get reports data",allData);
           // res.status(200).json(allData.slice(req.params.startRange, req.params.limitRange));
          res.status(200).json(data);

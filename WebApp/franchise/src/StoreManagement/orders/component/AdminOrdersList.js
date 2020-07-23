@@ -20,13 +20,19 @@ class AdminOrdersList extends Component{
         if(!this.props.loading){ 
             this.state = {
                 "orderData":[],
-                "orderId": ''
+                "orderId": '',
                 // "notificationData" :Meteor.subscribe("notificationTemplate"),
+                "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
+                "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
+                "status"  : ''
             };
         } else{
             this.state = {
                 "orderData":[],
-                "orderId": ''
+                "orderId": '',
+                "fromDate"     : moment(new Date()).format("YYYY-MM-DD"),
+                "toDate"       : moment(new Date()).format("YYYY-MM-DD"),
+                "status"  : ''
             };
         }
         window.scrollTo(0, 0);
@@ -145,6 +151,157 @@ class AdminOrdersList extends Component{
       var id = $(event.currentTarget).attr('data-id');
       this.setState({orderId : id})
     }
+
+    handleFromChange(event){
+      event.preventDefault();
+      const target = event.target;
+      const name = target.name;
+
+      this.setState({
+          [name] : event.target.value,
+      },()=>{
+       this.getOrdersBetweenDates();
+    });
+    }
+    handleToChange(event){
+        event.preventDefault();
+      const target = event.target;
+      const name = target.name;
+
+      this.setState({
+          [name] : event.target.value,
+      },()=>{
+       this.getOrdersBetweenDates();
+    });
+    }
+
+    onStatusChange(event){
+      event.preventDefault();
+      const {name,value} = event.target;
+      this.setState({ 
+        [name]:value,
+      },()=>{
+        if(this.state.status == "all"){
+          this.getOrdersBetweenDates();
+        }else{
+          this.getOrdersByStatus();
+        }
+      });
+
+    }
+
+    getOrdersBetweenDates(){
+      var orderFilterData= {};
+      orderFilterData.startDate = this.state.fromDate;
+      orderFilterData.endDate = this.state.toDate;
+      var userDetails = (localStorage.getItem('userDetails'));
+      var userData = JSON.parse(userDetails);
+      console.log("userData.companyID===>",userData.companyID)
+      axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+      .then((resdata)=>{
+        console.log("resdata===>",resdata.data._id);
+        orderFilterData.franchiseID = resdata.data._id;
+         axios.post('/api/orders/get/report/'+resdata.data._id+'/'+this.state.fromDate+'/'+this.state.toDate,orderFilterData)
+            .then((response)=>{
+              var UsersArray = [];
+                for (let i = 0; i < response.data.length; i++) {
+                  var _id = response.data[i]._id;
+                  var orderID = response.data[i].orderID;
+                  var userFullName = response.data[i].userFullName;
+                  var totalQuantity = response.data[i].cartQuantity;
+                  var currency = response.data[i].currency;
+                  var totalAmount = response.data[i].total;
+                  var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
+                  var status = response.data[i].status;
+                  var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
+                  var viewOrder =  "/viewOrder/"+response.data[i]._id;
+                  var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
+
+                  var UserArray = [];
+                  UserArray.push(orderID);
+                  UserArray.push(userFullName);
+                  UserArray.push(totalQuantity);
+                  UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
+                   
+                  UserArray.push(createdAt);
+                  UserArray.push({status : status, deliveryStatus : deliveryStatus});
+                  UserArray.push({_id:_id, viewOrder:viewOrder, deliveryStatus:deliveryStatus});
+                  
+                  UsersArray.push(UserArray);
+                }
+
+                this.setState({
+                  data: UsersArray
+                });
+
+                this.setState({
+                  orderData: response.data
+                });
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            })
+        })
+        .catch((error)=>{
+            console.log('error', error);
+        })
+    }
+
+    getOrdersByStatus(){
+      var userDetails = (localStorage.getItem('userDetails'));
+      var userData = JSON.parse(userDetails);
+      console.log("userData.companyID===>",userData.companyID)
+      axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+      .then((resdata)=>{
+        console.log("resdata===>",resdata.data._id)
+        axios.get("/api/orders//get/orderlist/"+this.state.status+'/'+resdata.data._id)
+              .then((response)=>{
+                console.log("resdata===>",response.data)
+  
+                var UsersArray = [];
+                  for (let i = 0; i < response.data.length; i++) {
+                    var _id = response.data[i]._id;
+                    var orderID = response.data[i].orderID;
+                    var userFullName = response.data[i].userFullName;
+                    var totalQuantity = response.data[i].cartQuantity;
+                    var currency = response.data[i].currency;
+                    var totalAmount = response.data[i].total;
+                    var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
+                    var status = response.data[i].status;
+                    var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
+                    var viewOrder =  "/viewOrder/"+response.data[i]._id;
+                    var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
+  
+                    var UserArray = [];
+                    UserArray.push(orderID);
+                    UserArray.push(userFullName);
+                    UserArray.push(totalQuantity);
+                    UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
+                     
+                    UserArray.push(createdAt);
+                    UserArray.push({status : status, deliveryStatus : deliveryStatus});
+                    UserArray.push({_id:_id, viewOrder:viewOrder, deliveryStatus:deliveryStatus});
+                    
+                    UsersArray.push(UserArray);
+                  }
+  
+                  this.setState({
+                    data: UsersArray
+                  });
+  
+                  this.setState({
+                    orderData: response.data
+                  });
+  
+              })
+              .catch((error)=>{
+                  console.log('error', error);
+              })
+            })
+            .catch((error)=>{
+                console.log('error', error);
+            })
+      }
     
     render(){
       const data = this.state.data;
@@ -154,7 +311,7 @@ class AdminOrdersList extends Component{
         print: true, 
         download: true,
         viewColumns: true,
-        filter: true,
+        filter: false,
         responsive: "stacked",
         selectableRows: 'none'
       };
@@ -166,7 +323,7 @@ class AdminOrdersList extends Component{
           { name:"Order Date" },
           { name:"Status",
             options: {
-              filter: true,
+              filter: false,
               sort: false,
               selectableRows: false, 
               customBodyRender: (value, tableMeta, updateValue) => {
@@ -358,6 +515,39 @@ class AdminOrdersList extends Component{
                             </div>
                         </div>
                         <br/>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            {/* <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+											        <label>Date:</label>
+											        <input type="Date" className="col-lg-6 col-md-6 form-control" value={this.state.filterByDate} name="filterByDate" refs="filterByDate" onChange={this.onChangeDate.bind(this)} id="filterByDate"/>
+									        	</div> */}
+                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                              <label>From Date</label>
+                              <div className="reports-select-date-from3">
+                                <input onChange={this.handleFromChange.bind(this)} name="fromDate" ref="fromDateCustomised" value={this.state.fromDate} type="date" className="reportsDateRef form-control" placeholder=""  />
+                              </div>
+                            </div>
+                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                              <label>To Date</label>
+                              <div className="reports-select-date-to3">
+                                <input onChange={this.handleToChange.bind(this)} name="toDate" ref="toDateCustomised" value={this.state.toDate} type="date" className="reportsDateRef form-control" placeholder=""   />
+                              </div>
+                            </div>
+                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                            <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status</label>
+                                <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
+                                  <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+                                  <option value="all" name="roleListDDOption">Show All</option>
+                                  <option value="New Order">New Order</option>
+                                  <option value="Packed">Packed</option>
+                                  <option value="Inspection">Inspection</option>
+                                  <option value="Dispatch Approved">Dispatch Approved</option>
+                                  <option value="Dispatch">Dispatch</option>
+                                  <option value="Delivery Initiated">Delivery Initiated</option>
+                                  <option value="Delivered & Paid">Delivered & Paid</option>
+                             
+                                </select>
+                            </div>
+                        </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <MUIDataTable
