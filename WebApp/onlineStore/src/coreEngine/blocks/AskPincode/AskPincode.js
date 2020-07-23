@@ -18,6 +18,7 @@ export default class AskPincode extends Component {
             "NotAllowDeliveryMsg" : "",
             "DeliveryStatus"      : "",
             "pincode"             : "",
+            "pincodeExists"       : "",
         }        
       }  
      componentDidMount(){
@@ -71,13 +72,6 @@ export default class AskPincode extends Component {
         // console.log(" componentWillmountUserPincode:====",this.state.pincode);
      }
  
-    //   getPincodeVlue(event){
-    //     const target = event.target;
-    //     const name = target.name;
-    //     this.setState({
-    //         [name]: event.target.value
-    //     }); 
-    //   }
     closeModal(event){
         event.preventDefault();
         localStorage.setItem('pincodeFlag',"false");
@@ -134,6 +128,39 @@ export default class AskPincode extends Component {
       validatePIN (pin) {
         return /^(\d{4}|\d{6})$/.test(pin);
     }
+
+    handleChange(event) {     
+        console.log("Event.target.name:",event.target.name);   
+        if (event.target.name === 'pincode') {
+            this.handlePincode(event.target.value);
+        }
+    }
+    handlePincode(pincode){        
+        if (pincode !== '') {
+            axios.get("https://api.postalpincode.in/pincode/" +pincode)
+            .then((response) => {
+                // console.log('valid', $("[name='modalpincode']").valid())
+                // console.log('pincodeExists', this.state.pincodeExists);
+
+                if ($("[name='modalPincode']").valid()) {
+
+                    if (response.data[0].Status === 'Success' ) {
+                        this.setState({pincodeExists : true})
+                    }else{
+                        this.setState({pincodeExists : false})
+                    }
+                }else{
+                    this.setState({pincodeExists : true})
+                }
+                
+            })
+            .catch((error) => {
+                console.log('error', error);
+            })
+        }else{
+            this.setState({pincodeExists : true})
+        }
+    }
       
   render() {  
     // $(".modal-backdrop").hide();
@@ -171,9 +198,11 @@ export default class AskPincode extends Component {
                                                                     <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                                     <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                         <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
-                                                                        <input id="pincode" type="text" class="form-control pinocodeInput" name="pincode" placeholder="Pincode..."/>
+                                                                        <input id="pincode" type="text" class="form-control pinocodeInput" minLength="6" maxLength="6" name="pincode" placeholder="Pincode..."  onChange={this.handleChange.bind(this)}/>
+                                                                        
                                                                         {/* <input class="form-control error pinocodeInput" id="pincode" type="text" id="pincode" className="pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input> */}
-                                                                    </div>   
+                                                                    </div> 
+                                                                    {/* {this.state.pincodeExists ? null : <label className="error" style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}   */}
                                                                     </div>                                           
                                                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                                                         <button className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn newModalBtn pull-right hidden-lg hidden-md hidden-sm" onClick={this.checkDelivery.bind(this)}>Check</button>

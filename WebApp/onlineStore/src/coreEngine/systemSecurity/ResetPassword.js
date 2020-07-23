@@ -3,6 +3,7 @@ import $ from 'jquery';
 import jQuery from 'jquery';
 import swal from 'sweetalert';
 import axios from 'axios';
+import '../../sites/currentSite/common/SignUp.css'
 
 class ResetPassword extends Component {
     constructor(props) {

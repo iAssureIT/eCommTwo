@@ -171,8 +171,8 @@
   text-align: center;
   vertical-align: middle !important;
   float: unset;
-  height: 472px;
-  width: 1300px;
+  /* height: 472px; */
+  /* width: 1300px; */
 }
 
 .innloginwrap{
@@ -259,6 +259,7 @@
 #signUpBtn{
   padding: 10px 10px;
   border-radius: 20px;
+  margin-top: 5px;
 
 }
 .systemsecBtn{
@@ -281,7 +282,7 @@
   color: #fff !important;
 }
 .loginBtn_uni{
-  border-radius: 25px;
+  border-radius: 5px !important;
   padding: 10px 15px;
   background-color: #80b435;  
   color: #fff !important;
@@ -341,7 +342,7 @@
     margin-top: -50px;
   }
   .frmhgt{
-    height:70px;
+    height:62px;
   }
   .innloginwrap h4{
     text-transform: capitalize;

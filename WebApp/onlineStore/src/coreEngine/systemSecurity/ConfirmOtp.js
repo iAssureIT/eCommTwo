@@ -3,8 +3,8 @@ import swal from 'sweetalert';
 import $ from "jquery";
 import jQuery from 'jquery';
 import axios from 'axios';
-import './SignUp.css';
-
+// import './SignUp.css';
+import '../../sites/currentSite/common/SignUp.css'
 class ConfirmOtp extends Component {
   constructor(props) {
     super(props);

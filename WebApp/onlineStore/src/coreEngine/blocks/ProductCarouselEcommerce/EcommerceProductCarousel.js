@@ -252,7 +252,9 @@ class EcommerceProductCarousel extends Component {
   }//end else websiteModel
   }
 
-  submitCart(event) {
+  submitCart(event) { 
+    const user_ID = localStorage.getItem('user_ID');
+    if(user_ID){
     var id = event.target.id;
     console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
@@ -262,7 +264,7 @@ class EcommerceProductCarousel extends Component {
       var size = event.target.getAttribute('mainSize');
       console.log("size:",size);
       var unit = event.target.getAttribute('unit');
-      console.log("unit:",unit);
+      // console.log("unit:",unit);
     }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
@@ -308,13 +310,37 @@ class EcommerceProductCarousel extends Component {
     this.setState({
       ['sizeCollage' + currProId]: false
     })
-  } 
-  closeSize(event) {
-    var id = event.target.id;
-    this.setState({
-      ['sizeCollage' + id]: false
-    })
+  }else{
+    if(localStorage.getItem('showLoginAs')==="modal"){
+      $('#loginFormModal').show();
+      $(".modal-backdrop").remove();
+      }else{
+      this.setState({
+        messageData: {
+          "type": "outpage",
+          "icon": "fa fa-exclamation-circle",
+          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+          
+          "class": "danger",
+          "autoDismiss": true
+        }
+      })
+      setTimeout(() => {
+        this.setState({
+          messageData: {},
+        })
+      }, 3000);
+    }//end else
   }
+  } 
+
+  // closeSize(event) {
+  //   var id = event.target.id;
+  //   this.setState({
+  //     ['sizeCollage' + id]: false
+  //   })
+  // }
 
   addtowishlist(event) {
     event.preventDefault();
@@ -486,7 +512,7 @@ class EcommerceProductCarousel extends Component {
                                                   <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
                                                 </div>
                                                 :
-                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - Pack Of&nbsp;{data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                             }
                                           </div>
                                           

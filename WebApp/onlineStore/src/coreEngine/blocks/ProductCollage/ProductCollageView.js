@@ -44,12 +44,32 @@ class ProductCollageView extends Component {
     console.log("nextProps:==",nextProps);
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
-        var availableSizes = [];       
+        var availableSizes = [];  
+        var availablePack = [];       
         if(nextProps.products[i].size){ 
-          availableSizes.push(nextProps.products[i].size*1);
-          availableSizes.push(nextProps.products[i].size*2);
-          availableSizes.push(nextProps.products[i].size*4); 
-          nextProps.products[i].availableSizes = availableSizes;            
+          availableSizes.push(
+            {
+              "productSize": nextProps.products[i].size*1,
+              "packSize"   :1,
+            },
+            {
+              "productSize": nextProps.products[i].size*2,
+              "packSize"   :2,
+            },
+            {
+              "productSize": nextProps.products[i].size*4,
+              "packSize"   :4,
+            },
+          )
+          // availableSizes.push(nextProps.products[i].size*1);
+          // availableSizes.push(nextProps.products[i].size*2);
+          // availableSizes.push(nextProps.products[i].size*4); 
+          nextProps.products[i].availableSizes = availableSizes;
+          console.log("availableSizes:---",availableSizes);  
+          // availablePack.push(1);
+          // availablePack.push(2);
+          // availablePack.push(4); 
+          // nextProps.products[i].availablePack = availablePack;            
         }
     }
   }
@@ -345,6 +365,8 @@ class ProductCollageView extends Component {
   }
 
   submitCart(event) { 
+    const user_ID = localStorage.getItem('user_ID');
+    if(user_ID){
     var id = event.target.id;
     console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
@@ -400,7 +422,31 @@ class ProductCollageView extends Component {
     this.setState({
       ['sizeCollage' + currProId]: false
     })
+  }else{
+    if(localStorage.getItem('showLoginAs')==="modal"){
+      $('#loginFormModal').show();
+      $(".modal-backdrop").remove();
+      }else{
+      this.setState({
+        messageData: {
+          "type": "outpage",
+          "icon": "fa fa-exclamation-circle",
+          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+          
+          "class": "danger",
+          "autoDismiss": true
+        }
+      })
+      setTimeout(() => {
+        this.setState({
+          messageData: {},
+        })
+      }, 3000);
+    }//end else
+  }
   } 
+
 
   closeSize(event) {
     var id = event.target.id;
@@ -454,7 +500,7 @@ class ProductCollageView extends Component {
                                       <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
                                     </div>
                                     :
-                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - Pack Of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                 }
                               </div>
                               
@@ -465,27 +511,28 @@ class ProductCollageView extends Component {
                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
                                         <div className="selectSizeBox col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding ">                                                                              
                                         <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
-                                          { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
+                                          { Array.isArray(data.availableSizes) && data.availableSizes.map((availablesize, index) => {
                                               return( 
-                                                  size === 1000?
-                                                  // <option className="" value={size}>{size}KG</option>
-                                                  <option className="" value={size}> 1 KG</option>
-                                                  :
-                                                  data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                    <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                  :
-                                                  <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
+                                                <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
+                                                  // size === 1000?
+                                                  
+                                                  // <option className="" value={size}> 1 KG</option>
+                                                  // :
+                                                  // data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                  //   // <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                  //   <option className="selectedSize" value={size}>{size} Pack</option>
+                                                  //     :
+                                                  // <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
                                               )                                                        
                                             })
                                           }
                                         </select>                                     
-                                      </div>   
-                                    
-                                    {/* <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)}  */}
-                                    <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} currPro={data._id} mainSize={data.size} unit={data.unit}  onClick={this.submitCart.bind(this)} 
-                                      title="Add to Cart" className="col-lg-6 col-md-6 col-sm-6 col-xs-6 homeCart fa fa-shopping-cart">                                                                         
+                                      </div>    
+                                      <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} currPro={data._id} mainSize={data.size} unit={data.unit}  onClick={this.submitCart.bind(this)} 
+                                        title="Add to Cart" className="col-lg-6 col-md-6 col-sm-6 col-xs-6 homeCart fa fa-shopping-cart">                                                                         
                                          &nbsp;Add
-                                    </button>
+                                      </button>            
+                                    
                                     </div>
                                     :
                                     data.availableQuantity > 0 ?

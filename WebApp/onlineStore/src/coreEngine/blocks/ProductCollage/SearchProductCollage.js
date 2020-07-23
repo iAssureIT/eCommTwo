@@ -225,7 +225,9 @@ class SearchProductCollage extends Component {
   }//end else websiteModel
   }
 
-  submitCart(event) {
+  submitCart(event) { 
+    const user_ID = localStorage.getItem('user_ID');
+    if(user_ID){
     var id = event.target.id;
     console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
@@ -235,7 +237,7 @@ class SearchProductCollage extends Component {
       var size = event.target.getAttribute('mainSize');
       console.log("size:",size);
       var unit = event.target.getAttribute('unit');
-      console.log("unit:",unit);
+      // console.log("unit:",unit);
     }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
@@ -281,7 +283,30 @@ class SearchProductCollage extends Component {
     this.setState({
       ['sizeCollage' + currProId]: false
     })
+  }else{
+    if(localStorage.getItem('showLoginAs')==="modal"){
+      $('#loginFormModal').show();
+      $(".modal-backdrop").remove();
+      }else{
+      this.setState({
+        messageData: {
+          "type": "outpage",
+          "icon": "fa fa-exclamation-circle",
+          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+          
+          "class": "danger",
+          "autoDismiss": true
+        }
+      })
+      setTimeout(() => {
+        this.setState({
+          messageData: {},
+        })
+      }, 3000);
+    }//end else
   }
+  } 
 
   closeSize(event) {
     var id = event.target.id;
@@ -394,6 +419,11 @@ class SearchProductCollage extends Component {
         products: this.state.products.sort((a, b) => b[field] - a[field])
       });
     }
+  }
+
+  closeModal(event){
+    console.log("inside close modal");
+    $('#loginFormModal').hide();
   }
 
   render() {
@@ -531,7 +561,7 @@ class SearchProductCollage extends Component {
                                       <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
                                     </div>
                                     :
-                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - Pack Of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                 }
                               </div>
                               
@@ -600,7 +630,7 @@ class SearchProductCollage extends Component {
               <div className="modal-content">
                 <div className="modal-header">
                   <img src="../../../sites/currentSite/images/Icon.png" alt="Icon" />
-                  <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
+                  <button type="button" className="close modalclosebut" onClick={this.closeModal.bind()} data-dismiss="modal">&times;</button>
                 </div>
                 <div className="modal-body">
                   <ProductDetailsHomeView productInfo={this.state.modalIDNew} />
@@ -614,7 +644,7 @@ class SearchProductCollage extends Component {
                 <div className="modal-dialog">                                        
                     <div className="modal-content loginModalContent">                            
                         <div className="modal-body">   
-                        <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                        <button type="button" className="close closeModal" onClick={this.closeModal.bind()}  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
                             {this.props.formToShow === "login" ?
                                 <div className="col-lg-12 col-md-12 loginForm">
                                     <Login />

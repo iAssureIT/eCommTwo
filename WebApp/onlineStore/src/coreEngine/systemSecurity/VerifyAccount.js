@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import InputMask from 'react-input-mask';
 
 import 'font-awesome/css/font-awesome.min.css';
-import './SignUp.css';
+// import './SignUp.css';
+import '../../sites/currentSite/common/SignUp.css'
 
 class VerifyAccount extends Component {
 

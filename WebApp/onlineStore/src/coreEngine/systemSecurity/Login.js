@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Link, location } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './SignUp.css';
+// import './SignUp.css';
+import '../../sites/currentSite/common/SignUp.css'
 import $ from 'jquery';
 import axios from 'axios';
 import jQuery from 'jquery';
@@ -244,7 +245,7 @@ class Login extends Component {
                 {
                   this.state.btnLoading
                   ?
-                  <div className="col-lg-3 col-lg-offset-4 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight ">
+                  <div className="col-lg-3 col-lg-offset-4 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NoPadding ">
                   <div align="center" className="cssload-fond">
                     <div className="cssload-container-general">
                       <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_1"> </div></div>
@@ -255,7 +256,7 @@ class Login extends Component {
                   </div>
                 </div>
                   :
-                    <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 NOpaddingRight">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
                     </div>
                 }

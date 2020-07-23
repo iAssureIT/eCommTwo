@@ -391,7 +391,7 @@ class CartProducts extends Component{
                                                             data.productDetail.availableQuantity > 0 ?
                                                                 <div >
                                                                     <span id="productPrize" className={"cartProductPrize fa fa-inr"}>&nbsp;{data.productDetail.discountedPrice}</span><br />
-                                                                    <span className ="productUnit" id={data.productDetail._id}>Per &nbsp;<span className="CapsUnit">{data.productDetail.unit}</span></span>
+                                                                    <span className ="productUnit" id={data.productDetail._id}>Per &nbsp;<span className="CapsUnit">{data.productDetail.size} {data.productDetail.unit}</span></span>
                                                                 </div>
                                                             :
                                                             <span>-</span>

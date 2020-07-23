@@ -3,7 +3,7 @@ import $ from 'jquery';
 import jQuery from 'jquery';
 import axios from 'axios';
 import swal from 'sweetalert';
-
+import '../../sites/currentSite/common/SignUp.css'
 import { connect } from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getForm,updateForm} from '../actions/index';

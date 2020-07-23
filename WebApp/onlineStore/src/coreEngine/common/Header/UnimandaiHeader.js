@@ -17,12 +17,10 @@ import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
 import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
 import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
-// import pincodeModalImg from '../../../sites/currentSite/images/modalBack.jpg';
-import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
-
 // import pincodeModalImg from '../../../sites/currentSite/images/loginBackground.png';
-// import pincodeModalImg from '../../../sites/currentSite/images/loginBg.png';
+import signupBgImg from '../../../sites/currentSite/images/loginBg.jpeg';
+
 
 import AskPincode from '../../blocks/AskPincode/AskPincode.js';
 import '../../../sites/currentSite/common/UnimandaiHeader.css';
@@ -823,9 +821,9 @@ loginPage(event){
 
         <AskPincode />  
          
-        <div id="loginFormModal" className="modal in">
+        <div id="loginFormModal" className="modal in" >
           <div className="modal-dialog">                                        
-              {/* <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                             */}
+              {/* <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +signupBgImg  +')'}}>                             */}
               <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">                            
                   <div className="modal-body">   
                   <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            

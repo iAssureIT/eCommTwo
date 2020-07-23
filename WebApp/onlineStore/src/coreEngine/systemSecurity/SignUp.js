@@ -7,7 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 import 'bootstrap/js/tab.js';
 import 'font-awesome/css/font-awesome.min.css';
-import './SignUp.css';
+// import './SignUp.css';
+import '../../sites/currentSite/common/SignUp.css'
 import swal from 'sweetalert';
 import axios from 'axios';
 import { connect } from 'react-redux';
