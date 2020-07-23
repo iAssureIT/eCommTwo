@@ -271,7 +271,7 @@ exports.user_signup_user_otp = (req, res, next) => {
 															companyID: req.body.companyID,
 															pincode: req.body.pincode,
 															companyName: req.body.companyName,
-															mobile: mobNumber,
+															mobile: req.body.mobNumber,
 															createdAt: new Date(),
 															otpEmail: emailOTP,
 															status: req.body.status ? req.body.status : "Inactive",

@@ -171,7 +171,7 @@ export default class FranchiseShoppingList extends React.Component {
     axios.post('/api/franchisepo/post',formValues1)
 	  	.then(function (response) {
 				var id = response.data.order_id;
-				console.log("data in franchise_id========",id);
+				// console.log("data in franchise_id========",id);
 				
 				swal("Thank You!","Your Order has been placed successfully!!")
 				this.props.history.push("/franchise-order-view/"+id);
@@ -276,8 +276,10 @@ export default class FranchiseShoppingList extends React.Component {
 											Array.isArray(this.state.franchiseList) && this.state.franchiseList.length > 0
 											? 
 												this.state.franchiseList.map((franchise,index)=>{
+													// console.log("franchise==>",franchise.companyName);
 													return(
-														<option key={index} value={franchise._id}>{franchise.groupName}</option>
+														// <option key={index} value={franchise._id}>{franchise.groupName}</option>
+														<option key={index} value={franchise._id}>{franchise.companyName}</option>
 													);
 												})
 											:
