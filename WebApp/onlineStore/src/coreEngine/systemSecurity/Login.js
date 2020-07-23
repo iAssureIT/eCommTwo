@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Link, location } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './SignUp.css';
+import '../../sites/currentSite/common/SignUp.css';
 import $ from 'jquery';
 import axios from 'axios';
 import jQuery from 'jquery';

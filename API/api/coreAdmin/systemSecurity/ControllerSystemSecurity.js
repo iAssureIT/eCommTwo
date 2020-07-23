@@ -26,7 +26,7 @@ exports.user_signup_user = (req, res, next) => {
 		if(req.body.email && req.body.pwd && req.body.role){
 			var emailId = req.body.email;
 			var role_lower = (req.body.role).toLowerCase();
-			// console.log("role ", role_lower);
+			console.log("role ", role_lower);
 			if (role_lower && emailId) {
 				Role.findOne({ role: role_lower })
 					.exec()
