@@ -385,6 +385,9 @@
 .selectSizeBox{
 	text-align: left;
 }
+.categoriesContainerEcommerce a{
+	font-size: 13px;
+}
 .availablesize{
 	padding: 0px 10px !important ;
 	text-transform: uppercase !important;

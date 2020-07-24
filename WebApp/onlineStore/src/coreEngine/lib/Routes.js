@@ -36,6 +36,7 @@ import MyOrders_Unimandai                        from '../pages/MyOrders/MyOrder
 import ShipmentTracking                          from '../pages/ShipmentTracking/ShipmentTracking.js';
 import ProductDetailsEcommerce                   from '../pages/ProductDetailsEcommerce/ProductDetailsEcommerce.js';
 import SearchProduct                             from '../pages/ProductCollage/SearchProductPage.js';
+import BigSale                                   from '../pages/ProductCollage/BigSale.js';
 // import ProductCollage                            from '../pages/ProductCollage/ProductCollageOld.js';
 import ProductCollage                            from '../pages/ProductCollage/ProductCollage.js';
 
@@ -101,6 +102,7 @@ class Routes extends Component{
                 <Route path="/productdetails/:productID"exact strict component={ ProductDetailsEcommerce } />
                 <Route path="/productdetails/:productURL/:productID"             exact strict component={ ProductDetailsEcommerce } />
                 <Route path="/searchProducts"           exact strict component={ SearchProduct } />
+                <Route path="/deals-of-the-day"                  exact strict component={ BigSale } />
                 <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />
                 <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
                 <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
@@ -154,6 +156,7 @@ class Routes extends Component{
             <Route path="/productdetails/:productID"exact strict component={ ProductDetailsEcommerce } />
             <Route path="/productdetails/:productURL/:productID"             exact strict component={ ProductDetailsEcommerce } />
             <Route path="/searchProducts"           exact strict component={ SearchProduct } />
+            <Route path="/deals-of-the-day"                  exact strict component={ BigSale } />
             <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />
             <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
             <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"        exact strict component={ ProductCollage } />
@@ -218,7 +221,7 @@ class Routes extends Component{
             <Route path="/shipment-tracking"        exact strict component={ ShipmentTracking } />
             <Route path="/productdetails/:productID"             exact strict component={ ProductDetailsEcommerce } />
             <Route path="/productdetails/:productURL/:productID"             exact strict component={ ProductDetailsEcommerce } />
-            <Route path="/searchProducts"           exact strict component={ SearchProduct } />
+            <Route path="/searchProducts"           exact strict component={ SearchProduct } />            
             <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />
             <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
             <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />

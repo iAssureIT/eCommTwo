@@ -456,6 +456,7 @@ button.button_search {
     padding-bottom: 20px;
     background-size: 100% 100% !important;
     background-repeat: no-repeat !important;
+    margin-top: 20px;
 }
 .loginModalContent .close{
     font-size: 55px !important;
@@ -473,6 +474,10 @@ button.button_search {
 }
 .headerWrapper{
     z-index: 1000 !important;
+}
+#loginFormModal{
+    background-repeat: no-repeat !important;
+    background-position: center !important;
 }
 @media only screen and (max-device-width: 480px) {   
     .firstDiv{

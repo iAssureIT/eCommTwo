@@ -22,8 +22,8 @@
 
 }
 .filterWrapper{
-  min-height: 450px;
-  overflow: auto;
+  min-height: 200px;
+  
 }
 .categoriesContainerEcommerce li{
   height: 35px;
@@ -127,7 +127,7 @@
 
 }
 .subcategory:hover, .subcategory:active, .subcategory:focus  {
-  color: #A2632C !important;
+  color: #80b435 !important;
   text-decoration: none;
   font-weight: 100 !important;
 }

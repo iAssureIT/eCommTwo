@@ -17,7 +17,7 @@ import SignUp         from '../../systemSecurity/SignUp.js';
 import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 const user_ID = localStorage.getItem("user_ID");
 
-class ProductCollageView extends Component {
+class BigSaleCollageView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -490,12 +490,7 @@ class ProductCollageView extends Component {
                           <div className="productDetails  col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                             
                             <div className="innerDiv">
                               <div className="product-brand" title={data.brand}>{data.brand}</div>
-                              <div className="product-item-link" title={data.productName}>{data.productName} 
-                              {data.shortDescription ?
-                              (<span className="marathiName">{data.shortDescription}</span>) 
-                              :null
-                              }
-                              </div>
+                              <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
                               <div className="col-lg-12 col-md-12 NOpadding">
                                 {
                                   data.discountPercent ?
@@ -628,4 +623,4 @@ const mapStateToProps = (state) => {
 const mapDispachToProps = (dispatch) => {
   return bindActionCreators({ fetchCartData: getCartData }, dispatch)
 }
-export default connect(mapStateToProps, mapDispachToProps)(ProductCollageView);
+export default connect(mapStateToProps, mapDispachToProps)(BigSaleCollageView);

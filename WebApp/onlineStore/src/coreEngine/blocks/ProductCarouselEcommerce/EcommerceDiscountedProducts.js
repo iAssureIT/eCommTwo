@@ -61,11 +61,34 @@ class EcommerceDiscountedProducts extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      newProducts: nextProps.newProducts,
-      type: nextProps.type
-    })
-  }
+    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
+      console.log("nextProps.newProducts:",nextProps.newProducts);
+      for(var i=0;i<nextProps.newProducts.length;i++){      
+          var availableSizes = [];         
+          if(nextProps.newProducts[i].size){
+            availableSizes.push(
+              {
+                "productSize": nextProps.newProducts[i].size*1,
+                "packSize"   :1,
+              },
+              {
+                "productSize": nextProps.newProducts[i].size*2,
+                "packSize"   :2,
+              },
+              {
+                "productSize": nextProps.newProducts[i].size*4,
+                "packSize"   :4,
+              },
+            )            
+            nextProps.newProducts[i].availableSizes = availableSizes;           
+          }
+      }
+    } 
+      this.setState({
+        newProducts: nextProps.newProducts,        
+        type: nextProps.type
+      });
+    }
   async componentDidMount(){
       const websiteModel = localStorage.getItem("websiteModel");      
       const showLoginAs = localStorage.getItem("showLoginAs");      
@@ -203,39 +226,89 @@ class EcommerceDiscountedProducts extends Component {
         })
     }
   }
-  submitCart(event) {
+  submitCart(event) { 
+    const user_ID = localStorage.getItem('user_ID');
+    if(user_ID){
     var id = event.target.id;
+    console.log("Id:",id);
+    if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
+      var selectedSize = $('#'+id+"-size").val();
+      // var selectedSize = event.target.value;
+      console.log("selectedSize:",selectedSize);
+      var size = event.target.getAttribute('mainSize');
+      console.log("size:",size);
+      var unit = event.target.getAttribute('unit');
+      // console.log("unit:",unit);
+    }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
     var currProId = event.target.getAttribute('currPro');
     var recentCartData = this.props.recentCartData.length > 0 ? this.props.recentCartData[0].cartItems : [];
     var productCartData = recentCartData.filter((a) => a.product_ID === id);
     var quantityAdded = productCartData.length > 0 ? productCartData[0].quantity : 0;
+    var formValues ={};
+    if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
+      if(selectedSize === size){
+         var quantity = 1;
+         var totalWeight = selectedSize +" "+unit
+         formValues = {
+          "user_ID": userid,
+          "product_ID": event.target.id,
+          "quantity": 1,  
+          "selectedSize" : selectedSize,
+          "size"         : size,
+          "totalWeight"  : totalWeight,      
+        }
+      }else{
+        var quantity    = selectedSize/size;
+        var totalWeight = size*quantity +" "+unit;
+        formValues = {
+          "user_ID"      : userid,
+          "product_ID"   : event.target.id,
+          "quantity"     : quantity,
+          "selectedSize" : selectedSize,
+          "size"         : size,
+          "totalWeight"  : totalWeight,
+        }
+      }
 
-    const formValues = {
-      "user_ID": userid,
-      "product_ID": event.target.id,
-      "quantity": 1,
+    }else{      
+      formValues = {
+        "user_ID": userid,
+        "product_ID": event.target.id,
+        "quantity": 1,        
+      }      
     }
+
     this.addCart(formValues, quantityAdded, availableQuantity);
     this.setState({
       ['sizeCollage' + currProId]: false
     })
+  }else{
+    if(localStorage.getItem('showLoginAs')==="modal"){
+      $('#loginFormModal').show();
+      $(".modal-backdrop").remove();
+      }else{
+      this.setState({
+        messageData: {
+          "type": "outpage",
+          "icon": "fa fa-exclamation-circle",
+          "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+          // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+          
+          "class": "danger",
+          "autoDismiss": true
+        }
+      })
+      setTimeout(() => {
+        this.setState({
+          messageData: {},
+        })
+      }, 3000);
+    }//end else
   }
-  closeSize(event) {
-    var id = event.target.id;
-    this.setState({
-      ['sizeCollage' + id]: false
-    })
-  }
-  componentWillReceiveProps(nextProps) {
-    console.log('newProducts componentWillReceiveProps', nextProps.newProducts);
-    this.setState({
-      newProducts: nextProps.newProducts,
-      type: nextProps.type
-    })
- 
-  }
+  } 
+  
 
   addtowishlist(event) {
     event.preventDefault();
@@ -317,8 +390,9 @@ class EcommerceDiscountedProducts extends Component {
   }
   
   render() {
+    // const token = localStorage.getItem("user_ID");
     return (
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 abc">
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20" id="flashsalediv">
         <div className="row">
           <Message messageData={this.state.messageData} />
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -327,122 +401,118 @@ class EcommerceDiscountedProducts extends Component {
                 <h3 className="row">
                   <b>{this.props.title}</b>
                 </h3>
-              </div>
+              </div>       
+              
             </div>
           </div>
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
           <div className="tab-content customTabContent">
             <div id="home" className="tab-pane fade in active ecommerceTabContent">
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50">
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50 mb50">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <OwlCarousel
                     className="owl-theme customnNavButton"
                     margin={0}
-                    nav={true}
+                    nav={true} 
                     responsive={this.state.responsive}
                     autoplay={true}
                     autoplayHoverPause={true}
                   >
                     {
-                     Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 
-                       ?
+                      Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 ?
                         this.state.newProducts.map((data, index) => {
-                          console.log("data prod unit====>",data.unit)
+                          console.log("this.state.newProducts:",data.availableSizes);
                           var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
+                           var wishClass = '';
+                            var tooltipMsg = '';
                           if(x && x.length > 0){
-                            var wishClass = '';
-                            var tooltipMsg = 'Remove from wishlist';
+                             wishClass = '';
+                             tooltipMsg = 'Remove from wishlist';
                           }else{
-                            var wishClass = '-o';
-                            var tooltipMsg = 'Add To wishlist';
+                             wishClass = '-o';
+                             tooltipMsg = 'Add To Wishlist';
                           }
-                       
                           return (
-                            <div>
-                            {/* {
-                            data.productImage.length > 0 ? */}
-                            <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>                            
-                              <a >
-                                <div className="">
-                               
-                                  <div className="card blockCard"><div className="item-top">
-                                      <div className="productImg">
+                            <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
+                              {/* <a href=""> */}
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-8 productInnerWrap NoPadding">
+                                    <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                                      <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>
-                                        {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null} 
+                                        {data.discountPercent ? <div className=" discounttag">{data.discountPercent} % </div> : null} 
                                         <a href={"/productdetails/"+data.productUrl+"/" + data._id} className="product photo product-item-photo" tabIndex="-1">
                                           <img src={data.productImage[0] ? data.productImage[0] : notavailable} />
                                         </a>
                                       </div>
-                                      <div className="productDetails">
-                                      {
-                                        this.state['sizeCollage' + data._id] === true ?
-                                          <div className="sizeCollage col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <i className="fa fa-times pull-right" id={data._id} onClick={this.closeSize.bind(this)}></i>
-                                            {
-                                              this.state['relatedProductArray' + data._id] && this.state['relatedProductArray' + data._id].length > 0 ?
-                                                this.state['relatedProductArray' + data._id].map((a, i) => {
-                                                  if (a.size) {
-                                                    return (
-                                                      <span>
-                                                        <label className="collageSize">
-                                                          <input title="Please select size first." currPro={data._id} availableQuantity={a.availableQuantity} onClick={this.submitCart.bind(this)} value={a.size} name="size" type="radio" id={a._id} />
-                                                          <span title={a.size} className="collageCheck">{a.size}</span>
-                                                        </label> &nbsp;
-                                                      </span>
-                                                    );
-                                                  }
-                                                })
-                                                :
-                                                null
-                                            }
-                                          </div>
-                                          :
-                                          null
-                                      }
+                                      <div className="productDetails">                                      
                                         <div className="innerDiv">
-                                          
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="product-brand" title={data.brand}>{data.brand}</div></a>
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="product-item-link" title={data.productName}>{data.productName}</div></a>
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="col-lg-12 col-md-12 NOpadding">
+                                          <div className="product-brand" title={data.brand}>{data.brand}</div>
+                                          <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
+                                          <div className="col-lg-12 col-md-12 NOpadding">
                                             {
-                                              data.discountPercent ?
-                                                <div className="col-lg-12 col-md-12 NOpadding">
-                                                  
-                                                  <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
-                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} /{data.unit}</span> 
+                                              data.discountPercent ?                                                
+                                                  localStorage.getItem("websiteModel")=== "FranchiseModel" ?
+                                                    <div className="col-lg-12 col-md-12 NOpadding disscountDetails">
+                                                      <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
+                                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                      
+                                                    </div>
+                                                  :
+                                                    <div className="col-lg-12 col-md-12 NOpadding">
+                                                      <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice} / {data.unit}</span> &nbsp;
+                                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} / {data.unit}</span> &nbsp; 
+                                                    </div>
+                                                :
+                                                localStorage.getItem("websiteModel")=== "FranchiseModel" ?
+                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                :
+                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                            }
+                                          </div>
+                                          
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                                  
+                                              {
+                                                localStorage.getItem("websiteModel")=== "FranchiseModel"?
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
+                                                    <div className="selectSizeBox col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding ">                                                                              
+                                                    <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
+                                                    { Array.isArray(data.availableSizes) && data.availableSizes.map((availablesize, index) => {
+                                                          return( 
+                                                            <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>                                                             
+                                                          )                                                        
+                                                        })
+                                                      }
+                                                    </select>                                     
+                                                  </div>   
+                                                
+                                                {/* <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)}  */}
+                                                <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} currPro={data._id} mainSize={data.size} unit={data.unit}  onClick={this.submitCart.bind(this)} 
+                                                  title="Add to Cart" className="col-lg-6 col-md-6 col-sm-6 col-xs-6 homeCart fa fa-shopping-cart">                                                                         
+                                                    &nbsp;Add
+                                                </button>
                                                 </div>
                                                 :
-                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice}</span>
-                                            }
-                                          </div></a>
-                                          <div >
-                                          </div>
-                                          {
-                                              data.availableQuantity > 0 ?
-                                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                  <button type="submit" id={data._id} color={data.color} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
-                                                      &nbsp;Add To Cart
+                                                data.availableQuantity > 0 ?
+                                                  <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart pull-right">
+                                                    &nbsp;Add To Cart
                                                   </button>
-                                                </div>
-                                              </div>
-                                              :
-                                              
-                                              <div className="outOfStock col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sold Out</div>
-                                            }
+                                                  :
+                                                  <div className="outOfStock">Sold Out</div>
+                                              }                               
+
+                                            </div>
+                                          </div>
                                         </div>
+
                                       </div>
                                     </div>
-                                  </div> 
+                                  </div>
                                 </div>
-                              </a>
-                            </div>
-                            {/* :
-                            null
-                            } */}
+                              {/* </a> */}
                             </div>
                           );
-                         
                         })
                         : ''
                     }
@@ -452,9 +522,9 @@ class EcommerceDiscountedProducts extends Component {
                   <div className="modal-dialog modal-lg dialog">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <img src="../../../sites/currentSite/images/Icon.png" />
+                        <img src="../../../sites/currentSite/images/Icon.png" alt="" />
                         <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
-                        <h4 className="modal-title modalheadingcont"></h4>
+                        <h4 className="modal-title modalheadingcont"> </h4>
                       </div>
                       <div className="modal-body">
                         <ProductDetailsHomeView productInfo={this.state.modalIDNew} />

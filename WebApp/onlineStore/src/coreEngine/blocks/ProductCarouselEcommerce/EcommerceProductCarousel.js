@@ -60,6 +60,7 @@ class EcommerceProductCarousel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("localStorage:",localStorage.getItem('websiteModel'));
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
       for(var i=0;i<nextProps.newProducts.length;i++){      
           var availableSizes = [];         
@@ -81,7 +82,8 @@ class EcommerceProductCarousel extends Component {
             // availableSizes.push(nextProps.newProducts[i].size*1);
             // availableSizes.push(nextProps.newProducts[i].size*2);
             // availableSizes.push(nextProps.newProducts[i].size*4); 
-            nextProps.newProducts[i].availableSizes = availableSizes;           
+            nextProps.newProducts[i].availableSizes = availableSizes; 
+            console.log("availableSizes:--",availableSizes);          
           }
       }
     } 
@@ -542,14 +544,7 @@ class EcommerceProductCarousel extends Component {
                                                     <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
                                                     { Array.isArray(data.availableSizes) && data.availableSizes.map((availablesize, index) => {
                                                           return( 
-                                                            <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
-                                                              // size === 1000?                                                            
-                                                              // <option className="" value={size}> 1 KG</option>
-                                                              // :
-                                                              // data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                              //   <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                              // :
-                                                              // <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
+                                                            <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>                                                             
                                                           )                                                        
                                                         })
                                                       }

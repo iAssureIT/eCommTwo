@@ -625,7 +625,10 @@ background-color: transparent !important;
 .clearfix {
     *zoom: 1;
 }
-
+.disscountDetails span,
+.disscountDetails .fa-inr{
+    font-size: 10px !important;
+}
 .price{
     font-size: 12px;
     font-weight: 600;
