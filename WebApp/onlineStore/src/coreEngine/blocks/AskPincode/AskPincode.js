@@ -195,7 +195,7 @@ export default class AskPincode extends Component {
                                                             </div>
                                                             <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding pincodeBtnwrapper">   
                                                                 <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  
-                                                                    <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                    <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-7">
                                                                     <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                         <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
                                                                         <input id="pincode" type="text" class="form-control pinocodeInput" minLength="6" maxLength="6" name="pincode" placeholder="Pincode..."  onChange={this.handleChange.bind(this)}/>
@@ -204,7 +204,7 @@ export default class AskPincode extends Component {
                                                                     </div> 
                                                                     {/* {this.state.pincodeExists ? null : <label className="error" style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}   */}
                                                                     </div>                                           
-                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                                                                         <button className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn newModalBtn pull-right hidden-lg hidden-md hidden-sm" onClick={this.checkDelivery.bind(this)}>Check</button>
                                                                         <button className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn newModalBtn pull-right hidden-xs" onClick={this.checkDelivery.bind(this)}>Check Delivery</button>
                                                                     </div>

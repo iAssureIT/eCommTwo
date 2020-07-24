@@ -440,7 +440,7 @@ class Ecommercenewproductcaro extends Component {
   }
   
   render() {
-    // console.log("newProducts array===:", this.state.newProducts);
+    
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 abc">
         <div className="row">
@@ -617,8 +617,14 @@ class Ecommercenewproductcaro extends Component {
                                                   <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
                                                 </div>
                                                 :
-                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - Pack Of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                
+                                                  localStorage.getItem("websiteModel")=== "FranchiseModel"?
+                                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                  :
+                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                
                                             } 
+                                            
                                           </div>
                                           
                                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">

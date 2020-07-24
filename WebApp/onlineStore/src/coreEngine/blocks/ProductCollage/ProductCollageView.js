@@ -41,7 +41,7 @@ class ProductCollageView extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps:==",nextProps);
+    // console.log("nextProps:==",nextProps);
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
         var availableSizes = [];  
@@ -65,11 +65,8 @@ class ProductCollageView extends Component {
           // availableSizes.push(nextProps.products[i].size*2);
           // availableSizes.push(nextProps.products[i].size*4); 
           nextProps.products[i].availableSizes = availableSizes;
-          console.log("availableSizes:---",availableSizes);  
-          // availablePack.push(1);
-          // availablePack.push(2);
-          // availablePack.push(4); 
-          // nextProps.products[i].availablePack = availablePack;            
+          // console.log("availableSizes:---",availableSizes);  
+                     
         }
     }
   }
@@ -502,7 +499,10 @@ class ProductCollageView extends Component {
                                       <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
                                     </div>
                                     :
-                                    <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - Pack Of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                    localStorage.getItem("websiteModel")=== "FranchiseModel"?
+                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                    :
+                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                 }
                               </div>
                               
