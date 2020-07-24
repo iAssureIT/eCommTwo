@@ -85,10 +85,12 @@ class AdminOrdersList extends Component{
                 
             return null;
           });	
+          console.log("filtered products array",ProductList);
             this.setState({
                 "data": nextProps.data,
                 "allProductsArray" : nextProps.allProductsArray,
-                "filteredProductArray" : ProductList
+                "filteredProductArray" : ProductList,
+                "showStatusFilter"  : nextProps.showStatusFilter
             });
         }
         this.getFranchiseList();
@@ -620,6 +622,7 @@ class AdminOrdersList extends Component{
                                   }
                                 </select>
                             </div>
+                            {this.state.showStatusFilter === true ? 
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status</label>
                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
@@ -635,6 +638,7 @@ class AdminOrdersList extends Component{
                              
                                 </select>
                             </div>
+                            : null}
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">

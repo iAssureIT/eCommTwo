@@ -15,7 +15,8 @@ export default class DeliveryInitiatedOrders extends Component{
   constructor(props) {
    super(props);
     this.state = {
-      "data" : [] 
+      "data" : [] ,
+      "allProductsArray" :[]
     }
     this.getOrders = this.getOrders.bind(this);
   }
@@ -27,6 +28,7 @@ export default class DeliveryInitiatedOrders extends Component{
       axios.get("/api/orders/get/orderlist/Delivery Initiated")
             .then((response)=>{
               var UsersArray = [];
+              var allProductsArray = [];
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
@@ -39,7 +41,7 @@ export default class DeliveryInitiatedOrders extends Component{
                   var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
                   var viewOrder =  "/viewOrder/"+response.data[i]._id;
                   var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-
+                  allProductsArray.push(response.data[i].products[0]);
                   var UserArray = [];
                   UserArray.push(orderID);
                   UserArray.push(userFullName);
@@ -54,7 +56,8 @@ export default class DeliveryInitiatedOrders extends Component{
                 }
 
                 this.setState({
-                  data: UsersArray
+                  data: UsersArray,
+                  allProductsArray : allProductsArray
                 });
 
                 this.setState({
@@ -70,7 +73,7 @@ export default class DeliveryInitiatedOrders extends Component{
   render(){
     return(
       <div>
-      <AdminOrdersList tableTitle={'Delivery Initiated Order List'} data={this.state.data} getOrdersFun={this.getOrders}/>
+      <AdminOrdersList tableTitle={'Delivery Initiated Order List'} data={this.state.data} allProductsArray={this.state.allProductsArray} showStatusFilter="false" getOrdersFun={this.getOrders}/>
       </div>
       );
     
