@@ -46,7 +46,7 @@
   text-align: left;
 }
 
-.addressDetails .addfield{
+.addressDetails a{
   display: block;
   color: #666666 !important;
   text-decoration: none;
@@ -119,22 +119,10 @@
 .NoPadding{
   padding: 0
 }
-.footer3{
-  background: #A2632C;
-  color: #fff;
-  padding:18px;
-}
+
 
 .footer_bottom p{
   margin:0 !important;
-}
-.footer_bottom a{
-  float: right;
-}
-.footer1{
-  background: #f3f3f3 !important;
-  padding: 30px 0;
-  /*margin-top: -20px;*/
 }
 .footer-top ul{
   list-style: none;
@@ -165,4 +153,200 @@
 .catdiv{
   height: 200px;
   max-height: 300px;
+}
+
+
+
+/*unimandai css*/
+.footernabbar{
+  padding-top: 10px;
+}
+.copyrighttxt{
+  font-size: 13px;
+  padding-top: 10px;
+}
+.footernabbar li{
+  float:left;
+}
+.footernabbar li>a{
+  padding-left: 20px;
+  color:#666;
+  font: 400 12px/20px "Roboto Slab";
+}
+
+.sitemapDiv{
+  /*border-left: 1px solid #cec6c6;*/
+}
+.title-footer {
+    font: 400 20px "Roboto Slab";
+    color: #80b435;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    text-transform: capitalize;
+    }
+
+.footer-v3{
+    color: #666 ! important;
+    font: 400 14px/24px "Roboto Slab";
+    }
+
+.sublist li{
+      color: #666 ! important;
+      font: 400 14px/20px "Roboto Slab";
+      padding: 5px 0px;
+  } 
+  .space-30 {
+    margin-bottom: 30px !important;
+}  
+.social a {
+    margin: 0 12px;
+}
+.social a i {
+    font-size: 20px;
+    color: #666;
+}
+.subscribe input {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #e5e5e5;
+    padding: 0px 15px;
+    font: 300 12px "Roboto";
+    color: #898989;
+}
+.subscribe button {
+    display: inline-block;
+    background: #80b435;
+    color: #fff;
+    border: 1px solid #80b435;
+    transiton: all 0.3s ease 0s;
+    font: 700 12px/35px "Roboto Slab";
+    text-transform: uppercase;
+    letter-spacing: 0px;
+    width: 140px;
+    margin-top: 20px;
+} 
+.socialicon li{
+    padding-left: 0;
+    padding-right: 0;
+    /*padding-top: 28px;*/
+}
+
+.footer3{
+  background: #fff;
+  color: #898989;
+  padding:18px;
+  font-size: 13px;
+}
+.footernabbar a{
+  font-weight: 600;
+}
+.uniColor{
+  color: #ff4444;
+  font-weight: 700;
+}
+.mandaiColor{
+  color: #80c21c;
+  font-weight: 700;
+}
+.footer1 {
+  min-height: 240px;
+  background-color: #f1f1f1;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  background: #f3f3f3 !important;
+  padding: 30px 0;
+  margin-top: -4px;
+}
+.footerWrapper{
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-top: -10px;
+  background-color: #f3f3f3 !important;
+}
+.footerAnimation{
+  height: 160px;
+  /* width: 100%; */
+  /* position:absolute; */
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  background: url(/images/unimandai/bg-footer.jpg) no-repeat scroll center bottom;
+  content: "";
+  left: 0px;
+  bottom: calc(100% - 3px);
+  background-color: #fff;
+  margin-top: -20px;
+}
+.hrLine{
+  color: #A2632C;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-bottom: solid 3px #A2632C;
+  margin-left: 15px;
+  /* padding-left: 0px !important; */
+}
+.onlineShoppingWrapper{
+  /* border:solid 1px #aaa; */
+}
+.FooterTitle{
+  font-weight: 600;
+  font-size: 16px;
+}
+.sectionName{
+  padding-left: 0px !important;
+
+}
+.footerLogoImg{
+  margin-bottom: 20px;
+}
+.sectionurl span{
+  margin-bottom: 20px !important;
+  line-height: 2;
+}
+.sectionName .sectionurl{
+  color: #444 !important;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 20px !important;
+}
+.categortTitle span{
+    font-weight: 500;
+    font-size:14px;
+    color: #444 !important;
+    text-decoration: none !important;
+    transition: 0.3s ease;
+}
+.categortTitle a{
+  text-decoration: none !important;
+  transition: 0.3s ease;
+}
+.categortTitle a span:hover{
+  color: #80c21c !important;
+}
+.socialMediaIcons .fa{
+  border-radius: 100%;
+  /* padding: 5px; */
+  padding-top: 8px;
+  float: left;
+  color:#fff;
+  margin-top: 20px;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  margin-right: 25px;
+  background-color: #A2632C;
+}
+
+@media only screen and (max-device-width: 480px) {    
+  .categoryFooterWrapper{
+    margin-bottom: 20px;
+  }
+  .aboutusFooterWrapper{
+    margin-bottom: 20px;
+}
+.copyrighttxt p{
+  font-size: 11px;
+}
 }

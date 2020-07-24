@@ -378,7 +378,7 @@ class CartProducts extends Component{
                                                                 }
 
                                                                 <div>
-                                                                    {data.productDetail.color ? <span className="cartColor">Color : <span style={{backgroundColor : data.productDetail.color, padding: '0px 5px'}}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span> : null}
+                                                                    {data.productDetail.color ? <span className="cartColor">Color :&nbsp;{ntc.name(data.productDetail.color)[1]}, </span> : null}
                                                                     {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp;<span className="CapsUnit">{data.productDetail.unit}</span></span>: null}
                                                                 </div>
                                                                     <button productid={data.productDetail._id} id={data._id} onClick={this.moveWishlist.bind(this)} className="btn moveWish">Move to Wishlist</button>
@@ -495,24 +495,9 @@ class CartProducts extends Component{
                                             </table>
                                         </div>
                                     </div>
-                                    {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
-                                        <button onClick={this.proceedToCheckout.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn cartCheckout">
-                                            PROCEED TO CHECKOUT
-                                        </button>
-                                        :
-                                        <button  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn blockcartCheckout">
-                                            PROCEED TO CHECKOUT
-                                        </button>   
-                                    }
-                                     {this.state.minvalueshipping <= this.props.recentCartData[0].total  ?
-                                        null
-                                    :
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mg20">
-                                        {/* <span className="minpurchase">Make minimum purchase of Rs.{this.state.minvalueshipping} to checkout your order.</span>&nbsp; */}
-                                        <span className="minpurchase">Minimum order should be ₹  {this.state.minvalueshipping} to Checkout & Place Order. 
-                                            Add more products worth ₹  {this.state.minvalueshipping - this.props.recentCartData[0].total} to proceed further.</span>
-                                    </div>
-                                    }
+                                    <button onClick={this.proceedToCheckout.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn cartCheckout">
+                                        PROCEED TO CHECKOUT
+                                    </button>
                                 </div>
                                 
                             </div>

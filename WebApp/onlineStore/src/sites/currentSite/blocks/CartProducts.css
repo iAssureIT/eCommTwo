@@ -190,3 +190,16 @@
     color: #878787;
     text-decoration: line-through;
 }
+.blockcartCheckout{
+    font-weight: 700;
+    padding: 8px 0px;
+    border-radius: 25px;
+    background-color: #999;
+    color: #fff;
+}
+.minpurchase, .sold {
+    color: red!important;
+}
+.mg20{
+    margin-top: 20px;
+}

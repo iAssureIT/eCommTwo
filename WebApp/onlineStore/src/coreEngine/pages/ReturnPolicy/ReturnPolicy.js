@@ -23,13 +23,13 @@ export default class ReturnPolicy extends Component {
 				                              <p>You can cancel your order anytime up to next day 9 am before delivery by 
                                                 calling our customer care executives on 8686342020 or 8686642020. We will 
                                                 issue a credit note in favour of you. Your payment will be credited to your 
-                                                account wallet at unimandai.
+                                                account wallet at AnasHandicrafts.
 				                              </p>
 				                              <p>You can use this credit for your next purchase. There is no expiry time 
                                                     to use this credit. We have no cash refund or online return policy.  
 				                              </p>
 				                              <p>Ensure proper and full address at the time of registering on website. It 
-                                                    will help us to deliver you our products on time. Unimandai reserves the right 
+                                                    will help us to deliver you our products on time. AnasHandicrafts reserves the right 
                                                     to confirm and validate the information and other details provided by you at 
                                                     any point of time. If upon confirmation your details are found not to be true 
                                                     (wholly or partly), it has the right in its sole discretion to reject the registration 

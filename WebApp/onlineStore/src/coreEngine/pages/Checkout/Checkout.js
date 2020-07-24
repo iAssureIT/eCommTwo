@@ -1132,7 +1132,7 @@ class Checkout extends Component {
                                                                         <span className="price"><i className="fa fa-inr"></i> &nbsp;{data.productDetail.originalPrice}</span>
                                                                     }
                                                                     <div>
-                                                                        {data.productDetail.color ? <span className="cartColor">Color : <span style={{ backgroundColor: data.productDetail.color, padding: '0px 5px' }}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span> : null}
+                                                                        {data.productDetail.color ? <span className="cartColor">Color :&nbsp; {ntc.name(data.productDetail.color)[1]}, </span> : null}
                                                                         {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp; {data.productDetail.unit}</span> : null}
                                                                     </div>
                                                                 </td>

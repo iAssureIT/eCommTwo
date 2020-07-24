@@ -1,0 +1,27 @@
+.aboutusbanner {
+    background-image: url(/images/banner2.png);
+    background-size: cover!important;
+    background-repeat: no-repeat!important;
+    height: 450px!important;
+    background-size: 100% 100%!important;
+}
+.aboutheading {
+    margin-top: 90px!important;
+    position: absolute;
+    color:white;
+}
+.aboutheading {
+    font-size: 36px;
+    font-weight: 700;
+    margin-top: 50px;
+    position: absolute;
+}
+.aboutbread {
+    background-color: transparent!important;
+    font-size: 16px;
+    color: white;
+    position: absolute;
+    /*position: absolute;*/
+    left: 582px;
+    top: 147px;
+}

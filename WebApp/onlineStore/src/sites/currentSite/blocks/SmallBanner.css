@@ -32,3 +32,18 @@
     transform: translate(-50%,0);
     top: 0;
 }
+.banner, .bannerText {
+    color: #fff;
+    text-align: center;
+}
+.banner {
+    height: 300px;
+    background: #54a79b;
+    padding: 6% 10%;
+}
+.bannerUL {
+    line-height: 60px;
+    font-size: 1.2rem;
+    list-style: none none;
+    color: #fff!important;
+}

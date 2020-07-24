@@ -14,15 +14,12 @@ export default class Aboutusmultistore extends Component {
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
 				<div className="row">
 					<div className="col-lg-12">
-						<h2 className="col-lg-12 mt50">Unicorn Fresh</h2>
+						<h2 className="col-lg-12 mt50"> AnasHandicrafts</h2>
 						<div className="col-lg-10 col-lg-offset-1">
 							<p className="col-lg-12 mt20 ">
-								We often take care of our loved ones, family and friends. Always asks them to avoid junk food and street food. But ever we noticed, when we buy vegetables or fruits, they are on open carts, unhygienic mandi or on polluted streets.
-								Thinking on that, we have launched sanitized, hygienic and packed vegetables and fruits for you.
-								Our products are washed with ozonised water which removes fungus, bacteria, chemicals and colours over it. Then they are packed with proper hygienic ways. There is no human interference after packing till you unpack at your kitchen.So stop consuming poison, eat sanitized.
-
-								Unimandai has raised the bar even higher for others emulate. It is one of the leading fruits and vegetables supplier chain in Pune.  
-								The difference lies in the sheer scale of operations at Unimandai.All the standard sanitizing and packaging procedures are in line with the Total Quality Management principles and conform to the quality standards set by us.At any given point in time Team Unimandai can handle customers  ensuring its flawless service.
+								We often take care of our loved ones, family and friends. 
+								AnasHnadicrafts has raised the bar even higher for others emulate. It is one of the furniture supplier chain..  
+								The difference lies in the sheer scale of operations at AnasHnadicrafts.All the standard sanitizing and packaging procedures are in line with the Total Quality Management principles and conform to the quality standards set by us.At any given point in time Team AnasHnadicrafts can handle customers  ensuring its flawless service.
 							</p>
 						</div>
 					</div>
@@ -32,7 +29,7 @@ export default class Aboutusmultistore extends Component {
 						  	<i className="fa fa-inbox multiicon" aria-hidden="true"></i>
 						  </div>
 						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<h3><b>200+</b></h3>
+							<h3><b>5000+</b></h3>
 							<h4>Products</h4>
 						  </div>
 						</div>
@@ -60,9 +57,9 @@ export default class Aboutusmultistore extends Component {
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 multistorebgimg">
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center multistorebgimgtext">
-										<h3 className="mb50">The Unimandai Promise</h3>
+										<h3 className="mb50">The AnasHnadicrafts Promise</h3>
 										<p className=" textparaabout1">
-											We promise that buying fruits and vegetables from us; will be an exceptional experience.
+											We promise that buying products from us; will be an exceptional experience.
 											We promise that, wherever humanely possible, we will meet and exceed all customer needs & expectations.
 											We promise that, in the unfortunate occasions when problems occur, we will own them and solve them with the least inconvenience to our customers.
 											We promise that all our people will develop and maintain habits of excellence in all that they do.
@@ -95,8 +92,8 @@ export default class Aboutusmultistore extends Component {
 							To succeed also requires, we believe, the highest standards of corporate behavior towards everyone we work with, the communities we touch, and the environment on which we have an impact. This is our road to sustainable, profitable growth, creating long-term Success and Prosperity.<br/>
 							<p className="pull-right mt50 mb50">
 								Thank You <br/>
-								Mandar Pawar <br/>
-								Founder, Unimandai 
+								Anas Khan<br/>
+								Founder, AnasHnadicrafts 
 							</p>
 							
 						</p>

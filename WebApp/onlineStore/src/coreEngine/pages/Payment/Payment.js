@@ -158,7 +158,7 @@ class Payment extends Component {
                                   <span className="price"><i className="fa fa-inr"></i>{data.originalPrice}</span>
                                 }
                                 <div>
-                                  {data.color ? <span className="cartColor">Color : <span style={{ backgroundColor: data.color, padding: '0px 5px' }}>&nbsp;</span> {ntc.name(data.color)[1]}, </span> : null}
+                                  {data.color ? <span className="cartColor">Color : &nbsp; {ntc.name(data.color)[1]}, </span> : null}
                                   {data.size ? <span className="cartColor">Size : {data.size}</span> : null} &nbsp;
                                   {data.size && data.unit ? <span className="cartColor">{data.unit}</span> : null}
                                 </div>

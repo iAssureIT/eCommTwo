@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import $                    from 'jquery';
 // import axios                from 'axios';
-
+import loginIconImg    from "../../../sites/currentSite/images/banner3.png";
 import "../../../sites/currentSite/blocks/SmallBanner.css";
 
 class SmallBanner extends Component{
@@ -13,7 +13,7 @@ class SmallBanner extends Component{
         return(
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="row">
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner" style={{"backgroundImage": `url(`+this.props.bannerData.backgroungImage+`)`}}>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner" style={{"backgroundImage": `url(`+loginIconImg+`)`}}>
                         <h1>{this.props.bannerData.title}</h1>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bannerText">
                             {

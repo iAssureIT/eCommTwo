@@ -165,7 +165,7 @@
   border-radius: 5px;
   background-size: 100% 100%;
   display: table-cell;
-  background-image: url("/images/Background.jpg");
+  background-image: url("/images/background.png");
   border-radius: 5px;
   background-size: 100% 100%;
   text-align: center;
@@ -176,6 +176,7 @@
 }
 
 .innloginwrap{
+  margin-top: 81px;
   text-align: center;
 }
 .labelCss{
@@ -268,7 +269,7 @@
   border-radius: 25px;
   padding: 10px 15px;
   /* background-color: #80B435;   */
-  background-color: #80B435;  
+  background-color: #A2632C;  
   color: #fff !important;
 }
 .resetBtn{
