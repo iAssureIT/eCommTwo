@@ -200,7 +200,10 @@ export class printBill extends React.Component {
 		.then((response) => {
 		  this.setState({
 			orderData: response.data,
-			billNumber :response.data.billNumber
+			billNumber :response.data.billNumber,
+			billDate : response.data.createdAt
+		  },()=>{
+			  console.log("orderData",response.data);
 		  })
 		})
 		.catch((error) => {
@@ -408,7 +411,7 @@ export class printBill extends React.Component {
 	// }
 
 
-	UpdateCartData(event){
+	addReturnData(event){
 		event.preventDefault();
 		// this.checkProductSoldOut(this.state.itemCode,'update');
 		const userid = localStorage.getItem('user_ID');
@@ -422,35 +425,25 @@ export class printBill extends React.Component {
 
 		}
 
-		var reportFilterData = {};
+		var ProductList = [];
+		var returnproduct  = this.state.orderData.products.filter(function(product,index){
+                if(this.state.product_ID == product.product_ID){
+                  console.log("proucts",product);
+                }       
+             
+            return null;
+          });	
 
-		reportFilterData.franchiseId = this.state.franchise_id;
-		reportFilterData.itemcode = this.state.itemCode;
-		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
+			
+		axios.patch("/api/carts/returnOrder" ,formValues)
 		.then((response)=>{
-			if(response.data.length > 0){
-				if(this.props.recentCartData.length > 0){
-						   if(response.data[0].totalStock < this.state.quantity){
-							   this.setState({
-								   "soldOutProductError" : "Product Sold Out"
-							   })
-							   swal(this.state.soldOutProductError);
-						   }else{
-								this.setState({
-									"soldOutProductError" : ''
-								});
-								axios.patch("/api/carts/updateCart" ,formValues)
-								.then((response)=>{
-									swal("Product updated successfully.")
-										this.props.fetchCartData();
-								})
-								.catch((error)=>{
-										console.log('error', error);
-								})
-						    }
-				}
-			}
+			swal("Product updated successfully.")
+				this.props.fetchCartData();
 		})
+		.catch((error)=>{
+				console.log('error', error);
+		})
+							
 		$('.close').click();
 		
 	}
@@ -615,8 +608,8 @@ export class printBill extends React.Component {
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(new Date()).format("DD MMM YYYY")}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(new Date()).format(" hh:mm a")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
 								</div>
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: {this.state.pos}</small></div>
@@ -709,7 +702,7 @@ export class printBill extends React.Component {
 																		</div>
 																	</div>
 																	<div class="modal-footer">
-																		<button type="button" class="btn btn-primary" onClick={this.UpdateCartData.bind(this)}>Submit</button>
+																		<button type="button" class="btn btn-primary" onClick={this.addReturnData.bind(this)}>Submit</button>
 																	</div>
 																	</div>
 																</div>

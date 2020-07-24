@@ -26,6 +26,7 @@ class AdminOrdersList extends Component{
                 "FranchiseArray" : [],
                 "selectedFranchise" : '',
                 "status"  : '',
+                "currentViewStatus" : '',
                 "filteredProductArray" : [],
                 "productQty" : ''
                 // "notificationData" :Meteor.subscribe("notificationTemplate"),
@@ -39,6 +40,7 @@ class AdminOrdersList extends Component{
                 "FranchiseArray" : [],
                 "selectedFranchise" : '',
                 "status"  : '',
+                "currentViewStatus" : '',
                 "filteredProductArray" : [],
                 "productQty" : ''
             };
@@ -48,15 +50,13 @@ class AdminOrdersList extends Component{
 
     componentDidMount() {
       var websiteModel = (localStorage.getItem('websiteModel'));
-    
-    this.setState({
-      websiteModel: websiteModel
-    },()=>{
-      // FranchiseModel
-      console.log("websiteModel==>",this.state.websiteModel)
-    })
+      this.setState({
+        websiteModel: websiteModel
+      },()=>{
+        // FranchiseModel
+        console.log("websiteModel==>",this.state.websiteModel)
+      })
         // this.getBA();
-    
     }
     
     // getBA(){
@@ -71,6 +71,7 @@ class AdminOrdersList extends Component{
     //         })  
     // }
     componentWillReceiveProps(nextProps){
+      console.log("componentWillReceiveProps",nextProps)
         if(nextProps){
           var ProductList = [];
           nextProps.allProductsArray.filter(function(item,index){
@@ -90,10 +91,13 @@ class AdminOrdersList extends Component{
                 "data": nextProps.data,
                 "allProductsArray" : nextProps.allProductsArray,
                 "filteredProductArray" : ProductList,
-                "showStatusFilter"  : nextProps.showStatusFilter
+                "showStatusFilter"  : nextProps.showStatusFilter ? nextProps.showStatusFilter : true,
+                "currentViewStatus" : nextProps.status
             });
         }
-        this.getFranchiseList();
+        if(this.state.websiteModel === 'FranchiseModel'){
+            this.getFranchiseList();
+        }
     }
     componentWillUnmount() {
         $("body").find("script[src='/js/adminLte.js']").remove();
@@ -212,11 +216,16 @@ class AdminOrdersList extends Component{
     }
 
     getOrdersBetweenDates(){
+      // var currentViewStatus = this.status.currentViewStatuss ? this.status.currentViewStatus : '';
       var orderFilterData= {};
       orderFilterData.startDate = this.state.fromDate;
       orderFilterData.endDate = this.state.toDate;
       orderFilterData.franchiseID = this.state.selectedFranchise !== 'all' ? this.state.selectedFranchise : '' ;
-      orderFilterData.status = this.state.status !== 'all' ? this.state.status : '';
+      if(this.state.currentViewStatus){
+        orderFilterData.status = this.state.currentViewStatus
+      }else{
+        orderFilterData.status = this.state.status !== 'all' ? this.state.status : ''
+      }
       axios.post('/api/orders/get/get_orders/',orderFilterData)
             .then((response)=>{
               // console.log("response.data of order==>",response.data)
@@ -238,10 +247,17 @@ class AdminOrdersList extends Component{
                   var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
                   var viewOrder =  "/viewOrder/"+response.data[i]._id;
                   var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
+                  // var billNumber = response.data[i].billNumber ? response.data[i].billNumber : '';
 
                   var UserArray = [];
                   UserArray.push(orderID);
-                  UserArray.push(allocatedToFranchise);
+                  // UserArray.push(billNumber);
+                  if(this.state.websiteModel === 'FranchiseModel'){
+                    UserArray.push(allocatedToFranchise);
+                  }else{
+                    UserArray.push("");
+                  }
+                  
                   UserArray.push(userFullName);
                   // UserArray.push(totalQuantity);
                   UserArray.push(productarr.toString());
@@ -314,7 +330,8 @@ class AdminOrdersList extends Component{
                   var allocatedToFranchise = response.data[i].allocatedToFranchise ?response.data[i].allocatedToFranchise.companyName : null;
                   var userFullName = response.data[i].userFullName;
                   var totalQuantity = response.data[i].cartQuantity;
-                  var shippingtime = response.data[i].shippingtime;
+                  // var shippingtime = response.data[i].shippingtime;
+                  // var billNumber = response.data[i].billNumber ? response.data[i].billNumber : '';
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
                   var productarr = [];
@@ -329,10 +346,11 @@ class AdminOrdersList extends Component{
 
                   var UserArray = [];
                   UserArray.push(orderID);
+                  // UserArray.push(billNumber);
                   UserArray.push(allocatedToFranchise);
                   UserArray.push(userFullName);
                   // UserArray.push(totalQuantity);
-                  UserArray.push(shippingtime);
+                  // UserArray.push(shippingtime);
                   UserArray.push(productarr.toString());
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
                   UserArray.push(createdAt);
@@ -379,7 +397,13 @@ class AdminOrdersList extends Component{
 
     
     render(){
-      const data = this.state.data;
+      const data = this.state.data; 
+      var franchiseColumn = {};
+      if(this.state.websiteModel === 'FranchiseModel'){
+        franchiseColumn =  {name:"Franchise Name",options: {display: true}};
+      }else{
+        franchiseColumn =  {name:"Franchise Name",options: {display: false}};
+      }
       const options = {
         print: true, 
         download: true,
@@ -390,9 +414,10 @@ class AdminOrdersList extends Component{
       };
       const columns = [
           { name:"Order Id" },
-          {name:"Franchise Name"},
+          // { name : "Bill Number"},
+          franchiseColumn,
           { name:"Customer Name" }, 
-          { name:"Shipping Time" },
+          // { name:"Shipping Time" },
           { name:"Total Items" },
           { name:"Total Price" },
           { name:"Order Date" },
@@ -604,6 +629,7 @@ class AdminOrdersList extends Component{
                                 <input onChange={this.handleToChange.bind(this)} name="toDate" ref="toDateCustomised" value={this.state.toDate} type="date" className="reportsDateRef form-control" placeholder=""   />
                               </div>
                             </div>
+                            {this.state.websiteModel === 'FranchiseModel' ?
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Franchise</label>
                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="selectedFranchise" name="selectedFranchise" value={this.state.selectedFranchise} onChange={this.onFranchiseChange.bind(this)} >
@@ -612,7 +638,6 @@ class AdminOrdersList extends Component{
                                   {
                                     this.state.FranchiseArray && this.state.FranchiseArray.length > 0 ?
                                       this.state.FranchiseArray.map((data, index) => {
-                                        // console.log("companyDropdown==>",data);
                                         return (
                                           <option key={index} value={data._id}>{data.companyName}</option>
                                         );
@@ -622,6 +647,7 @@ class AdminOrdersList extends Component{
                                   }
                                 </select>
                             </div>
+                            : null }
                             {this.state.showStatusFilter === true ? 
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status</label>
@@ -639,9 +665,7 @@ class AdminOrdersList extends Component{
                                 </select>
                             </div>
                             : null}
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                           <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Product</label>
                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="product" name="product" value={this.state.product} onChange={this.onProductChange.bind(this)} >
                                   <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
@@ -664,6 +688,31 @@ class AdminOrdersList extends Component{
                                 </div>
                             </div>
                             : null }
+                        </div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                           {/* <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                            <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Product</label>
+                                <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="product" name="product" value={this.state.product} onChange={this.onProductChange.bind(this)} >
+                                  <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+                                  {
+                                    this.state.filteredProductArray && this.state.filteredProductArray.length > 0 ?
+                                      this.state.filteredProductArray.map((data, i)=>{
+                                        return(
+                                        <option key={i} value={data.product_ID}>{data.productName}</option>
+                                        );
+                                      })
+                                    :
+                                    null
+                                  }
+                                </select>
+                            </div>
+                            {this.state.productQty ?
+                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12" style={{"padding-top": "28px"}}>
+                                <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                  Quantity : {this.state.productQty}
+                                </div>
+                            </div>
+                            : null } */}
                         </div>
 
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -23,6 +23,12 @@ export default class AllOrders extends Component{
    
   componentDidMount(){
     this.getOrders();
+    var websiteModel = (localStorage.getItem('websiteModel'));
+    this.setState({
+      websiteModel: websiteModel
+    },()=>{
+      
+    })
   }    
   getOrders(){
       axios.post("/api/orders/get/get_orders")
@@ -37,6 +43,7 @@ export default class AllOrders extends Component{
                   var userFullName = response.data[i].userFullName;
                   var totalQuantity = response.data[i].cartQuantity;
                   var shippingtime = response.data[i].shippingtime;
+                  // var billNumber = response.data[i].billNumber ? response.data[i].billNumber : '';
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
                   var productarr = [];
@@ -52,10 +59,15 @@ export default class AllOrders extends Component{
 
                   var UserArray = [];
                   UserArray.push(orderID);
-                  UserArray.push(allocatedToFranchise);
+                  // UserArray.push(billNumber);
+                  if(this.state.websiteModel === 'FranchiseModel'){
+                    UserArray.push(allocatedToFranchise);
+                  }else{
+                    UserArray.push("");
+                  }
                   UserArray.push(userFullName);
                   // UserArray.push(totalQuantity);
-                  UserArray.push(shippingtime);
+                  // UserArray.push(shippingtime);
                   UserArray.push(productarr.toString());
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
                   UserArray.push(createdAt);

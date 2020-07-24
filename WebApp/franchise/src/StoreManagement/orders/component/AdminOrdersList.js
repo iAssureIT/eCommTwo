@@ -71,7 +71,8 @@ class AdminOrdersList extends Component{
             this.setState({
                 "data": nextProps.data,
                 "allProductsArray" : nextProps.allProductsArray,
-                "filteredProductArray" : ProductList
+                "filteredProductArray" : ProductList,
+                "currentViewStatus" : nextProps.status
             });
         }
     }
@@ -224,13 +225,17 @@ class AdminOrdersList extends Component{
       var orderFilterData= {};
       orderFilterData.startDate = this.state.fromDate;
       orderFilterData.endDate = this.state.toDate;
-      orderFilterData.status = this.state.status !== 'all' ? this.state.status : '';
+      if(this.state.currentViewStatus){
+        orderFilterData.status = this.state.currentViewStatus
+      }else{
+        orderFilterData.status = this.state.status !== 'all' ? this.state.status : ''
+      }
       var userDetails = (localStorage.getItem('userDetails'));
       var userData = JSON.parse(userDetails);
       axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
       .then((resdata)=>{
         orderFilterData.franchiseID = resdata.data._id;;
-         axios.post('/api/orders/get/get_orders/',)
+        axios.post("/api/orders/get/get_orders",orderFilterData)
             .then((response)=>{
               var UsersArray = [];
                 for (let i = 0; i < response.data.length; i++) {
@@ -245,9 +250,12 @@ class AdminOrdersList extends Component{
                   var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
                   var viewOrder =  "/viewOrder/"+response.data[i]._id;
                   var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
+                  var billNumber = response.data[i].billNumber ? response.data[i].billNumber :'';
 
                   var UserArray = [];
                   UserArray.push(orderID);
+                  UserArray.push(billNumber);
+
                   UserArray.push(userFullName);
                   UserArray.push(totalQuantity);
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
@@ -276,118 +284,7 @@ class AdminOrdersList extends Component{
         })
     }
 
-    getOrdersByStatus(){
-      var userDetails = (localStorage.getItem('userDetails'));
-      var userData = JSON.parse(userDetails);
-      console.log("userData.companyID===>",userData.companyID)
-      axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
-      .then((resdata)=>{
-        console.log("resdata===>",resdata.data._id)
-        axios.get("/api/orders//get/orderlist/"+this.state.status+'/'+resdata.data._id)
-              .then((response)=>{
-                console.log("resdata===>",response.data)
-  
-                var UsersArray = [];
-                  for (let i = 0; i < response.data.length; i++) {
-                    var _id = response.data[i]._id;
-                    var orderID = response.data[i].orderID;
-                    var userFullName = response.data[i].userFullName;
-                    var totalQuantity = response.data[i].cartQuantity;
-                    var currency = response.data[i].currency;
-                    var totalAmount = response.data[i].total;
-                    var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
-                    var status = response.data[i].status;
-                    var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-                    var viewOrder =  "/viewOrder/"+response.data[i]._id;
-                    var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-  
-                    var UserArray = [];
-                    UserArray.push(orderID);
-                    UserArray.push(userFullName);
-                    UserArray.push(totalQuantity);
-                    UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
-                     
-                    UserArray.push(createdAt);
-                    UserArray.push({status : status, deliveryStatus : deliveryStatus});
-                    UserArray.push({_id:_id, viewOrder:viewOrder, deliveryStatus:deliveryStatus});
-                    
-                    UsersArray.push(UserArray);
-                  }
-  
-                  this.setState({
-                    data: UsersArray
-                  });
-  
-                  this.setState({
-                    orderData: response.data
-                  });
-  
-              })
-              .catch((error)=>{
-                  console.log('error', error);
-              })
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })
-      }
-
-      getOrders(){
-        var userDetails = (localStorage.getItem('userDetails'));
-        var userData = JSON.parse(userDetails);
-        console.log("userData.companyID===>",userData.companyID)
-        axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
-        .then((resdata)=>{
-          console.log("resdata===>",resdata.data._id)
-          axios.get("/api/orders/get/franchisewise/list/"+resdata.data._id)
-                .then((response)=>{
-                  console.log("resdata===>",response.data)
-    
-                  var UsersArray = [];
-                    for (let i = 0; i < response.data.length; i++) {
-                      var _id = response.data[i]._id;
-                      var orderID = response.data[i].orderID;
-                      var userFullName = response.data[i].userFullName;
-                      var totalQuantity = response.data[i].cartQuantity;
-                      var currency = response.data[i].currency;
-                      var totalAmount = response.data[i].total;
-                      var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
-                      var status = response.data[i].status;
-                      var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-                      var viewOrder =  "/viewOrder/"+response.data[i]._id;
-                      var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-    
-                      var UserArray = [];
-                      UserArray.push(orderID);
-                      UserArray.push(userFullName);
-                      UserArray.push(totalQuantity);
-                      UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
-                       
-                      UserArray.push(createdAt);
-                      UserArray.push({status : status, deliveryStatus : deliveryStatus});
-                      UserArray.push({_id:_id, viewOrder:viewOrder, deliveryStatus:deliveryStatus});
-                      
-                      UsersArray.push(UserArray);
-                    }
-    
-                    this.setState({
-                      data: UsersArray
-                    });
-    
-                    this.setState({
-                      orderData: response.data
-                    });
-    
-                })
-                .catch((error)=>{
-                    console.log('error', error);
-                })
-              })
-              .catch((error)=>{
-                  console.log('error', error);
-              })
-        }
-    
+   
     render(){
       const data = this.state.data;
 
@@ -402,6 +299,7 @@ class AdminOrdersList extends Component{
       };
       const columns = [
           { name:"Order Id" },
+          { name:"Bill Number" },
           { name:"Customer Name" }, 
           { name:"Total Items" },
           { name:"Total Price" },
@@ -618,8 +516,8 @@ class AdminOrdersList extends Component{
                               </div>
                             </div>
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-                            <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status</label>
-                                <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
+                                 <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status</label>
+                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
                                   <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
                                   <option value="all" name="roleListDDOption">Show All</option>
                                   <option value="New Order">New Order</option>
@@ -630,9 +528,7 @@ class AdminOrdersList extends Component{
                                   <option value="Delivery Initiated">Delivery Initiated</option>
                                   <option value="Delivered & Paid">Delivered & Paid</option>                                </select>
                             </div>
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                           <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
+                            <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Product</label>
                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="product" name="product" value={this.state.product} onChange={this.onProductChange.bind(this)} >
                                   <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
@@ -656,6 +552,7 @@ class AdminOrdersList extends Component{
                             </div>
                             : null}
                         </div>
+                        
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <MUIDataTable

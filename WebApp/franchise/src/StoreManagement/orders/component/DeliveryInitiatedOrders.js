@@ -23,17 +23,24 @@ export default class DeliveryInitiatedOrders extends Component{
    
   componentDidMount(){
     this.getOrders();
-  }    
-  getOrders(){
-      axios.get("/api/orders/get/orderlist/Delivery Initiated")
+  }   
+  
+    getOrders(){
+      var orderFilterData= {};
+      orderFilterData.status = "Delivery Initiated";
+      var userDetails = (localStorage.getItem('userDetails'));
+      var userData = JSON.parse(userDetails);
+      axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+      .then((resdata)=>{
+        orderFilterData.franchiseID = resdata.data._id;;
+         axios.post('/api/orders/get/get_orders/',orderFilterData)
             .then((response)=>{
               var UsersArray = [];
-              var allProductsArray = [];
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
                   var userFullName = response.data[i].userFullName;
-                  var totalQuantity = response.data[i].totalQuantity;
+                  var totalQuantity = response.data[i].cartQuantity;
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
                   var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
@@ -41,7 +48,7 @@ export default class DeliveryInitiatedOrders extends Component{
                   var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
                   var viewOrder =  "/viewOrder/"+response.data[i]._id;
                   var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-                  allProductsArray.push(response.data[i].products[0]);
+  
                   var UserArray = [];
                   UserArray.push(orderID);
                   UserArray.push(userFullName);
@@ -54,26 +61,28 @@ export default class DeliveryInitiatedOrders extends Component{
                   
                   UsersArray.push(UserArray);
                 }
-
+  
                 this.setState({
-                  data: UsersArray,
-                  allProductsArray : allProductsArray
+                  data: UsersArray
                 });
-
+  
                 this.setState({
                   orderData: response.data
                 });
-
             })
             .catch((error)=>{
                 console.log('error', error);
             })
+        })
+        .catch((error)=>{
+            console.log('error', error);
+        })
     }
 
   render(){
     return(
       <div>
-      <AdminOrdersList tableTitle={'Delivery Initiated Order List'} data={this.state.data} allProductsArray={this.state.allProductsArray} showStatusFilter="false" getOrdersFun={this.getOrders}/>
+      <AdminOrdersList tableTitle={'Delivery Initiated Order List'} data={this.state.data} allProductsArray={this.state.allProductsArray} showStatusFilter="false" status="Delivery Initiated" getOrdersFun={this.getOrders}/>
       </div>
       );
     

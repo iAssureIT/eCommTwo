@@ -31,7 +31,9 @@ export default class AllOrders extends Component{
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
       console.log("resdata===>",resdata.data._id)
-      axios.get("/api/orders/get/franchisewise/list/"+resdata.data._id)
+      var orderFilterData= {};
+      orderFilterData.franchiseID = resdata.data._id;
+      axios.post("/api/orders/get/get_orders",orderFilterData)
             .then((response)=>{
               console.log("resdata===>",response.data)
 
@@ -43,6 +45,7 @@ export default class AllOrders extends Component{
                   var totalQuantity = response.data[i].cartQuantity;
                   var currency = response.data[i].currency;
                   var totalAmount = response.data[i].total;
+                  var billNumber = response.data[i].billNumber ? response.data[i].billNumber :'';
                   var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
                   var status = response.data[i].status;
                   var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
@@ -51,6 +54,7 @@ export default class AllOrders extends Component{
                   allProductsArray.push(response.data[i].products[0]);
                   var UserArray = [];
                   UserArray.push(orderID);
+                   UserArray.push(billNumber);
                   UserArray.push(userFullName);
                   UserArray.push(totalQuantity);
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
