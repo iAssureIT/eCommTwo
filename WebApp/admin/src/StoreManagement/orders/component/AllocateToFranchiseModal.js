@@ -71,10 +71,8 @@ class AllocateToFranchiseModal extends Component{
     }
     closeModal(event){
        event.preventDefault();
-       alert();
-         console.log('event',event);
 
-        // $('.AllocateToFranchiseModal').close();
+        $('.ssmodal').css('display','none');
         // var modal = document.getElementById('adminModal');
         
         // modal.style.display = "none";
@@ -93,7 +91,7 @@ class AllocateToFranchiseModal extends Component{
                     <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">                                                                              
                       <h4 className="WightFont textAlignCenter col-lg-11 col-md-11 col-sm-11 col-xs-11">Allocate To Franchise</h4>
                       <div className="adminCloseCircleDiv pull-right  col-lg-1 col-md-1 col-sm-1 col-xs-12 NOpadding-left NOpadding-right">
-                        <button type="button" className="adminCloseButton" data-dismiss="modal" >&times;</button>
+                        <button type="button" className="adminCloseButton" data-dismiss="modal" onClick={this.closeModal.bind(this)}>&times;</button>
                       </div>
                     </div>
                     <div className="modal-body">
