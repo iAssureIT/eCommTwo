@@ -59,21 +59,25 @@ ul.main-nav > li > a {
   display: block; 
   padding: 10px 15px; 
   position: relative;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 400;
+  color: #ffffff;
+  font: 600 15px/40px "Roboto Slab" ! important;
+  font-weight: 600;
   box-sizing: border-box;
   cursor: pointer;
   text-decoration: none;
+  transition: 0.4s ease;
 }
 
-ul.main-nav > li:hover { background-color: #f9f9f9; }
+ul.main-nav > li:hover { 
+  background-color: #f9f9f9;
+  color: rgb(58, 162, 44);
+}
 ul.main-nav > li:hover > a { color: #333; font-weight: 400; }
 
 ul.main-nav > li ul.sub-menu-lists {
   margin: 0px;
   padding: 0px;
-  list-style-type : none;
+  /* list-style-type : none; */
   display:block;
 }
 
@@ -260,10 +264,10 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   visibility: hidden;
   background-color: #f9f9f9;
   position: absolute;
-  margin-top: 0px;
-  width: 100%;
+  margin-top: -10px;
+  /* width: 17%; */
   color: #333;
-  left: 0;
+  left: 125;
   box-sizing: border-box;
   z-index : 3;
   font-size: 16px;
@@ -363,14 +367,22 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   width: auto!important;
   float: none!important;
 }
+.mega-menu:hover{
+  color: #A2632C !important;
+}
+.sub-menu-head a:hover{
+  color: #A2632C !important;
+}
 
 .sub-menu-head a{
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
-  color: #e39b35;
+  color: #333;
+  transition: 0.4s ease;
   font-size: 14px;
-
+  margin-left: -52px
 }
-/*.sub-menu-head a:hover{
-  color: #A2632C;
-}*/
+.category_list{
+    width: 83px;
+    margin-left: -15px;
+}

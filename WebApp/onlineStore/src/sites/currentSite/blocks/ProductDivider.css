@@ -161,7 +161,7 @@
 	bottom: 6px;
 	left: 65px;
 	border: 2px solid #fff;
-	box-shadow: 0 0 0 30px rgba(255,255,255,0.2);
+	/*box-shadow: 0 0 0 30px rgba(255,255,255,0.2);*/
 	content: '';
 	opacity: 1;
 	-webkit-transition: opacity .35s,-webkit-transform .35s;

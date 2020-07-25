@@ -79,7 +79,7 @@ componentWillMount() {
   render() {  
         return (
         <header className="dark">
-        <nav className="" role="navigation">
+        <nav className="" role="navigation" style={{height:"52px"}}>
           {/* <a href="javascript:void(0);" className="ic menu" tabindex="1">
             <span className="line"></span>
             <span className="line"></span>
@@ -93,7 +93,7 @@ componentWillMount() {
                   return(
                     <li key={index} className="top-level-link">
                       <a className="mega-menu" href={"/section/"+data.sectionUrl+'/'+data._id}><span>{data.section}</span></a>
-                      <div className="col-lg-4 col-md-4 sub-menu-block textAlignLeft">
+                      <div className="col-lg-2 col-md-2 sub-menu-block textAlignLeft"style={{width:"208px"}}>
                         <div className="row">
                           <div className="col-md-3 col-lg-3 col-sm-3 megamenusubwidth">
                           <ul className="sub-menu-head">
@@ -103,7 +103,7 @@ componentWillMount() {
                                   return(
                                     <div key={catindex} className="col-md-12 col-lg-12 col-sm-12 megamenusubwidth1">
                                       {/* <h1 className="sub-menu-head"><a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a></h1> */}   
-                                          <li>
+                                          <li className="category_list">
                                               <a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a>
                                           </li>
                                     </div>

@@ -1,10 +1,10 @@
 
 .cshoplistwrap{
-	min-height: 725px
+	min-height: 240px
 }
 .boxOfShop{
 	margin: 15px 10px 15px 10px;
-	height: 200px;
+	height: 111px;
 	background-color: #fff;
 	box-shadow: #ccc 0px 0px 6px 0px;
 	border-radius: 10px;

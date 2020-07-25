@@ -282,7 +282,7 @@ componentDidMount(){
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Mail Us:</b> </label><br/>
-											<p>info@unimandai.com
+											<p>info@abc.com
 											</p>
 
 										</div>
@@ -294,7 +294,7 @@ componentDidMount(){
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Phone Us:</b> </label><br/>
-											<p>8686 34 2020 / 8686 64 2020</p>
+											<p>999999999</p>
 
 										</div>
 									</div>

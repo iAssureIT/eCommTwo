@@ -168,29 +168,7 @@ class HomePage extends Component {
                 null
             } */}
             <EcommerceBanner/>
-            <div className="homeRow">
-          {
-            this.state.exclusiveprloading ?  
-            <Loader type="carouselloader" productLoaderNo = {4}/>      
-            : 
-            (this.state.exclusiveProducts.length > 0 ? 
-              <EcommerceProductCarousel 
-                  title={'FLASH PRODUCTS'} 
-                  newProducts={this.state.exclusiveProducts}
-                  type={'exclusive'} 
-                  categories={this.state.categories} 
-                  getWishData={this.getWishData.bind(this)} 
-                  wishList={this.state.wishList}
-                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
-              :
-              null
-            )
-          }
-        </div>
-            <HomePageBanner2 />
-           {/* <FreshFoodBlock />*/}
-          </div>
-          <div className="homeRow">
+             <div className="homeRow">
             {
               this.state.discountedProductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -208,6 +186,29 @@ class HomePage extends Component {
               )
             }
           </div>
+          {/*  <div className="homeRow">
+          {
+            this.state.exclusiveprloading ?  
+            <Loader type="carouselloader" productLoaderNo = {4}/>      
+            : 
+            (this.state.exclusiveProducts.length > 0 ? 
+              <EcommerceProductCarousel 
+                  title={'EXCLUSIVE PRODUCTS'} 
+                  newProducts={this.state.exclusiveProducts}
+                  type={'exclusive'} 
+                  categories={this.state.categories} 
+                  getWishData={this.getWishData.bind(this)} 
+                  wishList={this.state.wishList}
+                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
+              :
+              null
+            )
+          }
+        </div>*/}
+            <HomePageBanner2 />
+           {/* <FreshFoodBlock />*/}
+          </div>
+         
            {/*-----------------shop by category block---------------------*/}
           <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ProductDivider categories={this.state.categories} />

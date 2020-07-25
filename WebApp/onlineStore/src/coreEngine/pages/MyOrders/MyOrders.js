@@ -441,7 +441,7 @@ export default class MyOrders extends Component {
                               <div className="col-lg-6 col-md-6 col-sm-4 col-xs-6 NOpadding">
                                 <div className="actionbtn NOpadding">
                                   { data.deliveryStatus[data.deliveryStatus.length - 1].status !== 'Cancelled' ? 
-                                    <a className="btn filterallalphab" target="_blank" href={"/view-order/" + data._id} title="View Order">
+                                    <a className="btn filterallalphab"  href={"/view-order/" + data._id} title="View Order">
                                     <span> Invoice</span></a> : <div className="pull-right"><span className="cancelledtext"> Cancelled</span></div>
                                   }   
                                   

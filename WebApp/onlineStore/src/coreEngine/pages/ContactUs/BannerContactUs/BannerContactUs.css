@@ -1,7 +1,7 @@
 .bannercusweapper{
 	height: 275px;
 	background-color: #fff;
-	padding: 35px 40px;
+	/*padding: 35px 40px;*/
 }
 .bgImageTextonBCUS{
 	background-image: url("/images/header3.jpg");
@@ -16,4 +16,5 @@
 .fs40CU{
 	font-size: 40px;
 	font-weight: 600;
+	color:#fff;
 }
