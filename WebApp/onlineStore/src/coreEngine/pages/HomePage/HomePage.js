@@ -186,25 +186,7 @@ class HomePage extends Component {
               )
             }
           </div>
-          {/*  <div className="homeRow">
-          {
-            this.state.exclusiveprloading ?  
-            <Loader type="carouselloader" productLoaderNo = {4}/>      
-            : 
-            (this.state.exclusiveProducts.length > 0 ? 
-              <EcommerceProductCarousel 
-                  title={'EXCLUSIVE PRODUCTS'} 
-                  newProducts={this.state.exclusiveProducts}
-                  type={'exclusive'} 
-                  categories={this.state.categories} 
-                  getWishData={this.getWishData.bind(this)} 
-                  wishList={this.state.wishList}
-                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
-              :
-              null
-            )
-          }
-        </div>*/}
+          
             <HomePageBanner2 />
            {/* <FreshFoodBlock />*/}
           </div>
@@ -216,9 +198,7 @@ class HomePage extends Component {
 
           
         </div>
-        <SaleProductDivider />
-        
-        <div className="homeRow">
+         <div className="homeRow">
             {
               this.state.featuredproductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -236,6 +216,28 @@ class HomePage extends Component {
               )
             }
           </div>
+        <SaleProductDivider />
+        <div className="homeRow">
+          {
+            this.state.exclusiveprloading ?  
+            <Loader type="carouselloader" productLoaderNo = {4}/>      
+            : 
+            (this.state.exclusiveProducts.length > 0 ? 
+              <EcommerceProductCarousel 
+                  title={'EXCLUSIVE PRODUCTS'} 
+                  newProducts={this.state.exclusiveProducts}
+                  type={'exclusive'} 
+                  categories={this.state.categories} 
+                  getWishData={this.getWishData.bind(this)} 
+                  wishList={this.state.wishList}
+                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
+              :
+              null
+            )
+          }
+        </div>
+        
+       
 
 
         {/* <Ceo />*/}
