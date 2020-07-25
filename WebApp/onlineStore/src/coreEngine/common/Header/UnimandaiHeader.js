@@ -422,9 +422,9 @@ loginPage(event){
   removeModalBackDrop(event){
     $(".modal-backdrop").hide(); 
     $("#pageOpacity").show(); 
-    if(event.target.id === "loginModal"){
-      $("#pageOpacity").show();  
-    }
+    // if(event.target.id === "loginModal"){
+    //   $("#pageOpacity").show();  
+    // }
      
   }
 
@@ -439,6 +439,7 @@ loginPage(event){
   } 
   CloseModal() {
     $("#pageOpacity").hide();
+    $('#loginFormModal').hide();
   }
   showModal() {
     document.getElementByClass("App").style.opacity = "0.5";

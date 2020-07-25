@@ -97,12 +97,7 @@ class EcommerceProductCarousel extends Component {
     const websiteModel = localStorage.getItem("websiteModel");      
     const showLoginAs = localStorage.getItem("showLoginAs");      
     this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
-  }
-  removeModalBackDrop(event){
-    console.log("inside modal");
-    $(".modal-backdrop").hide();
-  }
-  
+  }  
   addtocart(event) {
     event.preventDefault();
     var productCode = event.target.getAttribute('productCode');
@@ -330,6 +325,7 @@ class EcommerceProductCarousel extends Component {
     if(localStorage.getItem('showLoginAs')==="modal"){
       $('#loginFormModal').show();
       $(".modal-backdrop").remove();
+      $("#pageOpacity").show(); 
       }else{
       this.setState({
         messageData: {
@@ -396,6 +392,7 @@ class EcommerceProductCarousel extends Component {
     else {      
       if(localStorage.getItem('showLoginAs')==="modal"){
       $('#loginFormModal').show();
+      $("#pageOpacity").show(); 
       }else{
       this.setState({ 
         messageData: {
@@ -437,6 +434,10 @@ class EcommerceProductCarousel extends Component {
     $(".toast-info").removeClass('toast');
     $(".toast-warning").removeClass('toast');
 
+  }
+  removeModalBackDrop(event){
+    $(".modal-backdrop").hide();
+    $("#pageOpacity").show(); 
   }
   render() {
     // const token = localStorage.getItem("user_ID");

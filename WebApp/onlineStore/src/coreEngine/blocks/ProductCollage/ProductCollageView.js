@@ -149,6 +149,7 @@ class ProductCollageView extends Component {
       localStorage.setItem("previousUrl",previousUrl);
       if(localStorage.getItem('showLoginAs')==="modal"){
         $('#loginFormModal').show();
+        $("#pageOpacity").show(); 
         }else{
         this.setState({
           messageData: {
@@ -423,6 +424,7 @@ class ProductCollageView extends Component {
     if(localStorage.getItem('showLoginAs')==="modal"){
       $('#loginFormModal').show();
       $(".modal-backdrop").remove();
+      $("#pageOpacity").show(); 
       }else{
       this.setState({
         messageData: {
