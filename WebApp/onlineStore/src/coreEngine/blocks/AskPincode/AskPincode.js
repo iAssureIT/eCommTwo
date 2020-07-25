@@ -74,7 +74,9 @@ export default class AskPincode extends Component {
  
     closeModal(event){
         event.preventDefault();
+        $("#pageOpacity").hide();
         localStorage.setItem('pincodeFlag',"false");
+
     }
 
       checkDelivery(event){
@@ -196,6 +198,7 @@ export default class AskPincode extends Component {
                                                             <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding pincodeBtnwrapper">   
                                                                 <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  
                                                                     <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-7">
+                                                                        
                                                                     <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                         <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
                                                                         <input id="pincode" type="text" class="form-control pinocodeInput" minLength="6" maxLength="6" name="pincode" placeholder="Pincode..."  onChange={this.handleChange.bind(this)}/>

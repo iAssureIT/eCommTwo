@@ -15,6 +15,7 @@ import { bindActionCreators }     from 'redux';
 import {getForm,updateForm} from '../actions/index';
 
 import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
+import logo from '../../sites/currentSite/images/Logo.png';
 // import signInBackgroundImg from '../../sites/currentSite/images/loginBackground.png';
 
 import SignUp from './SignUp.js';
@@ -175,12 +176,10 @@ class Login extends Component {
   }
   closeModal(event){
     event.preventDefault();
-    // modal.style.display = "none";
     $("#loginFormModal").css("display", "none");
     $('.modal-backdrop').remove();
     $("#signUpFormModal").show();
-    // $("#loginFormModal").remove(); 
-    // $(".modal-backdrop").hide(); 
+   
   }
   openSignUpModal(event){
       event.preventDefault();
@@ -223,7 +222,10 @@ class Login extends Component {
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-12 NoPadding">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
-                <h3>Sign In</h3>
+                <div className=" col-lg-8 col-lg-offset-2 siteLogo NoPadding" style={{'background': 'url(' +logo  +')'}}></div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <h4>Sign In</h4>
+                </div>
               </div>
               <form id="login" onSubmit={this.userlogin.bind(this)}>
                 <div className="form-group frmhgt textAlignLeft col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mt25">
@@ -256,7 +258,7 @@ class Login extends Component {
                   </div>
                 </div>
                   :
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                       <input id="logInBtn" type="submit" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni" value="Sign In" />
                     </div>
                 }

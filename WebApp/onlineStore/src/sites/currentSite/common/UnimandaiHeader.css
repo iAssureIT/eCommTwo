@@ -479,6 +479,15 @@ button.button_search {
     background-repeat: no-repeat !important;
     background-position: center !important;
 }
+#pageOpacity{
+    height: 700px;
+    width: 100%;
+    top:0 !important;
+    position: fixed;
+    background-color: rgba(250,250,250,0.8);
+    z-index: 1001;
+    display: none;
+}
 @media only screen and (max-device-width: 480px) {   
     .firstDiv{
         min-height: auto;

@@ -420,8 +420,14 @@ loginPage(event){
       })
   }
   removeModalBackDrop(event){
-    $(".modal-backdrop").hide();
+    $(".modal-backdrop").hide(); 
+    $("#pageOpacity").show(); 
+    if(event.target.id === "loginModal"){
+      $("#pageOpacity").show();  
+    }
+     
   }
+
   responsiveNav(event){
     // console.log("inside responsive nav");
     var x = document.getElementById("myTopnav");
@@ -430,13 +436,22 @@ loginPage(event){
     } else {
       x.className = "topnav";
     }
+  } 
+  CloseModal() {
+    $("#pageOpacity").hide();
+  }
+  showModal() {
+    document.getElementByClass("App").style.opacity = "0.5";
   }
   render() {
+
     $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");    
     return (
-      <div className="headerWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">        
-        <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow hidden-xs hidden-sm">            
+      <div className="headerWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">  
+        <div id="pageOpacity"></div>  
+        <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow hidden-xs hidden-sm"> 
+                   
           <div className="row">
           <Message messageData={this.state.messageData} />  
           {/* <AskPincode />         */}
@@ -535,7 +550,7 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
-                            <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
+                            <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" id="loginModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
                               <img src={loginIconImg} className="icon-cart"></img></a>
                             </span>
                           }
@@ -552,7 +567,7 @@ loginPage(event){
                             </span>
                         </a>
                         :
-                        <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)}>
+                        <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" id="loginModal" onClick={this.removeModalBackDrop.bind(this)}>
                             <img src={cartIconImg} className="icon-cart"></img>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cart-count">
@@ -697,7 +712,7 @@ loginPage(event){
                                       </ul>
                                   </li>
                               :
-                              <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
+                              <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" id="loginModal" onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
                                 <img src={loginIconImg} className="icon-cart"></img></a>
                               </span>
                             }
@@ -826,7 +841,7 @@ loginPage(event){
               {/* <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +signupBgImg  +')'}}>                             */}
               <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">                            
                   <div className="modal-body">   
-                  <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                  <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.CloseModal.bind(this)}>&times;</button>                                                            
                       {this.props.formToShow === "login" ?
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
                               <Login />
