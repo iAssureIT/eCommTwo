@@ -162,8 +162,8 @@ export default class PurchaseManagement extends React.Component {
 			  unitRate:{
 				  required:true,
 				  noSpace: true,
-				  maxlength: 5,
-				  digits: true
+				  maxlength: 6,
+				//   digits: true
 			  },
 			  quantity:{
 				  required:true,
@@ -529,7 +529,7 @@ export default class PurchaseManagement extends React.Component {
 	onChangeUnitRate(event){
 		event.preventDefault();
 		var {name,value} = event.target;
-		var invalidChars = /[^0-9]/gi
+		var invalidChars = /[^0-9.]/gi;
 		if(invalidChars.test(value)) {
 			value = value.replace(invalidChars,"");
 		}
@@ -763,7 +763,7 @@ export default class PurchaseManagement extends React.Component {
 													<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="completeProductName" /> 
 												   : <input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />}
 												 */}
-												<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.onChangeProduct.bind(this)} name="completeProductName" autocomplete="off"/> 
+												<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.onChangeProduct.bind(this)} name="completeProductName" autoComplete="off"/> 
 
 												<datalist id="product" name="product" className="productDatalist">
 													{
@@ -784,8 +784,9 @@ export default class PurchaseManagement extends React.Component {
 												<div className="input-group inputBox-main  new_inputbx unitRateDiv" >
 													<div className="input-group-addon inputIcon">
 													   <i className="fa fa-rupee"></i>
+													   {/* pattern="\d{5}" */}
 													</div> 
-													<input type="text" placeholder="" className="form-control new_inputbx1"  value={ this.state.unitRate} name="unitRate" pattern="\d{5}" maxlength="5" refs="unitRate" onChange={this.onChangeUnitRate.bind(this)} id="unitRate" min="1"  onBlur={this.calculateAmount.bind(this)}  style={{borderRight: "1px solid gray"}}/>
+													<input type="text" placeholder="" className="form-control new_inputbx1"  value={ this.state.unitRate} name="unitRate"   pattern="\d{6}" maxlength="5" refs="unitRate" onChange={this.onChangeUnitRate.bind(this)} id="unitRate" min="0.001"  onBlur={this.calculateAmount.bind(this)}  style={{borderRight: "1px solid gray"}}/>
 													<div className="input-group-addon inputIcon prependSelect" style={{"borderLeft": "1px solid gray !important"}}>
 														<select id="unitOfMeasurement"  name="unitOfMeasurement" value={this.state.unitOfMeasurement} onChange={this.onChangeUnit.bind(this)}  className="input-group" style={{"border":0,"width": "65px","fontSize":"small"}}> 
 															<option selected={true} disabled={true}>-- Select --</option>

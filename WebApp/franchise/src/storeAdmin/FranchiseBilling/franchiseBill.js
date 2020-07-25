@@ -1164,9 +1164,9 @@ export class Bill extends React.Component {
 											</div>
 										</div>
 										<div className="row" style={{"padding": "13px"}}>
-											<ul className="declaration"><b>Declaration</b>
+											{/* <ul className="declaration"><b>Declaration</b>
 												<li>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-											</ul>
+											</ul> */}
 											<h5 style={{textAlign:'center',fontSize:"medium",fontWeight: 600}}>!!! Thank You !!! Visit Again !!!</h5>
 										</div>
 										{this.props.recentCartData.length > 0 && this.state.checkoutClicked === false ? 

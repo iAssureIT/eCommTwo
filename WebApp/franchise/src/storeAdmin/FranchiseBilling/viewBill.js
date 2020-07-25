@@ -2,6 +2,7 @@ import React from 'react';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import Barcode from 'react-barcode' ;
 import './bill.css';
+import './print.css';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
@@ -413,6 +414,7 @@ export class printBill extends React.Component {
 
 	addReturnData(event){
 		event.preventDefault();
+		console.log("this.state.products",this.state.orderData.products)
 		// this.checkProductSoldOut(this.state.itemCode,'update');
 		const userid = localStorage.getItem('user_ID');
 		const formValues = {
@@ -426,25 +428,34 @@ export class printBill extends React.Component {
 		}
 
 		var ProductList = [];
-		var returnproduct  = this.state.orderData.products.filter(function(product,index){
-                if(this.state.product_ID == product.product_ID){
-                  console.log("proucts",product);
+		var returnproduct  = this.state.orderData.products.map(function(product,index){
+                if(formValues.product_ID == product.product_ID){
+				  console.log("proucts",product);
+				  product.discountPercent = formValues.discountPercent;
+				  product.discountedPrice = formValues.discountedPrice;
+				  product.originalPrice   = formValues.rate;
+				  product.quantity        = formValues.quantity;
+				  ProductList.push(product);
                 }       
              
             return null;
-          });	
+		  });	
+
+		console.log("formValues",formValues);
+		  
+		// console.log("returnproduct",returnproduct);
 
 			
-		axios.patch("/api/carts/returnOrder" ,formValues)
-		.then((response)=>{
-			swal("Product updated successfully.")
-				this.props.fetchCartData();
-		})
-		.catch((error)=>{
-				console.log('error', error);
-		})
+		// axios.patch("/api/carts/returnOrder" ,formValues)
+		// .then((response)=>{
+		// 	swal("Product updated successfully.")
+		// 		this.props.fetchCartData();
+		// })
+		// .catch((error)=>{
+		// 		console.log('error', error);
+		// })
 							
-		$('.close').click();
+		// $('.close').click();
 		
 	}
 
@@ -471,10 +482,10 @@ export class printBill extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
-					{/* {this.state.showReturnProductDiv === true  ? 
+					{this.state.showReturnProductDiv === true  ? 
 						<div className="row">
 						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding mtop20">
-							    <input list="selectBillNumber" type="text" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autocomplete="off"/> 
+							    <input list="selectBillNumber" type="text" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autoComplete="off"/> 
 								<datalist id="selectBillNumber" name="selectBillNumber" className="billDatalist">
 										{
 											this.state.billNumbersArray && this.state.billNumbersArray.length > 0 ?
@@ -491,7 +502,7 @@ export class printBill extends React.Component {
 						</div>
 						
 						</div>
-						: null} */}
+						: null}
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding billPage">
                         <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
 						    <a className="btn btn-info printbtn viewBillBtns fa fa-home" href="/dashboard" title="Go to Homepage"></a>
@@ -499,10 +510,10 @@ export class printBill extends React.Component {
 							<button className="btn btn-info printbtn viewBillBtns fa fa-arrows-alt" title="Open Fullscreen" onClick={this.openFullscreen.bind(this)}></button>
 							: <button className="btn btn-info printbtn viewBillBtns fa fa-window-close" title="Close Fullscreen"  onClick={this.closeFullscreen.bind(this)}></button>
 						    }
-                            <a class="btn btn-info viewBillBtns" href="/franchise-billing" title="Create New Bill">New Bill</a>
-                            <button class="btn btn-info printbtn viewBillBtns fa fa-print" title="Print Bill" onClick={this.printTable.bind(this)}></button>
+                            <a className="btn btn-info viewBillBtns" href="/franchise-billing" title="Create New Bill">New Bill</a>
+                            <button className="btn btn-info printbtn viewBillBtns fa fa-print" title="Print Bill" onClick={this.printTable.bind(this)}></button>
 						
-							{/* <a class="btn btn-info reTurnBill viewBillBtns" onClick={this.onClickReturnProducts.bind(this)} title="return Products">Return Bill</a>  */}
+							{/* <a className="btn btn-info reTurnBill viewBillBtns" onClick={this.onClickReturnProducts.bind(this)} title="return Products">Return Bill</a>  */}
 							
 							{/* href="/return-products" */}
                         </div>
@@ -514,21 +525,21 @@ export class printBill extends React.Component {
 									<div className="address">{this.state.franchiseLocation}</div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span class="barcode">{this.state.billNumber}</span></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode">{this.state.billNumber}</span></div>
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: {this.state.pos}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">GSTIN: {this.state.gstNo}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">POS: {this.state.pos}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">GSTIN: {this.state.gstNo}</small></div>
 								</div>
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsEditForm" id="productsEditForm">
 									<div className="table-responsive">
-										<table class="table table-borderless">
+										<table className="table table-borderless">
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>
@@ -567,16 +578,16 @@ export class printBill extends React.Component {
 											<tfoot>
 												<tr>
 													{this.state.orderData ?
-														<td colspan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
+														<td colSpan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
 														:
-														<td colspan="4">Items/Qty 0</td>
+														<td colSpan="4">Items/Qty 0</td>
 													}
 
-													<td colspan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
+													<td colSpan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
 												</tr>
 												<tr>
-												<td colspan="4"></td>
-												<td className="totalNetAmount" colspan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
+												<td colSpan="4"></td>
+												<td className="totalNetAmount" colSpan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
 												</tr>
 											</tfoot>
 											</table>
@@ -585,9 +596,9 @@ export class printBill extends React.Component {
 												<span>Payment Method : {this.state.orderData.paymentMethod}</span>
 										</div>
 										<div className="row">
-											<ul className="declaration"><b>Declaration</b>
+											{/* <ul className="declaration"><b>Declaration</b>
 												<li>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-											</ul>
+											</ul> */}
 											<h5 style={{textAlign:'center',fontSize:"medium",fontWeight: 600}}>!!! Thank You !!! Visit Again !!!</h5>
 										</div>
 										
@@ -604,21 +615,21 @@ export class printBill extends React.Component {
 									<div className="address">{this.state.franchiseLocation}</div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span class="barcode">{this.state.billNumber}</span></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode">{this.state.billNumber}</span></div>
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">POS: {this.state.pos}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">GSTIN: {this.state.gstNo}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">POS: {this.state.pos}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">GSTIN: {this.state.gstNo}</small></div>
 								</div>
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsEditForm" id="productsEditForm">
 									<div className="table-responsive">
-										<table class="table table-borderless">
+										<table className="table table-borderless">
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>
@@ -641,30 +652,30 @@ export class printBill extends React.Component {
 													              <small>{data.quantity} {data.unit}</small>
 															</td>
 															<td>{data.originalPrice}</td>
-															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
+															<td>{data.discountPercent}<i className="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
 															<td>
-																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editOrder.bind(this,data.product_ID)} data-target={"#editPoItem"+ data._id} id={data._id}></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																<i class="fa fa-undo" aria-hidden="true"></i>
-																<div class="modal fade" id={"editPoItem"+ data._id} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-																<div class="modal-dialog modal-dialog-centered" role="document">
-																	<div class="modal-content">
-																	<div class="modal-header">
-																	    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																<span className="fa fa-pencil" data-toggle="modal" title="Partial Return" onClick={this.editOrder.bind(this,data.product_ID)} data-target={"#editPoItem"+ data._id} id={data._id}></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																<i className="fa fa-undo" title="Return Product" aria-hidden="true"></i>
+																<div className="modal fade" id={"editPoItem"+ data._id} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+																<div className="modal-dialog modal-dialog-centered" role="document">
+																	<div className="modal-content">
+																	<div className="modal-header">
+																	    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
 																			<span aria-hidden="true">&times;</span>
 																		</button>
-																		<h3 class="modal-title" id="exampleModalLongTitle">Edit Purchase Item</h3>
+																		<h3 className="modal-title" id="exampleModalLongTitle">Edit Purchase Item</h3>
 																	</div>
-																	<div class="modal-body">
+																	<div className="modal-body">
 																		<h4>{data.productName} <small>(Product Code :{data.productCode} , Item Code :{data.itemCode})</small></h4>
-																		<div class="row">
+																		<div className="row">
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
 																				<label className="control-label statelabel locationlabel" >Quantity <i className="redFont">*</i></label>
 																				<div className="input-group inputBox-main  new_inputbx quantityDiv" >
 																					<div className="input-group-addon inputIcon">
 																					    <small>{data.unit}</small>
 																					</div> 
-																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.quantity} prevValue={data.quantity} name="quantity" refs="quantity" onChange={this.onChangeEditVal.bind(this)} id="quantity" min="1" size={data.size} unit={data.unit} productid={data.product_ID} id={data._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availableQuantity={data.availableQuantity} required/>
+																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.quantity} prevvalue={data.quantity} name="quantity" refs="quantity" onChange={this.onChangeEditVal.bind(this)} id="quantity" min="1" size={data.size} unit={data.unit} productid={data.product_ID} id={data._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availablequantity={data.availableQuantity} required/>
 																				</div>     
 																			</div>  
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
@@ -673,7 +684,7 @@ export class printBill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					<i className="fa fa-rupee"></i>
 																					</div> 
-																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.rate} name="rate" refs="rate" onChange={this.percentAndPrice.bind(this)} productid={data.product_ID} id="rate" min="1" ref="originalPrice" discountPercent={data.discountPercent} discountedPrice={data.discountedPrice} required/>
+																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.rate} name="rate" refs="rate" onChange={this.percentAndPrice.bind(this)} productid={data.product_ID} id="rate" min="1" ref="originalPrice" discountpercent={data.discountPercent} discountedprice={data.discountedPrice} required/>
 																				</div>     
 																			</div>  
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
@@ -696,13 +707,13 @@ export class printBill extends React.Component {
 																				</div>     
 																			</div>  
 																		</div>
-																		<div class="row">
+																		<div className="row">
 																			<br/>
 																			<h4>Subtotal : <i className="fa fa-rupee"></i> {(this.state.discountedPrice) * (this.state.quantity)}</h4>
 																		</div>
 																	</div>
-																	<div class="modal-footer">
-																		<button type="button" class="btn btn-primary" onClick={this.addReturnData.bind(this)}>Submit</button>
+																	<div className="modal-footer">
+																		<button type="button" className="btn btn-primary" onClick={this.addReturnData.bind(this)}>Return</button>
 																	</div>
 																	</div>
 																</div>
@@ -718,24 +729,24 @@ export class printBill extends React.Component {
 											<tfoot>
 												<tr>
 													{this.state.orderData ?
-														<td colspan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
+														<td colSpan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
 														:
-														<td colspan="4">Items/Qty 0</td>
+														<td colSpan="4">Items/Qty 0</td>
 													}
 
-													<td colspan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
+													<td colSpan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
 												</tr>
 												<tr>
-												<td colspan="4"></td>
-												<td className="totalNetAmount" colspan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
+												<td colSpan="4"></td>
+												<td className="totalNetAmount" colSpan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
 												</tr>
 											</tfoot>
 											</table>
 										</div>
 										<div className="row" style={{"padding": "13px"}}>
-											<ul className="declaration"><b>Declaration</b>
+											{/* <ul className="declaration"><b>Declaration</b>
 												<li>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-											</ul>
+											</ul> */}
 											<h5 style={{textAlign:'center',fontSize:"medium",fontWeight: 600}}>!!! Thank You !!! Visit Again !!!</h5>
 										</div>
 										
