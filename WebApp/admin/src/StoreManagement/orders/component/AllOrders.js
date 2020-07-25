@@ -66,7 +66,6 @@ export default class AllOrders extends Component{
                       UserArray.push(allocatedToFranchise);
                     }else{
                       UserArray.push('');
-                      // UserArray.push(<button class="btn btn-warning btn-xs admin-orders-stat-NewOrder">Allocate to franchise</button>);
                     }
                   }else{
                     UserArray.push("");

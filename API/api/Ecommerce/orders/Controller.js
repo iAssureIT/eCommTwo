@@ -2334,4 +2334,33 @@ exports.get_orders_with_filters = (req,res,next)=>{
 };
 
 
+exports.allocateOrderToFranchise = (req,res,next)=>{
+    Orders.updateOne(
+            { orderID:req.body.orderID}, 
+            {
+                $set:{
+                  "allocatedToFranchise" : ObjectId(req.body.allocatedToFranchise)
+                }
+            }
+        )
+        .exec()
+        .then(data=>{
+          console.log("Data",data);
+            if(data.nModified == 1){
+                res.status(200).json({
+                    "message": "Order allocated to franchise Successfully."
+                });
+            }else{
+                res.status(401).json({
+                    "message": "Order Not Found"
+                });
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
 

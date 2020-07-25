@@ -77,5 +77,8 @@ router.post('/get/get_orders',orderController.get_orders_with_filters);
 
 router.post('/get/getBillsByUser/',orderController.list_bill_by_user);
 
+router.patch('/patch/allocateOrderToFranchise', orderController.allocateOrderToFranchise);
+
+
 
 module.exports = router; 

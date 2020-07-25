@@ -28,33 +28,26 @@ class AllocateToFranchiseModal extends Component{
     componentDidMount() {
 
     }
-    addDispatchDetails(event){
+    componentWillReceiveProps(nextProps){
+        console.log("componentWillReceiveProps",nextProps);
+    }
+    allocateToFranchiseDetails(event){
         event.preventDefault();
-        
         var id = $(event.currentTarget).attr('id');
-
-        var businessAssociate = $('.allocateToFranchiseForm').find('#businessAssociate').val();
-
-        var expDeliveryDate = $('.expDeliveryDate').val();
-        
-        if(businessAssociate !== '' ){
+        var selectedFranchise = $('#allocatedFranchise').val();
+        if(selectedFranchise !== '' ){
           var formValues = {
                           "orderID"             :  id,
-                          "userid"              :  localStorage.getItem('admin_ID'),
-                          "businessAssociateId" : businessAssociate
+                          "allocatedToFranchise" : selectedFranchise
                           }
-          console.log(formValues);
-
-          axios.patch('/api/orders/patch/dispatchOrder', formValues)
+          axios.patch('/api/orders/patch/allocateOrderToFranchise', formValues)
           .then((response)=>{
-            console.log('response', response);
             swal({
               title : response.data.message,
             });
-             if(response.status === 200){
-                
+            if(response.status === 200){
                     swal({
-                        title: 'Order is dispatched Successflly',
+                        title: 'Order is allocated to franchise.',
                     });
                     // this.getOrders();
                     var modal = document.getElementById('adminModal');
@@ -63,7 +56,7 @@ class AllocateToFranchiseModal extends Component{
                     $('.expDeliveryDate').val('');
                     
                     window.location.reload();
-                }
+            }
           })
           .catch((error)=>{
             console.log('error', error);
@@ -78,15 +71,18 @@ class AllocateToFranchiseModal extends Component{
     }
     closeModal(event){
        event.preventDefault();
-        // console.log('event',event);
-        var modal = document.getElementById('adminModal');
+       alert();
+         console.log('event',event);
+
+        // $('.AllocateToFranchiseModal').close();
+        // var modal = document.getElementById('adminModal');
         
-        modal.style.display = "none";
+        // modal.style.display = "none";
         
        
-        $('.dispatchCompanyName').val('');
-        $('.deliveryPersonName').val('');
-        $('.deliveryPersonContact').val('');
+        // $('.dispatchCompanyName').val('');
+        // $('.deliveryPersonName').val('');
+        // $('.deliveryPersonContact').val('');
     }
     
     render(){
@@ -101,7 +97,7 @@ class AllocateToFranchiseModal extends Component{
                       </div>
                     </div>
                     <div className="modal-body">
-                      <form className="allocateToFranchiseForm" onSubmit={this.addDispatchDetails.bind(this)} id={this.props.orderId}>
+                      <form className="allocateToFranchiseForm" onSubmit={this.allocateToFranchiseDetails.bind(this)} id={this.props.orderId}>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="row inputrow">
                             <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -110,7 +106,7 @@ class AllocateToFranchiseModal extends Component{
                                 <label>Franchise</label><span className="astrick">*</span>
                                 <div className="input-group">
                                 <span className="input-group-addon" id="basic-addon1"><i className="fa fa-building	" aria-hidden="true"></i></span>
-                                    <select className="form-control" id="businessAssociate">
+                                    <select className="form-control" id="allocatedFranchise">
                                     { this.props.FranchiseArray ?
                                         this.props.FranchiseArray.map( (data, index)=>{
                                             return (
@@ -129,7 +125,7 @@ class AllocateToFranchiseModal extends Component{
                       </div>
                       <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <button type="button" className="btn adminCancel-btn col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
+                            <button type="button" className="btn adminCancel-btn col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" onClick={this.closeModal.bind(this)} data-dismiss="modal">CANCEL</button>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                               <input  type="submit" className="btn adminFinish-btn col-lg-6 col-lg-offset-6 col-md-6 col-md-offset-6 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" value="ALLOCATE" />
@@ -143,7 +139,7 @@ class AllocateToFranchiseModal extends Component{
                     </div>
                   </div>
                 </div>
-              }
+              
             </div>
         );
     }

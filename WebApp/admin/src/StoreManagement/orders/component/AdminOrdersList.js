@@ -56,6 +56,7 @@ class AdminOrdersList extends Component{
         websiteModel: websiteModel
       },()=>{
         // FranchiseModel
+        this.getOrdersBetweenDates();
         console.log("websiteModel==>",this.state.websiteModel)
       })
         // this.getBA();
@@ -193,10 +194,11 @@ class AdminOrdersList extends Component{
       this.setState({orderId : id})
     }
 
-    AllocateToFranchiseModal(event){
-      event.preventDefault();
+    AllocateToFranchiseModal(id){
+      // event.preventDefault();
       $('#AllocateToFranchiseModal').show();
-      var id = $(event.currentTarget).attr('data-id');
+      // var id = $(event.currentTarget).attr('data-id');
+      console.log("id",id);
       this.setState({orderId : id})
     }
 
@@ -265,7 +267,7 @@ class AdminOrdersList extends Component{
                     if(allocatedToFranchise){
                       UserArray.push(allocatedToFranchise);
                     }else{
-                      UserArray.push(<button class="btn btn-warning btn-xs admin-orders-stat-NewOrder" onClick={this.AllocateToFranchiseModal.bind(this)}>Allocate to franchise</button>);
+                      UserArray.push(<button class="btn btn-warning btn-xs admin-orders-stat-NewOrder" onClick={this.AllocateToFranchiseModal.bind(this,orderID)} id={orderID}>Allocate to franchise</button>);
                     }
                   }else{
                     UserArray.push("");
