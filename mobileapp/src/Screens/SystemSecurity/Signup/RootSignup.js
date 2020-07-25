@@ -217,22 +217,20 @@ class RootSignup extends ValidationComponent {
       } = this.state;
       var emailId = email.toLowerCase();
       var mobileNo = '+91' + mobileNumber.split(' ')[1].split('-').join('')
-      var roles = 'user';
-      let mobileOTP = Math.floor(1000 + Math.random() * 9000);
       var formValues = {
         firstname:firstName,
         lastname:lastName,
         mobNumber: mobileNo,
         pincode: pincode,
-        email:email,
+        email:emailId,
         pwd: password,
         role:'user',
         status: 'unverified',
-        "emailSubject" : "Email Verification",
-        "emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
+        // "emailSubject" : "Email Verification",
+        // "emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
       }
 
-      console.log('formValues',formValues);
+      console.log('formValues=====>>>',formValues);
 
       this.setState({ btnLoading: true })
       if(this.state.isChecked){
@@ -241,13 +239,32 @@ class RootSignup extends ValidationComponent {
         .then((response) => {
           this.setState({ btnLoading: false});
           if(response.data.message == 'USER_CREATED'){            
-            var messageHead = "Great, Information submitted successfully";
-            var messagesSubHead = "and OTP is sent to your registered Email.";
-            this.props.openModal(true,messageHead,messagesSubHead,"success");
-            AsyncStorage.multiSet([
-              ['user_id_signup', response.data.ID],
-            ])
-            this.props.navigation('OTPVerification');
+            console.log('response.data Result==>', response.data.result)
+            // =================== Notification OTP ==================
+            var sendData = {
+              "event": "2",
+              "toUser_id": response.data.ID,
+              "toUserRole":"user",
+              "variables": {
+                "Username" : response.data.result.profile.firstname,
+                "OTP" : response.data.result.profile.otpEmail,
+                
+                }
+              }
+              console.log('sendDataToUser==>', sendData)
+              axios.post('/api/masternotifications/post/sendNotification', sendData)
+              .then((res) => {
+              console.log('sendDataToUser in result==>>>', res.data)
+              })
+              .catch((error) => { console.log('notification error: ',error)})
+            // =================== Notification ==================
+              var messageHead = "Great, Information submitted successfully";
+              var messagesSubHead = "and OTP is sent to your registered Email.";
+              this.props.openModal(true,messageHead,messagesSubHead,"success");
+              AsyncStorage.multiSet([
+                ['user_id_signup', response.data.ID],
+              ])
+                  this.props.navigation('OTPVerification',{userID:response.data.ID,Username:response.data.result.profile.firstname});
           }else{
             var messageHead = response.data.message;
             var messagesSubHead = "";

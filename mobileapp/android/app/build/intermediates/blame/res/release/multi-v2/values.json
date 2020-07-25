@@ -99,9 +99,11 @@
                 {
                     "source": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/src/main/res/values/strings.xml",
                     "from": {
-                        "startLines": "-1,-1,-1,-1",
-                        "startColumns": "-1,-1,-1,-1",
-                        "startOffsets": "-1,-1,-1,-1"
+                        "startLines": "4,-1,-1,-1",
+                        "startColumns": "4,-1,-1,-1",
+                        "startOffsets": "240,-1,-1,-1",
+                        "endColumns": "107,-1,-1,-1",
+                        "endOffsets": "343,-1,-1,-1"
                     },
                     "to": {
                         "startLines": "285,314,315,316",

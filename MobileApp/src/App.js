@@ -1,19 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import HomeStack from "./config/routes.js";
 import AuthStack  from "./config/routes.js";
-import settings from "./config/settings.js";
-import Footer from "../src/ScreenComponents/Footer/UniFooter.js";
 import SplashScreen from 'react-native-splash-screen';
 import codePush               from 'react-native-code-push';
 // import axios                from './config/axios.js';
-import {
-  ActivityIndicator,
-  AsyncStorage,
-  StatusBar,
-  View,
-  Alert
-} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 const HomeStackContainer = createAppContainer(HomeStack);
 const AuthStackContainer = createAppContainer(AuthStack);

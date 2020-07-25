@@ -81,6 +81,9 @@ superparent:{
   productname:{
     fontSize:16,fontFamily:"Montserrat-SemiBold",flexWrap:'wrap'
   },
+  prodqtyunit:{
+    fontSize:14,fontFamily:"Montserrat-Regular",flexWrap:'wrap'
+  },
   custtname:{
     fontSize:16,fontFamily:"Montserrat-SemiBold",flexWrap:'wrap',padding:10,
   },

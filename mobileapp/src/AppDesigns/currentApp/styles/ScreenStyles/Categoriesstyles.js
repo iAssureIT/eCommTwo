@@ -153,10 +153,31 @@ export default StyleSheet.create({
     alignItems : "center",marginBottom:10,
   },
   productname:{
-    fontSize:19,fontFamily:"Montserrat-SemiBold",color:'#333',
+    fontSize:20,
+    fontFamily:"Montserrat-SemiBold",
+    color:'#666',
   },
   shortDescription:{
-    fontSize:16,fontFamily:"KrutiDev010",color:'#333',
+    fontSize:18,
+    fontFamily:"kruti",
+    color:'#333',
+  },
+  brandname: {
+		fontSize: 12, 
+		fontFamily: "Montserrat-SemiBold", 
+		marginLeft: 2, color: '#666', 
+		alignItems: 'center',
+	},
+  packofnos: {
+		fontSize: 12, 
+		fontFamily: "Montserrat-SemiBold", 
+		marginLeft: 2, color: '#666', 
+		alignItems: 'center',
+	},
+  proddetprice:{
+    fontSize:18,
+    fontFamily:"Montserrat-Bold",
+    color : "#333",
   },
   star:{
     flex:0.2,backgroundColor:'#388e3c',borderRadius:3,paddingVertical:3,
@@ -165,7 +186,7 @@ export default StyleSheet.create({
     flexDirection:'row',justifyContent:'center',
   },
   saleimg:{
-    height:300,width:350 ,
+    height:200,width:350 ,marginBottom:20,
   },
   orderstatus:{
     flex:1,flexDirection:"row",

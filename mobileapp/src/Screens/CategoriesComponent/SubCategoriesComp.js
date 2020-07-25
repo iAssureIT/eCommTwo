@@ -11,7 +11,7 @@ import {
   AsyncStorage,
 
 } from 'react-native';
-
+import {  Icon,Button} from "react-native-elements";
 import Modal from "react-native-modal";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar3 from '../../ScreenComponents/HeaderBar3/HeaderBar3.js';
@@ -53,7 +53,7 @@ export default class SubCategoriesComp extends React.Component {
       })
     axios.get("/api/Products/get/list/" + category_ID + '/' + subCategory_ID)
       .then((response) => {
-        console.log("ProductsDetails =========>", response.data);
+        // console.log("ProductsDetails =========>", response.data);
         this.setState({
           ProductsDetails: response.data,
 
@@ -75,7 +75,7 @@ export default class SubCategoriesComp extends React.Component {
   getProductsDetails() {
     axios.get("/api/Products/get/list/" + this.state.category_ID + '/' + this.state.subCategory_ID)
       .then((response) => {
-        console.log("ProductsDetails =========>", response.data);
+        // console.log("ProductsDetails =========>", response.data);
         this.setState({
           ProductsDetails: response.data,
 
@@ -101,7 +101,7 @@ export default class SubCategoriesComp extends React.Component {
     axios
       .post('/api/Carts/post', formValues)
       .then((response) => {
-        console.log("formValues addCart =========>", response.data);
+        // console.log("formValues addCart =========>", response.data);
         this.setState({
           addtocart: true,
         });
@@ -127,10 +127,10 @@ export default class SubCategoriesComp extends React.Component {
       "user_ID": this.state.userId,
       "product_ID": productid,
     }
-    console.log("wishValuess==>", wishValues);
+    // console.log("wishValuess==>", wishValues);
     axios.post('/api/wishlist/post', wishValues)
       .then((response) => {
-        console.log(" response wishValuess==>", response.data);
+        // console.log(" response wishValuess==>", response.data);
         this.setState({
           wishlisted: true,
         });
@@ -158,10 +158,7 @@ export default class SubCategoriesComp extends React.Component {
 
 
   render() {
-
-    const { navigate, dispatch, goBack } = this.props.navigation;
-    const menu = <Menu navigate={navigate} isOpen={this.state.isOpen} />;
-
+    const { navigate,goBack } = this.props.navigation;
     if (this.props.loading) {
       return (
         <Loading />
@@ -178,8 +175,8 @@ export default class SubCategoriesComp extends React.Component {
           />
           <View style={styles.addsuperparent}>
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" >
-              <View style={styles.formWrapper}>
-                <View style={styles.flxdir}>
+               <View style={styles.formWrapper}>
+              {/*  <View style={styles.flxdir}>
                   <View >
                     <Button
                       icon={
@@ -237,7 +234,7 @@ export default class SubCategoriesComp extends React.Component {
                   </View>
                   <View>
                   </View>
-                </View>
+                </View> */}
                 <View>
                   <View style={styles.proddets}>
                     {this.state.ProductsDetails && this.state.ProductsDetails.length > 0 ?
@@ -246,12 +243,7 @@ export default class SubCategoriesComp extends React.Component {
                           <View key={i} style={styles.width160}>
                             <TouchableOpacity  onPress={() => this.props.navigation.navigate('SubCatCompView', { productID: item._id })}>
                               <View style={styles.flx5}>
-                             
                                 <View style={styles.flx1}>
-                                {/* <Image
-                                  source={{ uri: item.productImage[0] }}
-                                  style={styles.subcatimg}
-                                /> */}
                                  {item.productImage.length> 0 ?
                                       <Image
                                         source={{ uri: item.productImage[0] }}
@@ -268,11 +260,6 @@ export default class SubCategoriesComp extends React.Component {
                                  </TouchableOpacity>
                                  <Text style={styles.peroff}> {item.discountPercent}% OFF</Text> 
                                 </View>  
-                                {/* <View style={styles.flx1}> */}
-                                  {/* <Text style={styles.peroff}> {item.discountPercent}% OFF</Text> */}
-                                  {/* <Text style={styles.peroff}> {item.discountPercent}% OFF</Text> */}
-                                  
-                                {/* </View>  */}
                                 <View style={[styles.flx1, styles.protxt]}>
                                   <Text numberOfLines={1} style={[styles.nameprod, (i % 2 == 0 ? {} : { marginLeft: 12 })]}>{item.productName}</Text>
                                   <Text numberOfLines={1} style={[styles.urlprod, (i % 2 == 0 ? {} : { marginLeft: 12 })]}>{item.productUrl}</Text>
@@ -396,18 +383,15 @@ export default class SubCategoriesComp extends React.Component {
                 <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
                   Product is added to cart.
                     </Text>
+                
                 <View style={styles.yesmodalbtn}>
-                  <View style={styles.ordervwbtn}>
-                    <TouchableOpacity>
                       <Button
                         onPress={() => this.setState({ addtocart: false })}
                         titleStyle={styles.buttonText1}
                         title="OK"
                         buttonStyle={styles.buttonGreen}
-                        containerStyle={styles.buttonContainer2}
+                        containerStyle={styles.buttonContainer1}
                       />
-                    </TouchableOpacity>
-                  </View>
                 </View>
               </View>
             </Modal>
@@ -417,25 +401,21 @@ export default class SubCategoriesComp extends React.Component {
               hideModalContentWhileAnimating={true}
               style={{ paddingHorizontal: '5%', zIndex: 999 }}
               animationOutTiming={500}>
-              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
+               <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
                 <View style={{ justifyContent: 'center', }}>
                   <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
                 </View>
-                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
+                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20, }}>
                   Product is added to wishlist.
                 </Text>
-                <View style={styles.yesmodalbtn}>
-                  <View style={styles.ordervwbtn}>
-                    <TouchableOpacity>
+                 <View style={styles.yesmodalbtn}>
                       <Button
                         onPress={() => this.setState({ wishlisted: false })}
                         titleStyle={styles.buttonText1}
                         title="OK"
                         buttonStyle={styles.buttonGreen}
-                        containerStyle={styles.buttonContainer2}
+                        containerStyle={styles.buttonContainer1}
                       />
-                    </TouchableOpacity>
-                  </View>
                 </View>
               </View>
             </Modal>

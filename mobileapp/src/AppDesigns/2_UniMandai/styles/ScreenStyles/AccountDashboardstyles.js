@@ -49,13 +49,16 @@ export default StyleSheet.create({
     flex:0.5,paddingHorizontal:15,
   },
   accmobnumber:{
-    flex:0.4,fontSize:13,fontFamily:"Montserrat-SemiBold",color:'#333'
+    flex:0.7,fontSize:13,fontFamily:"Montserrat-SemiBold",color:'#333'
   },
   accusermob:{
-    flex:0.2,fontSize:13,fontFamily:"Montserrat-Regular",color:'#666'
+    flex:0.3,fontSize:13,fontFamily:"Montserrat-Regular",color:'#666'
   },
   padhr18:{
     paddingHorizontal:18
+  },
+  contactname:{
+    flex:1 , marginBottom:20,
   },
   accusermobinfo:{
     flexDirection:'row',

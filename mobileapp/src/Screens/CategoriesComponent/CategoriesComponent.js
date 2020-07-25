@@ -71,7 +71,7 @@ export default class CategoriesComponent extends React.Component{
   getCategories(){
     axios.get("/api/category/get/list/"+this.state.section_id)
     .then((response)=>{
-      // console.log('response.data categoriesId ================>', response.data );
+      console.log('response.data categoriesId ================>', response.data );
       this.setState({
         categories  : response.data,
         
@@ -141,12 +141,7 @@ export default class CategoriesComponent extends React.Component{
   }
 
   render(){
-
-
-
-    const {navigate, dispatch ,goBack} = this.props.navigation;
-    const menu = <Menu navigate={navigate} isOpen={this.state.isOpen}/>;
-
+    const {navigate,goBack} = this.props.navigation;
     if(this.props.loading){
       return(
         <Loading />
@@ -168,16 +163,17 @@ export default class CategoriesComponent extends React.Component{
 							         horizontal={true} 
 							         showsHorizontalScrollIndicator={false} >
                				<View style={styles.menuWrapper}>
-                      {
+                      {this.state.categories.length > 0 ?
                         this.state.categories && this.state.categories.map((item,index)=>{
                           if (index < 8 ) {
-                            console.log("item.catIMGs===>>",item);
+                            // console.log("item.catIMGs===>>",item);
                           return(
                           <View key={index}>
                             <TouchableOpacity onPress={()=>this.handlePressCategoryMenu(item._id)}>
                                <View style={styles.imageMenuWraper} >
                                   <Image
                                   // source={{uri:item.categoryImage[0]}}
+                                  
                                   source={require("../../AppDesigns/currentApp/images/saleimage.png")}
                                   style={styles.catimg}
                                   />
@@ -187,6 +183,13 @@ export default class CategoriesComponent extends React.Component{
                           </View>
                         )}
                       })
+                      :
+                      
+                      <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
+                      <Image
+                        source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
+                      />
+                    </View>
                      }
                     </View>
           				</ScrollView>
@@ -195,11 +198,12 @@ export default class CategoriesComponent extends React.Component{
                         <View style={styles.subcategory}>
                         {
                           this.state.subCategory && this.state.subCategory.map((item,i)=>{
-                            console.log('item subCategoryTitle=========> ',item);
+                            // console.log('item subCategoryTitle=========> ',item);
                             return(
                               <View key={i} style={[styles.catnsubcatvw,(i%2==0?{marginRight:25}:{})]}>
                                   <TouchableOpacity  onPress={()=>this.props.navigation.navigate('SubCategoriesComp',{category_ID:this.state.category_ID,subCategory_ID:item._id})}>
                                     <Image
+                                    // source={{uri:item.categoryImage}}
                                     source={require("../../AppDesigns/currentApp/images/saleimage.png")}
                                     style={styles.subcatimg}
                                     />

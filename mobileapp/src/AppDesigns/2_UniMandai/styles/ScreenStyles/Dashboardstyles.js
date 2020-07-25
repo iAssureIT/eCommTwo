@@ -24,6 +24,9 @@ export default StyleSheet.create({
   formInputView: {
     width:'90%',
   },
+  bannerwrap: {
+    width:'90%',
+  },
   inputWrapper : {
     width:'100%',
     borderColor:'#666',

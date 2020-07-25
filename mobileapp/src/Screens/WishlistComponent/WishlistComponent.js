@@ -416,8 +416,8 @@ export default class WishlistComponent extends React.Component {
                   Product is removed from wishlist.
                 </Text>
                 <View style={styles.yesmodalbtn}>
-                  <View style={styles.ordervwbtn}>
-                    <TouchableOpacity>
+                  {/* <View style={styles.ordervwbtn}>
+                    <TouchableOpacity> */}
                       <Button
                         onPress={() => this.setState({ removewishlistmodal: false })}
                         titleStyle={styles.buttonText1}
@@ -425,8 +425,8 @@ export default class WishlistComponent extends React.Component {
                         buttonStyle={styles.buttonGreen}
                         containerStyle={styles.buttonContainer2}
                       />
-                    </TouchableOpacity>
-                  </View>
+                    {/* </TouchableOpacity>
+                  </View> */}
                 </View>
               </View>
             </Modal>

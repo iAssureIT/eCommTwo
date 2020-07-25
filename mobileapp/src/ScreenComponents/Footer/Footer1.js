@@ -74,10 +74,6 @@ class UniFooter extends ValidationComponent {
     this.props.navigation.navigate('WishlistComponent', { user_ID: this.state.userId });
   }
 
-  _goBack = () => {
-    this.props.goBack();
-  };
-
   render() {
     var { navigation } = this.props;
     return (
@@ -95,13 +91,13 @@ class UniFooter extends ValidationComponent {
               <TouchableOpacity onPress={() => this.cart()} >
                 <Icon name="shopping-cart" type="feather" size={15} color="#666" />
                 <Text style={styles.footerTitle}>My Cart</Text>
-                <Text style={styles.notificationText}>{this.state.getCartCountData}</Text>
-                {/* {
+                {/* <Text style={styles.notificationText}>{this.state.getCartCountData}</Text> */}
+                {
                   this.state.getCartCountData > 0 ?
                     <Text style={styles.notificationText}>{this.state.getCartCountData}</Text>
                   :
                   null
-                } */}
+                }
                 
               </TouchableOpacity>
             </View>

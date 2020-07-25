@@ -689,7 +689,7 @@ exports.user_login_using_mobile = (req, res, next) => {
 	var mobNumber = req.body.mobNumber;
 	var role = (req.body.role).toLowerCase();
 	User.findOne({
-		"username": mobNumber,
+		"profile.mobile": mobNumber,
 		"roles": role,
 	})
 	.exec()

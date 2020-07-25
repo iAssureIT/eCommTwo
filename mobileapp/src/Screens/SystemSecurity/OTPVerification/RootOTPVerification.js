@@ -53,13 +53,33 @@ class RootOTPVerification extends ValidationComponent {
     }
 
     componentDidMount() {
-
+    // const userId = this.props.navigation.getParam('userID', 'No userID');
+    // const Username = this.props.navigation.getParam('Username', 'No Username');
+    //     this.setState({ 
+    //         userID: userId,
+    //         Username: Username,
+    //     })
         AsyncStorage.multiGet(['user_id_signup'])
             .then((data) => {
-                // console.log('data otp---',data)
-                user_id_signup = data[0][1]
+                console.log('data otp---',data)
+                var user_id_signup = data[0][1]
                 this.setState({ 
                     userId: user_id_signup
+                },()=>{
+                    axios.get('/api/users/get/' + this.state.userId)
+                        .then((res) => {
+                        console.log("res.data.user details==>", res.data);
+                        this.setState({
+                            user_id: res.data._id,
+                            fullName: res.data.fullName,
+                            username: res.data.email,
+                            // deliveryAddress: res.data.deliveryAddress[0],
+                            mobNumber: res.data.mobile,
+                            profileImage: res.data.image,
+                            companyID: res.data.companyID
+                        })
+                        })
+                        .catch((error) => {});
                 })
             })
 
@@ -135,6 +155,22 @@ class RootOTPVerification extends ValidationComponent {
         .then(response => {
           this.setState({ btnLoading: false })
           if (response.data.message == 'SUCCESS') {
+              // =================== Notification OTP ==================
+            var sendData = {
+                "event": "1",
+                "toUser_id": this.state.user_id,
+                "toUserRole":"user",
+                "variables": {
+                  "Username" : this.state.fullName,
+                  }
+                }
+                console.log('sendDataToUser==>', sendData)
+                axios.post('/api/masternotifications/post/sendNotification', sendData)
+                .then((res) => {
+                console.log('sendDataToUser in result==>>>', res.data)
+                })
+                .catch((error) => { console.log('notification error: ',error)})
+              // =================== Notification ==================
             this.props.navigation('Login');
           }else{
             var messageHead = "Please enter correct OTP.";

@@ -8,7 +8,7 @@
 //   TouchableOpacity,
 //   ImageBackground,
 //   Image,
-//   Button,
+//   Button, 
 //   TextInput,
 //   Alert
 // } from 'react-native';
@@ -101,7 +101,6 @@ import {
 } from 'react-native';
 import Modal from "react-native-modal";
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/FeatureProductComponentStyles.js';
-// import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import {  Icon,Button} from "react-native-elements";
 import axios from 'axios';
 
@@ -124,7 +123,7 @@ export default class FeatureProductComponent extends React.Component {
   }
 
   componentDidMount(){
-    console.log("this.props.userId addCart =========>", this.props.userId);
+    // console.log("this.props.userId addCart =========>", this.props.userId);
      this.setState({
         ProductsDetails : this.props.newProducts,
         type            : this.props.type
@@ -140,7 +139,7 @@ export default class FeatureProductComponent extends React.Component {
     axios
       .post('/api/Carts/post', formValues)
       .then((response) => {
-        console.log("formValues addCart =========>", response.data);
+        // console.log("formValues addCart =========>", response.data);
         this.setState({
           addtocart: true,
         });
@@ -158,7 +157,7 @@ export default class FeatureProductComponent extends React.Component {
     console.log("wishValuess==>", wishValues);
     axios.post('/api/wishlist/post', wishValues)
       .then((response) => {
-        console.log(" response wishValuess==>", response.data);
+        // console.log(" response wishValuess==>", response.data);
         this.setState({
           wishlisted: true,
         });
@@ -182,9 +181,10 @@ export default class FeatureProductComponent extends React.Component {
                   <View style={styles.proddets}>
                   {this.state.ProductsDetails &&
                       this.state.ProductsDetails.map((item, i) => {
+                        console.log("featuredproductsloading =========>", item);
                         return (
                           <View key={i} style={styles.width160}>
-                            <TouchableOpacity  onPress={() => this.props.navigation.navigate('SubCatCompView', { productID: item._id })}>
+                            <TouchableOpacity  onPress={() => this.props.navigate('SubCatCompView', { productID: item._id })}>
                               <View style={styles.flx5}>
                              
                                 <View style={styles.flx1}>
@@ -207,17 +207,18 @@ export default class FeatureProductComponent extends React.Component {
                                 </View>  
                                 <View style={[styles.flx1, styles.protxt]}>
                                   <Text numberOfLines={1} style={[styles.nameprod, (i % 2 == 0 ? {} : { marginLeft: 12 })]}>{item.productName}</Text>
+                                  <Text numberOfLines={1} style={[styles.shortDescription]}>{item.shortDescription}</Text>
                                 </View>
                                 <View style={[styles.flx1, styles.prdet]}>
                                   <View style={[styles.flxdir]}>
                                     <Icon
                                       name="rupee"
-                                      type="font-awesome"
+                                      type="font-awesome" 
                                       size={12}
                                       color="#333"
                                       iconStyle={{ marginTop: 5, marginRight: 3 }}
                                     />
-                                    <Text style={styles.ogprice}>{item.originalPrice}</Text>
+                                    <Text style={styles.ogprice}>{item.originalPrice} - <Text style={styles.packofnos}>Pack Of {item.size} {item.unit}</Text> </Text>
                                   </View>
                                 </View>
                                 <View style={styles.addtocartbtn}>

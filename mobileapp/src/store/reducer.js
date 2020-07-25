@@ -6,7 +6,11 @@ const initialState = {
 	longitude   :"",
 	latitude    :"",
 	user_id     :"",
+	searchText  :"",
 	token       :"",
+
+
+
 }
 
 const reducer = (state = initialState,action) => {
@@ -21,9 +25,16 @@ const reducer = (state = initialState,action) => {
 	if(action.type === "SET_USER_ID"){
 		newState.user_id 		= action.user_id;
 	}
+
 	if(action.type === "TRACKING_ID"){
 		newState.tracking_id 		= action.tracking_id;
 	}
+	
+	if(action.type === "SET_GLOBAL_Search"){
+		console.log("action.searchText===>",action.searchText)
+		newState.searchText 		= action.searchText;
+	}
+	
 	if(action.type === "SET_STARTING_COORDINATES"){
 		newState.tracking_id 		= action.tracking_id;
 		newState.longitude 		    = action.longitude;

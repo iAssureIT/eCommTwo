@@ -37,7 +37,7 @@ export default class MenuCarousel extends ValidationComponent {
   
   
   render() {
-      console.log('sections -------------------->', this.state.sections);
+      // console.log('sections -------------------->', this.state.sections);
       return (
         <View>
           <View>
@@ -54,7 +54,8 @@ export default class MenuCarousel extends ValidationComponent {
                           <TouchableOpacity onPress={()=>this.props.navigation.navigate('CategoriesComponent',{section_id:item._id})}>
                              <View style={styles.imageMenuWraper} >
                                   <Image
-                                   source= {require("../../AppDesigns/currentApp/images/saleimage.png")}
+                                  //  source= {require("../../AppDesigns/currentApp/images/saleimage.png")}
+                                  source={{uri:item.categoryImage}}
                                    style={{ height:80,borderRadius:5,width: 120,}}
                                   />
                              </View>
@@ -66,9 +67,8 @@ export default class MenuCarousel extends ValidationComponent {
                           <TouchableOpacity onPress={()=>this.props.navigate('CategoriesComponent',{section_id:item._id})}>
                              <View style={styles.imageMenuWraper} >
                                   <Image
-                                 
-                                     source= {require("../../AppDesigns/currentApp/images/saleimage.png")}
-                                  style={{ height:80,borderRadius:5,width: 120,}}
+                                    source= {require("../../AppDesigns/currentApp/images/saleimage.png")}
+                                    style={{ height:80,borderRadius:5,width: 120,}}
                                   />
                              </View>
                              <Text style={{color:'#333',flexShrink:1,textAlign:'center',marginTop:10,fontSize:13,fontFamily:"Montserrat-SemiBold",flexWrap: 'wrap'}}>{item.section}</Text>

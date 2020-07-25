@@ -147,7 +147,7 @@ logout=()=>{
                 </Text>
               </View>
             </TouchableOpacity>
-             <TouchableOpacity onPress={()=> this.props.navigate('MyProductReview')}>
+             {/* <TouchableOpacity onPress={()=> this.props.navigate('MyProductReview')}>
               <View style={styles.menu} >
                 <Icon 
                   size={20} 
@@ -160,7 +160,7 @@ logout=()=>{
                   My Product Review
                 </Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={()=>this.logout()}>
               <View style={styles.menu}>
                 <Icon 

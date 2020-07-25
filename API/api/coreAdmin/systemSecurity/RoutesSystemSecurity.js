@@ -18,7 +18,7 @@ router.patch('/patch/setsendemailotpusingID/:ID',UserController.set_send_emailot
 router.patch('/patch/setsendemailotpusingEmail/:emailId',UserController.set_send_emailotp_usingEmail);
 
 
-//API for driver app
+//API for Mobile app
 router.post('/post/login/mobile',UserController.user_login_using_mobile); //Working
 router.post('/post/signup_user', UserController1.user_signup_user); //Working
 router.get('/get/checkmobileotp/usingID/:ID/:mobileotp',UserController.check_userID_MobileOTP);//Working

@@ -9,6 +9,21 @@ export default StyleSheet.create({
     paddingRight:20,
     marginRight:10,
   },
+  whitelogo: {
+    height: 30, width: 45, marginTop: 15, marginLeft: 10 
+  },
+  whitename: {
+    height: 65, width: 140, marginTop: 10, 
+    marginLeft: 80 
+  },
+  searchvw: {
+    paddingTop:-2,
+    paddingHorizontal: 15, 
+    marginBottom: 30, 
+  },
+  rightcnt: {
+    paddingTop: 0, paddingLeft: 0, paddingRight: 0, backgroundColor: '#80c21c' 
+  },
   notificationText: {
 
        ...Platform.select({
@@ -45,8 +60,8 @@ export default StyleSheet.create({
   },
 
   outerContent: {
-    borderBottomWidth:0, 
-    backgroundColor: '#f7ac57',
+    // borderBottomWidth:0, 
+    // backgroundColor: '#f7ac57',
     margin:0
   },
   notificationbell: {
@@ -104,6 +119,21 @@ export default StyleSheet.create({
       }
     }) 
   },
+  header2main:{
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#80c21c",
+    backgroundColor: "#80c21c", elevation: 4,
+    // boxShadow: "10px 5px 5px black"
+  },
+  leftside:{
+    backgroundColor: 'transparent', paddingHorizontal: 15 
+  },
+  center:{
+    backgroundColor: 'transparent', paddingLeft: 0, paddingRight: 0, 
+  },
+  rightside:{
+    backgroundColor: 'transparent', paddingHorizontal: 15 
+  },
 
   searchContainer:{
     width:'100%',
@@ -120,7 +150,7 @@ export default StyleSheet.create({
     borderLeftWidth:1,
     borderRightWidth:1,
     borderRadius:5,
-    borderColor:"#ccc",
+    // borderColor:"#ccc",
      elevation:4,
     shadowOffset: { width: 5, height: 5 },
     shadowColor: "grey",

@@ -9,13 +9,28 @@ export default StyleSheet.create({
     paddingRight:20,
     marginRight:10,
   },
+  whitelogo: {
+    height: 30, width: 45, marginTop: 15, marginLeft: 10 
+  },
+  whitename: {
+    height: 65, width: 140, marginTop: 10, 
+    marginLeft: 80 
+  },
+  searchvw: {
+    paddingTop:-2,
+    paddingHorizontal: 15, 
+    marginBottom: 30, 
+  },
+  rightcnt: {
+    paddingTop: 0, paddingLeft: 0, paddingRight: 0, backgroundColor: '#80c21c' 
+  },
   notificationText: {
 
        ...Platform.select({
       ios:{
             position: 'absolute',
-            right: 0,
-            top: -8,
+            right: 4,
+            top: -15,
             borderRadius: 29,
             width: 15,
             height: 15,
@@ -29,8 +44,8 @@ export default StyleSheet.create({
       },
       android : {
             position: 'absolute',
-            right: 0,
-            top: -4,
+            right: -4,
+            top: -10,
             borderRadius: 9,
             width: 18,
             height: 18,
@@ -45,11 +60,27 @@ export default StyleSheet.create({
   },
 
   outerContent: {
-    borderBottomWidth:0, 
-    backgroundColor: '#f7ac57',
+    // borderBottomWidth:0, 
+    // backgroundColor: '#f7ac57',
     margin:0
   },
-
+  notificationbell: {
+    flexDirection:'row',justifyContent:'center',
+    alignItems:'center',marginTop:6,
+    alignSelf:'center',marginRight:20
+  },
+  flxdir: {
+    flexDirection:'row'
+  },
+  iconOuterWrapper:{
+    flex:0.5,backgroundColor:'#fff',color:'#fff',
+  },
+  iconOuterWrapper2:{
+    flex:0.5,backgroundColor:'#fff',color:'#fff',
+  },
+  footerTitle:{
+    textAlign:'center',fontFamily:"Montserrat-SemiBold",fontSize:12,color:'#fff',
+  },
   title:{
     color: '#fff',
     fontFamily:"Montserrat-SemiBold",
@@ -88,6 +119,21 @@ export default StyleSheet.create({
       }
     }) 
   },
+  header2main:{
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#80c21c",
+    backgroundColor: "#80c21c", elevation: 4,
+    // boxShadow: "10px 5px 5px black"
+  },
+  leftside:{
+    backgroundColor: 'transparent', paddingHorizontal: 15 
+  },
+  center:{
+    backgroundColor: 'transparent', paddingLeft: 0, paddingRight: 0, 
+  },
+  rightside:{
+    backgroundColor: 'transparent', paddingHorizontal: 15 
+  },
 
   searchContainer:{
     width:'100%',
@@ -95,7 +141,7 @@ export default StyleSheet.create({
     height:30,
     borderTopWidth:0,
     borderBottomWidth:0,
-    backgroundColor:'transparent',
+    backgroundColor:'#80c21c',
   },
   searchInputContainer:{
     backgroundColor:'#fff',
@@ -104,7 +150,7 @@ export default StyleSheet.create({
     borderLeftWidth:1,
     borderRightWidth:1,
     borderRadius:5,
-    borderColor:"#ccc",
+    // borderColor:"#ccc",
      elevation:4,
     shadowOffset: { width: 5, height: 5 },
     shadowColor: "grey",
@@ -115,7 +161,7 @@ export default StyleSheet.create({
   },
   searchInput:{
     fontSize:13,
-    color:'#ccc',
+    // color:'#ccc',
     fontFamily:"Montserrat-Regular",
 
   },

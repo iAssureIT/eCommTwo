@@ -17,24 +17,18 @@ import {
 
 } from 'react-native';
 
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Drawer from 'react-native-drawer';
-import { TextField } from 'react-native-material-textfield';
-import { Header, Button, Icon, SearchBar, CheckBox } from "react-native-elements";
-import SideMenu from 'react-native-side-menu';
+import { Dropdown }                 from 'react-native-material-dropdown';
+import { Button, Icon,} from "react-native-elements";
 import Modal from "react-native-modal";
 import axios from "axios";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
-// import styles from './Addressstyles.js';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/OrderSummaryStyles.js';
 import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
-import ConfirmOrderComponent from '../ConfirmOrderComponent/ConfirmOrderComponent.js';
-const window = Dimensions.get('window');
+
 
 export default class OrderSummary extends React.Component {
   constructor(props) {
@@ -43,7 +37,8 @@ export default class OrderSummary extends React.Component {
       inputFocusColor: colors.textLight,
       isOpen: false,
       starCount: 2.5,
-
+      "startRange": 0,
+      "limitRange": 10,
     };
   }
 
@@ -86,14 +81,26 @@ export default class OrderSummary extends React.Component {
       adddatastate: adddata.state,
     }, () => {
       this.getCartData(this.state.user_ID, this.state.product_ID);
+      this.gettimes(this.state.startRange, this.state.limitRange);
     })
   }
-
+  gettimes(startRange, limitRange) {
+    axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
+        .then((response) => {
+            // console.log('gettimes ===> ', response.data);
+            this.setState({
+                gettimes: response.data
+            })
+        })
+        .catch((error) => {
+            console.log('error', error);
+        });
+}
   getCartData() {
     axios
       .get('/api/Carts/get/cartproductlist/' + userId)
       .then((response) => {
-        console.log("Item size==>", response.data[0].cartItems.length);
+        // console.log("Item size==>", response.data[0].cartItems[0].productDetail);
         this.setState({
           subtotalitems: response.data[0].cartItems.length,
           cartData: response.data[0].cartItems,
@@ -202,10 +209,18 @@ export default class OrderSummary extends React.Component {
                             <View key={i} style={styles.proddetails}>
                               <View style={styles.flxdir}>
                                 <View style={styles.flxpd}>
-                                  <Image
-                                    style={styles.imgwdht}
-                                    source={{ uri: item.productDetail.productImage[0] }}
-                                  />
+                                  {
+                                    item.productDetail.productImage.length> 0 ?
+                                      <Image
+                                      source={{ uri: item.productDetail.productImage[0] }}
+                                        style={styles.imgwdht}
+                                      />
+                                    :
+                                      <Image
+                                        source={require("../../AppDesigns/currentApp/images/notavailable.jpg")}
+                                        style={styles.imgwdht}
+                                      />
+                                  }
                                 </View>
                                 <View style={styles.flxmg}>
                                   <Text style={styles.productname}>{item.productDetail.productName}</Text>
@@ -219,6 +234,7 @@ export default class OrderSummary extends React.Component {
                                     />
                                     <Text style={styles.proddetprice}>{item.productDetail.discountedPrice}</Text>
                                   </View>
+                                  <Text style={styles.prodqtyunit}>Size: {item.productDetail.size +" " +item.productDetail.unit}</Text>
                                 </View>
                               </View>
                             </View>
@@ -258,7 +274,7 @@ export default class OrderSummary extends React.Component {
                           <View style={styles.endrow}>
                             <Text style={styles.free}>&nbsp;&nbsp;Free</Text>
                           </View>
-                        </View>
+                        </View> 
                       </View>
                       <View style={styles.amountpay}>
                         <View style={styles.flx7}>
@@ -280,7 +296,7 @@ export default class OrderSummary extends React.Component {
                       <View style={styles.margTp20}>
                         <TouchableOpacity >
                           <Button
-                            onPress={() => this.props.navigation.navigate('PaymentMethod', { cartdata: this.state.cartData, adddata: this.state.adddata, userID: this.state.user_ID })}
+                            onPress={() => this.props.navigation.navigate('PaymentMethod', { cartdata: this.state.cartData, adddata: this.state.adddata, userID: this.state.user_ID,totalamountpay : this.state.totaloriginalprice })}
                             title={"PROCEED TO BUY"}
                             buttonStyle={styles.button1}
                             containerStyle={styles.buttonContainer1}

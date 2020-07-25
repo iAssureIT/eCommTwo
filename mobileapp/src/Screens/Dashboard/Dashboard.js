@@ -1,20 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  Text,
-  View,
-  BackHandler,
-  Dimensions,
-  AsyncStorage,
-  KeyboardAvoidingView,
-  ImageBackground,
-  Image,
-  TextInput,
-  Alert,
-  Picker,
-  Keyboard
-
-} from 'react-native';
+import {ScrollView,View,AsyncStorage,} from 'react-native';
 
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
 import SideMenu from 'react-native-side-menu';
@@ -24,11 +9,11 @@ import HeaderBar2 from '../../ScreenComponents/HeaderBar2/HeaderBar2.js';
 import BannerComponent from '../../ScreenComponents/BannerComponent/BannerComponent.js';
 import MenuCarouselSection from '../../ScreenComponents/Section/MenuCarouselSection.js';
 import FeatureProductComponent from'../../ScreenComponents/FeatureProductComponent/FeatureProductComponent.js';
-import FlashComponent from'../../ScreenComponents/FlashComponent/FlashComponent.js';
+import SearchProducts from'../Search/SearchProducts.js';
 // import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js'
-// import styles from './Dashboardstyles.js';
+import { connect }        from 'react-redux';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/Dashboardstyles.js';
 import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -37,9 +22,7 @@ import { TextField } from 'react-native-material-textfield';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
 import axios from "axios";
 
-const window = Dimensions.get('window');
-
-export default class Dashboard extends React.Component{
+class Dashboard extends React.Component{
   constructor(props){
     super(props);
     this.state={
@@ -53,9 +36,11 @@ export default class Dashboard extends React.Component{
     this.getSections();
     this.exclusiveProductsData();
     this.featuredProductData();
+    this.SearchProducts();
   }
 
   componentDidMount() {
+    console.log("this.searchText IN ===>s", this.props.searchText);
     AsyncStorage.multiGet(['user_id', 'token'])
       .then((data) => {
         userId = data[0][1]
@@ -84,11 +69,26 @@ export default class Dashboard extends React.Component{
           console.log('error', error);
       })
   }
-
+  SearchProducts(){
+    // console.log("Name serarch==>",this.props.searchText);
+    axios.get("/api/products/get/search/" + this.props.searchText)
+          .then((response) => {
+            // console.log("searchResult of serarch==>",response.data);
+            this.setState({
+              ProductsDetails: response.data,
+            },()=>{
+              console.log("searchResult of serarch==>",this.state.ProductsDetails);
+            })
+            
+          })
+          .catch((error) => {})
+  }
   featuredProductData(){
     var productType1 = 'featured';
     axios.get("/api/products/get/listbytype/"+productType1)
       .then((response)=>{
+    
+
         this.setState({
           featuredproductsloading:false,
           featuredProducts : response.data
@@ -132,6 +132,8 @@ export default class Dashboard extends React.Component{
   }
 
   componentWillReceiveProps(nextProps){
+    console.log("this.searchText nextprops ===>s", nextProps.searchText);
+    this.SearchProducts();
   }
 
   updateMenuState(isOpen) {
@@ -190,13 +192,21 @@ export default class Dashboard extends React.Component{
             <View style={styles.superparent}>
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled" >
               <View  style={styles.formWrapper}>
-                <View>
-                  {/* <BannerComponent /> */}
+                <View style={styles.bannerwrap}>
+                  <BannerComponent />
                 </View>
                 <View>
+                { this.props.searchText ?
+                  null
+                     
+                :
                   <MenuCarouselSection  navigate = {navigate} sections={this.state.sections} />
-                </View>
-                {
+                }
+                  </View>
+                { this.props.searchText ?
+                     <SearchProducts navigate = {navigate} title={'Search PRODUCTS'} searchProds={this.state.ProductsDetails}  />
+                     
+                :
                   (this.state.featuredProducts.length > 0 ? 
                     <FeatureProductComponent navigate = {navigate} title={'FEATURE PRODUCTS'}  newProducts={this.state.featuredProducts} type={'featured'} getWishData={this.getWishData.bind(this)} wishList={this.state.wishList} userId={this.state.userId} categories={this.state.categories}/>
                     : null
@@ -218,5 +228,10 @@ export default class Dashboard extends React.Component{
   }
 }
 
-
-
+const mapStateToProps = (state) => {
+  // console.log("Name serarch state==>",state.searchText);
+  return {
+      searchText: state.searchText,
+  }
+};
+export default connect(mapStateToProps)(Dashboard);

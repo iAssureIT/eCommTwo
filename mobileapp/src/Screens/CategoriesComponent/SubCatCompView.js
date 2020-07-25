@@ -42,11 +42,11 @@ export default class SubCatCompView extends React.Component {
 
   componentDidMount() {
     const productID = this.props.navigation.getParam('productID', 'No productID');
-    // console.log('productID-------------------------->', productID);
+    console.log('productID-------------------------->', productID);
     this.setState({
       productID: productID
     }, () => {
-      this.getProductsView();
+      this.getProductsView(this.state.productID);
     })
 
     AsyncStorage.multiGet(['user_id', 'token'])
@@ -60,25 +60,27 @@ export default class SubCatCompView extends React.Component {
       })
   }
 
-  getProductsView() {
+  getProductsView(productID) {
+    console.log(" ProductsView =========>", productID);
 
-    axios.get("/api/Products/get/one/" + this.state.productID)
-
-      // axios.get('/api/Products/get/one/5ec4b6ea72a23d4fea8797e3')
+    axios.get("/api/Products/get/one/" + productID)
       .then((response) => {
         console.log("response.data ProductsView =========>", response.data);
         this.setState({
           productdata: response.data,
+          brand: response.data.brand,
           productName: response.data.productName,
           shortDescription: response.data.shortDescription,
           productUrl: response.data.productUrl,
           discountedPrice: response.data.discountedPrice,
           originalPrice: response.data.originalPrice,
           color: response.data.color,
+          size: response.data.size,
+          unit: response.data.unit,
           discountPercent: response.data.discountPercent,
           productDetails: response.data.productDetails,
           featureList: response.data.featureList,
-          productImage: response.data.productImage[0]
+          productImage: response.data.productImage
         })
       })
       .catch((error) => {
@@ -155,7 +157,7 @@ export default class SubCatCompView extends React.Component {
 
 
   render() {
-    var productImages = JSON.stringify(this.state.productImage);
+    // var productImages = JSON.stringify(this.state.productImage);
     // console.log("this.state.productImage RENder------------>", productImages);
     const { navigate, dispatch, goBack } = this.props.navigation;
     return (
@@ -173,7 +175,7 @@ export default class SubCatCompView extends React.Component {
 
               <Text numberOfLines={1} style={styles.produrl}></Text>
               <View style={styles.imgvw}>
-                <View style={styles.flxmgstart}>
+                {/* <View style={styles.flxmgstart}>
                   <View style={styles.star}>
                     <View style={styles.staricn}>
                       <Icon
@@ -186,19 +188,12 @@ export default class SubCatCompView extends React.Component {
                       <Text numberOfLines={1} style={styles.prodqty}>4.5</Text>
                     </View>
                   </View>
-                </View>
-                {/* <Image style={styles.saleimg}
-                  source={require("../../AppDesigns/currentApp/images/saleimage.png")}
-                /> */}
-                {/* <Image style={styles.saleimg}
-                  source={productImages == null || "" ?
-                    require("../../AppDesigns/currentApp/images/saleimage.png")
-                    : { uri: productImages }}
-                /> */}
-                {productImages ?
+                </View> */}
+
+                {this.state.productImage.length > 0 ?
                             <Image
-                              // source={{ uri: productImages }}
-                              source={require("../../AppDesigns/currentApp/images/saleimage.png")}
+                              source={{ uri: this.state.productImage[0]}}
+                              // source={require("../../AppDesigns/currentApp/images/saleimage.png")}
                               style={styles.saleimg}
                             />
                           :
@@ -208,6 +203,7 @@ export default class SubCatCompView extends React.Component {
                             />
                         }
                 <View style={styles.prodnameview}>
+                  <Text numberOfLines={1} style={styles.brandname}>{this.state.brand}</Text>
                   <Text numberOfLines={1} style={styles.productname}>{this.state.productName}</Text>
                   <Text numberOfLines={1} style={styles.shortDescription}>{this.state.shortDescription}</Text>
                 </View>
@@ -219,7 +215,8 @@ export default class SubCatCompView extends React.Component {
                     color="#333"
                     iconStyle={styles.rupeeicn}
                   />
-                  <Text style={styles.rupeetxt}> {this.state.discountedPrice}</Text>
+                  {/* <Text style={styles.rupeetxt}> {this.state.discountedPrice}</Text> */}
+                  <Text style={styles.proddetprice}>{this.state.discountedPrice} - <Text style={styles.packofnos}>Pack Of {this.state.size}  {this.state.unit}</Text></Text>
                 </View>
               </View>
               <View style={styles.orderstatus}>
@@ -286,7 +283,9 @@ export default class SubCatCompView extends React.Component {
                     />
                   </TouchableOpacity>
                 </View>
+                
               </View>
+              
               {/* <View style={styles.mgbtm15}>
                             <Text style={styles.proddetails}>Details</Text>
                             <Text style={styles.productDetails}>{this.state.productDetails}</Text>

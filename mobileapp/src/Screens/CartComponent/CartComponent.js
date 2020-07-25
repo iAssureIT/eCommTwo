@@ -58,22 +58,9 @@ export default class CartComponent extends React.Component {
   componentDidMount() {
     const product_ID = this.props.navigation.getParam('product_ID', 'No product_ID');
     const userId = this.props.navigation.getParam('user_ID', 'No user_ID');
-    console.log('user_ID-------------------------->', userId);
-    console.log('product_ID-------------------------->', product_ID);
-    // this.getCartData(userId, product_ID);
-    // AsyncStorage.multiGet(['user_id', 'token'])
-    //   .then((data) => {
-    //     userId = data[0][1],
-    //       this.setState({
-    //         product_ID: product_ID,
-    //         userId: userId,
-    //       }, () => {
-    //         // console.log('userId', this.state.userId)
-    //         this.getCartData(this.state.user_ID, this.state.product_ID);
-    //         console.log('user_ID-------------------------->', this.state.userId);
-    //       })
-    //   })
-    // console.log('user_ID-------------------------->', user_ID);
+    // console.log('user_ID-------------------------->', userId);
+    // console.log('product_ID-------------------------->', product_ID);
+    this.getshippingamount(this.state.startRange, this.state.limitRange);
     this.setState({
       product_ID: product_ID,
       userId: userId
@@ -81,7 +68,18 @@ export default class CartComponent extends React.Component {
       this.getCartData(this.state.userId, this.state.product_ID);
     })
   }
-
+  getshippingamount(startRange, limitRange){
+    axios.get('/api/shipping/get/list-with-limits/' + startRange + '/' + limitRange)
+    .then((response) => {
+      // console.log('shippingamount = ', response.data[0].shippingcosting);
+      this.setState({
+        minvalueshipping: response.data[0].shippingcosting,
+      })
+    })
+    .catch((error) => {
+      console.log('error', error);
+    });
+}
   getCartData() {
     axios
       .get('/api/Carts/get/cartproductlist/' + this.state.userId)
@@ -106,7 +104,7 @@ export default class CartComponent extends React.Component {
       "user_ID": this.state.userId,
       "cartItem_ID": this.state.cartitemid,
     }
-    console.log('formValues----->', formValues);
+    // console.log('formValues----->', formValues);
     axios.patch("/api/carts/remove", formValues)
       .then((response) => {
         this.setState({
@@ -153,18 +151,24 @@ export default class CartComponent extends React.Component {
   gettotalcount() {
     let totalcount = 0;
     var resdata = this.state.cartData;
-    resdata.filter((value) => {
-      totalcount = totalcount + value.productDetail.originalPrice;
-    });
-
-
+    // console.log('resdata', resdata[0].subTotal);
+    let UserArray = [];
+    for (let i = 0; i < resdata.length; i++) {
+      var totalprice = resdata[i].subTotal;
+      UserArray.push(totalprice);
+    }
+    let totalAmount = UserArray.reduce(function(prev, current) {
+          return prev + +current
+    }, 0);
+    // console.log('totalprice====>', totalAmount);
     this.setState({
-      totaloriginalprice: totalcount,
+      totaloriginalprice: totalAmount,
     })
   }
   UNSAFE_componentWillReceiveProps() {
     const product_ID = this.props.navigation.getParam('product_ID', 'No product_ID');
     const user_ID = this.props.navigation.getParam('user_ID', 'No user_ID');
+    this.gettotalcount()
     this.setState({
       product_ID: product_ID,
       user_ID: user_ID
@@ -195,17 +199,17 @@ export default class CartComponent extends React.Component {
     const quantity = parseInt(number);
     // console.log("quantity ==>", quantity)
     // const quantityAdded = quantity+1;
-    console.log("quantityAdded ==>", quantity)
+    // console.log("quantityAdded ==>", quantity)
     const formValues = {
       "user_ID"       : this.state.userId,
       "product_ID"    : product_ID,
       "quantityAdded" : quantity,
     }
-    console.log('for cart on change==>', formValues);
+    // console.log('for cart on change==>', formValues);
     axios.patch("/api/carts/quantity", formValues)
       .then((response) => {
         this.getCartData(this.state.userId, this.state.product_ID);
-        console.log("response ==>", response.data)
+        // console.log("response ==>", response.data)
         // console.log("response ==>", formValues.quantityAdded)
           this.setState({
             incresecartnum : formValues.quantityAdded
@@ -253,13 +257,14 @@ export default class CartComponent extends React.Component {
                     this.state.cartData ?
                       this.state.cartData && this.state.cartData.length > 0 ?
                         this.state.cartData.map((item, i) => {
-                          console.log("item ==>", item.productDetail);
+                          console.log("item ==>", item.product_ID);
                           return (
 
                             <View key={i}>
                               <View key={i} style={styles.proddetails}>
                                 <View style={styles.flxdir}>
                                   <View style={styles.flxpd}>
+                                  <TouchableOpacity  onPress={() => this.props.navigation.navigate('SubCatCompView', { productID: item.product_ID })}>
                                    {item.productDetail.productImage.length > 0 ?
                                       <Image
                                       style={styles.imgwdht}
@@ -271,10 +276,11 @@ export default class CartComponent extends React.Component {
                                       source={require("../../AppDesigns/currentApp/images/notavailable.jpg")}
                                       />
                                    }
-                                   
+                                   </TouchableOpacity>
                                   </View>
                                   <View style={styles.flxmg}>
-                                    <Text style={styles.productname}>{item.productDetail.productName}</Text>
+                                  <TouchableOpacity  onPress={() => this.props.navigation.navigate('SubCatCompView', { productID: item.product_ID })}>
+                                    <Text style={styles.productname}>{item.productDetail.productName}</Text></TouchableOpacity>
                                     <View style={styles.productdets}>
                                       <Icon
                                         name="rupee"
@@ -283,7 +289,7 @@ export default class CartComponent extends React.Component {
                                         color="#666"
                                         iconStyle={styles.iconstyle}
                                       />
-                                      <Text style={styles.proddetprice}>{item.productDetail.discountedPrice} {item.productDetail.unit}</Text>
+                                      <Text style={styles.proddetprice}>{item.productDetail.discountedPrice} Per {item.productDetail.size}  {item.productDetail.unit.toUpperCase()}</Text>
                                     </View>
                                     {/* <Text style={styles.proddetprice}>Select Quantity</Text> */}
                                     <Counter start={item.quantity} min={1}
@@ -366,7 +372,7 @@ export default class CartComponent extends React.Component {
                       
                       <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
                       <Image
-                        source={require("../../AppDesigns/currentApp/images/saleimage.png")}
+                        source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
                       />
                     </View>
                   }
@@ -391,11 +397,11 @@ export default class CartComponent extends React.Component {
                             </View>
                           </View>
                         </View>
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1,marginTop:10 }}>
                           <Text style={styles.totalsubtxt}>Part of your order qualify for Free Delivery </Text>
                         </View>
-                        <View style={styles.flxdata}>
-                          <View style={{ flex: 0.2 }}>
+                          <View style={styles.flxdata}>
+                          <View style={{ flex: 0.2,marginTop:10 }}>
                             <Image
                               source={require("../../AppDesigns/currentApp/images/Logo.png")}
                               style={styles.cartlogoimg}
@@ -407,17 +413,26 @@ export default class CartComponent extends React.Component {
                               <Text style={styles.freshnsecuretxt}>Fresh Product | Secure Payment </Text>
                             </View>
                           </View>
+                        </View> 
+                        <View>
+                        {this.state.minvalueshipping <= this.state.totaloriginalprice  ?
+                            <View>
+                              <Button
+                                onPress={() => this.props.navigation.navigate('AddressDefaultComp', { userID: this.state.userId })}
+                                title={"PROCEED TO CHECKOUT"}
+                                buttonStyle={styles.button1}
+                                containerStyle={styles.buttonContainer1}
+                              />
+                            </View>
+                            :
+                            <View>
+                                  <Text style={styles.minpurchase}>Minimum order should be ₹  {this.state.minvalueshipping} to Checkout & Place Order. 
+                                  Add more products worth ₹  {this.state.minvalueshipping - this.state.totaloriginalprice} to proceed further.</Text>
+                            </View>
+                    
+                        }
                         </View>
-                        <View style={styles.margTp20}>
-                          <TouchableOpacity >
-                            <Button
-                              onPress={() => this.props.navigation.navigate('AddressDefaultComp', { userID: this.state.userId })}
-                              title={"PROCEED TO CHECKOUT"}
-                              buttonStyle={styles.button1}
-                              containerStyle={styles.buttonContainer1}
-                            />
-                          </TouchableOpacity>
-                        </View>
+                        
                       </View>
                       :
                       null

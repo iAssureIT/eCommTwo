@@ -39,6 +39,11 @@ export default StyleSheet.create({
     height: 45,
     width:"100%",
   },
+   disablebtn:{
+    backgroundColor: colors.buttonRED,
+    height: 45,
+    width:"100%",
+  },
   buttonText1:{
     color: colors.buttonText,
     fontFamily:"Montserrat-Regular",
@@ -49,6 +54,10 @@ export default StyleSheet.create({
     flex:1,
     paddingHorizontal:15,
     marginTop:15,marginBottom:"20%"
+  },
+  minpurchase:{
+    color: "#c10000" ,
+    marginTop:50
   },
   details:{
     fontSize:13,fontFamily:"Montserrat-SemiBold",
@@ -176,6 +185,9 @@ superparent:{
   flxdata:{
     flex:1,flexDirection:"row"
   },
+  flxdatalogo:{
+    flex:1,flexDirection:"row",
+  },
   totaldetails:{
     backgroundColor:'#fff',borderWidth:1,
     borderColor:"#f1f1f1",height:180,marginTop:15,
@@ -193,6 +205,9 @@ superparent:{
   margTp20:{
     marginTop:20
   },
+  // margTp10:{
+  //   marginTop:10
+  // },
   savings:{
     fontSize:12,fontFamily:"Montserrat-SemiBold", color:'#333',
   },
@@ -207,7 +222,9 @@ superparent:{
   },
   proddetprice:{
     // textDecorationLine: 'line-through',
-    fontSize:12,fontFamily:"Montserrat-Regular",
+    fontSize:13,
+    fontFamily:"Montserrat-Bold",
+    color : "#999",
   },
   proprice:{
     // textDecorationLine: 'line-through',
@@ -229,7 +246,7 @@ superparent:{
   },
   buttonContainer1:{
 
-    marginTop:15,
+    marginTop:50,
     marginBottom:15,
     ...Platform.select({
       ios:{

@@ -4,7 +4,7 @@ import {
   ScrollView,
   Text,
   View,
-  BackHandler,
+  AsyncStorage,
   Dimensions,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -33,8 +33,7 @@ import Notification from '../../ScreenComponents/Notification/Notification.js'
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/AccountDashboardstyles';
 import {colors} from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
-import ConfirmOrderComponent from '../ConfirmOrderComponent/ConfirmOrderComponent.js';
-const window = Dimensions.get('window');
+
 
 export default class AccountDashboard extends React.Component{
   constructor(props){
@@ -46,7 +45,36 @@ export default class AccountDashboard extends React.Component{
       
     };
   }
+  componentDidMount() {
+    AsyncStorage.multiGet(['user_id', 'token'])
+      .then((data) => {
+        userId = data[0][1]
+        console.log('userId on Dashboard===>', userId);
+        this.setState({
+          userId : userId
+      },()=>{
+        axios.get('/api/users/get/' + this.state.userId)
+        .then((res) => {
+          console.log("res.data.image==>", res.data);
+          this.setState({
+            fullName: res.data.fullName,
+            username: res.data.email,
+            dAddress: res.data.deliveryAddress[0].addressLine1,
+            mobNumber: res.data.mobile,
+            profileImage: res.data.image,
+            companyID: res.data.companyID
+          })
+        })
+        .catch((error) => {
+        });
+      })
 
+      })
+      .catch((error) => {
+        console.log('error', error);
+      })
+
+	}
   updateMenuState(isOpen) {
     this.setState({ isOpen });
   }
@@ -145,16 +173,29 @@ export default class AccountDashboard extends React.Component{
                   
                   <View style={styles.accuserinfo}>
                     <View style={styles.padhr15}>
-                    <Text style={styles.acccontactinfo}>Contact Information</Text>
+                    <Text style={styles.acccontactinfo}>User Information</Text>
                     </View>
-                    <View style={styles.accnameuser}>
-                      <Text style={styles.accusername}> Garima Billore</Text>
+                    {/* <View style={styles.accnameuser}>
+                      <Text style={styles.accusername}> {this.state.fullName} {"\n"} {this.state.username}</Text>
+                    </View> */}
+                     <View style={styles.padhr18}> 
+                      {/* <Text style={styles.accuseraddress}> 323 Amanora Chambers, Amanora Mall,Hadapsar,Pune,411028 Maharashtra uygfewuafyrfuyeuwefegfuyegfuwgefwyegfyuwegfyugewfyuwe jhfjwfwegfw hfuwehuiwef efwfuwehfuw</Text>  */}
+                      <View style={styles.accusermobinfo}>
+                        <Text style={styles.accusermob}>Your Name:</Text>
+                        <Text style={styles.accmobnumber}>: {this.state.fullName}</Text>
+                      </View>
+                    </View>
+                     <View style={styles.padhr18}> 
+                      {/* <Text style={styles.accuseraddress}> 323 Amanora Chambers, Amanora Mall,Hadapsar,Pune,411028 Maharashtra uygfewuafyrfuyeuwefegfuyegfuwgefwyegfyuwegfyugewfyuwe jhfjwfwegfw hfuwehuiwef efwfuwehfuw</Text>  */}
+                      <View style={styles.accusermobinfo}>
+                        <Text style={styles.accusermob}>Your Address</Text>
+                        <Text style={styles.accmobnumber}>: {this.state.dAddress } </Text> 
+                      </View>
                     </View>
                     <View style={styles.padhr18}>
-                    <Text style={styles.accuseraddress}> 323 Amanora Chambers, Amanora Mall,Hadapsar,Pune,411028 Maharashtra uygfewuafyrfuyeuwefegfuyegfuwgefwyegfyuwegfyugewfyuwe jhfjwfwegfw hfuwehuiwef efwfuwehfuw</Text> 
                     <View style={styles.accusermobinfo}>
                       <Text style={styles.accusermob}>Mobile:</Text>
-                      <Text style={styles.accmobnumber}>79989846513</Text>
+                      <Text style={styles.accmobnumber}>: {this.state.mobNumber}</Text>
                     </View>
                     </View>
                     <View style={styles.acceditbtn}>

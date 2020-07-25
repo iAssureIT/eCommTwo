@@ -40,12 +40,12 @@
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/layout/abc_cascading_menu_item_layout.xml"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable_tooltip_frame_dark.xml.flat",
-        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable/tooltip_frame_dark.xml"
-    },
-    {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/layout_abc_alert_dialog_title_material.xml.flat",
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/layout/abc_alert_dialog_title_material.xml"
+    },
+    {
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable_tooltip_frame_dark.xml.flat",
+        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable/tooltip_frame_dark.xml"
     },
     {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/layout-v21_notification_template_custom_big.xml.flat",
@@ -104,12 +104,12 @@
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-mdpi-v4/abc_list_pressed_holo_dark.9.png"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_appdesigns_currentapp_images_bellpaper.png.flat",
-        "source": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/generated/res/react/release/drawable-mdpi/src_appdesigns_currentapp_images_bellpaper.png"
-    },
-    {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/color_abc_hint_foreground_material_dark.xml.flat",
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/color/abc_hint_foreground_material_dark.xml"
+    },
+    {
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_appdesigns_currentapp_images_bellpaper.png.flat",
+        "source": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/generated/res/react/release/drawable-mdpi/src_appdesigns_currentapp_images_bellpaper.png"
     },
     {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable_btn_radio_off_mtrl.xml.flat",
@@ -204,12 +204,12 @@
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/b6abf82cce1eaa56780eb55f68a31bfb/res/layout/notification_template_part_time.xml"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-hdpi-v4_abc_ic_star_black_36dp.png.flat",
-        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-hdpi-v4/abc_ic_star_black_36dp.png"
-    },
-    {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/color-v23_abc_tint_spinner.xml.flat",
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/color-v23/abc_tint_spinner.xml"
+    },
+    {
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-hdpi-v4_abc_ic_star_black_36dp.png.flat",
+        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-hdpi-v4/abc_ic_star_black_36dp.png"
     },
     {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-xxhdpi-v4_common_google_signin_btn_text_dark_normal_background.9.png.flat",
@@ -304,24 +304,24 @@
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-mdpi-v4/abc_scrubber_control_to_pressed_mtrl_005.png"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/layout-watch-v20_abc_alert_dialog_button_bar_material.xml.flat",
-        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/layout-watch-v20/abc_alert_dialog_button_bar_material.xml"
-    },
-    {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/anim_catalyst_push_up_in.xml.flat",
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/826ae3ea5fea0c79d0d64d7cd00601f7/res/anim/catalyst_push_up_in.xml"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_octicons.json.flat",
-        "source": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_octicons.json"
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/layout-watch-v20_abc_alert_dialog_button_bar_material.xml.flat",
+        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/layout-watch-v20/abc_alert_dialog_button_bar_material.xml"
+    },
+    {
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-mdpi-v4_abc_list_pressed_holo_light.9.png.flat",
+        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-mdpi-v4/abc_list_pressed_holo_light.9.png"
     },
     {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-mdpi-v4_abc_ic_menu_paste_mtrl_am_alpha.png.flat",
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-mdpi-v4/abc_ic_menu_paste_mtrl_am_alpha.png"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-mdpi-v4_abc_list_pressed_holo_light.9.png.flat",
-        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-mdpi-v4/abc_list_pressed_holo_light.9.png"
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/raw_node_modules_reactnativevectoricons_glyphmaps_octicons.json.flat",
+        "source": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/generated/res/react/release/raw/node_modules_reactnativevectoricons_glyphmaps_octicons.json"
     },
     {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-xhdpi-v4_abc_scrubber_track_mtrl_alpha.9.png.flat",
@@ -380,20 +380,20 @@
         "source": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/generated/res/react/release/drawable-mdpi/node_modules_reactnativeratings_src_images_airbnbstarselected.png"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/color_abc_secondary_text_material_dark.xml.flat",
-        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/color/abc_secondary_text_material_dark.xml"
-    },
-    {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-xhdpi-v4_abc_textfield_activated_mtrl_alpha.9.png.flat",
         "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-xhdpi-v4/abc_textfield_activated_mtrl_alpha.9.png"
     },
     {
-        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4_abc_btn_check_to_on_mtrl_015.png.flat",
-        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-xxxhdpi-v4/abc_btn_check_to_on_mtrl_015.png"
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/color_abc_secondary_text_material_dark.xml.flat",
+        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/color/abc_secondary_text_material_dark.xml"
     },
     {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-mdpi_src_appdesigns_currentapp_images_white_name.png.flat",
         "source": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/generated/res/react/release/drawable-mdpi/src_appdesigns_currentapp_images_white_name.png"
+    },
+    {
+        "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4_abc_btn_check_to_on_mtrl_015.png.flat",
+        "source": "/Users/omkar/.gradle/caches/transforms-2/files-2.1/8e12ac82f9328fafb0994b185828a78e/res/drawable-xxxhdpi-v4/abc_btn_check_to_on_mtrl_015.png"
     },
     {
         "merged": "/Users/omkar/Documents/Reactjs/EcomMobileBCKup/MobileApp/android/app/build/intermediates/res/merged/release/drawable-xxhdpi-v4_abc_switch_track_mtrl_alpha.9.png.flat",

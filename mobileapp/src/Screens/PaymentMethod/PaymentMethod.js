@@ -8,20 +8,17 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import Drawer from 'react-native-drawer';
 import { Header, Button, Icon, SearchBar } from "react-native-elements";
-import SideMenu from 'react-native-side-menu';
+
 import Modal from "react-native-modal";
 import Menu from '../../ScreenComponents/Menu/Menu.js';
 import HeaderBar5 from '../../ScreenComponents/HeaderBar5/HeaderBar5.js';
-// import Footer from '../../ScreenComponents/Footer/Footer.js';
 import Footer from '../../ScreenComponents/Footer/Footer1.js';
 import Notification from '../../ScreenComponents/Notification/Notification.js';
 import axios from 'axios';
 import styles from '../../AppDesigns/currentApp/styles/ScreenStyles/PaymentMethodStyles.js';
 import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Loading from '../../ScreenComponents/Loading/Loading.js';
-// import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { RadioButton } from 'react-native-paper';
 
 export default class PaymentMethod extends React.Component {
@@ -41,13 +38,15 @@ export default class PaymentMethod extends React.Component {
     const cartdata = this.props.navigation.getParam('cartdata', 'No product_ID');
     const userID = this.props.navigation.getParam('userID', 'No userID');
     const adddata = this.props.navigation.getParam('adddata', 'No adddata');
-    console.log('cartdata-------------------------->', cartdata);
-    console.log('user_ID-------------------------->', userID);
-    console.log('adddata-------------------------->', adddata);
+    const totalamountpay = this.props.navigation.getParam('totalamountpay', 'No totalamountpay');
+    // console.log('cartdata-------------------------->', cartdata);
+    // console.log('user_ID-------------------------->', userID);
+    // console.log('adddata-------------------------->', totalamountpay);
     this.setState({
       cartdata: cartdata,
       user_ID: userID,
       adddata: adddata,
+      totalamountpay: totalamountpay,
     }, () => {
     })
   }
@@ -141,7 +140,7 @@ export default class PaymentMethod extends React.Component {
     var orderData = {
       user_ID     : this.state.user_ID,
       cartItems   : cartItems,
-      total       : this.state.cartdata[0].total,
+      total       : this.state.totalamountpay,
       cartTotal   : this.state.cartdata[0].cartTotal,
       discount    : this.state.cartdata[0].discount,
       cartQuantity: this.state.cartdata[0].cartQuantity,
@@ -151,15 +150,6 @@ export default class PaymentMethod extends React.Component {
     console.log("orderData==>", orderData);
     axios.post('/api/orders/post', orderData)
       .then((result) => {
-        // console.log("a item for Result==>", result.data);
-        // Alert.alert(
-        //   "Your order is confirmed.Thank you for shopping with us.",
-        //   "",
-        //   [
-        //     { text: "OK", onPress: () => console.log("OK Pressed") }
-        //   ],
-        //   { cancelable: false }
-        // );
         this.setState({ paymentmod: true });
         this.props.navigation.navigate('Dashboard')
       })

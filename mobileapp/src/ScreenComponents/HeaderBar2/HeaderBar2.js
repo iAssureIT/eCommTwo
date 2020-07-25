@@ -8,14 +8,11 @@ import {
 } from "react-native";
 import { Header, Icon, SearchBar } from 'react-native-elements';
 import ValidationComponent from "react-native-form-validator";
-// import styles from "./styles.js";
 import axios              from 'axios'; 
 import styles from '../../AppDesigns/currentApp/styles/ScreenComponentStyles/HeaderBar2Styles.js';
-import { colors } from '../../AppDesigns/currentApp/styles/CommonStyles.js';
-import Search from 'react-native-search-box';
+import { connect }        from 'react-redux';
 
-
-export default class HeaderBars2 extends ValidationComponent {
+class HeaderBars2 extends ValidationComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +27,6 @@ export default class HeaderBars2 extends ValidationComponent {
   handleNavigation = (screen) => {
     this.props.navigate(screen);
   }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps) {
       this.setState({
@@ -54,27 +50,67 @@ export default class HeaderBars2 extends ValidationComponent {
     })
   }
   updateSearch = searchText => {
-    this.setState({ searchText });
-  };
+  // updateSearch =(searchText)=> {
+    // this.setState({ searchText });
+   
+    this.setState({searchText : searchText}
+      ,()=>{
+        console.log(" serarch==>",this.state.searchText);
+        this.props.setGloblesearch(this.state.searchText);
+        // this.props.navigate("Dashboard",{searchText : this.state.searchText});
+      })
+      // var searchstr = searchText.trim();
+      // if(searchText){
+      //   var formValues = {
+      //     "searchstr": searchstr,
+      //     "loading": true
+      //   }
+        // console.log("formValues of serarch==>",formValues);
+        // this.props.searchProductFun(formValues, this.state.searchResult);
+        // var searchResult = [];
+        // axios.get("/api/products/get/search/" + searchText)
+        //   .then((response) => {
+        //     console.log("searchResult of serarch==>",response.data);
+        //     // this.setState({ searchResult: response.data},()=>{
+              
+        //     // });
+        //     // searchResult = response.data
+        //     // this.props.setGloblesearch(response.data);
+        //     // formValues.loading = false;
+        //     // this.setState({ searchResult: response.data }, () => {
+        //       // this.props.searchProductFun(formValues, this.state.searchResult);
 
-  _goBack = () => {
-    this.props.goBack();
+        //     // });
+            
+        //   })
+        //   .catch((error) => {})
+          // console.log("before of serarch page==>",searchResult);
+         
+      // }else{
+      //   // this.props.navigate("Dashboard");
+      // }
+      
+    
   };
+  searchedText = (text)=>{
+    this.setState({
+      searchText      : text,
+      loading         : true,
+      page            : 0,
+      farmerList      : [],
+    });
+}
 
   render() {
+    var { navigation } = this.props;
     return (
-      <View style={{
-        "borderBottomWidth": 1,
-        "borderBottomColor": "#80c21c",
-        "backgroundColor": "#80c21c", elevation: 4,
-        "boxShadow": "10px 5px 5px black"
-      }}>
+      <View style={styles.header2main}>
         <Header
           backgroundColor={'transparent'}
           placement="left"
-          leftContainerStyle={{ backgroundColor: 'transparent', paddingHorizontal: 15 }}
-          centerContainerStyle={{ backgroundColor: 'transparent', paddingLeft: 0, paddingRight: 0, paddingTop: 0 }}
-          rightContainerStyle={{ backgroundColor: 'transparent', paddingHorizontal: 15 }}
+          leftContainerStyle={styles.leftside}
+          centerContainerStyle={styles.center}
+          rightContainerStyle={styles.rightside}
           leftComponent={
             <View style={styles.flxdir}>
               <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10, alignSelf: 'center' }}>
@@ -84,19 +120,20 @@ export default class HeaderBars2 extends ValidationComponent {
                 </TouchableOpacity>
 
               </View>
-              <Image
+              {/* <Image
                 resizeMode="contain"
                 source={require("../../AppDesigns/currentApp/images/white_logo.png")}
-                style={{ height: 45, width: 45, marginTop: 15, marginLeft: 10 }}
-              />
+                style={styles.whitelogo}
+              /> */}
             </View>
           }
           centerComponent={
-            <View style={styles.flxdir}>
+            <View style={styles.flxdircenter}>
               <Image
                 resizeMode="contain"
-                source={require("../../AppDesigns/currentApp/images/white_name.png")}
-                style={{ height: 65, width: 120, marginTop: 10, marginLeft: 40 }}
+                // source={require("../../AppDesigns/currentApp/images/white_name.png")}
+                source={require("../../AppDesigns/currentApp/images/Logounimandai.jpg")}
+                style={styles.whitename}
               />
             </View>
           }
@@ -110,18 +147,17 @@ export default class HeaderBars2 extends ValidationComponent {
               </TouchableOpacity>
             </View>
           }
-          containerStyle={{ paddingTop: 0, paddingLeft: 0, paddingRight: 0, backgroundColor: '#80c21c' }}
+          containerStyle={styles.rightcnt}
         />
-
-        <View style={{ paddingHorizontal: 15, marginBottom: 30, }}>
-          <SearchBar
+        <View style={styles.searchvw}>
+           <SearchBar
             placeholder='Search for Product, Brands and More'
             containerStyle={styles.searchContainer}
             inputContainerStyle={styles.searchInputContainer}
             inputStyle={styles.searchInput}
-            onChangeText={this.updateSearch}
+            onChangeText={this.updateSearch.bind(this)}
             value={this.state.searchText}
-          />
+          /> 
         </View>
 
 
@@ -131,8 +167,7 @@ export default class HeaderBars2 extends ValidationComponent {
 
 
 
-
-        {
+        {/* {
             this.state.categoryData && this.state.categoryData.map((data,index)=>{
               console.log("categoryData data===>",data.section);
                 return(
@@ -147,7 +182,7 @@ export default class HeaderBars2 extends ValidationComponent {
                   // </View>
                 );
             })
-        }
+        } */}
         {/* <View style={{ paddingHorizontal: 15, marginBottom: 30, }}>
           <View style={{ flexDirection: 'row', flex: 1 }}>
             <View style={styles.iconOut erWrapper}>
@@ -181,3 +216,22 @@ export default class HeaderBars2 extends ValidationComponent {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    // selectedVehicle: state.selectedVehicle,
+    // purposeofcar: state.purposeofcar,
+
+  }
+};
+
+const mapDispatchToProps = (dispatch)=>{
+return {
+    setGloblesearch : (searchText) => dispatch({
+          searchText   : searchText,
+          type        : "SET_GLOBAL_Search",
+      
+    })
+}
+};
+export default connect(mapStateToProps,mapDispatchToProps)(HeaderBars2);
