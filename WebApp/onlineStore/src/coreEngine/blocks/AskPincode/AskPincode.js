@@ -193,7 +193,13 @@ export default class AskPincode extends Component {
                                                                 <span>{this.state.AllowDeliveryMsg} </span>                                                                
                                                             </div>
                                                             <div  className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"style={{padding:"0px"}}>What is the pincode of are where you want delivery? </label>
+                                                                <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"style={{padding:"0px"}}>We have just started! </label><br/>
+                                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding pinInfo">
+                                                                    <span className="NoPadding"style={{padding:"0px"}}>Our delivery is restricted to only certain areas. </span>
+                                                                    <span className="NoPadding"style={{padding:"0px"}}>Check the delivery in your area. </span>
+                                                                </div>
+                                                                
+                                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"style={{"text-align":"center"}}>What’s your area pincode? </div>
                                                             </div>
                                                             <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding pincodeBtnwrapper">   
                                                                 <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  

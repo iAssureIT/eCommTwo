@@ -36,7 +36,12 @@
     text-align: center !important;
     font-weight: 600;
     color: #444;
+    margin-bottom: 0px;
+}
+.pincodemodal .pinInfo{
+    font-size: 12px;
     margin-bottom: 10px;
+
 }
 .pinmodalHeader{
     border-top-right-radius: 8px;
@@ -46,7 +51,7 @@
     margin-top: 30px;
 }
 .pincodemodal {
-    min-height: 320px; 
+    min-height: 340px; 
     overflow: auto;
     border-radius: 10px !important;
     background-color: #fff !important;
@@ -90,6 +95,7 @@
     text-align: center;
     margin-top: 15px;
     margin-bottom: 20px;
+    font-size: 13px;
     /* padding-left: 40px; */
     /* padding-right: 40px; */
 }
