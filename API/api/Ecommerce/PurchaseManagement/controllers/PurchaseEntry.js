@@ -4,8 +4,10 @@ const PurchaseEntry = require('../models/PurchaseEntry');
 const EntityMaster = require('../../../coreAdmin/entityMaster/ModelEntityMaster');
 const Products      = require('../../products/Model');
 const FailedRecords = require('../../failedRecords/Model');
-const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
-const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
+var UnitOfMeasurment = require('../../departmentMaster/ModelUnitofmeasurment');
+
+// const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
+// const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
 const moment = require('moment-timezone');
 
 exports.insert_purchaseEntry = (req,res,next)=>{
@@ -312,12 +314,10 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                         var productPresent = await findProduct(productData[k].itemCode,productData[k].product);
                         if (productPresent) {
                            var AllUnits = await fetchUnitOfMeasurment();
-                            var unitofmeasurment = AllUnits.filter((data)=>{
-                                if (data.unitofmeasurment.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
-                                   return data;
-                                }
-                            })    
-                           if (unitofmeasurment.length > 0) {
+                           const unitOfMeasurement = AllUnits.find(element => element.department === productData[k].unitOfMeasurement);
+                           const unit = AllUnits.find(element => element.department === productData[k].unit);
+ 
+                           if (unitOfMeasurement && unit) {
                             if(moment(new Date(date), "YYYY-MM-DD").isValid()){
                                if(typeof productData[k].unitRate  === 'number'){
                                   if(typeof productData[k].unitOfMeasurement != undefined){
@@ -325,7 +325,7 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                                         if(typeof productData[k].quantity  === 'number'){
                                             if(typeof productData[k].amount  === 'number'){
                                                 productData[k].fileName = req.body.fileName;
-                                               // console.log("filename",productData[k].fileName);
+                                                console.log("insert filename",productData[k].fileName);
                                                 var insertPurchaseEntryObj = await insertPurchaseEntry(productData[k]);
                                                 if (insertPurchaseEntryObj != 0) {
                                                     Count++;
@@ -391,14 +391,12 @@ exports.raw_material_bulk_upload = (req,res,next)=>{
                      remark += "Product Code not found";
                 }
                 if (productData[k].purchaseDate) {
-                    if(productData[k].productCode == undefined){
+                    if(productData[k].purchaseDate == undefined){
                         remark += ", Purchase Date not found, ";
                     }else{
-                       if(!moment(new Date(purchaseDate), "YYYY-MM-DD").isValid()){
+                       if(moment(new Date(date), "YYYY-MM-DD").isValid() !== true){
                             remark += ", Purchase date should be in YYYY-MM-DD formart, ";
-                        }else{
-                             remark += ", Purchase Date not found, ";
-                        } 
+                        }
                     }
                     
                 }
@@ -464,6 +462,19 @@ function findProduct(itemCode, productName) {
     })           
 }
 
+function fetchUnitOfMeasurment(){
+    return new Promise(function(resolve,reject){ 
+    UnitOfMeasurment.find({})
+        .exec()
+        .then(data=>{
+            resolve( data );
+        })
+        .catch(err =>{
+            reject(err);
+        }); 
+    });
+};
+
 exports.filedetails = (req,res,next)=>{
     var finaldata = {};
     PurchaseEntry.find({fileName:req.params.fileName})
@@ -496,17 +507,20 @@ var insertPurchaseEntry = async (data) => {
         async function insertPurchaseEntryControl(){
              const purchaseEntry = new PurchaseEntry({
                     _id                       : new mongoose.Types.ObjectId(),                    
-                    purchaseDate              : data.purchaseDate,
+                    purchaseDate              : moment(data.purchaseDate).tz('Asia/Kolkata').startOf('day'),
                     purchaseStaff             : data.purchaseStaff,
                     purchaseLocation          : data.purchaseLocation,
                     itemCode                  : data.itemCode,
                     productName               : data.product,
                     quantity                  : data.quantity,
-                    unit                      : data.Units,
+                    unit                      : data.unit,
                     amount                    : data.amount,
                     unitRate                  : data.unitRate,
+                    unitOfMeasurement         : data.unitOfMeasurement,
                     Details                   : data.details,
                     purchaseNumber            : data.purchaseNumber,
+                    balance                   : data.quantity,
+                    balanceUnit               : data.unit,
                     fileName                  : data.fileName,
                     createdBy                 : data.createdBy,
                     createdAt                 : new Date()
@@ -891,6 +905,7 @@ exports.get_purchase_entry_report = (req, res, next)=>{
         });
     }
 };
+
 
 
 

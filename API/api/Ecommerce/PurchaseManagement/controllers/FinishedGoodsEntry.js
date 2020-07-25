@@ -5,8 +5,7 @@ const PurchaseEntry = require('../models/PurchaseEntry');
 const PurchaseEntryController = require('../controllers/PurchaseEntry');
 const Products      = require('../../products/Model');
 const FailedRecords = require('../../failedRecords/Model');
-const UnitOfMeasurment = require('../../unitOfMeasurement/ControllerUnitOfMeasurment');
-const UnitOfMeasurmentMaster     = require('../../unitOfMeasurement/ModelUnitOfMeasurment.js');
+var UnitOfMeasurment = require('../../departmentMaster/ModelUnitofmeasurment');
 const franchisegoods = require('../../distributionManagement/Model');
 const Entitymaster          = require('../../../coreAdmin/entityMaster/ModelEntityMaster.js');
 const moment = require('moment-timezone');
@@ -345,15 +344,13 @@ exports.finished_goods_bulk_upload = (req,res,next)=>{
                 // console.log("date",productData[k].Date);
                 if (productData[k].productName != '') {
                     if (typeof(productData[k].productName) != undefined && typeof(productData[k].productCode) != undefined && typeof(productData[k].itemCode) != undefined) {
-                        var productPresent = await findProduct(productData[k].itemCode,productData[k].productName);
-                        var AllUnits = await fetchUnitOfMeasurment();
-                        var unitofmeasurment = AllUnits.filter((data)=>{
-                            if (data.unitofmeasurment.trim().toLowerCase() == req.body.fieldValue.trim().toLowerCase() && data.companyID == req.body.companyID) {
-                               return data;
-                            }
-                        })    
-
-                        if (unitofmeasurment.length > 0) {
+                       var productPresent = await findProduct(productData[k].itemCode,productData[k].productName);
+                       var AllUnits = await fetchUnitOfMeasurment();
+                        const OutwardUnit  = AllUnits.find(element => element.department === productData[k].OutwardUnit);
+                        const scrapUnit    = AllUnits.find(element => element.department === productData[k].scrapUnit);
+                        const finishedGoodsUnit = AllUnits.find(element => element.department === productData[k].finishedGoodsUnit);
+                        const fgUnitWt     = AllUnits.find(element => element.department === productData[k].fgUnitWt); 
+                        if (OutwardUnit && scrapUnit && finishedGoodsUnit && fgUnitWt) {
                          if (productPresent) {
                             if(validDate){
                                 if(typeof productData[k].OutwardRawMaterial  === 'number'){
@@ -368,7 +365,7 @@ exports.finished_goods_bulk_upload = (req,res,next)=>{
                                                                     if(typeof productData[k].finishedBy != undefined){
                                                                             var currentStock = await raw_material_current_stock(productData[k].itemCode);
                                                                             if(currentStock != 0){
-                                                                                var totalStock = currentStock[0].totalStock;
+                                                                                var totalStock = currentStock.totalStock;
                                                                                 if(totalStock >= productData[k].OutwardRawMaterial){
                                                                                     var insertFinishedGoodsEntryObj = await insertFinishedGoodsEntry(productData[k]);
                                                                                     if (insertFinishedGoodsEntryObj != 0) {
@@ -380,7 +377,6 @@ exports.finished_goods_bulk_upload = (req,res,next)=>{
                                                                                         invalidData.push(invalidObjects);
                                                                                     }
                                                                                 }else{
-                                                                                      console.log("else",currentStock);
                                                                                     remark += "Not enough stock to outward";
                                                                                     invalidObjects =  productData[k];
                                                                                     invalidObjects.failedRemark = remark;
@@ -546,7 +542,6 @@ function findProduct(itemCode, productName) {
 }
 
 var insertFinishedGoodsEntry = async (data) => {
-    // console.log('Data',data);
     return new Promise(function(resolve,reject){ 
         insertFinishedGoodsEntryControl();
         async function insertFinishedGoodsEntryControl(){
@@ -569,8 +564,8 @@ var insertFinishedGoodsEntry = async (data) => {
                     fgUnitQty                 : data.fgUnitQty,
                     fgUnitWt                  : data.fgUnitWt,
                     fgTotalQty                : data.fgTotalQty,
-                    fgInwardQty               : data.fgInwardQty,
-                    fgInwardUnit              : data.fgInwardUnit,
+                    fgInwardQty               : data.finishedGoodsTotalQty,
+                    fgInwardUnit              : data.finishedGoodsUnit,
                     scrapQty                  : data.scrapQty,
                     scrapUnit                 : data.scrapUnit,
                     fileName                  : data.fileName,
@@ -770,22 +765,6 @@ var raw_material_current_stock = async (data) => {
 //         })
 //     });
 // }
-
-var fetchUnitOfMeasurment = async ()=>{
-    return new Promise(function(resolve,reject){ 
-    UnitOfMeasurmentMaster.find({})
-        .exec()
-        .then(data=>{
-            resolve( data );
-        })
-        .catch(err =>{
-            reject(err);
-        }); 
-    });
-};
-
-
-
 
 
 var update_raw_material_entry = async (data) => {
@@ -1059,6 +1038,20 @@ exports.get_product_current_stock_report = (req, res, next)=>{
         });
   
 };
+
+function fetchUnitOfMeasurment(){
+    return new Promise(function(resolve,reject){ 
+    UnitOfMeasurment.find({})
+        .exec()
+        .then(data=>{
+            resolve( data );
+        })
+        .catch(err =>{
+            reject(err);
+        }); 
+    });
+};
+
 /*Code by madhuri*/
 
 

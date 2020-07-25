@@ -60,8 +60,14 @@ export default class AllOrders extends Component{
                   var UserArray = [];
                   UserArray.push(orderID);
                   // UserArray.push(billNumber);
+                  console.log("allocatedToFranchise",allocatedToFranchise);
                   if(this.state.websiteModel === 'FranchiseModel'){
-                    UserArray.push(allocatedToFranchise);
+                    if(allocatedToFranchise){
+                      UserArray.push(allocatedToFranchise);
+                    }else{
+                      UserArray.push('');
+                      // UserArray.push(<button class="btn btn-warning btn-xs admin-orders-stat-NewOrder">Allocate to franchise</button>);
+                    }
                   }else{
                     UserArray.push("");
                   }

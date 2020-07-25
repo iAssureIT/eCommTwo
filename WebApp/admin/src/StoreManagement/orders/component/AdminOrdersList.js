@@ -6,7 +6,9 @@ import moment                 from "moment";
 // import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
-import DispatchModal          from './dispatchModal.js'
+import DispatchModal          from './dispatchModal.js';
+import AllocateToFranchiseModal from './AllocateToFranchiseModal.js';
+
 import '../css/AdminOrdersList.css';
 
 //npm i mui-datatables
@@ -191,6 +193,13 @@ class AdminOrdersList extends Component{
       this.setState({orderId : id})
     }
 
+    AllocateToFranchiseModal(event){
+      event.preventDefault();
+      $('#AllocateToFranchiseModal').show();
+      var id = $(event.currentTarget).attr('data-id');
+      this.setState({orderId : id})
+    }
+
     // code for filters
     handleFromChange(event){
       event.preventDefault();
@@ -253,7 +262,11 @@ class AdminOrdersList extends Component{
                   UserArray.push(orderID);
                   // UserArray.push(billNumber);
                   if(this.state.websiteModel === 'FranchiseModel'){
-                    UserArray.push(allocatedToFranchise);
+                    if(allocatedToFranchise){
+                      UserArray.push(allocatedToFranchise);
+                    }else{
+                      UserArray.push(<button class="btn btn-warning btn-xs admin-orders-stat-NewOrder" onClick={this.AllocateToFranchiseModal.bind(this)}>Allocate to franchise</button>);
+                    }
                   }else{
                     UserArray.push("");
                   }
@@ -965,6 +978,10 @@ class AdminOrdersList extends Component{
                   <div id="dispatchModal" className="modal ssmodal">
                     <button type="button" className="close dispatchModalClose">&times;</button>
                     <DispatchModal baList={this.state.baList} orderId={this.state.orderId}  />
+                  </div>
+                  <div id="AllocateToFranchiseModal" className="modal ssmodal">
+                    <button type="button" className="close dispatchModalClose">&times;</button>
+                    <AllocateToFranchiseModal FranchiseArray={this.state.FranchiseArray} orderId={this.state.orderId}  />
                   </div>
                   </div>
                 </div>
