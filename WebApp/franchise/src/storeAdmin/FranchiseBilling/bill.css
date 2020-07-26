@@ -381,4 +381,18 @@ rect{
   height: 30 !important;
 }
 
+.retrunBillSubtotal{
+  float: right;
+  margin-right: 40px;
+}
+
+.reasonForReturn{
+  float: left;
+  margin-left: 15px;
+}
+
+.redFont{
+  color:red !important
+}
+
 

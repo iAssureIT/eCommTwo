@@ -510,6 +510,7 @@ var insertPurchaseEntry = async (data) => {
                     purchaseDate              : moment(data.purchaseDate).tz('Asia/Kolkata').startOf('day'),
                     purchaseStaff             : data.purchaseStaff,
                     purchaseLocation          : data.purchaseLocation,
+                    productCode               : data.productCode,
                     itemCode                  : data.itemCode,
                     productName               : data.product,
                     quantity                  : data.quantity,

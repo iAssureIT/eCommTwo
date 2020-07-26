@@ -391,7 +391,7 @@ exports.insert_orders = (req,res,next)=>{
                             minDisFranchise = franchiseObjects;                                    
                           }                                  
                         }//end if lat-long
-                      console.log("minDisFranchise.franchiseID data:=======",minDisFranchise);
+                      // console.log("minDisFranchise.franchiseID data:=======",minDisFranchise);
             
                         allocatedToFranchise = minDisFranchise.franchiseID; 
                         console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
@@ -410,7 +410,7 @@ exports.insert_orders = (req,res,next)=>{
           }// end if pincode
              
         }else{
-          console.log("website model is not franchise model");
+          // console.log("website model is not franchise model");
           //if website model !== franchiseModel
            var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
           const order = new Orders({

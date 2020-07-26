@@ -411,6 +411,53 @@ export class printBill extends React.Component {
     //     //  }
 	// }
 
+	returnProductAction(event) {
+		event.preventDefault();
+		var id = $(event.target).data('id');
+		var altorderid = $(event.target).data('altorderid');
+
+		var formValues = {
+		  "orderID": id,
+		  "altorderid": altorderid,
+		  "productID": this.state.product_ID,
+		  "reasonForReturn": this.state.reasonForReturn,
+		//   "bankname": $('#bankname').val(),
+		//   "bankacctno": $('#bankacctno').val(),
+		//   "ifsccode": $('#ifsccode').val()
+		}
+		
+	
+		if ($('#returnForm').valid()) {
+		  axios.patch('/api/orders/get/returnOrder', formValues)
+			.then((response) => {
+			  $('.fullpageloader').hide();
+			  this.getMyOrders();
+			  this.setState({
+				messageData: {
+				  "type": "outpage",
+				  "icon": "fa fa-exclamation-circle",
+				  "message": response.data.message,
+				  "class": "warning",
+				  "autoDismiss": true
+				}
+			  })
+			  setTimeout(() => {
+				this.setState({
+				  messageData: {},
+				})
+			  }, 3000);
+			  var modal = document.getElementById('returnProductModal');
+			  modal.style.display = "none";
+	
+			  $('.modal-backdrop').remove();
+			})
+	
+			.catch((error) => {
+			  console.log('error', error);
+			})
+		}
+	  }
+
 
 	addReturnData(event){
 		event.preventDefault();
@@ -466,6 +513,14 @@ export class printBill extends React.Component {
 			[name] : value 
 		})
 	}
+
+	onChangeReturnReason(event){
+		event.preventDefault();
+		const {name,value} = event.target;
+		this.setState({
+			[name] : value 
+		})
+	}
    
 
 
@@ -482,7 +537,7 @@ export class printBill extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
-					{this.state.showReturnProductDiv === true  ? 
+					{/* {this.state.showReturnProductDiv === true  ? 
 						<div className="row">
 						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding mtop20">
 							    <input list="selectBillNumber" type="text" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autoComplete="off"/> 
@@ -502,7 +557,7 @@ export class printBill extends React.Component {
 						</div>
 						
 						</div>
-						: null}
+						: null} */}
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding billPage">
                         <div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
 						    <a className="btn btn-info printbtn viewBillBtns fa fa-home" href="/dashboard" title="Go to Homepage"></a>
@@ -645,6 +700,7 @@ export class printBill extends React.Component {
                                                 this.state.orderData.products && this.state.orderData.products.length > 0 ?
                                                     this.state.orderData.products.map((data, index) => {
 													data.subTotal = data.discountedPrice * data.quantity;
+													console.log("{data.orderID}",data.orderID);
 													return(
 														<tr>
 															<td>{data.productName}</td>
@@ -667,6 +723,7 @@ export class printBill extends React.Component {
 																		<h3 className="modal-title" id="exampleModalLongTitle">Edit Purchase Item</h3>
 																	</div>
 																	<div className="modal-body">
+																		<form id="returnForm">
 																		<h4>{data.productName} <small>(Product Code :{data.productCode} , Item Code :{data.itemCode})</small></h4>
 																		<div className="row">
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
@@ -707,13 +764,19 @@ export class printBill extends React.Component {
 																				</div>     
 																			</div>  
 																		</div>
+																		<br/>
 																		<div className="row">
-																			<br/>
-																			<h4>Subtotal : <i className="fa fa-rupee"></i> {(this.state.discountedPrice) * (this.state.quantity)}</h4>
+																		   <h4 className="retrunBillSubtotal">Subtotal : <i className="fa fa-rupee"></i> {(this.state.discountedPrice) * (this.state.quantity)}</h4>
 																		</div>
+																		<br/>
+																		<div className="row">
+																		        <label className="reasonForReturn">Reason for Return <i className="redFont">*</i></label>
+																				<textarea rows="3" cols="110" className="reasonForReturn" name="reasonForReturn" value={this.state.reasonForReturn} onChange={this.onChangeReturnReason.bind(this)} required></textarea>
+																		</div>
+																		</form>
 																	</div>
 																	<div className="modal-footer">
-																		<button type="button" className="btn btn-primary" onClick={this.addReturnData.bind(this)}>Return</button>
+																		<button type="button" className="btn btn-primary" data-id={this.state.orderData._id} data-altorderid={this.state.orderData.orderID}  onClick={this.returnProductAction.bind(this)}>Return</button>
 																	</div>
 																	</div>
 																</div>
