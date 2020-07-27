@@ -12,8 +12,9 @@ import '../../../sites/currentSite/common/Header.css';
 import Login          from '../../systemSecurity/Login.js';
 import SignUp         from '../../systemSecurity/SignUp.js';
 import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
-import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
 import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
+import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
+import cartphoto       from "../../../sites/currentSite/images/cartpic1.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
 import cartIconImg     from "../../../sites/currentSite/images/cartIcon.png";
 import loginActiveIconImg from "../../../sites/currentSite/images/loginActiveImg.png";
@@ -452,7 +453,7 @@ removeModalBackDrop(event){
                       <span>  
                       {user_ID ?                      
                         <a href={user_ID ? "/cart" : null} className="icon-cart">
-                            <i class="fa fa-shopping-bag headercarticon headercarticon_bag" aria-hidden="true"onClick={this.loginPage.bind(this)}></i>
+                            <i class="fa fa-shopping-cart headercarticon headercarticon_bag" aria-hidden="true"onClick={this.loginPage.bind(this)}></i>
                             
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cart-count">
@@ -461,8 +462,7 @@ removeModalBackDrop(event){
                         </a>
                         :
                         <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)}>
-                           <i class="fa fa-shopping-bag headercarticon" aria-hidden="true"></i>
-                           
+                           <img className=" headercarticon headercarticon_bag"src={cartphoto} aria-hidden="true" style={{width:"24px"}}/>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
@@ -536,7 +536,7 @@ removeModalBackDrop(event){
                   </div>                   
                 </div>
 
-                <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 headerpaddingtop">
+                <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 usericon_pos">
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 header1list2">
                       <div className="row">
                         <ul>
@@ -549,7 +549,7 @@ removeModalBackDrop(event){
                           {
 
                             user_ID ?
-                              <li className="dropdown"><i className="fa fa-user headercarticon" aria-hidden="true"></i>
+                              <li className="dropdown"><img className="headercarticon" src={loginIconImg} aria-hidden="true"/>
                                 <ul className="dropdown-menu signinmenuul">
                                   <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <a href="/">
@@ -583,7 +583,7 @@ removeModalBackDrop(event){
                               :
                              <li>
                                <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
-                                 <i className="fa fa-user headercarticon"></i></a>
+                                 <img className="headercarticon" src={loginIconImg} aria-hidden="true"/></a>
                                </span>
                         
                              </li>

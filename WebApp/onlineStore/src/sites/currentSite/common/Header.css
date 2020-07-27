@@ -649,8 +649,8 @@ ul.box-static-link li span {
     line-height: 18px;
     text-align: center;
     position: absolute;
-        bottom: 2%;
-    right: -5px;
+    bottom: -3%;
+    right: -2px;
     font-family: "Montserrat";
     border-radius: 50%;
     background: #3c763d;
@@ -735,4 +735,7 @@ ul.box-static-link li span {
     background-color: #A2632C;
     padding: 0px;
 
+}
+.usericon_pos{
+  padding-top: 24px;
 }
