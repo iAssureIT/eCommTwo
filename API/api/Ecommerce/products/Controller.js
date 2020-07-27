@@ -773,7 +773,7 @@ exports.list_productby_type_mobile = (req,res,next)=>{
     if(productType == 'featured'){
         selector={'featured':true,  "status": "Publish"};
         Products.find(selector) 
-        .limit(50)      
+        .limit(10)      
         .exec()
         .then(data=>{
             res.status(200).json(data);
