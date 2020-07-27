@@ -765,6 +765,77 @@ exports.wishlist_product = (req,res,next)=>{
 };
 
 
+exports.list_productby_type_mobile = (req,res,next)=>{
+    
+    var productType = req.params.productType;
+
+    selector={};
+    if(productType == 'featured'){
+        selector={'featured':true,  "status": "Publish"};
+        Products.find(selector) 
+        .limit(50)      
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }
+    else if(productType == 'exclusive'){
+        selector={'exclusive':true,  "status": "Publish"};
+        Products.find(selector)     
+        .limit(10)        
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }
+    else if(productType == 'discounted'){
+        selector={'discountPercent': { $gt:0 } ,  "status": "Publish"};
+        Products.find(selector)      
+        .limit(10)       
+        .exec()
+        .then(data=>{
+            console.log('discounted ===>>>', data);
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }
+    else if(productType == 'bestSeller'){
+        selector={'bestSeller':true,  "status": "Publish"};
+        Products.find(selector)       
+        .limit(10)      
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    }
+    else{
+        res.status(200).json([]);
+    }
+    
+};
 exports.list_productby_type = (req,res,next)=>{
     
     var productType = req.params.productType;
