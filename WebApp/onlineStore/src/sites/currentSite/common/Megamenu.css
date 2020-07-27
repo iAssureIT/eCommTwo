@@ -299,6 +299,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
     -moz-transform: rotateX(0deg);
     -ms-transform: rotateX(0deg);
     transform: rotateX(0deg);
+    box-shadow: 1px 1px 4px 3px #eee;
   }
   
   ul.main-nav > li > div.sub-menu-block > * {
