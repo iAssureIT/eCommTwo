@@ -36,3 +36,11 @@
 	background:#fff;
 	/* margin-top: 255px; */
 }
+.multiicon {
+    font-size: 30px;
+    border: 18px solid #80b435!important;
+    background-color: #80b435!important;
+    color: #fff;
+    border-radius: 100%;
+    padding: 6px 9px;
+}

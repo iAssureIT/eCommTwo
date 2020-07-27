@@ -367,24 +367,24 @@ removeModalBackDrop(event){
     return (
       <div className="homecontentwrapper">
         <Message messageData={this.state.messageData} />
-        <header className="col-lg-12 headerflow">
-          <div className="row">
-            <div className="col-lg-10 col-lg-offset-1">
+          <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow NoPadding">
+           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 upper_headerdiv"></div>
+            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
               <div className="row">
-                <div className="col-lg-3 headerlogoimg headerLogoPaddingtop text-center">
+                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 headerlogoimg headerLogoPaddingtop text-center">
                   <div className="row">
-                    <div className="col-lg-8">
+                    <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                       <div className="row">
                         <a href="/"><img src={require("../../../sites/currentSite/images/anasLogo.png")} alt="Logo Picture " /></a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-7 col-md-7 headerpaddingtop">
+                <div className="col-lg-7 col-md-7 col-sm-8 col-xs-8 headerpaddingtop">
                   <div className="row">
-                    <div className="col-lg-12">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div className="row">
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                           <div className="row abc">
                             <ReactMultiSelectCheckboxes placeholderButtonLabel="Shop by category"
                               value={this.state.localCategories}
@@ -392,16 +392,16 @@ removeModalBackDrop(event){
                               onChange={this.handleChange.bind(this)} />
                           </div>
                         </div>
-                        <div className="col-lg-7">
+                        <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                           <div className="row">
-                            <input type="text" className="col-lg-12 headersearch" onChange={this.searchProducts.bind(this)}
+                            <input type="text" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headersearch" onChange={this.searchProducts.bind(this)}
                               ref="tableSearch" id="tableSearch" name="tableSearch"
                               placeholder="Search by product name, category, brand..." />
                           </div>
                         </div>
-                        <div className="col-lg-2">
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                           <div className="row">
-                            <button className="col-lg-8 btn searchbutton" type="button" onClick={this.searchProducts.bind(this)} ><i className="fa fa-search" aria-hidden="true"></i></button>
+                            <button className="col-lg-8 col-md-8 col-sm-8 col-xs-8 btn searchbutton" type="button" onClick={this.searchProducts.bind(this)} ><i className="fa fa-search" aria-hidden="true"></i></button>
                           </div>
                         </div>
                       </div>
@@ -415,32 +415,32 @@ removeModalBackDrop(event){
                           {user_ID 
                             ? 
                                 <li className="dropdown">
-                                    <ul className="col-lg-3 dropdown-menu list-menu">                                        
-                                        <li className="col-lg-12 NOpadding">
+                                    <ul className="col-lg-3 col-md-3 col-sm-3 col-xs-3 dropdown-menu list-menu">                                        
+                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                             <a href="">
                                             <div className="row">
-                                                <div className="col-lg-2">
+                                                <div className="col-lg-2 col-md-12 col-sm-12 col-xs-12">
                                                 <div className="shortnamebk">
                                                     <div className="">                                                    
                                                         <div className="userinfo">{this.state.firstname}{this.state.lastname}</div>
                                                     </div>
                                                 </div>
                                                 </div>
-                                                <div className="col-lg-10">
-                                                <div className="col-lg-12">
+                                                <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div className="userinfotext"><span >{this.state.userData ? this.state.userData.fullName : null}</span></div>
                                                 </div>
-                                                <div className="col-lg-12">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div className="useremail"><span>{this.state.userData ? this.state.userData.email : null}</span></div>
                                                 </div>
                                                 </div>
                                             </div>
                                             </a>
                                         </li>                                  
-                                        <li className="col-lg-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
-                                        <li className="col-lg-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
-                                        <li className="col-lg-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
-                                        <li className="col-lg-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
+                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
+                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
+                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
+                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
                                     </ul>
                                 </li>
                             :
@@ -476,31 +476,31 @@ removeModalBackDrop(event){
                             <div>
                               <p className="categoryDetails"><b>Cart Details</b></p>
                             </div>
-                              <p className="col-lg-3 mb20"><b>{this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}</b> item(s)</p>
-                              <div className="col-lg-9 text-right">Subtotal : <i className="fa fa-inr"></i> {this.props.recentCartData.length>0 ? this.props.recentCartData[0].total : 0}</div>                              
+                              <p className="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb20"><b>{this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}</b> item(s)</p>
+                              <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 text-right">Subtotal : <i className="fa fa-inr"></i> {this.props.recentCartData.length>0 ? this.props.recentCartData[0].total : 0}</div>                              
                             </div>
                             <div className={this.props.recentCartData.length > 0 ? "dropScroll": ""}>
                             {
                               this.props.recentCartData && this.props.recentCartData.length > 0 && this.props.recentCartData[0].cartItems.length > 0 ?
                               this.props.recentCartData[0].cartItems.map((data, index) => {
                                   return (
-                                    <li className="col-lg-12 cartdropheight " key={index}>
+                                    <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropheight " key={index}>
 
                                       <div className="cartdropborder">
-                                        <div className="col-lg-3">
+                                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                                             <img src={data.productDetail.productImage &&  data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="Product Picture" className="imghgt" />
                                         </div>
-                                        <div className="col-lg-9 ">
+                                        <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 ">
                                           {/* <div className="row"> */}
                                             {/* <a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}></a> */}
-                                            <div className="col-lg-12"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div>
-                                            <div className="col-lg-12 text-center">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div>
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                                               {/* <div className="row"> */}
                                                 {/* <div className="col-lg-4"><p className="row"><a href={"/productdetails/"+data.productDetail.productUrl+"/" + data.productDetail._id}><b>{data.productDetail.productName}</b></a></p></div> */}
-                                                <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
-                                                <div className="col-lg-3"><p className="row"><b> {data.quantity}</b></p></div>
-                                                <div className="col-lg-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
-                                                <div className="col-lg-3 pull-right"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
+                                                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3"><p className="row"><b><i className="fa fa-inr"></i> {data.productDetail.discountedPrice}</b></p></div>
+                                                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3"><p className="row"><b> {data.quantity}</b></p></div>
+                                                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3"><p className="row"><b><i className="fa fa-inr"></i> {data.subTotal}</b></p></div>
+                                                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right"><div className="row"><i className="fa fa-trash-o cartdropaction" aria-hidden="true" id={data._id} removeid={data._id} onClick={this.Removefromcart.bind(this)}></i></div></div>
 
                                               {/* </div> */}
                                             </div>
@@ -517,12 +517,12 @@ removeModalBackDrop(event){
                             }
                             </div>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropborder">
-                              <div className="col-lg-6 NOpaddingLeft">
+                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpaddingLeft">
                                 <a href="/cart">
-                                 <div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
+                                 <div className="btn cartdropbtn2_un col-lg-12 col-md-12 col-sm-12 col-xs-12" title="VIEW CART">VIEW CART</div></a>
                               </div>
                               
-                                <div className="col-lg-6 NOpaddingRight">
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpaddingRight">
                                   <a href={user_ID ? "/checkout" : "/login"}>
                                     <div className="btn cartdropbtn_un col-lg-12 cartdropbtn2_un" title="Checkout">CHECKOUT</div></a>
                                 </div>
@@ -536,8 +536,8 @@ removeModalBackDrop(event){
                   </div>                   
                 </div>
 
-                <div className="col-lg-1 col-md-1 headerpaddingtop">
-                  <div className="col-lg-6 header1list2">
+                <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 headerpaddingtop">
+                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 header1list2">
                       <div className="row">
                         <ul>
                           {/*
@@ -551,10 +551,10 @@ removeModalBackDrop(event){
                             user_ID ?
                               <li className="dropdown"><i className="fa fa-user headercarticon" aria-hidden="true"></i>
                                 <ul className="dropdown-menu signinmenuul">
-                                  <li className="col-lg-12 NOpadding">
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <a href="/">
                                       <div className="row">
-                                        <div className="col-lg-2">
+                                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                           <div className="shortnamebk">
                                             <div className="">
                                               {/*<div className="userinfo">{this.state.userData ? this.state.firstname  : null}</div>*/}
@@ -562,11 +562,11 @@ removeModalBackDrop(event){
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="col-lg-10">
-                                          <div className="col-lg-12">
+                                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div className="userinfotext"><span >{this.state.userData ? this.state.userData.fullName : null}</span></div>
                                           </div>
-                                          <div className="col-lg-12">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                                             <div className="useremail"><span>{this.state.userData ? this.state.userData.email : null}</span></div>
                                           </div>
                                         </div>
@@ -574,10 +574,10 @@ removeModalBackDrop(event){
                                     </a>
 
                                   </li>
-                                  <li className="col-lg-12 NOpadding"><a href="/account">My Profile</a></li>
-                                  <li className="col-lg-12 NOpadding"><a href="/my-orders">My Orders</a></li>
-                                  <li className="col-lg-12 NOpadding"><a href="/wishlist">My Wishlist</a></li>
-                                  <li className="col-lg-12 NOpadding" onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#A2632C", color:"#fff"}}>Sign Out</a></li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/account">My Profile</a></li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/my-orders">My Orders</a></li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/wishlist">My Wishlist</a></li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#A2632C", color:"#fff"}}>Sign Out</a></li>
                                 </ul>
                               </li>
                               :
@@ -622,10 +622,9 @@ removeModalBackDrop(event){
                 </div>
               </div>
             </div>
-          </div>
         </header>
         <nav>
-          <div className="col-lg-12 catogeryvaluebg">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 catogeryvaluebg">
             <div className="row">
               <Megamenu />
             </div>

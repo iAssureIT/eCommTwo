@@ -237,7 +237,7 @@ export default class AdminDashboard extends Component{
 
 
 
-            <li className="treeview" >
+           {/* <li className="treeview" >
               <a href="JavaScript:void(0);" onClick={()=>this.openMenu("corporateData")} title="Corporate Master">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Inventory Management </span>
@@ -283,7 +283,7 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
               </ul>
-            </li>
+            </li>*/}
             <li className="treeview" >
               <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
                 <i className="fa fa-book" aria-hidden="true"></i>
@@ -357,12 +357,12 @@ export default class AdminDashboard extends Component{
               </a>
             </li>
 
-            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+           {/* <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/franchise/list" title="Franchise Master" onClick={()=>this.openMenu("dashboard")}>
                 <i className="fa fa-money" aria-hidden="true"></i>
                 <span className="sidebarMenuTitle">Franchise Master</span>
               </a>
-            </li>
+            </li>*/}
 
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/cms/dashboard" title="cms" onClick={()=>this.openMenu("dashboard")}>

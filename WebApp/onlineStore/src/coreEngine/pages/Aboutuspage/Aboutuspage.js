@@ -1,5 +1,6 @@
 import React, { Component }       from 'react';
 import Aboutusbanner              from "../../blocks/Aboutusbanner/Aboutusbanner.js";
+import AboutusVideos              from "../../blocks/AboutusVideos/AboutusVideos.js";
 import Aboutusmultistore          from "../../blocks/Aboutusmultistore/Aboutusmultistore.js";
 import Aboutusteam                from "../../blocks/Aboutusteam/Aboutusteam.js";
 import Aboutushistory             from "../../blocks/Aboutushistory/Aboutushistory.js";
@@ -20,6 +21,7 @@ class Aboutuspage extends Component {
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorGray">
           <div className="row">
             <Aboutusbanner />
+             <AboutusVideos />
             <Aboutusmultistore />
             {/* <Aboutusteam /> */}
             {/* <Aboutushistory /> */}

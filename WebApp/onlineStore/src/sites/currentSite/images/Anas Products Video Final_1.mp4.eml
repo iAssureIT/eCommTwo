@@ -1,0 +1,147 @@
+Delivered-To: ashish.naik@iassureit.com
+Received-SPF: pass (zohomail.com: domain of _spf.google.com designates 209.85.161.70 as permitted sender) client-ip=209.85.161.70; envelope-from=3oha5XhMJAK8XckXcRXQaT.PcPhZWPcVbPXa.Rdb@doclist.bounces.google.com; helo=mail-oo1-f70.google.com;
+Authentication-Results: mx.zohomail.com;
+	dkim=pass;
+	spf=pass (zohomail.com: domain of _spf.google.com designates 209.85.161.70 as permitted sender)  smtp.mailfrom=3oha5XhMJAK8XckXcRXQaT.PcPhZWPcVbPXa.Rdb@doclist.bounces.google.com;
+	dmarc=pass(p=none dis=none)  header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1589188259; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LzZ9O85U6PHQ+kweVVj2E9SPASS8ah4SDbhEX9HwcLn0CRs4oZAV6biC1BrAOVPUhMd4o+6d9D1Sd/LF4q6QivCrZxB/5xeJsw93BOmV8ebCXP5Syf30w40tl9pEGGP0QwHsZLBRRGYaZEdLQdNyUywZkETjFSUGufEMxlfaLQ4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1589188259; h=Content-Type:Date:From:MIME-Version:Message-ID:Reply-To:References:Subject:To; 
+	bh=k0SWxOSvvP9agvztGWDufiwx+f0dNFFL9UpLcHnBgXE=; 
+	b=SHsDHNkmdyDzSxIEzvfbVAzejhFxSQjb5sRbQD3i8H0G8laNwYpMyKV4Hwh4VP83O51izxOJ46s9evGiS/EvjwjrtNqIhhhNKgx2GcZF4aPFmYiqXbrM4/e9Ziup3gvwBZm4kRlWwcS2Bjn8GqxDrqKhPwQZd6pzF8dMdegvDi0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass;
+	spf=pass (zohomail.com: domain of _spf.google.com designates 209.85.161.70 as permitted sender)  smtp.mailfrom=3oha5XhMJAK8XckXcRXQaT.PcPhZWPcVbPXa.Rdb@doclist.bounces.google.com;
+	dmarc=pass header.from=<invincible.anaskhan@gmail.com> (p=none dis=none) header.from=<invincible.anaskhan@gmail.com>
+Return-Path: <3oha5XhMJAK8XckXcRXQaT.PcPhZWPcVbPXa.Rdb@doclist.bounces.google.com>
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70]) by mx.zohomail.com
+	with SMTPS id 1589188259687275.04360689026817; Mon, 11 May 2020 02:10:59 -0700 (PDT)
+Received: by mail-oo1-f70.google.com with SMTP id u14so6406278oon.17
+        for <ashish.naik@iassureit.com>; Mon, 11 May 2020 02:10:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:references:message-id:date:subject:from:to;
+        bh=k0SWxOSvvP9agvztGWDufiwx+f0dNFFL9UpLcHnBgXE=;
+        b=o5BWGyOi17ZO4PqUPk+ugbngD4TatsMYLjnYVesSNERkzQC0V8spTtkZZbzQ+Aqx+6
+         daXdeENNbst53ctbceULlAwHryB8S0J7+rkIeRZYmT63WpTu1SdLcDk0XYK31f9P0+nX
+         KaQt5j8iHMusTK83E/ERq1qJnqJAw0724hGAiYgTrfZb0PjloyGcSMafOcNdT82LAQOp
+         ejbhCpmiD9yU+d59zwFQV4SQE4Bnto0KSKCdoPp4WhjRv92dlZzjFcKRDWXvi9vwrOJh
+         +Jkk4a9GZst90DKfMYrJpQMc40QF/A58sOUp2FNSkpSkrf4qKWSVaoYcV35YFZNqx0Ys
+         +5Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:references:message-id:date
+         :subject:from:to;
+        bh=k0SWxOSvvP9agvztGWDufiwx+f0dNFFL9UpLcHnBgXE=;
+        b=HaJKwhND5y6TBiy4osSxxhoEsE1viZg2JU5iKPkcBeb1HTFyN2elWm0Yedp802toQ0
+         0YqQeUEI66zeL+z1atI1WbYfFVMx4b7IL4cc8jF1jChV+KjgEsDzSbLWNXJ7vxJva4TK
+         BWrVTMiMR4RDhbPsImxOkPdZoDM6nXortZeculZ1zp4VouEiCSZK3crmljEERF+Ks3BD
+         5sH3nYzQ3P7d5vMt22A1fDPvH/ASp4l82ted5wWte6H24mRcBiQoWFgRGIZbDG65DLEQ
+         rXTHLYEcpjJ+50Rjt6aJAAR4CYI/ZSHasscf+tGZjYaiL2C2vIcuc8fMyQLVGXpuuSj5
+         bPfA==
+X-Gm-Message-State: AGi0PubKqUQ3jcdsxUDoEpe0GZKlHtV1BosBh1Gsm1HYw6erWDWwLaEt
+	ySnG6nK9ysf0kEOmdVIndKRTB1sdJMI=
+X-Google-Smtp-Source: APiQypKHYbxB/MlDMnnUMc1tNIEIFMESXJdDirEX7An70xd5fLES9fusuJBkU19ctJsaV8NEroit2irqG5I=
+MIME-Version: 1.0
+X-Received: by 2002:aca:54d8:: with SMTP id i207mr17893404oib.118.1589188258543;
+ Mon, 11 May 2020 02:10:58 -0700 (PDT)
+Reply-To: Anas Khan <invincible.anaskhan@gmail.com>
+X-No-Auto-Attachment: 1
+References: <49467d6d-2f4d-419e-9ba8-e4261710dd08@docs-share.google.com>
+Message-ID: <000000000000a1bc0b05a55bb9f6@google.com>
+Date: Mon, 11 May 2020 09:10:58 +0000
+Subject: Anas Products Video Final_1.mp4
+From: "Anas Khan (via Google Drive)" <invincible.anaskhan@gmail.com>
+To: ashish.naik@iassureit.com
+Content-Type: multipart/alternative; boundary="000000000000a1bbf505a55bb9f3"
+X-ZohoMail-DKIM: pass (identity @gmail.com)
+
+
+--000000000000a1bbf505a55bb9f3
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+
+I've shared an item with you:
+
+Anas Products Video Final_1.mp4
+https://drive.google.com/file/d/1gcCKY1HxbA3tHIPJZ6UseaqNge8ZoG9G/view?usp=sharing&invite=CKHV75UG&ts=5eb916a2
+
+It's not an attachment -- it's stored online. To open this item, just click  
+the link above.
+
+
+--000000000000a1bbf505a55bb9f3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html><head></head><body><div style=3D"width: 100%; padding: 24px 0 16px 0;=
+ background-color: #f5f5f5; text-align: center;"><div style=3D"display: inl=
+ine-block; width: 90%; max-width: 680px;min-width: 280px; text-align: left;=
+ font-family: Roboto,Arial,Helvetica,sans-serif;"><div style=3D"height: 0px=
+;" dir=3D"ltr"></div><div style=3D"display: block; padding: 0 2px;"><div st=
+yle=3D"display: block; background: #fff; height: 2px;"></div></div><div sty=
+le=3D"border-left: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0;"><di=
+v style=3D"padding: 24px 32px 24px 32px; background:#fff; border-right: 1px=
+ solid #eaeaea; border-left: 1px solid #eaeaea;" dir=3D"ltr"><div style=3D"=
+font-size: 14px; line-height: 18px; color: #444;"><a href=3D"mailto:invinci=
+ble.anaskhan@gmail.com" style=3D"color:inherit;text-decoration:none">invinc=
+ible.anaskhan@gmail.com</a> has shared the following video:</div><div style=
+=3D"height: 10px;"></div><div style=3D"font-size: 18px; display: table;"><d=
+iv style=3D"display: table-row; border-bottom: 4px solid #fff;"><span style=
+=3D"display: table-cell;"><div style=3D"height: 32px;"><img src=3D"https://=
+ssl.gstatic.com/docs/documents/share/images/services/video-5.png" aria-labe=
+l=3D"Video" style=3D"vertical-align: middle; max-width: 24px;"/></div></spa=
+n><span style=3D"display: table-cell; padding-left: 12px; word-break: break=
+-word;"><a href=3D"https://drive.google.com/file/d/1gcCKY1HxbA3tHIPJZ6Useaq=
+Nge8ZoG9G/view?usp=3Dsharing_eil&amp;invite=3DCKHV75UG&amp;ts=3D5eb916a2" s=
+tyle=3D"color: #3367d6; text-decoration: none; vertical-align: middle;">Ana=
+s Products Video Final_1.mp4</a><div itemprop=3D"action" itemscope itemtype=
+=3D"http://schema.org/ViewAction"><meta itemprop=3D"url" content=3D"https:/=
+/drive.google.com/file/d/1gcCKY1HxbA3tHIPJZ6UseaqNge8ZoG9G/view?usp=3Dshari=
+ng_eil&amp;invite=3DCKHV75UG&amp;ts=3D5eb916a2"></div></span></div></div><d=
+iv style=3D"height: 32px;"></div><div><a href=3D"https://drive.google.com/f=
+ile/d/1gcCKY1HxbA3tHIPJZ6UseaqNge8ZoG9G/view?usp=3Dsharing_eip&amp;invite=
+=3DCKHV75UG&amp;ts=3D5eb916a2" target=3D"_blank" style=3D"background-color:=
+ #4d90fe; border: 1px solid #3079ed; border-radius: 2px; color: white; disp=
+lay: inline-block; font: bold 11px Roboto,Arial,Helvetica,sans-serif; heigh=
+t: 29px; line-height: 29px; min-width: 54px; outline: 0px; padding: 0 8px; =
+text-align: center; text-decoration: none">Open</a></div><div style=3D"heig=
+ht: 24px;"></div><div style=3D"background: #fce8b2; font-size: 13px; color:=
+ #444; border-radius: 2px; padding: 5px 10px;">This email grants access to =
+this item without logging in. Only forward it to people you trust.</div></d=
+iv></div><table style=3D"width: 100%; border-collapse: collapse;" role=3D"p=
+resentation"><tr><td style=3D"padding: 0px;"><table style=3D"border-collaps=
+e: collapse; width: 3px;" role=3D"presentation"><tr height=3D"1"><td width=
+=3D"1" bgcolor=3D"#f0f0f0" style=3D"padding: 0px;"></td><td width=3D"1" bgc=
+olor=3D"#eaeaea" style=3D"padding: 0px;"></td><td width=3D"1" bgcolor=3D"#e=
+5e5e5" style=3D"padding: 0px;"></td></tr><tr height=3D"1"><td width=3D"1" b=
+gcolor=3D"#f0f0f0" style=3D"padding: 0px;"></td><td width=3D"1" bgcolor=3D"=
+#eaeaea" style=3D"padding: 0px;"></td><td width=3D"1" bgcolor=3D"#eaeaea" s=
+tyle=3D"padding: 0px;"></td></tr><tr height=3D"1"><td width=3D"1" bgcolor=
+=3D"#f5f5f5" style=3D"padding: 0px;"></td><td width=3D"1" bgcolor=3D"#f0f0f=
+0" style=3D"padding: 0px;"></td><td width=3D"1" bgcolor=3D"#f0f0f0" style=
+=3D"padding: 0px;"></td></tr></table></td><td style=3D"width: 100%; padding=
+: 0px;"><div style=3D"height: 1px; width: auto; border-top: 1px solid #ddd;=
+ background:#eaeaea; border-bottom: 1px solid #f0f0f0;"></div></td><td styl=
+e=3D"padding: 0px;"><table style=3D"border-collapse: collapse; width: 3px;"=
+ role=3D"presentation"><tr height=3D"1"><td width=3D"1" bgcolor=3D"#e5e5e5"=
+ style=3D"padding: 0px;"></td><td width=3D"1" bgcolor=3D"#eaeaea" style=3D"=
+padding: 0px;"></td><td width=3D"1" bgcolor=3D"#f0f0f0" style=3D"padding: 0=
+px;"></td></tr><tr height=3D"1"><td width=3D"1" bgcolor=3D"#eaeaea" style=
+=3D"padding: 0px;"></td><td width=3D"1" bgcolor=3D"#eaeaea" style=3D"paddin=
+g: 0px;"></td><td width=3D"1" bgcolor=3D"#f0f0f0" style=3D"padding: 0px;"><=
+/td></tr><tr height=3D"1"><td width=3D"1" bgcolor=3D"#f0f0f0" style=3D"padd=
+ing: 0px;"></td><td width=3D"1" bgcolor=3D"#f0f0f0" style=3D"padding: 0px;"=
+></td><td width=3D"1" bgcolor=3D"#f5f5f5" style=3D"padding: 0px;"></td></tr=
+></table></td></tr></table><table style=3D"padding: 14px 10px 0 10px;" role=
+=3D"presentation" dir=3D"ltr"><tr><td style=3D"width: 100%; font:11px Robot=
+o,Arial,Helvetica,sans-serif; color:#646464; line-height: 20px; min-height:=
+ 40px; vertical-align: middle;">Google Drive: Have all your files within re=
+ach from any device. <br/>Google LLC, 1600 Amphitheatre Parkway, Mountain V=
+iew, CA 94043, USA</td><td style=3D"padding-left: 20px; vertical-align: mid=
+dle;"><a href=3D"http://drive.google.com" target=3D"_blank"><img src=3D"htt=
+ps://www.gstatic.com/images/branding/googlelogo/1x/googlelogo_tm_black54_co=
+lor_96x40dp.png" width=3D"96" alt=3D"Logo for Google Drive" border=3D"0"></=
+a></td></tr></table></div></div></body></html>
+--000000000000a1bbf505a55bb9f3--

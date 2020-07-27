@@ -13,45 +13,6 @@ export default class Aboutusmultistore extends Component {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
 				<div className="row">
-					<div className="col-lg-12">
-						<h2 className="col-lg-12 mt50"> AnasHandicrafts</h2>
-						<div className="col-lg-10 col-lg-offset-1">
-							<p className="col-lg-12 mt20 ">
-								We often take care of our loved ones, family and friends. 
-								AnasHnadicrafts has raised the bar even higher for others emulate. It is one of the furniture supplier chain..  
-								The difference lies in the sheer scale of operations at AnasHnadicrafts.All the standard sanitizing and packaging procedures are in line with the Total Quality Management principles and conform to the quality standards set by us.At any given point in time Team AnasHnadicrafts can handle customers  ensuring its flawless service.
-							</p>
-						</div>
-					</div>
-					<div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 mt50">
-						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						  	<i className="fa fa-inbox multiicon" aria-hidden="true"></i>
-						  </div>
-						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<h3><b>5000+</b></h3>
-							<h4>Products</h4>
-						  </div>
-						</div>
-						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						  	<i className="fa fa-shopping-cart multiicon" aria-hidden="true"></i>
-						  </div>
-						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<h3><b>300+</b></h3>
-							<h4>Sellers</h4>
-						  </div>
-						</div>
-						<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						  	<i className="fa fa-globe multiicon" aria-hidden="true"></i>
-						  </div>
-						  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						  <h3><b>Pune</b></h3>
-						  <h4>City</h4>
-						  </div>
-						</div>
-					</div>
 					<div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 						<div className="">
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

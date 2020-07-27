@@ -491,7 +491,7 @@ class ProductCollageView extends Component {
                                     </div>
                                     :
                                     data.availableQuantity > 0 ?
-                                      <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart pull-right">
+                                      <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart pull-center">
                                         &nbsp;Add To Cart
                                       </button>
                                       :

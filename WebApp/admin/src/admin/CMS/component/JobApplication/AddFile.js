@@ -55,7 +55,7 @@ class AddFile extends Component{
       
         const config = {
                           bucketName      : response.data.bucket,
-                          dirName         : "iOG",
+                          dirName         : "AnasHandicrafts",
                           region          : response.data.region,
                           accessKeyId     : response.data.key,
                           secretAccessKey : response.data.secret,

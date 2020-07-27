@@ -79,7 +79,7 @@ componentWillMount() {
   render() {  
         return (
         <header className="dark">
-        <nav className="" role="navigation" style={{height:"52px"}}>
+        <nav className="" role="navigation" style={{height:"68px"}}>
           {/* <a href="javascript:void(0);" className="ic menu" tabindex="1">
             <span className="line"></span>
             <span className="line"></span>
@@ -104,7 +104,7 @@ componentWillMount() {
                                     <div key={catindex} className="col-md-12 col-lg-12 col-sm-12 megamenusubwidth1">
                                       {/* <h1 className="sub-menu-head"><a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a></h1> */}   
                                           <li className="category_list">
-                                              <a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a>
+                                              <span><i className="fa fa-square list_dot"></i></span><a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a>
                                           </li>
                                     </div>
                                   );

@@ -59,7 +59,7 @@ ul.main-nav > li > a {
   display: block; 
   padding: 10px 15px; 
   position: relative;
-  color: #ffffff;
+  color: #333;
   font: 600 15px/40px "Roboto Slab" ! important;
   font-weight: 600;
   box-sizing: border-box;
@@ -69,7 +69,7 @@ ul.main-nav > li > a {
 }
 
 ul.main-nav > li:hover { 
-  background-color: #f9f9f9;
+  background-color: #fff;
   color: rgb(58, 162, 44);
 }
 ul.main-nav > li:hover > a { color: #333; font-weight: 400; }
@@ -262,18 +262,18 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   /* Sub Menu */
   ul.main-nav > li > div.sub-menu-block { 
   visibility: hidden;
-  background-color: #f9f9f9;
+  background-color: #fff ! important;
   position: absolute;
   margin-top: -10px;
   /* width: 17%; */
   color: #333;
   left: 125;
   box-sizing: border-box;
-  z-index : 3;
+  z-index : 100;
   font-size: 16px;
-  border-left: 1px solid #ccc;
+  /*border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;*/
   opacity: 0;
     
   /*CSS animation applied for sub menu : Slide from Top */
@@ -294,6 +294,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
     background-color: #f9f9f9; 
     visibility: visible;
     opacity: 1;
+    /*margin-left: -22px;*/
     -webkit-transform: rotateX(0deg);
     -moz-transform: rotateX(0deg);
     -ms-transform: rotateX(0deg);
@@ -380,9 +381,16 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   color: #333;
   transition: 0.4s ease;
   font-size: 14px;
-  margin-left: -52px
+  margin-left: -43px
 }
 .category_list{
     width: 83px;
     margin-left: -15px;
+}
+.list_dot{
+    position: absolute;
+    left: -52px;
+    bottom: 9px;
+    color: #333;
+    font-size: 4px;
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ProductCollageView from '../../blocks/ProductCollage/ProductCollageView.js';
-// import ProductCollageView from '../../blocks/ProductCollage/ProductCollageTest.js';
 import SearchProductPage from '../../../sites/currentSite/pages/SearchProductPage.css';
 import $ from 'jquery';
 import InputRange from 'react-input-range';
@@ -124,6 +123,7 @@ class ProductCollage extends Component {
 	getCategoryDetails(categoryID) {
 		axios.get("/api/category/get/one/" + categoryID)
 			.then((response) => {
+				console.log("Response:",response.data);
 				this.setState({
 					categoryDetails: response.data
 				})
@@ -697,7 +697,6 @@ class ProductCollage extends Component {
         selector.category_ID = this.props.parameters.categoryID;
         selector.subCategory_ID = this.props.parameters.subcategoryID;
         selector.limit = $(event.target).val()
-
         this.setState({	selector: selector },()=>{
 			this.getFilteredProducts(this.state.selector);
 		})
@@ -760,6 +759,20 @@ class ProductCollage extends Component {
 		}
 	}
 	render() {
+		console.log("Category details:-----",this.state.categoryDetails);
+		if(this.state.categoryDetails.length < 1){
+			$('.filterWrapper').hide();
+			$('.ProductViewWrapper').removeClass('col-lg-9');
+			$('.ProductViewWrapper').removeClass('col-md-9');			
+			$('.ProductViewWrapper').addClass('col-lg-12');
+			$('.ProductViewWrapper').addClass('col-md-12');
+
+		}else{
+			$('.ProductViewWrapper').addClass('col-lg-9');
+			$('.ProductViewWrapper').addClass('col-md-9');
+			$('.ProductViewWrapper').removeClass('col-lg-12');
+			$('.ProductViewWrapper').removeClass('col-md-12');	
+		}		
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv">
 				<div className="row">
@@ -791,8 +804,8 @@ class ProductCollage extends Component {
 																
 																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<li>
-																			<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
-																			<ul>
+																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
+																			{/* <ul>
 																				{
 																					data.subCategory.map((subcat, subind) => {
 																						return (
@@ -800,7 +813,7 @@ class ProductCollage extends Component {
 																								{
 																									subcat.subCategoryTitle > 1 ?
 																										<li>
-																											<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
+																											<a href="" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
 																										</li>
 																									: 
 																									null
@@ -810,7 +823,7 @@ class ProductCollage extends Component {
 																					})
 																				}
 	
-																			</ul>
+																			</ul> */}
 																		</li>
 																	</div>
 																
@@ -898,38 +911,39 @@ class ProductCollage extends Component {
 								</div>
 							</div>
 						</div>
-
-
-						{/*for lg and md*/}
+						
+					{/*============for lg and md=============*/} 
 						{
-							this.state.categoryDetails.length > 1 ?
-								<div className="col-lg-3 col-md-3 hidden-sm hidden-xs">
-									{/* <div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding"> */}
-										{/* <div className="accordion" id="accordionExample">
+							Array.isArray(this.state.categoryDetails) && this.state.categoryDetails.length > 0 ?
+								<div className="col-lg-3 col-md-3 filterWrapper">									
+									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
+										<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
-												<div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
+												<div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
+												{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" > */}
 													<button className="btn btn-link" type="button" data-key="category"   >
 														CATEGORY
-						        			</button>
+						        					</button>
 													<span className="expand"><i className={this.state["toggleIconcategory"] ? this.state["toggleIconcategory"] : "fa fa-plus-circle categoryIcon"} data-key="category"></i></span>
 												</div> 
 											</div>
-											<div id="collapseOne" className="collapse">
+											<div id="collapseOne" className="collapse in">
 												<div className="card-body">
 													{
-														this.state.categoryDetails.length >= 2 ?
+														this.state.categoryDetails.length ?
 															this.state.categoryDetails.map((data, index) => {
-																console.log("data in collapse==>",data)
+																// console.log("data in collapse==>",data)
 																return (
 																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<li>
-																			<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a>
+																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
+																			{/* <a href="" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a> */}
 																			<ul>
 																				{
-																					data.subCategory.map((subcat, subind) => {
+																					data.subCategory && data.subCategory.map((subcat, subind) => {
 																						return (
 																							<li>
-																								<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
+																								<a href="" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
 																							</li>
 																						);
 																					})
@@ -946,8 +960,9 @@ class ProductCollage extends Component {
 															</div>
 													}
 												</div>
-											</div> */}
-
+											</div>
+											</div>
+											
 											{/* 	<div>
 										<div id="collapseTwo" className="collapse" >
 													<div className="card-body">
@@ -962,7 +977,6 @@ class ProductCollage extends Component {
 																		: null
 																);
 															})
-
 															: ''}
 													</div>
 												</div> 
@@ -990,9 +1004,7 @@ class ProductCollage extends Component {
 															this.state.sizes.map((data, index) => {
 																return (<option value={data}>{data}</option>);
 															})
-
 															: ''}
-
 													</select>
 												</div>
 											</div> */}
@@ -1026,7 +1038,6 @@ class ProductCollage extends Component {
 											{/* {
 												this.state.attributesArray ?
 													Object.entries(this.state.attributesArray).map(([key, value1], i) => {
-
 														return (
 															<div>
 																<div className="card-header" id="headingThree">
@@ -1046,7 +1057,6 @@ class ProductCollage extends Component {
 																					<label><input type="checkbox" name={key} className="attributes" value={attrvalue.attributeValue.toUpperCase()} onClick={this.onSelectedItemsChange.bind(this, 'attributes')} />{attrvalue.attributeValue}</label>
 																				</div>
 																				);
-
 																			})
 																			: null}
 																	</div>
@@ -1061,35 +1071,39 @@ class ProductCollage extends Component {
 									</div> */}
 									{/* <br /> */}
 									{/* <div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
-					 <div className="Featured-Brands-tittle">Featured Brands</div>						
-						<br/>
-						{ this.state.brands && this.state.brands.length > 0 ? 
-							this.state.brands.map((data,index)=>{											
-								return(
-								<div className="col-lg-9 col-md-12 col-sm-12 col-xs-12 " key={index}>
-									<div>
-									 <div className="centreDetailContainerEcommerce col-lg-1 row">
-									 <input type="checkbox" name="brands[]" onChange={this.onSelectedItemsChange.bind(this,"brands")} value={data}/>
-									 <span className="centreDetailCheckEcommerce"></span>
-									</div>
-										<span className="centreDetaillistItemEcommerce">{data}</span>
-									</div>
-								</div>
-								);
-							})
-							: ''
+										<div className="Featured-Brands-tittle">Featured Brands</div>						
+										<br/>
+										{ this.state.brands && this.state.brands.length > 0 ? 
+											this.state.brands.map((data,index)=>{											
+												return(
+												<div className="col-lg-9 col-md-12 col-sm-12 col-xs-12 " key={index}>
+													<div>
+													<div className="centreDetailContainerEcommerce col-lg-1 row">
+													<input type="checkbox" name="brands[]" onChange={this.onSelectedItemsChange.bind(this,"brands")} value={data}/>
+													<span className="centreDetailCheckEcommerce"></span>
+													</div>
+														<span className="centreDetaillistItemEcommerce">{data}</span>
+													</div>
+												</div>
+												);
+											})
+											: ''
+										}
+									</div> */}
+						</div>{/*} end accordian div*/}
+								
+						</div>
+						 : null
 						}
-					</div> */}
-								</div> : ""
-						}
+
 						{
 							this.state.loading ?
-								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3" id="productDiv">
+								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3 ProductViewWrapper" id="productDiv">
 									<Loader type="collageloader" productLoaderNo={6} />
 								</div>
 								:
 								this.state.products.length > 0 ?
-									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12" id="productDiv">
+									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 ProductViewWrapper" id="productDiv">
 										<br />
 										<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div id="products" className="tab-pane fade in active">

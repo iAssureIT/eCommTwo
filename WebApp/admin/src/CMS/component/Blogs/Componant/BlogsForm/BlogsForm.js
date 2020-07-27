@@ -105,7 +105,7 @@ class BlogsForm extends React.PureComponent{
          
           const config = {
                             bucketName      : response.data.bucket,
-                            dirName         : "iOG",
+                            dirName         : "AnasHandicrafts",
                             region          : response.data.region,
                             accessKeyId     : response.data.key,
                             secretAccessKey : response.data.secret,
@@ -393,7 +393,7 @@ class BlogsForm extends React.PureComponent{
       uploadedImage: e.target.files[0]
     },()=>{
           console.log("uploadToS3 =",this.state.uploadedImage);
-          console.log("config",this.state.config);
+          // console.log("config",this.state.config);
      S3FileUpload
       .uploadFile(file,this.state.config)
       .then((Data)=>{
