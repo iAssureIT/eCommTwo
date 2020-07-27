@@ -453,7 +453,7 @@ removeModalBackDrop(event){
                       <span>  
                       {user_ID ?                      
                         <a href={user_ID ? "/cart" : null} className="icon-cart">
-                            <i class="fa fa-shopping-cart headercarticon headercarticon_bag" aria-hidden="true"onClick={this.loginPage.bind(this)}></i>
+                           <img className=" headercarticon headercarticon_bag"src={cartphoto} aria-hidden="true" onClick={this.loginPage.bind(this)} style={{width:"24px"}}/>
                             
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cart-count">
