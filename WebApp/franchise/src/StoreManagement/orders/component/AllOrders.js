@@ -54,7 +54,7 @@ export default class AllOrders extends Component{
                   allProductsArray.push(response.data[i].products[0]);
                   var UserArray = [];
                   UserArray.push(orderID);
-                   UserArray.push(billNumber);
+                  //  UserArray.push(billNumber);
                   UserArray.push(userFullName);
                   UserArray.push(totalQuantity);
                   UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);

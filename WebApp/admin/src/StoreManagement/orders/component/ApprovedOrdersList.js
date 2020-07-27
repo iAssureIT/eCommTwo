@@ -56,8 +56,15 @@ export default class ApprovedOrdersList extends Component{
                   var UserArray = [];
                   UserArray.push(orderID);
                   // UserArray.push(billNumber);
-                  UserArray.push(allocatedToFranchise);
-                  UserArray.push(userFullName);
+                  if(this.state.websiteModel === 'FranchiseModel'){
+                    if(allocatedToFranchise){
+                      UserArray.push(allocatedToFranchise);
+                    }else{
+                      UserArray.push(<button class="btn btn-warning btn-xs admin-orders-stat-NewOrder" onClick={this.AllocateToFranchiseModal.bind(this,orderID)} id={orderID}>Allocate to franchise</button>);
+                    }
+                  }else{
+                    UserArray.push("");
+                  }                  UserArray.push(userFullName);
                   // UserArray.push(totalQuantity);
                   // UserArray.push(shippingtime);
                   UserArray.push(productarr.toString());

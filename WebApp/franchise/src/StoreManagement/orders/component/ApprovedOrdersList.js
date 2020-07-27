@@ -33,7 +33,7 @@ export default class ApprovedOrdersList extends Component{
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
       orderFilterData.franchiseID = resdata.data._id;;
-       axios.post('/api/orders/get/get_orders/',orderFilterData)
+       axios.post('/api/orders/get/get_orders',orderFilterData)
           .then((response)=>{
             var UsersArray = [];
               for (let i = 0; i < response.data.length; i++) {

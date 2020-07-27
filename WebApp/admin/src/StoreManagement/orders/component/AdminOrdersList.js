@@ -56,7 +56,6 @@ class AdminOrdersList extends Component{
         websiteModel: websiteModel
       },()=>{
         // FranchiseModel
-        this.getOrdersBetweenDates();
         console.log("websiteModel==>",this.state.websiteModel)
       })
         // this.getBA();
@@ -96,11 +95,14 @@ class AdminOrdersList extends Component{
                 "filteredProductArray" : ProductList,
                 "showStatusFilter"  : nextProps.showStatusFilter ? nextProps.showStatusFilter : true,
                 "currentViewStatus" : nextProps.status
+            },()=>{
+              this.getOrdersBetweenDates();
             });
         }
         if(this.state.websiteModel === 'FranchiseModel'){
             this.getFranchiseList();
         }
+        
     }
     componentWillUnmount() {
         $("body").find("script[src='/js/adminLte.js']").remove();
@@ -228,6 +230,7 @@ class AdminOrdersList extends Component{
 
     getOrdersBetweenDates(){
       // var currentViewStatus = this.status.currentViewStatuss ? this.status.currentViewStatus : '';
+      console.log("this.state.currentViewStatus",this.state.currentViewStatus)
       var orderFilterData= {};
       orderFilterData.startDate = this.state.fromDate;
       orderFilterData.endDate = this.state.toDate;
@@ -237,7 +240,7 @@ class AdminOrdersList extends Component{
       }else{
         orderFilterData.status = this.state.status !== 'all' ? this.state.status : ''
       }
-      axios.post('/api/orders/get/get_orders/',orderFilterData)
+      axios.post('/api/orders/get/get_orders',orderFilterData)
             .then((response)=>{
               // console.log("response.data of order==>",response.data)
               var UsersArray = [];
@@ -333,63 +336,6 @@ class AdminOrdersList extends Component{
       });
 
     }
-
-    getOrdersByStatus(){
-      axios.get('/api/orders/get/orderlist/'+this.state.status)
-            .then((response)=>{
-              // console.log("response.data of order==>",response.data)
-              var UsersArray = [];
-                for (let i = 0; i < response.data.length; i++) {
-                  var _id = response.data[i]._id;
-                  var orderID = response.data[i].orderID;
-                  var allocatedToFranchise = response.data[i].allocatedToFranchise ?response.data[i].allocatedToFranchise.companyName : null;
-                  var userFullName = response.data[i].userFullName;
-                  var totalQuantity = response.data[i].cartQuantity;
-                  // var shippingtime = response.data[i].shippingtime;
-                  // var billNumber = response.data[i].billNumber ? response.data[i].billNumber : '';
-                  var currency = response.data[i].currency;
-                  var totalAmount = response.data[i].total;
-                  var productarr = [];
-                  for(let j in response.data[i].products){
-                      productarr.push(response.data[i].products[j].productName +' '+response.data[i].products[j].quantity )
-                  }
-                  var createdAt = moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a");
-                  var status = response.data[i].status;
-                  var deliveryStatus = response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status === "Dispatch" ? 'Out for Delivery' : response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-                  var viewOrder =  "/viewOrder/"+response.data[i]._id;
-                  var deliveryStatus =  response.data[i].deliveryStatus[response.data[i].deliveryStatus.length-1].status;
-
-                  var UserArray = [];
-                  UserArray.push(orderID);
-                  // UserArray.push(billNumber);
-                  UserArray.push(allocatedToFranchise);
-                  UserArray.push(userFullName);
-                  // UserArray.push(totalQuantity);
-                  // UserArray.push(shippingtime);
-                  UserArray.push(productarr.toString());
-                  UserArray.push(<i className={"fa fa-"+currency}>&nbsp;{(parseInt(totalAmount)).toFixed(2)}</i>);
-                  UserArray.push(createdAt);
-                  UserArray.push({status : status, deliveryStatus : deliveryStatus});
-                  UserArray.push({_id:_id, viewOrder:viewOrder, deliveryStatus:deliveryStatus});
-                  
-                  UsersArray.push(UserArray);
-                }
-
-                this.setState({
-                  data: UsersArray,
-                });
-
-                this.setState({
-                  orderData: response.data
-                });
-
-            })
-            .catch((error)=>{
-                console.log('error', error);
-            })
-    }
-
-
 
     onProductChange(event){
       event.preventDefault();

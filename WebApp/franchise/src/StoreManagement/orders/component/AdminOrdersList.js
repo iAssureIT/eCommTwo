@@ -254,7 +254,7 @@ class AdminOrdersList extends Component{
 
                   var UserArray = [];
                   UserArray.push(orderID);
-                  UserArray.push(billNumber);
+                  // UserArray.push(billNumber);
 
                   UserArray.push(userFullName);
                   UserArray.push(totalQuantity);
@@ -299,7 +299,7 @@ class AdminOrdersList extends Component{
       };
       const columns = [
           { name:"Order Id" },
-          { name:"Bill Number" },
+          // { name:"Bill Number" },
           { name:"Customer Name" }, 
           { name:"Total Items" },
           { name:"Total Price" },
