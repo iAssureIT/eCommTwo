@@ -268,14 +268,36 @@ class Ecommercenewproductcaro extends Component {
   submitCart(event) { 
     const user_ID = localStorage.getItem('user_ID');
     if(user_ID){
+      if(this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length>0){
+        var cartLength = this.props.recentCartData[0].cartItems.length;
+        var productId = event.target.id;
+        for(let i=0;i<cartLength;i++){
+            if(this.props.recentCartData[0].cartItems[i].product_ID === productId){
+              this.setState({
+                messageData: {
+                  "type": "outpage",
+                  "icon": "fa fa-exclamation-circle",
+                  "message": "This product is already in your cart",       
+                  "class": "success",
+                  "autoDismiss": true
+                }
+              })
+              setTimeout(() => {
+                this.setState({
+                  messageData: {},
+                })
+              }, 3000);
+              break;
+            }//end if
+        }//end for loop
+    }
     var id = event.target.id;
-    console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
       var selectedSize = $('#'+id+"-size").val();
       // var selectedSize = event.target.value;
-      console.log("selectedSize:",selectedSize);
+      // console.log("selectedSize:",selectedSize);
       var size = event.target.getAttribute('mainSize');
-      console.log("size:",size);
+      
       var unit = event.target.getAttribute('unit');
       // console.log("unit:",unit);
     }    

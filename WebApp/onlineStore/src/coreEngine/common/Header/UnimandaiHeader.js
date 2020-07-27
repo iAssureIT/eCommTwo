@@ -420,6 +420,7 @@ loginPage(event){
       })
   }
   removeModalBackDrop(event){
+    event.preventDefault();
     $(".modal-backdrop").hide(); 
     $("#pageOpacity").show(); 
     // if(event.target.id === "loginModal"){
@@ -578,6 +579,7 @@ loginPage(event){
                       }
                       </span>
                         {user_ID ?
+                            
                           <ul className="dropdown-menu cart-dropdown-menu" role="menu" aria-labelledby="menu1">
                             <div className="checkoutBtn">
                             <div>
@@ -590,7 +592,9 @@ loginPage(event){
                             {
                               this.props.recentCartData && this.props.recentCartData.length > 0 && this.props.recentCartData[0].cartItems.length > 0 ?
                               this.props.recentCartData[0].cartItems.map((data, index) => {
+                                  console.log("recentCartData:",this.props.recentCartData );
                                   return (
+                                      
                                     <li className="col-lg-12 cartdropheight " key={index}>
 
                                       <div className="cartdropborder">

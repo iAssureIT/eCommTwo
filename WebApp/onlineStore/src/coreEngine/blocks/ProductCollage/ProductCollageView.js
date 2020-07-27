@@ -286,12 +286,12 @@ class ProductCollageView extends Component {
   }
   
   addCart(formValues, quantityAdded, availableQuantity) {
-    console.log("inside addCart");
+    // console.log("inside addCart");
     if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
       axios.post('/api/carts/post', formValues)
         .then((response) => {
           this.props.fetchCartData();
-          console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          // console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
               "type": "outpage",
@@ -331,12 +331,12 @@ class ProductCollageView extends Component {
         })
       }, 3000);
     } else {
-      console.log("addCart formValues===",formValues);
+      // console.log("addCart formValues===",formValues);
       axios.post('/api/carts/post', formValues)
         .then((response) => {
-          console.log("Response changeCartCount:",response);
+          // console.log("Response changeCartCount:",response);
           this.props.fetchCartData();
-          console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          // console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
               "type": "outpage",
@@ -365,16 +365,36 @@ class ProductCollageView extends Component {
   submitCart(event) { 
     const user_ID = localStorage.getItem('user_ID');
     if(user_ID){
+      if(this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length>0){
+          var cartLength = this.props.recentCartData[0].cartItems.length;
+          var productId = event.target.id;
+          for(let i=0;i<cartLength;i++){
+              if(this.props.recentCartData[0].cartItems[i].product_ID === productId){
+                this.setState({
+                  messageData: {
+                    "type": "outpage",
+                    "icon": "fa fa-exclamation-circle",
+                    "message": "This product is already in your cart",       
+                    "class": "success",
+                    "autoDismiss": true
+                  }
+                })
+                setTimeout(() => {
+                  this.setState({
+                    messageData: {},
+                  })
+                }, 3000);
+                break;
+              }//end if
+          }//end for loop
+      }
+      // console.log("this.props.recentCartData[0].cartItems:",this.props.recentCartData[0].cartItems);
     var id = event.target.id;
-    console.log("Id:",id);
+    // console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
-      var selectedSize = $('#'+id+"-size").val();
-      // var selectedSize = event.target.value;
-      console.log("selectedSize:",selectedSize);
-      var size = event.target.getAttribute('mainSize');
-      console.log("size:",size);
-      var unit = event.target.getAttribute('unit');
-      // console.log("unit:",unit);
+      var selectedSize = $('#'+id+"-size").val();      
+      var size = event.target.getAttribute('mainSize');      
+      var unit = event.target.getAttribute('unit');      
     }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
@@ -494,7 +514,11 @@ class ProductCollageView extends Component {
                               <div className="product-brand" title={data.brand}>{data.brand}</div>
                               <div className="product-item-link" title={data.productName}>{data.productName} 
                               {data.shortDescription ?
-                              (<span className="marathiName">{data.shortDescription}</span>) 
+                              <span>
+                                <span>(</span>                              
+                                  <span className="marathiName">&nbsp;{data.shortDescription}&nbsp;</span>
+                                <span>)</span>
+                              </span>
                               :null
                               }
                               </div>

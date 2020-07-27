@@ -11,7 +11,7 @@
     transition: 0.3s;
 }
 .addPincode{
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .newModalBtn:hover{
     border: solid 1px #80b435 !important;
@@ -72,12 +72,12 @@
     text-align: center;
 }
 .AllowDeliveryMsg, .NotAllowDeliveryMsg {
-    font-size: 14px;
+    font-size: 13px;
     color: #444;
     padding: 5px 0px;
     font-weight: 500;
     border-radius: 5px;
-    margin-top: 5px;
+    margin-top: 10px;
     display: none;
     text-align: center !important;
 }
@@ -103,8 +103,18 @@
     color: #80b435;
     font-size: 20px;
     font-weight: 700;
+    /* margin-bottom: 20px; */
     /* display: none; */
 }
 .marginTop{
-    margin-top: 70px;
+    margin-top: 55px;
+}
+@media only screen and (max-device-width: 480px) {   
+    .marginTop{
+        margin-top: 90px;
+    }
+    ..newModalBtn{
+        margin-top: 0px;
+    }
+
 }

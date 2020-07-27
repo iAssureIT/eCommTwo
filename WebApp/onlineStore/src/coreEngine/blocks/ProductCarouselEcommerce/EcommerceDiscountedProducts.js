@@ -62,7 +62,7 @@ class EcommerceDiscountedProducts extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
-      console.log("nextProps.newProducts:",nextProps.newProducts);
+      // console.log("nextProps.newProducts:",nextProps.newProducts);
       for(var i=0;i<nextProps.newProducts.length;i++){      
           var availableSizes = [];         
           if(nextProps.newProducts[i].size){
@@ -119,7 +119,7 @@ class EcommerceDiscountedProducts extends Component {
       // this.getProductData(productCode, clr);
       axios.get("/api/products/get/productcode/" + productCode)
         .then((response) => {
-          console.log('getProductData', response.data);
+          // console.log('getProductData', response.data);
           let mymap = new Map();
           var colorFilter = response.data.filter(x => {
             return x.color === clr && x.availableQuantity > 0
@@ -229,16 +229,34 @@ class EcommerceDiscountedProducts extends Component {
   submitCart(event) { 
     const user_ID = localStorage.getItem('user_ID');
     if(user_ID){
+      if(this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length>0){
+        var cartLength = this.props.recentCartData[0].cartItems.length;
+        var productId = event.target.id;
+        for(let i=0;i<cartLength;i++){
+            if(this.props.recentCartData[0].cartItems[i].product_ID === productId){
+              this.setState({
+                messageData: {
+                  "type": "outpage",
+                  "icon": "fa fa-exclamation-circle",
+                  "message": "This product is already in your cart",       
+                  "class": "success",
+                  "autoDismiss": true
+                }
+              })
+              setTimeout(() => {
+                this.setState({
+                  messageData: {},
+                })
+              }, 3000);
+              break;
+            }//end if
+        }//end for loop
+    }
     var id = event.target.id;
-    console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
-      var selectedSize = $('#'+id+"-size").val();
-      // var selectedSize = event.target.value;
-      console.log("selectedSize:",selectedSize);
+      var selectedSize = $('#'+id+"-size").val();      
       var size = event.target.getAttribute('mainSize');
-      console.log("size:",size);
       var unit = event.target.getAttribute('unit');
-      // console.log("unit:",unit);
     }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
@@ -307,8 +325,7 @@ class EcommerceDiscountedProducts extends Component {
       }, 3000);
     }//end else
   }
-  } 
-  
+  }  
 
   addtowishlist(event) {
     event.preventDefault();
@@ -421,7 +438,7 @@ class EcommerceDiscountedProducts extends Component {
                     {
                       Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 ?
                         this.state.newProducts.map((data, index) => {
-                          console.log("this.state.newProducts:",data.availableSizes);
+                          // console.log("this.state.newProducts:",data.availableSizes);
                           var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                            var wishClass = '';
                             var tooltipMsg = '';

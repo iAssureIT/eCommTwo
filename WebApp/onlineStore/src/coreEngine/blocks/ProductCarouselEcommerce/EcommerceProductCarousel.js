@@ -60,7 +60,7 @@ class EcommerceProductCarousel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("localStorage:",localStorage.getItem('websiteModel'));
+    // console.log("localStorage:",localStorage.getItem('websiteModel'));
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
       for(var i=0;i<nextProps.newProducts.length;i++){      
           var availableSizes = [];         
@@ -83,7 +83,7 @@ class EcommerceProductCarousel extends Component {
             // availableSizes.push(nextProps.newProducts[i].size*2);
             // availableSizes.push(nextProps.newProducts[i].size*4); 
             nextProps.newProducts[i].availableSizes = availableSizes; 
-            console.log("availableSizes:--",availableSizes);          
+                    
           }
       }
     } 
@@ -266,16 +266,34 @@ class EcommerceProductCarousel extends Component {
   submitCart(event) { 
     const user_ID = localStorage.getItem('user_ID');
     if(user_ID){
+      if(this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length>0){
+        var cartLength = this.props.recentCartData[0].cartItems.length;
+        var productId = event.target.id;
+        for(let i=0;i<cartLength;i++){
+            if(this.props.recentCartData[0].cartItems[i].product_ID === productId){
+              this.setState({
+                messageData: {
+                  "type": "outpage",
+                  "icon": "fa fa-exclamation-circle",
+                  "message": "This product is already in your cart",       
+                  "class": "success",
+                  "autoDismiss": true
+                }
+              })
+              setTimeout(() => {
+                this.setState({
+                  messageData: {},
+                })
+              }, 3000);
+              break;
+            }//end if
+        }//end for loop
+    }
     var id = event.target.id;
-    console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
       var selectedSize = $('#'+id+"-size").val();
-      // var selectedSize = event.target.value;
-      console.log("selectedSize:",selectedSize);
       var size = event.target.getAttribute('mainSize');
-      console.log("size:",size);
       var unit = event.target.getAttribute('unit');
-      // console.log("unit:",unit);
     }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');

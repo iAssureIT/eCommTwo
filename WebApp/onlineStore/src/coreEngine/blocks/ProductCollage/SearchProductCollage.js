@@ -242,6 +242,29 @@ class SearchProductCollage extends Component {
   submitCart(event) { 
     const user_ID = localStorage.getItem('user_ID');
     if(user_ID){
+      if(this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length>0){
+        var cartLength = this.props.recentCartData[0].cartItems.length;
+        var productId = event.target.id;
+        for(let i=0;i<cartLength;i++){
+            if(this.props.recentCartData[0].cartItems[i].product_ID === productId){
+              this.setState({
+                messageData: {
+                  "type": "outpage",
+                  "icon": "fa fa-exclamation-circle",
+                  "message": "This product is already in your cart",       
+                  "class": "success",
+                  "autoDismiss": true
+                }
+              })
+              setTimeout(() => {
+                this.setState({
+                  messageData: {},
+                })
+              }, 3000);
+              break;
+            }//end if
+        }//end for loop
+    }
     var id = event.target.id;
     console.log("Id:",id);
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){

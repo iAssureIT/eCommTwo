@@ -563,7 +563,7 @@ class ProductViewEcommerce extends Component {
 												</div>
 											:
 												<div>
-														this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.size}&nbsp;{this.state.productData.unit}</span> : null
+														{this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.size}&nbsp;{this.state.productData.unit}</span> : null}
 														<span className="priceEcommerceNew" ><i className="fa fa-inr"></i>&nbsp;{this.state.productData.discountedPrice}&nbsp;-&nbsp;{this.state.productData.size}&nbsp;{this.state.productData.unit}&nbsp; </span>												
 														{this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr">&nbsp; {this.state.productData.originalPrice}&nbsp;{this.state.productData.size}&nbsp;{this.state.productData.unit}</i></span> : null} &nbsp; &nbsp;
 														{this.state.productData.discountPercent ?<span className="discountPercent">{this.state.productData.discountPercent}% off</span>: null}

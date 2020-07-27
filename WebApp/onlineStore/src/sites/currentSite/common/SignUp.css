@@ -259,7 +259,7 @@
 #signUpBtn{
   padding: 10px 10px;
   border-radius: 20px;
-  margin-top: 5px;
+  margin-top: 10px;
 
 }
 .systemsecBtn{
@@ -342,7 +342,7 @@
     margin-top: -50px;
   }
   .frmhgt{
-    height:62px;
+    height:68px;
   }
   .innloginwrap h4{
     text-transform: capitalize;
