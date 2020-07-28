@@ -168,6 +168,10 @@ class HomePage extends Component {
                 null
             } */}
             <EcommerceBanner/>
+             {/*-----------------shop by category block---------------------*/}
+          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ProductDivider categories={this.state.categories} />
+          </div>
              <div className="homeRow">
             {
               this.state.discountedProductsloading ?  
@@ -191,10 +195,7 @@ class HomePage extends Component {
            {/* <FreshFoodBlock />*/}
           </div>
          
-           {/*-----------------shop by category block---------------------*/}
-          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <ProductDivider categories={this.state.categories} />
-          </div>
+          
 
           
         </div>

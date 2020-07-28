@@ -112,7 +112,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   color: #fff;
   top:8px;
   height:40px;
-  display: block;
+  /*display: block;*/
   outline: none;
 }
 

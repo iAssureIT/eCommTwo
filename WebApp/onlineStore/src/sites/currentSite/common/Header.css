@@ -60,10 +60,11 @@ catogeryvaluebg.headerflow{
     vertical-align: middle;
     white-space: nowrap;
     border-radius:0px 0px 0px 0px!important;
-  border:1px solid #ccc!important;
-  border-right: none!important;
-  background:transparent!important;
-  float: left;
+    border:1px solid #ccc!important;
+    border-right: none!important;
+    border-left: none!important;
+    background:transparent!important;
+    float: left;
 }
 
 .searchbutton{
@@ -71,6 +72,18 @@ catogeryvaluebg.headerflow{
   border-radius:0px 50px 50px 0px!important;
   border:1px solid #ccc!important;
   /*border-right: none!important;*/
+  background:transparent!important;
+  outline:0px!important;
+  /*box-shadow: 0 1px 1px 1px rgba(0,0,0,0.08);*/
+  font-size: 20px;
+
+}
+.searchbutton_left{
+  color: #fff;
+  padding: 6px 13px 4px 10px!important;
+  border-radius:50px 0px 0px 50px!important;
+  border:1px solid #ccc!important;
+  border-right: none!important;
   background:transparent!important;
   outline:0px!important;
   /*box-shadow: 0 1px 1px 1px rgba(0,0,0,0.08);*/
@@ -649,8 +662,8 @@ ul.box-static-link li span {
     line-height: 18px;
     text-align: center;
     position: absolute;
-    bottom: -3%;
-    right: -2px;
+    top: -101%;
+    right: -121px;
     font-family: "Montserrat";
     border-radius: 50%;
     background: #3c763d;
@@ -660,9 +673,13 @@ ul.box-static-link li span {
   right: -5px;
   bottom:49%;
 }
-.headercarticon_bag{
-  margin-top: 32px;
-  margin-left: -24px;
+.cornercart{
+  margin-top: 13px;
+}
+.headercarticon_bag {
+    margin-top: 2px;
+    margin-left: 96px;
+    position: absolute;
 }
 .LoginWrapper {
     background-size: 100% 100%!important;

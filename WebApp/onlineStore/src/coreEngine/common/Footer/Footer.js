@@ -119,9 +119,9 @@ export default class Footer extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Connect</div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="socialMediaIcons"><a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href="https://www.instagram.com/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
+                    <div className="socialMediaIcons"><a href="https://m.facebook.com/anashandicraftts/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.instagram.com/anashandicraftts/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.youtube.com/results?search_query=anasHandicrafts" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
                     <div className="socialMediaIcons"><a href="https://www.twitter.com/" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></div>                   
                 </div>
 

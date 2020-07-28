@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import "../../../sites/currentSite/blocks/Aboutusmultistore.css";
+import founderImg   from "../../../sites/currentSite/images/userimg.png";
+import $ from 'jquery';
+import ReactPlayer from 'react-player'
 
 export default class Aboutusmultistore extends Component {
 	constructor(props){
@@ -7,7 +10,29 @@ export default class Aboutusmultistore extends Component {
 	    this.state = {
 	    	
 	    };
+	  }
+	  componentDidMount(){
+	  	$("#morecontent").css("display","none");
 	  }  
+	  showmore(){
+	  	$("#morecontent").css("display", "block");
+	  }
+
+  VideoData(){
+        return [
+            {
+                video1st        : "https://iogsolutions-my.sharepoint.com/personal/anurag_shinde_iogsolutions_com/_layouts/15/onedrive.aspx?originalPath=aHR0cHM6Ly9pb2dzb2x1dGlvbnMtbXkuc2hhcmVwb2ludC5jb20vOmY6L3AvYW51cmFnX3NoaW5kZS9Fc0VrNEo3cWtVaEx1UlRNNjBEUUttTUJndDB1WElqTjUwRmNjLU5ZT3dIUEp3P3J0aW1lPWFfRjg1Wlp0MTBn&id=%2Fpersonal%2Fanurag%5Fshinde%5Fiogsolutions%5Fcom%2FDocuments%2FMarketing%20Activities%2FWebsite%20Revamp%2FVideos%2F05%20iOG%20SCM%2Emp4&parent=%2Fpersonal%2Fanurag%5Fshinde%5Fiogsolutions%5Fcom%2FDocuments%2FMarketing%20Activities%2FWebsite%20Revamp%2FVideos",
+                downstreamtext  : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer pellentesque, elit id pharetra cursus, turpis ex mollis magna, eu fringilla urna ante ut tellus. Cras imperdiet tristique venenatis Vivamus elementum enim ipsum, nec pharetra sapien ornare eu. Mauris quis arcu quis tortor imperdiet viverra. Sed ut iaculis",
+                link            : "https://anashandicraftapp.s3.amazonaws.com/AnasHandicrafts/Anas Products Video Final_1.mp4",
+            }, 
+            /*{
+          
+                downstreamtext  : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer pellentesque, elit id pharetra cursus, turpis ex mollis magna, eu fringilla urna ante ut tellus. Cras imperdiet tristique venenatis Vivamus elementum enim ipsum, nec pharetra sapien ornare eu. Mauris quis arcu quis tortor imperdiet viverra. Sed ut iaculis",
+                 link           : 'https://anashandicraftapp.s3.amazonaws.com/AnasHandicrafts/video2.mp4', 
+            },*/
+        ]
+    }
+
 	  
   render() {
 		return (
@@ -18,13 +43,15 @@ export default class Aboutusmultistore extends Component {
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 multistorebgimg">
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center multistorebgimgtext">
-										<h3 className="mb50">The AnasHnadicrafts Promise</h3>
-										<p className=" textparaabout1">
-											We promise that buying products from us; will be an exceptional experience.
-											We promise that, wherever humanely possible, we will meet and exceed all customer needs & expectations.
-											We promise that, in the unfortunate occasions when problems occur, we will own them and solve them with the least inconvenience to our customers.
-											We promise that all our people will develop and maintain habits of excellence in all that they do.
-										</p>
+										<h3 className="mb50 promisstxt">Our Committment</h3>
+										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<p className=" textparaabout1">
+												We promise that buying products from us; will be an exceptional experience.
+												We promise that, wherever humanely possible, we will meet and exceed all customer needs & expectations.
+												We promise that, in the unfortunate occasions when problems occur, we will own them and solve them with the least inconvenience to our customers.
+												We promise that all our people will develop and maintain habits of excellence in all that they do.
+											</p>
+									   </div>		
 									</div>
 								</div>
 							</div>
@@ -37,30 +64,54 @@ export default class Aboutusmultistore extends Component {
 								</div>
 							</div> */}
 						</div>
-					</div>
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<h3 className="mb50">Message from Founders</h3>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 textparaabout">
-							We are nothing without our customers. We are priceless because they choose to invest their faith in us.Their continued patronage and complete conviction in our services inspires us to seek better solutions every day. 
-							This commitment is the corner stone of our Quality Policy and we strive to achieve it by putting into place a Quality System which adheres to the Industry Standard.
-							Every employee at Unimandai is continually involved in achieving the company’s core objectives.
-							we do not have Impossible word in our dictionary. What we have is the vision, the commitment and the expertise to become a leader. We are not competing with anyone. Our competition is with us only. We are stand alone.   
-
-							Our motto is to use our in-depth and profound knowledge of the market to ensure a fair products. To provide personalized service, on-schedule deliveries and reliable quality at competitive prices at all times through our expertise while making it a working pleasure for our staff, vendors and our customers.
-
-							Our long-term success requires a total commitment to exceptional standards of performance and productivity, to working together effectively, and to a willingness to embrace new ideas and learn continuously.
-							To succeed also requires, we believe, the highest standards of corporate behavior towards everyone we work with, the communities we touch, and the environment on which we have an impact. This is our road to sustainable, profitable growth, creating long-term Success and Prosperity.<br/>
-							<p className="pull-right mt50 mb50">
-								Thank You <br/>
-								Anas Khan<br/>
-								Founder, AnasHnadicrafts 
-							</p>
-							
-						</p>
-						</div>
-					</div>
 					
+					</div>
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 messageDiv">
+						<div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						  <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						    <div className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+							 <h3 className="mb50 promisstxt">About The Founder</h3>
+						    </div>
+						   </div> 
+						  </div> 	
+						 <div  className="backgrd_curve1 col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 head_spacing">
+                            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 takeleft">
+                                 </div>
+                                    <div className="col-lg-offset-1 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                      <img src={founderImg} alt="" className="director_img"/>
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12">
+                                    <div className="row">
+                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 messageDiv1">
+                                          <h2 className="para-top3 txt-size-director textcoloryellow"><b>Anas Khan</b></h2>
+                                          <h4 className="txt-size-founder lightbluetext subheading_foundr"><b>Founder and Director of AnasHandicrafts</b></h4>
+                                            <p className="para_spacing text-justify pull-right"></p> 
+                                           <ul className="alg_lft">
+                                            <li className="line_ht founderpara col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <p> We are nothing without our customers. We are priceless because they choose
+	                                                to invest their faith in us. Their continued patronage and complete conviction
+	                                                in our services inspires us to seek better solutions every day. This commitment is
+	                                                the corner stone of our Quality Policy and we strive to achieve it by putting into 
+	                                                place a Quality System which adheres to the Industry Standard.</p>
+	                                            <p>Every employee at AnasHandicraftts is continually involved in achieving the company’s core objectives.
+	                                               We do not have Impossible word in our dictionary. What we have is the vision, the commitment and the
+	                                                expertise to become a leader.</p>
+	                                            <p> To provide personalized service, on-schedule deliveries
+	                                                and reliable quality at competitive prices at all times through our expertise while making
+	                                                it a working pleasure for our staff, vendors and our customers. Our long-term success requires
+	                                                a total commitment to exceptional standards of performance and productivity, to working together
+	                                                 effectively, and to a willingness to embrace new ideas and learn continuously. </p>
+	                                                 
+	                                                </li>
+                                                 
+                                          </ul>                                     
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
+					</div>	
 				</div>
 			</div>
 		);

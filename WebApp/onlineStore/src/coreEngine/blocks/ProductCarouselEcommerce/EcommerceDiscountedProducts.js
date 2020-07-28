@@ -340,7 +340,7 @@ class EcommerceDiscountedProducts extends Component {
                     margin={0}
                     nav={true}
                     responsive={this.state.responsive}
-                    autoplay={true}
+                    autoplay={false}
                     autoplayHoverPause={true}
                   >
                     {

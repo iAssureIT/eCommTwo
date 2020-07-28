@@ -273,11 +273,11 @@ class Routes extends Component{
             <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
             <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />
             <Route path="/productreview"            exact strict component={ Productreview } />
-            <Route path="/returnpolicy"            exact strict component={ ReturnPolicy } />
-            <Route path="/privacypolicy"             exact strict component={PrivacyPolicy}  />
-            <Route path="/about-us"             exact strict component={Aboutuspage}  />
-            <Route path="/sitemap" exact strict component={SiteMap}  />
-            <Route path="/contact-us" exact strict component={Login}  />
+            <Route path="/returnpolicy"             exact strict component={ ReturnPolicy } />
+            <Route path="/privacypolicy"            exact strict component={PrivacyPolicy}  />
+            <Route path="/about-us"                 exact strict component={Aboutuspage}  />
+            <Route path="/sitemap"                  exact strict component={SiteMap}  />
+            <Route path="/contact-us"               exact strict component={ContactPage}  />
             <Route path="/cart"                     exact strict component={ Login } />
             <Route path="/checkout"                 exact strict component={ Login } />
             <Route path="/my-orders"                exact strict component={ Login } />

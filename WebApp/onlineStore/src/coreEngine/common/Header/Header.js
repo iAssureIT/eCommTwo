@@ -1,3 +1,4 @@
+ 
 import React, { Component }       from 'react';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Megamenu                   from '../Megamenu/Megamenu.js';
@@ -230,6 +231,10 @@ removeModalBackDrop(event){
       })
 
   }
+  CloseModal() {
+    $("#pageOpacity").hide();
+    $('#loginFormModal').hide();
+  }
   getUserData() {
     const userid = localStorage.getItem('user_ID');
     // console.log("inside getuserdata");
@@ -385,12 +390,9 @@ removeModalBackDrop(event){
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div className="row">
-                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                          <div className="row abc">
-                            <ReactMultiSelectCheckboxes placeholderButtonLabel="Shop by category"
-                              value={this.state.localCategories}
-                              options={this.state.options} className={"customStyles"}
-                              onChange={this.handleChange.bind(this)} />
+                         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                          <div className="row">
+                            <button className="col-lg-offset-4 col-lg-8 col-md-8 col-sm-8 col-xs-8 btn searchbutton_left" type="button" onClick={this.searchProducts.bind(this)} ><i className="fa fa-search" aria-hidden="true"></i></button>
                           </div>
                         </div>
                         <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
@@ -409,8 +411,90 @@ removeModalBackDrop(event){
                     </div>
                   </div>
                 </div>
+                <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 usericon_pos">
+                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 header1list2">
+                      <div className="row">
+                        <ul>
+                          {/*
+                            user_ID ? ""
+                              : <li className="borderLeft"><a href="/signup"><i className="fa fa-sign-in"></i> &nbsp;Sign Up</a></li>
+                          */}
 
-                <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
+                          {
+
+                            user_ID ?
+                              <li className="dropdown"><img className="headercarticon" src={loginIconImg} aria-hidden="true"/>
+                                <ul className="dropdown-menu signinmenuul">
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                    <a href="/">
+                                      <div className="row">
+                                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                          <div className="shortnamebk">
+                                            <div className="">
+                                              {/*<div className="userinfo">{this.state.userData ? this.state.firstname  : null}</div>*/}
+                                              <div className="userinfo">{this.state.firstname}{this.state.lastname}</div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div className="userinfotext"><span >{this.state.userData ? this.state.userData.fullName : null}</span></div>
+                                          </div>
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                            <div className="useremail"><span>{this.state.userData ? this.state.userData.email : null}</span></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </a>
+
+                                  </li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/account">My Profile</a></li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/my-orders">My Orders</a></li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/wishlist">My Wishlist</a></li>
+                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#A2632C", color:"#fff"}}>Sign Out</a></li>
+                                </ul>
+                              </li>
+                              :
+                             <li>
+                               <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
+                                 <img className="headercarticon" src={loginIconImg} aria-hidden="true"/></a>
+                               </span>
+                        
+                             </li>
+                          }
+                        </ul>
+                      </div>
+                      <div id="loginFormModal" className="modal in">
+                        <div className="modal-dialog">                                        
+                            {/* <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                             */}
+                            <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">                            
+                              <div className="modal-body">   
+                                <button type="button" className="close" onClick={this.CloseModal.bind(this)}  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
+                                    {this.props.formToShow === "login" ?
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
+                                            <Login />
+                                        </div>  
+                                    : null
+                                    }  
+                                    {this.props.formToShow === "signUp" ?
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signupForm">
+                                            <SignUp />
+                                        </div>  
+                                    : null
+                                    } 
+                                    {this.props.formToShow === "forgotPassword" ?
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
+                                            <ForgotPassword />
+                                        </div>  
+                                    : null
+                                    }                                                                
+                                </div>
+                            </div>
+                        </div>
+                     </div> 
+                    </div>
+                </div>
+                 <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                       <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                           {user_ID 
@@ -452,11 +536,11 @@ removeModalBackDrop(event){
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu ">
                       <span>  
                       {user_ID ?                      
-                        <a href={user_ID ? "/cart" : null} className="icon-cart">
+                        <a href={user_ID ? "/cart" : null} className="icon-cart ">
                            <img className=" headercarticon headercarticon_bag"src={cartphoto} aria-hidden="true" onClick={this.loginPage.bind(this)} style={{width:"24px"}}/>
                             
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
-                            <span className="cart-count">
+                            <span className="cornercart cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                             </span>
                         </a>
@@ -464,7 +548,7 @@ removeModalBackDrop(event){
                         <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)}>
                            <img className=" headercarticon headercarticon_bag"src={cartphoto} aria-hidden="true" style={{width:"24px"}}/>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
-                            <span className="cart-count">
+                            <span className="cornercart cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                             </span>
                         </a>
@@ -536,90 +620,6 @@ removeModalBackDrop(event){
                   </div>                   
                 </div>
 
-                <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 usericon_pos">
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 header1list2">
-                      <div className="row">
-                        <ul>
-                          {/*
-                            user_ID ? ""
-                              : <li className="borderLeft"><a href="/signup"><i className="fa fa-sign-in"></i> &nbsp;Sign Up</a></li>
-
-                          */}
-
-                          {
-
-                            user_ID ?
-                              <li className="dropdown"><img className="headercarticon" src={loginIconImg} aria-hidden="true"/>
-                                <ul className="dropdown-menu signinmenuul">
-                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                    <a href="/">
-                                      <div className="row">
-                                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                                          <div className="shortnamebk">
-                                            <div className="">
-                                              {/*<div className="userinfo">{this.state.userData ? this.state.firstname  : null}</div>*/}
-                                              <div className="userinfo">{this.state.firstname}{this.state.lastname}</div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <div className="userinfotext"><span >{this.state.userData ? this.state.userData.fullName : null}</span></div>
-                                          </div>
-                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                            <div className="useremail"><span>{this.state.userData ? this.state.userData.email : null}</span></div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </a>
-
-                                  </li>
-                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/account">My Profile</a></li>
-                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/my-orders">My Orders</a></li>
-                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><a href="/wishlist">My Wishlist</a></li>
-                                  <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#A2632C", color:"#fff"}}>Sign Out</a></li>
-                                </ul>
-                              </li>
-                              :
-                             <li>
-                               <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
-                                 <img className="headercarticon" src={loginIconImg} aria-hidden="true"/></a>
-                               </span>
-                        
-                             </li>
-                          }
-                        </ul>
-                      </div>
-                      <div id="loginFormModal" className="modal in">
-                        <div className="modal-dialog">                                        
-                            {/* <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +pincodeModalImg  +')'}}>                             */}
-                            <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">                            
-                              <div className="modal-body">   
-                                <button type="button" className="close"  data-dismiss="modal" aria-hidden="true">&times;</button>                                                            
-                                    {this.props.formToShow === "login" ?
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
-                                            <Login />
-                                        </div>  
-                                    : null
-                                    }  
-                                    {this.props.formToShow === "signUp" ?
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signupForm">
-                                            <SignUp />
-                                        </div>  
-                                    : null
-                                    } 
-                                    {this.props.formToShow === "forgotPassword" ?
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
-                                            <ForgotPassword />
-                                        </div>  
-                                    : null
-                                    }                                                                
-                                </div>
-                            </div>
-                        </div>
-                     </div> 
-                    </div>
-                </div>
               </div>
             </div>
         </header>

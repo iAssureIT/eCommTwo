@@ -4,7 +4,6 @@ import axios                    from 'axios';
 import Message from '../../blocks/Message/Message.js';
 import $ from "jquery";
 import Loader from "../../common/loader/Loader.js";
-
 import BannerContactUs from '../ContactUs/BannerContactUs/BannerContactUs.js';
 import CUform from '../ContactUs/CUform/CUform.js';
 import ContactShopList from '../ContactUs/ContactShopList/ContactShopList.js';

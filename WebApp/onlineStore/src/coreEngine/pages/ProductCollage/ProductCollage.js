@@ -943,7 +943,7 @@ class ProductCollage extends Component {
 																					data.subCategory && data.subCategory.map((subcat, subind) => {
 																						return (
 																							<li>
-																								<a href="" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
+																								<a href="" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}></a>
 																							</li>
 																						);
 																					})

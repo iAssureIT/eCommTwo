@@ -17,8 +17,8 @@ export default class SaleProductDivider extends Component {
             	<div className="figcaption2"> </div>
             </div>
             <div className="flatSaleBlockWrapper">
-                <div className="flatSaleBlock">Flat Sale <span className="OffBlock">70% OFF</span> </div>
-                <div className="offerText">Offers available on all categories of AnasHandicraft</div>
+                <div className="flatSaleBlock">Flash Sale <span className="OffBlock">Minimum 10% OFF</span> </div>
+                <div className="offerText">Only for Limited period of time..</div>
             </div>
             
     	</div> 	

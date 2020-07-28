@@ -79,6 +79,12 @@ componentWillMount() {
   render() {  
         return (
         <header className="dark">
+          <button className="contactBar hidden-xs" >
+          <div className="fixedContactBar">
+            <i className="fa fa-youtube-square youtubeicon"style={{color:"#ffffff"}} aria-hidden="true"></i>
+          </div>
+          <a href="https://www.youtube.com/results?search_query=anasHandicrafts"><div className="hovertext">You Tube</div></a>
+        </button>
         <nav className="" role="navigation" style={{height:"68px"}}>
           {/* <a href="javascript:void(0);" className="ic menu" tabindex="1">
             <span className="line"></span>

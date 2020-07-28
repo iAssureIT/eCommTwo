@@ -171,3 +171,21 @@ p{
 #containerDiv{
   background-color: #ffffff;
 }
+/*.customnNavButton .owl-nav button.owl-next{
+  display: none ! important;
+
+}
+.owl-next span {
+  display: none ! important;
+
+}
+.owl-prev span{
+  display: none;
+}
+.customnNavButton .owl-nav button.owl-next{
+  margin-left: 0px ! important;
+  display: none;
+}
+.ic.close{
+  display: none;
+}*/

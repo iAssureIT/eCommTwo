@@ -23,7 +23,7 @@ export default class ProductDivider extends Component {
 		<div className="col-lg-12 col-md-12 col-ms-12 col-xs-12 flatSale">	
 			<div className="col-lg-12 col-md-12 col-ms-12 col-xs-12">
 				<div className="col-lg-12 col-md-12 col-ms-12 col-xs-12">
-					<div className="col-lg-12 col-md-12 col-ms-12 col-xs-12 shopByCat mt50 mb15">SHOP BY CATEGORY</div>
+					<div className="col-lg-12 col-md-12 col-ms-12 col-xs-12 shopByCat mt50 mb15">Browse Popular Categories</div>
 				</div>
 				{
 					Array.isArray(this.state.categoriesImg) && this.state.categoriesImg.map((data,index)=>{

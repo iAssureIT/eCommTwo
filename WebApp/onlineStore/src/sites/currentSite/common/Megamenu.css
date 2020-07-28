@@ -57,7 +57,7 @@ ul.main-nav > li {
 
 ul.main-nav > li > a { 
   display: block; 
-  padding: 10px 15px; 
+  padding: 10px 7px; 
   position: relative;
   color: #333;
   font: 600 15px/40px "Roboto Slab" ! important;
@@ -116,7 +116,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   color: #fff;
   top:8px;
   height:40px;
-  display: block;
+  /*display: block;*/
   outline: none;
 }
 
@@ -394,4 +394,46 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
     bottom: 9px;
     color: #333;
     font-size: 4px;
+}
+.youtubeicon{
+  font-size: 24px;
+}
+.contactBar{
+  position: absolute;
+  right: 0px;
+  background-color: #f19000;
+  width: 35px;
+  height: 30px;
+  color: #fff;
+  padding: 6px 8px 6px 6px ;
+  border-radius: 3px;
+  text-align: right;
+  cursor: pointer;
+  transition-duration: 0.7s;
+  transition: width 1s;
+  border: none;
+  z-index: 100000;
+  top:13px;
+}
+.contactBar:hover i{
+  display: none;
+  font-size: 50px;
+}
+.contactBarres:hover i{
+  display: none;
+  font-size: 50px;
+}
+.contactBar:hover{
+  width: 130px;
+}
+.contactBarres:hover{
+  width: 130px;
+}
+.contactBar:hover .hovertext{
+  display: block;
+  cursor: pointer;
+  text-align: right;
+  font-weight: bold;
+  white-space: nowrap;
+  text-decoration: none;
 }

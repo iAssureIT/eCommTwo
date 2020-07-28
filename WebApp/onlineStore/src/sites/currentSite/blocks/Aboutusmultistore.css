@@ -19,12 +19,26 @@
 	/*color: #999;*/
 	text-align: justify;
 }
+.promisstxt{
+	margin-bottom: 35px;
+    background-color: #333;
+    color: #fff;
+    height: 40px;
+    padding-top: 7px;
+}
+.messageDiv{
+	margin-top: 43px;
+}
+.messageDiv1{
+	margin-top: 152px;
+}
 
 
 .multistorebgimg{
 	background-image: url("/images/aboutleftimg.png");
 	background-size: 100% 100%;
-	height: 300px;
+	height: 235px;
+	margin-top: 55px;
 }
 .multistorebgimg2{
 	background-image: url("/images/aboutrightimg.png");
@@ -43,4 +57,32 @@
     color: #fff;
     border-radius: 100%;
     padding: 6px 9px;
+}
+.backgrd_curve1 {
+    height: 580px;
+}
+.director_img {
+    height: 300px;
+    width: 300px;
+    margin-top: 215px;
+    border: 9px solid #fff;
+    box-shadow: 0 10px 29px rgba(92,141,255,.5);
+}
+
+.founderpara{
+ text-align: justify;
+ color: #333;
+ font-size: 15px;
+ padding: 0px;
+}
+.backgrd_curve1{
+	margin-top: -167px;
+	height:670px;
+}
+.textcoloryellow{
+	margin-right: 438px;
+	color:#f08f00;
+}
+.subheading_foundr{
+	margin-right: 219px;
 }
