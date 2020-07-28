@@ -337,7 +337,7 @@ class CartProducts extends Component{
                         this.props.recentCartData.length > 0 &&  this.props.recentCartData[0].cartItems.length > 0? 
                         <div className="col-lg-12 col-sm-12 col-xs-12 NOpadding">
                             
-                            <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 table-responsive cartProduct">
+                            <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12  table-responsive cartProduct">
                                 <table className="table cartProductTable">
                                     <thead>
                                         <tr>
@@ -362,7 +362,9 @@ class CartProducts extends Component{
                                                         <td>
                                                             <tr>
                                                                 <td>
-                                                                    <a href={"/productdetails/" + data.product_ID}><img className="img img-responsive cartProductImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="ProductImg"/></a>
+                                                                    <a href={"/productdetails/" + data.product_ID} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                        <img className="img  cartProductImg col-lg-12 col-md-12 col-sm-12 col-xs-12" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} alt="ProductImg"/>
+                                                                    </a>
                                                                 </td>
                                                                 <td className="cartProductDetail">
                                                                 <a href={"/productdetails/" + data.product_ID}><h5>{data.productDetail.productName}</h5></a>
