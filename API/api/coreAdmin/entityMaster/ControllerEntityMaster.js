@@ -403,9 +403,10 @@ exports.updateEntity = (req,res,next)=>{
     EntityMaster.updateOne(
             { _id:req.body.entityID},  
             {
-                $set:   { 
+                $set:   {  
                             'companyName'               : req.body.companyName,
                             'groupName'                 : req.body.groupName,
+                            'companyEmail'              : req.body.companyEmail,
                             'CIN'                       : req.body.CIN,   
                             'COI'                       : req.body.COI,
                             'TAN'                       : req.body.TAN,

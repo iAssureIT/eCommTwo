@@ -282,7 +282,7 @@ componentDidMount(){
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
 											<label className=""><b>Mail Us:</b> </label><br/>
-											<p>info@unimandai.com
+											<p>admin@unimandai.com
 											</p>
 
 										</div>
