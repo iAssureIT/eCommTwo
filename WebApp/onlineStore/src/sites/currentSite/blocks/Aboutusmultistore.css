@@ -24,9 +24,12 @@
 	line-height: 20px;
 	/*color: #999;*/
 	text-align: center;
+	text-align: justify;
 }
 
-
+.uniFreshPara{
+	text-align: justify;
+}
 .multistorebgimg{
 	background-image: url("/images/aboutleftimg.png");
 	background-size: 100% 100%;

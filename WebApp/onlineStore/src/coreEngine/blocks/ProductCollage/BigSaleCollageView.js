@@ -41,7 +41,7 @@ class BigSaleCollageView extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    // console.log("nextProps:==",nextProps);
+    console.log("nextProps:==",nextProps);
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
         var availableSizes = [];  
@@ -286,7 +286,7 @@ class BigSaleCollageView extends Component {
   }
   
   addCart(formValues, quantityAdded, availableQuantity) {
-    console.log("inside addCart");
+    // console.log("inside addCart");
     if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
       axios.post('/api/carts/post', formValues)
         .then((response) => {
@@ -331,12 +331,12 @@ class BigSaleCollageView extends Component {
         })
       }, 3000);
     } else {
-      console.log("addCart formValues===",formValues);
+      // console.log("addCart formValues===",formValues);
       axios.post('/api/carts/post', formValues)
         .then((response) => {
-          console.log("Response changeCartCount:",response);
+          // console.log("Response changeCartCount:",response);
           this.props.fetchCartData();
-          console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          // console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
               "type": "outpage",

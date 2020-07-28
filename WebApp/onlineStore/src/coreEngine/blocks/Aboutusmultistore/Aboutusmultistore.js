@@ -13,10 +13,11 @@ export default class Aboutusmultistore extends Component {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
 				<div className="row">
-					<div className="col-lg-12">
-						<h2 className="col-lg-12 mt50">Unicorn Fresh</h2>
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<h2 className="col-lg-12 col-md-12 col-sm-12 hidden-xs mt50">Unicorn Fresh</h2>
+						<h2 className="hidden-lg hidden-md">Unicorn Fresh</h2>
 						<div className="col-lg-10 col-lg-offset-1">
-							<p className="col-lg-12 mt20 ">
+							<p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20  uniFreshPara">
 								We often take care of our loved ones, family and friends. Always asks them to avoid junk food and street food. But ever we noticed, when we buy vegetables or fruits, they are on open carts, unhygienic mandi or on polluted streets.
 								Thinking on that, we have launched sanitized, hygienic and packed vegetables and fruits for you.
 								Our products are washed with ozonised water which removes fungus, bacteria, chemicals and colours over it. Then they are packed with proper hygienic ways. There is no human interference after packing till you unpack at your kitchen.So stop consuming poison, eat sanitized.
@@ -83,7 +84,7 @@ export default class Aboutusmultistore extends Component {
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<h3 className="mb50">Message from Founders</h3>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 textparaabout">
+						<p className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 textparaabout">
 							We are nothing without our customers. We are priceless because they choose to invest their faith in us.Their continued patronage and complete conviction in our services inspires us to seek better solutions every day. 
 							This commitment is the corner stone of our Quality Policy and we strive to achieve it by putting into place a Quality System which adheres to the Industry Standard.
 							Every employee at Unimandai is continually involved in achieving the company’s core objectives.

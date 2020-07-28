@@ -52,7 +52,7 @@ ul.main-nav {
 
 ul.main-nav > li { 
   display: inline-block;
-  padding: 0; 
+  padding: 0 5px; 
 }
 
 ul.main-nav > li > a { 
@@ -344,7 +344,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid #fff;
-    content: '';
+    /* content: ''; */
     background-color: transparent;
     display: inline-block;
     margin-left: 10px;

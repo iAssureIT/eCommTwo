@@ -524,16 +524,25 @@ class ProductCollageView extends Component {
                               </div>
                               <div className="col-lg-12 col-md-12 NOpadding">
                                 {
-                                  data.discountPercent ?
+                                  localStorage.getItem("websiteModel")=== "FranchiseModel"?                                  
+                                    data.discountPercent ?                                      
+                                      <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{data.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {data.discountedPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>                                      
+                                     
+                                    :
+                                      <div className="col-lg-12 col-md-12 NOpadding">
+                                        <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;
+                                        {/* <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                      */}
+                                      </div> 
+
+                                  :                                    
+                                    data.discountPercent ?
+                                    <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{data.originalPrice} </span><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                    :  
                                     <div className="col-lg-12 col-md-12 NOpadding">
-                                      <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
-                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
-                                    </div>
-                                    :
-                                    localStorage.getItem("websiteModel")=== "FranchiseModel"?
-                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
-                                    :
-                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                      <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} /{data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;
+                                      {/* <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                      */}
+                                    </div>                                
+
                                 }
                               </div>
                               

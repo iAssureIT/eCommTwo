@@ -34,7 +34,7 @@ exports.insert_wishlist = (req,res,next)=>{
                     .exec()
                     .then(wishlist=>{
                         res.status(200).json({
-                            "message": "Product added in wishlist Successfully.",
+                            "message": "Product added in wishlist successfully.",
                             "wishlistCount": wishlist
                         });
                     })

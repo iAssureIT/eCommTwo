@@ -191,6 +191,29 @@ class ProductViewEcommerce extends Component {
 	addtocart(event) {
 		event.preventDefault();		
 		if(user_ID){
+			if(this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length>0){
+				var cartLength = this.props.recentCartData[0].cartItems.length;
+				var productId = event.target.id;
+				for(let i=0;i<cartLength;i++){
+					if(this.props.recentCartData[0].cartItems[i].product_ID === productId){
+					  this.setState({
+						messageData: {
+						  "type": "outpage",
+						  "icon": "fa fa-exclamation-circle",
+						  "message": "This product is already in your cart",       
+						  "class": "success",
+						  "autoDismiss": true
+						}
+					  })
+					  setTimeout(() => {
+						this.setState({
+						  messageData: {},
+						})
+					  }, 3000);
+					  break;
+					}//end if
+				}//end for loop
+			}
 			if($("#productView").valid()){
 				var id = event.target.id;
 				const userid = localStorage.getItem('user_ID');
@@ -463,16 +486,43 @@ class ProductViewEcommerce extends Component {
 		})
 	}
 	render() {
-		console.log("product data: --",this.state.productData);
+		console.log("product data: =====",this.state.productData);
 		const props = { width: 400, height: 350, zoomWidth: 750, offset: { vertical: 0, horizontal: 30 }, zoomLensStyle: 'cursor: zoom-in;', zoomStyle: 'z-index:1000;background-color:#fff; height:500px;width:750px;box-shadow: 0 4px 20px 2px rgba(0,0,0,.2);border-radius: 8px;', img: this.state.selectedImage ? this.state.selectedImage : notavailable };
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 mb20 boxBorder">
-				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50">
+				<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxBorderInner mt50 ">
 					<div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 stickyDiv">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageContainer imgCont">
-							<div className="prod-detail-slider prod-detail-filpCommon ">
+							<div className="prod-detail-slider prod-detail-filpCommon col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 								<div id="react-app" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs item img-responsiveProduct">
 									<ReactImageZoom {...props} />
+								</div> 
+								<div id="" className="hidden-lg hidden-md col-sm-12 col-xs-12">
+								<OwlCarousel
+									className="owl-theme productview"
+									margin={0}
+									nav={true}
+									responsive={this.state.responsive}
+									autoplay={true}
+									autoplayHoverPause={true}
+								>
+									{
+										
+										Array.isArray(this.state.productData.productImage) && this.state.productData.productImage.map((data, index) => {
+											return(
+												<img src={data} className="img-responsive prodImgMobileView col-xs-3"></img>											
+											);
+										})
+									}
+								</OwlCarousel>
+									{/* {
+										
+										Array.isArray(this.state.productData.productImage) && this.state.productData.productImage.map((data, index) => {
+											return(
+												<img src={data} className="img-responsive prodImgMobileView col-xs-3"></img>											
+											);
+										})
+									} */}
 								</div>
 							</div>
 						</div>
@@ -550,7 +600,7 @@ class ProductViewEcommerce extends Component {
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mb15">
 											{localStorage.getItem('websiteModel')==="FranchiseModel"?
 												<div>
-													{this.state.productData.unit === "Box" || this.state.productData.unit === "Wrap" || this.state.productData.unit === "Pack" || this.state.productData.unit==="pounch" ?
+													{/* {this.state.productData.unit === "Box" || this.state.productData.unit === "Wrap" || this.state.productData.unit === "Pack" || this.state.productData.unit==="pounch" ?
 														<span className="priceEcommerceNew" ><i className="fa fa-inr"></i>&nbsp;{this.state.productData.discountedPrice}&nbsp;-&nbsp;{this.state.productData.unit} of {this.state.productData.size}&nbsp; </span>												
 													:
 													<span className="priceEcommerceNew" ><i className="fa fa-inr"></i>&nbsp;{this.state.productData.discountedPrice}&nbsp;-&nbsp;{this.state.productData.size}&nbsp;{this.state.productData.unit} </span>												
@@ -559,7 +609,12 @@ class ProductViewEcommerce extends Component {
 														this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.unit} of {this.state.productData.size}&nbsp;</span> : null
 													:
 													this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.size}&nbsp;{this.state.productData.unit}</span> : null
-													}
+													} */}
+													{ this.state.productData.discountPercent ? 
+														<span className="priceEcommerceNew"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{this.state.productData.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {this.state.productData.discountedPrice} / Pack of {this.state.productData.size}&nbsp;<span className="ProSize">{this.state.productData.unit}</span></span>         
+														:
+														<span className="priceEcommerceNew"><i className="fa fa-inr"></i>&nbsp;{this.state.productData.originalPrice} / Pack of {this.state.productData.size}&nbsp;<span className="ProSize">{this.state.productData.unit}</span></span>   
+													}                         
 												</div>
 											:
 												<div>
@@ -742,7 +797,7 @@ class ProductViewEcommerce extends Component {
 							<div id="gotoreview" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding topspace detailtitle">DESCRIPTION</div>
 								<div className="spcbx topspace15"></div>
-								<div className="col-md-12 col-sm-12 col-xs-12 col-lg-12 ttllist" dangerouslySetInnerHTML={{__html: this.state.productData.productDetails}}></div>
+								<div className="col-md-12 col-sm-12 col-xs-12 col-lg-12 NoPadding ttllist" dangerouslySetInnerHTML={{__html: this.state.productData.productDetails}}></div>
 							</div>
 							:
 							null

@@ -14,7 +14,8 @@ export default class Aboutusbanner extends Component {
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
 				<div className="row">
 					<div className="aboutusbanner" style={{'background' : "url("+Aboutus_Banner +")"}}>
-						<p className="col-lg-12 aboutheading">ABOUT US</p>
+						<h1 className="col-lg-12 col-md-12 hidden-sm hidden-xs aboutheading">ABOUT US</h1>
+						<h3 className="col-xs-12 col-sm-12 hidden-lg hidden-md aboutheading">ABOUT US</h3>
 						<ul className="breadcrumb aboutbread">
 						  <li><a href="/" title="GO TO HOME PAGE">HOME</a></li>
 						  <li>ABOUT US</li>

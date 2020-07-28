@@ -564,17 +564,23 @@ loginPage(event){
                         <a href={user_ID ? "/cart" : null} className="icon-cart">
                             <img src={cartIconImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
+                          {  this.props.recentCartData.length>0 ?
                             <span className="cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                             </span>
+                            :null
+                          }
                         </a>
                         :
                         <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" id="loginModal" onClick={this.removeModalBackDrop.bind(this)}>
                             <img src={cartIconImg} className="icon-cart"></img>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
-                            <span className="cart-count">
-                                {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
-                            </span>
+                            {this.props.recentCartData.length>0?
+                              <span className="cart-count">
+                                  {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
+                              </span>
+                            : null
+                            }
                         </a>
                       }
                       </span>
@@ -662,8 +668,7 @@ loginPage(event){
               </div>
             </div>          
           </div>
-        </header>
-        
+        </header>        
         {/* for mobile and Tab only */} 
         <div className="topnav hidden-lg hidden-md" id="myTopnav">   
            {/* <AskPincode /> */}
@@ -685,7 +690,7 @@ loginPage(event){
                             {user_ID 
                               ? 
                                   <li className="dropdown">
-                                      <span className="  "><a href="" className="faIcon" area-hidden ="true">                         
+                                      <span className="  "><a href="javascript:void(0);" className="faIcon" area-hidden ="true">                         
                                       <img src={loginActiveIconImg} className="icon-cart"></img>
                                   </a></span>
                                       <ul className="col-lg-3 dropdown-menu list-menu">                                        
@@ -729,16 +734,22 @@ loginPage(event){
                         {user_ID ?                      
                           <a href={user_ID ? "/cart" : null} className="icon-cart">
                               <img src={cartIconImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>                             
-                              <span className="cart-count">
-                                  {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
-                              </span>
+                              {  this.props.recentCartData.length>0 ?
+                                <span className="cart-count">
+                                    {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
+                                </span>
+                              :null
+                              }
                           </a>
                           :
                           <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)}>
                               <img src={cartIconImg} className="icon-cart"></img>                              
-                              <span className="cart-count">
-                                  {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
-                              </span>
+                              {  this.props.recentCartData.length>0 ?
+                                <span className="cart-count">
+                                    {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
+                                </span>
+                              :null
+                              }
                           </a>
                         }
                         </span>
