@@ -176,7 +176,7 @@ text-align:right ! important;
 	margin:10px 0;
 }
 .orderIdButton{
-	width: 196px !important;
+	/* width: 196px !important; */
     background-color: #80b435 !important;
     color: #fff;
     text-align: center;

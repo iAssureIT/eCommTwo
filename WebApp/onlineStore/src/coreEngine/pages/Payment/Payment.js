@@ -54,7 +54,7 @@ class Payment extends Component {
             <br />
             <br />
             <h4 className="table-caption">Order Details</h4>
-            <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | OrderID -  {this.state.orderData.orderID}    <span className="pull-right">Shipping Time : {this.state.orderData.shippingtime}</span></p>
+            <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | OrderID -  {this.state.orderData.orderID}    <span className="pull-right hidden-xs">Shipping Time : {this.state.orderData.shippingtime}</span></p>
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
               <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb50">
                 <strong className="box-title">
@@ -108,7 +108,7 @@ class Payment extends Component {
                       <span><i className={"fa fa-" + this.state.orderData.currency}> {parseInt(this.state.orderData.total).toFixed(2)}</i></span>
                     </div>
                   </div>
-                  <div className="brdrbtmpayment col-lg-12 col-md-6 col-sm-6 col-xs-6"></div>
+                  <div className="brdrbtmpayment col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
                   <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
@@ -137,7 +137,7 @@ class Payment extends Component {
                         this.state.orderData.products.map((data, index) => {
                           return (
                             <tr key={'cartData' + index}>
-                              <td><img alt="Product Image" className="img img-responsive orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
+                              <td><img alt="Product Image" className="img orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
                               <td>
                                 <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productName}</h5></a>
 

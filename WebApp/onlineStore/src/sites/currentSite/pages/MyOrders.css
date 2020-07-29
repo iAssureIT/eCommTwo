@@ -165,8 +165,6 @@ table > tfoot > tr > td:last-of-type {
 .tabletext{
 text-align:right ! important;
 }
-
-
 .table-caption{
 	font-weight: 600;
 }
@@ -197,4 +195,9 @@ text-align:right ! important;
     font-weight: 600;
     color: #333;
     text-decoration: none;
+}
+@media only screen and (max-device-width: 480px) {   
+	.custmTabs{
+		font-size: 10px !important;
+	}
 }

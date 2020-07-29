@@ -114,16 +114,9 @@ export default class OurCources extends React.Component {
 						 <div className="col-lg-12 ">
 							
 						 </div>  
-						</div>
-						{/*<div className="col-lg-12">
-							<div className="col-lg-offset-5">
-								<div className="occmpbtn"> VIEW ALL COURCES</div>
-							</div>
-						</div>
-*/}
+						</div>	
 					</div>					
-				</div>
-	
+				</div>	
 			</div>
 		);
 	}

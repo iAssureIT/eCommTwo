@@ -15,6 +15,7 @@ import axios                        from 'axios';
 import Loader                       from "../../common/loader/Loader.js";
 import Blogs                        from "../../blocks/Blogs/Blogs.js";
 import Ceo                          from "../../blocks/CEO/Ceo.js";
+import UnimandaiBlogs               from '../../blocks/Blogs/UnimandaiBlogs.js';
 
 class HomePage extends Component {
     constructor(props){
@@ -242,6 +243,7 @@ class HomePage extends Component {
         {/* <Ceo />*/}
 
         {/* <Blogs /> */}
+        {/* <UnimandaiBlogs /> */}
 
 
       </div>

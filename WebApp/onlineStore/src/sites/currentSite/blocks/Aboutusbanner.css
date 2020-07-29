@@ -2,8 +2,8 @@
     background-image: url("/images/aboutbaner.png");
     background-size: cover !important;
     background-repeat: no-repeat !important;
-    /* height: 450px !important; */
-    height: auto;
+    height: 300px !important;
+    /* height: auto; */
     background-size: 100% 100% !important;
   }
   .aboutbread{
@@ -25,3 +25,14 @@
   .aboutbread a:hover{
   text-decoration: none;
   }
+  @media only screen and (max-device-width: 480px) {  
+  .aboutusbanner{
+    height: 150px !important;
+  }
+  .aboutheading{
+    margin-top: 50px;
+  }
+  .aboutbread{
+    font-size: 13px;
+  }
+}

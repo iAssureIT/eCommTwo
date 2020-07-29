@@ -18,8 +18,6 @@ import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 export default class MyOrders extends Component {
   constructor(props) {
     super(props);
-
-
     if (!this.props.loading) {
       this.state = {
         "orderData": [],
@@ -422,28 +420,28 @@ export default class MyOrders extends Component {
 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
               <br />
-              <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4 NOpadding mr20">
+              <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding mr20">
                 <Sidebar />
               </div>
 
-              <div className="col-lg-9 col-md-9 col-sm-6 col-xs-6">
+              <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                 <h4 className="table-caption">My Orders</h4>
                 {
                   this.state.orderData && this.state.orderData.length > 0 ?
                     this.state.orderData.map((data, index) => {
                       return (
                         <div style={{marginBottom:"10px"}} className={data.deliveryStatus[data.deliveryStatus.length - 1].status === 'Cancelled' ? "row cancelledorder" : "row"}>
-                          <div className="col-lg-12 orderIdborder"  >
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderIdborder"  >
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                              <div className="col-lg-6 col-md-6 col-sm-4 col-xs-6 NOpadding">
-                                <div className="orderIdButton">{"OrderId: "+(data.orderID)}</div>
+                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding">
+                                <div className="orderIdButton col-lg-8 col-md-12 col-sm-12 col-xs-12 ">{"OrderId: "+(data.orderID)}</div>
                               </div>  
-                              <div className="col-lg-6 col-md-6 col-sm-4 col-xs-6 NOpadding">
-                                <div className="actionbtn NOpadding">
+                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding">
+                                <div className="actionbtn col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                   { data.deliveryStatus[data.deliveryStatus.length - 1].status !== 'Cancelled' ? 
                                     <a className="btn filterallalphab" target="_blank" href={"/view-order/" + data._id} title="View Order">
                                     <span> Invoice</span></a> : <div className="pull-right"><span className="cancelledtext"> Cancelled</span></div>
-                                  }   
+                                  }
                                   
                                   {
                                     data.deliveryStatus[data.deliveryStatus.length - 1].status === 'Cancelled' || data.deliveryStatus[data.deliveryStatus.length - 1].status === 'Returned' ? '' :
@@ -456,12 +454,12 @@ export default class MyOrders extends Component {
                             </div> 
                           </div>
                           { data.deliveryStatus[data.deliveryStatus.length - 1].status !== 'Cancelled' ?
-                          <div className="col-lg-12 orderIdborder">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderIdborder">
                             <StepWizard data={data} />
                           </div> :null
 
                           }
-                          <div className="col-lg-12 orderbodyborder">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderbodyborder">
                             {
                             data.products && data.products.length > 0 ?
                                   data.products.map((pdata, index)=>{
@@ -470,7 +468,7 @@ export default class MyOrders extends Component {
                                         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-3">
                                           <img src={pdata.productImage[0]} style={{width:"100%"}} alt=""/>
                                         </div>
-                                        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6 NOpadding">
+                                        <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 NOpadding">
                                           <p> <a href={"/productdetails/"+pdata.product_ID} className="productname">{pdata.productName}</a></p>
                                           {
                                             pdata.discountPercent ?
@@ -486,10 +484,10 @@ export default class MyOrders extends Component {
                                           
                                           <p>Quantity: {pdata.quantity}</p>
                                         </div>  
-                                        <div className="col-lg-2 col-md-2 col-sm-3 col-xs-6 NOpadding">
+                                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 NOpadding">
                                           <span><i className="fa fa-inr"></i>&nbsp;{pdata.subTotal}</span> &nbsp;
                                         </div>
-                                        <div className="col-lg-2 col-md-2 col-sm-3 col-xs-6 NOpadding">
+                                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 NOpadding">
                                         {
                                           data.deliveryStatus[data.deliveryStatus.length-1].status ==='New Order' ||
                                           data.deliveryStatus[data.deliveryStatus.length-1].status ==='Verified' || 

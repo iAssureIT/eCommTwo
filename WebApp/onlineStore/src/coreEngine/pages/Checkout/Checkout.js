@@ -80,7 +80,7 @@ class Checkout extends Component {
             return regexpr.test(value);
         }, "Please enter valid mobile number.");
         $.validator.addMethod("regxemail", function (value, element, regexpr) {
-            return regexpr.test(value);
+            return regexpr.test(value); 
         }, "Please enter valid email.");
         $.validator.addMethod("regxaddressLine", function (value, element, regexpr) {
             return regexpr.test(value);
@@ -1118,7 +1118,7 @@ class Checkout extends Component {
                                                         return (
                                                             <tr key={'cartData' + index}>
                                                                 {/* <td><span className="fa fa-times-circle-o crossOrder" id={data._id} onClick={this.Removefromcart.bind(this)}></span></td> */}
-                                                                <td><img className="img img-responsive orderImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} /></td>
+                                                                <td><img className="img orderImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} /></td>
                                                                 <td>
                                                                     <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productDetail.productName}</h5></a>
 

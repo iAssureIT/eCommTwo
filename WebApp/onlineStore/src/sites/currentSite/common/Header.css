@@ -762,6 +762,9 @@ ul.box-static-link li span {
   font-size: 12px;
 
 } */
+.error{
+  font-size: 9px !important;
+}
 
 .dropdown-content a:hover {
   background-color: #ddd;

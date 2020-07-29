@@ -68,7 +68,7 @@
     margin-top: 15px;
 }
 .orderImg{
-    height: 100px;
+    /* height: 100px; */
     width: 100px;
 }
 .orderTable{
@@ -200,4 +200,10 @@
     margin-bottom: 5px;
     display: none;
     padding-left: 0px;
+}
+
+@media only screen and (max-device-width: 480px) {   
+.orderImg{
+    width: 60px;
+}
 }

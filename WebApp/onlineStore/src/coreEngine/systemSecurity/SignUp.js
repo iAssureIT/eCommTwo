@@ -66,6 +66,9 @@ class SignUp extends Component {
 		$.validator.addMethod("regxpincode", function (value, element, regexpr) {
 			return regexpr.test(value);
 		}, "Please enter valid pincode.");
+		$.validator.addMethod("regxmobNumber", function (value, element, regexpr) {
+            return regexpr.test(value);
+        }, "Please enter valid mobile number.");
 
 		jQuery.validator.setDefaults({
 			debug: true,
@@ -86,6 +89,10 @@ class SignUp extends Component {
 					required: true,
 					regxEmail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
 				},
+				mobNumber: {
+                    regxmobNumber: /^([7-9][0-9]{9})$/,
+                    required: true,
+                },
 				signupPassword: {
 					required: true,
 				},
@@ -115,6 +122,9 @@ class SignUp extends Component {
 				}
 				if (element.attr("name") === "signupEmail") {
 					error.insertAfter("#signupEmail");
+				}
+				if (element.attr("name") === "mobNumber") {
+					error.insertAfter("#mobNumber");
 				}
 				if (element.attr("name") === "pincode") {
 					error.insertAfter("#pincode");
@@ -340,7 +350,7 @@ class SignUp extends Component {
 	render() {		
 		return (
 			// <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
 							<h3>Sign Up</h3>
 						</div>
@@ -383,7 +393,7 @@ class SignUp extends Component {
 							</div>
 							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Pincode</label><label className="astricsign">*</label>
-								<input minLength="6" maxLength="6" type="number" className="form-control" id="pincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
+								<input minLength="6" maxLength="6" type="text" className="form-control" id="pincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
 							</div>
 
 

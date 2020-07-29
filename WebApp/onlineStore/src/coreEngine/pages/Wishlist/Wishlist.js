@@ -240,10 +240,10 @@ class Wishlist extends Component {
         <div className="container">
 
           <br />
-          <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4 NOpadding mr20">
+          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding mr20">
             <Sidebar />
           </div>
-          <div className="col-lg-9 col-md-9 col-sm-8 col-xs-8 NOpadding">
+          <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 NOpadding">
             <br />
             <br />
             {
@@ -252,7 +252,7 @@ class Wishlist extends Component {
 
                   return (
 
-                    <div className="item col-lg-4 col-md-4 col-sm-4 col-xs-4" key={index}>
+                    <div className="item col-lg-4 col-md-4 col-sm-4 col-xs-6" key={index}>
                       <a href={"/productdetails/" + data.product_ID}>
                         <div className="">
                           <div className="card">

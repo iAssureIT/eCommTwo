@@ -83,7 +83,7 @@ addtocart(event){
                   return(
                     <div className="dropdown menuDropDown col-sm-3 NoPadding col-xs-12">
                         <button className="dropbtn">{data.section} 
-                            <i className="fa fa-caret-down"></i>
+                            {/* <i className="fa fa-caret-down"></i> */}
                         </button>                        
                         {
                               data.categorylist.map((cateoryDetails,catindex)=>{                                

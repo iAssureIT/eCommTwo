@@ -492,7 +492,9 @@ button.button_search {
     .firstDiv{
         min-height: auto;
     }
-    
+    .userinfotext{
+        margin-top: 5px !important;
+    }
     .searchBoxWrapper{
         /* padding-left: 10px; */
         /* padding-right: 10px; */
@@ -508,7 +510,7 @@ button.button_search {
     }
     .box-right .cart .cart-count{
         bottom: 61%;
-        right: 2px;
+        right: 5px;
     }
     .greenStrip{
         height: 15px;

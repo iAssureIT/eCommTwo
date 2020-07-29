@@ -70,11 +70,11 @@ class ViewOrder extends Component {
 
         <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
         <br/>
-        <br/>
+        
         <h4 className="table-caption">Order Details</h4>
-        <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | Order {this.state.orderData.orderID} <span className="pull-right">Shipping Time : {this.state.orderData.shippingtime}</span></p>
+        <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | Order {this.state.orderData.orderID} <span className="pull-right hidden-xs">Shipping Time : {this.state.orderData.shippingtime}</span></p>
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
-            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb20">
               <strong className="box-title">
                   <span>Shipping Address</span>
               </strong>
@@ -87,7 +87,7 @@ class ViewOrder extends Component {
                { this.state.orderData.deliveryAddress && this.state.orderData.deliveryAddress.country } <br/>
               </div>
             </div>
-            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+            <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb20">
               <strong className="box-title">
                 <span>Payment Method</span>
               </strong>
@@ -97,7 +97,7 @@ class ViewOrder extends Component {
               }
               </div>
             </div>
-            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 mb50">
+            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 mb50">
                 <strong className="box-title">
                   <span>Order Summary</span>
                 </strong>
@@ -122,7 +122,7 @@ class ViewOrder extends Component {
                       <span><i className={"fa fa-" + this.state.orderData.currency}> {parseInt(this.state.orderData.total).toFixed(2)}</i></span>
                     </div>
                   </div>
-                  <div className="brdrbtmpayment col-lg-12 col-md-6 col-sm-6 col-xs-6"></div>
+                  <div className="brdrbtmpayment col-lg-12 col-md-6 col-sm-12 col-xs-12"></div>
                   <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
@@ -176,8 +176,8 @@ class ViewOrder extends Component {
                       this.state.orderData.products && this.state.orderData.products.length > 0 ?
                         this.state.orderData.products.map((data, index) => {
                           return (
-                            <tr key={'cartData' + index}>
-                              <td><img alt="Product Image" className="img img-responsive orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
+                            <tr key={'cartData' + index}> 
+                              <td><img alt="Product Image" className="img orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
                               <td>
                                 <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productName}</h5></a>
 

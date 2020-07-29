@@ -1121,9 +1121,9 @@ class ProductCollage extends Component {
 																<div className="categoryName">{this.state.categoryDetails && this.state.categoryDetails.category}</div>
 															</div>
 
-															<div className="col-lg-offset-2 col-md-offset-2 col-lg-4 col-md-6 col-sm-9 col-xs-7 col-xs-offset-1 NoPadding">
+															<div className="col-lg-offset-2 col-md-offset-2 col-lg-4 col-md-6 col-sm-7 col-xs-7 col-xs-offset-1 NoPadding">
 																<label className="col-lg-3 col-md-6 col-sm-9 col-xs-9 NoPadding labeldiv">Sort By</label>
-																<select className="sortProducts col-lg-8 col-sm-9 col-md-8 col-xs-9 NoPadding" onChange={this.sortProducts.bind(this)}>
+																<select className="sortProducts col-lg-8 col-sm-8 col-md-8 col-xs-9 NoPadding" onChange={this.sortProducts.bind(this)}>
 																	<option className="hidden" >Relevance</option>
 																	<option value="alphabeticallyAsc">Name A-Z</option>
 																	<option value="alphabeticallyDsc">Name Z-A</option>
