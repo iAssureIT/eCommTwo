@@ -200,4 +200,13 @@ text-align:right ! important;
 	.custmTabs{
 		font-size: 10px !important;
 	}
+	.orderfooterborder{
+		margin-bottom: 20px;
+	}
+	.mr20{
+		margin-right: 0px !important;
+	}
+	.sidebar{
+		margin-top: -60px;
+	}
 }

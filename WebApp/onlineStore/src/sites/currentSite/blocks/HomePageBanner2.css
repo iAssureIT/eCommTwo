@@ -52,3 +52,33 @@
     font-weight: 600;
     margin-left: 15px;
 }
+@media only screen and (max-device-width: 480px) {   
+.imageBlock{
+    margin-top: -45px;
+}
+.HomePageBanner2 .hover-images{
+    padding: 0px;
+}
+.HomePageBanner2{
+    margin-bottom: 0px;
+}
+.freshFood{
+    margin-top: -130px;
+}
+.freshfoodImgWrapper{
+    padding: 0px 90px;
+}
+/* .owl-prev, .owl-next {
+    display: none !important;
+} */
+}
+/* @media only screen and (min-device-width: 481px)and(max-device-width: 768px) {    */
+    @media only screen and (min-width: 481px) and (max-width: 768px) { 
+    .imageBlock{
+        /* margin-top: 80px; */
+    }
+    .HomePageBanner2{
+        margin-top: -100px;
+        margin-bottom: 0px;
+    }
+}

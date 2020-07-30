@@ -521,13 +521,19 @@ button.button_search {
         margin-top: 10px !important;
     }
 }
-@media only screen and (max-device-width: 768px) {  
+@media only screen and (min-width: 481px) and (max-width: 768px) { 
 .menuDropDown .dropbtn{
     /* border-bottom: 0px solid #ccc !important; */
 }
 .box-right{
     /* float: right; */
     /* margin-right: 60px; */
+}
+.searchBoxWrapper{
+    margin-top: 15px;
+}
+.box-right{
+    padding-top: 4px;
 }
 }
  

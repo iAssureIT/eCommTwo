@@ -452,8 +452,7 @@ loginPage(event){
     return (
       <div className="headerWrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">  
         <div id="pageOpacity"></div>  
-        <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow hidden-xs hidden-sm"> 
-                   
+        <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow hidden-xs">                   
           <div className="row">
           <Message messageData={this.state.messageData} />  
           {/* <AskPincode />         */}
@@ -670,7 +669,7 @@ loginPage(event){
           </div>
         </header>        
         {/* for mobile and Tab only */} 
-        <div className="topnav hidden-lg hidden-md" id="myTopnav">   
+        <div className="topnav hidden-lg hidden-md hidden-sm" id="myTopnav">   
            {/* <AskPincode /> */}
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip"></div>
           <div className="col-sm-12 col-xs-12 NoPadding">

@@ -429,6 +429,7 @@ export default class MyOrders extends Component {
                 {
                   this.state.orderData && this.state.orderData.length > 0 ?
                     this.state.orderData.map((data, index) => {
+                      // console.log("orderData:",data);
                       return (
                         <div style={{marginBottom:"10px"}} className={data.deliveryStatus[data.deliveryStatus.length - 1].status === 'Cancelled' ? "row cancelledorder" : "row"}>
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderIdborder"  >
@@ -463,10 +464,11 @@ export default class MyOrders extends Component {
                             {
                             data.products && data.products.length > 0 ?
                                   data.products.map((pdata, index)=>{
+                                    console.log("pdata:",pdata);
                                     return(
                                       <div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" style={{marginBottom:"20px"}}>
                                         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                                          <img src={pdata.productImage[0]} style={{width:"100%"}} alt=""/>
+                                          <img src={pdata.productImage[0]?pdata.productImage[0]:notavailable} style={{width:"100%"}} alt=""/>
                                         </div>
                                         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 NOpadding">
                                           <p> <a href={"/productdetails/"+pdata.product_ID} className="productname">{pdata.productName}</a></p>
