@@ -16,6 +16,7 @@ exports.insert_franchise_goods = (req,res,next)=>{
                     inwardQty                 : req.body.suppliedQty,
                     unit                      : req.body.unit,
                     orders                    : [],
+                    returnedOrders            : [],
                     balance                   : req.body.suppliedQty,
                     orderedDate               : req.body.orderedDate,
                     createdBy                 : req.body.createdBy,

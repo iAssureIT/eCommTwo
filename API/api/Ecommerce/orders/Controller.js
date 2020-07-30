@@ -105,8 +105,9 @@ exports.insert_orders = (req,res,next)=>{
                         const order = new Orders({
                           _id                  : new mongoose.Types.ObjectId(),
                         "orderID"              : Math.round(new Date().getTime()/1000),
-                        "billNumber"          : BillNumber,
+                        "billNumber"           : BillNumber,
                         "user_ID"              : req.body.user_ID,
+                        "franchiseCustId"      : req.body.franchiseCustId ? req.body.franchiseCustId : 0,
                         "allocatedToFranchise" : allocatedToFranchise ? allocatedToFranchise : billFranchise,
                         "userName"             : data.profile.email,
                         "userFullName"         : data.profile.fullName,
@@ -761,10 +762,10 @@ exports.update_order = (req,res,next)=>{
         });
 };
 exports.list_franchise_order = (req,res,next)=>{
-  console.log("list_franchise_order===>>>",req.params);
+  // console.log("list_franchise_order===>>>",req.params);
 
     Orders.find({allocatedToFranchise : ObjectId(req.params.franchiseID)})
-        // .populate("allocatedToFranchise")
+        // .populate("franchiseCustId")
         .populate("allocatedToFranchise")
         .sort({createdAt:-1})      
         .exec()
@@ -1011,6 +1012,7 @@ exports.count_order = (req,res,next)=>{
 };
 exports.fetch_order = (req,res,next)=>{
     Orders.findOne({_id : req.params.orderID}).sort({createdAt:-1})
+    .populate('franchiseCustId')
     .exec()
     .then(data=>{
         res.status(200).json(data);
@@ -1040,7 +1042,7 @@ exports.delete_order = (req,res,next)=>{
  
 exports.updateDeliveryStatus = (req,res,next)=>{
     var status = req.body.status == "Delivered & Paid" ? "Paid" : "UnPaid";
-    console.log(req.body.status);
+    // console.log(req.body.status);
 
     Orders.updateOne(
             { _id : req.body.orderID}, 
@@ -1535,7 +1537,7 @@ exports.dispatchOrder = (req,res,next)=>{
 
 
 exports.list_order_by_user = (req,res,next)=>{
-  console.log('user_ID',req.params.userID);
+//  console.log('user_ID',req.params.userID);
 
     /*Orders.find({
         "user_ID": ObjectId(req.params.userID)
@@ -1559,7 +1561,7 @@ exports.list_order_by_user = (req,res,next)=>{
     ])   
     .exec()
     .then(data=>{
-      console.log('data', data);
+      //console.log('data', data);
       res.status(200).json(data);
     })
     .catch(err =>{
@@ -1571,7 +1573,7 @@ exports.list_order_by_user = (req,res,next)=>{
 };
 
 exports.cancelOrder = (req,res,next)=>{
-    console.log("Order cancelled");
+    //console.log("Order cancelled");
      Orders.updateOne(
             { _id : req.body.orderID}, 
             {
@@ -1608,8 +1610,8 @@ exports.cancelOrder = (req,res,next)=>{
 }
 
 exports.returnOrder = (req,res,next)=>{ 
-    console.log(req.body.orderID)
-    console.log(req.body.productID)
+    // console.log(req.body.orderID)
+    // console.log(req.body.productID)
       /*Orders.findOne(
             { _id : req.body.orderID, "products.product_ID":req.body.productID}
             )
@@ -1629,7 +1631,7 @@ exports.returnOrder = (req,res,next)=>{
             )
             .exec()
                 .then(data=>{
-                  console.log(data);
+                  // console.log(data);
                     if(data.nModified == 1){
                         
                         Orders.findOne({ _id : req.body.orderID, "products.product_ID":req.body.productID})
@@ -1707,7 +1709,7 @@ exports.get_reports_count = (req,res,next)=>{
 };
 
 exports.get_reports_franchise = (req,res,next)=>{
-  console.log("req.body.franchiseID==>",req.body.franchiseID)
+  // console.log("req.body.franchiseID==>",req.body.franchiseID)
     Orders.find({
       allocatedToFranchise : ObjectId(req.params.franchiseID),
       createdAt: {
@@ -1763,7 +1765,7 @@ exports.get_reports = (req,res,next)=>{
           //   //     "status"        : x.deliveryStatus[x.deliveryStatus.length-1].status
           //   // }
           // })
-        console.log("get reports data",data);
+        // console.log("get reports data",data);
           // res.status(200).json(allData.slice(req.params.startRange, req.params.limitRange));
          res.status(200).json(data);
         })
@@ -2159,7 +2161,6 @@ exports.vendorWiseOrder = (req,res,next)=>{
 };
 
 function addOrderToFranchiseGoods(productId,obj,franchise_id) {   
-  console.log("ItemCodeobj",franchise_id);
       return new Promise(function(resolve,reject){
              FranchiseGoods.find({productId : productId,balance: { $gt: 0 },franchise_id:franchise_id})
               .sort({createdAt : 1})
@@ -2363,4 +2364,7 @@ exports.allocateOrderToFranchise = (req,res,next)=>{
             });
         });
 };
+
+
+
 

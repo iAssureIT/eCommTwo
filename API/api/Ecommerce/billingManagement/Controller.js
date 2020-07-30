@@ -8,7 +8,8 @@ const Carts         = require('../cart/Model');
 const EntityMaster  =  require('../../coreAdmin/entityMaster/ModelEntityMaster');
 var   ObjectId        = require('mongodb').ObjectID;
 const franchisegoods = require('../distributionManagement/Model');
-
+const ReturnedProducts      = require('../returnedProducts/Model');
+const FranchiseCustomers      = require('./CustomerModal');
 
 exports.list_products_by_category = (req,res,next)=>{
     Products.find({category_ID : req.params.categoryID, "status": "Publish"})
@@ -104,24 +105,26 @@ exports.list_product_by_section = (req,res,next)=>{
 //generate bill number 
 exports.generate_bill_number = (req,res,next)=>{
     var franchiseId = req.params.companyId;
-    Carts.count()
+    Carts.countDocuments()
         .exec()
         .then(cartData =>{
             console.log("cartData",cartData);
             var maxId = 1;
-            Orders.count()
+            Orders.countDocuments()
             .exec()
             .then(orderData =>{
+                console.log("orderData",orderData);
                 let calenderYear = new Date().getFullYear();
-                if(cartData > orderData) {
+                if(Number(cartData) > Number(orderData)) {
                    maxId = cartData + 1;
-                }else if(orderData > cartData){
+                } 
+                if(Number(orderData) > Number(cartData)){
                     maxId = orderData + 1;
-                }else if(orderData == cartData){
+                } 
+                if(Number(orderData) === Number(cartData)){
                     maxId = orderData + 1;
-                }else{
-                    maxId = 1;
                 }
+
                 let str = maxId.toString().padStart(5, "0");
 
                 let billNum = franchiseId + calenderYear + str;
@@ -174,9 +177,11 @@ exports.getCompany = (req,res,next)=>{
 };
 
 exports.getListBill = (req,res,next)=>{
-  Orders.find({allocatedToFranchise:req.params.franchise_id,billNumber:{ $exists: true, $ne: null }})
+    console.log("allocatedToFranchise id",req.params.franchise_id)
+  Orders.find({allocatedToFranchise:ObjectId(req.params.franchise_id),billNumber:{ $exists: true, $ne: null }})
     .exec()
     .then(data=>{
+        console.log("getListBill",data);
         res.status(200).json(data);
     })
     .catch(err =>{
@@ -185,3 +190,214 @@ exports.getListBill = (req,res,next)=>{
         });
     });
 };
+
+exports.returned_products = (req,res,next)=>{
+    ReturnedProducts.find({"orderID":req.params.orderID})
+    .populate('orderID')
+    .exec()
+    .then(data=>{
+        console.log("dTA",data);
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+
+//save returned products
+
+exports.save_returned_products = (req,res,next)=>{
+    var obj = {"orderNum":req.body.altorderid,"returnDate":new Date(),"returnQty":req.body.returnProductArray.quantity,"Unit":req.body.returnProductArray.unit, "orderStatus":"Returned"}
+    var franchise_id = req.body.franchise_id;
+    var ProductId    = req.body.productID;
+    var returnProductObj = req.body.returnProductArray;
+    returnProductObj.reasonForReturn = req.body.reasonForReturn;
+    returnProductObj.paymentMethod = req.body.paymentMethod;
+
+    Orders.updateOne(
+        { _id: req.body.orderID,"products.product_ID": ObjectId(req.body.productID)},  
+        {
+            $push:  { 'returnedProduct' : returnProductObj },
+            $set:   { 'products.$.status' : 'Returned', 'products.$.returnedDate'   : new Date()}
+        },
+    )
+    .exec()
+    .then(data=>{
+        main();
+        async function main(){
+            var franchiseGoodsOrder =   await addOrderToFranchiseGoods(ProductId,obj,franchise_id);
+        }
+
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        res.status(500).json({error: err});
+    });
+};
+
+
+function addOrderToFranchiseGoods(productId,obj,franchise_id) {   
+      return new Promise(function(resolve,reject){
+             franchisegoods.find({productId : productId,balance: { $gt: 0 },franchise_id:franchise_id})
+              .sort({createdAt : 1})
+              .limit(1)
+              .then(fgdata=>{
+                console.log("fgdata",fgdata);
+                    if(fgdata[0].unit.toLowerCase() == obj.Unit.toLowerCase()){
+                            var remainingBalance = fgdata[0].balance - obj.returnQty;
+                    }else{
+                            //if units are different
+                            if((fgdata[0].unit.toLowerCase() == 'kg' || fgdata[0].unit.toLowerCase() == 'kilogram') && (obj.Unit.toLowerCase() == "gm" || obj.Unit.toLowerCase() == "gram")){
+                                //convert raw material gram to kg formula kg=gm/1000
+                               var convertToKg            = obj.returnQty/1000;
+                               obj.returnQty = convertToKg;
+                               obj.Unit        = fgdata[0].unit
+                               var remainingBalance       = fgdata[0].balance - convertToKg;          
+                            }
+                            if((fgdata[0].unit.toLowerCase() == 'gm' || fgdata[0].unit.toLowerCase() == 'gram') && (obj.Unit.toLowerCase() == "kg" || obj.Unit.toLowerCase() == "kilogram")){
+                                //convert raw material kg to gram formula g=kg*1000
+                                var convertToGram          = obj.returnQty*1000;
+                                obj.returnQty = convertToGram;
+                                obj.Unit        = fgdata[0].unit
+                                var remainingBalance       = fgdata[0].balance - convertToGram;
+                            }
+                            if(fgdata[0].unit.toLowerCase() == "kg" &&  obj.Unit.toLowerCase() == "kilogram"){
+                               var remainingBalance = fgdata[0].balance - obj.returnQty;
+                            }
+
+                             if(fgdata[0].Unit.toLowerCase() == "gm" &&  obj.Unit.toLowerCase() == "gram"){
+                               var remainingBalance = fgdata[0].balance - obj.returnQty;
+                            }
+
+                             if(fgdata[0].unit.toLowerCase() !== "kg" ||  obj.Unit.toLowerCase() !== "gram"){
+                               var remainingBalance = fgdata[0].balance - obj.returnQty;
+                            }
+                    }
+
+                    // compare and update raw material stock
+                       if(fgdata[0].balance >= obj.returnQty){
+                         // var remainingBalance = fgdata[0].balance - obj.Quantity;
+                         obj.finishedGoods = obj;
+                         obj.balance = remainingBalance;
+
+                         orders = {"orderNum":obj.orderNum,"returnDate":obj.returnDate,"ProductId":productId,"returnQty":obj.returnQty,"Unit":obj.Unit};
+                            franchiseGoods.update(
+                            {    _id:fgdata[0]._id},  
+                            {
+                                 $set:   {'balance': remainingBalance} ,
+                                 $push:  {'returnedOrders' : orders }                         
+                            })
+                                .then(data=>{
+                                    if(data.nModified == 1){
+                                        resolve(data);
+                                    }else{
+                                        resolve(data);
+                                    }
+                                })
+                                .catch(err =>{ reject(err); });
+                        }else{
+                            var remainFcQty =  obj.returnQty - fgdata[0].balance;
+                            var remainingBalance = 0;
+                            orders = {"orderNum":obj.orderNum,"returnDate":obj.returnDate,"ProductId":productId,"returnQty":fgdata[0].balance,"Unit":obj.Unit};
+                            franchisegoods.updateOne(
+                            {    _id:fgdata[0]._id},  
+                            {
+                                 $set:   {'balance': remainingBalance} ,
+                                 $push:  {'returnedOrders' : orders }                         
+                            })
+                            .then(data=>{
+                               PoUpObj = {"orderNum":obj.orderNum,"returnDate":obj.returnDate,"ProductId":productId,"returnQty":remainFcQty,"Unit":obj.Unit};
+                                if(data.nModified == 1){
+                                    if(remainFcQty != 0){
+                                         var updateOtherPoObj = updateOtherFranchiseGoods(itemCode,PoUpObj);
+                                         if(updateOtherPoObj){
+
+                                         }else{
+                                            console.log("err");
+                                         }
+                                    }
+                                    resolve(data);
+                                }else{
+                                    resolve(data);
+                                }
+                            })
+                            .catch(err =>{ reject(err); });
+                            resolve(0);
+                        }
+
+
+              })
+              .catch(err =>{
+                   reject(err);
+              });
+      });
+}
+
+var updateOtherFranchiseGoods = async (itemCode,obj) => {
+    // console.log('Data',data);
+    return new Promise(function(resolve,reject){ 
+        updateOtherfgControl();
+        async function updateOtherfgControl(){
+            addOrderToFranchiseGoods(itemCode,obj)
+        }
+    })
+}
+
+exports.save_customer = (req,res,next)=>{
+    FranchiseCustomers.find({mobile:req.body.mobile})
+    .exec()
+    .then(data=>{
+        if(data.length > 0){
+            res.status(200).json({ duplicated : true });
+        }else{
+            const franchiseCustomers  = new FranchiseCustomers({
+                _id                       : new mongoose.Types.ObjectId(),  
+                franchise_id              : req.body.franchise_id,                  
+                customerName              : req.body.Name,
+                mobile                    : req.body.mobile,
+                email                     : req.body.email,
+                address                   : req.body.address,
+                createdBy                 : req.body.createdBy,
+                createdAt                 : new Date()
+            });
+            franchiseCustomers.save()
+                .then(data=>{
+                    res.status(200).json({
+                        "customerData" : data,
+                        "message": "Customer added Successfully."
+                    });
+                })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+                }
+               console.log("dtatattat",data);
+            })
+    .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+    });
+    
+};
+
+exports.get_customers = (req,res,next)=>{
+    FranchiseCustomers.find({"franchise_id":req.params.franchise_id})
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+

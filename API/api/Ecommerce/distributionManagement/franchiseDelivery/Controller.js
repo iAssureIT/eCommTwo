@@ -111,7 +111,9 @@ exports.update_delivery_attribute = (req,res,next)=>{
                            var deleteFromFinishedGoods = deletefrom_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
                        }
                     }else{
-                         resolve(data);
+                         res.status(200).json({
+                           "message": "Success",
+                         });
                     }
                 
 

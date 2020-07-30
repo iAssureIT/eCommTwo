@@ -220,10 +220,25 @@
     border-bottom: none !important; 
   }
 
-  table{
+  .billTable{
     font-size: smaller;
     margin-top: 10px; 
     margin-bottom: 50% !important;
+  }
+
+  .returnItemsTable{
+    margin-top: 20px; 
+    /* margin-bottom: 10% !important; */
+  }
+
+  .Slogan{
+    margin-top: 30% !important;
+  }
+
+  .viewBillTable{
+    font-size: smaller;
+    margin-top: 10px; 
+    margin-bottom: 10% !important;
   }
 
   ul.declaration {
@@ -309,10 +324,6 @@
   text-align:center;
 }
 
-.modal-body{
-  text-align: center;
-}
-
 .inputIcon{
   width: 30px;
 }
@@ -386,7 +397,7 @@ rect{
   margin-right: 40px;
 }
 
-.reasonForReturn{
+.reasonForReturnlabel{
   float: left;
   margin-left: 15px;
 }
@@ -395,4 +406,36 @@ rect{
   color:red !important
 }
 
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
 
+.textAlignCenter{
+  text-align:'center'
+}
+
+.textAlignLeft{
+  text-align:'left'
+}
+
+.modal-header{
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  color: white;
+}
+
+.paddingTop{
+  padding-top : 30px  !important;
+}
+
+.textWhite{
+  color:white !important;
+}
+
+.modal-buttons{
+  margin : 5px !important;
+}
+
+.top30{
+  top:30px;
+}

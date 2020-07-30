@@ -13,7 +13,7 @@ const FranchiseGoodsSchema = mongoose.Schema({
     inwardQty                 : String,
     unit                      : String,
     orders                    : Array,
-    productCode               : String,
+    returnedOrders            : Array,
     balance                   : Number,
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,

@@ -88,7 +88,7 @@ import PurchaseManagement  from './storeAdmin/PurchaseManagement/PurchaseManagem
 import FinishedGoods       from './storeAdmin/PurchaseManagement/FinishedGoods.js';
 import Bill                from './storeAdmin/FranchiseBilling/franchiseBill.js'
 import viewBill           from './storeAdmin/FranchiseBilling/viewBill.js'
-import returnBill            from './storeAdmin/FranchiseBilling/ReturnProducts.js'
+import returnBill            from './storeAdmin/FranchiseBilling/returnBill.js'
 
 
 //=============== Purchase Management =================
@@ -218,7 +218,10 @@ class Layout extends Component  {
                           {/*Billing*/}
                           <Route path="/franchise-billing"                                exact strict component={Bill} />
                           <Route path="/view-bill/:orderId"                               exact strict component={viewBill} />
-                          <Route path="/return-products"                                       exact strict component={returnBill} />
+                          <Route path="/return-bill"                             exact strict component={returnBill} />
+                          {/* <Route path="/return-bill"                             exact strict component={viewBill} /> */}
+
+                          {/* <Route path="/return-products"                                  exact strict component={returnBill} /> */}
 
                           { /*Order List*/}
                           <Route path="/allorders"                                        exact strict component={AllOrdersList} />

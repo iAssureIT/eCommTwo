@@ -14,7 +14,7 @@ import { bindActionCreators } from 'redux';
 import { getCartData } from '../../redux/actions/index';
 
 
-export class printBill extends React.Component {
+export class returnBill extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
@@ -31,10 +31,10 @@ export class printBill extends React.Component {
 				cartData              : [],
 				totalAmt              : 0,
 				billNumber            : 0,
-                orderData             : [],
+                orderData             : {},
 				pos                   : '',
 				showFullScreen        : false,
-				showReturnProductDiv  : false,
+				showReturnProductDiv  : true,
 				getBillNumbers        :'',
 				billDate              : '',
 				paymentMethod         : 'cash'
@@ -51,7 +51,7 @@ export class printBill extends React.Component {
 		$('#dashbordid').removeClass('dashboardeffect');
 		this.getFranchiseDetails();
 		 // this.getBillNumbers();
-		this.getOrder(this.props.match.params.orderId);
+		// this.getOrder(this.props.match.params.orderId);
 
 		$.validator.addMethod("noSpace", function(value, element) { 
 			return value == '' || value.trim().length != 0;
@@ -103,6 +103,7 @@ export class printBill extends React.Component {
     }
 
     getFranchiseDetails(){
+        console.log("getBillNumbers");
         var userDetails = JSON.parse(localStorage.getItem('userDetails'));
 		axios.get('/api/entitymaster/getCompany/'+userDetails.companyID)
         .then((response) => {
@@ -130,6 +131,7 @@ export class printBill extends React.Component {
                 "pos"       : addressLine2
 				
 			},()=>{
+               
 				this.getBillNumbers();
 		   })
           
@@ -254,8 +256,8 @@ export class printBill extends React.Component {
 				billNumber :response.data.billNumber,
 				billDate : response.data.createdAt,
 				orderID  : id,
-				returnedOrderTotal : returnedOrderTotal,
-				customerDetail : response.data.franchiseCustId
+                returnedOrderTotal : returnedOrderTotal,
+                customerDetail : response.data.franchiseCustId
 			},()=>{
 				// console.log("returnedOrderTotal",returnedOrderTotal);
 			})
@@ -399,6 +401,7 @@ export class printBill extends React.Component {
 
 
 	render() {
+        console.log("this.state.customerDetail",this.state.customerDetail);
 		const cartItems = this.props.recentCartData;
 		let total    = 0
 		 if(this.props.recentCartData.length > 0){
@@ -411,9 +414,9 @@ export class printBill extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
-					{this.state.showReturnProductDiv === true  ? 
+					{/* {this.state.showReturnProductDiv === true  ?  */}
 						<div className="row">
-						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding mtop20">
+						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding paddingTop">
 							    <input list="selectBillNumber" type="search" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autoComplete="off"/> 
 								<datalist id="selectBillNumber" name="selectBillNumber" className="billDatalist">
 										{
@@ -427,12 +430,12 @@ export class printBill extends React.Component {
 											<option>No Bills available</option>
 										}
 								</datalist>
-                                <button className="input-group button_add button button" type="button"><i className="fa fa-plus"></i></button>
+                                <button className="input-group button_add button button top30" type="button"><i className="fa fa-plus"></i></button>
 						</div>
 						
 						</div>
-						: null}
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding billPage">
+						{/* : null} */}
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding paddingTop billPage">
 							<div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
 								<a className="btn btn-info printbtn viewBillBtns fa fa-home" href="/dashboard" title="Go to Homepage"></a>
 								{this.state.showFullScreen === false ? 
@@ -441,14 +444,10 @@ export class printBill extends React.Component {
 								}
 								<a className="btn btn-info viewBillBtns" href="/franchise-billing" title="Create New Bill">New Bill</a>
 								<button className="btn btn-info printbtn viewBillBtns fa fa-print" title="Print Bill" onClick={this.printTable.bind(this)}></button>
-							
-								<a className="btn btn-info reTurnBill viewBillBtns" onClick={this.onClickReturnProducts.bind(this)} title="return Products">Return Bill</a> 
-								
-								{/* href="/return-products" */}
 							</div>
-						    {/* View bill div start */}
-							{this.state.showReturnProductDiv === false ? 
-							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
+							{/* /* Return product div start */ }
+							{Object.keys(this.state.orderData).length > 0 ? 
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12  viewBillDiv">
 							    <div className="row billLogoDiv">
 									<img className="logoImg" src="../../images/logoUnimandai.png"/>
 									<div className="address">{this.state.franchiseLocation}</div>
@@ -457,103 +456,7 @@ export class printBill extends React.Component {
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode">{this.state.billNumber}</span></div>
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
 								</div>
-								{
-                                this.state.customerDetail ?
-                                Object.keys(this.state.customerDetail).length > 0 ?
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Customer Name: {this.state.customerDetail.customerName}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Mobile: {this.state.customerDetail.mobile}</small></div>
-								</div>
-                                : null
-                                :null}
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
-								</div>
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">POS: {this.state.pos}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">GSTIN: {this.state.gstNo}</small></div>
-								</div>
-								<div className="row" style={{"padding": "15px"}}> 
-									<form className="productsEditForm" id="productsEditForm">
-									<div className="table-responsive">
-										<table className="table table-borderless billTable">
-											<thead>
-												<tr>
-												<th scope="col">ITEM</th>
-												<th scope="col">QTY</th>
-												<th scope="col">RATE</th>
-												<th scope="col">DISCOUNT</th>
-												<th scope="col">AMOUNT</th>
-												{/* <th scope="col"></th> */}
-												</tr>
-											</thead>
-											<tbody>
-											{
-                                                this.state.orderData.products && this.state.orderData.products.length > 0 ?
-                                                    this.state.orderData.products.map((data, index) => {
-													data.subTotal = data.discountedPrice * data.quantity;
-													return(
-														<tr>
-															<td>{data.productName}</td>
-															<td> 
-													              <small>{data.quantity} {data.unit}</small>
-															</td>
-															<td>{data.originalPrice}</td>
-															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
-															<td>{data.subTotal}</td>
-													    </tr>
-													)
-												   
-												})
-												:
-												null
-											} 
-											</tbody>
-											<tfoot>
-												<tr>
-													{this.state.orderData ?
-														<td colSpan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
-														:
-														<td colSpan="4">Items/Qty 0</td>
-													}
-
-													<td colSpan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
-												</tr>
-												<tr>
-												<td colSpan="4"></td>
-												<td className="totalNetAmount" colSpan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
-												</tr>
-											</tfoot>
-											</table>
-										</div>
-										<div className="row" style={{"padding": "15px"}}>
-												<span>Payment Method : {this.state.orderData.paymentMethod}</span>
-										</div>
-										<div className="row">
-											{/* <ul className="declaration"><b>Declaration</b>
-												<li>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-											</ul> */}
-											<h5 style={{textAlign:'center',fontSize:"medium",fontWeight: 600}}>!!! Thank You !!! Visit Again !!!</h5>
-										</div>
-										
-									</form>
-								</div>
-							</div> 
-							: 
-							/* View Bill div end */
-							/* Return product div start */
-							
-							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
-							    <div className="row billLogoDiv">
-									<img className="logoImg" src="../../images/logoUnimandai.png"/>
-									<div className="address">{this.state.franchiseLocation}</div>
-								</div>
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode">{this.state.billNumber}</span></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
-								</div>
-								{
+                                {
                                 this.state.customerDetail ?
                                 Object.keys(this.state.customerDetail).length > 0 ?
 								<div className="row">
@@ -720,7 +623,7 @@ export class printBill extends React.Component {
 										<div className="row" style={{"padding": "15px"}}>
 												<span><b>Payment Method</b> : {this.state.orderData.paymentMethod}</span>
 										</div>
-										{this.state.orderData.returnedProduct.length > 0 ?
+                                        {this.state.orderData ? 
 										<div>
 										<div className="table-responsive returnItemsTable">
 											<h5><b>Returned Items</b></h5>
@@ -756,8 +659,8 @@ export class printBill extends React.Component {
 													)
 												   
 												})
-												:
-												null
+												: null
+                                             
 											} 
 											</tbody>
 											<tfoot>
@@ -782,7 +685,6 @@ export class printBill extends React.Component {
 											</div>
 										</div>
 										: null }
-									
 										<div className="row Slogan" style={{"padding": "13px"}}>
 											{/* <ul className="declaration"><b>Declaration</b>
 												<li>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
@@ -793,7 +695,9 @@ export class printBill extends React.Component {
 									</form>
 								</div>
 							</div> 
-							}
+                            : <div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12">
+                                <h3 style={{color:'darkgray'}}>Please search bill number to return products</h3>
+                            </div> }
 							{/* return bill div end */}
 							</div>
 					</div>
@@ -812,4 +716,4 @@ const mapStateToProps = (state) => {
   const mapDispachToProps = (dispatch) => {
 	return  bindActionCreators({ fetchCartData: getCartData }, dispatch)
   }
-  export default connect(mapStateToProps, mapDispachToProps)(printBill);
+  export default connect(mapStateToProps, mapDispachToProps)(returnBill);

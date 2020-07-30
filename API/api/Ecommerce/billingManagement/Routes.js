@@ -19,6 +19,19 @@ router.get('/get/list/:franchiseId',billController.list_product);
 router.get('/getCompany/:companyID',billController.getCompany);
 
 //list bills
-router.get('/get/billnumberlist/:franchiseId',billController.getListBill);
+router.get('/get/billnumberlist/:franchise_id',billController.getListBill);
+
+//return products in order
+router.get('/get/OrderwiseReturnedProducts/:orderID',billController.returned_products);
+
+//return products
+router.patch('/returnProducts',billController.save_returned_products);
+
+//add customer
+router.post('/saveCustomer',billController.save_customer);
+
+//get customers list
+router.get('/get/customers/:franchise_id',billController.get_customers);
+
 
 module.exports = router;

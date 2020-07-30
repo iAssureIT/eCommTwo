@@ -9,13 +9,15 @@ var UnitOfMeasurment = require('../../departmentMaster/ModelUnitofmeasurment');
 const franchisegoods = require('../../distributionManagement/Model');
 const Entitymaster          = require('../../../coreAdmin/entityMaster/ModelEntityMaster.js');
 const moment = require('moment-timezone');
-var objId = mongoose.Types.ObjectId();
+// var objId = new mongoose.Types.ObjectId();
+var ObjectId                = require('mongodb').ObjectID;
+
 
 exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                 getData();
                 async function getData(){
                     var obj = {};
-                    var fcId = objId;
+                    var fcId = new mongoose.Types.ObjectId();
                     obj.date               = req.body.Date;
                     obj.productId          = req.body.productId;
                     obj.ItemCode           = req.body.ItemCode;
@@ -24,7 +26,7 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                     obj.FinishGoodsId      = fcId;
 
                     const finishedGoods = new FinishedGoodsEntry({
-                        _id                       : objId,                    
+                        _id                       : fcId,                    
                         Date                      : moment(req.body.Date).tz('Asia/Kolkata').startOf('day'),
                         ItemCode                  : req.body.ItemCode,/*itemID from productMaster*/      
                         ProductCode               : req.body.ProductCode,

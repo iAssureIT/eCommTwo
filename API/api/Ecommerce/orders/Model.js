@@ -5,6 +5,7 @@ const orderSchema = mongoose.Schema({
     orderID                   : Number,
     billNumber                : Number,
     user_ID                   : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    franchiseCustId           : { type: mongoose.Schema.Types.ObjectId, ref: 'franchisecustomers' },
     allocatedToFranchise      : { type: mongoose.Schema.Types.ObjectId, ref: 'entitymasters' },
     emailID                   : String,
     BA_ID                     : { type: mongoose.Schema.Types.ObjectId, ref: 'businessAssociate' }, 
@@ -43,6 +44,7 @@ const orderSchema = mongoose.Schema({
             "returnedDate"      : Date
         }
     ],
+    returnedProduct           : Array,
     paymentMethod             : String,
     shippingtime              : String,
     productLength             : Number,

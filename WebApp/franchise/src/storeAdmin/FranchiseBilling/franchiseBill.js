@@ -10,8 +10,8 @@ import $ from 'jquery';
 import { countBy } from 'underscore';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getCartData } from '../../redux/actions/index';
-
+import { getCartData,fetchCustomerData} from '../../redux/actions/index';
+import CustomerModal from './customerModal.js';
 export class Bill extends React.Component {
 	constructor(props) {
 		super(props);
@@ -43,8 +43,8 @@ export class Bill extends React.Component {
 				itemCode              : '',
 				showFullScreen        : false,
 				checkoutClicked       : false,
-				paymentMethod         : 'cash'
-				
+				paymentMethod         : 'cash',
+				customerDetail        : {}
 		  };
 		//   this.escFunction = this.escFunction.bind(this);
 		
@@ -53,6 +53,7 @@ export class Bill extends React.Component {
 	
 	componentDidMount(){
 		this.getFranchiseDetails();
+		$('#customerModal').show();
 		$('.leftsidebarbackgroundcolor').hide();
 		// $('#headerid').css('width',"100% !important");
 		// $('#headerid').attr('style',"width : 100% !important");
@@ -67,7 +68,7 @@ export class Bill extends React.Component {
 		this.generateBillNumber();
 		$('#sidebarCollapse').click();
 		this.getCartData();
-
+	
 		$.validator.addMethod("regxPrice", function (value, element, regexpr) {
 			return regexpr.test(value);
 		  }, "Price should have positive decimal number followed by 1 or 2 digits");
@@ -157,7 +158,7 @@ export class Bill extends React.Component {
 				"pos"               : addressLine2
 				
 			},()=>{
-				console.log("franchiseId",franchiseId);
+				// console.log("franchiseId",franchiseId);
 
 		   })
           
@@ -380,6 +381,10 @@ export class Bill extends React.Component {
             console.log('error', error);
           })
 	}
+
+	getCustData(){
+		this.props.fetchCustomerData();
+	}
 	
 	editCart(id){
 		var showDiscount = false;
@@ -481,66 +486,7 @@ export class Bill extends React.Component {
 		// }
 	  }
 
-	
 
-	checkProductSoldOut(itemCode,productCode,id,unit,rate,discountPercent,discountedPrice,cart){
-		var franchiseId = this.state.franchise_id;
-		var reportFilterData = {};
-		reportFilterData.franchiseId = franchiseId;
-		reportFilterData.itemcode = itemCode;
-		console.log("checkProductSoldOut called");
-		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
-		.then((response)=>{
-			if(response.data.length > 0){
-				if(this.props.recentCartData.length > 0){
-					var soldProducts = this.props.recentCartData[0].cartItems.filter((a, i)=>{
-						if(a.productDetail.itemCode ==  itemCode){
-						   if(response.data[0].totalStock < a.quantity){
-							console.log("soldout 1");
-							   this.setState({
-								   "soldOutProductError" : "Product Sold Out"
-							   })
-							   swal(this.state.soldOutProductError);
-						   }else{
-								this.setState({
-									"soldOutProductError" : ''
-								})
-									this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
-						   }
-						}else{
-							this.setState({
-								"soldOutProductError" : ''
-							})
-								this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
-						}
-				   })
-				}else{
-					if(response.data[0].totalStock == 0){
-						console.log("soldout 2");
-						this.setState({
-							"soldOutProductError" : "Product Sold Out."
-						})
-						swal(this.state.soldOutProductError);
-					}else{
-						this.setState({
-							"soldOutProductError" : ''
-						})
-						this.addtocart(productCode,id,unit,rate,discountPercent,discountedPrice)
-					}
-				}
-			}
-			else{
-				console.log("soldout 3");
-				this.setState({
-					"soldOutProductError" : 'Product Sold Out.'
-				})
-				swal(this.state.soldOutProductError);
-			}
-		})
-		.catch((error) => {
-			console.log('error', error);
-		})
-	}
 
 	addtocart(productCode,id,unit,rate,discountPercent,discountedPrice,availableQuantity) {
 		if(availableQuantity == 0){
@@ -755,6 +701,7 @@ export class Bill extends React.Component {
 			    billNumber : this.state.billNumber,
 				franchise_id : this.state.franchise_id,
 				user_ID: localStorage.getItem('user_ID'),
+				franchiseCustId  : this.props.recentCustomerData._id ? this.props.recentCustomerData._id : '',
 				cartItems: cartItems,
 				shippingtime: this.state.shippingtiming,
 				total: this.props.recentCartData[0].total,
@@ -805,8 +752,7 @@ export class Bill extends React.Component {
 			"quantity"        : this.state.quantity,
 			"discountedPrice" : this.state.discountedPrice,
 			"discountPercent" : this.state.discountPercent,
-			"rate"            : this.state.rate
-
+			"rate"            : this.state.rate,
 		}
 
 		var reportFilterData = {};
@@ -892,8 +838,21 @@ export class Bill extends React.Component {
 			console.log("paymentMethod",this.state.paymentMethod);
 		})
 	}
+	closeModal(event){
+		console.log("called")
+		event.preventDefault();
+		$('#customerModal').css('display','none');
+		var customerDetail = localStorage.getItem("customerDetail");
+		console.log("closeModal",JSON.parse(customerDetail));
+		this.setState({
+			customerDetail : JSON.parse(customerDetail)
+		})
+
+		
+	 }
 
 	render() {
+		console.log("props",this.props);
 		const cartItems = this.props.recentCartData;
 		let total    = 0
 		 if(this.props.recentCartData.length > 0){
@@ -902,8 +861,6 @@ export class Bill extends React.Component {
 		 }else{
 			total = 0;
 		 }
-		
-		
 		
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -918,11 +875,11 @@ export class Bill extends React.Component {
 								}
 							</div>
 							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 searchProduct">
-							     <input type="text" name="searchText" value={this.state.searchText} className="form-control col-lg-2 col-md-2 " placeholder="Search Product..." onChange={this.getProductBySearch.bind(this)}/>
+							     <input type="search" name="searchText" value={this.state.searchText} className="form-control col-lg-2 col-md-2 " placeholder="Search Product..." onChange={this.getProductBySearch.bind(this)}/>
                                  <button className="input-group button_search button"  type="button"><i className="fa fa-search"></i></button>
 							</div>
 							<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding itemCodeDiv">
-							    <input list="product" type="text" refs="product" className="form-control" placeholder="Search by Itemcode..." value={this.state.completeProductName}  onChange={this.onSearchItemCode.bind(this)} name="completeProductName" autocomplete="off"/> 
+							    <input list="product" type="search" refs="product" className="form-control" placeholder="Search by Itemcode..." value={this.state.completeProductName}  onChange={this.onSearchItemCode.bind(this)} name="completeProductName" autocomplete="off"/> 
 								<datalist id="product" name="product" className="productDatalist">
 										{
 											this.state.productArray && this.state.productArray.length > 0 ?
@@ -1019,9 +976,18 @@ export class Bill extends React.Component {
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span class="barcode">{this.state.billNumber}</span></div>
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright">
-								   <Barcode value={this.state.billNumber}/>
+									{this.state.billNumber !== undefined ? 
+									<Barcode value={this.state.billNumber}/> 
+									: null
+									}
 								   </div>
 								</div>
+								{Object.keys(this.props.recentCustomerData).length > 0 ?
+								<div className="row">
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Customer Name: {this.props.recentCustomerData.customerName}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Mobile: {this.props.recentCustomerData.mobile}</small></div>
+								</div>
+								: null}
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Date: {moment(new Date()).format("DD MMM YYYY")}</small></div>
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Time: {moment(new Date()).format(" hh:mm a")}</small></div>
@@ -1032,7 +998,7 @@ export class Bill extends React.Component {
 								</div>
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsEditForm" id="productsEditForm">
-									<div className="table-responsive">
+									<div className="table-responsive billTable">
 										<table class="table table-borderless">
 											<thead>
 												<tr>
@@ -1180,6 +1146,11 @@ export class Bill extends React.Component {
 		
 							</div> 
 							</div>
+							{/* add customer indformation */}
+							<div id="customerModal" className="modal ssmodal">
+								<button type="button" className="close CustomerModalClose" onClick={this.closeModal.bind(this)}>CLOSE</button>
+								<CustomerModal franchise_id={this.state.franchise_id}/>
+							</div>
 						 {/* </div> */}
 					</div>
 				</div>
@@ -1189,12 +1160,13 @@ export class Bill extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	//console.log("mapStateToProps",state);
+	console.log("mapStateToProps",state.recentCustomerData);
 	return {
-	  recentCartData :  state.recentCartData
+	  recentCartData     :  state.recentCartData,
+	  recentCustomerData :  state.recentCustomerData
 	}
   }
   const mapDispachToProps = (dispatch) => {
-	return  bindActionCreators({ fetchCartData: getCartData }, dispatch)
+	return  bindActionCreators({ fetchCartData: getCartData,fetchCustomerData }, dispatch)
   }
   export default connect(mapStateToProps, mapDispachToProps)(Bill);

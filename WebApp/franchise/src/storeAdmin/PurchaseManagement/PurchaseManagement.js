@@ -4,7 +4,8 @@ import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.js
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
-
+import jQuery, { isNumeric } from 'jquery';
+import $ from 'jquery';
 export default class PurchaseManagement extends React.Component {
 
 	constructor(props) {
@@ -64,7 +65,8 @@ export default class PurchaseManagement extends React.Component {
 
 		var editId = this.props.match.params.purchaseId;
         console.log('ven', editId);
-        this.getData();
+		this.getData();
+	
 
 	}
 	componentWillReceiveProps(nextProps) {
@@ -387,7 +389,7 @@ export default class PurchaseManagement extends React.Component {
 		    								{/*<input type="text" list="societyList" className="form-control" ref="society" value={this.state.societyName} onChange={this.handleChange.bind(this)} onBlur={this.handleSociety.bind(this)} name="societyName" placeholder="Enter Society" />*/}
 											
 											  <datalist id="product" name="product" >
-											    <option value="Broccoli"/>
+											    {/* <option value="Broccoli"/> */}
 											    {
                                                     this.state.productArray && this.state.productArray.length > 0 ?
                                                         this.state.productArray.map((data, i)=>{

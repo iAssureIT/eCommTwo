@@ -42,6 +42,17 @@ export const searchProductAction = (searchCriteria, searchResult )=> ({
       searchResult: searchResult
 });
 
+export const storeCustData = CustData => ({
+    type: 'STORE_CUST_DATA',
+    CustData: CustData
+});
+
+export const fetchCustomerData = CustData => ({
+  type: 'FETCH_CUST_DATA',
+  CustData: CustData
+});
+
+
 export const getForm = formToShow => ({
   type: 'MODAL_DATA',
   formToShow: formToShow
