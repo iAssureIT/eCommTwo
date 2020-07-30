@@ -101,6 +101,20 @@ height: 100px;
   border:1px solid #eee;
   overflow: hidden;
 }
+.videocard1_new{
+  display: block;
+  position: relative;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 5px 5px;
+  margin: 12px;
+  height: 221px;
+  width: 332px;
+  text-decoration: none;
+  z-index: 0;
+  border:1px solid #eee;
+  overflow: hidden;
+}
 
 .videocard1:before {
     content: "";

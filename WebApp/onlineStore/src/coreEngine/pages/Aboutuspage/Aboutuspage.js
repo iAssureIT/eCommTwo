@@ -22,7 +22,7 @@ class Aboutuspage extends Component {
           <div className="row">
             <Aboutusbanner />
              <AboutusVideos />
-            <Aboutusmultistore />
+             <Aboutusmultistore />
             {/* <Aboutusteam /> */}
             {/* <Aboutushistory /> */}
             {/* <Aboutusclient /> */}
