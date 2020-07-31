@@ -106,6 +106,9 @@ class Checkout extends Component {
         $.validator.addMethod("regxaddType", function (value, element, arg) {
             return arg !== value;
         }, "Please select the address type.");
+        $.validator.addMethod("regxaddType", function (value, element, arg) {
+            return arg !== value;
+        }, "Please select the address type.");
         jQuery.validator.setDefaults({
             debug: true,
             success: "valid"
@@ -165,6 +168,10 @@ class Checkout extends Component {
                 payMethod: {
                     required: true
                 },
+                // termsNconditions: {
+                //     required: true,
+                //     regxTermandCondition: "check type"
+                // }
                 termsNconditions: {
                     required: true
                 }
@@ -979,12 +986,13 @@ class Checkout extends Component {
                                     this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn shippingAddressTitle">SHIPPING ADDRESS <span className="required">*</span></div>
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 addressWrapper">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <label id="checkoutAddess"></label>
                                             </div>
                                             {this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
                                                 this.state.deliveryAddress.map((data, index) => {
-                                                    console.log("checked ==", this.state.addressId === data._id);
+                                                    // console.log("checked ==", this.state.addressId === data._id);
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div>
@@ -1000,8 +1008,8 @@ class Checkout extends Component {
                                                 })
                                                 :
                                                 null
-                                            }
-
+                                            }                                            
+                                            </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
                                                 <button className="btn modalBtn anasBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
                                             </div>
@@ -1012,6 +1020,7 @@ class Checkout extends Component {
                                             {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
                                                 <button className="btn modalBtn anasBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
                                             </div> */}
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 addressWrapper">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
                                                 <input type="text" maxLength="50" ref="username" name="username" id="username" value={this.state.username} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
@@ -1079,11 +1088,11 @@ class Checkout extends Component {
                                             </div> */}
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
-                                                <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} maxLength="6" minLength="6" onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                                 {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
                                                 <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
                                             </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput lastField"> 
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address type <span className="required">*</span></label>
                                                 <select id="addType" name="addType" ref="addType" value={this.state.addType} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
                                                     <option value="Home">Home (All day delivery) </option>
@@ -1092,14 +1101,16 @@ class Checkout extends Component {
                                                     <option value="Friend">Friend (All day delivery)</option>
                                                 </select>
                                             </div>
-
-
+                                            
+                                        </div>
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 manageHeight"></div>                                        
                                         </div>
                                 }
                             </div>
                             <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderReviews NOpadding table-responsive">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn orderReviewsTitle">ORDER REVIEWS</div>
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderReviewsWrapper">
                                     <table className="table orderTable">
                                         <thead>
                                             <tr>
@@ -1175,19 +1186,19 @@ class Checkout extends Component {
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25">
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Cart Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Discount:</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">
+                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight saving">
                                         {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"}
                                     </span>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Order Total:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12">Delivery Charges:</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
 
 
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                     </div>
-                                    <span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-12 col-xs-12 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
+                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
 
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
@@ -1258,11 +1269,11 @@ class Checkout extends Component {
                                                         <option value='user'>No Timings available</option>
                                                 }
                                             </select>
-                                        </div> */}
+                                        </div> */}                                    
+                                    </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
                                     </div>
-
                                 </div>
                             </div>
                         </form>

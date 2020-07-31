@@ -14,6 +14,7 @@ const initialState = {
 	searchCriteria: [],
 	categoryDetails:[],
 	formToShow :"login",
+	deliveryPincode : '',
 }
 const reducer = (state = initialState,action) =>{
 
@@ -50,6 +51,10 @@ const reducer = (state = initialState,action) =>{
 	if(action.type === "MODAL_DATA"){
 		newState.formToShow  = action.formToShow;
 		// console.log("FormtoShow:===",newState.formToShow);
+	}
+	if(action.type === "PINCODE_DATA"){
+		newState.deliveryPincode  = action.deliveryPincode;	
+		// console.log("FormtoShow:===",newState.formToShow);	
 	}
 	return newState;
 }

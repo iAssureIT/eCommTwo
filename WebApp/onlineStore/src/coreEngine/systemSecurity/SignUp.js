@@ -166,7 +166,7 @@ class SignUp extends Component {
 			var passwordVar = this.refs.signupPassword.value;
 			var signupConfirmPasswordVar = this.refs.signupConfirmPassword.value;
 			if (passwordVar === signupConfirmPasswordVar) {
-				console.log("Before post Auth:==>",auth)
+				// console.log("Before post Auth:==>",auth)
 				return (passwordVar.length >= 6) ?
 				
 					(true,
@@ -191,7 +191,7 @@ class SignUp extends Component {
 													firstname	: response.data.userDetails.firstname,
 													lastname	: response.data.userDetails.lastname,
 													email		: response.data.userDetails.email,
-													mobNumber		: response.data.userDetails.mobile,
+													mobNumber   : response.data.userDetails.mobile,
 													pincode		: response.data.userDetails.pincode,
 													user_id		: response.data.userDetails.user_id,
 													roles		: response.data.userDetails.roles,
@@ -213,7 +213,7 @@ class SignUp extends Component {
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
 													localStorage.setItem("roles", response.data.roles);
-													localStorage.setItem("pincode", response.data.pincode);
+													// localStorage.setItem("pincode", response.data.pincode);
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
 													swal('Congratulations! You have been successfully Login, Now you can place your order.');
 													window.location.reload();
@@ -224,11 +224,10 @@ class SignUp extends Component {
 														this.props.history.push(previousUrl_split[1]);
 													}
 												} else {	
-													console.log('pincode:',response.data.userDetails.pincode);												
-													localStorage.setItem("pincode", response.data.userDetails.pincode);
+													// console.log('pincode:',response.data.userDetails.pincode);												
+													// localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
-													localStorage.setItem("user_ID", response.data.ID);
-													localStorage.setItem("pincode", response.data.pincode);
+													localStorage.setItem("user_ID", response.data.ID);													
 													localStorage.setItem("roles", response.data.roles);
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
 													// this.props.history.push("/");
@@ -378,9 +377,10 @@ class SignUp extends Component {
 								)}
 							</div>
 							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
-								<label>Mobile Number</label><label className="astricsign">*</label>
-
-								<PhoneInput
+								<label>Mobile Number</label><label className="astricsign">*</label>                         
+                                <input maxLength="10" placeholder="" type="text" ref="mobNumber" name="mobNumber" id="mobNumber" value={this.state.mobNumber} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />                                     
+                    
+								{/* <PhoneInput
 									country={'in'}
 									value={this.state.mobNumber}
 									name="mobNumber"
@@ -389,7 +389,7 @@ class SignUp extends Component {
 										required: true
 									}}
 									onChange={mobNumber => { this.setState({ mobNumber }) }}
-								/>
+								/> */}
 							</div>
 							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Pincode</label><label className="astricsign">*</label>

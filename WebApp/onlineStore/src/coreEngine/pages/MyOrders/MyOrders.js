@@ -435,7 +435,7 @@ export default class MyOrders extends Component {
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderIdborder"  >
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding">
-                                <div className="orderIdButton col-lg-8 col-md-12 col-sm-12 col-xs-12 ">{"OrderId: "+(data.orderID)}</div>
+                                <div className="orderIdButton col-lg-8 col-md-12 col-sm-12 col-xs-12 ">{"Order ID : "+(data.orderID)}</div>
                               </div>  
                               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding">
                                 <div className="actionbtn col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">

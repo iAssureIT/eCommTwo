@@ -3,11 +3,17 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import jQuery                 from 'jquery';
 import $                      from 'jquery';
+import { withRouter }             from 'react-router-dom';
+import { connect }                from 'react-redux';
+import { bindActionCreators }     from 'redux';
+// import {getPincode} from '../../actions/index';
+import {getPincode,updatePin} from '../../actions/index';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../../sites/currentSite/blocks/AskPincode.css';
 import pincodeModalImg from '../../../sites/currentSite/images/modalBackground.png';
 
-export default class AskPincode extends Component {
+class AskPincode extends Component {
     
 	constructor(props){
     super(props);
@@ -19,16 +25,17 @@ export default class AskPincode extends Component {
             "DeliveryStatus"      : "",
             "pincode"             : "",
             "pincodeExists"       : "",
+            "deliveryPincode"     :"",
         }        
       }  
      componentDidMount(){
         var pincode = localStorage.getItem('pincode');
         
      }
-
      componentWillMount(){
         //  console.log("In will mount");
-        var pincode = localStorage.getItem('pincode');          
+        var pincode = localStorage.getItem('pincode');  
+        this.props.updatePincode(pincode);      
         if(pincode){            
             if(localStorage.getItem('status')){
                 axios.get("/api/allowablepincode/checkpincode/"+pincode)
@@ -82,10 +89,11 @@ export default class AskPincode extends Component {
       checkDelivery(event){
         event.preventDefault();
         var userPincode =  $('.pinocodeInput').val();
-        console.log("Pincode:",userPincode);
+        // console.log("Pincode:",userPincode);
         // console.log("userPincode===",userPincode);
         //create object to store userPincode data into localStorage
         localStorage.setItem("pincode",userPincode);
+        this.props.updatePincode(userPincode); 
         localStorage.setItem('deliveryStatusMsg',"true");
         axios.get("/api/allowablepincode/checkpincode/"+userPincode)
             .then((response)=>{
@@ -236,3 +244,19 @@ export default class AskPincode extends Component {
 		);
 	}
 }
+
+const mapStateToProps = (state) => {
+    console.log("askpincode form state===",state);
+    return {
+      
+        deliveryPincode : state.deliveryPincode,
+  
+  
+    }
+  }
+  const mapDispachToProps = (dispatch) => {
+    return  bindActionCreators({ showpincode :getPincode,updatePincode : updatePin}, dispatch)
+    // return  bindActionCreators({ showpincode :getPincode, updatePincode : updatePin }, dispatch)
+  }
+  export default connect(mapStateToProps, mapDispachToProps)(withRouter(AskPincode));
+// export default AskPincode;

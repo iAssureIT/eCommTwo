@@ -7,8 +7,17 @@
     margin-bottom: 20px;
     padding-bottom: 20px;
     border: 1px solid #ddd;
-    height: 557px;
+    /* height: 557px; */
     overflow: auto;
+}
+.addressWrapper{
+    height: 400px;
+    overflow: auto;
+}
+.orderReviewsWrapper{
+    height:590px;
+    overflow:auto;
+    margin-bottom: 20px;
 }
 .shippingInput{
     margin-top: 20px;
@@ -201,9 +210,15 @@
     display: none;
     padding-left: 0px;
 }
+.manageHeight{
+    height : 58px;
+}
 
 @media only screen and (max-device-width: 480px) {   
 .orderImg{
     width: 60px;
+}
+.termsWrapper{
+    margin-top: -18px;
 }
 }

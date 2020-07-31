@@ -7,7 +7,13 @@ export function updateForm(formValue) {
     formToShow: formValue
   }
 }
-
+export function updatePin(pincode) {
+  // console.log("In Action updatePin value ===",pincode);
+  return {
+    type: "PINCODE_DATA",
+    deliveryPincode: pincode
+  }
+}
 export function getCartData() {
 	return dispatch =>{
 
@@ -45,4 +51,9 @@ export const searchProductAction = (searchCriteria, searchResult )=> ({
 export const getForm = formToShow => ({
   type: 'MODAL_DATA',
   formToShow: formToShow
+});
+
+export const getPincode = deliveryPincode => ({
+  type            : 'PINCODE_DATA',
+  deliveryPincode : deliveryPincode
 });

@@ -341,7 +341,7 @@ class CartProducts extends Component{
                                 <table className="table cartProductTable">
                                     <thead>
                                         <tr>
-                                            <th>ITEMS</th>
+                                            <th className="itemth">ITEMS</th>
                                             <th>PRICE</th>
                                             <th>QUANTITY</th>
                                             { localStorage.getItem('websiteModel') === 'FranchiseModel'? 
@@ -388,7 +388,7 @@ class CartProducts extends Component{
                                                                 
                                                             </tr>
                                                         </td>
-                                                        <td className="nowrap">
+                                                        <td className="nowrap ">
                                                         {
                                                             data.productDetail.availableQuantity > 0 ?
                                                                 <div >
@@ -417,7 +417,7 @@ class CartProducts extends Component{
                                                             }
                                                         </td>
 
-                                                        <td>  
+                                                        <td className="proWeight">  
                                                             { localStorage.getItem('websiteModel') === 'FranchiseModel'? 
                                                                
                                                                 <span className="productSize totalWeight">&nbsp;{data.totalWeight} &nbsp;</span> 

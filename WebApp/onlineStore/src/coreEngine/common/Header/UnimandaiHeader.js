@@ -7,7 +7,7 @@ import { withRouter }             from 'react-router-dom';
 import Message                    from '../../blocks/Message/Message.js'; 
 import { connect }                from 'react-redux';
 import { bindActionCreators }     from 'redux';
-import {getCartData, searchProductAction,getForm} from '../../actions/index';
+import {getCartData, searchProductAction,getForm,getPincode} from '../../actions/index';
 import $                          from "jquery";
 import Login          from '../../systemSecurity/Login.js';
 import SignUp         from '../../systemSecurity/SignUp.js';
@@ -47,6 +47,8 @@ class unimandaiHeader extends Component {
       "limitRange": 10,
       lastname       : '',
       formToShow     : "login",
+      deliveryPincode: "",
+
     }  
     
     if (window.location.pathname !== "/searchProducts") {
@@ -59,7 +61,7 @@ componentWillMount() {
   //get current location of user
   if (navigator.geolocation) { //check if geolocation is available
     navigator.geolocation.getCurrentPosition(function(position){
-      console.log(position);
+      // console.log(position);
       if(position){
         $.get( "http://maps.googleapis.com/maps/api/geocode/json?latlng="+ position.coords.latitude + "," + position.coords.longitude +"&sensor=false", function(data) {
           console.log(data);
@@ -67,6 +69,13 @@ componentWillMount() {
       }
     });   
   }  
+
+  if(localStorage.getItem(pincode)){
+    var pincode =localStorage.getItem(pincode);
+      this.setState({
+        deliveryPincode : pincode,
+      })
+  }
   
       $(document).ready(function(e){      
       $('.search-panel li a').on('click', function(e){
@@ -456,17 +465,20 @@ loginPage(event){
           <div className="row">
           <Message messageData={this.state.messageData} />  
           {/* <AskPincode />         */}
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 greenStrip">
-            {/* {localStorage.getItem('pincode') ?
+          {/* show user -  delivery is possible or not  */}
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs greenStrip">
+            {localStorage.getItem('pincode') ?
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
                 {localStorage.getItem('status') === 'NotAllow'?                
-                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
+                  // <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
+                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {this.props.deliveryPincode} </div>
                 :
-                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
+                  // <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
+                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {this.props.deliveryPincode} </div>
                 }
               </div>
             :null
-            }           */}
+            }          
           </div>
 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 firstDiv">
@@ -583,8 +595,7 @@ loginPage(event){
                         </a>
                       }
                       </span>
-                        {user_ID ?
-                            
+                        {user_ID ?                            
                           <ul className="dropdown-menu cart-dropdown-menu" role="menu" aria-labelledby="menu1">
                             <div className="checkoutBtn">
                             <div>
@@ -884,17 +895,17 @@ loginPage(event){
   }
 }
 const mapStateToProps = (state) => {
-  // console.log("form state===",state);
+  console.log("form state===",state);
   return {
     searchResult   : state.searchResult,
     searchCriteria : state.searchCriteria,
     recentCartData : state.recentCartData,
     formToShow     : state.formToShow,
-
-
+    deliveryPincode: state.deliveryPincode,
   }
 }
 const mapDispachToProps = (dispatch) => {
-  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction, formToShowValue :getForm}, dispatch)
+  return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction, formToShowValue :getForm,showpincode :getPincode}, dispatch)
+  // return  bindActionCreators({ fetchCartData: getCartData, searchProductFun: searchProductAction, formToShowValue :getForm, showpincode :getPincode}, dispatch)
 }
 export default connect(mapStateToProps, mapDispachToProps)(withRouter(unimandaiHeader));

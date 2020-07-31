@@ -35,7 +35,9 @@
 .totalWeight{
     text-transform: uppercase !important;
 }
-
+.cartProductTable thead tr .itemth, .proWeight{ 
+    text-align: center !important;
+}
 @media only screen and (max-device-width: 480px) {  
 .banner{
     height: auto !important;

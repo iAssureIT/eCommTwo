@@ -123,36 +123,23 @@ componentDidMount(){
 /*	    if($('#ContactUsForm').valid()){*/
 
 	    // var adminEmail = this.getAdminEmail();  //Get email id from company settings. Write API for that.
-	    var adminEmail = "info@iassureit.com";
+	    var adminEmail = "admin@unimandai.com";
 
-	    const formValues1 = {
-	        "email"         : this.state.email ,
-	        "subject"       : "Your Query/Feedback is sent successfully to www.iassureit.com!",
-	        "text"          : "", 
-	        "mail"          : 'Dear ' + this.state.name + ', <br/><br/>'+
+	    // const formValues1 = {
+	    //     "email"         : this.state.email ,
+	    //     "subject"       : "Your Query/Feedback is sent successfully to www.iassureit.com!",
+	    //     "text"          : "", 
+	    //     "mail"          : 'Dear ' + this.state.name + ', <br/><br/>'+
 	                          
-	                          "<b>Your Email: </b>"  + this.state.email + '<br/><br/>'+
-	                          "Your following message has been successfully delivered to the admin! We will get back to you shortly. <br/> <br/> " + 
-	                          "===============================  <br/> <br/> " + 
-	                          "<pre> " + this.state.message+ "</pre>" + 
-	                          " <br/> <br/> =============================== " + 
-	                          "<br/><br/> Thank You, <br/> Support Team, <br/> www.iassureit.com " ,
+	    //                       "<b>Your Email: </b>"  + this.state.email + '<br/><br/>'+
+	    //                       "Your following message has been successfully delivered to the admin! We will get back to you shortly. <br/> <br/> " + 
+	    //                       "===============================  <br/> <br/> " + 
+	    //                       "<pre> " + this.state.message+ "</pre>" + 
+	    //                       " <br/> <br/> =============================== " + 
+	    //                       "<br/><br/> Thank You, <br/> Support Team, <br/> www.iassureit.com " ,
 
-	      };
-	    //   console.log("notification",formValues1); 
-	      
-	        /*axios
-	        .post('/send-email',formValues1)
-	        .then((res)=>{
-	          console.log("re==",res);
-	                   if(res.status === 200){
-	                    Swal("Thank you for contacting us. We will get back to you shortly.")
-	                    }
-	                })
-	                .catch((error)=>{
-	                  console.log("error = ", error);
-	                  
-	                });*/
+	    //   };
+	    
 	             
 	       const formValues2 = {
 	        "email"         : adminEmail ,
@@ -169,23 +156,37 @@ componentDidMount(){
 	                          "<br/><br/> ============================ " + 
 	                          "<br/><br/> This is a system generated email! " ,
 
-	      };
-	      console.log("notification",formValues2); 
+		  };
+		  //   console.log("notification",formValues1); 
 	      
-	       /* axios
+	        axios
 	        .post('/send-email',formValues2)
 	        .then((res)=>{
-	          console.log("re==",res);
+	        //   console.log("re==",res);
+				if(res.status === 200){
+				Swal("Thank you for contacting us. We will get back to you shortly.")
+				}
+			})
+			.catch((error)=>{
+				console.log("error = ", error);
+				
+			});
+	    //   console.log("notification",formValues2); 
+	      
+	        // axios
+	        // .post('/send-email',formValues2)
+	        // .then((res)=>{ 
+	        // //   console.log("re==",res);
 	            
-	                  if(res.status === 200){
-	                    console.log("Mail Sent TO ADMIN successfully!")
-	                  }
-	                })
-	                .catch((error)=>{
-	                  console.log("error = ", error);
+	        //           if(res.status === 200){
+			// 			console.log("Mail Sent TO ADMIN successfully!")
+			// 			Swal("Mail sent successfuly");
+	        //           }
+	        //         })
+	        //         .catch((error)=>{
+	        //           console.log("error = ", error);
 	                  
-	                });
-	           */
+	        //         });	           
 	               
 	                this.setState({
                           		name    : "",
@@ -193,10 +194,7 @@ componentDidMount(){
 	                			Subject : "",
 	                			message : ""
                       });
-
-	            /*  }*/
-	}
-	    
+		} 
 
 	render() {
 			return (

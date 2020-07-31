@@ -69,6 +69,7 @@
 }
 .freshfoodImg{
     /* margin-top: 20px; */
+    padding-left: 40px;
 }
 
 @media only screen and (max-device-width: 480px) {  
@@ -95,6 +96,5 @@ and (max-device-width : 1024px) {
 .freshFoodBlock{
     padding: 40px;
 }
-
 }
 
