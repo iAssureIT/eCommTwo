@@ -1,0 +1,13 @@
+.whatsupIcon{
+	/*height: 100px;*/
+	font-size: 100px;
+	color:#2f943c;
+
+}
+.whatsappLink{
+	position: absolute;
+    width: 308px;
+    left: 131px;
+    top: 49px;
+    text-decoration: underline;
+}

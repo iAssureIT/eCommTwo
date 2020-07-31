@@ -69,3 +69,38 @@ background: #FBBD65;
 	border-bottom: solid 2px #A2632C;
 	margin-top: 33px;
 }
+.homeBanner2{
+	margin-top: 98px;
+}
+.intro_img{
+	width: 50px;
+    height: 50px;
+    text-align: center;
+    margin-left: 60px;
+}
+.bannerContainerEcomm{
+	margin-top: 23px;
+}
+.homeBanner2_head{
+	font-size: 14px;
+    font-weight: 700;
+
+
+}
+.img_border{
+ border-right: 1px solid #eee;
+}
+.btnbg {
+    background-image: url(/images/contact.png);
+    width: 102px;
+    background-color: #f1f1f1;
+    box-shadow: 1px 1px 10px 0 #f1f1f1;
+    border-radius: 40px 0 0 40px;
+    height: 55px;
+    top: 307px;
+    right: 0px;
+    z-index: 1000;
+    position: absolute;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}

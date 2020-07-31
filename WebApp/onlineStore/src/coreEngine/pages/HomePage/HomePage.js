@@ -5,12 +5,14 @@ import EcommerceProductCarousel     from "../../blocks/ProductCarouselEcommerce/
 import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
 import EcommerceDiscountedProducts  from "../../blocks/ProductCarouselEcommerce/EcommerceDiscountedProducts.js";
 import EcommerceBanner              from "../../blocks/Banner/EcommerceBanner.js";
+import Homepage_Block2              from "../../blocks/Homepage_Block2/Homepage_Block2.js";
 import ProductDivider               from "../../blocks/ProductDivider/ProductDivider.js";
 import SaleProductDivider           from "../../blocks/ProductDivider/SaleProductDivider.js";
 import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js";
 import AskPincode                   from "../../blocks/AskPincode/AskPincode.js";
 import HomePageBanner2              from "../../blocks/unimandaiBlock/HomePageBanner2/HomePageBanner2.js";
 import FreshFoodBlock               from "../../blocks/unimandaiBlock/FreshFoodBlock/FreshFoodBlock.js";
+import                              "../../../sites/currentSite/pages/HomePage.css";
 import axios                        from 'axios';
 import Loader                       from "../../common/loader/Loader.js";
 import Blogs                        from "../../blocks/Blogs/Blogs.js";
@@ -167,6 +169,7 @@ class HomePage extends Component {
               :
                 null
             } */}
+
             <EcommerceBanner/>
              {/*-----------------shop by category block---------------------*/}
           <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">

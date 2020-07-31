@@ -183,7 +183,20 @@ removeModalBackDrop(event){
     }
     
   }
+  showSearchbar(){
+    $(".searchBox").css('display','block');
+    $(".searchicon").css('display','none');
+    $(".searchclose").css('display','block');
+
+  }
+  closesearchbar(){
+    $(".searchBox").css('display','none');
+      $(".searchicon").css('display','block');
+      $(".searchclose").css('display','none');
+
+  }
   searchProducts() {
+    
     if (this.state.catArray.length === 0 && $('.headersearch').val() !== '') {
       var searchstr = this.refs.tableSearch.value.trim();
       if(searchstr){
@@ -374,19 +387,19 @@ removeModalBackDrop(event){
       <div className="homecontentwrapper">
         <Message messageData={this.state.messageData} />
           <header className="col-lg-12 col-md-12 col-sm-12 col-xs-12 headerflow NoPadding">
-           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 upper_headerdiv"></div>
-            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
-              <div className="row">
-                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 headerlogoimg headerLogoPaddingtop text-center">
-                  <div className="row">
-                    <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                      <div className="row">
-                        <a href="/"><img src={require("../../../sites/currentSite/images/anasLogo.png")} alt="Logo Picture " /></a>
-                      </div>
+          {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 upper_headerdiv"></div>*/}
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                <div className="col-lg-1 col-md-1 col-sm-1 col-xs-3 headerlogoimg headerLogoPaddingtop text-left NoPadding">
+                    <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8 NoPadding">
+                        <a href="/"><img src={require("../../../sites/currentSite/images/NewAnasLogo.jpeg")} alt="Logo Picture " /></a>
                     </div>
-                  </div>
                 </div>
-                <div className="col-lg-7 col-md-7 col-sm-8 col-xs-8 headerpaddingtop">
+                <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 NoPadding-right">
+                  <nav>
+                      <Megamenu />
+                  </nav>
+                </div>
+                {/*<div className="col-lg-7 col-md-7 col-sm-8 col-xs-8 headerpaddingtop">
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div className="row">
@@ -410,9 +423,15 @@ removeModalBackDrop(event){
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 usericon_pos">
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 header1list2">
+                </div>*/}
+               
+                <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 usericon_pos">
+                 <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 header1list2">
+                  <i className="searchicon headercarticon fa fa-search "id="demo-2" title="Search The website" onClick={this.showSearchbar.bind(this)}></i>
+                  <i className="searchclose headercarticon fa fa-times" title="Close Search" onClick={this.closesearchbar.bind(this)}></i>
+                    
+                 </div>
+                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 header1list2">
                       <div className="row">
                         <ul>
                           {/*
@@ -423,7 +442,8 @@ removeModalBackDrop(event){
                           {
 
                             user_ID ?
-                              <li className="dropdown"><img className="headercarticon" src={loginIconImg} aria-hidden="true"/>
+                              <li className="dropdown">
+                                <i className="headercarticon fa fa-user"aria-hidden="true"></i>
                                 <ul className="dropdown-menu signinmenuul">
                                   <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <a href="/">
@@ -457,7 +477,7 @@ removeModalBackDrop(event){
                               :
                              <li>
                                <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
-                                 <img className="headercarticon" src={loginIconImg} aria-hidden="true"/></a>
+                                 <i className="headercarticon  fa fa-user" aria-hidden="true"></i></a>
                                </span>
                         
                              </li>
@@ -492,52 +512,14 @@ removeModalBackDrop(event){
                             </div>
                         </div>
                      </div> 
-                    </div>
-                </div>
-                 <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-                      <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                          {user_ID 
-                            ? 
-                                <li className="dropdown">
-                                    <ul className="col-lg-3 col-md-3 col-sm-3 col-xs-3 dropdown-menu list-menu">                                        
-                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                            <a href="">
-                                            <div className="row">
-                                                <div className="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                                                <div className="shortnamebk">
-                                                    <div className="">                                                    
-                                                        <div className="userinfo">{this.state.firstname}{this.state.lastname}</div>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div className="userinfotext"><span >{this.state.userData ? this.state.userData.fullName : null}</span></div>
-                                                </div>
-                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div className="useremail"><span>{this.state.userData ? this.state.userData.email : null}</span></div>
-                                                </div>
-                                                </div>
-                                            </div>
-                                            </a>
-                                        </li>                                  
-                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia"><a href="/account">My Profile</a></li>
-                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia"><a href="/my-ordersUni">My Orders</a></li>
-                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia"><a href="/wishlist">My Wishlist</a></li>
-                                        <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding headerlia signoutBtn" style={{ backgroundColor:"#80b435", color:"#fff"}}  onClick={this.signOut.bind(this)}><a href="/" style={{ backgroundColor:"#80b435", color:"#fff"}}>Sign Out</a></li>
-                                    </ul>
-                                </li>
-                            :
-                            null
-                          }
-                      </div>
+                  </div>
+                   
                     
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu ">
                       <span>  
                       {user_ID ?                      
                         <a href={user_ID ? "/cart" : null} className="icon-cart ">
-                           <img className=" headercarticon headercarticon_bag"src={cartphoto} aria-hidden="true" onClick={this.loginPage.bind(this)} style={{width:"24px"}}/>
+                           <i className=" headercarticon headercarticon_bag fa fa-shopping-cart" aria-hidden="true" onClick={this.loginPage.bind(this)} style={{width:"24px"}}></i>
                             
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cornercart cart-count">
@@ -546,7 +528,7 @@ removeModalBackDrop(event){
                         </a>
                         :
                         <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)}>
-                           <img className=" headercarticon headercarticon_bag"src={cartphoto} aria-hidden="true" style={{width:"24px"}}/>
+                           <i className=" headercarticon headercarticon_bag fa fa-shopping-cart" aria-hidden="true" style={{width:"24px"}}></i>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                             <span className="cornercart cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
@@ -616,19 +598,19 @@ removeModalBackDrop(event){
                           null
                         }
                     </div> 
-
-                  </div>                   
                 </div>
-
-              </div>
             </div>
+             <div className="col-lg-3 col-md-3 searchBox">
+                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
+                  <button className="button_search"  type="button"><i className="fa fa-search" ></i></button>
+                </div> 
         </header>
         <nav>
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 catogeryvaluebg">
+         {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 catogeryvaluebg">
             <div className="row">
               <Megamenu />
             </div>
-          </div>
+          </div>*/}
         </nav>
       </div>
     );

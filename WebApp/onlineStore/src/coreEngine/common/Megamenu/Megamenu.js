@@ -79,18 +79,13 @@ componentWillMount() {
   render() {  
         return (
         <header className="dark">
-          <button className="contactBar hidden-xs" >
+          {/*<button className="contactBar hidden-xs" >
           <div className="fixedContactBar">
             <i className="fa fa-youtube-square youtubeicon"style={{color:"#ffffff"}} aria-hidden="true"></i>
           </div>
           <a href="https://www.youtube.com/results?search_query=anasHandicrafts"><div className="hovertext">You Tube</div></a>
-        </button>
+        </button>*/}
         <nav className="" role="navigation" style={{height:"68px"}}>
-          {/* <a href="javascript:void(0);" className="ic menu" tabindex="1">
-            <span className="line"></span>
-            <span className="line"></span>
-            <span className="line"></span>
-          </a> */}
           <a href="javascript:void(0);" className="ic close"> </a>
 
           <ul className="main-nav textAlignCenter">            
@@ -98,11 +93,13 @@ componentWillMount() {
               Array.isArray(this.state.categoryData) && this.state.categoryData.map((data,index)=>{
                   return(
                     <li key={index} className="top-level-link">
-                      <a className="mega-menu" href={"/section/"+data.sectionUrl+'/'+data._id}><span>{data.section}</span></a>
-                      <div className="col-lg-2 col-md-2 sub-menu-block textAlignLeft"style={{width:"208px"}}>
-                        <div className="row">
-                          <div className="col-md-3 col-lg-3 col-sm-3 megamenusubwidth">
-                          <ul className="sub-menu-head">
+                      <a className="mega-menu" href={"/section/"+data.sectionUrl+'/'+data._id}>
+                        <span className="spanDiv">{data.section}</span>
+                       </a>
+                        <div className="col-lg-2 col-md-2 sub-menu-block textAlignLeft"style={{width:"208px"}}>
+                          <div className="row">
+                           <div className="col-md-3 col-lg-3 col-sm-3 megamenusubwidth">
+                            <ul className="sub-menu-head">
                             {
                               data.categorylist.map((cateoryDetails,catindex)=>{                                
                                 // if(!cateoryDetails.subCategory.length > 0){

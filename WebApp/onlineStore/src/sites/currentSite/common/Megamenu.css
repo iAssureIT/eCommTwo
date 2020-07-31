@@ -57,9 +57,9 @@ ul.main-nav > li {
 
 ul.main-nav > li > a { 
   display: block; 
-  padding: 10px 7px; 
+  padding: 28px 5px; 
   position: relative;
-  color: #333;
+  color: #fff;
   font: 600 15px/40px "Roboto Slab" ! important;
   font-weight: 600;
   box-sizing: border-box;
@@ -67,10 +67,19 @@ ul.main-nav > li > a {
   text-decoration: none;
   transition: 0.4s ease;
 }
-
-ul.main-nav > li:hover { 
+ul.main-nav > li > a:hover .spanDiv{
   background-color: #fff;
-  color: rgb(58, 162, 44);
+  border-radius: 20px;
+  /*padding-left: 2px;*/
+  /*color:#fff;*/
+
+}
+ul.main-nav > li > a:hover ul.main-nav > li > a{
+  color:#333;
+} 
+ul.main-nav > li:hover { 
+  /*background-color: #fff;*/
+  color: #333;
 }
 ul.main-nav > li:hover > a { color: #333; font-weight: 400; }
 
@@ -370,7 +379,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   float: none!important;
 }
 .mega-menu:hover{
-  color: #A2632C !important;
+  color: #333 !important;
 }
 .sub-menu-head a:hover{
   color: #A2632C !important;

@@ -197,9 +197,9 @@ class Address extends Component {
         this.setState({
             [event.target.name]: event.target.value
         })
-        if (event.target.name === 'modalPincode') {
+       /* if (event.target.name === 'modalPincode') {
             this.handlePincode(event.target.value);
-        }
+        }*/
     }
     handlePincode(pincode){
         
