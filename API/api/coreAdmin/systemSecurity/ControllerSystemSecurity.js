@@ -577,7 +577,7 @@ exports.check_username_EmailOTP = (req, res, next) => {
 };
 
 exports.user_login_using_email = (req, res, next) => {
-	// console.log("user_login_using_email req.body = ",req.body);
+	console.log("user_login_using_email req.body = ",req.body);
 	var emailId = (req.body.email).toLowerCase(); 
 	var role = (req.body.role).toLowerCase();
 	User.findOne({

@@ -64,10 +64,11 @@ class Login extends Component {
       role: "admin"
     }
     if ($("#login").valid()) {
+      console.log("auth:",auth);      
       document.getElementById("logInBtn").value = this.setState({ btnLoading: true });
       axios.post('/api/auth/post/login', auth)
       .then((response) => {
-        console.log("response",response)
+        console.log("response",response);
           // this.props.setGlobalUser(response.data.userDetails);
           if (response.data.ID) {
             this.setState({ btnLoading: false });
