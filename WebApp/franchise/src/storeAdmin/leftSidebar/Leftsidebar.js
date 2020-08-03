@@ -79,7 +79,6 @@ export default class Leftsidebar extends Component{
                     Dashboard
                   </a>
                 </li>
-
                 <li className="sidebarMenuText">
                   <a href="#Shipment" data-toggle="collapse" aria-expanded="false">
                     <i className="fa fa-map-marker" />

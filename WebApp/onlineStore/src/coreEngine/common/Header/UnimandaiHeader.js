@@ -471,10 +471,10 @@ loginPage(event){
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
                 {localStorage.getItem('status') === 'NotAllow'?                
                   // <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
-                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {this.props.deliveryPincode} </div>
+                  <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-12  pull-right showPincode">Delivery Not Available : {this.props.deliveryPincode} </div>
                 :
                   // <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
-                  <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {this.props.deliveryPincode} </div>
+                  <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-3 pull-right showPincode">Delivery Available : {this.props.deliveryPincode} </div>
                 }
               </div>
             :null
@@ -497,7 +497,7 @@ loginPage(event){
                 </div>
 
                 
-                <div className="col-lg-6 col-md-6 col-sm-9 col-xs-6 megamenuWrapper">
+                <div className="col-lg-6 col-md-6 col-sm-1 col-xs-6 megamenuWrapper">
                   <nav>
                       <Megamenu />
                   </nav>
@@ -895,7 +895,7 @@ loginPage(event){
   }
 }
 const mapStateToProps = (state) => {
-  console.log("form state===",state);
+  // console.log("form state===",state);
   return {
     searchResult   : state.searchResult,
     searchCriteria : state.searchCriteria,

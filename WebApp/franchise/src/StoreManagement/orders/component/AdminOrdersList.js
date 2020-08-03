@@ -447,14 +447,22 @@ class AdminOrdersList extends Component{
 
           }
         ];
-        return(         
-            <div className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
-              <div className="row"> 
-                <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                <div className="formWrapper">
+        return(    
 
+        // <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				// <div className="row">
+				// 	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
+				// 		<section className="content">
+				// 			<div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+          
+
+
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div className="row"> 
+                <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NoPadding">
+                <div className="formWrapper">
                   <section className="content">
-                    <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent marginBottomCSS">
+                    <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12 marginBottomCSS">
                     <br/>
                       <div className="row">
                           <div className="admin-orders-SubTitleRow  row">

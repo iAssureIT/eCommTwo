@@ -82,9 +82,7 @@ class CoreLayout extends Component {
                 {/* <Route path="/Department" exact strict component={Department} /> */}
                 {/* <Route path="/Department/:fieldID" exact strict component={Department} /> */}
                 <Route path="/designation" exact strict component={Designation} />
-                <Route path="/designation/:fieldID" exact strict component={Designation} />
-
-              
+                <Route path="/designation/:fieldID" exact strict component={Designation} />              
 
                 {/* access-management */}
                 <Route path="/access-management" exact strict component={AccessManagement} />

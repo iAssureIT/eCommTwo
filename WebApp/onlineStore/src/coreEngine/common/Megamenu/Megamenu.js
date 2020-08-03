@@ -85,7 +85,7 @@ componentWillMount() {
             <span className="line"></span>
             <span className="line"></span>
           </a> */}
-          <a href="javascript:void(0);" className="ic close"> </a>
+          {/* <a href="javascript:void(0);" className="close">X </a> */}
 
           <ul className="main-nav textAlignCenter">            
             {
