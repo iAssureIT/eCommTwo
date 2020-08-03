@@ -14,9 +14,9 @@ export default class LegalNotice extends Component {
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  mt20  ">
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  ">										
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 returnPolicy ">
-											<div className="pageTitle">Legal Notice</div>
+											<h3 className="pageTitle text-center headingBottom">Legal Notice</h3>
 											<p className="">
-												AnasHandicrafts grants you a limited right to access and use of this site. Do not modify it or any portion of it. Any downloading or copying of account information for the benefit of another merchant; or any use of data mining or similar data gathering and extraction tools. This site may not be reproduced, duplicated, copied, sold visited without written consent of AnasHandicrafts. You can not use any trademark, logo, or other proprietary information (including images, text, page layout, or form) of the Site.Any unauthorized use terminates the permission or license granted by AnasHandicrafts.
+												AnasHandicraftts grants you a limited right to access and use of this site. Do not modify it or any portion of it. Any downloading or copying of account information for the benefit of another merchant; or any use of data mining or similar data gathering and extraction tools. This site may not be reproduced, duplicated, copied, sold visited without written consent of AnasHandicraftts. You can not use any trademark, logo, or other proprietary information (including images, text, page layout, or form) of the Site.Any unauthorized use terminates the permission or license granted by AnasHandicraftts.
 											</p>
 											<div className="pageSubtitle">Accounts</div>
 											<p>

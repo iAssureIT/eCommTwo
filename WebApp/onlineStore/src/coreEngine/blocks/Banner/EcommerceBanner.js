@@ -43,7 +43,8 @@ export default class EcommerceBanner extends Component {
 
 		  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "style={{padding:"0px"}}>
 			 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
-					 <a href="https://www.youtube.com/results?search_query=anasHandicrafts"><button type="button" class="btn btn-lg madalbtn btnbg">You Tube</button></a>
+					 <a href="https://www.youtube.com/results?search_query=anasHandicrafts">
+					 <button type="button" class="btn btn-lg madalbtn btnbg">You Tube</button></a>
 						<div className="row">
 							<div className="">
 
@@ -68,7 +69,7 @@ export default class EcommerceBanner extends Component {
 											    	</div>
 											    </div>
 											    <div className="item">
-											    	<img className="img img-responsive" src={require("../../../sites/currentSite/images/banner2.png")} alt="banner" />
+											    	<img className="img img-responsive bannerimg" src={require("../../../sites/currentSite/images/banner2.png")} alt="banner" />
 											    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner2AnimationImg">
 											    		<img className="img img-responsive banner2sideImg" src="../../../sites/currentSite/images/banner2(1).png" alt="banner" />
 											    	</div>
@@ -82,7 +83,7 @@ export default class EcommerceBanner extends Component {
 											    	</div>
 											    </div>
 											    <div className="item">
-											    	<img className="img img-responsive" src={require("../../../sites/currentSite/images/banner3.png")} alt="banner"  />
+											    	<img className="img img-responsive bannerimg" src={require("../../../sites/currentSite/images/banner3.png")} alt="banner"  />
 											    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
 											    		<img className="img img-responsive banner1upImg" src={require("../../../sites/currentSite/images/banner3(1).png")} alt="banner"  />
 											    		<div className="BannerTitle"> Royal Collection </div>

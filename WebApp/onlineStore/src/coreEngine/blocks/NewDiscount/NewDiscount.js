@@ -2,11 +2,14 @@ import React, {Component} from 'react';
 import axios              from 'axios'; 
 // import $ from "jquery";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'font-awesome/css/font-awesome.min.css';
-import '../../../sites/currentSite/blocks/Homepage_Block2.css'; 
+import 'font-awesome/css/font-awesome.min.css'; 
+import '../../../sites/currentSite/blocks/NewDiscount.css';
+import Newblock1 from '../../../sites/currentSite/images/Newblock1.png';
+import Newblock2 from '../../../sites/currentSite/images/newblock2.png';
+import newblock3 from '../../../sites/currentSite/images/newblock3.png';
 
 
-export default class Homepage_Block2 extends Component {
+export default class NewDiscount extends Component {
 constructor(props) {
         super(props);
         this.state = {
@@ -91,25 +94,28 @@ componentWillMount() {
   
   render() {  
         return (
-        <div clasName="col-lg-12 col-md-12 col-sm-12 col-xs-12 below_header">
-         <div clasName="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
-
-         {
-            this.ServicesData().map((data, index)=>{
-              return (   
-                        <div key={index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div className="col-lg-12">shfhdsfiuh
-                              <div className="img1">
-                                <img src={data.servicesimg} alt="" className="intro_img img-responsive" />
-                            </div>
-                          </div>
-                          </div>
-                        </div>
-                         );
-                      })
-                    }
-            </div>
+        <div clasName="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 mainDiscDiv" style={{height:"350px"}}>
+         <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 image1stDiv div1background image1_div">
+          <img className="img img-responsive bannerimg" style={{height:"258px"}} src={require("../../../sites/currentSite/images/Newblock1.png")} alt="banner" />
+         </div>
+         <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imagediv2 ">
+          <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7 image1stDiv"style={{'background' : "url("+Newblock2 +")"}}>
+          </div>
+           <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imge2text"style={{padding:"0px"}}>
+            <h3 style={{color:"#fff"}}><b>BIG SAVING</b></h3>
+            <h1 style={{color:"#fff"}}><b>GET 75%</b></h1>
+            <a href="#"><div class="btn  new_shopnowbtn" title="Shop Now">Shop Now</div></a>
+          </div>
+         </div>
+          <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imagediv3">
+           <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 image1stDiv">
+           <h1 style={{color:"#fff"}}><b>BIG SALE</b></h1>
+           <h3 style={{color:"#fff"}}><b>GET 25%</b></h3>
+          </div>
+          <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7 image1stDiv">\
+            <img className="img img-responsive bannerimg" style={{height:"258px"}} src={require("../../../sites/currentSite/images/newblock3.png")} alt="banner" />
+          </div>
+         </div>
         </div>
     );  
   }

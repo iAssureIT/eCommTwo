@@ -246,7 +246,7 @@
   font-size: 20px!important;
   border-radius: 0px;
   padding: 0px;
-  width: 250px;
+  width: 198px;
   border:1px solid #fff !important;
   margin: 0;
 }
@@ -788,10 +788,11 @@ ul.box-static-link li span {
     z-index: 1000;
 }
 button.button_search {
-    background: #333;
-    color: #fff;
+    background: #fff;
+    color: #333;
+    border:none;
     text-transform: uppercase;
-    border: 1px solid #948c8c!important;
+    /*border: 1px solid #948c8c!important;*/
     border-left: 0!important;
     padding: 5px 8px;
     border-radius: 4px;
@@ -806,9 +807,18 @@ button.button_search {
   position: absolute;
   display: none;
   top: 84px;
-  right: 41px;
+  right: 54px;
   animation: fadeIn ease 1s;
 
+}
+.searchIcon
+{
+    position: absolute;
+    right:111px;
+    bottom: 9px;
+}
+.search_input{
+  width: 75% ! important;
 }
 .fade-in {
 animation: fadeIn ease 20s;

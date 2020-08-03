@@ -5,7 +5,7 @@ import EcommerceProductCarousel     from "../../blocks/ProductCarouselEcommerce/
 import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
 import EcommerceDiscountedProducts  from "../../blocks/ProductCarouselEcommerce/EcommerceDiscountedProducts.js";
 import EcommerceBanner              from "../../blocks/Banner/EcommerceBanner.js";
-import Homepage_Block2              from "../../blocks/Homepage_Block2/Homepage_Block2.js";
+import NewDiscount                  from "../../blocks/NewDiscount/NewDiscount.js";
 import ProductDivider               from "../../blocks/ProductDivider/ProductDivider.js";
 import SaleProductDivider           from "../../blocks/ProductDivider/SaleProductDivider.js";
 import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js";
@@ -171,12 +171,7 @@ class HomePage extends Component {
             } */}
 
             <EcommerceBanner/>
-             {/*-----------------shop by category block---------------------*/}
-          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <ProductDivider categories={this.state.categories} />
-          </div>
-             <div className="homeRow">
-            {
+              {
               this.state.discountedProductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
               :
@@ -193,16 +188,14 @@ class HomePage extends Component {
               )
             }
           </div>
-          
-            <HomePageBanner2 />
-           {/* <FreshFoodBlock />*/}
+             {/*-----------------shop by category block---------------------*/}
+          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ProductDivider categories={this.state.categories} />
           </div>
-         
-          
-
-          
-        </div>
-         <div className="homeRow">
+          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12 take_disc_down">
+            <NewDiscount />
+          </div>
+           <div className="homeRow">
             {
               this.state.featuredproductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -220,6 +213,18 @@ class HomePage extends Component {
               )
             }
           </div>
+             <div className="homeRow">
+          
+          
+            <HomePageBanner2 />
+           {/* <FreshFoodBlock />*/}
+          </div>
+         
+          
+
+          
+        </div>
+        
         <SaleProductDivider />
         <div className="homeRow">
           {

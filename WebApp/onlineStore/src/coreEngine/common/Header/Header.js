@@ -392,7 +392,7 @@ removeModalBackDrop(event){
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                 <div className="col-lg-1 col-md-1 col-sm-1 col-xs-3 headerlogoimg headerLogoPaddingtop text-left NoPadding">
                     <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8 NoPadding">
-                        <a href="/"><img src={require("../../../sites/currentSite/images/NewAnasLogo.jpeg")} alt="Logo Picture " /></a>
+                        <a href="/"><img src={require("../../../sites/currentSite/images/NewAnasLogo.jpg")} alt="Logo Picture " /></a>
                     </div>
                 </div>
                 <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 NoPadding-right">
@@ -601,9 +601,9 @@ removeModalBackDrop(event){
                     </div> 
                 </div>
             </div>
-             <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 searchBox">
-                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
-                  <button className="button_search"  type="button"><i className="fa fa-search" ></i></button>
+             <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 searchBox">
+                  <input type="text" placeholder="Search for Products  " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control search_input" ref="tableSearch" id="tableSearch" name="tableSearch" />
+                  <i className="fa fa-search searchIcon" ></i>
                 </div> 
         </header>
         <nav>

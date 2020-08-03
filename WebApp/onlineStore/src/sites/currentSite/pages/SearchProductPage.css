@@ -56,6 +56,9 @@
   text-decoration: none;
   padding: 6px 0px;
 }
+.nb-brand{
+  margin-top: 130px;
+}
 .expand{
   float: right;
   color: #999;
@@ -269,4 +272,7 @@ li{
 } 
 .searchtab>li >a{
   color: #333
+}
+.ProductViewWrapper{
+  margin-top: 50px;
 }

@@ -15,10 +15,10 @@ export default class Aboutusbanner extends Component {
 				<div className="row">
 					<div className="aboutusbanner" style={{'background' : "url("+Aboutus_Banner +")"}}>
 						<p className="col-lg-12 aboutheading">ABOUT US</p>
-						<ul className="breadcrumb aboutbread">
+						{/*<ul className="breadcrumb aboutbread">
 						  <li><a href="/" title="GO TO HOME PAGE">HOME</a></li>
 						  <li>ABOUT US</li>
-						</ul>
+						</ul>*/}
 					</div>
 				</div>
 			</div>

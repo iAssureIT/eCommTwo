@@ -391,7 +391,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
   color: #333;
   transition: 0.4s ease;
   font-size: 14px;
-  margin-left: -43px
+  margin-left: -22px
 }
 .category_list{
     width: 83px;
@@ -399,7 +399,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
 }
 .list_dot{
     position: absolute;
-    left: -52px;
+    left: -38px;
     bottom: 9px;
     color: #333;
     font-size: 4px;

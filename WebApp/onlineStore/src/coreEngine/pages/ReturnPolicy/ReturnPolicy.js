@@ -15,7 +15,7 @@ export default class ReturnPolicy extends Component {
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  mt20  ">
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  ">										
 										<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 returnPolicy ">
-											<div className="pageTitle">Return Policy</div>
+											<h3 className="pageTitle text-center headingBottom">Return Policy</h3>
 											<p className="">
                                                 Returns is a scheme provided by respective sellers directly under this policy in terms of which the option of exchange, replacement and/ or refund is offered by the respective sellers to you. All products listed under a particular category may not have the same returns policy. For all products, the policy on the product page shall prevail over the general returns policy. Do refer the respective item's applicable return policy on the product page for any exceptions to the table below.
                                                 The return policy is divided into three parts; Do read all sections carefully to understand the conditions and cases under which returns will be accepted.</p>
@@ -23,13 +23,13 @@ export default class ReturnPolicy extends Component {
 				                              <p>You can cancel your order anytime up to next day 9 am before delivery by 
                                                 calling our customer care executives on 8686342020 or 8686642020. We will 
                                                 issue a credit note in favour of you. Your payment will be credited to your 
-                                                account wallet at AnasHandicrafts.
+                                                account wallet at AnasHandicraftts.
 				                              </p>
 				                              <p>You can use this credit for your next purchase. There is no expiry time 
                                                     to use this credit. We have no cash refund or online return policy.  
 				                              </p>
 				                              <p>Ensure proper and full address at the time of registering on website. It 
-                                                    will help us to deliver you our products on time. AnasHandicrafts reserves the right 
+                                                    will help us to deliver you our products on time. AnasHandicraftts reserves the right 
                                                     to confirm and validate the information and other details provided by you at 
                                                     any point of time. If upon confirmation your details are found not to be true 
                                                     (wholly or partly), it has the right in its sole discretion to reject the registration 
