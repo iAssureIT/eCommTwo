@@ -17,7 +17,7 @@
     position: fixed;
     z-index: 10000;
     background-color: transparent;
-    background-color:#0d0c0c;
+    background-color:#fff;
     height: 83px;
     /*border-bottom: 2px solid #eee;*/
 }
@@ -30,6 +30,8 @@
 .headerlogoimg img{
   padding-top: 0px;
   height: 70px;
+  padding-left: 29px;
+  margin-top: 12px;
 }
 
 .css-1jllj6i-control{
@@ -109,7 +111,7 @@
 .headercarticon{
   font-size: 20px;
   cursor:pointer;
-  color: #fff;
+  color: #333;
 }
 
 .headercart a{
@@ -786,10 +788,10 @@ ul.box-static-link li span {
     z-index: 1000;
 }
 button.button_search {
-    background: #A2632C;
+    background: #333;
     color: #fff;
     text-transform: uppercase;
-    border: 1px solid #999!important;
+    border: 1px solid #948c8c!important;
     border-left: 0!important;
     padding: 5px 8px;
     border-radius: 4px;
@@ -805,7 +807,39 @@ button.button_search {
   display: none;
   top: 84px;
   right: 41px;
+  animation: fadeIn ease 1s;
 
+}
+.fade-in {
+animation: fadeIn ease 20s;
+-webkit-animation: fadeIn ease 20s;
+-moz-animation: fadeIn ease 20s;
+-o-animation: fadeIn ease 20s;
+-ms-animation: fadeIn ease 20s;
+}
+@keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
 }
 .searchclose{
   display: none;

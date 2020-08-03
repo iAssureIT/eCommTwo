@@ -29,7 +29,7 @@ export default class EcommerceBanner extends Component {
         return [
             {
                 servicesTitle : "Company Profile",
-                servicesSubTitle : "iOG Solutions stands for intelligent O&G solutions.",
+                servicesSubTitle : "",
                 servicesimg   : "../../../sites/currentSite/images/Truck.png",
                 servicestext  : "iOG Solutions is an independent and reputed provider of consulting and implementation services on advanced and intelligent Software solutionsin the Oil & Gas industry. Our headquarters have been established since 2013 in Pune (India)."
                     
@@ -41,49 +41,8 @@ export default class EcommerceBanner extends Component {
   render() {
 		return (
 
-		  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 homeBanner2"style={{padding:"0px"}}>
-			<div clasName="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
-
-		         {
-		            this.ServicesData().map((data, index)=>{
-		              return (   
-		                        <div key={index} className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
-		                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                            <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
-		                              <div className="img1 img_border">
-		                                <img src={require("../../../sites/currentSite/images/truck11.png")} alt="" className="intro_img img-responsive" />
-		                                <h5 className="homeBanner2_head">FREE DELIVERY NATIONWIDE</h5>
-		                                <p>Door Step Delivery</p>
-		                            </div>
-		                          </div>
-		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
-		                              <div className="img1 img_border">
-		                                <img src={require("../../../sites/currentSite/images/whatsapp1.png")} alt="" className="intro_img img-responsive" />
-		                                <h5 className="homeBanner2_head">24/7 WhatsApp Support</h5>
-		                                <p> +91 - 98765 43210</p>
-		                            </div>
-		                          </div>
-		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
-		                              <div className="img1 img_border">
-		                                <img src={require("../../../sites/currentSite/images/savemoney.png")} alt="" className="intro_img img-responsive" />
-		                               <h5 className="homeBanner2_head">100% Moneyback Guarantee</h5>
-		                                <p>Trust worthy Transactions</p>
-		                            </div>
-		                          </div>
-		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
-		                              <div className="img1">
-		                                <img src={require("../../../sites/currentSite/images/cashhh.png")} alt="" className="intro_img img-responsive" />
-		                                <h5 className="homeBanner2_head">Cash On Delivery</h5>
-		                                <p>Pay after delivery at home</p>
-		                            </div>
-		                          </div>
-		                          </div>
-		                        </div>
-		                         );
-		                      })
-		                    }
-		            </div>
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
+		  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "style={{padding:"0px"}}>
+			 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
 					 <a href="https://www.youtube.com/results?search_query=anasHandicrafts"><button type="button" class="btn btn-lg madalbtn btnbg">You Tube</button></a>
 						<div className="row">
 							<div className="">
@@ -137,6 +96,47 @@ export default class EcommerceBanner extends Component {
 							</div>	
 						</div>
 					</div>
+					<div clasName="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+
+		         {
+		            this.ServicesData().map((data, index)=>{
+		              return (   
+		                        <div key={index} className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+		                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		                            <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                              <div className="img1 img_border">
+		                                <img src={require("../../../sites/currentSite/images/truck11.png")} alt="" className="intro_img img-responsive" />
+		                                <h5 className="homeBanner2_head">FREE DELIVERY NATIONWIDE</h5>
+		                                <p>Door Step Delivery</p>
+		                            </div>
+		                          </div>
+		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                              <div className="img1 img_border">
+		                                <img src={require("../../../sites/currentSite/images/whatsapp1.png")} alt="" className="intro_img img-responsive" />
+		                                <h5 className="homeBanner2_head">24/7 WhatsApp Support</h5>
+		                                <p> +91 - 98765 43210</p>
+		                            </div>
+		                          </div>
+		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                              <div className="img1 img_border">
+		                                <img src={require("../../../sites/currentSite/images/savemoney.png")} alt="" className="intro_img img-responsive" />
+		                               <h5 className="homeBanner2_head">100% Moneyback Guarantee</h5>
+		                                <p>Trust worthy Transactions</p>
+		                            </div>
+		                          </div>
+		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                              <div className="img1">
+		                                <img src={require("../../../sites/currentSite/images/cashhh.png")} alt="" className="intro_img img-responsive" />
+		                                <h5 className="homeBanner2_head">Cash On Delivery</h5>
+		                                <p>Pay after delivery at home</p>
+		                            </div>
+		                          </div>
+		                          </div>
+		                        </div>
+		                         );
+		                      })
+		                    }
+		            </div>
 				 </div>	
 		);
 	}

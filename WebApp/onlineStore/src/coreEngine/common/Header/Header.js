@@ -185,14 +185,15 @@ removeModalBackDrop(event){
   }
   showSearchbar(){
     $(".searchBox").css('display','block');
-    $(".searchicon").css('display','none');
+    $(".searchicon").fadeOut();
     $(".searchclose").css('display','block');
 
   }
   closesearchbar(){
-    $(".searchBox").css('display','none');
-      $(".searchicon").css('display','block');
-      $(".searchclose").css('display','none');
+    // $(".searchBox").css('display','none');
+    $(".searchBox").fadeOut(); 
+    $(".searchicon").css('display','block');
+    $(".searchclose").fadeOut();
 
   }
   searchProducts() {
@@ -600,7 +601,7 @@ removeModalBackDrop(event){
                     </div> 
                 </div>
             </div>
-             <div className="col-lg-3 col-md-3 searchBox">
+             <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 searchBox">
                   <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
                   <button className="button_search"  type="button"><i className="fa fa-search" ></i></button>
                 </div> 

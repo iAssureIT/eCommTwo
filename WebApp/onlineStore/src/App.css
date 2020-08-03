@@ -171,7 +171,7 @@ p{
 #containerDiv{
   background-color: #ffffff;
 }
-/*.customnNavButton .owl-nav button.owl-next{
+.customnNavButton .owl-nav button.owl-next{
   display: none ! important;
 
 }
@@ -188,4 +188,4 @@ p{
 }
 .ic.close{
   display: none;
-}*/
+}

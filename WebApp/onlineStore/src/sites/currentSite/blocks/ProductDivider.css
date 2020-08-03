@@ -49,7 +49,7 @@
 }
 
 
-.block:hover .figcaption2::before{
+/*.block:hover .figcaption2::before{
 	opacity: 1;
 	transition-duration: 0.5s;
 	transform: scale3d(1,1,1);
@@ -70,7 +70,7 @@
     display: block;
     text-align: center;
     opacity: 1;
-}
+}*/
 .figcaption span {
     color: #fff;
     background: rgba(0,0,0,0.3);
@@ -154,21 +154,7 @@
 
 }
 
-.figcaption2::before{
-	position: absolute;
-	top: -221px;
-	right: 65px;
-	bottom: 6px;
-	left: 65px;
-	border: 2px solid #fff;
-	/*box-shadow: 0 0 0 30px rgba(255,255,255,0.2);*/
-	content: '';
-	opacity: 1;
-	-webkit-transition: opacity .35s,-webkit-transform .35s;
-	transition: opacity .35s,transform .35s;
-	-webkit-transform: scale3d(1.4,1.4,1);
-	transform: scale3d(1.4,1.4,1);
-}
+
 
 
 .banerbg{

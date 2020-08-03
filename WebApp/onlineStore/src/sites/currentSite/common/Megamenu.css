@@ -59,7 +59,7 @@ ul.main-nav > li > a {
   display: block; 
   padding: 28px 5px; 
   position: relative;
-  color: #fff;
+  color: #333;
   font: 600 15px/40px "Roboto Slab" ! important;
   font-weight: 600;
   box-sizing: border-box;
