@@ -1316,7 +1316,7 @@ class LocationDetails extends Component {
 																		{/*<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />*/}
 																		 {this.state.gmapsLoaded ?
 																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
-																<PlacesAutocomplete value={this.state.addressLine1}
+																<PlacesAutocomplete value={this.state.addressLine}
 																		onChange={this.handleChangePlaces}
 																		onSelect={this.handleSelect}
 																>

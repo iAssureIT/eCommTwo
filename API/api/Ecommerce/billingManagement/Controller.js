@@ -177,11 +177,11 @@ exports.getCompany = (req,res,next)=>{
 };
 
 exports.getListBill = (req,res,next)=>{
-    console.log("allocatedToFranchise id",req.params.franchise_id)
+    // console.log("allocatedToFranchise id",req.params.franchise_id)
   Orders.find({allocatedToFranchise:ObjectId(req.params.franchise_id),billNumber:{ $exists: true, $ne: null }})
     .exec()
     .then(data=>{
-        console.log("getListBill",data);
+        // console.log("getListBill",data);
         res.status(200).json(data);
     })
     .catch(err =>{
@@ -196,7 +196,6 @@ exports.returned_products = (req,res,next)=>{
     .populate('orderID')
     .exec()
     .then(data=>{
-        console.log("dTA",data);
         res.status(200).json(data);
     })
     .catch(err =>{
@@ -244,7 +243,6 @@ function addOrderToFranchiseGoods(productId,obj,franchise_id) {
               .sort({createdAt : 1})
               .limit(1)
               .then(fgdata=>{
-                console.log("fgdata",fgdata);
                     if(fgdata[0].unit.toLowerCase() == obj.Unit.toLowerCase()){
                             var remainingBalance = fgdata[0].balance - obj.returnQty;
                     }else{
@@ -350,7 +348,41 @@ exports.save_customer = (req,res,next)=>{
     .exec()
     .then(data=>{
         if(data.length > 0){
-            res.status(200).json({ duplicated : true });
+             FranchiseCustomers.updateOne(
+                { _id:data[0]._id},  
+                {
+                    $set:{
+                        customerName              : req.body.Name,
+                        mobile                    : req.body.mobile,
+                        email                     : req.body.email,
+                        houseNo                   : req.body.houseNo,
+                        address                   : req.body.address, 
+                    }
+
+                },
+
+            )
+            .exec()
+            .then(updateData=>{
+                FranchiseCustomers.find({_id:data[0]._id})
+                .exec()
+                .then(data=>{
+                    res.status(200).json({"customerData" : data[0], "message": "Customer Updated Successfully." });
+                })
+                .catch(err =>{
+                    console.log(err);
+                    res.status(500).json({
+                        error: err
+                    });
+                });
+            })
+             .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+           
         }else{
             const franchiseCustomers  = new FranchiseCustomers({
                 _id                       : new mongoose.Types.ObjectId(),  
@@ -358,6 +390,7 @@ exports.save_customer = (req,res,next)=>{
                 customerName              : req.body.Name,
                 mobile                    : req.body.mobile,
                 email                     : req.body.email,
+                houseNo                   : req.body.houseNo,
                 address                   : req.body.address,
                 createdBy                 : req.body.createdBy,
                 createdAt                 : new Date()
@@ -376,7 +409,6 @@ exports.save_customer = (req,res,next)=>{
                     });
                 });
                 }
-               console.log("dtatattat",data);
             })
     .catch(err =>{
             console.log(err);

@@ -57,3 +57,9 @@ export const getForm = formToShow => ({
   type: 'MODAL_DATA',
   formToShow: formToShow
 });
+
+export const showCustomerForm = form => ({
+  type: 'SHOW_CUST_FORM',
+  customerForm: form
+});
+

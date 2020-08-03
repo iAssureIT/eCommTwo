@@ -18,7 +18,7 @@ export class printBill extends React.Component {
 	constructor(props) {
 		super(props);
 		  this.state = {
-				serchByDate:moment(new Date()).format("YYYY-MM-DD"), 
+				serchByDate           : moment(new Date()).format("YYYY-MM-DD"), 
 				categoriesData        : [], 
 				SectionsData          : [],
 				SectionCategoriesData : [],
@@ -45,13 +45,17 @@ export class printBill extends React.Component {
 		$('.leftsidebarbackgroundcolor').hide();
 		$('#headerid').hide();
 		$('#dashbordid').css('top',0);
-		// $('#headerid').css('width',"100% !important");
-		// $('#headerid').attr('style',"width : 100% !important");
 		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
 		$('#dashbordid').removeClass('dashboardeffect');
 		this.getFranchiseDetails();
-		 // this.getBillNumbers();
-		this.getOrder(this.props.match.params.orderId);
+		if(this.props.match.params.orderId){
+			this.getOrder(this.props.match.params.orderId);
+		}else{
+			this.getOrder(this.props.match.params.billNo);
+			this.setState({
+				showReturnProductDiv : true
+			})
+		}
 
 		$.validator.addMethod("noSpace", function(value, element) { 
 			return value == '' || value.trim().length != 0;
@@ -106,32 +110,32 @@ export class printBill extends React.Component {
         var userDetails = JSON.parse(localStorage.getItem('userDetails'));
 		axios.get('/api/entitymaster/getCompany/'+userDetails.companyID)
         .then((response) => {
-			var franchiseLocation = '';
-			var gstNo = '';
-			var city = '';
-			var state = '';
-            var country = '';
-            var addressLine2 = '';
-		
-			if(response.data.locations){
-				response.data.locations[0].pincode = 412207;
-				franchiseLocation = response.data.locations;
-				gstNo = franchiseLocation[0].GSTIN;
-				city = franchiseLocation[0].city;
-				state = franchiseLocation[0].state;
-                country = franchiseLocation[0].country;
-                addressLine2 = franchiseLocation[0].addressLine2;
-			}
-			this.setState({
-				"franchise_id": response.data._id,
-				"gstNo"       : gstNo,
-				"deliveryLocation" : franchiseLocation,
-                "franchiseLocation" : city +','+state+','+country,
-                "pos"       : addressLine2
-				
-			},()=>{
-				this.getBillNumbers();
+		   var franchiseLocation = '';
+		   var franchiseId = '';
+		   var gstNo = '';
+		   var city = '';
+		   var state = '';
+		   var country = '';
+		   var addressLine1 = '';
+		   var franchiseName = '';
+		 
+		   response.data.locations.map(function(val,ind){
+			   gstNo             = val.GSTIN;
+			   city              = val.city;
+			   state             = val.state;
+			   country           = val.country;
+			   addressLine1      = val.addressLine1;
 		   })
+		   this.setState({
+			   "franchise_id"      : response.data._id,
+			   "gstNo"             : gstNo,
+			   "deliveryLocation"  : franchiseLocation,
+			   "franchiseLocation" : addressLine1,
+			   "franchiseName"     : response.data.companyName
+			   
+		   },()=>{
+			   this.getBillNumbers();
+		  })
           
 	      })
 	      .catch((error) => {
@@ -214,6 +218,7 @@ export class printBill extends React.Component {
 		this.setState({
 			showReturnProductDiv : true
 		})
+		window.location.href = "/return-bill/"+this.props.match.params.orderId; 
 	}
 
 	getBillNumbers(){
@@ -233,8 +238,8 @@ export class printBill extends React.Component {
 		var id = 0
 		this.state.billNumbersArray.map((data, i)=>{
 			if(event.target.value == data.billNumber){
-				console.log("match",data.billNumber);
 				id = data._id
+				window.location.href = "/return-bill/"+data._id; 
 			}
 		});
 
@@ -243,19 +248,45 @@ export class printBill extends React.Component {
 
 	getOrder(id){
 		let returnedOrderTotal = 0;
+		let returnTotal = 0;
+		let returnCGSTAmt = 0;
+		let returnSGSTAmt = 0;
+		let returnDiscount = 0;
+		let returnSubtotal = 0;
 		axios.get("/api/orders/get/one/" + id)
 		.then((response) => {
 			response.data.returnedProduct.map((data, index) => {
+				let discountedPrice = 0
+				if(data.discountPercent > 0){
+					returnDiscount = returnDiscount + data.discountedPrice;
+					discountedPrice = data.discountedPrice;
+					
+				}else{
+					returnDiscount = returnDiscount + 0;
+					discountedPrice = 0
+				}
+
+				let totalQty = data.originalPrice * data.quantity;
+				returnSubtotal = returnSubtotal + ( totalQty - discountedPrice );				
 				returnedOrderTotal = returnedOrderTotal + (data.discountedPrice * data.quantity);
-			})
+				returnTotal = returnTotal + (data.originalPrice * data.quantity);
+				returnCGSTAmt = returnCGSTAmt +  data.CGSTAmt;
+				returnSGSTAmt = returnSGSTAmt + data.SGSTAmt;
+
+			}) 
+
 
 			this.setState({
-				orderData: response.data,
-				billNumber :response.data.billNumber,
-				billDate : response.data.createdAt,
-				orderID  : id,
-				returnedOrderTotal : returnedOrderTotal,
-				customerDetail : response.data.franchiseCustId
+				orderData      : response.data,
+				billNumber     : response.data.billNumber,
+				billDate       : response.data.createdAt,
+				orderID        : id,
+				customerDetail : response.data.franchiseCustId,
+				returnTotal    : returnTotal,
+				returnDiscount : returnDiscount,
+				returnSubtotal : returnSubtotal,
+				returnGstTax   : returnCGSTAmt + returnSGSTAmt,
+				returnAmountPayable : returnCGSTAmt + returnSGSTAmt + returnSubtotal
 			},()=>{
 				// console.log("returnedOrderTotal",returnedOrderTotal);
 			})
@@ -289,8 +320,8 @@ export class printBill extends React.Component {
 		var originalPrice = parseFloat(this.refs.originalPrice.value).toFixed(2);
 	
 		if (originalPrice !== "NaN") {
-		  var discountedPrice = parseFloat(originalPrice) - parseFloat((originalPrice * event.target.value) / 100).toFixed(2);
-		  this.setState({
+			var discountedPrice = event.target.value * parseFloat(originalPrice)/100;
+			this.setState({
 			discountedPrice: discountedPrice < 0 ? 0 : parseFloat(discountedPrice).toFixed(2)
 		  })
 		}
@@ -303,8 +334,8 @@ export class printBill extends React.Component {
 	
 		var originalPrice = parseFloat(this.refs.originalPrice.value).toFixed(2);
 		if (originalPrice !== "NaN") {
-		  var discountPercent = parseFloat(((originalPrice - event.target.value) / originalPrice) * 100).toFixed(2);
-		  this.setState({
+			var discountPercent = parseFloat(((originalPrice - event.target.value) / originalPrice) * 100).toFixed(2);
+			this.setState({
 			discountPercent: parseFloat(discountPercent).toFixed(2)
 		  })
 		}
@@ -339,6 +370,11 @@ export class printBill extends React.Component {
 			orderID : id
 		});
 
+		var productToReturnObj = this.state.productToReturn;
+		productToReturnObj.discountPercent = this.state.discountPercent;
+		productToReturnObj.discountedPrice = this.state.discountedPrice
+		productToReturnObj.subtotal        = this.state.discountedPrice;
+		productToReturnObj.quantity        = this.state.quantity;
 
 		var formValues = {
 		  "orderID": id,
@@ -406,14 +442,13 @@ export class printBill extends React.Component {
 		 }else{
 			total = 0;
 		 }
-		
 		return (
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
 					{this.state.showReturnProductDiv === true  ? 
 						<div className="row">
-						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding mtop20">
+						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding paddingTop">
 							    <input list="selectBillNumber" type="search" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autoComplete="off"/> 
 								<datalist id="selectBillNumber" name="selectBillNumber" className="billDatalist">
 										{
@@ -427,9 +462,8 @@ export class printBill extends React.Component {
 											<option>No Bills available</option>
 										}
 								</datalist>
-                                <button className="input-group button_add button button" type="button"><i className="fa fa-plus"></i></button>
+                                <button className="input-group button_add button button top30" type="button"><i className="fa fa-plus"></i></button>
 						</div>
-						
 						</div>
 						: null}
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding billPage">
@@ -442,38 +476,41 @@ export class printBill extends React.Component {
 								<a className="btn btn-info viewBillBtns" href="/franchise-billing" title="Create New Bill">New Bill</a>
 								<button className="btn btn-info printbtn viewBillBtns fa fa-print" title="Print Bill" onClick={this.printTable.bind(this)}></button>
 							
+								{this.state.showReturnProductDiv ? '' :
 								<a className="btn btn-info reTurnBill viewBillBtns" onClick={this.onClickReturnProducts.bind(this)} title="return Products">Return Bill</a> 
-								
-								{/* href="/return-products" */}
+							   }
 							</div>
 						    {/* View bill div start */}
 							{this.state.showReturnProductDiv === false ? 
 							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
-							    <div className="row billLogoDiv">
-									<img className="logoImg" src="../../images/logoUnimandai.png"/>
-									<div className="address">{this.state.franchiseLocation}</div>
+								<div className="row ">
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
+									</div>
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<span>{this.state.franchiseName}</span><br/>
+									    <span>{this.state.franchiseLocation}</span><br/>
+										<small>GST: {this.state.gstNo}</small><br/>
+									</div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode">{this.state.billNumber}</span></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode billNumber">{this.state.billNumber}</span><br/><small style={{fontSize:'small'}}>Date: {moment(this.state.billDate).format("DD MMM YYYY hh:mm a")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullleft">
+									{this.state.billNumber !== undefined ? 
+									<Barcode value={this.state.billNumber}/> 
+									: null
+									}
+								   </div>
 								</div>
-								{
-                                this.state.customerDetail ?
+							    {this.state.customerDetail ?
                                 Object.keys(this.state.customerDetail).length > 0 ?
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Customer Name: {this.state.customerDetail.customerName}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Mobile: {this.state.customerDetail.mobile}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Name: {this.state.customerDetail.customerName}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Phone: {this.state.customerDetail.mobile}</small></div>
 								</div>
                                 : null
                                 :null}
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
-								</div>
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">POS: {this.state.pos}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">GSTIN: {this.state.gstNo}</small></div>
-								</div>
+								
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsEditForm" id="productsEditForm">
 									<div className="table-responsive">
@@ -481,25 +518,31 @@ export class printBill extends React.Component {
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>
-												<th scope="col">QTY</th>
-												<th scope="col">RATE</th>
+												<th scope="col">QTY <br/>CGST</th>
+												<th scope="col">RATE<br/>SGST</th>
 												<th scope="col">DISCOUNT</th>
-												<th scope="col">AMOUNT</th>
-												{/* <th scope="col"></th> */}
+												<th scope="col" className="width20">AMOUNT</th>
 												</tr>
 											</thead>
 											<tbody>
 											{
+												this.state.orderData ?
                                                 this.state.orderData.products && this.state.orderData.products.length > 0 ?
                                                     this.state.orderData.products.map((data, index) => {
-													data.subTotal = data.discountedPrice * data.quantity;
+													data.subTotal = (data.originalPrice * data.quantity) - data.discountedPrice;
 													return(
 														<tr>
 															<td>{data.productName}</td>
 															<td> 
 													              <small>{data.quantity} {data.unit}</small>
+																  <br/>
+													              {data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}
 															</td>
-															<td>{data.originalPrice}</td>
+															<td>
+																{data.originalPrice}
+															    <br/>
+													            {data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}
+															</td>
 															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
 													    </tr>
@@ -508,21 +551,33 @@ export class printBill extends React.Component {
 												})
 												:
 												null
+											: null
 											} 
 											</tbody>
 											<tfoot>
 												<tr>
-													{this.state.orderData ?
-														<td colSpan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
+													{this.state.orderData.cartQuantity > 0  ?
+														<td colSpan="3">Items/Qty {this.state.orderData.cartQuantity}</td>
 														:
-														<td colSpan="4">Items/Qty 0</td>
+														<td colSpan="3">Items/Qty 0</td>
 													}
-
-													<td colSpan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
+													<td colSpan="3">Total Amount: <i className="fa fa-inr"></i> { parseFloat(this.state.orderData.total).toFixed(2)}</td>
 												</tr>
 												<tr>
-												<td colSpan="4"></td>
-												<td className="totalNetAmount" colSpan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
+												   <td colSpan="3"></td>
+												   <td className="" colSpan="3">Discount: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.discount).toFixed(2)}</td>
+												</tr>
+												<tr>
+												   <td colSpan="3"></td>
+												   <td className="" colSpan="3">Subtotal: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.subTotal).toFixed(2)}</td>
+												</tr>
+												<tr>
+												   <td colSpan="3"></td>
+												   <td className="" colSpan="3">GST TAX: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.gstTax).toFixed(2)}</td>
+												</tr>
+												<tr className="totalNetAmount" colSpan="4">
+												   <td colSpan="3"></td>
+												   <td className="totalNetAmount" colSpan="3">Amount Paid : <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.amountPayable).toFixed(2)}</td>
 												</tr>
 											</tfoot>
 											</table>
@@ -543,18 +598,29 @@ export class printBill extends React.Component {
 							: 
 							/* View Bill div end */
 							/* Return product div start */
-							
+							Object.keys(this.state.orderData).length > 0 ? 
+							<div className="paddingTop">
 							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
-							    <div className="row billLogoDiv">
-									<img className="logoImg" src="../../images/logoUnimandai.png"/>
-									<div className="address">{this.state.franchiseLocation}</div>
+								<div className="row padding5Px">
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
+									</div>
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<span>{this.state.franchiseName}</span><br/>
+									    <span>{this.state.franchiseLocation}</span><br/>
+										<small>GST: {this.state.gstNo}</small><br/>
+									</div>
 								</div>
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode">{this.state.billNumber}</span></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullright"><Barcode value={this.state.billNumber}/></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber">Bill No: <span className="barcode billNumber">{this.state.billNumber}</span><br/><small style={{fontSize:'small'}}>Date: {moment(this.state.billDate).format("DD MMM YYYY hh:mm a")}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 billNumber pullleft">
+									{this.state.billNumber !== undefined ? 
+									<Barcode value={this.state.billNumber}/> 
+									: null
+									}
+								   </div>
 								</div>
-								{
-                                this.state.customerDetail ?
+							    {this.state.customerDetail ?
                                 Object.keys(this.state.customerDetail).length > 0 ?
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Customer Name: {this.state.customerDetail.customerName}</small></div>
@@ -562,14 +628,6 @@ export class printBill extends React.Component {
 								</div>
                                 : null
                                 :null}
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">Date: {moment(this.state.billDate).format("DD MMM YYYY")}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">Time: {moment(this.state.billDate).format(" hh:mm a")}</small></div>
-								</div>
-								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">POS: {this.state.pos}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small className="">GSTIN: {this.state.gstNo}</small></div>
-								</div>
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsViewForm" id="productsViewForm">
 									<div className="table-responsive">
@@ -577,8 +635,8 @@ export class printBill extends React.Component {
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>
-												<th scope="col">QTY</th>
-												<th scope="col">RATE</th>
+												<th scope="col">QTY <br/>CGST</th>
+												<th scope="col">RATE<br/>SGST</th>
 												<th scope="col">DISCOUNT</th>
 												<th scope="col">AMOUNT</th>
 												<th scope="col"></th>
@@ -588,16 +646,22 @@ export class printBill extends React.Component {
 											{
                                                 this.state.orderData.products && this.state.orderData.products.length > 0 ?
                                                     this.state.orderData.products.map((data, index) => {
-													data.subTotal = data.discountedPrice * data.quantity;
-													console.log("product status",data);
+													data.subTotal = (data.originalPrice * data.quantity) - data.discountedPrice;
+
 													var status = data.status ? data.status : '';
 													return(
 														<tr>
 															<td>{data.productName}</td>
 															<td> 
 													              <small>{data.quantity} {data.unit}</small>
+																  <br/>
+													              {data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}
 															</td>
-															<td>{data.originalPrice}</td>
+															<td>
+																{data.originalPrice}
+															    <br/>
+													            {data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}
+															</td>
 															<td>{data.discountPercent}<i className="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
 															{data.status !== 'Returned' ?
@@ -628,7 +692,7 @@ export class printBill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					    <small>{data.unit}</small>
 																					</div> 
-																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.quantity} prevvalue={data.quantity} name="quantity" refs="quantity" onChange={this.onChangeEditVal.bind(this)} id="quantity" min="1" size={data.size} unit={data.unit} productid={data.product_ID} id={data._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availablequantity={data.availableQuantity} required/>
+																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.quantity} prevvalue={data.quantity} name="quantity" refs="quantity" onChange={this.onChangeEditVal.bind(this)} id="quantity" min={data.quantity} size={data.size} unit={data.unit} productid={data.product_ID} id={data._id} dataquntity={this.state.quantityAdded !== 0 ? this.state.quantityAdded : data.quantity} availablequantity={data.availableQuantity} required/>
 																				</div>     
 																			</div>  
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
@@ -637,7 +701,7 @@ export class printBill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					<i className="fa fa-rupee"></i>
 																					</div> 
-																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.rate} name="rate" refs="rate" onChange={this.percentAndPrice.bind(this)} productid={data.product_ID} id="rate" min="1" ref="originalPrice" discountpercent={data.discountPercent} discountedprice={data.discountedPrice} required/>
+																					<input type="number" placeholder="" className="form-control new_inputbx1" value={this.state.rate} name="rate" refs="rate" onChange={this.onChangeEditVal.bind(this)} productid={data.product_ID} id="rate" min="1" ref="originalPrice" discountpercent={data.discountPercent} discountedprice={data.discountedPrice} required/>
 																				</div>     
 																			</div>  
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 disPercentDiv">
@@ -663,7 +727,7 @@ export class printBill extends React.Component {
 																		<br/>
 																		
 																		<div className="row textAlignCenter">
-																		   <h4 className="retrunBillSubtotal">Subtotal : <i className="fa fa-rupee"></i> {(this.state.discountedPrice) * (this.state.quantity)}</h4>
+																		   <h4 className="retrunBillSubtotal">Subtotal : <i className="fa fa-rupee"></i> {(this.state.rate) * (this.state.quantity) - (this.state.discountedPrice)}</h4>
 																		</div>
 																		<br/>
 																		</div>
@@ -702,25 +766,44 @@ export class printBill extends React.Component {
 											</tbody>
 											<tfoot>
 												<tr>
-													{this.state.orderData ?
+													{this.state.orderData.cartQuantity > 0 ?
 														<td colSpan="4">Items/Qty {this.state.orderData.cartQuantity}</td>
 														:
 														<td colSpan="4">Items/Qty 0</td>
 													}
-
-													<td colSpan="2">Total: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal}</td>
+													<td colSpan="4">Total Amount: <i className="fa fa-inr"></i> { parseFloat(this.state.orderData.total).toFixed(2)}</td>
 												</tr>
 												<tr>
-												<td colSpan="4"></td>
-												<td className="totalNetAmount" colSpan="2">Net: <i className="fa fa-inr"></i> {this.state.orderData.cartTotal} ({this.state.orderData.status})</td>
+												   <td colSpan="4"></td>
+												   <td className="" colSpan="4">Discount: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.discount).toFixed(2)}</td>
+												</tr>
+												<tr>
+												   <td colSpan="4"></td>
+												   <td className="" colSpan="4">Subtotal: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.subTotal).toFixed(2)}</td>
+												</tr>
+												<tr>
+												   <td colSpan="4"></td>
+												   <td className="" colSpan="4">GST TAX: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.gstTax).toFixed(2)}</td>
+												</tr>
+												<tr className="totalNetAmount" colSpan="4">
+												   <td colSpan="4"></td>
+												   <td className="totalNetAmount" colSpan="4">Amount Paid : <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.amountPayable).toFixed(2)}</td>
 												</tr>
 											</tfoot>
 											</table>
 										</div>
-										<div className="row" style={{"padding": "15px"}}>
-												<span><b>Payment Method</b> : {this.state.orderData.paymentMethod}</span>
-										</div>
-										{this.state.orderData.returnedProduct.length > 0 ?
+										{
+										this.state.orderData.length > 0 ?
+											this.state.orderData.paymentMethod ? 
+											<div className="row" style={{"padding": "15px"}}>
+													<span><b>Payment Method</b> : {this.state.orderData.paymentMethod}</span>
+											</div>
+											: null
+										:null
+									    }
+										{
+										this.state.orderData ? 
+										this.state.orderData.returnedProduct.length > 0 ?
 										<div>
 										<div className="table-responsive returnItemsTable">
 											<h5><b>Returned Items</b></h5>
@@ -728,8 +811,8 @@ export class printBill extends React.Component {
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>
-												<th scope="col">QTY</th>
-												<th scope="col">RATE</th>
+												<th scope="col">QTY <br/>CGST</th>
+												<th scope="col">RATE<br/>SGST</th>
 												<th scope="col">DISCOUNT</th>
 												<th scope="col">AMOUNT</th>
 												<th scope="col">PAYMENT</th>
@@ -740,14 +823,20 @@ export class printBill extends React.Component {
 											{
                                                 this.state.orderData.returnedProduct && this.state.orderData.returnedProduct.length > 0 ?
                                                     this.state.orderData.returnedProduct.map((data, index) => {
-													data.subTotal = data.discountedPrice * data.quantity;
+													data.subTotal = (data.originalPrice * data.quantity) - data.discountedPrice;
 													return(
 														<tr>
 															<td>{data.productName}</td>
 															<td> 
 													              <small>{data.quantity} {data.unit}</small>
+																  <br/>
+													              {data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}
 															</td>
-															<td>{data.originalPrice}</td>
+															<td>
+																{data.originalPrice}
+															    <br/>
+													            {data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}
+															</td>
 															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
 															<td>{data.paymentMethod}</td>
@@ -761,27 +850,37 @@ export class printBill extends React.Component {
 											} 
 											</tbody>
 											<tfoot>
-												<tr>
-													{this.state.orderData.returnedProduct ?
-														<td colSpan="5">Items/Qty {this.state.orderData.returnedProduct.length}</td>
+											    <tr>
+													{this.state.orderData.returnedProduct.length > 0 ?
+														<td colSpan="4">Items/Qty {this.state.orderData.returnedProduct.length}</td>
 														:
-														<td colSpan="5">Items/Qty 0</td>
+														<td colSpan="4">Items/Qty 0</td>
 													}
-														
-													<td colSpan="2">Total: <i className="fa fa-inr"></i> {this.state.returnedOrderTotal}</td>
+													<td colSpan="4">Total Amount: <i className="fa fa-inr"></i> { parseFloat(this.state.returnTotal).toFixed(2)}</td>
 												</tr>
 												<tr>
-												<td colSpan="5"></td>
-												<td className="totalNetAmount" colSpan="2">Net: <i className="fa fa-inr"></i> {this.state.returnedOrderTotal}</td>
+												   <td colSpan="4"></td>
+												   <td className="" colSpan="4">Discount: <i className="fa fa-inr"></i> {parseFloat(this.state.returnDiscount).toFixed(2)}</td>
+												</tr>
+												<tr>
+												   <td colSpan="4"></td>
+												   <td className="" colSpan="4">Subtotal: <i className="fa fa-inr"></i> {parseFloat(this.state.returnSubtotal).toFixed(2)}</td>
+												</tr>
+												<tr>
+												   <td colSpan="4"></td>
+												   <td className="" colSpan="4">GST TAX: <i className="fa fa-inr"></i> {parseFloat(this.state.returnGstTax).toFixed(2)}</td>
+												</tr>
+												<tr className="totalNetAmount" colSpan="4">
+												   <td colSpan="4"></td>
+												   <td className="totalNetAmount" colSpan="4">Amount Paid : <i className="fa fa-inr"></i> {parseFloat(this.state.returnAmountPayable).toFixed(2)}</td>
 												</tr>
 											</tfoot>
 											</table>
 										</div>
-											<div className="row" style={{"padding": "15px"}}>
-												<span><b>Payment Method</b> : {this.state.orderData.paymentMethod}</span>
-											</div>
 										</div>
-										: null }
+										: null
+										: null
+									    }
 									
 										<div className="row Slogan" style={{"padding": "13px"}}>
 											{/* <ul className="declaration"><b>Declaration</b>
@@ -793,6 +892,11 @@ export class printBill extends React.Component {
 									</form>
 								</div>
 							</div> 
+							</div>
+							: 	
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12">
+							     <h3 style={{color:'darkgray'}}>Please search bill number to return products</h3>
+						    </div> 
 							}
 							{/* return bill div end */}
 							</div>

@@ -14,7 +14,8 @@ const initialState = {
 	searchCriteria: [],
 	categoryDetails:[],
 	formToShow :"login",
-	recentCustomerData   : []
+	recentCustomerData   : [],
+	showCustomerForm : 'add'
 }
 const reducer = (state = initialState,action) =>{
 
@@ -59,6 +60,11 @@ const reducer = (state = initialState,action) =>{
 	if(action.type === "FETCH_CUST_DATA"){
 		newState.recentCustomerData= action.CustData;
 	}
+	if(action.type === "SHOW_CUST_FORM"){
+		newState.showCustomerForm= action.customerForm;
+	}
+
+	
 	
 	return newState;
 }

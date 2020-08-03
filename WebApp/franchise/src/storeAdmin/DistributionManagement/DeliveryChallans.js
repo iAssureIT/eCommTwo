@@ -339,6 +339,7 @@ export default class DeliveryChallans extends React.Component {
                                         ? 
                                             this.state.challanData.map((result, index)=>{
                                                 console.log("result",result);
+                                              
                                                 return(
                                                     <tr key={index}>
 														<td>{result.productName} <br/><small>{result.productCode} - {result.itemCode}</small></td>
@@ -346,7 +347,7 @@ export default class DeliveryChallans extends React.Component {
                                                         <td>{result.suppliedQty} {result.suppliedUnit}</td>
                                                         {/* <td><i onClick={this.changeAttribute.bind(this)} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title={ (result.status === "deliveryAccepted" )? "Disable It" : "Enable It" } className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i></td>	 */}
                                                         <td>
-                                                        <button onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'btn btn-success btn-sm inactiveAccept ' + ( result.status === "deliveryAccepted" ? "Accepted" : "NotClicked" )}>Accept</button>
+                                                        <button onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted" || result.status == "deliveryCompleted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'btn btn-success btn-sm inactiveAccept ' + ( result.status === "deliveryAccepted" || result.status == "deliveryCompleted" ? "Accepted" : "NotClicked" )}>Accept</button>
                                                         <button data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={' btn btn-warning btn-sm ' + ( result.status === "deliveryRejected" ? " rejected" : "NotClicked" )}>Reject</button>
                                                         <div className="modal" id={"showDeleteModal-" + (result.itemCode)} role="dialog">
 																<div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">

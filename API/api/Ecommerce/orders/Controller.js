@@ -85,7 +85,7 @@ exports.insert_orders = (req,res,next)=>{
 
                       //insert into franchise goods
                       for (var i=0;i<=req.body.cartItems.length;i++) {
-                        //  console.log("inside for cartitems",req.body.cartItems[i]);
+                        //console.log("inside for cartitems",req.body.cartItems[i]);
                         var productId = req.body.cartItems[i].product_ID; 
                        
                         var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
@@ -107,7 +107,7 @@ exports.insert_orders = (req,res,next)=>{
                         "orderID"              : Math.round(new Date().getTime()/1000),
                         "billNumber"           : BillNumber,
                         "user_ID"              : req.body.user_ID,
-                        "franchiseCustId"      : req.body.franchiseCustId ? req.body.franchiseCustId : 0,
+                        "franchiseCustId"      : req.body.franchiseCustId ? req.body.franchiseCustId : null,
                         "allocatedToFranchise" : allocatedToFranchise ? allocatedToFranchise : billFranchise,
                         "userName"             : data.profile.email,
                         "userFullName"         : data.profile.fullName,
@@ -115,6 +115,9 @@ exports.insert_orders = (req,res,next)=>{
                         "currency"             : 'inr',
                         "cartTotal"            : req.body.cartTotal,
                         "discount"             : req.body.discount,
+                        "subTotal"             : req.body.subTotal ? req.body.subTotal : 0,
+                        "gstTax"               : req.body.gstTax ? req.body.gstTax : 0,
+                        "amountPayable"        : req.body.amountPayable ? req.body.amountPayable : 0,
                         "status"               : status,
                         "createdAt"            : new Date(),
                         "products"             : req.body.cartItems,
@@ -150,7 +153,7 @@ exports.insert_orders = (req,res,next)=>{
                            //save order and send notifications to customer 
                            order.save()
                             .then(orderdata=>{        
-                                console.log("1.Inside order response",orderdata);
+                                //console.log("1.Inside order response",orderdata);
                                 var header = "<table><tbody><tr><td align='center' width='100%'><a><img src='http://http://anashandicrafts.iassureit.com/images/anasLogo.png' style='width:25%'></a></td></tr></table>";
                                 var body = "";
                                 var footer = "<table width='100%' bgcolor='#232f3e' height='50'><tbody><tr><td>"
@@ -395,7 +398,7 @@ exports.insert_orders = (req,res,next)=>{
                       // console.log("minDisFranchise.franchiseID data:=======",minDisFranchise);
             
                         allocatedToFranchise = minDisFranchise.franchiseID; 
-                        console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
+                        //console.log("allocatedToFranchise of franchise ID=====>",allocatedToFranchise); 
                         resolve(allocatedToFranchise);
                         // if(i === matchedFranchise.length-1){
                         //   flag === "true";  
@@ -456,7 +459,7 @@ exports.insert_orders = (req,res,next)=>{
         });
         order.save()
         .then(orderdata=>{        
-              console.log("Inside order response",orderdata);
+            //  console.log("Inside order response",orderdata);
               var header = "<table><tbody><tr><td align='center' width='100%'><a><img src='http://http://anashandicrafts.iassureit.com/images/anasLogo.png' style='width:25%'></a></td></tr></table>";
               var body = "";
               var footer = "<table width='100%' bgcolor='#232f3e' height='50'><tbody><tr><td>"
@@ -2166,7 +2169,7 @@ function addOrderToFranchiseGoods(productId,obj,franchise_id) {
               .sort({createdAt : 1})
               .limit(1)
               .then(fgdata=>{
-                console.log("fgdata",fgdata);
+                //console.log("fgdata",fgdata);
                     if(fgdata[0].unit.toLowerCase() == obj.Unit.toLowerCase()){
                             var remainingBalance = fgdata[0].balance - obj.orderQty;
                     }else{
@@ -2269,14 +2272,13 @@ var updateOtherFranchiseGoods = async (itemCode,obj) => {
 
 
 exports.list_bill_by_user = (req,res,next)=>{
-  console.log('user_ID',req.body.userid);
-
+  //console.log('user_ID',req.body.userid);
     Orders.find(
       {"user_ID": ObjectId(req.body.userid),orderID:{$ne:null}
      })   
     .exec()
     .then(data=>{
-      console.log('data', data);
+      //console.log('data', data);
       res.status(200).json(data);
     })
     .catch(err =>{
@@ -2317,7 +2319,6 @@ exports.get_orders_with_filters = (req,res,next)=>{
       }
    }
 
-   console.log("selector",selector);
 
     Orders.find(selector)
     .populate("allocatedToFranchise")
@@ -2346,7 +2347,6 @@ exports.allocateOrderToFranchise = (req,res,next)=>{
         )
         .exec()
         .then(data=>{
-          console.log("Data",data);
             if(data.nModified == 1){
                 res.status(200).json({
                     "message": "Order allocated to franchise Successfully."

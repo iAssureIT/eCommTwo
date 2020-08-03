@@ -47,8 +47,12 @@ exports.insert_cartid = (req,res,next)=>{
                             'quantity'   : req.body.quantity,
                             'totalWeight': req.body.totalWeight,
                             'rate'       : req.body.rate ? req.body.rate : 0,
-                            'discountPercent'   : req.body.discount ? req.body.discount : 0,
-                            'discountedPrice'       : req.body.discountedPrice ? req.body.discountedPrice : 0
+                            'discountPercent'  : req.body.discount ? req.body.discount : 0,
+                            'discountedPrice'  : req.body.discountedPrice ? req.body.discountedPrice : 0,
+                            'CGST'             : req.body.CGST,
+                            'SGST'             : req.body.SGST,
+                            'CGSTAmt'          : req.body.CGSTAmt,
+                            'SGSTAmt'          : req.body.SGSTAmt
                         }
                         Carts.updateOne(
                             {'_id':cartData._id},

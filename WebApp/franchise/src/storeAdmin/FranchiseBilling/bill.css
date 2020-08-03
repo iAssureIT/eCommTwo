@@ -35,8 +35,8 @@
     right: 1px;
     top: 0;
     height: 34px;
-    transition: all .4s ease 0s;
-    z-index: 99;
+    /* transition: all .4s ease 0s; */
+    /* z-index: 99; */
   }
 
   .sectionDiv{
@@ -130,30 +130,36 @@
 
   .box{
     height: 75px !important ;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     padding: 6px !important;
     margin-bottom: 15px !important;
+    cursor: pointer;
+    transition: all 1s;
+    /* outline: 2px solid white;
+    outline-offset: -8px; */
   }
 
-  .section .sectionContent :hover {
-    border-radius: 3px;
-    color: white;
-    border: 1px solid white;
-    padding: 8px 3px 12px 2px;
-    -webkit-transform: scale(1.1,1.1); 
-    transform: scale(1.1,1.1);
-    -webkit-transition: all 0.3s ease-in-out;
-  
+  .section :hover{
+    transform: 0.5;
   }
+
   
 
-  .sectionContent .active {
-    border-radius: 3px;
-    color: white;
-    border: 1px solid white;
-    padding: 8px 3px 12px 2px;
+  .section .active{
+    outline: 1px solid white;
+    outline-offset: -8px;
   }
 
+  .sectionContent {
+    margin: 0;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+  
 
    .logoDiv{
     width: 10.666667% !important;
@@ -194,6 +200,7 @@
 
   .billNumber{
     font-size: large;
+    /* line-height: 65px; */
   }
 
   .pullright{
@@ -215,7 +222,8 @@
     border-bottom: 1px dashed #66666673;
   }
 
-  .table th, .table td { 
+  table th, table td { 
+    padding:5px !important;
     border-top: none !important; 
     border-bottom: none !important; 
   }
@@ -299,7 +307,7 @@
   }
 
   .totalNetAmount{
-    font-size: larger;
+    font-size: small;
     font-weight: 600;
   }
 
@@ -349,7 +357,9 @@
 
 svg{
   max-width: 125px !important;
-  max-height: 39px !important;
+  max-height: 68px !important;
+  top: -9px;  
+  float: left !important;
 }
 
 .headerbackgroundcolor{
@@ -361,7 +371,7 @@ svg{
 }
 
 .button:hover {
-  padding-right: 25px;
+  /* padding-right: 25px; */
 }
 
 #deactiveProducts{
@@ -386,10 +396,6 @@ svg{
 
 .discountInput{
   border-left: 1px solid #b2a2a2b3 !important;
-}
-
-rect{
-  height: 30 !important;
 }
 
 .retrunBillSubtotal{
@@ -438,4 +444,34 @@ input[type=search]::-webkit-search-cancel-button {
 
 .top30{
   top:30px;
+}
+
+.padding5Px{
+  padding: 5px;
+}
+
+rect{
+  /* height: 84px !important; */
+}
+
+.location-search-input{
+  padding:0px !important;
+}
+
+.totalNetAmount{
+  border-top: 1px dashed #66666673;
+}
+
+.showCustInfoDiv {
+  border: 1px solid #3813133b;
+  padding: 20p;
+  background: #a9a9a914;
+}
+
+.showCustInfoDiv  i {
+  color:gray;
+}
+
+.width20{
+  width: 20%;
 }

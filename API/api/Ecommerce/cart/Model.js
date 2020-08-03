@@ -10,7 +10,11 @@ const cartSchema = mongoose.Schema({
             totalWeight         : String,
             rate                : Number,
             discountPercent     : Number,
-            discountedPrice     : Number
+            discountedPrice     : Number,
+            SGST                : Number,
+            CGST                : Number,
+            CGSTAmt             : Number,
+            SGSTAmt             : Number
         }
     ],
     cartTotal             : Number,
