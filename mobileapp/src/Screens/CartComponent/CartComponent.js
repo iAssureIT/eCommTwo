@@ -120,24 +120,27 @@ export default class CartComponent extends React.Component {
 
     })
   }
-  addtowishlist = (productid) => {
+  addtowishlist = (productid,cartid)=>{
     const wishValues = {
       "user_ID": this.state.userId,
       "product_ID": productid,
     }
-    // console.log("wishValuess==>", wishValues);
+    console.log("wishValuess==>", wishValues);
     axios.post('/api/wishlist/post', wishValues)
       .then((response) => {
-        // console.log(" response wishValuess==>", response.data);
+        console.log(" response wishValuess==>", response.data);
+        
+        const formValues = {
+          "user_ID": this.state.userId,
+          "cartItem_ID": cartid,
+        }
+        console.log(" Before remove from cart==>", formValues);
+        axios.patch("/api/carts/remove" ,formValues)
+        .then((response)=>{
+        console.log(" After remove from cart==>", response.data);
         this.setState({
           wishlisted: true,
         });
-        const formValues = {
-          "user_ID": this.state.userId,
-          "cartItem_ID": productid,
-        }
-        axios.patch("/api/carts/remove" ,formValues)
-        .then((response)=>{
           this.getCartData(this.state.userId, this.state.product_ID);
         })
         .catch((error)=>{
@@ -243,7 +246,7 @@ export default class CartComponent extends React.Component {
         <React.Fragment>
           <HeaderBar5
             goBack={goBack}
-            headerTitle={'Cart'}
+            headerTitle={'MY CART'}
             navigate={navigate}
             toggle={() => this.toggle.bind(this)}
             openControlPanel={() => this.openControlPanel.bind(this)}
@@ -257,7 +260,7 @@ export default class CartComponent extends React.Component {
                     this.state.cartData ?
                       this.state.cartData && this.state.cartData.length > 0 ?
                         this.state.cartData.map((item, i) => {
-                          console.log("item ==>", item.product_ID);
+                          // console.log("item.productDetail==>",item.productDetail);
                           return (
 
                             <View key={i}>
@@ -313,7 +316,7 @@ export default class CartComponent extends React.Component {
                                   <View style={styles.flxmg2}>
 
                                     <View style={styles.proddeletes}>
-                                      <TouchableOpacity style={[styles.flx1, styles.wishlisthrt]} onPress={() => this.addtowishlist(item._id)} >
+                                      <TouchableOpacity style={[styles.flx1, styles.wishlisthrt]} onPress={() => this.addtowishlist(item.product_ID,item._id)} >
                                         <Icon size={20} name='heart-o' type='font-awesome' color='#80c21c' style={{ backgroundColor: "red" }} />
                                       </TouchableOpacity>
                                       <Icon
@@ -356,33 +359,32 @@ export default class CartComponent extends React.Component {
                           )
                         })
                         :
-                        <View style={{ flex: 1, alignItems: 'center', marginTop: '90%' }}>
-                        <BouncingPreloader
-                            icons={[
-                              require("../../AppDesigns/currentApp/images/bellpaper.png"),
-                              require("../../AppDesigns/currentApp/images/carrot.png"),
-                              require("../../AppDesigns/currentApp/images/mangooo.png"),
-                              require("../../AppDesigns/currentApp/images/tomato.png"),
-                            ]}
-                            leftRotation="-680deg"
-                            rightRotation="360deg"
-                            speed={2000} />
-                      </View>
+                          <View style={{ flex: 1, alignItems: 'center', marginTop: '90%' }}>
+                            <BouncingPreloader
+                                icons={[
+                                  require("../../AppDesigns/currentApp/images/bellpaper.png"),
+                                  require("../../AppDesigns/currentApp/images/carrot.png"),
+                                  require("../../AppDesigns/currentApp/images/mangooo.png"),
+                                  require("../../AppDesigns/currentApp/images/tomato.png"),
+                                ]}
+                                leftRotation="-680deg"
+                                rightRotation="360deg"
+                                speed={2000} />
+                          </View>
                       :
-                      
-                      <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
-                      <Image
-                        source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
-                      />
-                    </View>
+                        <View style={{ flex: 1, alignItems: 'center', marginTop: '10%' }}>
+                          <Image
+                            source={require("../../AppDesigns/currentApp/images/noproduct.jpeg")}
+                          />
+                        </View>
+                     
                   }
-
                   {
                     this.state.cartData && this.state.cartData.length > 0 ?
                       <View style={styles.totaldetails}>
                         <View style={styles.flxdata}>
                           <View style={{ flex: 0.7 }}>
-                            <Text style={styles.totaldata}>Subtotal ({this.state.subtotalitems} Item) </Text>
+                            <Text style={styles.totaldata}>Subtotal ({this.state.subtotalitems} Item(s)) </Text>
                           </View>
                           <View style={{ flex: 0.3 }}>
                             <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
@@ -401,12 +403,6 @@ export default class CartComponent extends React.Component {
                           <Text style={styles.totalsubtxt}>Part of your order qualify for Free Delivery </Text>
                         </View>
                           <View style={styles.flxdata}>
-                          <View style={{ flex: 0.2,marginTop:10 }}>
-                            <Image
-                              source={require("../../AppDesigns/currentApp/images/Logo.png")}
-                              style={styles.cartlogoimg}
-                            />
-                          </View>
                           <View style={{ flex: 0.7 }}>
                             <View >
                               <Text style={styles.purchasep}>100% Purchase Protection </Text>
@@ -427,7 +423,7 @@ export default class CartComponent extends React.Component {
                             :
                             <View>
                                   <Text style={styles.minpurchase}>Minimum order should be ₹  {this.state.minvalueshipping} to Checkout & Place Order. 
-                                  Add more products worth ₹  {this.state.minvalueshipping - this.state.totaloriginalprice} to proceed further.</Text>
+                                 {"\n"}<Text style={styles.minpurchaseadd}>Add more products worth ₹  {this.state.minvalueshipping - this.state.totaloriginalprice} to proceed further.</Text> </Text>
                             </View>
                     
                         }
@@ -449,7 +445,7 @@ export default class CartComponent extends React.Component {
               hideModalContentWhileAnimating={true}
               style={{ paddingHorizontal: '5%', zIndex: 999 }}
               animationOutTiming={500}>
-              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
+              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10,borderWidth:2,borderColor:"#80c21c" }}>
                 <View style={{ justifyContent: 'center', backgroundColor: "transparent", width: 60, height: 60, borderRadius: 30, overflow: 'hidden' }}>
                   <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
                 </View>
@@ -489,7 +485,7 @@ export default class CartComponent extends React.Component {
               hideModalContentWhileAnimating={true}
               style={{ paddingHorizontal: '5%', zIndex: 999 }}
               animationOutTiming={500}>
-              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
+              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10,borderWidth:2,borderColor:"#80c21c" }}>
                 <View style={{ justifyContent: 'center', backgroundColor: "transparent", width: 60, height: 60, borderRadius: 30, overflow: 'hidden' }}>
                   <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
                 </View>
@@ -511,34 +507,6 @@ export default class CartComponent extends React.Component {
                 </View>
               </View>
             </Modal>
-            {/* <Modal isVisible={this.state.wishlisted}
-              onBackdropPress={() => this.setState({ wishlisted: false })}
-              coverScreen={true}
-              hideModalContentWhileAnimating={true}
-              style={{ paddingHorizontal: '5%', zIndex: 999 }}
-              animationOutTiming={500}>
-              <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10 }}>
-                <View style={{ justifyContent: 'center', }}>
-                  <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
-                </View>
-                <Text style={{ fontFamily: 'Montserrat-Bold', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20 }}>
-                  Product is added to wishlist.
-                </Text>
-                <View style={styles.yesmodalbtn}>
-                  <View style={styles.ordervwbtn}>
-                    <TouchableOpacity>
-                      <Button
-                        onPress={() => this.setState({ wishlisted: false })}
-                        titleStyle={styles.buttonText1}
-                        title="OK"
-                        buttonStyle={styles.buttonGreen}
-                        containerStyle={styles.buttonContainer2}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </Modal> */}
           </View>
         </React.Fragment>
       );

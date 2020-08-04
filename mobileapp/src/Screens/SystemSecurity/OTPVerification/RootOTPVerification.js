@@ -223,45 +223,8 @@ class RootOTPVerification extends ValidationComponent {
                     <View style={styles.textTitleWrapper}><Text style={styles.otpvsubtitle}>Please Enter Verification Code</Text></View>
 
                     <View style={styles.formWrapper}>
-                        {/*<View style={[styles.formInputView, styles.otpWrap]}>
-                            <Text style={styles.otpText}>Phone Number</Text>
-                            <View style={styles.otpInputWrap}>
-                                {
-                                    this.state.mobInputs.map((data, index) => {
-                                        return (
-                                            <View key={index} style={styles.otpInput}>
-                                            {    <TextInput
-                                                    label=""
-                                                    onChangeText={(v) => this.focusNext(index, v, "mobile", 4)}
-                                                    onKeyPress={e => this.focusPrevious(e.nativeEvent.key, index, "mobile")}
-                                                    lineWidth={1}
-                                                    tintColor={colors.button}
-                                                    inputContainerPadding={0}
-                                                    labelHeight={15}
-                                                    labelFontSize={sizes.label}
-                                                    titleFontSize={15}
-                                                    baseColor={'#666'}
-                                                    textColor={'#333'}
-                                                    // value                 = {this.state.email}
-                                                    containerStyle={styles.textContainer}
-                                                    inputContainerStyle={styles.textInputContainer}
-                                                    titleTextStyle={styles.textTitle}
-                                                    style={styles.textStyle}
-                                                    labelTextStyle={styles.textLabel}
-                                                    keyboardType="numeric"
-                                                    maxLength={1}
-                                                    ref={data}
-                                                    selectTextOnFocus
-                                                    selectionColor={colors.primary}
-                                                />}
-                                            </View>
-                                        );
-                                    })
-                                }
-                            </View>
-                        </View>*/}
                         <View style={[styles.formInputView, styles.otpWrap]}>
-                            <Text style={styles.otpText}>Email</Text>
+                            {/* <Text style={styles.otpText}>Email</Text> */}
                             <View style={styles.otpInputWrap}>
                                 {
                                     this.state.emailInputs.map((data, index) => {

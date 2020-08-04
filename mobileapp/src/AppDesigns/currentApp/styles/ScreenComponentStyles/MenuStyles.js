@@ -8,7 +8,7 @@ export default StyleSheet.create({
     width:null,
     height:window.height,
     alignItems:'center',
-    padding:10,
+    padding:10, 
     opacity:1,
     borderBottomWidth:2,
     borderColor:'#fff'

@@ -17,12 +17,17 @@ export default StyleSheet.create({
     marginLeft: 80 
   },
   searchvw: {
-    paddingTop:-2,
+    paddingTop:15,
     paddingHorizontal: 15, 
     marginBottom: 30, 
   },
   rightcnt: {
-    paddingTop: 0, paddingLeft: 0, paddingRight: 0, backgroundColor: '#80c21c' 
+    paddingTop: 0, paddingLeft: 0, paddingRight: 0, 
+    // backgroundColor: '#80c21c' 
+    backgroundColor: '#fff' ,
+    borderTopWidth: 3,
+    borderTopColor: "#80c21c",
+    height:60,
   },
   notificationText: {
 
@@ -120,9 +125,9 @@ export default StyleSheet.create({
     }) 
   },
   header2main:{
-    // borderBottomWidth: 1,
-    // borderBottomColor: "#80c21c",
-    backgroundColor: "#80c21c", elevation: 4,
+    
+    backgroundColor: "#80c21c",
+    //  elevation: 4, 
     // boxShadow: "10px 5px 5px black"
   },
   leftside:{

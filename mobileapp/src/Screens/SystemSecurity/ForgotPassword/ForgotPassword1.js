@@ -7,25 +7,15 @@ import {
   Dimensions,
   TouchableOpacity,
   ImageBackground,
-  Image, TextInput,
-  Platform,
-  Alert,
-  AsyncStorage
+  Image, 
 } from 'react-native';
-import { KeyboardAwareScrollView }  from 'react-native-keyboard-aware-scroll-view';
-import axios                      from 'axios';
-// import styles                       from './styles.js';
 import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordStyles.js';
 import RootForgotPassword           from './RootForgotPassword.js';
-import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import ValidationComponent          from "react-native-form-validator";
-
-const window = Dimensions.get('window');
 
 export default class ForgotPasswordOTP1 extends ValidationComponent {
   render() {
-    const { navigate, dispatch } = this.props.navigation;
-    const { navigation } = this.props;
+    const { navigate} = this.props.navigation;
     return (
       <React.Fragment>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always" >
@@ -39,14 +29,14 @@ export default class ForgotPasswordOTP1 extends ValidationComponent {
                         style={{ width: '50%' }}
                         />
                    </View> */}
-                   <View style={styles.fpimgvw}>
+                  <View style={styles.fpimgvw}>
                         <Image
                         resizeMode="contain"
-                        source={require("../../../AppDesigns/currentApp/images/Logo.png")}
+                        source={require("../../../AppDesigns/currentApp/images/Logo.jpg")}
                         style={styles.fpimglogo}
                         />
-                   </View>
-             <RootForgotPassword navigation={navigate} />
+                  </View>
+                  <RootForgotPassword navigation={navigate} />
               </View>
           </View>
           </ImageBackground>

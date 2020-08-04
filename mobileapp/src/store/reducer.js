@@ -8,14 +8,11 @@ const initialState = {
 	user_id     :"",
 	searchText  :"",
 	token       :"",
-
-
-
 }
 
 const reducer = (state = initialState,action) => {
 	const newState = {...state};
-	console.log("action",action)
+	
 	if(action.type === "MODAL"){
 		newState.openModal 			= action.openModal;
 		newState.messageHead 		= action.messageHead;
@@ -23,6 +20,7 @@ const reducer = (state = initialState,action) => {
 		newState.messageType 		= action.messageType;
 	}	
 	if(action.type === "SET_USER_ID"){
+		console.log("action.user_id==>",action.user_id)
 		newState.user_id 		= action.user_id;
 	}
 

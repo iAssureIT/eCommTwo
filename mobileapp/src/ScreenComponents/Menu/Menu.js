@@ -58,23 +58,7 @@ logout=()=>{
     return (
       <ScrollView contentContainerStyle={[styles.container]} scrollsToTop={false}>
       <ImageBackground source={require("../../AppDesigns/currentApp/images/Background.png")} style={styles.container} resizeMode="cover" >
-        {/* <View style={{flexDirection:'row',paddingHorizontal:25,marginTop:25,}}>
-          <View style={{flex:1,}}> 
-            <TouchableOpacity onPress={this.editProfileImage}>
-              <Avatar
-                overlayContainerStyle={{}}
-                width={90}
-                height={90}
-                rounded
-                source={require('../../AppDesigns/currentApp/images/34.png')}                 
-                // activeOpacity={0.7}
-              />
-            </TouchableOpacity> 
-              </View> 
-               <View style={{flex:1,}}> 
-                <Text style={{fontSize:15,fontFamily:"Montserrat-SemiBold",marginTop:15}}>{this.state.firstName} {this.state.lastName}</Text>
-              </View> 
-          </View> */}
+        
           	<View style={{flexDirection:"row",height:100,margin:40,paddingTop:30,borderBottomWidth:1}}>
             <Avatar
             style={{borderWidth:1, borderColor:"#999"}}
@@ -83,7 +67,6 @@ logout=()=>{
                 height={90}
                 rounded
                 source={require('../../AppDesigns/currentApp/images/user.jpg')}                 
-                // activeOpacity={0.7}
               />
 		     		<View style={{paddingTop:40,paddingLeft:4}}>
 		     			<Text style={{fontSize:18,color: "#333"}}>Hi, {this.state.firstName}</Text>
@@ -147,20 +130,6 @@ logout=()=>{
                 </Text>
               </View>
             </TouchableOpacity>
-             {/* <TouchableOpacity onPress={()=> this.props.navigate('MyProductReview')}>
-              <View style={styles.menu} >
-                <Icon 
-                  size={20} 
-                  name='eye' 
-                  type='font-awesome' 
-                  color='#666' 
-                  containerStyle={styles.iconContainer}
-                />
-                <Text style={styles.menuText}>
-                  My Product Review
-                </Text>
-              </View>
-            </TouchableOpacity> */}
             <TouchableOpacity onPress={()=>this.logout()}>
               <View style={styles.menu}>
                 <Icon 

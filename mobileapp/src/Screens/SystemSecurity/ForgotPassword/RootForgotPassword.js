@@ -3,31 +3,17 @@ import {
   ScrollView,
   Text,
   View,
-  BackHandler,
-  Dimensions,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ImageBackground,
-  Image,
-  TextInput,
-  Alert,
-  Keyboard
-
+  ActivityIndicator,
 } from 'react-native';
-import { TextField }                from "react-native-material-textfield";
-import { Divider, Button, Icon }    from 'react-native-elements';
-import ValidationComponent          from "react-native-form-validator";
-import axios                        from "axios";
-import { KeyboardAwareScrollView }  from 'react-native-keyboard-aware-scroll-view';
-import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordStyles.js';
-import { colors, sizes }            from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
-import Modal                        from "../../Modal/OpenModal.js";
-import { Fumi }                     from 'react-native-textinput-effects';
-import FontAwesomeIcon              from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons       from 'react-native-vector-icons/MaterialCommunityIcons';
-import { connect }        from 'react-redux';
-
-const window = Dimensions.get('window');
+import { Button, Icon } from 'react-native-elements';
+import ValidationComponent from "react-native-form-validator";
+import axios from "axios";
+import styles from '../../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordStyles.js';
+import { colors, sizes } from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
+import Modal from "../../Modal/OpenModal.js";
+import { Fumi } from 'react-native-textinput-effects';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { connect } from 'react-redux';
 
 class RootForgotPassword extends ValidationComponent {
   constructor(props) {
@@ -101,30 +87,64 @@ class RootForgotPassword extends ValidationComponent {
   }
 
   handleSendOtp = () => {
-      this.setState({ btnLoading: true})
-      var formValues = {
-        "emailSubject" : "Forgot Password",
-        "emailContent"  : "Use code to reset your password",
-      }
-      axios.patch('/api/auth//patch/setsendemailotpusingEmail/'+this.state.email,formValues)
+    this.setState({ btnLoading: true })
+    // var formValues = {
+    //   "emailSubject" : "Forgot Password",
+    //   "emailContent"  : "Use code to reset your password",
+    // }
+    axios.patch('/api/auth/patch/setsendemailotpusingEmail/' + this.state.email)
       .then(response => {
         this.setState({ btnLoading: false })
         if (response.data.message == 'OTP_UPDATED') {
-          var messageHead = "OTP Resend successfully!";
-          var messagesSubHead = "Please enter New OTP to verify";
-          this.props.setUserID(response.data.userID);
-          this.props.openModal(true,messageHead, messagesSubHead,"success");
-          this.props.navigation('ForgotPasswordOTP');
-        }else{
+          // var messageHead = "OTP Resend successfully!";
+          // var messagesSubHead = "Please enter New OTP to verify";
+          
+          // this.props.openModal(true,messageHead, messagesSubHead,"success");
+          // =================== Notification OTP ==================
+          axios.get('/api/ecommusers/' + response.data.userID)
+            .then((res) => {
+              // console.log("res.data.image==>", res.data);
+              this.setState({
+                fullName: res.data.profile.fullName,
+                userid:response.data._id
+              }, () => {
+                var sendData = {
+                  "event": "5",
+                  "toUser_id": response.data.userID,
+                  "toUserRole": "user",
+                  "variables": {
+                    "Username": this.state.fullName,
+                    "OTP": response.data.optEmail,
+                  }
+                }
+                console.log('sendDataToUser==>', sendData)
+                axios.post('/api/masternotifications/post/sendNotification', sendData)
+                  .then((res) => {
+                    
+                    console.log('sendDataToUser in result==>>>', res.data)
+                  })
+                  .catch((error) => { console.log('notification error: ', error) })
+              })
+              this.props.setUserID(response.data.userID);
+              this.props.navigation('ForgotPasswordOTP');
+
+            })
+            .catch((error) => {
+              console.log('error', error)
+            });
+
+          // =================== Notification ==================
+
+        } else {
           this.setState({ email: "" })
           var messageHead = response.data.message;
           var messagesSubHead = "";
-          this.props.openModal(true,messageHead, messagesSubHead,"warning");
+          this.props.openModal(true, messageHead, messagesSubHead, "warning");
         }
       })
       .catch(error => {
         if (error.response.status == 401) {
-          this.setState({btnLoading: false })
+          this.setState({ btnLoading: false })
         }
       })
 
@@ -147,86 +167,64 @@ class RootForgotPassword extends ValidationComponent {
     const { navigation } = this.props;
 
     return (
-        <View>
-          <View style={{ width: '100%' }}>
-            <View style={styles.textTitleWrapper}><Text style={styles.fptitle}>Forgot Password</Text></View>
-            <View style={{ paddingHorizontal: 30 }}><Text style={styles.fpsubtitle}>Please enter email id</Text></View>
-            <View style={styles.formWrapper}>
-              {/*<View style={[styles.formInputView, styles.marginBottom30]}>
-                 <Fumi
-                  label={'Phone Number'}
-                  onChangeText={(mobileNumber) => { this.setState({ mobileNumber }, () => { this.validInputField('mobileNumber', 'mobileNumberError'); }), this.handleMobileChange(mobileNumber) }}
-                  value={this.state.mobileNumber}
-                  keyboardType="numeric"
-                  iconClass={MaterialCommunityIcons}
-                  iconName={'lock'}
-                  iconColor     ={colors.inputText}
-                  iconSize={22}
-                  iconWidth={40}
-                  inputPadding={16}
-                  style={{borderWidth:1,borderColor:"#f1f1f1"}}
-                />
-                {this.displayValidationError('mobileNumberError')}
-              </View>*/}
-              <View style={[styles.formInputView, styles.marginBottom30]}>
-                <Fumi
-                  label={'Email'}
-                  onChangeText={(email) => { this.setState({ email }, () => { this.validInputField('email', 'emailError'); }) }}
-                  value={this.state.email}
-                  keyboardType="email-address"
-                  autoCapitalize='none'
-                  iconClass={MaterialCommunityIcons}
-                  iconName={'lock'}
-                  iconColor     ={colors.inputText}
-                  iconSize={22}
-                  iconWidth={40}
-                  inputPadding={16}
-                  style={styles.fpemail}
-                />
-                {this.displayValidationError('emailError')}
-              </View>
-
-             
-              <View style={{paddingHorizontal:15}}>
-                {this.state.btnLoading
-                  ?
-                  <Button
-                    titleStyle={styles.buttonText}
-                    title="Processing"
-                    loading
-                    buttonStyle={styles.button}
-                    containerStyle={styles.buttonContainer}
-                  />
-                  :
-                   <Button
-                    onPress={this.handleSendOtp}
-                    titleStyle={styles.buttonText}
-                    title="Send OTP"
-                    buttonStyle={styles.button}
-                    containerStyle={styles.buttonContainer}
-                  />
-                 
-                }
-              </View>
-              <Button
-                    onPress={() => this.props.navigation("Login")}
-                    titleStyle={styles.buttonText1}
-                    title="Sign In"
-                    buttonStyle={styles.button1}
-                    containerStyle={styles.buttonContainer1}
-                    icon={
-                      <Icon name="chevron-double-left" type="material-community" size={22} color="#666" style={{}} />
-                    }
-                  />
-
+      <View>
+        <View style={{ width: '100%' }}>
+          <View style={styles.textTitleWrapper}><Text style={styles.fptitle}>Forgot Password</Text></View>
+          <View style={{ paddingHorizontal: 30 }}><Text style={styles.fpsubtitle}>Please enter email id</Text></View>
+          <View style={styles.formWrapper}>
+            <View style={[styles.formInputView, styles.marginBottom30]}>
+              <Fumi
+                label={'Email'}
+                onChangeText={(email) => { this.setState({ email }, () => { this.validInputField('email', 'emailError'); }) }}
+                value={this.state.email}
+                keyboardType="email-address"
+                autoCapitalize='none'
+                iconClass={MaterialCommunityIcons}
+                iconName={'lock'}
+                iconColor={colors.inputText}
+                iconSize={22}
+                iconWidth={40}
+                inputPadding={16}
+                style={styles.fpemail}
+              />
+              {this.displayValidationError('emailError')}
             </View>
+
+
+            <View style={{ paddingHorizontal: 15 }}>
+              {this.state.btnLoading
+                ?
+                <ActivityIndicator size="large" color="#80c21c" />
+                :
+                <Button
+                  onPress={this.handleSendOtp}
+                  titleStyle={styles.buttonText}
+                  title="Send OTP"
+                  buttonStyle={styles.button}
+                  containerStyle={styles.buttonContainer}
+                />
+
+              }
+            </View>
+            <Button
+              onPress={() => this.props.navigation("Login")}
+              titleStyle={styles.buttonText1}
+              title="Sign In"
+              buttonStyle={styles.button1}
+              containerStyle={styles.buttonContainer1}
+              icon={
+                <Icon name="chevron-double-left" type="material-community" size={22} color="#666" style={{}} />
+              }
+            />
+
           </View>
-          {this.props.openModal ?
-            <Modal navigation={navigation}/>
-            :
-            null
-          }
-        </View> 
+        </View>
+        {this.props.openModal ?
+          <Modal navigation={navigation} />
+          :
+          null
+        }
+      </View>
     );
 
   }
@@ -248,24 +246,18 @@ RootForgotPassword.defaultProps = {
   },
 }
 
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
   return {
-    user_id             : state.user_id,
-    openModal           : state.openModal,
+    user_id: state.user_id,
   }
-  
+
 };
-const mapDispatchToProps = (dispatch)=>{
+const mapDispatchToProps = (dispatch) => {
   return {
-      openModal  : (openModal,messageHead,messagesSubHead,messageType)=> dispatch({type: "MODAL",
-                             openModal:openModal,
-                            messageHead:messageHead,
-                            messagesSubHead:messagesSubHead,
-                            messageType:messageType,
-                  }),
-      setUserID  : (user_id)=> dispatch({type: "SET_USER_ID",
-                            user_id:user_id,
-                  }),
+    setUserID: (user_id) => dispatch({
+      type: "SET_USER_ID",
+      user_id: user_id,
+    }),
   }
 };
-export default connect(mapStateToProps,mapDispatchToProps)(RootForgotPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(RootForgotPassword);

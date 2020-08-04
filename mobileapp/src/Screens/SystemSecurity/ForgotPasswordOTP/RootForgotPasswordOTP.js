@@ -9,14 +9,15 @@ import {
     ImageBackground,
     Image,
     TextInput,
-    Alert,
+    ActivityIndicator,
     AsyncStorage
 } from 'react-native';
 import { TextField } from "react-native-material-textfield";
 import { Button, Icon } from "react-native-elements";
 import ValidationComponent from "react-native-form-validator";
 import axios from "axios";
-import Modal from "../../Modal/OpenModal.js";
+// import Modal from "../../Modal/OpenModal.js";
+import Modal from "react-native-modal";
 import styles                       from '../../../AppDesigns/currentApp/styles/ScreenStyles/ForgotPasswordOTPStyles.js';
 import { colors, sizes } from '../../../AppDesigns/currentApp/styles/CommonStyles.js';
 import Loading from '../../../AppDesigns/currentApp/styles/ScreenComponentStyles/LoadingStyles.js';
@@ -44,13 +45,17 @@ class RootOTPVerification extends ValidationComponent {
             btnLoading: false,
             resendLoading: false,
             userId: "",
-            openModal: false,
+            otpresend: false,
         };
     }
 
     componentDidMount() {
-
-
+        // const userId = this.props.navigation.getParams('user_id','No user_id');
+        // const userId = this.props.navigation.getParam('userID', 'No userID');
+        console.log("user_id :===>",this.props.user_id);
+        this.setState({
+            userId: this.props.user_id,
+        });
     }
 
     focusNext(index, value, otpType, length) {
@@ -108,15 +113,15 @@ class RootOTPVerification extends ValidationComponent {
     handleSubmit = () => {
         let { otpEmail } = this.state;
         this.setState({ btnLoading: true })
-        axios.get('/api/auth/get/checkemailotp/usingID/'+this.props.user_id+"/"+otpEmail)
+        axios.get('/api/auth/get/checkemailotp/usingID/'+this.state.userId+"/"+otpEmail)
         .then(response => {
           this.setState({ btnLoading: false })
           if (response.data.message == 'SUCCESS') {
             this.props.navigation('ResetPassword');
           }else{
-            var messageHead = "Please enter correct OTP.";
-            var messagesSubHead = "";
-            this.props.openModal(true,messageHead, messagesSubHead,"warning");
+            // var messageHead = "Please enter correct OTP.";
+            // var messagesSubHead = "";
+            // this.props.openModal(true,messageHead, messagesSubHead,"warning");
           }
         })
         .catch(error => {
@@ -128,21 +133,47 @@ class RootOTPVerification extends ValidationComponent {
 
     handleResend = () => {
         this.setState({ resendLoading: true, otpEmailInput: ['', '', '', '', '', ''], otpMobInput: ['', '', '', ''], otpEmail: '', otpMob: '' })
-        var formValues = {
-          "emailSubject" : "Email Verification",
-          "emailContent"  : "As part of our registration process, we screen every new profile to ensure its credibility by validating email provided by user. While screening the profile, we verify that details put in by user are correct and genuine.",
-        }
-        axios.patch('/api/auth//patch/setsendemailotpusingID/'+this.props.user_id,formValues)
+        axios.patch('/api/auth/patch/setsendemailotpusingID/'+this.state.userId)
         .then(response => {
           this.setState({ resendLoading: false })
+          console.log('setsendemailotpusingID in result==>>>', response.data)
+
           if (response.data.message == 'OTP_UPDATED') {
-            var messageHead = "OTP Resend successfully!";
-            var messagesSubHead = "Please enter New OTP to verify";
-            this.props.openModal(true,messageHead, messagesSubHead,"success");
+            // =================== Notification OTP ==================
+          axios.get('/api/ecommusers/' + response.data.userID)
+          .then((res) => {
+            this.setState({
+              fullName: res.data.profile.fullName,
+              mobNumber: res.data.profile.mobile,
+            }, () => {
+              var sendData = {
+                "event": "5",
+                "toUser_id": response.data.userID,
+                "toUserRole": "user",
+                "variables": {
+                  "Username": this.state.fullName,
+                  "OTP": response.data.otpEmail,
+                }
+              }
+              console.log('sendDataToUser==>', sendData)
+              axios.post('/api/masternotifications/post/sendNotification', sendData)
+                .then((res) => {
+                    this.setState({otpresend: true,})
+                  console.log('sendDataToUser in result==>>>', res.data)
+                })
+                .catch((error) => { console.log('notification error: ', error) })
+            })
+
+          })
+          .catch((error) => {
+            console.log('error', error)
+          });
+
+        // =================== Notification ==================
           }else{
-            var messageHead = response.data.message;
-            var messagesSubHead = "";
-            this.props.openModal(true,messageHead, messagesSubHead,"warning");
+            // var messageHead = response.data.message;
+            // var messagesSubHead = "";
+            // // this.props.openModal(true,messageHead, messagesSubHead,"warning");
           }
         })
         .catch(error => {
@@ -161,47 +192,9 @@ class RootOTPVerification extends ValidationComponent {
                 <View style={{ width: '100%',}}>
                     <View style={styles.textTitleWrapper}><Text style={{ fontSize: 25, color:"#80c21c", fontFamily: 'Montserrat-SemiBold',textAlign:'center' }}>OTP Verification</Text></View>
                     <View style={styles.textTitleWrapper}><Text style={{ fontSize: 17, fontFamily: 'Montserrat-Regular' }}>Please Enter Verification Code</Text></View>
-
                     <View style={styles.formWrapper}>
-                        {/*<View style={[styles.formInputView, styles.otpWrap]}>
-                            <Text style={styles.otpText}>Phone Number</Text>
-                            <View style={styles.otpInputWrap}>
-                                {
-                                    this.state.mobInputs.map((data, index) => {
-                                        return (
-                                            <View key={index} style={styles.otpInput}>
-                                            {    <TextInput
-                                                    label=""
-                                                    onChangeText={(v) => this.focusNext(index, v, "mobile", 4)}
-                                                    onKeyPress={e => this.focusPrevious(e.nativeEvent.key, index, "mobile")}
-                                                    lineWidth={1}
-                                                    tintColor={colors.button}
-                                                    inputContainerPadding={0}
-                                                    labelHeight={15}
-                                                    labelFontSize={sizes.label}
-                                                    titleFontSize={15}
-                                                    baseColor={'#666'}
-                                                    textColor={'#333'}
-                                                    // value                 = {this.state.email}
-                                                    containerStyle={styles.textContainer}
-                                                    inputContainerStyle={styles.textInputContainer}
-                                                    titleTextStyle={styles.textTitle}
-                                                    style={styles.textStyle}
-                                                    labelTextStyle={styles.textLabel}
-                                                    keyboardType="numeric"
-                                                    maxLength={1}
-                                                    ref={data}
-                                                    selectTextOnFocus
-                                                    selectionColor={colors.primary}
-                                                />}
-                                            </View>
-                                        );
-                                    })
-                                }
-                            </View>
-                        </View>*/}
                         <View style={[styles.formInputView, styles.otpWrap]}>
-                            <Text style={styles.otpText}>Email</Text>
+                            {/* <Text style={styles.otpText}>Email</Text> */}
                             <View style={styles.otpInputWrap}>
                                 {
                                     this.state.emailInputs.map((data, index) => {
@@ -219,7 +212,6 @@ class RootOTPVerification extends ValidationComponent {
                                                     titleFontSize={15}
                                                     baseColor={'#666'}
                                                     textColor={'#333'}
-                                                    // value = {this.state.otpEmail}
                                                     containerStyle={styles.textContainer}
                                                     inputContainerStyle={styles.textInputContainer}
                                                     titleTextStyle={styles.textTitle}
@@ -239,14 +231,7 @@ class RootOTPVerification extends ValidationComponent {
                         </View>
                         <View style={{paddingHorizontal:15}}>
                            {this.state.btnLoading ?
-                             <Button
-                                // onPress={this.handleSubmit.bind(this)}
-                                titleStyle={styles.buttonText}
-                                title="Verify"
-                                loading
-                                buttonStyle={styles.button}
-                                containerStyle={styles.button1Container}
-                            />
+                           <ActivityIndicator size="large" color="#80c21c" />
                             :
                              <Button
                                 onPress={this.handleSubmit.bind(this)}
@@ -256,13 +241,9 @@ class RootOTPVerification extends ValidationComponent {
                                 containerStyle={styles.button1Container}
                             />
                           }
-                         
-                             
-                            
                         </View>
                         <Button
                            onPress={this.handleResend.bind(this)}
-                            // onPress={this.handleSubmit.bind(this)}
                             titleStyle={styles.buttonText1}
                             title="Resend OTP"
                             buttonStyle={styles.button1}
@@ -273,31 +254,40 @@ class RootOTPVerification extends ValidationComponent {
                           />
                     </View>
                 </View>
-                {this.props.openModal ?
-                  <Modal navigation={navigation}/>
-                  :
-                  null
-                }
+                <Modal isVisible={this.state.otpresend}
+                    onBackdropPress={() => this.setState({ otpresend: false })}
+                    coverScreen={true}
+                    hideModalContentWhileAnimating={true}
+                    style={{ zIndex: 999 }}
+                    animationOutTiming={500}>
+                    <View style={{ backgroundColor: "#fff", alignItems: 'center', borderRadius: 20, paddingVertical: 30, paddingHorizontal: 10,borderWidth:2,borderColor:"#80c21c" }}>
+                    <View style={{ justifyContent: 'center', }}>
+                        <Icon size={50} name='shopping-cart' type='feather' color='#666' style={{}} />
+                    </View>
+                    <Text style={{ fontFamily: 'Montserrat-Regular', fontSize: 16, textAlign: 'center', justifyContent: 'center', marginTop: 20, }}>
+                        OTP has been Re-send to your Email Id.
+                    </Text>
+                    <View style={styles.yesmodalbtn}>
+                        <Button
+                        onPress={() => this.setState({ otpresend: false })}
+                        titleStyle={styles.modalText}
+                        title="OK"
+                        buttonStyle={styles.modalGreen1}
+                        containerStyle={styles.buttonContainer1}
+                        />
+                    </View>
+                    </View>
+                </Modal>
             </View>
         );
 
     }
 }
-const mapStateToProps = (state)=>{
-  return {
-    user_id             : state.user_id,
-    openModal           : state.openModal,
-  }
-  
-};
-const mapDispatchToProps = (dispatch)=>{
-  return {
-      openModal  : (openModal,messageHead,messagesSubHead,messageType)=> dispatch({type: "MODAL",
-                             openModal:openModal,
-                            messageHead:messageHead,
-                            messagesSubHead:messagesSubHead,
-                            messageType:messageType,
-                  }),
-  }
-};
-export default connect(mapStateToProps,mapDispatchToProps)(RootOTPVerification);
+
+const mapStateToProps = (state) => {
+    console.log("Name serarch state==>",state.user_id);
+    return {
+        user_id: state.user_id,
+    }
+  };
+  export default connect(mapStateToProps)(RootOTPVerification);

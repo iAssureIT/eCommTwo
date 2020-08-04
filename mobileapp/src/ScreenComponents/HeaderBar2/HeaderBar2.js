@@ -27,28 +27,27 @@ class HeaderBars2 extends ValidationComponent {
   handleNavigation = (screen) => {
     this.props.navigate(screen);
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps) {
-      this.setState({
-        count: parseInt(nextProps.count)
-      })
-    }
+
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({
+  //       // searchText : ""
+  //   })
+  // }
+  componentWillUnmount () {
+    this.focusListener.remove()
   }
+  
   componentDidMount(){
-    axios.get("/api/sections/get/get_megamenu_list")
-    .then((response)=>{
-     if(response.data){
-      // console.log("section data===",response.data.categoryData); 
-      this.setState({ 
-          categoryData : response.data
-      })
-      // console.log("megamenu section Data: ",this.state.categoryData);
-    }
-    })
-    .catch((error)=>{
-        console.log('error', error);
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      
+    this.setState({searchText : ""}
+      ,()=>{
+        // console.log(" serarch==>",this.state.searchText);
+          this.props.setGloblesearch(this.state.searchText);
+        })
     })
   }
+
   updateSearch = searchText => {
   // updateSearch =(searchText)=> {
     // this.setState({ searchText });
@@ -59,38 +58,6 @@ class HeaderBars2 extends ValidationComponent {
         this.props.setGloblesearch(this.state.searchText);
         // this.props.navigate("Dashboard",{searchText : this.state.searchText});
       })
-      // var searchstr = searchText.trim();
-      // if(searchText){
-      //   var formValues = {
-      //     "searchstr": searchstr,
-      //     "loading": true
-      //   }
-        // console.log("formValues of serarch==>",formValues);
-        // this.props.searchProductFun(formValues, this.state.searchResult);
-        // var searchResult = [];
-        // axios.get("/api/products/get/search/" + searchText)
-        //   .then((response) => {
-        //     console.log("searchResult of serarch==>",response.data);
-        //     // this.setState({ searchResult: response.data},()=>{
-              
-        //     // });
-        //     // searchResult = response.data
-        //     // this.props.setGloblesearch(response.data);
-        //     // formValues.loading = false;
-        //     // this.setState({ searchResult: response.data }, () => {
-        //       // this.props.searchProductFun(formValues, this.state.searchResult);
-
-        //     // });
-            
-        //   })
-        //   .catch((error) => {})
-          // console.log("before of serarch page==>",searchResult);
-         
-      // }else{
-      //   // this.props.navigate("Dashboard");
-      // }
-      
-    
   };
   searchedText = (text)=>{
     this.setState({
@@ -115,23 +82,16 @@ class HeaderBars2 extends ValidationComponent {
             <View style={styles.flxdir}>
               <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10, alignSelf: 'center' }}>
                 <TouchableOpacity onPress={this.props.toggle()}>
-                  <Icon size={25} name='bars' type='font-awesome' color='#fff' />
-                  {/* <Icon size={25} name='bars' type='font-awesome' color='#ff3e6c' /> */}
+                  <Icon size={25} name='bars' type='font-awesome' color='#80c21c' />
                 </TouchableOpacity>
 
               </View>
-              {/* <Image
-                resizeMode="contain"
-                source={require("../../AppDesigns/currentApp/images/white_logo.png")}
-                style={styles.whitelogo}
-              /> */}
             </View>
           }
           centerComponent={
             <View style={styles.flxdircenter}>
               <Image
                 resizeMode="contain"
-                // source={require("../../AppDesigns/currentApp/images/white_name.png")}
                 source={require("../../AppDesigns/currentApp/images/Logounimandai.jpg")}
                 style={styles.whitename}
               />
@@ -141,8 +101,8 @@ class HeaderBars2 extends ValidationComponent {
             <View style={styles.flxdir}>
               <TouchableOpacity>
                 <View style={styles.notificationbell}>
-                  <Icon name="bell-o" type="font-awesome" size={25} color="#fff" style={styles.bellIcon} />
-                  <Text style={styles.notificationText}>{0}</Text>
+                  <Icon name="bell-o" type="font-awesome" size={25} color="#80c21c" style={styles.bellIcon} />
+                  {/* <Text style={styles.notificationText}>{0}</Text> */}
                 </View>
               </TouchableOpacity>
             </View>
@@ -160,58 +120,6 @@ class HeaderBars2 extends ValidationComponent {
           /> 
         </View>
 
-
-
-
-
-
-
-
-        {/* {
-            this.state.categoryData && this.state.categoryData.map((data,index)=>{
-              console.log("categoryData data===>",data.section);
-                return(
-                  // <View style={{ paddingHorizontal: 5, marginBottom: 30, }}>
-                      <View style={{ flexDirection: 'row', flex: 1 }}>
-                        <View style={styles.iconOuterWrapper}>
-                          <TouchableOpacity onPress={() => this.HomeNavigate()} >
-                            <Text style={styles.footerTitle}>{data.section}</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                  // </View>
-                );
-            })
-        } */}
-        {/* <View style={{ paddingHorizontal: 15, marginBottom: 30, }}>
-          <View style={{ flexDirection: 'row', flex: 1 }}>
-            <View style={styles.iconOut erWrapper}>
-              <TouchableOpacity onPress={() => this.HomeNavigate()} >
-                <Text style={styles.footerTitle}>Fruits</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.iconOuterWrapper}>
-              <TouchableOpacity onPress={() => this.cart()} >
-                <Text style={styles.footerTitle}>Vegetables</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.iconOuterWrapper}>
-              <TouchableOpacity onPress={() => this.wishlist()}>
-                <Text style={styles.footerTitle}>Frozen Items</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.iconOuterWrapper}>
-              <TouchableOpacity onPress={() => this.order()} >
-                <Text style={styles.footerTitle}>Other</Text>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-        </View> */}
-
       </View>
     );
   }
@@ -227,10 +135,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch)=>{
 return {
-    setGloblesearch : (searchText) => dispatch({
-          searchText   : searchText,
+    setGloblesearch   : (searchText) => dispatch({
+          searchText  : searchText,
           type        : "SET_GLOBAL_Search",
-      
     })
 }
 };
