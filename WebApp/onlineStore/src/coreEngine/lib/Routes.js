@@ -17,7 +17,7 @@ import HomePage                 from '../pages/HomePage/HomePage.js';
 import Unimandai_Homepage       from '../pages/HomePage/Unimandai_Homepage.js';
 import UnimandaiHeader          from '../common/Header/UnimandaiHeader.js';
 
-//-----------Syatem Security Rout.................//
+//-----------System Security Rout.................//
 
 import Login                                     from '../systemSecurity/Login.js';
 import ConfirmOtp                                from '../systemSecurity/ConfirmOtp.js'; 
@@ -38,6 +38,7 @@ import ShipmentTracking                          from '../pages/ShipmentTracking
 import ProductDetailsEcommerce                   from '../pages/ProductDetailsEcommerce/ProductDetailsEcommerce.js';
 import SearchProduct                             from '../pages/ProductCollage/SearchProductPage.js';
 import ProductCollage                            from '../pages/ProductCollage/ProductCollage.js';
+import BigSale                                   from '../pages/ProductCollage/BigSale.js';
 
 import Payment                                   from '../pages/Payment/Payment.js';
 import Wishlist                                  from '../pages/Wishlist/Wishlist.js';
@@ -223,6 +224,8 @@ class Routes extends Component{
             <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
             <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
             <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />
+            <Route path="/deals-of-the-day"   exact strict component={ BigSale } />
+            
             
             <Route path="/profile"              exact strict component={ Edituser } />
             <Route path="/payment/:order_ID"            exact strict component={ Payment } />
@@ -272,7 +275,8 @@ class Routes extends Component{
             <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
             <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
             <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />
-            <Route path="/productreview"            exact strict component={ Productreview } />
+            <Route path="/deals-of-the-day"         exact strict component={ BigSale } />
+            <Route path="/productreview"            exact strict component={ Productreview } />            
             <Route path="/returnpolicy"             exact strict component={ ReturnPolicy } />
             <Route path="/privacypolicy"            exact strict component={PrivacyPolicy}  />
             <Route path="/about-us"                 exact strict component={Aboutuspage}  />

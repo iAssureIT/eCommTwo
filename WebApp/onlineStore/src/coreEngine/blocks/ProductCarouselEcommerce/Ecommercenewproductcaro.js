@@ -524,17 +524,22 @@ class Ecommercenewproductcaro extends Component {
                                             }
                                           </div>
                                           :
-                                          null
+                                          null 
                                       }
-
-
-                                        <div className="innerDiv">
-                                          
+                                        <div className="innerDiv">                                          
                                           <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="product-brand" title={data.brand}>{data.brand}</div></a>
                                           <a href={"/productdetails/"+data.productUrl+"/" + data._id}>
-                                             <div className="product-item-link" title={data.productName}>{data.productName}&nbsp; (<span className="marathiName">{data.shortDescription}</span>)
-                                             </div>
-                                             </a> 
+                                          <div className="product-item-link" title={data.productName}>{data.productName} 
+                                          {data.shortDescription ?
+                                            <span>
+                                              <span>(</span>                              
+                                                <span className="marathiName">&nbsp;{data.shortDescription}&nbsp;</span>
+                                              <span>)</span>
+                                            </span>
+                                            :null
+                                          }
+                                          </div>
+                                          </a> 
                                           <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="col-lg-12 col-md-12 NOpadding">
                                             {
                                               data.discountPercent ?
@@ -544,7 +549,7 @@ class Ecommercenewproductcaro extends Component {
                                                   <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> 
                                                 </div>
                                                 :
-                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / &nbsp; {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                             }
                                           </div></a>
                                           <div >

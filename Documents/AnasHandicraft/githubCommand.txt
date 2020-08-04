@@ -1,0 +1,10 @@
+steps for to commit code in particular branch
+
+git branch -a
+git stash
+git pull origin anashandicraft
+git stash pop
+git add *
+git add .
+git commit -m "Msg"
+git push origin anashandicraft

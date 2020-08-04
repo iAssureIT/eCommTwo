@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ProductCollageView from '../../blocks/ProductCollage/ProductCollageView.js';
+import BigSaleCollageView from '../../blocks/ProductCollage/BigSaleCollageView.js';
+// import ProductCollageView from '../../blocks/ProductCollage/ProductCollageTest.js';
 import SearchProductPage from '../../../sites/currentSite/pages/SearchProductPage.css';
 import $ from 'jquery';
 import InputRange from 'react-input-range';
@@ -10,7 +11,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/js/collapse.js';
 import Loader from "../../common/loader/Loader.js";
 
-class ProductCollage extends Component {
+class BigSale extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -20,6 +21,7 @@ class ProductCollage extends Component {
 			categoryDetails: [],
 			masterproducts: [],
 			products: [],
+			discountedProducts: [],
 			sectionID: '',
 			categoryID: '',
 			subcategoryID: '',
@@ -44,12 +46,13 @@ class ProductCollage extends Component {
 
 	componentDidMount() {
 
-		this.getWishData();
+		// this.getWishData();
+		this.discountedproductsData();
+		this.getCategories();
 
 		var envVariable = process.env.REACT_APP_PROJECT_NAME;
 		this.setState({
 			envVariable: envVariable
-
 		})
 
 		var selector = this.state.selector;
@@ -86,11 +89,6 @@ class ProductCollage extends Component {
 			this.getProductsBySection(this.props.match.params.sectionID);
 		}
 		this.getSectionDetails(this.props.match.params.sectionID);
-		// this.getCategoryDetails(this.props.match.params.categoryID);
-
-
-
-
 		this.getPriceLimits();
 
 		$('.dropdown-submenu a.test').on("click", function (e) {
@@ -107,6 +105,18 @@ class ProductCollage extends Component {
 			this.setState({ ['toggleIcon' + event.target.getAttribute('data-key')]: "fa fa-plus-circle " + event.target.getAttribute('data-key') + "Icon" }, () => { })
 		}
 	}
+	getCategories(){
+		axios.get("/api/category/get/list")
+		.then((response)=>{
+		  console.log("All Category response:",response.data);
+		  this.setState({
+			allCategoryDetails : response.data
+		  })
+		})
+		.catch((error)=>{
+		  // console.log('error', error);
+		})
+	  }
 	getSectionDetails(sectionID) {
 		axios.get("/api/category/get/" + sectionID)
 			.then((response) => {
@@ -697,6 +707,7 @@ class ProductCollage extends Component {
         selector.category_ID = this.props.parameters.categoryID;
         selector.subCategory_ID = this.props.parameters.subcategoryID;
         selector.limit = $(event.target).val()
+
         this.setState({	selector: selector },()=>{
 			this.getFilteredProducts(this.state.selector);
 		})
@@ -758,21 +769,23 @@ class ProductCollage extends Component {
 			});
 		}
 	}
+	discountedproductsData(){
+		var productType3 = 'discounted';
+		
+		axios.get("/api/products/get/listbytype/"+productType3)
+			  .then((response)=>{
+				console.log('discounted prod response==>', response);
+				this.setState({
+					loading:false,
+				  discountedProducts : response.data
+				  
+				})
+			  })
+			  .catch((error)=>{})    
+	  }
 	render() {
-		console.log("Category details:-----",this.state.categoryDetails);
-		if(this.state.categoryDetails.length < 1){
-			$('.filterWrapper').hide();
-			$('.ProductViewWrapper').removeClass('col-lg-9');
-			$('.ProductViewWrapper').removeClass('col-md-9');			
-			$('.ProductViewWrapper').addClass('col-lg-12');
-			$('.ProductViewWrapper').addClass('col-md-12');
-
-		}else{
-			$('.ProductViewWrapper').addClass('col-lg-9');
-			$('.ProductViewWrapper').addClass('col-md-9');
-			$('.ProductViewWrapper').removeClass('col-lg-12');
-			$('.ProductViewWrapper').removeClass('col-md-12');	
-		}		
+		// console.log("Category details:",this.state.categoryDetails);
+		// console.log("loading:",this.state.loading);
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv">
 				<div className="row">
@@ -788,7 +801,7 @@ class ProductCollage extends Component {
 								<li><a href="/">{this.state.productscategoryName}</a></li>
 							</ul>
 						</div>
-						<div className="hidden-lg hidden-md hidden-sm hidden-xs col-sm-12 col-xs-12 menudiv1">
+						<div className=" hidden-sm hidden-xs col-sm-12 col-xs-12 menudiv1">
 							<div className="hidden-lg menudiv hidden-md col-sm-4 col-xs-4">
 								<div className="dropdown">
 									<button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Menu
@@ -804,8 +817,8 @@ class ProductCollage extends Component {
 																
 																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<li>
-																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
-																			{/* <ul>
+																			<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
+																			<ul>
 																				{
 																					data.subCategory.map((subcat, subind) => {
 																						return (
@@ -813,7 +826,7 @@ class ProductCollage extends Component {
 																								{
 																									subcat.subCategoryTitle > 1 ?
 																										<li>
-																											<a href="" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
+																											<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
 																										</li>
 																									: 
 																									null
@@ -823,7 +836,7 @@ class ProductCollage extends Component {
 																					})
 																				}
 	
-																			</ul> */}
+																			</ul>
 																		</li>
 																	</div>
 																
@@ -912,12 +925,13 @@ class ProductCollage extends Component {
 							</div>
 						</div>
 						
-					{/*============for lg and md=============*/} 
+						{/*for lg and md*/} 
 						{
-							Array.isArray(this.state.categoryDetails) && this.state.categoryDetails.length > 0 ?
+							// Array.isArray(this.state.categoryDetails.length) > 1 ?
+							Array.isArray(this.state.allCategoryDetails) && this.state.allCategoryDetails.length > 0 ?
 								<div className="col-lg-3 col-md-3 filterWrapper">									
-									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
-										<div className="accordion" id="accordionExample">
+									<div className="nb-brand filterInner col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
+									<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
 												<div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
 												{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" > */}
@@ -930,20 +944,20 @@ class ProductCollage extends Component {
 											<div id="collapseOne" className="collapse in">
 												<div className="card-body">
 													{
-														this.state.categoryDetails.length ?
-															this.state.categoryDetails.map((data, index) => {
+														this.state.allCategoryDetails.length ?
+															this.state.allCategoryDetails.map((data, index) => {
 																// console.log("data in collapse==>",data)
 																return (
 																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
-																		<li style={{height:"32px"}}>
-																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
+																		<li>
+																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "600!important" }}>{data.category.toUpperCase()}</a>
 																			{/* <a href="" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a> */}
 																			<ul>
 																				{
-																					data.subCategory.length>1 && data.subCategory.map((subcat, subind) => {
+																					data.subCategory && data.subCategory.map((subcat, subind) => {
 																						return (
-																							<li className="list_height">
-																								<a href="" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}></a>
+																							<li>
+																								<a href={"/category"+"/"+subcat.subCategoryTitle+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
 																							</li>
 																						);
 																					})
@@ -963,6 +977,7 @@ class ProductCollage extends Component {
 											</div>
 											</div>
 											
+											
 											{/* 	<div>
 										<div id="collapseTwo" className="collapse" >
 													<div className="card-body">
@@ -977,6 +992,7 @@ class ProductCollage extends Component {
 																		: null
 																);
 															})
+
 															: ''}
 													</div>
 												</div> 
@@ -1004,7 +1020,9 @@ class ProductCollage extends Component {
 															this.state.sizes.map((data, index) => {
 																return (<option value={data}>{data}</option>);
 															})
+
 															: ''}
+
 													</select>
 												</div>
 											</div> */}
@@ -1038,6 +1056,7 @@ class ProductCollage extends Component {
 											{/* {
 												this.state.attributesArray ?
 													Object.entries(this.state.attributesArray).map(([key, value1], i) => {
+
 														return (
 															<div>
 																<div className="card-header" id="headingThree">
@@ -1057,6 +1076,7 @@ class ProductCollage extends Component {
 																					<label><input type="checkbox" name={key} className="attributes" value={attrvalue.attributeValue.toUpperCase()} onClick={this.onSelectedItemsChange.bind(this, 'attributes')} />{attrvalue.attributeValue}</label>
 																				</div>
 																				);
+
 																			})
 																			: null}
 																	</div>
@@ -1095,15 +1115,15 @@ class ProductCollage extends Component {
 						</div>
 						 : null
 						}
-
 						{
-							this.state.loading ?
-								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3 ProductViewWrapper" id="productDiv">
+							
+							this.state.loading === true ?
+								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3" id="productDiv">
 									<Loader type="collageloader" productLoaderNo={6} />
 								</div>
 								:
-								this.state.products.length > 0 ?
-									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 ProductViewWrapper" id="productDiv">
+								this.state.discountedProducts.length > 0 ?
+									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12" id="productDiv">
 										<br />
 										<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div id="products" className="tab-pane fade in active">
@@ -1147,19 +1167,22 @@ class ProductCollage extends Component {
 														</div>
 													</div>
 													{
-														<ProductCollageView
-															products={this.state.products}
+														<BigSaleCollageView
+															products={this.state.discountedProducts}
 															categoryDetails={this.state.categoryDetails}
 															getWishData={this.getWishData.bind(this)} wishList={this.state.wishList}
 															getFilteredProductsFun={this.getFilteredProducts.bind(this)}
 															parameters={this.props.match.params}
 															selector={this.state.selector} />
 													}
+														{/* <BigSaleCollageView
+															products={this.state.discountedProducts}
+															 /> */}
 												</div>
 											</div>
 											<div id="categories" className="tab-pane fade">
 												Categories
-					    </div>
+					                        </div>
 										</div>
 									</div>
 									: <div className="text-center"><img src="../../../sites/currentSite/images/noproducts.jpeg" alt="" /></div>
@@ -1171,4 +1194,4 @@ class ProductCollage extends Component {
 		)
 	}
 }
-export default ProductCollage;
+export default BigSale;

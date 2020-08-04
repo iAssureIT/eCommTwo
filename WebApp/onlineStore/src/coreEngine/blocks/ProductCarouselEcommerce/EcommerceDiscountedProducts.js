@@ -143,22 +143,25 @@ class EcommerceDiscountedProducts extends Component {
           console.log('error', error);
         })
     } else {
-      this.setState({
-        messageData: {
-          "type": "outpage",
-          "icon": "fa fa-exclamation-circle",
-          // "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
-          "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal onClick={this.removeModalBackDrop.bind(this)}>Sign In</a> First.",
-
-          "class": "danger",
-          "autoDismiss": true
-        }
-      })
-      setTimeout(() => {
+      if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
+        $('#loginFormModal').show();
+        }else{
         this.setState({
-          messageData: {},
+          messageData: {
+            "type": "outpage",
+            "icon": "fa fa-exclamation-circle",
+            "message": "Need To Sign In, Please <a href='/login'>Sign In</a> First.",
+            // "message" : "Need To Sign In, Please <a data-toggle=modal data-target=#loginFormModal>Sign In</a> First.",          
+            "class": "warning",
+            "autoDismiss": true
+          }
         })
-      }, 3000);
+        setTimeout(() => {
+          this.setState({
+            messageData: {},
+          })
+        }, 3000);
+      }
     }
   }
   addCart(formValues, quantityAdded, availableQuantity) {

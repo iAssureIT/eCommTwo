@@ -213,16 +213,11 @@ class HomePage extends Component {
               )
             }
           </div>
-             <div className="homeRow">
-          
+             <div className="homeRow">          
           
             <HomePageBanner2 />
            {/* <FreshFoodBlock />*/}
-          </div>
-         
-          
-
-          
+          </div>          
         </div>
         
         <SaleProductDivider />
@@ -253,12 +248,9 @@ class HomePage extends Component {
 
         {/* <Blogs /> */}
 
-
       </div>
     );
   }
 }
-
-
 
 export default (HomePage);

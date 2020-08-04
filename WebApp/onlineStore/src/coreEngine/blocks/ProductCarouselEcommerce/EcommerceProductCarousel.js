@@ -154,7 +154,7 @@ class EcommerceProductCarousel extends Component {
         .catch((error) => {
           console.log('error', error);
         })
-    } else {
+    } else { 
       if(localStorage.getItem('websiteModel') && localStorage.getItem('showLoginAs')==='modal'){
         $('#loginFormModal').show();
         }else{
@@ -520,10 +520,18 @@ class EcommerceProductCarousel extends Component {
                                       }
                                         <div className="innerDiv">
                                         <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="product-brand" title={data.brand}>{data.brand}</div></a>
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}>
-                                           <div className="product-item-link" title={data.productName}>{data.productName}&nbsp;(<span className="marathiName">{data.shortDescription}</span>)
-                                           </div>
-                                          </a>
+                                        <a href={"/productdetails/"+data.productUrl+"/" + data._id}>
+                                        <div className="product-item-link" title={data.productName}>{data.productName} 
+                                          {data.shortDescription ? 
+                                            <span>
+                                              <span>(</span>                              
+                                                <span className="marathiName">&nbsp;{data.shortDescription}&nbsp;</span>
+                                              <span>)</span>
+                                            </span>
+                                            :null
+                                          }
+                                        </div>
+                                        </a>                                          
                                           <a href={"/productdetails/"+data.productUrl+"/" + data._id}><div className="col-lg-12 col-md-12 NOpadding">
                                             {
                                               data.discountPercent ?

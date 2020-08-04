@@ -21,9 +21,13 @@
 	margin:3px 0 0;
 	background-color:#eee;
 }
+.filterInner{
+    margin-top: 84px !important;
+}
 .nb-brand{
 	background-color:#eee;
-	margin-top: 20px 
+    margin-top: 20px ;
+    /* margin-top: 84px !important */
 }
 .Featured-Brands-tittle {
     font-size: 14px;

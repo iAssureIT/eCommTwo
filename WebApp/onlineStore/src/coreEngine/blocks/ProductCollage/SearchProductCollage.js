@@ -485,14 +485,22 @@ class SearchProductCollage extends Component {
                               }
                               <div className="innerDiv">
                                 <div className="product-brand" title={data.brand}>{data.brand}</div>
-                                <div className=" product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>)</div>
+                                <div className="product-item-link" title={data.productName}>{data.productName} 
+                                  {data.shortDescription ? 
+                                    <span>
+                                      <span>(</span>                              
+                                        <span className="marathiName">&nbsp;{data.shortDescription}&nbsp;</span>
+                                      <span>)</span>
+                                    </span>
+                                    :null
+                                  }
+                                </div>
                                 <div className="col-lg-12 col-md-12 NOpadding">
                                   {
                                     data.discountPercent ?
                                       <div className="col-lg-12 col-md-12 NOpadding">
                                         <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp; 
-                                        <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span>&nbsp;
-                                                                                
+                                        <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span>&nbsp;                                                                                
                                       </div>
                                       :
                                       <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>

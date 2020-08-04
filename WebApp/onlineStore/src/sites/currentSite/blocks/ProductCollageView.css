@@ -11,7 +11,9 @@
 .item-top{
 	text-align: center;
 }
-
+.success{
+	z-index: 1000 !important;
+}
 .productImg{
 	overflow: hidden;
 	height: 185px;
