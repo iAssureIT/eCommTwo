@@ -44,7 +44,9 @@ export default class EcommerceBanner extends Component {
 		  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "style={{padding:"0px"}}>
 			 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
 					 <a href="https://www.youtube.com/results?search_query=anasHandicrafts">
-					 <button type="button" class="btn btn-lg madalbtn btnbg">You Tube</button></a>
+					 <button type="button" class="btn btn-lg madalbtn btnbg"title="Visit Our YouTube Channel">
+					  <img src={require("../../../sites/currentSite/images/yt_logo_rgb_light.png")} />
+					 </button></a>
 						<div className="row">
 							<div className="">
 
@@ -88,7 +90,7 @@ export default class EcommerceBanner extends Component {
 											    		<img className="img img-responsive banner1upImg" src={require("../../../sites/currentSite/images/banner3(1).png")} alt="banner"  />
 											    		<div className="BannerTitle"> Royal Collection </div>
 											    		<img className="img img-responsive banner1downImg" src={require("../../../sites/currentSite/images/banner3(2).png")} alt="banner" />
-											    		<div className="bannertext">At amazing disscount, door step delivery</div>
+											    		<div className="bannertext">At amazing discount, door step delivery</div>
 											    	</div>
 											    </div>
 											</OwlCarousel>
@@ -104,28 +106,28 @@ export default class EcommerceBanner extends Component {
 		              return (   
 		                        <div key={index} className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
 		                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                            <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                            <div className="col-lg-3 col-md-3 col-sm-3 colxs-3 takephone_down">
 		                              <div className="img1 img_border">
 		                                <img src={require("../../../sites/currentSite/images/truck11.png")} alt="" className="intro_img img-responsive" />
 		                                <h5 className="homeBanner2_head text-center">FREE DELIVERY NATIONWIDE</h5>
 		                                <p className="text-center">Door Step Delivery</p>
 		                            </div>
 		                          </div>
-		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3 takephone_down">
 		                              <div className="img1 img_border">
 		                                <img src={require("../../../sites/currentSite/images/whatsapp1.png")} alt="" className="intro_img img-responsive" />
 		                                <h5 className="homeBanner2_head text-center">24/7 WhatsApp Support</h5>
 		                                <p className="text-center"> +91 - 98765 43210</p>
 		                            </div>
 		                          </div>
-		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3 takephone_down">
 		                              <div className="img1 img_border">
 		                                <img src={require("../../../sites/currentSite/images/savemoney.png")} alt="" className="intro_img img-responsive" />
 		                               <h5 className="homeBanner2_head text-center">100% Moneyback Guarantee</h5>
 		                                <p className="text-center">Trust worthy Transactions</p>
 		                            </div>
 		                          </div>
-		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
+		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3 takephone_down">
 		                              <div className="img1">
 		                                <img src={require("../../../sites/currentSite/images/cashhh.png")} alt="" className="intro_img img-responsive" />
 		                                <h5 className="homeBanner2_head text-center">Cash On Delivery</h5>

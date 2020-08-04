@@ -6,6 +6,7 @@ import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/
 import EcommerceDiscountedProducts  from "../../blocks/ProductCarouselEcommerce/EcommerceDiscountedProducts.js";
 import EcommerceBanner              from "../../blocks/Banner/EcommerceBanner.js";
 import NewDiscount                  from "../../blocks/NewDiscount/NewDiscount.js";
+import Marketing                    from "../../blocks/Marketing/Marketing.js";
 import ProductDivider               from "../../blocks/ProductDivider/ProductDivider.js";
 import SaleProductDivider           from "../../blocks/ProductDivider/SaleProductDivider.js";
 import WhychooseUs                  from "../../blocks/WhychooseUs/WhychooseUs.js";
@@ -239,6 +240,9 @@ class HomePage extends Component {
               null
             )
           }
+        </div>
+        <div className="homeRow">
+        <Marketing/>
         </div>
         
        

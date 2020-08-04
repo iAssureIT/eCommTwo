@@ -94,20 +94,19 @@ componentWillMount() {
   
   render() {  
         return (
-        <div clasName="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 mainDiscDiv" style={{height:"350px"}}>
-         <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 image1stDiv div1background image1_div">
+        <div clasName="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainDiscDiv" style={{height:"350px"}}>
+         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 image1stDiv div1background image1_div">
           <img className="img img-responsive bannerimg" style={{height:"258px"}} src={require("../../../sites/currentSite/images/Newblock1.png")} alt="banner" />
          </div>
-         <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imagediv2 ">
-          <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7 image1stDiv"style={{'background' : "url("+Newblock2 +")"}}>
-          </div>
+         <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 imagediv2 ">
+           <img className="col-lg-6 col-md-6 col-sm-6 col-xs-6 img img-responsive bannerimg" src={require("../../../sites/currentSite/images/newblock2.png")} alt="banner" />
            <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imge2text"style={{padding:"0px"}}>
             <h3 style={{color:"#fff"}}><b>BIG SAVING</b></h3>
             <h1 style={{color:"#fff"}}><b>GET 75%</b></h1>
             <a href="/deals-of-the-day"><div class="btn  new_shopnowbtn" title="Shop Now">Shop Now</div></a>
           </div>
          </div>
-          <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imagediv3">
+          <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 imagediv3">
            <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 image1stDiv">
            <h1 style={{color:"#fff"}}><b>BIG SALE</b></h1>
            <h3 style={{color:"#fff"}}><b>GET 25%</b></h3>

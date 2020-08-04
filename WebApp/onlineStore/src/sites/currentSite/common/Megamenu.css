@@ -57,10 +57,10 @@ ul.main-nav > li {
 
 ul.main-nav > li > a { 
   display: block; 
-  padding: 28px 5px; 
+  padding: 28px 2px; 
   position: relative;
   color: #333;
-  font: 600 15px/40px "Roboto Slab" ! important;
+  font: 600 14px/40px "Roboto Slab" ! important;
   font-weight: 600;
   box-sizing: border-box;
   cursor: pointer;

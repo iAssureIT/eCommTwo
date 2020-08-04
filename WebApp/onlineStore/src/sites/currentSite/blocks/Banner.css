@@ -11,6 +11,13 @@
     left: 603px;
     margin-top: 70px;
 }
+
+.owl-dots{
+	left:655px ! important;
+}
+.takephone_down{
+	margin-top: 15px;
+}
 .bannercaro .owl-dots .owl-dot span{
 background: #fff;
 height: 15px;
@@ -94,13 +101,20 @@ background: #FBBD65;
     background-image: url(/images/youtube.png);
     width: 102px;
     background-color: #f1f1f1;
-    box-shadow: 1px 1px 10px 0 #f1f1f1;
-    border-radius: 40px 0 0 40px;
-    height: 55px;
-    top: 307px;
+    /*box-shadow: 1px 1px 10px 0 #f1f1f1;*/
+    /*border-radius: 40px 0 0 40px;*/
+    height: 35px;
+    top: 560px;
     right: 0px;
     z-index: 1000;
-    position: absolute;
+    position: fixed;
     background-size: 100% 100%;
     background-repeat: no-repeat;
+}
+.btnbg img{
+	right: 9px;
+    height: 21px;
+    position: absolute;
+    width: 82px;
+    top: 5px;
 }

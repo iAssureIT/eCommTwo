@@ -41,11 +41,12 @@ export default class ProductDivider extends Component {
 										<img src={notavailable} alt="home banner" className="divImage"/>
 										}
 									</a>
-									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 figcaption1">
-				                		<span>{data.category}</span>
-				                	</div>
+									
 				                </div>
 				                </a>
+				                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 figcaption_new">
+				                		<span>{data.category}</span>
+				                	</div>
 			            	</div>
 						);
 						}

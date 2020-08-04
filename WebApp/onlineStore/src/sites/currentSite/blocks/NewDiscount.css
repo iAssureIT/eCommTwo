@@ -6,7 +6,8 @@
 	margin-top: 80px ! important;
 }
 .image1_div{
-	width:168px;
+	/*width:168px;*/
+    margin-left: 73px;
 	background-color: #a2632c ! important;
 }
 .image1stDiv{
@@ -17,12 +18,13 @@
 
 }
 .imagediv2{
-	margin-left: 20px;
+    height: 272px;
+	margin-left: 35px;
 	background-color: #a2632ccc;
 }
 .imagediv3{
 	background-color: #a94442ad;
-    margin-left: 20px;
+    margin-left: 35px;
 }
 .div1background{
    background-color: #a2632cba;
@@ -45,4 +47,8 @@
     z-index: 1000;
     background-color: #efece9;
     transition: 0.3s !important;
+}
+.{
+    width: 178px;
+    height: 208px;
 }
