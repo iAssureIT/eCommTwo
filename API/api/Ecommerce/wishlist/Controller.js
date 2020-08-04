@@ -5,7 +5,7 @@ const Wishlists = require('./Model');
 exports.insert_wishlist = (req,res,next)=>{
 	Wishlists.find({user_ID:req.body.user_ID, product_ID:req.body.product_ID})
 		.exec()
-		.then(data =>{
+		.then(data =>{ 
             console.log('data.length', data, data.length);
             if(data && data.length>0){
                 Wishlists.deleteOne({user_ID:req.body.user_ID,product_ID:req.body.product_ID})
@@ -41,6 +41,7 @@ exports.insert_wishlist = (req,res,next)=>{
                     .catch(err =>{
                         console.log(err);
                         res.status(500).json({
+                            "message": "Product already in wishlist.",
                             error: err
                         });
                     });
