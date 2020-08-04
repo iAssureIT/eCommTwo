@@ -107,29 +107,29 @@ export default class EcommerceBanner extends Component {
 		                            <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
 		                              <div className="img1 img_border">
 		                                <img src={require("../../../sites/currentSite/images/truck11.png")} alt="" className="intro_img img-responsive" />
-		                                <h5 className="homeBanner2_head">FREE DELIVERY NATIONWIDE</h5>
-		                                <p>Door Step Delivery</p>
+		                                <h5 className="homeBanner2_head text-center">FREE DELIVERY NATIONWIDE</h5>
+		                                <p className="text-center">Door Step Delivery</p>
 		                            </div>
 		                          </div>
 		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
 		                              <div className="img1 img_border">
 		                                <img src={require("../../../sites/currentSite/images/whatsapp1.png")} alt="" className="intro_img img-responsive" />
-		                                <h5 className="homeBanner2_head">24/7 WhatsApp Support</h5>
-		                                <p> +91 - 98765 43210</p>
+		                                <h5 className="homeBanner2_head text-center">24/7 WhatsApp Support</h5>
+		                                <p className="text-center"> +91 - 98765 43210</p>
 		                            </div>
 		                          </div>
 		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
 		                              <div className="img1 img_border">
 		                                <img src={require("../../../sites/currentSite/images/savemoney.png")} alt="" className="intro_img img-responsive" />
-		                               <h5 className="homeBanner2_head">100% Moneyback Guarantee</h5>
-		                                <p>Trust worthy Transactions</p>
+		                               <h5 className="homeBanner2_head text-center">100% Moneyback Guarantee</h5>
+		                                <p className="text-center">Trust worthy Transactions</p>
 		                            </div>
 		                          </div>
 		                           <div className="col-lg-3 col-md-3 col-sm-3 colxs-3">
 		                              <div className="img1">
 		                                <img src={require("../../../sites/currentSite/images/cashhh.png")} alt="" className="intro_img img-responsive" />
-		                                <h5 className="homeBanner2_head">Cash On Delivery</h5>
-		                                <p>Pay after delivery at home</p>
+		                                <h5 className="homeBanner2_head text-center">Cash On Delivery</h5>
+		                                <p className="text-center">Pay after delivery at home</p>
 		                            </div>
 		                          </div>
 		                          </div>

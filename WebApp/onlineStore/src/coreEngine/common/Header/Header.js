@@ -444,7 +444,7 @@ removeModalBackDrop(event){
 
                             user_ID ?
                               <li className="dropdown">
-                                <i className="headercarticon fa fa-user"aria-hidden="true"></i>
+                                <i className="headercarticon fa fa-user afterlogin_usericon"aria-hidden="true"></i>
                                 <ul className="dropdown-menu signinmenuul">
                                   <li className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <a href="/">
@@ -531,9 +531,13 @@ removeModalBackDrop(event){
                         <a href='' className="icon-cart" data-toggle="modal" data-target="#loginFormModal" onClick={this.removeModalBackDrop.bind(this)}>
                            <i className=" headercarticon headercarticon_bag fa fa-shopping-cart" aria-hidden="true" style={{width:"24px"}}></i>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
+                            {this.props.recentCartData.length>0 ?
                             <span className="cornercart cart-count">
                                 {this.props.recentCartData.length>0? this.props.recentCartData[0].cartItems.length : 0}                                
                             </span>
+                            :
+                            null
+                          }
                         </a>
                       }
                       </span>
@@ -601,7 +605,7 @@ removeModalBackDrop(event){
                     </div> 
                 </div>
             </div>
-             <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 searchBox">
+             <div className="col-lg-5col-md-5 col-sm-5 col-xs-5 searchBox">
                   <input type="text" placeholder="Search for Products  " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control search_input" ref="tableSearch" id="tableSearch" name="tableSearch" />
                   <i className="fa fa-search searchIcon" ></i>
                 </div> 

@@ -935,14 +935,14 @@ class ProductCollage extends Component {
 																// console.log("data in collapse==>",data)
 																return (
 																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
-																		<li>
+																		<li style={{height:"32px"}}>
 																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
 																			{/* <a href="" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a> */}
 																			<ul>
 																				{
 																					data.subCategory && data.subCategory.map((subcat, subind) => {
 																						return (
-																							<li>
+																							<li className="list_height">
 																								<a href="" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}></a>
 																							</li>
 																						);

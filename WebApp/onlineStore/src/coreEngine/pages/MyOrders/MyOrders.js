@@ -420,7 +420,7 @@ export default class MyOrders extends Component {
           this.state.loading ?
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loaderHeight"><Loader type="fullpageloader" /></div> :
 
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding myordersPage">
               <br />
               <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4 NOpadding mr20">
                 <Sidebar />

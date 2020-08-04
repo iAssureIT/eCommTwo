@@ -189,3 +189,7 @@ p{
 .ic.close{
   display: none;
 }
+.modal-backdrop{
+  z-index: 9;
+
+}

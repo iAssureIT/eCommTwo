@@ -177,7 +177,7 @@ class HomePage extends Component {
               :
               (this.state.discountedProducts.length > 0 ? 
                 <EcommerceDiscountedProducts  
-                    title={'Discounted PRODUCTS'} 
+                    title={'Top Deals For You'} 
                     newProducts={this.state.discountedProducts} 
                     type={'featured'} 
                     getWishData={this.getWishData.bind(this)} 

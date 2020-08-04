@@ -7,7 +7,7 @@
 }
 .headerflowscroll{
   position: fixed;
-  z-index: 10000;
+  z-index: 100;
   background-color: #fff;
   height: 120px;
   box-shadow: 0 10px 14px rgba(92,141,255,.2);
@@ -15,7 +15,7 @@
 }
 .headerflow{
     position: fixed;
-    z-index: 10000;
+    z-index: 100;
     background-color: transparent;
     background-color:#fff;
     height: 83px;
@@ -659,7 +659,12 @@ ul.box-static-link li span {
 }
 .loginModalContent{
   min-height: 500px;
-  margin-top: 74px;
+  margin-top: 34px;
+}
+.afterlogin_usericon{
+    padding-top: 3px;
+    padding-right: 7px;
+
 }
 .faIcon {
     color: #888!important;
@@ -678,8 +683,8 @@ ul.box-static-link li span {
     height: 18px;
     width: 18px;
     position: absolute;
-    left: 33px;
-    top:0px;
+    left: 30px;
+    top:-15px;
     line-height: 18px;
     text-align: center;
     font-family: "Montserrat";
@@ -727,8 +732,8 @@ ul.box-static-link li span {
 }
 .dropdown-menu{
   position: absolute;
-    top: 100%;
-    left: -313px;
+    top: 83%;
+    left: -325px;
     z-index: 1000;
     display: none;
     float: left;
@@ -807,18 +812,19 @@ button.button_search {
   position: absolute;
   display: none;
   top: 84px;
-  right: 54px;
+  right: 137px;
   animation: fadeIn ease 1s;
 
 }
 .searchIcon
 {
     position: absolute;
-    right:111px;
-    bottom: 9px;
+    right: 40px;
+    bottom: 14px;
 }
 .search_input{
-  width: 75% ! important;
+  /*width: 75% ! important;*/
+  height: 42px;
 }
 .fade-in {
 animation: fadeIn ease 20s;

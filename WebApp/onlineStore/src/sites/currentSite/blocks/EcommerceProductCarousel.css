@@ -20,6 +20,9 @@
     background-color: #eef3f4;
     height: 2px;
 }
+.cart_msg{
+    z-index: 1000 ! important;
+}
 .customPillsEcommerceorange {
     background: #fff;
     text-align: center;
