@@ -1239,7 +1239,7 @@ exports.set_send_emailotp_usingID = (req, res, next) => {
 				User.findOne({ _id: req.params.ID })
 					.then(user => {
 						if (user) {
-							res.status(201).json({ message: "OTP_UPDATED",userID: user._id,optEmail:optEmail  })
+							res.status(201).json({ message: "OTP_UPDATED",userID: user._id,otpEmail:otpEmail  })
 								
 						} else {
 							res.status(200).json({ message: "User not found" });
