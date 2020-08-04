@@ -1239,29 +1239,8 @@ exports.set_send_emailotp_usingID = (req, res, next) => {
 				User.findOne({ _id: req.params.ID })
 					.then(user => {
 						if (user) {
-							request({
-								"method": "POST",
-								"url": "http://localhost:" + globalVariable.port + "/send-email",
-								"body": {
-									email: user.profile.email,
-									subject: req.body.emailSubject,
-									text: req.body.emailContent + " " + otpEmail,
-								},
-								"json": true,
-								"headers": {
-									"User-Agent": "Test Agent"
-								}
-							})
-								.then(source => {
-									res.status(201).json({ message: "OTP_UPDATED" })
-								})
-								.catch(err => {
-									console.log(err);
-									res.status(500).json({
-										message: "Failed to Send the send email",
-										error: err
-									});
-								});
+							res.status(201).json({ message: "OTP_UPDATED",userID: user._id,optEmail:optEmail  })
+								
 						} else {
 							res.status(200).json({ message: "User not found" });
 						}
@@ -1330,7 +1309,6 @@ exports.set_send_emailotp_usingEmail = (req, res, next) => {
 	.then(user => {
 		if(user){
 		var optEmail = getRandomInt(1000, 9999);
-		// console.log("optEmail", optEmail, req.body);
 		User.updateOne(
 			{ "profile.email": req.params.emailId },
 			{
