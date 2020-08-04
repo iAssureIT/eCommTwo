@@ -83,6 +83,8 @@ router.get('/get/searchcount/:searchstr/:vendorID', productController.vendor_sea
 
 router.get('/get/search/:searchstr', productController.search_product);
 
+router.get('/get/searchproducts/:searchstr', productController.search_product_mobileapp);
+
 router.post('/post/searchINCategory', productController.searchINCategory);
 
 router.get('/get/listBrand/:sectionID', productController.list_brand);

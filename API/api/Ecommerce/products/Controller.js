@@ -773,7 +773,7 @@ exports.list_productby_type_mobile = (req,res,next)=>{
     if(productType == 'featured'){
         selector={'featured':true,  "status": "Publish"};
         Products.find(selector) 
-        .limit(10)      
+        .limit(6)      
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -788,7 +788,7 @@ exports.list_productby_type_mobile = (req,res,next)=>{
     else if(productType == 'exclusive'){
         selector={'exclusive':true,  "status": "Publish"};
         Products.find(selector)     
-        .limit(10)        
+        .limit(6)        
         .exec()
         .then(data=>{
             res.status(200).json(data);
@@ -1350,22 +1350,20 @@ exports.list_productby_subcategory = (req,res,next)=>{
 
 
 exports.search_product = (req,res,next)=>{
-    console.log("req body in search ==>",req.body);
     console.log("req params in search ==>",req.params);
-
     Products.find(
             {
                 "$and" : [
                 { "$or": 
                     [
-                    {"productName"    : {'$regex' : req.params.searchstr , $options: "i"} },
-                    {"brand"          : {'$regex' : req.params.searchstr , $options: "i"} },
-                    {"section"       : {'$regex' : req.params.searchstr , $options: "i"} },
-                    {"category"       : {'$regex' : req.params.searchstr , $options: "i"} },
-                    {"subCategory"    : {'$regex' : req.params.searchstr , $options: "i"} },
-                    {"productDetails" : {'$regex' : req.params.searchstr , $options: "i"} }, 
-                    {"shortDescription" : {'$regex' : req.params.searchstr , $options: "i"} }, 
-                    {"featureList.feature" : {'$regex' : req.params.searchstr , $options: "i"} }, 
+                    {"productName"                : {'$regex' : req.params.searchstr , $options: "i"} },
+                    {"brand"                      : {'$regex' : req.params.searchstr , $options: "i"} },
+                    {"section"                    : {'$regex' : req.params.searchstr , $options: "i"} },
+                    {"category"                   : {'$regex' : req.params.searchstr , $options: "i"} },
+                    {"subCategory"                : {'$regex' : req.params.searchstr , $options: "i"} },
+                    {"productDetails"             : {'$regex' : req.params.searchstr , $options: "i"} }, 
+                    {"shortDescription"           : {'$regex' : req.params.searchstr , $options: "i"} }, 
+                    {"featureList.feature"  : {'$regex' : req.params.searchstr , $options: "i"} }, 
                     {"attributes.attributeName" : {'$regex' : req.params.searchstr , $options: "i"} },
                     {"attributes.attributeValue" : {'$regex' : req.params.searchstr , $options: "i"} } 
                     ] 
@@ -1374,6 +1372,38 @@ exports.search_product = (req,res,next)=>{
                 ]
             }
         )
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+};
+exports.search_product_mobileapp = (req,res,next)=>{
+    console.log("req params in search ==>",req.params);
+    var selector = {};
+    selector["$and"] = [];
+    selector['$or'] = [];
+    selector["$and"].push({ "status":"Publish" })
+    selector["$or"].push({ "productName"    : {'$regex' : req.params.searchstr , $options: "i" } })
+    Products.find(selector)
+    // Products.find(
+    //         {
+    //             "$and" : [
+    //             { "$or": 
+    //                 [
+    //                 {"productName"                : {'$regex' : req.params.searchstr , $options: "i"} },
+    //                 // {"category"                   : {'$regex' : req.params.searchstr , $options: "i"} },
+    //                 ] 
+    //             },
+    //             { "$or": [{"status":"Publish"}] }
+    //             ]
+    //         }
+    //     )
     .exec()
     .then(data=>{
         res.status(200).json(data);
