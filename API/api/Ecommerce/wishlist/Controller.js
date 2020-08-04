@@ -7,21 +7,21 @@ exports.insert_wishlist = (req,res,next)=>{
 		.exec()
 		.then(data =>{ 
             console.log('data.length', data, data.length);
-            if(data && data.length>0){
-                Wishlists.deleteOne({user_ID:req.body.user_ID,product_ID:req.body.product_ID})
-                .exec()
-                .then(data=>{
-                    res.status(200).json({
-                        "message": "Product removed from wishlist successfully."
-                    });
-                })
-                .catch(err =>{
-                    console.log(err);
-                    res.status(500).json({
-                        error: err
-                    });
-                });
-            }else{
+            // if(data && data.length>0){
+            //     Wishlists.deleteOne({user_ID:req.body.user_ID,product_ID:req.body.product_ID})
+            //     .exec()
+            //     .then(data=>{
+            //         res.status(200).json({
+            //             "message": "Product removed from wishlist successfully."
+            //         });
+            //     })
+            //     .catch(err =>{
+            //         console.log(err);
+            //         res.status(500).json({
+            //             error: err
+            //         });
+            //     });
+            // }else{
                 const wishlists = new Wishlists({
                     _id                   : new mongoose.Types.ObjectId(),                    
                     user_ID               : req.body.user_ID,
@@ -49,10 +49,11 @@ exports.insert_wishlist = (req,res,next)=>{
                 .catch(err =>{
                     console.log(err);
                     res.status(500).json({
+                        "message": "Product already in wishlist.",
                         error: err
                     });
                 });
-            }
+            // }
 	})
 	.catch(err =>{
 		console.log(err);
