@@ -1118,12 +1118,12 @@ class BigSale extends Component {
 						{
 							
 							this.state.loading === true ?
-								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3" id="productDiv">
+								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3 ProductViewWrapper" id="productDiv">
 									<Loader type="collageloader" productLoaderNo={6} />
 								</div>
 								:
 								this.state.discountedProducts.length > 0 ?
-									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12" id="productDiv">
+									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 ProductViewWrapper" id="productDiv">
 										<br />
 										<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div id="products" className="tab-pane fade in active">
