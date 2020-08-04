@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
 import '../../../sites/currentSite/common/Footer.css';
-import logoUnimandai   from "../../../sites/currentSite/images/anasLogo.png";
+import logoUnimandai   from "../../../sites/currentSite/images/NewAnasLogo.jpg";
 import paypal_footer from "../../../sites/currentSite/images/paypal-footer.png";
 import footerAnimationImg from '../../../sites/currentSite/images/bg-footer.jpg';
 

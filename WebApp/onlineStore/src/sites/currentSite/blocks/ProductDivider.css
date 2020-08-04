@@ -191,7 +191,7 @@
     left: 46%;
     margin-top: 10px;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 10;
     background-color: #A2632C;
     transition: 0.3s !important;
 }
@@ -211,7 +211,7 @@
 .flatSaleBlockWrapper{
     position: absolute;  
     margin-top: -300px;
-    z-index: 1000 !important; 
+    z-index: 10 !important; 
     text-align: center;
     width: 100%;
 }

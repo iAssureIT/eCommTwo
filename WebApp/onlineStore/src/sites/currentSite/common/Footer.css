@@ -251,10 +251,10 @@
 }
 .footer1 {
   min-height: 240px;
-  background-color: #f1f1f1;
+  background-color: #a2632c;
   padding-left: 0px !important;
   padding-right: 0px !important;
-  background: #f3f3f3 !important;
+  background: #a2632c !important;
   padding: 30px 0;
   margin-top: -4px;
 }
@@ -262,7 +262,7 @@
   padding-left: 0px;
   padding-right: 0px;
   margin-top: -10px;
-  background-color: #f3f3f3 !important;
+  background-color:#a2632c !important;
 }
 .footerAnimation{
   height: 160px;
@@ -281,7 +281,7 @@
   color: #A2632C;
   margin-top: 10px;
   margin-bottom: 20px;
-  border-bottom: solid 3px #A2632C;
+  border-bottom: solid 3px #fff;
   margin-left: 15px;
   /* padding-left: 0px !important; */
 }
@@ -291,6 +291,7 @@
 .FooterTitle{
   font-weight: 600;
   font-size: 16px;
+  color:#fff;
 }
 .sectionName{
   padding-left: 0px !important;
@@ -304,7 +305,7 @@
   line-height: 2;
 }
 .sectionName .sectionurl{
-  color: #444 !important;
+  color: #fff !important;
   font-size: 14px;
   text-decoration: none;
   font-weight: 700;
@@ -314,7 +315,7 @@
 .categortTitle span{
     font-weight: 500;
     font-size:14px;
-    color: #444 !important;
+    color: #fff !important;
     text-decoration: none !important;
     transition: 0.3s ease;
 }
@@ -323,20 +324,20 @@
   transition: 0.3s ease;
 }
 .categortTitle a span:hover{
-  color: #80c21c !important;
+  color: #333 !important;
 }
 .socialMediaIcons .fa{
   border-radius: 100%;
   /* padding: 5px; */
   padding-top: 8px;
   float: left;
-  color:#fff;
+  color:#a2632c;
   margin-top: 20px;
   height: 30px;
   width: 30px;
   text-align: center;
   margin-right: 25px;
-  background-color: #A2632C;
+  background-color: #fff;
 }
 
 @media only screen and (max-device-width: 480px) {    
