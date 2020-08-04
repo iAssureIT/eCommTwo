@@ -16,6 +16,7 @@
 .headerflow{
     position: fixed;
     z-index: 100;
+    box-shadow: 1px 1px 1px 1px #eee;
     background-color: transparent;
     background-color:#fff;
     height: 83px;
