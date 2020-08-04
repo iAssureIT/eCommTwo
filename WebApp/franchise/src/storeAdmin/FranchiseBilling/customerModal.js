@@ -309,27 +309,27 @@ class customerModal extends Component{
                         {this.state.showCustForm ?
                             <div className="customerFormDiv col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group paddingTop">
-                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 customerDiv">
+                                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 customerDiv">
                                         <label>Customer Name</label><span className="astrick redFont"> *</span>
                                         <input type="text" name="customerName" className="form-control customerName" placeholder="Enter Name" onChange={this.onChangeInput.bind(this)} value={this.state.customerName} required/>
                                     </div>
-                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mobileNumberDiv">
+                                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 mobileNumberDiv">
                                         <label>Mobile Number</label><span className="astrick redFont"> *</span>
                                         <input type="tel" name="mobile" className="form-control mobile" placeholder="Enter Mobile Number"  onChange={this.onChangeInput.bind(this)} value={this.state.mobile} minlength="10" maxlength="10" required/>
                                     </div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
-                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <label>Email</label>
                                         <input type="email" name="email" className="form-control email" placeholder="Enter Email" onChange={this.onChangeInput.bind(this)} value={this.state.email}/>
                                     </div>
-                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <label>House No</label>
                                         <input type="text" name="houseNo" className="form-control houseNo" placeholder="Enter House Number" onChange={this.onChangeInput.bind(this)} value={this.state.houseNo}/>
                                     </div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
-                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <label>Address</label>
                                         {this.state.gmapsLoaded ?
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" style={{padding: "0px"}}>
@@ -386,21 +386,21 @@ class customerModal extends Component{
                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 showCustInfoDiv">
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group paddingTop">
-                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label><i class="fa fa-user" aria-hidden="true"></i> Customer Name</label>
                                     <p>{this.state.customerName}</p>
                                 </div>
-                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label><i class="fa fa-phone" aria-hidden="true"></i> Mobile Number</label>
                                     <p>{this.state.mobile}</p>
                                 </div>
                             </div>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
-                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label><i class="fa fa-envelope" aria-hidden="true"></i> Email</label>
                                     <p>{this.state.email}</p>
                                 </div>
-                                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label><i class="fa fa-map-marker" aria-hidden="true"></i> Address </label>
                                     <p>{this.state.address}</p>
                                 </div>

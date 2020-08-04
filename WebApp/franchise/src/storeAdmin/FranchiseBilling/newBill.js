@@ -934,19 +934,19 @@ export class Bill extends React.Component {
 			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmcontentWrap mainDiv">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent '>
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{"marginTop": "25px","paddingBottom":"5px"}}>
-					 	    <div className="col-lg-1 col-md-1 col-sm-6 col-xs-12 optionBtns">
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 Billhead" style={{"marginTop": "25px","paddingBottom":"5px"}}>
+					 	    <div className="col-lg-1 col-md-1 col-sm-2 col-xs-12 optionBtns">
 								<a className="btn fullScreenBtn" href="/dashboard" title="Go to Homepage"><i className="fa fa-home" aria-hidden="true"></i></a>
 								{this.state.showFullScreen === false ? 
 								<button className="btn fullScreenBtn" title="Open Fullscreen" onClick={this.openFullscreen.bind(this)}><i className="fa fa-arrows-alt" aria-hidden="true"></i></button>
 								: <button className="btn fullScreenBtn" title="Close Fullscreen" onClick={this.closeFullscreen.bind(this)}><i className="fa fa-window-close" aria-hidden="true"></i></button>
 								}
 							</div>
-							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 searchProduct">
+							<div className="col-lg-6 col-md-6 col-sm-4 col-xs-12 searchProduct">
 							     <input type="search" name="searchText" value={this.state.searchText} className="form-control col-lg-2 col-md-2 " placeholder="Search Product..." onChange={this.getProductBySearch.bind(this)}/>
                                  <button className="input-group button_search button"  type="button"><i className="fa fa-search"></i></button>
 							</div>
-							<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 NOpadding itemCodeDiv">
+							<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 NOpadding itemCodeDiv">
 							    <input list="product" type="search" refs="product" className="form-control" placeholder="Search by Itemcode..." value={this.state.completeProductName}  onChange={this.onSearchItemCode.bind(this)} name="completeProductName" autoComplete="off"/> 
 								<datalist id="product" name="product" className="productDatalist">
 										{
@@ -965,7 +965,7 @@ export class Bill extends React.Component {
 							</div>
 						</div>
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<div className="col-lg-1 col-md-1 col-sm-12 col-xs-12 sectionDiv">
+							<div className="col-lg-1 col-md-1 col-sm-2 col-xs-12 sectionDiv">
 								<h4>Section</h4>
 								<ul className="main-nav textAlignCenter">            
                                  {
@@ -984,7 +984,7 @@ export class Bill extends React.Component {
                                  }
                                 </ul> 
 							</div>
-							<div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 productDiv">
+							<div className="col-lg-6 col-md-6 col-sm-4 col-xs-12 productDiv">
 							    <ul className="row nav nav-pills">
 									<li className="active col-lg-3 col-md-3 col-sm-4 col-xs-12 NOpadding"><a data-toggle="pill" className="all" href="#all" onClick={this.getProductListBySection.bind(this,this.state.section_ID)}>All</a></li>
 									{
@@ -1003,7 +1003,7 @@ export class Bill extends React.Component {
 								   let imageUrl = data.productImage[0] ? data.productImage[0] : 'images/notavailable.jpg';
                                     return(
 										<div key={index} className="col-lg-3 col-md-3 col-sm-6 col-xs-12 cardBorder" id={data.availableQuantity > 0 && data.availableQuantity !== undefined ? 'activeProducts' : 'deactiveProducts'} onClick={this.addtocart.bind(this,data.productCode,data._id,data.unit,data.originalPrice,data.discountPercent,data.discountedPrice,data.availableQuantity)}>
-											<div className="col-lg-12 card">
+											<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 card">
 												{/* <div className="card"> */}
 													<div className="item-top">
 														<div className="productImg">
@@ -1014,7 +1014,7 @@ export class Bill extends React.Component {
 														<div className="productDetails">
 															<div className="innerDiv">
 															<div className="product-item-link" title="Alphanso Mango">{data.productName}</div>
-																<div className="col-lg-12 col-md-12 NOpadding"><span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} per {data.unit}</span>
+																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"><span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} per {data.unit}</span>
 																</div>
 															<div>
 															</div>
@@ -1037,12 +1037,12 @@ export class Bill extends React.Component {
 								
 							{/* </div> */}
 							</div>
-							<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 billDiv">
+							<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 billDiv">
 							    <div className="row padding5Px">
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
 									</div>
-									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 franhiseInfoDiv">
 										<span>{this.state.franchiseName}</span><br/>
 									    <span>{this.state.franchiseLocation}</span><br/>
 										<small>GST: {this.state.gstNo}</small><br/>

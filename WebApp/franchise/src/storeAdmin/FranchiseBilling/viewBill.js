@@ -448,7 +448,7 @@ export class printBill extends React.Component {
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding pmpageContent'>
 					{this.state.showReturnProductDiv === true  ? 
 						<div className="row">
-						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 col-xs-12 NOpadding paddingTop">
+						<div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-offset-4 col-sm-6 col-xs-12 NOpadding paddingTop">
 							    <input list="selectBillNumber" type="search" refs="selectBillNumber" className="form-control" placeholder="Search by Bill Number..." onChange={this.onSearchBillNumber.bind(this)} name="selectBillNumber" autoComplete="off"/> 
 								<datalist id="selectBillNumber" name="selectBillNumber" className="billDatalist">
 										{
@@ -467,7 +467,7 @@ export class printBill extends React.Component {
 						</div>
 						: null}
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding billPage">
-							<div className="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+							<div className="col-lg-2 col-md-2 col-sm-4 col-xs-6 billButtons">
 								<a className="btn btn-info printbtn viewBillBtns fa fa-home" href="/dashboard" title="Go to Homepage"></a>
 								{this.state.showFullScreen === false ? 
 								<button className="btn btn-info printbtn viewBillBtns fa fa-arrows-alt" title="Open Fullscreen" onClick={this.openFullscreen.bind(this)}></button>
@@ -482,7 +482,7 @@ export class printBill extends React.Component {
 							</div>
 						    {/* View bill div start */}
 							{this.state.showReturnProductDiv === false ? 
-							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6 col-xs-12 viewBillDiv">
 								<div className="row ">
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
@@ -600,7 +600,7 @@ export class printBill extends React.Component {
 							/* Return product div start */
 							Object.keys(this.state.orderData).length > 0 ? 
 							<div className="paddingTop">
-							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12 viewBillDiv">
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6 col-xs-12 viewBillDiv">
 								<div className="row padding5Px">
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
@@ -894,7 +894,7 @@ export class printBill extends React.Component {
 							</div> 
 							</div>
 							: 	
-							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-12 col-xs-12">
+							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6 col-xs-12">
 							     <h3 style={{color:'darkgray'}}>Please search bill number to return products</h3>
 						    </div> 
 							}
