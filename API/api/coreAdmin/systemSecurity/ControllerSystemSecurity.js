@@ -688,10 +688,119 @@ exports.user_login_using_email = (req, res, next) => {
 exports.user_login_using_mobile = (req, res, next) => {
 	var mobNumber = req.body.mobNumber;
 	var role = (req.body.role).toLowerCase();
+	console.log('mobNumber & role', mobNumber,role);
 	User.findOne({
 		"profile.mobile": mobNumber,
 		"roles": role,
 	})
+	.exec()
+	.then(user => {
+		if (user) {
+			console.log('user role', user);
+			if ((user.profile.status).toLowerCase() == "active") {
+				var pwd = user.services.password.bcrypt;
+				
+				if (pwd) {
+					bcrypt.compare(req.body.password, pwd, (err, result) => {
+						if (err) {
+							return res.status(200).json({
+								message: 'Auth failed'
+							});
+						}
+						if (result) {
+							const token = jwt.sign({
+								mobile: req.body.mobNumber,
+								userId: user._id,
+							}, globalVariable.JWT_KEY,
+								{
+									expiresIn: "365d"
+								}
+							);
+
+							User.updateOne(
+								{ "profile.mobile": mobNumber },
+								{
+									$push: {
+										"services.resume.loginTokens": {
+											whenLogin: new Date(),
+											hashedToken: token
+										}
+									}
+								}
+							)
+								.exec()
+								.then(updateUser => {
+									if (updateUser.nModified == 1) {
+										res.status(200).json({
+											message: 'Login Auth Successful',
+											token: token,
+											roles: user.roles,
+											ID: user._id,
+											companyID: user.profile.companyID,
+											userDetails: {
+												firstName: user.profile.firstname,
+												lastName: user.profile.lastname,
+												email: user.profile.email,
+												phone: user.profile.phone,
+												city: user.profile.city,
+												deliveryAddress: user.deliveryAddress,
+												pincode: user.profile.pincode,
+												companyID: user.profile.companyID,
+												locationID: user.profile.locationID,
+												user_id: user._id,
+												roles: user.roles,
+												token: token,
+											}
+										});
+									} else {
+										return res.status(200).json({
+											message: 'Auth failed'
+										});
+									}
+								})
+
+								.catch(err => {
+									console.log("500 err ", err);
+									res.status(500).json({
+										message: "Failed to save token",
+										error: err
+									});
+								});
+						} else {
+							return res.status(200).json({
+								message: 'INVALID_PASSWORD'
+							});
+						}
+					})
+				} else {
+					res.status(200).json({ message: "INVALID_PASSWORD" });
+				}
+			} else if ((user.profile.status).toLowerCase() == "blocked") {
+				res.status(200).json({ message: "USER_BLOCK" });
+			} else if ((user.profile.status).toLowerCase() == "unverified") {
+				res.status(200).json({ message: "USER_UNVERIFIED" });
+			}
+		} else {
+			res.status(200).json({ message: "NOT_REGISTER" });
+		}
+	})
+	.catch(err => {
+		console.log(err);
+		res.status(500).json({
+			message: "Failed to find the User",
+			error: err
+		});
+	});
+};
+
+exports.user_login_using_mobile_email = (req, res, next) => {
+	var mobNumber = req.body.mobNumber;
+	var role = (req.body.role).toLowerCase();
+	User.findOne({
+		"profile.mobile": mobNumber,
+		"roles": role,
+	})
+
 	.exec()
 	.then(user => {
 		if (user) {
@@ -1236,28 +1345,7 @@ exports.set_send_emailotp_usingEmail = (req, res, next) => {
 					User.findOne({ "profile.email": req.params.emailId })
 						.then(user => {
 							if (user) {
-								request({
-									"method": "POST",
-									"url": "http://localhost:" + globalVariable.port + "/send-email",
-									"body": {
-										email: user.profile.email,
-										subject: req.body.emailSubject,
-										text: req.body.emailContent + " " + optEmail,
-									},
-									"json": true,
-									"headers": {
-										"User-Agent": "Test Agent"
-									}
-								})
-									.then(source => {
-										res.status(201).json({ message: "OTP_UPDATED", userID: user._id })
-									})
-									.catch(err => {
-										res.status(500).json({
-											message: "Failed to Send the send email",
-											error: err
-										});
-									});
+								res.status(201).json({ message: "OTP_UPDATED", userID: user._id,optEmail:optEmail })	
 							} else {
 								res.status(200).json({ message: "User not found" });
 							}

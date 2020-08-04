@@ -837,9 +837,7 @@ exports.list_productby_type_mobile = (req,res,next)=>{
     
 };
 exports.list_productby_type = (req,res,next)=>{
-    
     var productType = req.params.productType;
-
     selector={};
     if(productType == 'featured'){
         selector={'featured':true,  "status": "Publish"};
@@ -1389,7 +1387,8 @@ exports.search_product_mobileapp = (req,res,next)=>{
     selector["$and"] = [];
     selector['$or'] = [];
     selector["$and"].push({ "status":"Publish" })
-    selector["$or"].push({ "productName"    : {'$regex' : req.params.searchstr , $options: "i" } })
+    selector["$or"].push({ "productName" : {'$regex' : req.params.searchstr , $options: "i" } })
+    console.log("selector in search ==>",selector);
     Products.find(selector)
     // Products.find(
     //         {
@@ -1406,6 +1405,7 @@ exports.search_product_mobileapp = (req,res,next)=>{
     //     )
     .exec()
     .then(data=>{
+        console.log("selector in search ==>",data);
         res.status(200).json(data);
     })
     .catch(err =>{
