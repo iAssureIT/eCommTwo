@@ -70,7 +70,7 @@ exports.insert_orders = (req, res, next) => {
                           var allocatedToFranchise = 0;
                           var distance = 0 ;
                           for(var i = 0 ; i < matchedFranchise.length; i++){
-                            var distance = await allocatefranchisebeforesave(matchedFranchise[i].franchiseID);
+                            distance = await allocatefranchisebeforesave(matchedFranchise[i].franchiseID);
                             if(distance < franchiseDistance){
                                 franchiseDistance = distance;
                                 allocatedToFranchise = matchedFranchise[i].franchiseID;
@@ -290,10 +290,11 @@ exports.insert_orders = (req, res, next) => {
                         Entitymaster.findOne({ _id: franchiseid })
                           .then(franchiseData => {
                             if (franchiseData) {
+                              var distance = 0
                               var Flatitude = franchiseData.locations[0].latitude;
                               var Flongitude = franchiseData.locations[0].longitude;
                               if (Flatitude && Flongitude) {
-                                var distance = findDistance(Flatitude, Flongitude, req.body.deliveryAddress.latitude, req.body.deliveryAddress.longitude, 'K');
+                                distance = findDistance(Flatitude, Flongitude, req.body.deliveryAddress.latitude, req.body.deliveryAddress.longitude, 'K');
                                 console.log("franchiseid = ", franchiseid,  " | distance = ",distance);
                                 resolve(distance);
                               }
