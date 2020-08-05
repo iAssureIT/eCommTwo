@@ -312,14 +312,17 @@ class Checkout extends Component {
         this.setState({
             [event.target.name]: event.target.value
         })
-        if (event.target.name === 'pincode') {
-            this.handlePincode(event.target.value);
-            this.checkPincode(event.target.value);
-
+        // if (event.target.name === 'pincode' && localStorage.getItem("websiteModel") === "FranchiseModel") {
+        if (event.target.name === 'pincode'){
+                if(localStorage.getItem("websiteModel") === "FranchiseModel") {
+                    this.handlePincode(event.target.value);
+                    this.checkPincode(event.target.value);
+                }else{
+                    this.handlePincode(event.target.value);
+                }
         }
     }
         handlePincode(pincode) {
-
         if (pincode !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + pincode)
                 .then((response) => {
@@ -331,7 +334,7 @@ class Checkout extends Component {
                             this.setState({ pincodeExists: false })
                         }
                     } else {
-                        this.setState({ pincodeExists: true })
+                        // this.setState({ pincodeExists: true })
                     }
                 })
                 .catch((error) => {
@@ -656,7 +659,7 @@ class Checkout extends Component {
                     "latitude": this.state.latitude,
                     "longitude": this.state.longitude,
                 }
-                console.log("inside if address values====", addressValues);
+                // console.log("inside if address values====", addressValues);
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     // console.log("addressValues:===",addressValues);
@@ -784,7 +787,7 @@ class Checkout extends Component {
             "latititude": this.state.latititude,
             "longitude": this.state.longitude,
         }
-        console.log("modal addressValues:", addressValues);
+        // console.log("modal addressValues:", addressValues);
 
         if ($('#modalAddressForm').valid()) {
 
@@ -923,26 +926,28 @@ class Checkout extends Component {
         // event.preventDefault();
         var target = event.target.pincode;
         var id = event.target.value;        
-        console.log("addressId =", id);
+        // console.log("addressId =", id);
         $('.notAvailable').hide();
         const pincode = event.target.getAttribute('pincode');
-        console.log("target:", pincode);
+        // console.log("target:", pincode);
         this.setState({
             "addressId": id,
         })
-        axios.get("/api/allowablepincode/checkpincode/" + pincode)
-            .then((response) => {
-                if (response) {
-                    if (response.data.message !== "Delivery Available") {
-                        console.log("Delivery not possible on this address");
-                        $('#' + id).show();
-                        $(".placeOrder").attr("disabled", true);
-                    }else{
-                        $('#' + id).hide();
-                        $(".placeOrder").attr("disabled", false);
+        if(localStorage.getItem("websiteModel")==="FranchiseModel"){
+            axios.get("/api/allowablepincode/checkpincode/" + pincode)
+                .then((response) => {
+                    if (response) {
+                        if (response.data.message !== "Delivery Available") {
+                            // console.log("Delivery not possible on this address");
+                            $('#' + id).show();
+                            $(".placeOrder").attr("disabled", true);
+                        }else{
+                            $('#' + id).hide();
+                            $(".placeOrder").attr("disabled", false);
+                        }
                     }
-                }
-        });
+            });
+        }
 
 
     }
@@ -984,12 +989,16 @@ class Checkout extends Component {
                                             </div>
                                             {this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
                                                 this.state.deliveryAddress.map((data, index) => {
-                                                    console.log("checked ==", this.state.addressId === data._id);
+                                                    // console.log("checked ==", this.state.addressId === data._id);
                                                     return (
                                                         <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div>
-                                                            <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelivery.bind(this)} className="codRadio" /> &nbsp;
-                                                            {/* <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)} className="codRadio"/> &nbsp; */}
+                                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div> */}      
+                                                            {localStorage.getItem('websiteModel')==="FranchiseModel" ?
+                                                                 <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelivery.bind(this)} className="codRadio" />                                                                                                                  
+                                                            :
+                                                            <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelivery.bind(this)} className="codRadio" />                                                                                                                   
+                                                            }                                                      
+                                                           
                                                             <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br />
                                                                 <span className="checkoutADDCss">Name : {data.name}.</span> <br />
                                                                 {data.addressLine2}, {data.addressLine1},
@@ -1080,8 +1089,10 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
                                                 <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                                {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
-                                                <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
+                                                {this.state.pincodeExists === true ? null    : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
+                                                {localStorage.getItem("websiteModel") === "FranchiseModel"?
+                                                    <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
+                                                :null}
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address type <span className="required">*</span></label>
@@ -1132,7 +1143,7 @@ class Checkout extends Component {
                                                                         <span className="price"><i className="fa fa-inr"></i> &nbsp;{data.productDetail.originalPrice}</span>
                                                                     }
                                                                     <div>
-                                                                        {data.productDetail.color ? <span className="cartColor">Color :&nbsp; {ntc.name(data.productDetail.color)[1]}, </span> : null}
+                                                                        {/* {data.productDetail.color ? <span className="cartColor">Color :&nbsp; {ntc.name(data.productDetail.color)[1]}, </span> : null} */}
                                                                         {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp; {data.productDetail.unit}</span> : null}
                                                                     </div>
                                                                 </td>

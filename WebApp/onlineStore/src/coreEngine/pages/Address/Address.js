@@ -347,7 +347,7 @@ class Address extends Component {
     saveAddress(event){
         event.preventDefault();
         var id = localStorage.getItem("user_ID");
-        console.log("address id :",id);
+        // console.log("address id :",id);
         var deliveryAddressID = this.props.addressId;
         // console.log("deliveryAddressID :",deliveryAddressID);
         // console.log("pincode:",this.state.modalPincode);
@@ -371,10 +371,10 @@ class Address extends Component {
             "latitude"          : this.state.latitude,
             "longitude"         : this.state.longitude,
         }
-        console.log("formValues:",formValues);
+        // console.log("formValues:",formValues);
         if(deliveryAddressID){
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
-                console.log('if form deliveryAddressID', formValues);
+                // console.log('if form deliveryAddressID', formValues);
                 axios.patch('/api/ecommusers/updateuseraddress', formValues)
                 .then((response)=>{
                     // console.log("response after update:",response.data.message);
@@ -394,8 +394,7 @@ class Address extends Component {
                 }, 3000);
                     // swal(response.data);
                     this.props.opDone();
-                    $(".checkoutAddressModal").hide();
-                    
+                    $(".checkoutAddressModal").hide();                    
                     $(".checkoutAddressModal").css({display: 'none'});
                     // $(".modal-header").css({display: 'block'});
                     // $(".modal-body").css({display: 'block'});
@@ -409,19 +408,23 @@ class Address extends Component {
                 });
             }
         }else{ 
+            var saveUserData="true";
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
-                console.log('else form deliveryAddressID', formValues);
+                // console.log('else form deliveryAddressID', formValues);
+                if(localStorage.getItem("websiteModel")==="FranchiseModel"){
                 axios.get("/api/allowablepincode/checkpincode/" + formValues.pincode)
                 .then((response) => {
                     if (response) {
                         if (response.data.message !== "Delivery Available") {
                             // console.log("Delevery not possible on this address");
+                            // saveUserData = "false";
                             swal({
                                 text : "Delivery is not possible on this address"
                             })                            // $('#' + id).show();
                             // $(".placeOrder").attr("disabled", true);
 
                         }else{
+                            // saveUserData = "true";
                             axios.patch('/api/ecommusers/patch/address', formValues)
                             .then((response)=>{
                                 // console.log(response.data.message);
@@ -456,7 +459,42 @@ class Address extends Component {
                             });                               
                         }
                     }
-                 });    
+                 }); 
+                 
+                }else{
+                    axios.patch('/api/ecommusers/patch/address', formValues)
+                            .then((response)=>{
+                                // console.log(response.data.message);
+                            this.setState({
+                            messageData : {
+                                "type" : "outpage",
+                                "icon" : "fa fa-check-circle",
+                                "message" : "&nbsp; "+response.data.message,
+                                "class": "success",
+                                "autoDismiss" : true
+                            }
+                            })
+                            setTimeout(() => {
+                                this.setState({
+                                    messageData   : {},
+                                })
+                            }, 3000);
+                                // swal(response.data.message);
+                                this.props.opDone();
+                                $(".checkoutAddressModal").hide();
+                                // $(".checkoutAddressModal").show();                                
+                                // $(".checkoutAddressModal").css({display: 'none'});
+                                $(".modal-header").css({display: 'block'});
+                                $(".modal-body").css({display: 'block'});
+                                $(".modal-footer").css({display: 'block'});
+                                // $(".checkoutAddressModal").removeClass("in");
+                                $(".modal-backdrop").hide();
+                                window.location.reload();
+                            })
+                            .catch((error)=>{
+                                console.log('error', error)
+                            });  
+                }
                 
             }
         }

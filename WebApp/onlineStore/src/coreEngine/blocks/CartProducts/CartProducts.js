@@ -378,7 +378,7 @@ class CartProducts extends Component{
                                                                 }
 
                                                                 <div>
-                                                                    {data.productDetail.color ? <span className="cartColor">Color :&nbsp;{ntc.name(data.productDetail.color)[1]}, </span> : null}
+                                                                    {/* {data.productDetail.color ? <span className="cartColor">Color :&nbsp;{ntc.name(data.productDetail.color)[1]}, </span> : null} */}
                                                                     {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp;<span className="CapsUnit">{data.productDetail.unit}</span></span>: null}
                                                                 </div>
                                                                     <button productid={data.productDetail._id} id={data._id} onClick={this.moveWishlist.bind(this)} className="btn moveWish">Move to Wishlist</button>

@@ -7,4 +7,4 @@ git stash pop
 git add *
 git add .
 git commit -m "Msg"
-git push origin anashandicraft
+git push origin anashandicraft 
