@@ -68,6 +68,7 @@ exports.insert_orders = (req, res, next) => {
                         if (matchedFranchise.length > 1) {
                           var franchiseDistance = 9999999999;
                           var allocatedToFranchise = 0;
+                          var distance = 0 ;
                           for(var i = 0 ; i < matchedFranchise.length; i++){
                             var distance = await allocatefranchisebeforesave(matchedFranchise[i].franchiseID);
                             if(distance < franchiseDistance){
