@@ -12,7 +12,8 @@ import { countBy } from 'underscore';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../redux/actions/index';
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export class printBill extends React.Component {
 	constructor(props) {
@@ -147,7 +148,24 @@ export class printBill extends React.Component {
         const w=window.open();
         w.document.write($('.viewBillDiv').html());
         w.print();
-        w.close();
+		w.close();
+		
+	//    const input = $('.viewBillDiv')[0];
+	//    $(input).css('background','white');
+    //    html2canvas(input)
+    //   .then((canvas) => {
+    //     const imgData = canvas.toDataURL('image/png');
+	// 	const pdf = new jsPDF({
+	// 		format :[700,330]
+	// 	});
+	// 	console.log("image",imgData);
+	// 	// options = {format:"PNG", background:"#418423"}
+
+	// 	pdf.addImage(imgData, 'JPEG', 0, 0);
+    //     pdf.output('save', 'bill.pdf'); //Try to save PDF as a file (not works on ie before 10, and some mobile devices)
+	// 	pdf.output('datauristring');        //returns the data uri string
+	// 	pdf.output('datauri');              //opens the data uri in current window
+    //  });
 	}
 	
 	editOrder(id,editorderInput){
@@ -184,7 +202,6 @@ export class printBill extends React.Component {
 		$('#headerid').hide();
 		$('#dashbordid').css('top',0);
 		var elem = document.documentElement;
-		console.log("elem",document.documentElement);
 		if (elem.requestFullscreen) {
 		  elem.requestFullscreen();
 		} else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -427,7 +444,7 @@ export class printBill extends React.Component {
 		this.setState({
 			"paymentMethod" : paymentMethod
 		},()=>{
-			console.log("paymentMethod",this.state.paymentMethod);
+			// console.log("paymentMethod",this.state.paymentMethod);
 		})
 	}
 

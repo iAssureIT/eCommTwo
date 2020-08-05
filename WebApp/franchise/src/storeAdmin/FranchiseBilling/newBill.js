@@ -116,7 +116,6 @@ export class Bill extends React.Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		console.log("In componentWillReceiveProps 119",nextProps.recentCartData[0]);
 		let discount = 0;
 		let total    = 0;
 		let subtotal = 0;
@@ -137,8 +136,6 @@ export class Bill extends React.Component {
 			}
 		   )
 		   
-		   console.log("disPrice",discount);
-
 			total = nextProps.recentCartData[0].cartItems.reduce((prev,next) => prev + (next.rate),0);
 			let CGSTAmt = nextProps.recentCartData[0].cartItems.reduce((prev,next) => prev + next.CGSTAmt,0);
 			let SGSTAmt = nextProps.recentCartData[0].cartItems.reduce((prev,next) => prev + next.SGSTAmt,0);
@@ -247,7 +244,6 @@ export class Bill extends React.Component {
 		$('.nav-pills').find('.active').removeClass('active');
 		$('.nav-pills .all').parent().addClass('active');
 		$('.box').removeClass('active');
-		console.log("$('#'+sectionId).parent",$('#'+sectionId).parent());
 		$('#'+sectionId).parent('.box').addClass('active');
 		this.setState({
 			section_ID : sectionId
@@ -312,11 +308,9 @@ export class Bill extends React.Component {
 		axios.get("api/products/get/search/"+value)
         .then((response)=>{
             if(response.data){
-            //    console.log("product list by search ===",response.data); 
               this.setState({ 
 				ProductList : response.data
               })
-              // console.log("megamenu section Data: ",this.state.categoryData);
             }
             })
             .catch((error)=>{
@@ -407,7 +401,6 @@ export class Bill extends React.Component {
         const userid = localStorage.getItem('user_ID');
         axios.get("/api/carts/get/cartproductlist/"+userid)
           .then((response)=>{ 
-			// console.log('cartData', response.data);
 			var totalAmt = 0;
 			if(response.data){
 				totalAmt = response.data.reduce(function(prev,current){
@@ -459,7 +452,6 @@ export class Bill extends React.Component {
 		this.setState({
 		  [event.target.name]: event.target.value
 		})
-		// console.log('discountPercent', event.target.value);
 		if (event.target.value > 100) {
 		  this.setState({
 			discountPercentError: "Discount Percent should be less than 100."
@@ -632,8 +624,6 @@ export class Bill extends React.Component {
 
 
 	  addCart(formValues, quantityAdded, availableQuantity) {
-		console.log("in addCart 625 ==========>",formValues, quantityAdded, availableQuantity);
-
 		if (quantityAdded >= availableQuantity) {
 		  this.setState({
 			messageData: {
@@ -869,7 +859,7 @@ export class Bill extends React.Component {
 		$('.dashboardeffect').css('top',0);
 		
 		var elem = document.documentElement;
-		console.log("elem",document.documentElement);
+
 		if (elem.requestFullscreen) {
 		  elem.requestFullscreen();
 		} else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -1250,7 +1240,7 @@ export class Bill extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log("mapStateToProps",state.recentCustomerData);
+	// console.log("mapStateToProps",state.recentCustomerData);
 	return {
 	  recentCartData     :  state.recentCartData,
 	  recentCustomerData :  state.recentCustomerData

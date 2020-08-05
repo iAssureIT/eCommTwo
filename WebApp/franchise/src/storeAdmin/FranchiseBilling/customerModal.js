@@ -81,7 +81,6 @@ class customerModal extends Component{
             this.setState({
                 googleAPIKey : response.data.googleapikey
             },()=>{
-                console.log("googleAPIKey",response.data.googleapikey);
                 window.initMap = this.initMap
                 const gmapScriptEl = document.createElement(`script`)
                 gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=`+this.state.googleAPIKey+`&libraries=places&callback=initMap`
@@ -137,7 +136,6 @@ class customerModal extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        console.log("componentWillReceiveProps",nextProps);
         this.setState({
             'franchise_id' : nextProps.franchise_id,
             "showCustForm" : nextProps.updateCustomer ? true : false,
@@ -150,7 +148,6 @@ class customerModal extends Component{
         var userDetails = JSON.parse(localStorage.getItem('userDetails'));
         axios.get('/api/billingmaster/getCompany/'+userDetails.companyID)
         .then((response) => {
-            console.log("response",response)
             axios.get('/api/billingmaster/get/customers/'+response.data[0]._id)
             .then((response) => {
                 this.setState({
@@ -167,7 +164,6 @@ class customerModal extends Component{
     }
 
     onSearchCustomer(event){
-        console.log("onSearchCustomer",event);
         event.preventDefault();
         const {name,value} = event.target;
         this.setState({ 
@@ -175,7 +171,6 @@ class customerModal extends Component{
         })
 		this.state.customersArray.map((data, i)=>{
 			if(value == data.customerName){
-                console.log("match");
 				this.setState({
                     "id"             : data._id,
                     "customerName"   : data.customerName,
@@ -256,7 +251,6 @@ class customerModal extends Component{
       }
 
     handleChangePlaces = address => {
-		console.log("address in handle change=>",address)
 	    this.setState({ address : address});
 	};
 

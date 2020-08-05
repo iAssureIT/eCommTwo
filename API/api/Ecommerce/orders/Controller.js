@@ -2296,9 +2296,10 @@ exports.get_orders_with_filters = (req,res,next)=>{
    let franchiseID = req.body.franchiseID ? req.body.franchiseID : '';
    let startDate = req.body.startDate ? moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate() : '';
    let endDate = req.body.endDate ? moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate() : '';
-   
+
    if(status !== "" && franchiseID !== "" && startDate !== "" && endDate !== ""){
-      selector ={"deliveryStatus.status" :  req.body.status,allocatedToFranchise : ObjectId(req.body.franchiseID),
+      selector ={"deliveryStatus.status" :  req.body.status,
+                  allocatedToFranchise : ObjectId(req.body.franchiseID),
                   createdAt: {
                       $gte:  moment(req.body.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
                       $lte:  moment(req.body.endDate).tz('Asia/Kolkata').endOf('day').toDate()
@@ -2306,7 +2307,7 @@ exports.get_orders_with_filters = (req,res,next)=>{
               }
    }else{
       if(status){
-          selector["deliveryStatus.status"] = status;
+          selector["deliveryStatus.status"] = req.body.status;
       }
       if(franchiseID){
           selector["allocatedToFranchise"] = ObjectId(req.body.franchiseID);
@@ -2319,13 +2320,36 @@ exports.get_orders_with_filters = (req,res,next)=>{
       }
    }
 
-
-    Orders.find(selector)
-    .populate("allocatedToFranchise")
-    .sort({createdAt:-1})      
+   if(status !== ''){
+      Orders.aggregate([
+      { "$match":selector },
+      { "$redact":
+          {
+              "$cond": {
+                 "if": { "$eq": [ { "$arrayElemAt": [ "$deliveryStatus.status", -1 ] }, req.body.status ] },
+                 "then": "$$KEEP",
+                 "else": "$$PRUNE"
+              }
+          }
+      }])
+        .sort({createdAt:-1})  
         .exec()
         .then(data=>{
-         res.status(200).json(data);
+           res.status(200).json(data);
+        })
+        .catch(err =>{
+              console.log(err);
+              res.status(500).json({
+                  error: err
+              });
+        });
+   }else{
+        Orders.find(selector)
+        .populate("allocatedToFranchise")
+        .sort({createdAt:-1})      
+        .exec()
+        .then(data=>{
+           res.status(200).json(data);
         })
         .catch(err =>{
             console.log(err);
@@ -2333,6 +2357,8 @@ exports.get_orders_with_filters = (req,res,next)=>{
                 error: err
             });
         });
+   }
+   
 };
 
 

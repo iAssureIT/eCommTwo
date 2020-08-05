@@ -613,16 +613,18 @@ class AdminOrdersList extends Component{
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status</label>
                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
-                                  <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
-                                  <option value="all" name="roleListDDOption">Show All</option>
-                                  <option value="New Order">New Order</option>
-                                  <option value="Packed">Packed</option>
-                                  <option value="Inspection">Inspection</option>
-                                  <option value="Dispatch Approved">Dispatch Approved</option>
-                                  <option value="Dispatch">Dispatch</option>
-                                  <option value="Delivery Initiated">Delivery Initiated</option>
-                                  <option value="Delivered & Paid">Delivered & Paid</option>
-                             
+                                   <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+                                    <option value="all" name="roleListDDOption">Show All</option>
+                                    <option value="New Order">New Order</option>
+                                    <option value="Verified">Verified</option>
+                                    <option value="Packed">Packed</option>
+                                    <option value="Inspection">Inspection</option>
+                                    <option value="Dispatch Approved">Dispatch Approved</option>
+                                    <option value="Dispatch">Dispatch</option>
+                                    <option value="Delivery Initiated">Delivery Initiated</option>
+                                    <option value="Delivered & Paid">Delivered & Paid</option>  
+                                    <option value="Returned">Returned</option>  
+                                    <option value="Cancelled">Cancelled</option>  
                                 </select>
                             </div>
                             : null}

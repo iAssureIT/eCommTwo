@@ -24,7 +24,8 @@ class AdminOrdersList extends Component{
                 // "notificationData" :Meteor.subscribe("notificationTemplate"),
                 "fromDate"     :'',
                 "toDate"       : '',
-                "status"  : ''
+                "status"  : '',
+                "showStatusFilter" : true
             };
         } else{
             this.state = {
@@ -32,7 +33,8 @@ class AdminOrdersList extends Component{
                 "orderId": '',
                 "fromDate"     : '',
                 "toDate"       : '',
-                "status"  : ''
+                "status"  : '',
+                "showStatusFilter" : true
             };
         }
         window.scrollTo(0, 0);
@@ -68,12 +70,15 @@ class AdminOrdersList extends Component{
                 
             return null;
           });	
+
             this.setState({
                 "data": nextProps.data,
                 "allProductsArray" : nextProps.allProductsArray,
                 "filteredProductArray" : ProductList,
-                "currentViewStatus" : nextProps.status
-            });
+                "currentViewStatus" : nextProps.status,
+                "showStatusFilter" : nextProps.showStatusFilter
+             },()=>{
+             });
         }
     }
     componentWillUnmount() {
@@ -448,7 +453,6 @@ class AdminOrdersList extends Component{
           }
         ];
         return(    
-
         // <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				// <div className="row">
 				// 	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
@@ -462,7 +466,7 @@ class AdminOrdersList extends Component{
                 <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12 NoPadding">
                 <div className="formWrapper">
                   <section className="content">
-                    <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12 marginBottomCSS">
+                    <div className="pageContent col-lg-offset-2  col-lg-10 col-md-offset-2 col-md-10 col-sm-12 col-xs-12 marginBottomCSS">
                     <br/>
                       <div className="row">
                           <div className="admin-orders-SubTitleRow  row">
@@ -523,19 +527,25 @@ class AdminOrdersList extends Component{
                                 <input onChange={this.handleToChange.bind(this)} name="toDate" ref="toDateCustomised" value={this.state.toDate} type="date" className="reportsDateRef form-control" placeholder=""   />
                               </div>
                             </div>
+                            {this.state.showStatusFilter === true ?
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
-                                 <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status</label>
-                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
-                                  <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
-                                  <option value="all" name="roleListDDOption">Show All</option>
-                                  <option value="New Order">New Order</option>
-                                  <option value="Packed">Packed</option>
-                                  <option value="Inspection">Inspection</option>
-                                  <option value="Dispatch Approved">Dispatch Approved</option>
-                                  <option value="Dispatch">Dispatch</option>
-                                  <option value="Delivery Initiated">Delivery Initiated</option>
-                                  <option value="Delivered & Paid">Delivered & Paid</option>                                </select>
+                                  <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status </label>
+                                  <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
+                                    <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+                                    <option value="all" name="roleListDDOption">Show All</option>
+                                    <option value="New Order">New Order</option>
+                                    <option value="Verified">Verified</option>
+                                    <option value="Packed">Packed</option>
+                                    <option value="Inspection">Inspection</option>
+                                    <option value="Dispatch Approved">Dispatch Approved</option>
+                                    <option value="Dispatch">Dispatch</option>
+                                    <option value="Delivery Initiated">Delivery Initiated</option>
+                                    <option value="Delivered & Paid">Delivered & Paid</option>  
+                                    <option value="Returned">Returned</option>  
+                                    <option value="Cancelled">Cancelled</option>  
+                                  </select>
                             </div>
+                            : null }
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Product</label>
                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="product" name="product" value={this.state.product} onChange={this.onProductChange.bind(this)} >
