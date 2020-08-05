@@ -203,7 +203,7 @@ class HomePage extends Component {
               :
               (this.state.featuredProducts.length > 0 ? 
                 <Ecommercenewproductcaro  
-                    title={'FEATURE PRODUCTS'} 
+                    title={'FEATURED PRODUCTS'} 
                     newProducts={this.state.featuredProducts} 
                     type={'featured'} 
                     getWishData={this.getWishData.bind(this)} 
@@ -242,7 +242,7 @@ class HomePage extends Component {
           }
         </div>
         <div className="homeRow">
-        <Marketing/>
+           <Marketing/>
         </div>
         
        

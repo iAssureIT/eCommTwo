@@ -62,11 +62,11 @@ addtocart(event){
                 "productCode" : response.data.productCode,
                 "productName" : response.data.productName,
                 "section_ID"        : response.data.section_ID,
-            "section"           : response.data.section,
-            "category_ID": response.data.category_ID,
-            "category": response.data.category,
-            "subCategory_ID": response.data.subCategory_ID,
-            "subCategory": response.data.subCategory,
+                "section"           : response.data.section,
+                "category_ID": response.data.category_ID,
+                "category": response.data.category,
+                "subCategory_ID": response.data.subCategory_ID,
+                "subCategory": response.data.subCategory,
                 "productImage" : response.data.productImage,
                 "quantity" : 1  ,
                 "discountedPrice" : parseInt(response.data.discountedPrice),
@@ -99,16 +99,16 @@ componentWillMount() {
           <img className="img img-responsive bannerimg" style={{height:"258px"}} src={require("../../../sites/currentSite/images/Newblock1.png")} alt="banner" />
          </div>
          <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 imagediv2 ">
-           <img className="col-lg-6 col-md-6 col-sm-6 col-xs-6 img img-responsive bannerimg" src={require("../../../sites/currentSite/images/newblock2.png")} alt="banner" />
+           <img className="col-lg-6 col-md-6 col-sm-6 col-xs-6 img img-responsive bannerimg imagediv2_top" src={require("../../../sites/currentSite/images/newblock2.png")} alt="banner" />
            <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imge2text"style={{padding:"0px"}}>
-            <h3 style={{color:"#fff"}}><b>BIG SAVING</b></h3>
+            <h3 className="imagetext_top" style={{color:"#fff"}}><b>BIG SAVING</b></h3>
             <h1 style={{color:"#fff"}}><b>GET 75%</b></h1>
             <a href="/deals-of-the-day"><div class="btn  new_shopnowbtn" title="Shop Now">Shop Now</div></a>
           </div>
          </div>
           <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 imagediv3">
            <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 image1stDiv">
-           <h1 style={{color:"#fff"}}><b>BIG SALE</b></h1>
+           <h1 className="imagetext_top" style={{color:"#fff"}}><b>BIG SALE</b></h1>
            <h3 style={{color:"#fff"}}><b>GET 25%</b></h3>
           </div>
           <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7 image1stDiv">\

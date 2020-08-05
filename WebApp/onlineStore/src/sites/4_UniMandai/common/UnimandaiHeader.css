@@ -1,3 +1,4 @@
+ 
 .headerWrapper{
     padding-left: 0px !important;
     padding-right: 0px !important;
@@ -456,6 +457,7 @@ button.button_search {
     padding-bottom: 20px;
     background-size: 100% 100% !important;
     background-repeat: no-repeat !important;
+    margin-top: 20px;
 }
 .loginModalContent .close{
     font-size: 55px !important;
@@ -474,11 +476,26 @@ button.button_search {
 .headerWrapper{
     z-index: 1000 !important;
 }
+#loginFormModal{
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+#pageOpacity{
+    height: 700px;
+    width: 100%;
+    top:0 !important;
+    position: fixed;
+    background-color: rgba(250,250,250,0.8);
+    z-index: 1001;
+    display: none;
+}
 @media only screen and (max-device-width: 480px) {   
     .firstDiv{
         min-height: auto;
     }
-    
+    .userinfotext{
+        margin-top: 5px !important;
+    }
     .searchBoxWrapper{
         /* padding-left: 10px; */
         /* padding-right: 10px; */
@@ -494,7 +511,7 @@ button.button_search {
     }
     .box-right .cart .cart-count{
         bottom: 61%;
-        right: 2px;
+        right: 5px;
     }
     .greenStrip{
         height: 15px;
@@ -505,13 +522,24 @@ button.button_search {
         margin-top: 10px !important;
     }
 }
-@media only screen and (max-device-width: 768px) {  
+@media only screen and (min-width: 768px) and (max-width: 1024px) { 
+    .mega-menu span{
+        font-size: 10px !important;
+    }
+}
+@media only screen and (min-width: 481px) and (max-width: 768px) { 
 .menuDropDown .dropbtn{
     /* border-bottom: 0px solid #ccc !important; */
 }
 .box-right{
     /* float: right; */
     /* margin-right: 60px; */
+}
+.searchBoxWrapper{
+    margin-top: 15px;
+}
+.box-right{
+    padding-top: 4px;
 }
 }
  
@@ -652,4 +680,3 @@ button.button_search {
       text-align: left;
     }
   }
-  

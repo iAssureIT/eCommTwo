@@ -474,6 +474,7 @@ ul.box-static-link li span {
     color: #FFF;
     font-size: 12px;
     font-weight: 600;
+    padding-top: 9px;
     text-transform: capitalize;
     /*background-color: #A2632C;*/
 
@@ -481,6 +482,7 @@ ul.box-static-link li span {
 .useremail{
   font-size: 11px;
   color: #555;
+  padding-top: 22px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -684,7 +686,7 @@ ul.box-static-link li span {
     height: 18px;
     width: 18px;
     position: absolute;
-    left: 30px;
+    left: 39px;
     top:-15px;
     line-height: 18px;
     text-align: center;
@@ -817,6 +819,18 @@ button.button_search {
   animation: fadeIn ease 1s;
 
 }
+.searchBox_mob{
+  position: absolute;
+  display: none;
+  background-color: #333 ! important;
+  top: 70px;
+  right: 90px;
+  animation: fadeIn ease 1s;
+
+}
+.searchBox_mob input{
+  height: 24px;
+}
 .searchIcon
 {
     position: absolute;
@@ -893,4 +907,60 @@ animation: fadeIn ease 20s;
 .NoPadding-right{
   padding-right: 0px;
   padding-left: 63px;
+}
+
+.topnav {
+    z-index: 1000;
+    overflow: hidden;
+    background-color: #fff;
+    /* border-bottom: solid 1px #ccc; */
+    /*margin-bottom: 20px;*/
+    min-height: 90px;
+  }
+  
+  .topnav .topNavCategory {
+    float: left;
+    display: block;
+    color: #333;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .topnav .box-right{
+        margin-top: 10px;
+  }
+  .logoResponsive{
+      margin-top: 10px;
+      margin-left: 4px;
+  }
+  .megamenu-top{
+    display: none;
+  }
+  .hiddenIconbar{
+    display: none; 
+    position: absolute;
+    right: 104px;
+    top: 3px;
+  }
+  .afterHIdeIcon{
+    position: absolute;
+    right: 0px;
+    top: 11px;
+    font-size: 20px;
+    color: #a2632c ! important;
+  }
+@media (min-width: 768px)
+.navbar-nav {
+    float: left;
+    margin: 0;
+}
+@media only screen and (max-width: 768px) {
+  .searchIcon
+{
+    position: absolute;
+    right: 29px;
+    bottom: 6px;
+}
+
 }

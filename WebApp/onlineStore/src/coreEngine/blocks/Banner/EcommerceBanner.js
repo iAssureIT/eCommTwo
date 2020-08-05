@@ -44,8 +44,9 @@ export default class EcommerceBanner extends Component {
 		  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "style={{padding:"0px"}}>
 			 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
 					 <a href="https://www.youtube.com/results?search_query=anasHandicrafts">
-					 <button type="button" class="btn btn-lg madalbtn btnbg"title="Visit Our YouTube Channel">
-					  <img src={require("../../../sites/currentSite/images/yt_logo_rgb_light.png")} />
+					 <button type="button" class=" btn-lg madalbtn btnbg"title="Visit Our YouTube Channel">
+					  <span className="youtubetxt1">Visit Our</span><i className="fa fa-youtube youtube_icon"></i><span className="youtubetxt2">Channel</span>
+					 {/* <img src={require("../../../sites/currentSite/images/yt_logo_rgb_light.png")} />*/}
 					 </button></a>
 						<div className="row">
 							<div className="">

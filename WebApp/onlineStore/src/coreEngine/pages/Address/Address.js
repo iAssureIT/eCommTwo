@@ -6,7 +6,7 @@ import Message from '../../blocks/Message/Message.js';
 import 'jquery-validation';
 import "../../../sites/currentSite/pages/Address.css";
 import PlacesAutocomplete, { geocodeByAddress,getLatLng } from "react-places-autocomplete";
-import ModaalHeaderImg from '../../../sites/currentSite/images/unimandaiLogo.jpeg';
+import ModaalHeaderImg from '../../../sites/currentSite/images/NewAnasLogo.jpg';
 import swal from 'sweetalert';
 class Address extends Component {
     constructor(props) {

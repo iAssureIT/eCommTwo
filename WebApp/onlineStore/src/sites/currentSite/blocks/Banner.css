@@ -15,6 +15,12 @@
 .owl-dots{
 	left:655px ! important;
 }
+@media only screen and (max-width: 768px) {
+	.owl-dots{
+	display: none ! important;
+}
+  
+}
 .takephone_down{
 	margin-top: 15px;
 }
@@ -97,14 +103,23 @@ background: #FBBD65;
 .img_border{
  border-right: 1px solid #eee;
 }
+@media only screen and (max-width: 768px) {
+ 
+ .btnbg{
+ 	top: 431px ! important; 
+    left: 325px ! important;
+ }
+  
+}
 .btnbg {
     background-image: url(/images/youtube.png);
-    width: 102px;
+    width: 135px;
     background-color: #f1f1f1;
     /*box-shadow: 1px 1px 10px 0 #f1f1f1;*/
     /*border-radius: 40px 0 0 40px;*/
-    height: 35px;
-    top: 560px;
+    height: 46px;
+    top: 517px;
+    border:1px solid #eee;
     right: 0px;
     z-index: 1000;
     position: fixed;
@@ -116,5 +131,34 @@ background: #FBBD65;
     height: 21px;
     position: absolute;
     width: 82px;
-    top: 5px;
+    top: 12px;
+}
+.youtube_icon{
+	float: left;
+    color: red;
+    /*background: red;*/
+    font-size: 29px;
+    position: absolute;
+    right: 52px;
+    bottom: 6px;
+}
+.youtubetxt1{
+	font-size: 11px;
+	position: absolute;
+	right: 82px;
+	bottom: 12px;
+	color:333 ! important;
+
+}
+.youtubetxt2{
+	font-size: 11px;
+	position: absolute;
+	right: 2px;
+	bottom: 12px;
+	color:333 ! important;
+
+}
+.btn-lg{
+	/*border-radius: none ! important;
+	border-radius-left:4px ! important;*/
 }

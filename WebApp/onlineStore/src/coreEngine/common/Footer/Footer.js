@@ -112,8 +112,8 @@ export default class Footer extends Component {
                {/* <div className="container"></div> */}
                 <div>
                     <div className="logo col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                        <a href="/" title="Unimandai logo ">
-                            <img src={logoUnimandai} alt="images" className="footerLogoImg col-lg-12"/>
+                        <a href="/" title="AnasHandicraftts logo ">
+                            <img src={logoUnimandai} alt="images" className="footerLogoImg"/>
                         </a>
                     </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Connect</div>

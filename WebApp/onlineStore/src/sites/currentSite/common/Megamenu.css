@@ -400,7 +400,7 @@ ul.main-nav > li ul.sub-menu-lists > li > a:hover {
 .list_dot{
     position: absolute;
     left: -38px;
-    bottom: 9px;
+    bottom: 19px;
     color: #333;
     font-size: 4px;
 }
