@@ -21,6 +21,7 @@ class BigSale extends Component {
 			categoryDetails: [],
 			masterproducts: [],
 			products: [],
+			discountedProducts: [],
 			sectionID: '',
 			categoryID: '',
 			subcategoryID: '',
@@ -45,12 +46,13 @@ class BigSale extends Component {
 
 	componentDidMount() {
 
-		this.getWishData();
+		// this.getWishData();
+		this.discountedproductsData();
+		this.getCategories();
 
 		var envVariable = process.env.REACT_APP_PROJECT_NAME;
 		this.setState({
 			envVariable: envVariable
-
 		})
 
 		var selector = this.state.selector;
@@ -87,11 +89,6 @@ class BigSale extends Component {
 			this.getProductsBySection(this.props.match.params.sectionID);
 		}
 		this.getSectionDetails(this.props.match.params.sectionID);
-		// this.getCategoryDetails(this.props.match.params.categoryID);
-
-
-
-
 		this.getPriceLimits();
 
 		$('.dropdown-submenu a.test').on("click", function (e) {
@@ -108,6 +105,18 @@ class BigSale extends Component {
 			this.setState({ ['toggleIcon' + event.target.getAttribute('data-key')]: "fa fa-plus-circle " + event.target.getAttribute('data-key') + "Icon" }, () => { })
 		}
 	}
+	getCategories(){
+		axios.get("/api/category/get/list")
+		.then((response)=>{
+		  console.log("All Category response:",response.data);
+		  this.setState({
+			allCategoryDetails : response.data
+		  })
+		})
+		.catch((error)=>{
+		  // console.log('error', error);
+		})
+	  }
 	getSectionDetails(sectionID) {
 		axios.get("/api/category/get/" + sectionID)
 			.then((response) => {
@@ -760,8 +769,23 @@ class BigSale extends Component {
 			});
 		}
 	}
+	discountedproductsData(){
+		var productType3 = 'discounted';
+		
+		axios.get("/api/products/get/listbytype/"+productType3)
+			  .then((response)=>{
+				console.log('discounted prod response==>', response);
+				this.setState({
+					loading:false,
+				  discountedProducts : response.data
+				  
+				})
+			  })
+			  .catch((error)=>{})    
+	  }
 	render() {
-		console.log("Category details:",this.state.categoryDetails);
+		// console.log("Category details:",this.state.categoryDetails);
+		// console.log("loading:",this.state.loading);
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv">
 				<div className="row">
@@ -777,7 +801,7 @@ class BigSale extends Component {
 								<li><a href="/">{this.state.productscategoryName}</a></li>
 							</ul>
 						</div>
-						<div className="hidden-lg hidden-md hidden-sm hidden-xs col-sm-12 col-xs-12 menudiv1">
+						<div className=" hidden-sm hidden-xs col-sm-12 col-xs-12 menudiv1">
 							<div className="hidden-lg menudiv hidden-md col-sm-4 col-xs-4">
 								<div className="dropdown">
 									<button className="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Menu
@@ -904,12 +928,13 @@ class BigSale extends Component {
 						{/*for lg and md*/} 
 						{
 							// Array.isArray(this.state.categoryDetails.length) > 1 ?
-							Array.isArray(this.state.categoryDetails) && this.state.categoryDetails.length > 0 ?
+							Array.isArray(this.state.allCategoryDetails) && this.state.allCategoryDetails.length > 0 ?
 								<div className="col-lg-3 col-md-3 filterWrapper">									
-									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
-										<div className="accordion" id="accordionExample">
+									<div className="nb-brand filterInner col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
+									<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
 												<div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
+												{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" > */}
 													<button className="btn btn-link" type="button" data-key="category"   >
 														CATEGORY
 						        					</button>
@@ -919,19 +944,20 @@ class BigSale extends Component {
 											<div id="collapseOne" className="collapse in">
 												<div className="card-body">
 													{
-														this.state.categoryDetails.length ?
-															this.state.categoryDetails.map((data, index) => {
-																console.log("data in collapse==>",data)
+														this.state.allCategoryDetails.length ?
+															this.state.allCategoryDetails.map((data, index) => {
+																// console.log("data in collapse==>",data)
 																return (
 																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<li>
-																			<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a>
+																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "600!important" }}>{data.category.toUpperCase()}</a>
+																			{/* <a href="" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a> */}
 																			<ul>
 																				{
 																					data.subCategory && data.subCategory.map((subcat, subind) => {
 																						return (
 																							<li>
-																								<a href="#productDiv" className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
+																								<a href={"/category"+"/"+subcat.subCategoryTitle+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
 																							</li>
 																						);
 																					})
@@ -950,6 +976,7 @@ class BigSale extends Component {
 												</div>
 											</div>
 											</div>
+											
 											
 											{/* 	<div>
 										<div id="collapseTwo" className="collapse" >
@@ -1088,14 +1115,14 @@ class BigSale extends Component {
 						</div>
 						 : null
 						}
-
 						{
-							this.state.loading ?
+							
+							this.state.loading === true ?
 								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3" id="productDiv">
 									<Loader type="collageloader" productLoaderNo={6} />
 								</div>
 								:
-								this.state.products.length > 0 ?
+								this.state.discountedProducts.length > 0 ?
 									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12" id="productDiv">
 										<br />
 										<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1141,7 +1168,7 @@ class BigSale extends Component {
 													</div>
 													{
 														<BigSaleCollageView
-															products={this.state.products}
+															products={this.state.discountedProducts}
 															categoryDetails={this.state.categoryDetails}
 															getWishData={this.getWishData.bind(this)} wishList={this.state.wishList}
 															getFilteredProductsFun={this.getFilteredProducts.bind(this)}

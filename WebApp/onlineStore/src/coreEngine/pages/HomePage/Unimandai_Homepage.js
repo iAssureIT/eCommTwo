@@ -41,7 +41,7 @@ class HomePage extends Component {
       // console.log("2.Didmount askPincodeToUser:");
       const preferences = localStorage.getItem("websiteModel");      
       const showLoginAs = localStorage.getItem("showLoginAs");      
-      this.setState({"askPincodeToUser" : preferences}); 
+      this.setState({"askPincodeTolistbytypeUser" : preferences}); 
 
       // if(localStorage.getItem('flag')=== null){
       //   localStorage.setItem('flag','false');
@@ -56,6 +56,7 @@ class HomePage extends Component {
       // } 
      
       this.featuredProductData();
+      this.getVegetablesData();
       this.exclusiveProductsData();
       this.discountedproductsData();
       // this.bestSellerData();
@@ -69,6 +70,25 @@ class HomePage extends Component {
       // console.log("wilmount askPincodeToUser:",preferences);      
       this.setState({"askPincodeToUser" : preferences});  
          
+    }
+    getVegetablesData(){
+      var section = 'Vegetables';
+      
+      axios.get("/api/products/get/sectiontype/"+section)
+      // axios.get("/api/category/get/"+section)
+      
+            .then((response)=>{
+              if(response.data){
+              console.log('vegetables Products ==== ' , response.data)
+              this.setState({
+                featuredproductsloading:false,
+                vegetableProducts : response.data
+              })
+            }
+            })
+            .catch((error)=>{
+                // console.log('error', error);
+            })
     }
     featuredProductData(){
       var productType1 = 'featured';
@@ -84,7 +104,6 @@ class HomePage extends Component {
             .catch((error)=>{
                 // console.log('error', error);
             })
-
     }
     exclusiveProductsData(){
       var productType2 = 'exclusive';
@@ -117,7 +136,7 @@ class HomePage extends Component {
     getCategories(){
       axios.get("/api/category/get/list")
       .then((response)=>{
-        console.log("Category response:",response.data);
+        // console.log("Category response:",response.data);
         this.setState({
           categories : response.data
         })
@@ -143,6 +162,7 @@ class HomePage extends Component {
       var user_ID = localStorage.getItem('user_ID');
       axios.get('/api/wishlist/get/userwishlist/'+user_ID)
       .then((response)=>{
+        this.getVegetablesData();
         this.featuredProductData();
         this.exclusiveProductsData();
         this.discountedproductsData();
@@ -170,7 +190,12 @@ class HomePage extends Component {
             } */}
             <EcommerceBanner_Unimandai/>
             <HomePageBanner2 />
-            <FreshFoodBlock />
+
+            {/*-----------------shop by category block---------------------*/}
+          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ProductDivider categories={this.state.categories} />
+          </div>
+            
           </div>
           <div className="homeRow">
             {
@@ -190,12 +215,10 @@ class HomePage extends Component {
               )
             }
           </div>
-           {/*-----------------shop by category block---------------------*/}
-          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <ProductDivider categories={this.state.categories} />
-          </div>
 
-          <div className="homeRow">
+          <FreshFoodBlock />
+
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
             {
               this.state.featuredproductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -213,9 +236,25 @@ class HomePage extends Component {
               )
             }
           </div>
-
+          {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
+            {
+              this.state.featuredproductsloading ?  
+              <Loader type="carouselloader" productLoaderNo = {4}/>      
+              :
+              (this.state.featuredProducts.length > 0 ? 
+                <Ecommercenewproductcaro  
+                    title={'Vegetables'} 
+                    newProducts={this.state.vegetableProducts} 
+                    type={'featured'} 
+                    getWishData={this.getWishData.bind(this)} 
+                    wishList={this.state.wishList} 
+                    categories={this.state.categories} 
+                    changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                : null
+              )
+            }
+          </div> */}
         </div>
-
 
         <Unimandai_SaleProductDivider />
         <div className="homeRow">

@@ -4,11 +4,12 @@ import axios from 'axios';
 
 // import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetables1.jpeg"
 // import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits1.jpg"
-// import HomePageBanner2_3 from "../../../../sites/currentSite/images/frozen1.png"
+
 
 import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetable blocks.png";
 import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits_blocks.png";
 import HomePageBanner2_3 from "../../../../sites/currentSite/images/Frozen_items.png";
+import HomePageBanner2_4 from "../../../../sites/currentSite/images/unimandaiOtherItemBlocks.png";
 
 class HomePageBanner2 extends Component{
     constructor(props){
@@ -51,7 +52,15 @@ class HomePageBanner2 extends Component{
                                 }
                                 // console.log("sectionDetails===",sectionDetails);
                                                             
-                            }                        
+                            }else if(sectionDetailsArray[i].section === "Other Items"){
+                                sectionDetails[3] = {
+                                    "section"    : sectionDetailsArray[i].section,
+                                    "sectionId"  : sectionDetailsArray[i]._id,
+                                    "sectionImg" : HomePageBanner2_4,
+                                }
+                                // console.log("sectionDetails===",sectionDetails);
+                                                            
+                            }                            
                         }         
                         // console.log("Array sectionDetails =========",sectionDetails); 
                         
@@ -70,13 +79,14 @@ class HomePageBanner2 extends Component{
       }  
     render(){
         return(
-            <div className="col-lg-12 col-md-12 col-sm-12 HomePageBanner2">
-                <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 ">
+            // <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 HomePageBanner2">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 HomePageBanner2">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div className="row">
                         {
                             Array.isArray(this.state.sectionDetails) && this.state.sectionDetails.map((data, index) => {                                                               
                                 return (
-                                    <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 imageBlock">
+                                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 imageBlock">
                                         <a className="hover-images col-lg-12 col-md-12 col-sm-12 col-xs-12" href={"/section/"+data.section+"/"+data.sectionId} >                                                              
                                             <img className="img-responsive zoomImg" src={data.sectionImg} alt="banner" />                                            
                                         </a>                        

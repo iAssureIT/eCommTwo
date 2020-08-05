@@ -141,7 +141,7 @@
     background-color: #fff !important;
 }
 .mega-menu span{
-    font-size: 15px !important;
+    font-size: 12px !important;
 }
 .mega-menu span{
     text-transform: uppercase !important;
@@ -441,6 +441,7 @@ button.button_search {
 .uniHomepageWrapper{
     padding-left: 0px;
     padding-right: 0px;
+    background-color: #fff;
 }
 .searchBox{
     /* margin-top: -7px; */

@@ -37,7 +37,7 @@ class BigSaleCollageView extends Component {
       products: this.props.products,
       masterLimitProducts: this.props.products
     });
-    // console.log("Products array :",this.state.products);
+    console.log("Products array :",this.state.products);
 
   }
   componentWillReceiveProps(nextProps) {
@@ -458,6 +458,7 @@ class BigSaleCollageView extends Component {
     $('#loginFormModal').hide();
   }
   render(){
+    // console.log("Inside bigSaleView render");
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
         <Message messageData={this.state.messageData} />

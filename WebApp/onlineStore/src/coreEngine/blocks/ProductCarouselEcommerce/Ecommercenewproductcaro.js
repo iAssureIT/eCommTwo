@@ -73,23 +73,23 @@ class Ecommercenewproductcaro extends Component {
       for(var i=0;i<nextProps.newProducts.length;i++){      
           var availableSizes = [];         
           if(nextProps.newProducts[i].size){
-            availableSizes.push(
-              {
-                "productSize": nextProps.newProducts[i].size*1,
-                "packSize"   :1,
-              },
-              {
-                "productSize": nextProps.newProducts[i].size*2,
-                "packSize"   :2,
-              },
-              {
-                "productSize": nextProps.newProducts[i].size*4,
-                "packSize"   :4,
-              },
-            )
-            // availableSizes.push(nextProps.newProducts[i].size*1);
-            // availableSizes.push(nextProps.newProducts[i].size*2);
-            // availableSizes.push(nextProps.newProducts[i].size*4); 
+            // availableSizes.push(
+            //   {
+            //     "productSize": nextProps.newProducts[i].size*1,
+            //     "packSize"   :1,
+            //   },
+            //   {
+            //     "productSize": nextProps.newProducts[i].size*2,
+            //     "packSize"   :2,
+            //   },
+            //   {
+            //     "productSize": nextProps.newProducts[i].size*4,
+            //     "packSize"   :4,
+            //   },
+            // )
+            availableSizes.push(nextProps.newProducts[i].size*1);
+            availableSizes.push(nextProps.newProducts[i].size*2);
+            availableSizes.push(nextProps.newProducts[i].size*4); 
             nextProps.newProducts[i].availableSizes = availableSizes;           
           }
       }
@@ -534,96 +534,7 @@ class Ecommercenewproductcaro extends Component {
                                           <img src={data.productImage[0] ? data.productImage[0] : notavailable} />
                                         </a>
                                       </div>
-                                      <div className="productDetails">
-
-                                      {/* {
-                                        this.state['sizeCollage' + data._id] === true ?
-                                          <div className="sizeCollage col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            
-                                            <i className="fa fa-times pull-right" id={data._id} onClick={this.closeSize.bind(this)}></i>
-                                            {
-                                              this.state['relatedProductArray' + data._id] && this.state['relatedProductArray' + data._id].length > 0 ?
-                                                this.state['relatedProductArray' + data._id].map((a, i) => {
-                                                  if (a.size) {
-                                                    return (     
-                                                      i === 0?                                        
-                                                        <div className="selectSizeBox">                                                          
-                                                          <span className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left Nopadding">Select Size</span>
-                                                          <select class="form-control selectdropdown valid availablesize" currPro={data._id} mainSize={data.size} unit={data.unit} availableQuantity={a.availableQuantity} onChange={this.submitCart.bind(this)} id={a._id} name="size" aria-invalid="false">
-                                                            { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
-                                                                return(
-                                                                    size === 1000?
-                                                                    <option className="" value={size}>{size}KG</option>
-                                                                    :
-                                                                    data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                                      <option className="" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                                    :
-                                                                      <option className="" value={size}>{size}{data.unit}</option>
-                                                                  
-                                                                )
-                                                                
-                                                              })
-                                                            }
-                                                          </select>
-                                                          <div className="col-lg-12 col-md-12 col-sm-12 pull-left Nopadding prodName">{data.productName}</div>
-                                                          {data.discountedPrice === data.originalPrice ?
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.originalPrice} &nbsp;                                                    
-                                                            </div>
-                                                          :
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 price Nopadding"><i class="fa fa-inr"></i>&nbsp;{data.discountedPrice} &nbsp;
-                                                              <span className="discountedPrice">Rs.{data.originalPrice}</span>&nbsp;
-                                                              <span className="disscountedPer">({data.discountPercent}% Off)</span>
-                                                            </div>
-                                                          }
-                                                        </div>  
-                                                      :null                                          
-                                                    );
-                                                  }
-                                                })
-                                                :
-                                                null
-                                            }
-                                          </div>
-                                          :
-                                          null
-                                      } */}
-
-
-                                        {/* <div className="innerDiv">
-                                          
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}>
-                                            <div className="product-brand" title={data.brand}>{data.brand}</div></a>
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}>
-                                            <div className="product-item-link" title={data.productName}>{data.productName}&nbsp;(<span className="marathiName">{data.shortDescription}</span>)</div></a> 
-                                          <a href={"/productdetails/"+data.productUrl+"/" + data._id}>
-                                            <div className="col-lg-12 col-md-12 NOpadding">
-                                            {
-                                              data.discountPercent ?
-                                                <div className="col-lg-12 col-md-12 NOpadding">
-                                                  
-                                                  <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
-                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> 
-                                                </div>
-                                                :
-                                                <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} - {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
-                                            }
-                                          </div></a>
-                                          <div >
-                                          </div> 
-                                          {
-                                              data.availableQuantity > 0 ?
-                                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-                                                  <button type="submit" id={data._id} color={data.color} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" className="homeCart fa fa-shopping-cart">
-                                                      &nbsp;Add To Cart
-                                                  </button>
-                                                </div>
-                                              </div>
-                                              :
-                                              
-                                              <div className="outOfStock col-lg-12 col-md-12 col-sm-12 col-xs-12 ">Sold Out</div>
-                                            }
-                                        </div> */} 
+                                      <div className="productDetails">                                      
                                         <div className="innerDiv">
                                           <div className="product-brand" title={data.brand}>{data.brand}</div>
                                           <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
@@ -652,16 +563,16 @@ class Ecommercenewproductcaro extends Component {
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
                                                     <div className="selectSizeBox col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding ">                                                                              
                                                     <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
-                                                    { Array.isArray(data.availableSizes) && data.availableSizes.map((availablesize, index) => {
+                                                    { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
                                                         return( 
-                                                          <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
-                                                              // size === 1000?                                                              
-                                                              // <option className="" value={size}> 1 KG</option>
-                                                              // :
-                                                              // data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                              //   <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                              // :
-                                                              // <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
+                                                          // <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
+                                                              size === 1000?                                                              
+                                                              <option className="" value={size}> 1 KG</option>
+                                                              :
+                                                              data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                                <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                              :
+                                                              <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
                                                           )                                                        
                                                         })
                                                       }

@@ -455,7 +455,6 @@ loginPage(event){
     document.getElementByClass("App").style.opacity = "0.5";
   }
   render() {
-
     $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");    
     return (
@@ -469,18 +468,15 @@ loginPage(event){
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs greenStrip">
             {localStorage.getItem('pincode') ?
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
-                {localStorage.getItem('status') === 'NotAllow'?                
-                  // <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-13  pull-right showPincode">Delivery Not Available : {localStorage.getItem('pincode')} </div>
+                {localStorage.getItem('status') === 'NotAllow'?       
                   <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-12  pull-right showPincode">Delivery Not Available : {this.props.deliveryPincode} </div>
-                :
-                  // <div className = "col-lg-3 col-md-3 col-sm-3 col-xs-3 pull-right showPincode">Delivery Available : {localStorage.getItem('pincode')} </div>
+                :                
                   <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-3 pull-right showPincode">Delivery Available : {this.props.deliveryPincode} </div>
                 }
               </div>
             :null
             }          
           </div>
-
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 firstDiv">
               <div className="row">           
                 <div className="col-lg-2 col-md-2 col-sm-3 col-xs-6 header-top">

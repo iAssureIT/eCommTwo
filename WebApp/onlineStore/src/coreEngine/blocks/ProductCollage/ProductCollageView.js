@@ -47,23 +47,23 @@ class ProductCollageView extends Component {
         var availableSizes = [];  
         var availablePack = [];       
         if(nextProps.products[i].size){ 
-          availableSizes.push(
-            {
-              "productSize": nextProps.products[i].size*1,
-              "packSize"   :1,
-            },
-            {
-              "productSize": nextProps.products[i].size*2,
-              "packSize"   :2,
-            },
-            {
-              "productSize": nextProps.products[i].size*4,
-              "packSize"   :4,
-            },
-          )
-          // availableSizes.push(nextProps.products[i].size*1);
-          // availableSizes.push(nextProps.products[i].size*2);
-          // availableSizes.push(nextProps.products[i].size*4); 
+          // availableSizes.push(
+          //   {
+          //     "productSize": nextProps.products[i].size*1,
+          //     "packSize"   :1,
+          //   },
+          //   {
+          //     "productSize": nextProps.products[i].size*2,
+          //     "packSize"   :2,
+          //   },
+          //   {
+          //     "productSize": nextProps.products[i].size*4,
+          //     "packSize"   :4,
+          //   },
+          // )
+          availableSizes.push(nextProps.products[i].size*1);
+          availableSizes.push(nextProps.products[i].size*2);
+          availableSizes.push(nextProps.products[i].size*4); 
           nextProps.products[i].availableSizes = availableSizes;
           // console.log("availableSizes:---",availableSizes);  
                      
@@ -553,18 +553,18 @@ class ProductCollageView extends Component {
                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
                                         <div className="selectSizeBox col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding ">                                                                              
                                         <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
-                                          { Array.isArray(data.availableSizes) && data.availableSizes.map((availablesize, index) => {
+                                          { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
                                               return( 
-                                                <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
-                                                  // size === 1000?
+                                                // <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
+                                                  size === 1000?
                                                   
-                                                  // <option className="" value={size}> 1 KG</option>
-                                                  // :
-                                                  // data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                  //   // <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                  //   <option className="selectedSize" value={size}>{size} Pack</option>
-                                                  //     :
-                                                  // <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
+                                                  <option className="" value={size}> 1 KG</option>
+                                                  :
+                                                  data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                    // <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                    <option className="selectedSize" value={size}>{size} Pack</option>
+                                                      :
+                                                  <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
                                               )                                                        
                                             })
                                           }

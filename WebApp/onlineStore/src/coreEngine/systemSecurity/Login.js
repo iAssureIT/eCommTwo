@@ -103,8 +103,7 @@ class Login extends Component {
             document.getElementById("logInBtn").value = 'Sign In';
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user_ID", response.data.ID);
-            localStorage.setItem("roles", response.data.roles);
-            localStorage.setItem("pincode", response.data.pincode);
+            localStorage.setItem("roles", response.data.roles);            
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
               axios.get("/api/adminPreference/get")
                   .then(preference =>{

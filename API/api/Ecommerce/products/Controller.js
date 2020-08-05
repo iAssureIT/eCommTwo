@@ -806,7 +806,7 @@ exports.list_productby_type_mobile = (req,res,next)=>{
         .limit(10)       
         .exec()
         .then(data=>{
-            console.log('discounted ===>>>', data);
+            // console.log('discounted ===>>>', data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -836,6 +836,26 @@ exports.list_productby_type_mobile = (req,res,next)=>{
     }
     
 };
+exports.list_productby_section = (req,res,next)=>{    
+    var section = req.params.section;
+    // console.log("section: +++++++++++++++++++++++",section);
+    selector={};
+    
+        selector={'section':section,  "status": "Publish"};
+        // Products.find(selector) 
+        Products.find()       
+        .exec()
+        .then(data=>{
+            res.status(200).json(data);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    
+}
 exports.list_productby_type = (req,res,next)=>{
     var productType = req.params.productType;
     selector={};
@@ -873,7 +893,7 @@ exports.list_productby_type = (req,res,next)=>{
         Products.find(selector)       
         .exec()
         .then(data=>{
-            console.log('discounted ===>>>', data);
+            // console.log('discounted ===>>>', data);
             res.status(200).json(data);
         })
         .catch(err =>{
@@ -929,7 +949,7 @@ exports.list_productby_type_category = (req,res,next)=>{
     });
 };
 exports.list_product_with_limits = (req,res,next)=>{
-    console.log('req', req.body);
+    // console.log('req', req.body);
     Products.find()
     .sort({ "createdAt": -1 })
     .exec()
@@ -960,7 +980,7 @@ exports.list_product_with_limits = (req,res,next)=>{
     });
 };
 exports.list_product_with_vendor = (req,res,next)=>{
-    console.log('req', req.body);
+    // console.log('req', req.body);
     Products.find({"vendor_ID" : req.body.vendor_ID})
     .sort({ "createdAt": -1 })
     .exec()
@@ -1133,7 +1153,7 @@ exports.fetch_file_count = (req,res,next)=>{
     
 };
 exports.fetch_vendorfile_count = (req,res,next)=>{
-    console.log('req.params.vendorID', req.params.vendorID);
+    // console.log('req.params.vendorID', req.params.vendorID);
     Products.find({"vendor_ID" : req.params.vendorID})
     .exec()
     .then(data=>{
@@ -1158,7 +1178,7 @@ exports.fetch_vendorfile_count = (req,res,next)=>{
     
 };
 exports.delete_file = (req,res,next)=>{
-    console.log("inside delete function");
+    // console.log("inside delete function");
     Products.deleteMany({"fileName":req.params.fileName})
     .exec()
     .then(data=>{
@@ -1178,7 +1198,7 @@ exports.delete_product = (req,res,next)=>{
     Orders.find({"products.product_ID" : req.params.productID })
         .exec()
         .then(odata=>{
-            console.log('odata',odata);
+            // console.log('odata',odata);
             if (odata.length > 0) {
                 res.status(200).json({
                     "message": "You cannot delete this product as orders are related to this product."
@@ -1208,7 +1228,7 @@ exports.delete_product = (req,res,next)=>{
     
 };
 exports.upload_photo = (req,res,next)=>{
-    console.log("input = ",req.body);
+    // console.log("input = ",req.body);
     
     Products.findOne({"_id":req.body.product_ID})
     .exec()
@@ -1331,8 +1351,8 @@ exports.list_productby_category = (req,res,next)=>{
     });
 };
 exports.list_productby_subcategory = (req,res,next)=>{
-    console.log(req.params.categoryID);
-    console.log(req.params.subcategoryID);
+    // console.log(req.params.categoryID);
+    // console.log(req.params.subcategoryID);
     Products.find({category_ID : req.params.categoryID, subCategory_ID:req.params.subcategoryID, "status": "Publish"})
     .exec()
     .then(data=>{
@@ -1348,7 +1368,8 @@ exports.list_productby_subcategory = (req,res,next)=>{
 
 
 exports.search_product = (req,res,next)=>{
-    console.log("req params in search ==>",req.params);
+    // console.log("req body in se// localStorage.setItem("pincode", response.data.pincode);arch ==>",req.body);
+    // console.log("req params in search ==>",req.params);
     Products.find(
             {
                 "$and" : [

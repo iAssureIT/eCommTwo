@@ -320,7 +320,6 @@ class SignUp extends Component {
 			$(".acceptinput").addAttr('disabled');
 		}
 	}
-
 	showModal() {
 		$(".modalbg").css("display", "block");
 	}

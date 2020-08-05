@@ -8,8 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';
 
-// import Background_2  from "../../../sites/currentSite/images/Fruits-1.png";
-// import Background_22  from "../../../sites/currentSite/images/VeggiesBanner1.png";
+import AddressBanner2  from "../../../sites/currentSite/images/AddressBanner2.png";
+import AddressBanner1  from "../../../sites/currentSite/images/AddressBanner1.png";
 import Background_2  from "../../../sites/currentSite/images/Fruits1.png";
 import Background_22  from "../../../sites/currentSite/images/VeggiesBanner1.png";
 
@@ -63,17 +63,20 @@ export default class EcommerceBanner extends Component {
 									    </div>
 									    <div className="item">
 									    	<img className="img img-responsive" src={Background_22} alt="banner" />
-									    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner2AnimationImg">
-									    		{/*<img className="img img-responsive banner2sideImg" src="../../../sites/currentSite/images/banner2(1).png" alt="banner" />*/}
+									    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner2AnimationImg">									    		
 									    	</div>
 									    	<div className="banner2TextBox col-lg-12 col-md-12 col-sm-12 col-xs-12">									    		
 									    		<div className="BannerTitle2"></div>	
 									    		<div className="col-lg-6 col-lg-offset-3 col-md-6 col-sm-8">								    		
-									    			<div className="bannertext1 col-lg-12">{/*We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home*/}</div>
-									    			 {/* <button className="col-lg-offset-5 viewdetails">VIEW DETAILS</button>  */}
-									    			{/*<div className="col-lg-2 hrLineBanner" />*/}
+									    			<div className="bannertext1 col-lg-12">{/*We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home*/}</div>									    			 
 									    		</div>
 									    	</div>
+									    </div>
+										<div className="item">
+									    	<img className="img img-responsive" src={AddressBanner1} alt="banner" />									    	
+									    </div>
+										<div className="item">
+									    	<img className="img img-responsive" src={AddressBanner2} alt="banner" />									    	
 									    </div>
 									</OwlCarousel>
 							</div>

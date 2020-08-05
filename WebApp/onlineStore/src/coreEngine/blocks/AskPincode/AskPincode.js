@@ -246,7 +246,7 @@ class AskPincode extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log("askpincode form state===",state);
+    // console.log("askpincode form state===",state);
     return {
       
         deliveryPincode : state.deliveryPincode,

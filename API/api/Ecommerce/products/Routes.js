@@ -26,6 +26,8 @@ router.get('/get/productcode/:productCode',productController.list_product_code);
 
 router.get('/get/listbytype/:productType',productController.list_productby_type);
 
+router.get('/get/sectiontype/:section',productController.list_productby_section);
+
 router.get('/get/products/listbytype/:productType',productController.list_productby_type_mobile);
 
 router.get('/get/listbytypeNcategory/:categoryID/:productType',productController.list_productby_type_category);
