@@ -109,6 +109,7 @@ class LocationDetails extends Component {
             this.setState({
                 googleAPIKey : response.data.googleapikey
             },()=>{
+							console.log("this.state.googleAPIKey = ",this.state.googleAPIKey);
                 window.initMap = this.initMap
                 const gmapScriptEl = document.createElement(`script`)
                 gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=`+this.state.googleAPIKey+`&libraries=places&callback=initMap`
