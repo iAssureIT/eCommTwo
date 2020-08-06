@@ -122,7 +122,7 @@ export default class Footer extends Component {
                     <div className="socialMediaIcons"><a href="https://m.facebook.com/anashandicraftts/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
                     <div className="socialMediaIcons"><a href="https://www.instagram.com/anashandicraftts/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></div>
                     <div className="socialMediaIcons"><a href="https://www.youtube.com/results?search_query=anasHandicrafts" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
-                    <div className="socialMediaIcons"><a href="https://www.twitter.com/" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></div>                   
+                    <div className="socialMediaIcons"><a href="https://twitter.com/anashandicraft1?lang=en" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></div>                   
                 </div>
 
             </div>            

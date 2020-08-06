@@ -642,9 +642,9 @@ removeModalBackDrop(event){
                 </div>
             </div>
              <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 searchBox">
-                  <input type="text" placeholder="Search for Products  "  className="NOpadding-right zzero form-control search_input" ref="tableSearch" id="tableSearch" name="tableSearch" />
+                  <input type="text" placeholder="Search for Products"  onChange={this.searchProducts.bind(this)}  className="NOpadding-right zzero form-control search_input" ref="tableSearch" id="tableSearch" name="tableSearch" />
                   <i className="fa fa-search searchIcon" ></i>
-                </div> 
+            </div> 
         </header>
         
           <div className="topnav hidden-lg hidden-md " id="myTopnav">   
@@ -838,24 +838,14 @@ removeModalBackDrop(event){
                     </div> 
                     </div>                   
                   </div>
-                  <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 searchBox_mob">
-                  <input type="text" placeholder="Search... " onChange={this.searchProducts.bind(this)} className="NOpadding-right zzero form-control search_input" ref="tableSearch" id="tableSearch" name="tableSearch" />
-                  <i className="fa fa-search searchIcon" ></i>
-                </div>
-
-            <div className="col-sm-2 menuIcon">
-                <a href="javascript:void(0);" className="icon" onClick={this.responsiveNav.bind(this)}><i className="fa fa-bars afterHIdeIcon NoPadding"></i><i className="fa fa-bars hiddenIconbar NoPadding"onClick={this.closesidebar.bind(this)}></i></a>   
-            </div>
+                  <div className="col-sm-2 menuIcon">
+                      <a href="javascript:void(0);" className="icon" onClick={this.responsiveNav.bind(this)}><i className="fa fa-bars afterHIdeIcon NoPadding"></i><i className="fa fa-bars hiddenIconbar NoPadding"onClick={this.closesidebar.bind(this)}></i></a>   
+                  </div>
           </div>
           
           <ResponsiveMegamenu/>   
 
-          <div className=" col-sm-12 col-xs-12 NOpadding searchBoxWrapper">
-              <div className="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 searchBox">
-                  <input type="text" placeholder="Search for Products, Brands and more   " onChange={this.searchProducts.bind(this)} className="NOpadding-right zero form-control" ref="tableSearch" id="tableSearch" name="tableSearch" />
-                  <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
-              </div> 
-          </div>
+          
 
         </div>
         

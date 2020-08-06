@@ -26,7 +26,7 @@ class ContactPage extends Component{
               <Message messageData={this.state.messageData} />              
               <BannerContactUs/>
               <CUform/>
-              <ContactShopList/>
+             {/* <ContactShopList/>*/}
               <CUMap/>
             </div>             
           

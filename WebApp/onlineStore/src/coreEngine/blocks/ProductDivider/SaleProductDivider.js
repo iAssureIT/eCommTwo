@@ -13,7 +13,7 @@ export default class SaleProductDivider extends Component {
                 <a className="image" href="#" target="_blank"> 
                     <img src={require("../../../sites/currentSite/images/sofa.jpg")} alt="home banner" style={{height:"400px"}} className="divImage"/>
                 </a>
-            	<a href="/"><div className="btn  shopnowbtn" title="Shop Now">Shop Now</div></a>
+            	<a href="/deals-of-the-day"><div className="btn  shopnowbtn" title="Shop Now">Shop Now</div></a>
             	<div className="figcaption2"> </div>
             </div>
             <div className="flatSaleBlockWrapper">

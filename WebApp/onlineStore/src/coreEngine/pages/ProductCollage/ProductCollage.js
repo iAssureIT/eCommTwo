@@ -1159,7 +1159,7 @@ class ProductCollage extends Component {
 											</div>
 											<div id="categories" className="tab-pane fade">
 												Categories
-					    </div>
+					                        </div>
 										</div>
 									</div>
 									: <div className="text-center"><img src="../../../sites/currentSite/images/noproducts.jpeg" alt="" /></div>

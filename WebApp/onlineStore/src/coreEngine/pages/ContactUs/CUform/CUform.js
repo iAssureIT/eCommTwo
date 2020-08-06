@@ -293,8 +293,23 @@ componentDidMount(){
 
 										</div>
 										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
-											<label className=""><b>Phone Us:</b> </label><br/>
+											<label className=""><b>Phone Us</b> </label><br/>
 											<p>999999999</p>
+
+										</div>
+									</div>
+									<div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 bt20">
+										<div className="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+											<i class="fa fa-map-marker addressicon" ></i>
+
+										</div>
+										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+											<label className=""><b>Shop Location</b> </label><br/>
+											<div className="franchiseName">Anas Handicrafts</div>
+												<div>Above Barista Cafe,</div>
+												<div> Opposite Arora Towers, 
+													MG Road, Camp, Pune
+													411001</div>
 
 										</div>
 									</div>
