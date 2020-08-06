@@ -466,7 +466,7 @@ loginPage(event){
           {/* <AskPincode />         */}
           {/* show user -  delivery is possible or not  */}
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs greenStrip">
-            {localStorage.getItem('pincode') ?
+            {localStorage.getItem('pincode') && localStorage.getItem('pincode')!== 'undefined'  ?
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
                 {localStorage.getItem('status') === 'NotAllow'?       
                   <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-12  pull-right showPincode">Delivery Not Available : {this.props.deliveryPincode} </div>
@@ -604,7 +604,7 @@ loginPage(event){
                             {
                               this.props.recentCartData && this.props.recentCartData.length > 0 && this.props.recentCartData[0].cartItems.length > 0 ?
                               this.props.recentCartData[0].cartItems.map((data, index) => {
-                                  console.log("recentCartData:",this.props.recentCartData );
+                                  // console.log("recentCartData:",this.props.recentCartData );
                                   return (
                                       
                                     <li className="col-lg-12 cartdropheight " key={index}>

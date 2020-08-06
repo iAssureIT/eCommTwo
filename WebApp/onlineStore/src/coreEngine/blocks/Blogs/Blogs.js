@@ -17,7 +17,6 @@ export default class OurCources extends React.Component {
 	constructor(props) {
 		super(props);;
 		this.state = {
-
 			responsive:{
             0:{
                 items:1
@@ -28,8 +27,7 @@ export default class OurCources extends React.Component {
             1000:{
                 items:1 
             }
-          },
- 	
+          }, 	
 
 		    "OurCourcesmaster"		: [
 							{
@@ -62,10 +60,10 @@ export default class OurCources extends React.Component {
 			<div>
 				<div className="container col-lg-12 col-md-12 hidden-xs hidden-sm ocWrap">
 					<div className="mtop65">
-						 <div className="col-lg-12 ">
+						<div className="col-lg-12 ">
 							<img src={title_lastest_from} className="col-lg-offset-6 blogTopImg"/>
 					
-						   </div>
+						</div>
 						   
 						<div className="col-lg-12 ">
 						 <div className="ocTitle txt2c offeredTitle text-center">Lastest From Blog</div>

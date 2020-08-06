@@ -381,7 +381,7 @@ ul.tabs.tabs-title li {
 
 @media only screen and (max-device-width: 480px) {    
     .flatSaleBlock{
-        font: 300 29px/50px "Roboto Slab";
+        font: 300 24px/50px "Roboto Slab";
         margin-left: 0px;
     }
     .newBlock{

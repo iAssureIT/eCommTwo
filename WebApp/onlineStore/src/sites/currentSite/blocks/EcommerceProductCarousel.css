@@ -756,10 +756,13 @@ background-color: transparent !important;
     font-size: 20px;
     font-weight: 700;
 }
+.exclusiveProduct .owl-nav{
+    display: none;
+}
 /* css for mobile */
 @media only screen and (max-device-width: 480px) {
     .customnNavButton .owl-nav button.owl-next{
-        margin-left: 320px !important;
+        margin-left: 280px !important;
         margin-top: -37px !important;
         opacity: 1;
     }
@@ -770,7 +773,11 @@ background-color: transparent !important;
         height: auto;
     }
     .blockCard{
-        margin-left: 50px;
+        margin-left: 23px;
+    }
+
+    .owl-nav{
+        display: none;
     }
 } 
 

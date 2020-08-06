@@ -469,31 +469,7 @@ class Ecommercenewproductcaro extends Component {
                 <h3 className="row">
                   <b>{this.props.title}</b>
                 </h3>
-              </div>
-              
-              {/* <div className="col-lg-5 producttimer producttimerposition">
-                <OwlCarousel
-                  className="owl-theme customnNavButtoncaro1"
-                  margin={0}
-                  nav={true}
-                  responsive={this.state.responsive2}
-                  autoplay={false}
-                  autoplayHoverPause={true}
-                >
-                  {
-                    this.props.categories && this.props.categories.length > 0 ?
-                      this.props.categories.map((data, index) => {
-                        return (
-                          <div className="item" key={index}>
-                            <span className="col-lg-12 row  productcarotext1" id={data._id} onClick={this.getCategoryID.bind(this)}>{data.category}</span>//
-                          </div>
-                        );
-                      })
-                      :
-                      null
-                  }
-                </OwlCarousel>
-              </div> */}
+              </div>            
             </div>
           </div>
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
@@ -525,7 +501,7 @@ class Ecommercenewproductcaro extends Component {
                             <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
                               {/* <a > */}
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
-                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-8 productInnerWrap NoPadding"> 
+                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-10 productInnerWrap NoPadding"> 
                                     <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                       <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>

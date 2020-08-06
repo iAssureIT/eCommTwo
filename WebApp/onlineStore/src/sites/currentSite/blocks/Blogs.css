@@ -21,8 +21,9 @@
 
 .AllBlogsBox{
 	background-color: #f6f6f6;
-	border: 1px solid #eaeaea;
+	/* border: 1px solid #eaeaea; */
 	padding: 20px;
+	margin-bottom: 40px;
 }
 /*.mtop75{
 
@@ -268,7 +269,7 @@
 	font: 400 36px/40px "Roboto Slab";
     color: #2b2b2b;
     text-transform: capitalize;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 
 }
 .paradown{

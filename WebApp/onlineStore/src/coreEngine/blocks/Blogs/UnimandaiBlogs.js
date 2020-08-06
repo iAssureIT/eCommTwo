@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';
 import swal from 'sweetalert';
+import Moment  from 'react-moment';
 
 import title_lastest_from from "../../../sites/currentSite/images/title-lastest-from.png";
 
@@ -85,87 +86,60 @@ componentDidMount(){
 		var blogs = this.state.Blogs;
 		// console.log("blogs url",blogs);
 		return (
-			<div className="container-fluid AllBlogsBox" style={{padding:"0px"}}>
-          		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-	          		
-					          			 {/* <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12 Allblog">					          				
-					          			 	<div className="All1blog1 z50">
-					          			 		{   
-						          					data.typeOfBlog == "Premium" ?
-						          					<div className="premiumBlogIndicate">Premium</div>
-													:
-													null
-												}
-												<img className="img-responsive AllblogImgB" src={data.bannerImage?data.bannerImage.path:" "} alt="Bannerpng"/>
-												<div className="middle">
-												    
-												    <a href={"/cms/blogs-form/"+data.blogURL} className="hoverbk"><i className="fa fa-pencil wclr"></i></a>
-												    <i className="fa fa-trash rclr hoverbbk" id={data.blogURL} onClick={this.deleteBlog.bind(this)}></i>
-												</div>
-												<a href={"/cms/singleblog/"+data.blogURL}>
-													<p className="blogDate p10 mtop20 graycolor">{data.createdAt}</p>
-													<h4 className="blogTitle p10"><b>{data.blogTitle}</b></h4>
-													<p className="blogPara p10 graycolor">{data.summary}</p>
-												</a>
-											</div>					          				
-                                          </div> */}
-                                          
-                                            <div className="container col-lg-12 col-md-12 hidden-xs hidden-sm ocWrap">
-                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                            <img src={title_lastest_from} className=" col-lg-1 col-lg-offset-6 blogTopImg"/>                                                
-                                                        </div> */}
-                                                        
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ocTitle txt2c offeredTitle text-center">Unimandai Blogs</div>
-                                                        {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                            <div className="col-lg-offset-6 blogTopText">SEE ALL</div>
-                                                        </div>  */}
-                                                        <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 courceblockDiv1 movemasterdiv">
-                                                        <OwlCarousel
-                                                            className="owl-theme customnNavButtonEcommerceND col-md-12 col-lg-12 col-sm-12 col-xs-12 boxShadow"
-                                                                loop
-                                                                margin 			=  {20}
-                                                                items  			=  {3}
-                                                                nav    			=  {0}
-                                                                dots   			=  {0}
-                                                                responsiveClass =  {true}
-                                                                autoplay        =  {false}
-                                                            >
-                                                        {
-                                                            blogs && blogs.length > 0 ?
-                                                            blogs.map((blogs, index)=>{
-                                                                    return(
-
-                                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 Allblog ">
-                                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 courceblockDiv NOpadding">
-                                                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 courceDiv NOpadding "> 
-                                                                                <img className="img-responsive blockimg1 zoom " src={blogs.bannerImage.path} alt="Bannerpng"/>
-                                                                            </div>
-                                                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 All1blog1">
-                                                                                <div className="ohide">	
-                                                                                </div>
-                                                                                <p className="date">{blogs.createdAt}</p>
-                                                                                <h4 className="blog_content">{blogs.blogTitle}</h4>
-                                                                                <p className="blog_comment">{blogs.summary}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>	
-                                                                        );
-                                                                    })
-                                                                :
-                                                                null
-                                                            }
-                                                            </OwlCarousel>
-                                                        </div>	
-                                                    </div>
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddiv text-center">
-                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                                        
-                                                        </div>  
-                                                    </div>	
-                                                </div>					
-                                            </div> 
+			<div className="container-fluid AllBlogsBox hidden-xs" style={{padding:"0px"}}>
+          		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">	          		
+                    <div className="container col-lg-12 col-md-12 col-sm-12 col-xs-12 ocWrap">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ocTitle txt2c offeredTitle text-center">Unimandai Blogs</div>                                
+                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 courceblockDiv1 movemasterdiv">
+                                <OwlCarousel
+                                    className="owl-theme customnNavButtonEcommerceND col-md-12 col-lg-12 col-sm-12 col-xs-12 boxShadow"
+                                        loop
+                                        margin 			=  {20}
+                                        items  			=  {3}
+                                        nav    			=  {0}
+                                        dots   			=  {0}
+                                        responsiveClass =  {true}
+                                        autoplay        =  {false}
+                                    >
+                                {
+                                    blogs && blogs.length > 0 ?
+                                    blogs.map((blogs, index)=>{
+                                            return(
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 Allblog ">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 courceblockDiv NOpadding">
+                                                    <a href={"/blog-view/"+blogs.blogURL}>
+                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 courceDiv NOpadding "> 
+                                                            <img className="img-responsive blockimg1 zoom" src={blogs.bannerImage.path} alt="Bannerpng"/>
+                                                        </div>
+                                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 All1blog1">
+                                                            <div className="ohide">	
+                                                            </div>
+                                                            <div className="date"><b>Date :</b> <Moment format="DD-MM-YYYY HH:mm">{blogs.createdAt}</Moment></div>
+                                                            {/* <p className="date">{blogs.createdAt}</p> */}
+                                                            <h4 className="blog_content">{blogs.blogTitle}</h4>
+                                                            <p className="blog_comment">{blogs.summary}</p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>	
+                                                );
+                                            })
+                                        :
+                                        null
+                                    }
+                                    </OwlCarousel>
+                                </div>	
+                            </div>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddiv text-center">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                
+                                </div>  
+                            </div>	
+                        </div>					
+                    </div> 
 					          	
 	        				
 	        				{/* :

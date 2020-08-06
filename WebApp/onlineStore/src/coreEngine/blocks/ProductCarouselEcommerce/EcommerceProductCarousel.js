@@ -498,7 +498,7 @@ class EcommerceProductCarousel extends Component {
           </div>
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
           <div className="tab-content customTabContent">
-            <div id="home" className="tab-pane fade in active ecommerceTabContent">
+            <div id="home" className="tab-pane fade in active ecommerceTabContent exclusiveProduct">
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50 mb50">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <OwlCarousel
@@ -525,8 +525,8 @@ class EcommerceProductCarousel extends Component {
                           return (
                             <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
                               {/* <a href=""> */}
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-10 col-xs-offset-1 productInnerWrap NoPadding">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-10 productInnerWrap NoPadding">
                                     <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                       <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>

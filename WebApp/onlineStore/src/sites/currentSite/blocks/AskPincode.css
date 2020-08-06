@@ -113,8 +113,8 @@
     .marginTop{
         margin-top: 90px;
     }
-    ..newModalBtn{
-        margin-top: 0px;
+    .newModalBtn{
+        /* margin-top: 0px; */
     }
 
 }

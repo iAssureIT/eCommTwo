@@ -37,7 +37,7 @@ import ShipmentTracking                          from '../pages/ShipmentTracking
 import ProductDetailsEcommerce                   from '../pages/ProductDetailsEcommerce/ProductDetailsEcommerce.js';
 import SearchProduct                             from '../pages/ProductCollage/SearchProductPage.js';
 import BigSale                                   from '../pages/ProductCollage/BigSale.js';
-// import ProductCollage                            from '../pages/ProductCollage/ProductCollageOld.js';
+import BlogView                                  from '../pages/BlogView/BlogView.js';
 import ProductCollage                            from '../pages/ProductCollage/ProductCollage.js';
 
 import Payment                                   from '../pages/Payment/Payment.js';
@@ -119,6 +119,8 @@ class Routes extends Component{
                 <Route path="/account"            exact strict component={ Account } />
                 <Route path="/edit"            exact strict component={ EditAccount } />
                 <Route path="/address-book"            exact strict component={ AddressBook } />
+                <Route path="/blog-view/:blogId"       exact strict component={ BlogView } />
+                
                 {/* <Route path="/address/:deliveryAddressID"            exact strict component={ Address } /> */}
                 {/* <Route path="/address"            exact strict component={ Address } /> */}
                 <Route path="/returnpolicy"            exact strict component={ ReturnPolicy } />
@@ -184,7 +186,8 @@ class Routes extends Component{
             <Route path="/contact-us" exact strict component={ContactPage}  />
             <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
             <Route path="/legal-notice" exact strict component={LegalNotice}  /> 
-            <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } />            
+            <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> 
+            <Route path="/blog-view/:blogId"       exact strict component={ BlogView } />           
             
           </div>
         );
