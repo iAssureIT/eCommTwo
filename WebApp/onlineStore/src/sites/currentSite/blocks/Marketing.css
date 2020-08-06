@@ -31,3 +31,28 @@
     font-weight: 700;
     font-size: 20px;
 }
+@media only screen and (max-width: 768px) {
+.marketingImg {
+    background-repeat: no-repeat;
+    width: 350px;
+    height: 221px;
+    height: 170px;
+    margin-bottom: 5px;
+  }
+  .marketingImg2 {
+    background-repeat: no-repeat;
+    width: 350px;
+    height: 221px;
+    height: 160px;
+  }
+  .marketingImg_txt{
+    bottom: 52px;
+
+  }
+  .marketingImg2_txt{
+    bottom:47px;
+  }
+  .marketing_div{
+    margin-top: 10px;
+  }
+}

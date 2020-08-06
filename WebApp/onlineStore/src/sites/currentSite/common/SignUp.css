@@ -352,7 +352,7 @@
     margin-top: -50px;
   }
   .frmhgt{
-    height:70px;
+    height:60px;
   }
   .innloginwrap h4{
     text-transform: capitalize;
@@ -372,6 +372,19 @@
   }
 .loginSignupBtn{
   text-align: right;
+}
+.headerlogoimg_modal img{
+    width: 103px;
+    position: absolute;
+    top: -108px;
+    left: -50px;
+}
+.headerlogoimg_signup img{
+    width: 103px;
+    position: absolute;
+    top: -50px;
+    left: -50px;
+
 }
 @media only screen and (max-device-width: 480px) {
     .loginSignupBtn{

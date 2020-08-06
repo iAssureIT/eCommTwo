@@ -230,3 +230,32 @@
     text-align: center !important;
     color: #fff;
 }
+
+@media only screen and (max-device-width: 480px) {
+.flatSaleBlockWrapper {
+    position: absolute;
+    margin-top: -371px;
+    z-index: 10 !important;
+    text-align: center;
+    width: 100%;
+    font-size: 13px;
+  }
+  .flatSaleBlock{
+    font-size: 34px;
+  }
+  .shopnowbtn {
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    border: 2px solid #A2632C;
+    position: absolute;
+    top: 56%;
+    left: 37%;
+    margin-top: 10px;
+    cursor: pointer;
+    z-index: 10;
+    background-color: #A2632C;
+    transition: 0.3s !important;
+}
+}  

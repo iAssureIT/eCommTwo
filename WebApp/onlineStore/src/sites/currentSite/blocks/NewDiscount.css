@@ -59,3 +59,50 @@
 .imagetext_top{
     padding-top: 40px;
 }
+@media only screen and (max-width: 768px) {
+    .imagediv3{
+        margin-left: 48px;
+        margin-top: 20px;
+    }
+    .image1_div{
+        margin-left: 40px;
+
+    }
+    .imagediv2{
+        margin-left: 19px;
+        height: 210px;
+    }
+    .image1stDiv{
+        height: 210px;
+    }
+    .image1_block{
+        height: 190px  ! important;
+    }
+    .new_shopnowbtn {
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1b1818;
+    border: 2px solid #f5f3f2;
+    position: absolute;
+    top: 98%;
+    height: 24px;
+    left: -9%;
+    margin-top: 10px;
+    cursor: pointer;
+    z-index: 1000;
+    background-color: #efece9;
+    transition: 0.3s !important;
+  }
+  .imagetext_top{
+    font-size: 12px;
+  }
+  .mobile_text{
+    font-size: 14px;
+  }
+  .btn {
+    
+    padding: 4px 12px;
+    /*font-size: 14px;*/
+  }
+}

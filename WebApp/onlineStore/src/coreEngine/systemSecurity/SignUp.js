@@ -13,7 +13,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators }     from 'redux';
 import {getForm,updateForm} from '../actions/index';
-
+import '../../sites/currentSite/common/SignUp.css';
 import signInBackgroundImg from '../../sites/currentSite/images/signInBackground.png';
 import Login from './Login.js';
 
@@ -341,6 +341,11 @@ class SignUp extends Component {
 			// <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px','background' : "url("+signInBackgroundImg +")" }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
+						 <div className="col-lg-1 col-md-1 col-sm-1 col-xs-3 headerlogoimg_signup headerLogoPaddingtop text-left NoPadding">
+			                    <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8 NoPadding">
+			                        <a href="/"><img src={require("../../sites/currentSite/images/NewAnasLogo.jpg")} alt="Logo Picture " /></a>
+			                    </div>
+			                </div>
 							<h3>Sign Up</h3>
 						</div>
 						<form id="signUpUser">
