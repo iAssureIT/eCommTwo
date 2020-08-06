@@ -38,6 +38,7 @@ class AddNewShopProduct extends Component {
   }
   componentWillReceiveProps(nextProps) {
     var editId = nextProps.match.params.id;
+   
     if (nextProps.match.params.id) {
       this.setState({
         editId: editId,
@@ -62,8 +63,11 @@ class AddNewShopProduct extends Component {
     const userDetails = localStorage.getItem("userDetails");
     const user_ID     = userDetails.user_id;
     const companyID   = userDetails.companyID;
-
-
+    var websiteModel = localStorage.getItem('websiteModel');
+    this.setState({
+      websiteModel : websiteModel
+    })
+   
     axios.get("/api/entityMasters/get/one/1")
         .then(entity=>{
           var appCompany_entity_id = entity._id;
@@ -75,7 +79,7 @@ class AddNewShopProduct extends Component {
                   userDetails           : userDetails,
                   user_ID               : user_ID,
                   appCompany_entity_id  : appCompany_entity_id,
-                  websiteModel          : preference.data[0].websiteModel,
+                  // websiteModel          : preference.data[0].websiteModel,
                 });
               })
               .catch(error=>{
@@ -110,6 +114,9 @@ class AddNewShopProduct extends Component {
     $.validator.addMethod("regxsection", function (value, element, arg) {
       return arg !== value;
     }, "Please select the section");
+    $.validator.addMethod("regxunit", function (value, element, arg) {
+      return arg !== value;
+    }, "Please select the unit");
     // $.validator.addMethod("regxbrand", function (value, element, regexpr) {
     //   return regexpr.test(value);
     // }, "Brand should only contain letters & number.");
@@ -216,6 +223,10 @@ class AddNewShopProduct extends Component {
           required: true,
           valueNotEquals: "-Select-"
         },
+        unit :{
+          required: true,
+          regxunit: "Select Unit"
+        },
         editor1: {
           required: function() 
           {
@@ -224,62 +235,65 @@ class AddNewShopProduct extends Component {
           }
       },
       errorPlacement: function (error, element) {
-        if (element.attr("name") === "category") {
-          error.insertAfter("#categoryDiv");
-        }
-        if (element.attr("name") === "subCategory") {
-          error.insertAfter("#subCategory");
-        }
-        if (element.attr("name") === "section") {
-          error.insertAfter("#section");
-        }
-        if (element.attr("name") === "brand") {
-          error.insertAfter("#brand");
-        }
-        if (element.attr("name") === "productCode") {
-          error.insertAfter("#productCode");
-        }
-        if (element.attr("name") === "itemCode") {
-          error.insertAfter("#itemCode");
-        }
-        if (element.attr("name") === "productName") {
-          error.insertAfter("#productName");
-        }
-        if (element.attr("name") === "productUrl") {
-          error.insertAfter("#productUrl");
-        }
-        if (element.attr("name") === "discountedPrice") {
-          error.insertAfter("#discountedPrice");
-        }
+        error.insertAfter(element);
+      
+        // if (element.attr("name") === "category") {
+        //   error.insertAfter("#categoryDiv");
+        // }
+        // if (element.attr("name") === "subCategory") {
+        //   error.insertAfter("#subCategory");
+        // }
+        // if (element.attr("name") === "section") {
+        //   console.log("element",element);
+        //   error.insertAfter(element);
+        // }
+        // if (element.attr("name") === "brand") {
+        //   error.insertAfter("#brand");
+        // }
+        // if (element.attr("name") === "productCode") {
+        //   error.insertAfter("#productCode");
+        // }
+        // if (element.attr("name") === "itemCode") {
+        //   error.insertAfter("#itemCode");
+        // }
+        // if (element.attr("name") === "productName") {
+        //   error.insertAfter("#productName");
+        // }
+        // if (element.attr("name") === "productUrl") {
+        //   error.insertAfter("#productUrl");
+        // }
+        // if (element.attr("name") === "discountedPrice") {
+        //   error.insertAfter("#discountedPrice");
+        // }
         
-        if (element.attr("name") === "discountPercent") {
-          error.insertAfter("#discountPercent");
-        }
-        if (element.attr("name") === "originalPrice") {
-          error.insertAfter("#originalPrice");
-        }
-        if (element.attr("name") === "availableQuantity") {
-          error.insertAfter("#availableQuantity");
-        }
-        if (element.attr("name") === "currency") {
-          error.insertAfter("#currency");
-        }
-        if (element.attr("name") === "productDetails") {
-          error.insertAfter("#productDetails");
-        }
-        if (element.attr("name") === "shortDescription") {
-          error.insertAfter("#shortDescription");
-        }
-        if (element.attr("name") === "status") {
-          error.insertAfter("#status");
-        }
+        // if (element.attr("name") === "discountPercent") {
+        //   error.insertAfter("#discountPercent");
+        // }
+        // if (element.attr("name") === "originalPrice") {
+        //   error.insertAfter("#originalPrice");
+        // }
+        // if (element.attr("name") === "availableQuantity") {
+        //   error.insertAfter("#availableQuantity");
+        // }
+        // if (element.attr("name") === "currency") {
+        //   error.insertAfter("#currency");
+        // }
+        // if (element.attr("name") === "productDetails") {
+        //   error.insertAfter("#productDetails");
+        // }
+        // if (element.attr("name") === "shortDescription") {
+        //   error.insertAfter("#shortDescription");
+        // }
+        // if (element.attr("name") === "status") {
+        //   error.insertAfter("#status");
+        // }
 
-        if (element.attr("name") == "editor1") 
-        {
-         error.insertBefore("textarea#editor1");
-         } else {
-         error.insertBefore(element);
-         }
+        // if (element.attr("name") == "editor1") 
+        // {
+        //  error.insertBefore("textarea#editor1");
+        //  } else {
+        //  error.insertBefore(element);
+        //  }
       }
     });
     this.getSectionData();
@@ -663,6 +677,10 @@ class AddNewShopProduct extends Component {
     }
     this.setState({
       productUrl:url
+    },()=>{
+      if(this.state.productUrl){
+        $('#productUrl').valid();
+      }
     })
   }
   discountedPrice(event) {
@@ -794,7 +812,6 @@ class AddNewShopProduct extends Component {
     })
   }
   render() {
-    console.log("this.state.websiteModel = ",this.state.websiteModel);
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <section className="content">
@@ -838,7 +855,7 @@ class AddNewShopProduct extends Component {
                               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                 <div className="addNewProductWrap col-lg-12 col-md-12 col-sm-12 col-xs-12 add-new-productCol">
 
-                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields">
+                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields sectionDiv">
                                     <label>Section <i className="redFont">*</i></label>
                                     <select onChange={this.showRelevantCategories.bind(this)} value={this.state.section} name="section" className="form-control allProductCategories" aria-describedby="basic-addon1" id="section" ref="section">
                                       <option defaultValue="">Select Section</option>
@@ -995,11 +1012,12 @@ class AddNewShopProduct extends Component {
                                     <label>Size</label>
                                     <input maxLength="10" onChange={this.handleChange.bind(this)} value={this.state.size} id="size" name="size" type="text" className="form-control " placeholder="Size" aria-describedby="basic-addon1" ref="size" />
                                   </div>
-                                  <div className=" col-lg-2 col-md-2 col-sm-12 col-xs-12   ">
-                                    <label>Color</label>
+                                  {this.state.websiteModel !== 'FranchiseModel' ?
+                                  <div className=" col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Color </label>
                                     <input onChange={this.handleChange.bind(this)} value={this.state.color} id="color" name="color" type="color" className="form-control" placeholder="Color" aria-describedby="basic-addon1" ref="color" />
-                                  </div>
-
+                                  </div> 
+                                  : null}
                                   <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>{this.state.taxName ? this.state.taxName : 'Tax'} Rate (%) <i className="redFont">*</i></label>
                                     <select className="form-control selectdropdown" ref="taxRate" id="taxRate" name="taxRate" value={this.state.taxRate} onChange={this.handleChange.bind(this)}>

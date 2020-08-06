@@ -1135,7 +1135,7 @@ export class Bill extends React.Component {
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
 																				<label className="control-label statelabel locationlabel" >Discount <i className="redFont">*</i></label>
 																				<div className="input-group inputBox-main  new_inputbx amountDiv" >
-																					<input max={100} disabled={this.state.showDiscount} value={this.state.discountPercent} onChange={this.discountedPrice.bind(this)} placeholder="Discount Percent" id="discountPercent" name="discountPercent" type="number" className="form-control  availableQuantityNew" aria-describedby="basic-addon1" ref="discountPercent" />
+																					<input max={100} disabled={this.state.showDiscount} value={this.state.discountPercent} onChange={this.discountedPrice.bind(this)} placeholder="Discount Percent" id="discountPercent" name="discountPercent" type="number" className="form-control  availableQuantityNew" aria-describedby="basic-addon1" min='0' ref="discountPercent" />
 																					<div className="input-group-addon inputIcon discountInput">
 																						<i className="fa fa-percent"></i>
 																					</div> 

@@ -162,7 +162,7 @@ class viewOrder extends Component{
                             </div>
                             <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 
-                              <p> <a href={"/productdetails/"+data.product_ID} className="productname">{data.productName}</a></p>
+                              <p> <a href={"/product-details/"+data.product_ID} className="productname">{data.productName}</a></p>
                               <span><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;
                               <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> 
                                               

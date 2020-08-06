@@ -312,6 +312,8 @@ class ProductList extends Component {
                     .then((response) => {
                         this.setState({
                             tableData: response.data
+                        },()=>{
+                            this.getData(this.state.startRange, this.state.limitRange);
                         })
                         //this.getData(this.state.startRange, this.state.limitRange);
                     })

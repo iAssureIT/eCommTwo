@@ -347,7 +347,6 @@ export default class PurchaseManagement extends React.Component {
 						}
 				});
 				var PoNumbersArray = [];
-				// console.log("list===>",tableData);
 				tableData.filter(function(item,index){
 					var i = PoNumbersArray.findIndex(x => x.PurchaseNumber == item.PurchaseNumber);
 					if(i <= -1){

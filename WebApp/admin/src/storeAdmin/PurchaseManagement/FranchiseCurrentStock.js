@@ -53,7 +53,7 @@ export default class FranchiseCurrentStock extends React.Component {
 					fromDate            : moment(new Date()).format("YYYY-MM-DD"),
                     toDate              : moment(new Date()).format("YYYY-MM-DD"),
                     franchiseList       : [],
-                    selectedFranchise   : 'Show All',
+                    selectedFranchise   : 'all',
 
 			      	
       };
@@ -97,7 +97,7 @@ export default class FranchiseCurrentStock extends React.Component {
 			delete reportFilterData["itemcode"];
         }
 
-        if(this.state.selectedFranchise !== "Show All"){
+        if(this.state.selectedFranchise !== "all"){
 			reportFilterData.franchiseId = this.state.selectedFranchise;
 		}else{
 			delete reportFilterData["franchiseId"];
