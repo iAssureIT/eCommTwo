@@ -611,9 +611,9 @@ class ProductViewEcommerce extends Component {
 													this.state.productData.discountPercent ? <span className="originalPrice"><i className="fa fa-inr"> </i>&nbsp; {this.state.productData.originalPrice} - {this.state.productData.size}&nbsp;{this.state.productData.unit}</span> : null
 													} */}
 													{ this.state.productData.discountPercent ? 
-														<span className="priceEcommerceNew"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{this.state.productData.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {this.state.productData.discountedPrice} / Pack of {this.state.productData.size}&nbsp;<span className="ProSize">{this.state.productData.unit}</span></span>         
+														<span className="priceEcommerceNew"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{this.state.productData.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {this.state.productData.discountedPrice} / {this.state.productData.size}&nbsp;<span className="ProSize">{this.state.productData.unit}</span></span>         
 														:
-														<span className="priceEcommerceNew"><i className="fa fa-inr"></i>&nbsp;{this.state.productData.originalPrice} / Pack of {this.state.productData.size}&nbsp;<span className="ProSize">{this.state.productData.unit}</span></span>   
+														<span className="priceEcommerceNew"><i className="fa fa-inr"></i>&nbsp;{this.state.productData.originalPrice} / {this.state.productData.size}&nbsp;<span className="ProSize">{this.state.productData.unit}</span></span>   
 													}                         
 												</div>
 											: 

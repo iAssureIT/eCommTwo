@@ -526,12 +526,11 @@ class ProductCollageView extends Component {
                                 {
                                   localStorage.getItem("websiteModel")=== "FranchiseModel"?                                  
                                     data.discountPercent ?                                      
-                                      <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{data.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {data.discountedPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>                                      
+                                      <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{data.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {data.discountedPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>                                      
                                      
                                     :
                                       <div className="col-lg-12 col-md-12 NOpadding">
-                                        <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;
-                                        {/* <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                      */}
+                                        <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;                                       
                                       </div> 
 
                                   :                                    
@@ -539,8 +538,7 @@ class ProductCollageView extends Component {
                                     <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{data.originalPrice} </span><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                     :  
                                     <div className="col-lg-12 col-md-12 NOpadding">
-                                      <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} /{data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;
-                                      {/* <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                      */}
+                                      <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} /{data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;                                      
                                     </div>                                
 
                                 }

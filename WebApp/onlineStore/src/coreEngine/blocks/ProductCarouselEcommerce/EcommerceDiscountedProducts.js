@@ -475,8 +475,8 @@ class EcommerceDiscountedProducts extends Component {
                                                   localStorage.getItem("websiteModel")=== "FranchiseModel" ?
                                                     <div className="col-lg-12 col-md-12 NOpadding disscountDetails">
                                                       <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
-                                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
-                                                      
+                                                      {/* <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> */}
+                                                      <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                                     </div>
                                                   :
                                                     <div className="col-lg-12 col-md-12 NOpadding">
@@ -485,7 +485,8 @@ class EcommerceDiscountedProducts extends Component {
                                                     </div>
                                                 :
                                                 localStorage.getItem("websiteModel")=== "FranchiseModel" ?
-                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                  // <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / Pack of {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
+                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                                 :
                                                 <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
                                             }
