@@ -67,7 +67,7 @@ export default class EcommerceBanner extends Component {
 											    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
 											    		{/*<img className="img img-responsive banner1upImg" src={require("../../../sites/currentSite/images/banner1(1).png")} alt="banner"  />*/}
 											    		<div className="BannerTitle"> Anas Handicraft </div>
-											    		{/*<img className="img img-responsive banner1downImg" src={require("../../../sites/currentSite/images/banner1(2).png")} alt="banner"  />*/}
+											    		<img className="img img-responsive banner1downImg" src={require("../../../sites/currentSite/images/banner1(2).png")} alt="banner"  />
 											    		<div className="bannertext">India's Largest Handicraft Furniture Mall</div>
 											    	</div>
 											    </div>
