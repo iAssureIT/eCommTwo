@@ -67,14 +67,14 @@ export default class EcommerceBanner extends Component {
 											    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
 											    		{/*<img className="img img-responsive banner1upImg" src={require("../../../sites/currentSite/images/banner1(1).png")} alt="banner"  />*/}
 											    		<div className="BannerTitle"> Anas Handicraft </div>
-											    		<img className="img img-responsive banner1downImg" src={require("../../../sites/currentSite/images/banner1(2).png")} alt="banner"  />
+											    		{/*<img className="img img-responsive banner1downImg" src={require("../../../sites/currentSite/images/banner1(2).png")} alt="banner"  />*/}
 											    		<div className="bannertext">India's Largest Handicraft Furniture Mall</div>
 											    	</div>
 											    </div>
 											    <div className="item">
 											    	<img className="img img-responsive bannerimg" src={require("../../../sites/currentSite/images/banner2.png")} alt="banner" />
 											    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner2AnimationImg">
-											    		<img className="img img-responsive banner2sideImg" src="../../../sites/currentSite/images/banner2(1).png" alt="banner" />
+											    		{/*<img className="img img-responsive banner2sideImg" src="../../../sites/currentSite/images/banner2(1).png" alt="banner" />*/}
 											    	</div>
 											    	<div className="banner2TextBox col-lg-12">									    		
 											    		<div className="BannerTitle2"> Authenticate Handicraft </div>	
