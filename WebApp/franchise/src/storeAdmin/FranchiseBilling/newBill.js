@@ -66,7 +66,6 @@ export class Bill extends React.Component {
 		this.props.fetchCartData();
 		this.getCategories();
 		this.getSections();
-		this.getproducts();
 		this.generateBillNumber();
 		$('#sidebarCollapse').click();
 		this.getCartData();
@@ -203,6 +202,7 @@ export class Bill extends React.Component {
 				"franchiseName"     : franchiseName
 				
 			},()=>{
+				this.getproducts();
 				// console.log("franchiseId",franchiseId);
 		   })
 	      })
@@ -941,8 +941,7 @@ export class Bill extends React.Component {
 								<datalist id="product" name="product" className="productDatalist">
 										{
 											this.state.productArray && this.state.productArray.length > 0 ?
-												this.state.productArray.map((data, i)=>{
-
+											this.state.productArray.map((data, i)=>{
 													return(
 														<option key={i} value={data.productName} data-id={data._id} data-originalprice={data.originalPrice} data-discountedprice={data.discountedPrice} data-discountpercent={data.discountPercent} data-itemcode={data.itemCode} data-productcode={data.productCode} data-unit={data.unit} data-productname={data.productName}>{data.productName} - {data.productCode} - {data.itemCode}</option>
 													);

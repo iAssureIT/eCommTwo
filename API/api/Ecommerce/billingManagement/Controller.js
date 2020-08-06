@@ -108,12 +108,12 @@ exports.generate_bill_number = (req,res,next)=>{
     Carts.countDocuments()
         .exec()
         .then(cartData =>{
-            console.log("cartData",cartData);
+            //console.log("cartData",cartData);
             var maxId = 1;
             Orders.countDocuments()
             .exec()
             .then(orderData =>{
-                console.log("orderData",orderData);
+               // console.log("orderData",orderData);
                 let calenderYear = new Date().getFullYear();
                 if(Number(cartData) > Number(orderData)) {
                    maxId = cartData + 1;
@@ -151,6 +151,10 @@ exports.list_product = (req,res,next)=>{
     .then(data=>{
        main();
         async function main(){
+          for(i = 0 ; i < data.length ; i++){
+             var franchiseStock = await get_current_stock_of_franchise(data[i].itemCode,req.params.franchiseId);
+             data[i].availableQuantity = franchiseStock.totalStock ? franchiseStock.totalStock : 0;
+          }
           const result = data.filter(product => product.availableQuantity > 0);
           res.status(200).json(result);
        }
