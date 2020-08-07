@@ -68,7 +68,7 @@ export default class Aboutusmultistore extends Component {
 									</div>
 								</div>
 								<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 world_div"style={{padding:"0px"}}>
-								 <h3 className="mb50 ">The World of AnasHnadicraftts</h3>
+								 <h3 className="mb50 world_heading1">The World of AnasHnadicraftts</h3>
 								  <div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{padding:"0px"}}>
 				                     {
 				                      this.VideoData().map((data, index)=>{
