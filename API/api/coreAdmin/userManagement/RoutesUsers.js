@@ -40,4 +40,6 @@ router.get('/get/id/:id',UserController.getID);
 
 router.delete('/delete/:ID',UserController.delete_user_ID);
 
+router.get('/get/user/count',UserController.countUsers);
+
 module.exports = router;

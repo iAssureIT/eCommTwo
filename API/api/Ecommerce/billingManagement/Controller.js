@@ -87,7 +87,9 @@ exports.list_product_by_section = (req,res,next)=>{
         main();
         async function main(){
           for(i = 0 ; i < data.length ; i++){
+            // console.log("franchiseStock",data[i]);
              var franchiseStock = await get_current_stock_of_franchise(data[i].itemCode,req.params.franchiseId);
+             // console.log("franchiseStock",franchiseStock);
              data[i].availableQuantity = franchiseStock.totalStock ? franchiseStock.totalStock : 0;
           }
         res.status(200).json(data);

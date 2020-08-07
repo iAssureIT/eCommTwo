@@ -64,7 +64,7 @@ export default class Statistics extends Component{
     })
     .then((response)=>{
       this.setState({
-        firstFieldCount:response.data.count
+        firstFieldCount:response.data.dataCount ? response.data.dataCount : response.data.count
       })
     })
     .catch((err)=>{console.log('entitymaster err: ',err)})
@@ -75,7 +75,7 @@ export default class Statistics extends Component{
     })
     .then((response)=>{
       this.setState({
-        secondFieldCount:response.data.count
+        secondFieldCount:response.data.dataCount ? response.data.dataCount : response.data.count
       })
     })
     .catch((err)=>{console.log('entitymaster err: ',err)})

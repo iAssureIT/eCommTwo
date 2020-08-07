@@ -1620,6 +1620,21 @@ exports.getID = (req,res,next)=>{
 };
 
 
+exports.countUsers = (req,res,next)=>{
+    User.estimatedDocumentCount()    
+        .exec()
+        .then(data=>{
+            res.status(200).json({dataCount: data});
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+
 
 
 

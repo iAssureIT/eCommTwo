@@ -9,11 +9,11 @@ router.get('/get/list',PurchaseEntryController.list_purchaseEntry);
 
 router.post('/post/getReportOfPurchaseEntry',PurchaseEntryController.get_purchase_entry_report);
 
-router.get('/get/one/:fetchId'          , PurchaseEntryController.fetch_one);
+router.get('/get/one/:fetchId'         , PurchaseEntryController.fetch_one);
 
-router.patch('/patch/:purchaseID'       , PurchaseEntryController.update_PurchaseEntry);
+router.patch('/patch/:purchaseID'      , PurchaseEntryController.update_PurchaseEntry);
 
-router.delete('/delete/:purchaseID'     ,PurchaseEntryController.delete_purchaseEntry);
+router.delete('/delete/:purchaseID'    ,PurchaseEntryController.delete_purchaseEntry);
 
 router.post('/post/datewisepurchase/'   ,PurchaseEntryController.get_datewise_purchaceEntry);
 

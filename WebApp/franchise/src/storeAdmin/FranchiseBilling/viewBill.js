@@ -38,7 +38,8 @@ export class printBill extends React.Component {
 				showReturnProductDiv  : false,
 				getBillNumbers        :'',
 				billDate              : '',
-				paymentMethod         : 'cash'
+				paymentMethod         : 'cash',
+				disableReturnBtn      : false
           };
 	}
 	
@@ -405,6 +406,9 @@ export class printBill extends React.Component {
 		
 	
 		if ($('#returnForm').valid()) {
+		   this.setState({
+				disableReturnBtn : true
+			})
 		  axios.patch('/api/billingmaster/returnProducts', formValues)
 			.then((response) => {
 			  swal("Product Returned Successfully..!");
@@ -724,7 +728,7 @@ export class printBill extends React.Component {
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 disPercentDiv">
 																				<label className="control-label statelabel locationlabel" >Discount <i className="redFont">*</i></label>
 																				<div className="input-group inputBox-main  new_inputbx" >
-																					<input max={100} disabled={this.state.showDiscount} value={this.state.discountPercent} onChange={this.discountedPrice.bind(this)} placeholder="Discount Percent" id="discountPercent" name="discountPercent" type="number" className="form-control  availableQuantityNew" aria-describedby="basic-addon1" ref="discountPercent" />
+																					<input max={100} disabled={this.state.showDiscount} value={this.state.discountPercent} onChange={this.discountedPrice.bind(this)} placeholder="Discount Percent" id="discountPercent" name="discountPercent" type="number" className="form-control  availableQuantityNew" aria-describedby="basic-addon1" ref="discountPercent" min="0"/>
 																					<div className="input-group-addon inputIcon discountInput">
 																						<i className="fa fa-percent"></i>
 																					</div> 
@@ -736,7 +740,7 @@ export class printBill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					<i className="fa fa-rupee"></i>
 																					</div> 
-																					<input max={this.state.rate} disabled={this.state.showDiscount} onChange={this.discountPercent.bind(this)} value={this.state.discountedPrice} id="discountedPrice" name="discountedPrice" type="number" className="form-control  selectdropdown" placeholder="Discounted Price" aria-describedby="basic-addon1" ref="discountedPrice"  max={this.state.rate} min="1"/>
+																					<input max={this.state.rate} disabled={this.state.showDiscount} onChange={this.discountPercent.bind(this)} value={this.state.discountedPrice} id="discountedPrice" name="discountedPrice" type="number" className="form-control  selectdropdown" placeholder="Discounted Price" aria-describedby="basic-addon1" ref="discountedPrice"  max={this.state.rate} min="0"/>
 
 																				</div>     
 																			</div>  
@@ -767,7 +771,7 @@ export class printBill extends React.Component {
 																		</form>
 																	</div>
 																	<div className="modal-footer">
-																		<button type="button" className="btn btn-primary" data-id={this.state.orderData._id} data-altorderid={this.state.orderData.orderID}  onClick={this.returnProductAction.bind(this)}>Return</button>
+																		<button type="button" className="btn btn-primary" data-id={this.state.orderData._id} data-altorderid={this.state.orderData.orderID}  onClick={this.returnProductAction.bind(this)} disabled={this.state.disableReturnBtn}>Return</button>
 																	</div>
 																	</div>
 																</div>
@@ -824,7 +828,7 @@ export class printBill extends React.Component {
 										<div>
 										<div className="table-responsive returnItemsTable">
 											<h5><b>Returned Items</b></h5>
-											<table className="table table-borderless viewBillTable">
+											<table className="table table-borderless commontable viewBillTable">
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>

@@ -52,22 +52,23 @@ export default class Dashboard extends Component{
                 display={true}
 	           		bgColor="bg-aqua"
 	           		faIcon="fa-info"
-	           		firstField={{"Field":"Total Booking","method":"get","path":"/api/bookingmaster/get/countbookingListForVendor/"+this.state.monthStart+"/"+this.state.monthEnd+"/"+localStorage.getItem("company_Id")}} 
-	           		secondField={{"Field":"Total Corporate","method":"get","path":"/api/entitymapping/get/getCompanyCount/"+localStorage.getItem("company_Id")}}
+	           		firstField={{"Field":"Total Franchise","method":"get","path":"/api/entitymaster/get/count/franchise"}} 
+	           		secondField={{"Field":"Total Users","method":"get","path":"/api/users/get/user/count"}}
 				      />
+            
 	           	<Statistics 
                 display={true}
 	           		bgColor="bg-red"
 	           		faIcon="fa-book"
-	           		firstField={{"Field":"Cancelled Trip","method":"get","path":"/api/bookingmaster/get/getCancelledbookingCountForVendor/"+this.state.monthStart+"/"+this.state.monthEnd+"/"+localStorage.getItem("company_Id")}}
-	           		secondField={{"Field":"Accepted Trip","method":"get","path":"/api/bookingmaster/get/getAcceptedbookingCountForVendor/"+this.state.monthStart+"/"+this.state.monthEnd+"/"+localStorage.getItem("company_Id")}}
+	           		firstField={{"Field":"Total Sections","method":"get","path":"/api/sections/get/count"}}
+	           		secondField={{"Field":"Total Categories","method":"get","path":"/api/category/get/count"}}
 	           	/>
 	           	<Statistics
                 display={true}
 	           		bgColor="bg-green"
-	           		faIcon="fa-car"
-	           		firstField={{"Field":"Total Cars","method":"get","path":"/api/vehiclemaster/countCompanyVehicles/"+localStorage.getItem("company_Id")}}
-	           		secondField={{"Field":"Total Drivers","method":"get","path":"/api/personmaster/get/companyDriverCount/"+localStorage.getItem("company_Id")}}
+                faIcon="fa-car"
+                firstField={{"Field":"YTD ORDERS","method":"get","path":"/api/orders/get/ytdorders"}}
+	           		secondField={{"Field":"MTD ORDERS","method":"get","path":"/api/orders/get/mtdorders"}}
 	           	/>
 	           	<Statistics 
                 display={true}

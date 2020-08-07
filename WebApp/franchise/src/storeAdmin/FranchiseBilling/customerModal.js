@@ -4,7 +4,6 @@ import jQuery, { isNumeric, data } from 'jquery';
 import axios                  from 'axios';
 import ReactTable             from "react-table";
 import moment                 from "moment";
-// import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import { connect } from 'react-redux';
@@ -22,7 +21,8 @@ class customerModal extends Component{
             id : '',
             selectCustomer : '',
             gmapsLoaded: false,
-            updateCustomer : false
+            updateCustomer : false,
+            disableSubmit  : true
         }
         window.scrollTo(0, 0);
     }
@@ -40,10 +40,6 @@ class customerModal extends Component{
 			return value == '' || value.trim().length != 0;
           }, "No space please and don't leave it empty");
           
-		$.validator.addMethod("validPoNum", function(value, element) {
-			return (/^-{0,1}\d+$/.test(value.replace(/[PR+]/g, '')));
-		}, "Please enter a valid Purchase order Number");
-
 		jQuery.validator.setDefaults({
 			debug: true,
 			success: "valid"
@@ -116,6 +112,7 @@ class customerModal extends Component{
         var showForm = this.state.showCustForm ? false : true;
         this.setState({
             showCustForm    : true,
+            disableSubmit   : false,
             showCustInfoDiv : false,
             customerName    : '',
             mobile          : '',
@@ -139,6 +136,7 @@ class customerModal extends Component{
         this.setState({
             'franchise_id' : nextProps.franchise_id,
             "showCustForm" : nextProps.updateCustomer ? true : false,
+            "disableSubmit" : nextProps.updateCustomer ? false : true,
             "showCustInfoDiv" : nextProps.updateCustomer == 'update' ? false : '',
         })
         this.getCustomer();
@@ -178,7 +176,8 @@ class customerModal extends Component{
                     "email"          : data.email,
                     "address"        : data.address,
                     "showCustInfoDiv": true,
-                    "showCustForm"   : false
+                    "showCustForm"   : false,
+                    "disableSubmit"  : true
                 })
 			}else{
                 this.setState({
@@ -266,6 +265,7 @@ class customerModal extends Component{
   };
 
     render(){
+        console.log("disableSubmit",this.state.disableSubmit);
         return( 
           <div className="col-lg-12">
                 {
@@ -410,8 +410,8 @@ class customerModal extends Component{
                           </div>
                           :
                           <div>
-                             <button className="btn btn-default modal-buttons pullleft" onClick={this.closeModal.bind(this)}>Close</button>
-                             <input  type="submit" className="btn btn-primary textWhite modal-buttons" onClick={this.saveCustomerInfo.bind(this)} value="Submit"/>
+                             <button className="btn btn-default modal-buttons pullleft" onClick={this.closeModal.bind(this)}>Close {this.state.disableSubmit}</button>
+                             <input  type="submit" className="btn btn-primary textWhite modal-buttons" disabled={this.state.disableSubmit} onClick={this.saveCustomerInfo.bind(this)} value="Submit"/>
                           </div>
                           }
                       </div>

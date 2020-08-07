@@ -1,12 +1,12 @@
-// /*
-//   Ashish Naik
+/*
+  Ashish Naik
 
-//   This Dashboard need to make Componentwise. 
-//   Every single thing on Dashboard must be a separate component. 
-//   Each component will have its own API. Until that component is loaded, it will show loader. 
-//   Dashboard will have placeholder for each component. 
+  This Dashboard need to make Componentwise. 
+  Every single thing on Dashboard must be a separate component. 
+  Each component will have its own API. Until that component is loaded, it will show loader. 
+  Dashboard will have placeholder for each component. 
 
-// */
+*/
 
 
 
