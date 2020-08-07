@@ -24,3 +24,8 @@
 .aboutbread a:hover{
 text-decoration: none;
 }
+@media only screen and (max-device-width: 480px) { 
+  .aboutheading{
+    margin-left: 80px;
+  }
+}  

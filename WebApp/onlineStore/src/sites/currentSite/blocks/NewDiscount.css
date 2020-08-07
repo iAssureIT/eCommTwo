@@ -7,6 +7,7 @@
 }
 .image1_div{
 	/*width:168px;*/
+    margin-top: 40px;
     margin-left: 73px;
 	background-color: #a2632c ! important;
 }
@@ -20,11 +21,13 @@
 .imagediv2{
     height: 272px;
 	margin-left: 35px;
+    margin-top: 40px;
 	background-color: #a2632ccc;
 }
 .imagediv3{
 	background-color: #a94442ad;
     margin-left: 35px;
+    margin-top: 40px;
 }
 .div1background{
    background-color: #a2632cba;
@@ -44,7 +47,7 @@
     left: 9%;
     margin-top: 10px;
     cursor: pointer;
-    z-index: 1000;
+    /*z-index: 1000;*/
     background-color: #efece9;
     transition: 0.3s !important;
 }
@@ -61,11 +64,11 @@
 }
 @media only screen and (max-width: 768px) {
     .imagediv3{
-        margin-left: 48px;
+        margin-left: 41px;
         margin-top: 20px;
     }
     .image1_div{
-        margin-left: 40px;
+        margin-left: 35px;
 
     }
     .imagediv2{

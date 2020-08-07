@@ -32,6 +32,9 @@
 .messageDiv1{
 	margin-top: 152px;
 }
+.world_heading1{
+  padding-left: 150px;
+}
 
 
 .multistorebgimg{
@@ -83,6 +86,65 @@
 	margin-right: 438px;
 	color:#f08f00;
 }
+.introvideo{
+	margin-left: 54px;
+}
 .subheading_foundr{
 	margin-right: 219px;
 }
+@media only screen and (max-device-width: 480px) { 
+	.aboutUs_Mobile{
+		width: 304px;
+		text-align: center;
+	   }
+	   .introvideo{
+	     margin-left: 0px;
+    }
+	.promisstxt{
+		margin-bottom: 35px;
+	    background-color: #333;
+	    color: #fff;
+	    height: 40px;
+	    padding-top: 7px;
+	    font-size: 14px;
+	   
+	   }
+	   .world_heading1{
+	   	padding-left: 0px
+	   }
+	.world_div{
+		margin-top: 155px;
+	 }  
+	.VideoDiv{
+		width: 273px ! important;
+	} 
+	.videocard1_new{
+		width: 302px ! important;
+	} 
+	.director_img {
+    height: 200px;
+    width: 200px;
+    margin-left: 45px;
+    margin-top: 158px;
+    border: 9px solid #fff;
+    box-shadow: 0 10px 29px rgba(92,141,255,.5);
+  } 
+  .textcoloryellow{
+  	margin-right: 0px;
+  	margin-left: 70px;
+  }  
+  .messageDiv1{
+  	margin-top: 5px;
+  }
+  .subheading_foundr{
+  	margin-right: 0px;
+  	margin-left: 36px;
+  }
+  .backgrd_curve1{
+  	/*margin-top: 0px;*/
+  	height: 1510px;
+  }
+  .founderpara{
+  	text-align: left;
+  }
+}  

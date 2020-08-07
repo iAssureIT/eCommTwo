@@ -280,7 +280,7 @@ componentDidMount(){
 											<img src={Email_Img} height="40px"/>
 
 										</div>
-										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10 left_padd" >
 											<label className=""><b>Mail Us:</b> </label><br/>
 											<p>info@abc.com
 											</p>
@@ -292,7 +292,7 @@ componentDidMount(){
 											<img src={Phone_Img} height="40px"/>
 
 										</div>
-										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10 left_padd">
 											<label className=""><b>Phone Us</b> </label><br/>
 											<p>999999999</p>
 
@@ -303,7 +303,7 @@ componentDidMount(){
 											<i class="fa fa-map-marker addressicon" ></i>
 
 										</div>
-										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+										<div className="col-lg-10 col-md-10 col-xs-10 col-sm-10 left_padd">
 											<label className=""><b>Shop Location</b> </label><br/>
 											<div className="franchiseName">Anas Handicrafts</div>
 												<div>Above Barista Cafe,</div>

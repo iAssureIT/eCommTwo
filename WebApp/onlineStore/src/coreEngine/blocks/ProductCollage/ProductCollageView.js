@@ -431,9 +431,9 @@ class ProductCollageView extends Component {
                   tooltipMsg = 'Add To Wishlist';
                 }
                 return (                  
-                  <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={index}>
+                  <div className="col-lg-3 col-md-3 col-sm-6 col-xs-6" key={index}>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                      <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 col-xs-offset-2 NOpadding">
+                      <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xs-offset-2 NOpadding">
                         <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                           <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                             <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>

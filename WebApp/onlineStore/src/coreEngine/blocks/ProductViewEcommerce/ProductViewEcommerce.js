@@ -474,6 +474,33 @@ class ProductViewEcommerce extends Component {
 								<div id="react-app" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs item img-responsiveProduct">
 									<ReactImageZoom {...props} />
 								</div>
+								<div id="" className="hidden-lg hidden-md col-sm-12 col-xs-12">
+								<OwlCarousel
+									className="owl-theme productview"
+									margin={0}
+									nav={true}
+									responsive={this.state.responsive}
+									autoplay={true}
+									autoplayHoverPause={true}
+								>
+									{
+										
+										Array.isArray(this.state.productData.productImage) && this.state.productData.productImage.map((data, index) => {
+											return(
+												<img src={data} className="img-responsive prodImgMobileView col-xs-3"></img>											
+											);
+										})
+									}
+								</OwlCarousel>
+									{/* {
+										
+										Array.isArray(this.state.productData.productImage) && this.state.productData.productImage.map((data, index) => {
+											return(
+												<img src={data} className="img-responsive prodImgMobileView col-xs-3"></img>											
+											);
+										})
+									} */}
+								</div>
 							</div>
 						</div>
 						{/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  mt50 hidden-lg hidden-md hidden-sm">

@@ -39,11 +39,11 @@ export default class AboutusVideos extends Component {
     render(){
       console.log("link",this.VideoData());
         return(
-            <div className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 margin-top">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top">
                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <h2 className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50 text-center"><b>AnasHandicraftts</b></h2>
                   <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1">
-                    <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 ">
+                    <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 aboutUs_Mobile ">
                       We often take care of our loved ones, family and friends. 
                       AnasHnadicraftts has raised the bar even higher for others emulate. It is one of the furniture supplier chain..  
                       The difference lies in the sheer scale of operations at AnasHnadicraftts.All the standard sanitizing and packaging procedures are in line with the Total Quality Management principles and conform to the quality standards set by us.At any given point in time Team AnasHnadicrafts can handle customers  ensuring its flawless service.
@@ -51,7 +51,7 @@ export default class AboutusVideos extends Component {
                   </div>
                 </div>
                 <div className="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-2 col-sm-12 col-xs-12 mt50">
-                  <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <i className="fa fa-inbox multiicon" aria-hidden="true"></i>
                     </div>
@@ -60,7 +60,7 @@ export default class AboutusVideos extends Component {
                     <h4>Products</h4>
                     </div>
                   </div>
-                  <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <i className="fa fa-shopping-cart multiicon" aria-hidden="true"></i>
                     </div>
@@ -69,7 +69,7 @@ export default class AboutusVideos extends Component {
                     <h4>Categories</h4>
                     </div>
                   </div>
-                  <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <i className="fa fa-globe multiicon" aria-hidden="true"></i>
                     </div>
@@ -84,13 +84,13 @@ export default class AboutusVideos extends Component {
                      {
                       this.VideoData().map((data, index)=>{
                       return (
-                        <div key={index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 seperatevideo">
+                        <div key={index} className="col-lg-offset-2 col-lg-8 col-md-8 col-sm-10 col-xs-10 seperatevideo">
                         <div className="videocard1">
                             <div className="introvideo">      
                              {/* <video width="320" height="240" controls>
                                 <source src={data.link} />
                               </video>*/}
-                               <ReactPlayer url={data.link} width='960px' height='300px' controls loop  />
+                               <ReactPlayer url={data.link} controls loop  />
                             </div>          
                            <div className="go-corner" href="#">
                             <div className="go-arrow">

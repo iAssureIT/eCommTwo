@@ -752,7 +752,7 @@ removeModalBackDrop(event){
                    <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu ">
                       <span>  
                       {user_ID ?                      
-                        <a href={user_ID ? "/cart" : null} className="icon-cart ">
+                        <a href={user_ID ? "" : null} className="icon-cart ">
                            <i className=" headercarticon headercarticon_bag fa fa-shopping-cart" aria-hidden="true" onClick={this.loginPage.bind(this)} style={{width:"24px"}}></i>
                             
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}

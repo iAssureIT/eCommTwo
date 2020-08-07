@@ -60,6 +60,9 @@
 .ml25{
 	margin-left: 15px;
 }
+.left_padd{
+	padding-left: 32px;
+}
 
 .formControl {
     display: block;

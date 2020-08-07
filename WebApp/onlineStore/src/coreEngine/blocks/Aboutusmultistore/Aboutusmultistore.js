@@ -67,9 +67,9 @@ export default class Aboutusmultistore extends Component {
 									   </div>		
 									</div>
 								</div>
-								<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								 <h3 className="mb50 promisstxt">The World of AnasHnadicraftts</h3>
-								  <div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 world_div"style={{padding:"0px"}}>
+								 <h3 className="mb50 ">The World of AnasHnadicraftts</h3>
+								  <div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12"style={{padding:"0px"}}>
 				                     {
 				                      this.VideoData().map((data, index)=>{
 				                      return (
@@ -79,7 +79,7 @@ export default class Aboutusmultistore extends Component {
 				                             {/* <video width="320" height="240" controls>
 				                                <source src={data.link} />
 				                              </video>*/}
-				                               <ReactPlayer url={data.link} width='324px' height='211px' controls loop  />
+				                               <ReactPlayer url={data.link} width='324px' height='211px' className="VideoDiv" controls loop  />
 				                            </div>          
 				                          <div className="go-corner" href="#">
 				                            <div className="go-arrow">
@@ -107,20 +107,20 @@ export default class Aboutusmultistore extends Component {
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 messageDiv">
 						<div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						  <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						    <div className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+						    <div className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-12 col-xs-12">
 							 <h3 className="mb50 promisstxt">About The Founder</h3>
 						    </div>
 						   </div> 
 						  </div> 	
 						 <div  className="backgrd_curve1 col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10 head_spacing">
-                            <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 takeleft">
                                  </div>
                                     <div className="col-lg-offset-1 col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                       <img src={founderImg} alt="" className="director_img"/>
                                     </div>
                                   </div>
-                                  <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12">
+                                  <div className="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                                     <div className="row">
                                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 messageDiv1">
                                           <h2 className="para-top3 txt-size-director textcoloryellow"><b>Anas Khan</b></h2>

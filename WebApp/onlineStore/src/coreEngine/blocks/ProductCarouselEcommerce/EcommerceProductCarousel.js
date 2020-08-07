@@ -459,7 +459,7 @@ class EcommerceProductCarousel extends Component {
                             <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
                               <a href="">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-8 NoPadding">
+                                  <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                     <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                       <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                         <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>

@@ -19,6 +19,9 @@
 	.owl-dots{
 	display: none ! important;
 }
+.mobile_div{
+	margin-left: 52px;
+}
   
 }
 .takephone_down{
@@ -107,7 +110,11 @@ background: #FBBD65;
  
  .btnbg{
  	top: 431px ! important; 
-    left: 325px ! important;
+    left: 255px ! important;
+ }
+ .img_bordermob{
+ 	border: 1px solid #eee;
+ 
  }
   
 }

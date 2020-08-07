@@ -257,5 +257,10 @@
     z-index: 10;
     background-color: #A2632C;
     transition: 0.3s !important;
+ 
+ }
+
+.figcaption_new{
+    width: 239px;
 }
 }  
