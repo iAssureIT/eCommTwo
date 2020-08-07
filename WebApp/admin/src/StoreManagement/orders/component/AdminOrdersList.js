@@ -73,7 +73,7 @@ class AdminOrdersList extends Component{
     //         })  
     // }
     componentWillReceiveProps(nextProps){
-      console.log("componentWillReceiveProps",nextProps)
+      // console.log("componentWillReceiveProps",nextProps)
         if(nextProps){
           var ProductList = [];
           nextProps.allProductsArray.filter(function(item,index){
@@ -88,7 +88,7 @@ class AdminOrdersList extends Component{
                 
             return null;
           });	
-          console.log("filtered products array",ProductList);
+         // console.log("filtered products array",ProductList);
             this.setState({
                 "data": nextProps.data,
                 "allProductsArray" : nextProps.allProductsArray,
@@ -230,7 +230,6 @@ class AdminOrdersList extends Component{
 
     getOrdersBetweenDates(){
       // var currentViewStatus = this.status.currentViewStatuss ? this.status.currentViewStatus : '';
-      console.log("this.state.currentViewStatus",this.state.currentViewStatus)
       var orderFilterData= {};
       orderFilterData.startDate = this.state.fromDate;
       orderFilterData.endDate = this.state.toDate;

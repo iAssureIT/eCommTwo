@@ -1061,7 +1061,7 @@ export class Bill extends React.Component {
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsEditForm" id="productsEditForm">
 									<div className="table-responsive billTable">
-										<table className="table table-borderless">
+										<table className="table table-borderless commontable">
 											<thead>
 												<tr>
 												<th scope="col"></th>

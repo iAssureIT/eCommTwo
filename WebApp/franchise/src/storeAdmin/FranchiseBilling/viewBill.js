@@ -145,26 +145,10 @@ export class printBill extends React.Component {
     }
     
     printTable(){
-        // const w=window.open();
-        // w.document.write($('.viewBillDiv').html());
-        // w.print();
-		// w.close();
-		const input = $('.viewBillDiv')[0];
-		$(input).find('.returnButtons').css('display','none');
-		$(input).css('background','white');
-
-		html2canvas($('.viewBillDiv')[0])
-		.then((canvas) => {
-			const imgData = canvas.toDataURL('image/png');
-			const pdf = new jsPDF();
-			pdf.setFillColor(245);
-			pdf.rect(0, 0, 210, 700, "F");
-			pdf.addImage(imgData, 'PNG', 0, 0);
-			pdf.save("download.pdf");  
-		});
-
-		$(input).find('.returnButtons').css('display','block');
-		
+        const w=window.open();
+        w.document.write($('.viewBillDiv').html());
+        w.print();
+		w.close();
 		
 	//    const input = $('.viewBillDiv')[0];
 	//    $(input).css('background','white');
@@ -547,7 +531,7 @@ export class printBill extends React.Component {
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsEditForm" id="productsEditForm">
 									<div className="table-responsive">
-										<table className="table table-borderless billTable">
+										<table className="table table-borderless commontable billTable">
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>
@@ -664,7 +648,7 @@ export class printBill extends React.Component {
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsViewForm" id="productsViewForm">
 									<div className="table-responsive">
-										<table className="table table-borderless viewBillTable">
+										<table className="table table-borderless commontable viewBillTable">
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>
@@ -698,10 +682,10 @@ export class printBill extends React.Component {
 															<td>{data.discountPercent}<i className="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
 															{data.status !== 'Returned' ?
-															<td className="returnButtons">
+															<td>
 																<span className="fa fa-pencil" data-toggle="modal" title="Partial Return" onClick={this.editOrder.bind(this,data._id)} data-target={"#editorder"+ data._id} id={data._id}></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 																{/* onClick={this.openproductApproval.bind(this)} */}
-																<span className="fa fa-undo" data-toggle="modal" title="Return Product" onClick={this.editOrder.bind(this,data._id,false)} data-target={"#editorder"+ data._id} id={data._id}></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																<span className="fa fa-undo" data-toggle="modal" title="Partial Return" onClick={this.editOrder.bind(this,data._id,false)} data-target={"#editorder"+ data._id} id={data._id}></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 																{/* <span className="fa fa-undo" title="Return Product"  data-toggle="modal"  onClick={this.editOrder.bind(this,data._id,false)}  data-target={"#editorder"+ data._id} id={data._id} aria-hidden="true"></span> */}
 																<div className="modal fade" id={"editorder"+ data._id} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -740,7 +724,7 @@ export class printBill extends React.Component {
 																			<div className="col-lg-3 col-md-3 col-sm-6 col-xs-6 disPercentDiv">
 																				<label className="control-label statelabel locationlabel" >Discount <i className="redFont">*</i></label>
 																				<div className="input-group inputBox-main  new_inputbx" >
-																					<input max={100} disabled={this.state.showDiscount} value={this.state.discountPercent} onChange={this.discountedPrice.bind(this)} placeholder="Discount Percent" id="discountPercent" name="discountPercent" type="number" className="form-control  availableQuantityNew" aria-describedby="basic-addon1" ref="discountPercent" min="0"/>
+																					<input max={100} disabled={this.state.showDiscount} value={this.state.discountPercent} onChange={this.discountedPrice.bind(this)} placeholder="Discount Percent" id="discountPercent" name="discountPercent" type="number" className="form-control  availableQuantityNew" aria-describedby="basic-addon1" ref="discountPercent" />
 																					<div className="input-group-addon inputIcon discountInput">
 																						<i className="fa fa-percent"></i>
 																					</div> 
@@ -752,7 +736,7 @@ export class printBill extends React.Component {
 																					<div className="input-group-addon inputIcon">
 																					<i className="fa fa-rupee"></i>
 																					</div> 
-																					<input max={this.state.rate} disabled={this.state.showDiscount} onChange={this.discountPercent.bind(this)} value={this.state.discountedPrice} id="discountedPrice" name="discountedPrice" type="number" className="form-control  selectdropdown" placeholder="Discounted Price" aria-describedby="basic-addon1" ref="discountedPrice"  max={this.state.rate} min="0"/>
+																					<input max={this.state.rate} disabled={this.state.showDiscount} onChange={this.discountPercent.bind(this)} value={this.state.discountedPrice} id="discountedPrice" name="discountedPrice" type="number" className="form-control  selectdropdown" placeholder="Discounted Price" aria-describedby="basic-addon1" ref="discountedPrice"  max={this.state.rate} min="1"/>
 
 																				</div>     
 																			</div>  

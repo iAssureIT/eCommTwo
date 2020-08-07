@@ -211,3 +211,29 @@ padding: 5px 5px;
 .prodModalImage{
     max-height:200px;
 }
+
+#bulkActionModalbtn{
+    background-color: #337ab7;
+    color: white
+}
+
+
+.bg-aqua {
+    background-color: #00c0ef!important;
+    color: #fff;
+}
+
+.bg-redcolor{
+    background-color: #dd4b39!important;
+    color: #fff;
+}
+
+.bg-green{
+    background-color: #00a65a!important;
+    color: #fff;
+}
+
+.bg-yellow {
+    background-color: #f39c12!important;
+    color: #fff;
+}

@@ -313,7 +313,7 @@ class ProductList extends Component {
                         this.setState({
                             tableData: response.data
                         },()=>{
-                            this.getData(this.state.startRange, this.state.limitRange);
+                          //  this.getData(this.state.startRange, this.state.limitRange);
                         })
                         //this.getData(this.state.startRange, this.state.limitRange);
                     })
@@ -410,9 +410,10 @@ class ProductList extends Component {
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <section className="content">
-                            <Message messageData={this.state.messageData} />
                             <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                                 <div className="row">
+                                    <Message messageData={this.state.messageData} />
+
                                     <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                                         <h4 className="NOpadding-right"> Product List</h4>
                                     </div>
@@ -560,7 +561,7 @@ class ProductList extends Component {
                                     <br />
                                 </div>
                                 <div className="modal-footer"> 
-                                      <a href="#" className="btn btn-warning" id="bulkActionModalbtn" data-dismiss="modal" onClick={this.productBulkAction.bind(this)} style={{"margin-bottom": 0,"margin-left": "5px"}}>Yes</a>
+                                      <a href="#" className="btn btn-info" id="bulkActionModalbtn" data-dismiss="modal" onClick={this.productBulkAction.bind(this)} style={{"margin-bottom": 0,"margin-left": "5px"}}>Yes</a>
                                       <button type="button" className="btn btn-default" onClick={this.closeModal.bind(this)} data-dismiss="modal">Close</button>
                                 </div>
                             </div>

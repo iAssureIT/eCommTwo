@@ -51,7 +51,7 @@ class Login extends Component {
           error.insertAfter("#loginusername");
         }
         if (element.attr("name") === "loginpassword") {
-          error.insertAfter("#loginpassword");
+          error.insertAfter(".showHideSignDiv");
         }
       }
     });

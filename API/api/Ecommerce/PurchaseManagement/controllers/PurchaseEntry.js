@@ -113,19 +113,22 @@ exports.get_datewise_purchaceEntry = (req, res, next)=>{
     const moment = require('moment-timezone');
     const purchaseDate = moment(req.body.purchaseDate).tz('Asia/Kolkata').startOf('day');
     var selector = {};
-    if(typeof(req.body.purchaseNumber) != "undefined" && typeof(req.body.productName) != "undefined"){
+    if(typeof(req.body.purchaseDate) != "undefined" && typeof(req.body.purchaseNumber) != "undefined" && typeof(req.body.productName) != "undefined"){
         selector ={"purchaseDate":purchaseDate,"purchaseNumber":req.body.purchaseNumber,"productName":req.body.productName};
     }else{
         if(typeof(req.body.purchaseNumber) != "undefined"){
-            selector ={"purchaseDate":req.body.purchaseDate,"purchaseNumber":req.body.purchaseNumber};
-        }else if(typeof(req.body.productName) != "undefined"){
-            selector ={"purchaseDate":purchaseDate,"productName":req.body.productName};
-        }else{
-            selector ={"purchaseDate":purchaseDate};
+            selector.purchaseNumber =req.body.purchaseNumber;
+        }
+        if(typeof(req.body.productName) != "undefined"){
+            selector.productName =req.body.productName;
+        } 
+        if(typeof(req.body.purchaseDate) != "undefined"){
+            selector.purchaseDate =purchaseDate;
         }
     }
 
-    //console.log("selector",selector);
+
+    console.log("selector",selector);
     PurchaseEntry.find(selector)
     .then(data=>{
     //    console.log("data----=",data);

@@ -75,3 +75,15 @@
     width: 100%;
         border: 1px dashed #ddd;
 }
+
+/* code by madhuri start */
+
+.floatRight{
+  float: right !important;
+}
+
+.swal-footer {
+  text-align: center;
+}
+
+/* code by madhuri end */

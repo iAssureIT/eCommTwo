@@ -24,7 +24,7 @@ export default class PurchaseManagement extends React.Component {
 			      	purchaseNumber		:'',
 			      	product 			: '',
 			      	Units 				: 'Kg',
-			      	serchByDate         : moment(new Date()).format("YYYY-MM-DD"),
+			      	serchByDate         : '',
 			      	"twoLevelHeader"    : {
 						            apply  : false,
 						           },
@@ -91,8 +91,8 @@ export default class PurchaseManagement extends React.Component {
 		            confirmDel              : false,
 					tableData               : "",
 					PoNumbersArray			:[],
-					selectedPurchaseNum 	:'Select Purchase Number',
-					selectedProductName 	: 'Select Product',
+					selectedPurchaseNum 	:'All',
+					selectedProductName 	: 'All',
 					filterData 				: {},
 					PurchaseNumberArray		:[],
 					totalPoAmount 			: 0,
@@ -311,19 +311,20 @@ export default class PurchaseManagement extends React.Component {
 	getData(startRange, limitRange){ 
 		var dateToSearch=this.state.serchByDate;
 		var filterData = this.state.filterData;
-		if(this.state.selectedPurchaseNum != "Select Purchase Number"){
+		if(this.state.selectedPurchaseNum != "All"){
 			filterData.purchaseNumber = this.state.selectedPurchaseNum;
 		}else{
 			delete filterData["purchaseNumber"];
 		}
 
-		if(this.state.selectedProductName != "Select Product"){
+		if(this.state.selectedProductName != "All"){
 			filterData.productName = this.state.selectedProductName;
 		}else{
 			delete filterData["productName"];
 		}
-		
-		filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
+		if(dateToSearch){
+			filterData.purchaseDate = moment(dateToSearch).format("YYYY-MM-DD");
+		}
 		axios
 		.post('/api/purchaseentry/post/datewisepurchase/',filterData)
 		.then((response)=>{
@@ -861,7 +862,7 @@ export default class PurchaseManagement extends React.Component {
 									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
 										<label>Purchase Number:</label>
 										<select className="form-control allPoNumbers" aria-describedby="basic-addon1" name="selectedPurchaseNum" id="selectedPoNum" ref="selectedPoNum" value={this.state.selectedPurchaseNum} onChange={this.filterChange.bind(this)}>
-										<option disabled="">Select Purchase Number</option>
+										<option>All</option>
 											{
 												this.state.PurchaseNumberArray && this.state.PurchaseNumberArray.length > 0 ?
 													this.state.PurchaseNumberArray.map((data, i)=>{
@@ -877,7 +878,7 @@ export default class PurchaseManagement extends React.Component {
 									<div className="form-group col-lg-4 col-md-4 col-xs-12 col-sm-12 mbt25">
 										<label>Product Name:</label>
 										<select className="form-control allProducts" aria-describedby="basic-addon1" name="selectedProductName" id="SelectProduct" ref="SelectProduct" value={this.state.selectedProductName} onChange={this.filterChange.bind(this)}>
-										<option disabled="">Select Product</option>
+										<option>All</option>
 										{
 											this.state.productArray && this.state.productArray.length > 0 ?
 												this.state.productArray.map((data, i)=>{

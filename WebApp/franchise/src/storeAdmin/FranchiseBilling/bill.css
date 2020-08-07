@@ -211,18 +211,18 @@
   .pullleft{
     float: left;
   }
-  table thead{
+  .commontable thead{
     font-size: smaller;
     border-top: 1px dashed #66666673;
     border-bottom: 1px dashed #66666673;
   }
 
-  tfoot{
+  .commontable tfoot{
     border-top: 1px dashed #66666673;
     border-bottom: 1px dashed #66666673;
   }
 
-  table th, table td { 
+  .commontable th,  td { 
     padding:5px !important;
     border-top: none !important; 
     border-bottom: none !important; 
@@ -277,12 +277,12 @@
     height: 0;
   }
  
-  .table i{
+  .commontable i{
     font-size: smaller;
     color: #3c3939c9;
   }
 
-  .table .fa {
+  .commontable .fa {
     font-size: smaller !important;
     /* color: #3c3939c9 !important; */
    }

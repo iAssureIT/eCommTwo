@@ -933,7 +933,7 @@ class AddNewShopProduct extends Component {
 
                                   <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 ">
                                     <label>Quantity <i className="redFont">*</i></label>
-                                    <input onChange={this.handleChange.bind(this)} value={this.state.availableQuantity} id="availableQuantity" name="availableQuantity" type="number" className="form-control availableQuantityNew" placeholder="Quantity" aria-describedby="basic-addon1" ref="availableQuantity" />
+                                    <input onChange={this.handleChange.bind(this)} value={this.state.availableQuantity} id="availableQuantity" name="availableQuantity" type="number" className="form-control availableQuantity" placeholder="Quantity" aria-describedby="basic-addon1" ref="availableQuantity" min="1" />
                                   </div>
                                   {/* <div className="col-lg-4 col-md-4 col-sm-12 <col-xs-12></col-xs-12>">
                                     <label>Unit <i className="redFont">*</i></label>
@@ -981,7 +981,7 @@ class AddNewShopProduct extends Component {
 
                                   <div className=" col-lg-2 col-md-2 col-sm-12 col-xs-12 paddingRightZeroo">
                                     <label>Original Price <i className="redFont">*</i></label>
-                                    <input onChange={this.percentAndPrice.bind(this)} value={this.state.originalPrice} id="originalPrice" name="originalPrice" type="number" className="form-control availableQuantityNew" placeholder="Original Price" aria-describedby="basic-addon1" ref="originalPrice" />
+                                    <input onChange={this.percentAndPrice.bind(this)} value={this.state.originalPrice} id="originalPrice" name="originalPrice" type="number" className="form-control availableQuantityNew" placeholder="Original Price" aria-describedby="basic-addon1" ref="originalPrice" min="1"/>
                                   </div>
                                   <div className="col-lg-1 col-md-2 col-sm-12 col-xs-12 paddingLeftZeroo">
                                     <label>Currency <i className="redFont">*</i></label>
