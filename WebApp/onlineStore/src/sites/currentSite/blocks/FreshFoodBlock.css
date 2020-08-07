@@ -59,9 +59,10 @@
 }
 .shippingBlock p {
     font-family: "Roboto Slab";
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 400;
-    color: #979797;
+    /* color: #979777; */
+    color: #333;
     line-height: 15px;
 }
 .zoom:hover, .zoom:active, .zoom:focus {
@@ -78,6 +79,7 @@
     }
     .freshfoodImg{
         margin-top: 100px;
+        padding-left: 15px;
     }
 }
 

@@ -28,35 +28,28 @@ class HomePage extends Component {
         exclusiveprloading      : true,
         discountedProductsloading   : true,
         featuredproductsloading : true,
+        vegetableProductsloading: true,
+        fruitProductsloading    : true,
         askPincodeToUser        : "",
         userPincode             : "",
         DeliveryStatus          : "",
+        vegetableProducts       : [],
+        fruitProducts           : [],
       };
       // this.featuredProductData();
       // this.exclusiveProductsData();
       // this.newProductsData();
       // this.bestSellerData();
     }  
+    
     componentDidMount() {
       // console.log("2.Didmount askPincodeToUser:");
       const preferences = localStorage.getItem("websiteModel");      
       const showLoginAs = localStorage.getItem("showLoginAs");      
       this.setState({"askPincodeTolistbytypeUser" : preferences}); 
-
-      // if(localStorage.getItem('flag')=== null){
-      //   localStorage.setItem('flag','false');
-      // }
-
-      // if(localStorage.getItem('flag')=== null){
-      //   localStorage.setItem('flag','false');
-      //   import("../../blocks/AskPincode/AskPincode.js")
-      //   .catch(error => {
-      //     console.error('AskPincode not yet supported');
-      //   });
-      // } 
-     
       this.featuredProductData();
       this.getVegetablesData();
+      this.getFruitsData();
       this.exclusiveProductsData();
       this.discountedproductsData();
       // this.bestSellerData();
@@ -65,7 +58,8 @@ class HomePage extends Component {
   }
 
     componentWillMount(){
-      // console.log("1.wilmount askPincodeToUser:");  
+      // console.log("1.wilmount ================");  
+      this.getVegetablesData();
       const preferences = localStorage.getItem("preferences");
       // console.log("wilmount askPincodeToUser:",preferences);      
       this.setState({"askPincodeToUser" : preferences});  
@@ -73,21 +67,34 @@ class HomePage extends Component {
     }
     getVegetablesData(){
       var section = 'Vegetables';
-      
-      axios.get("/api/products/get/sectiontype/"+section)
-      // axios.get("/api/category/get/"+section)
-      
+      axios.get("/api/products/get/list/"+section)      
             .then((response)=>{
               if(response.data){
-              console.log('vegetables Products ==== ' , response.data)
+              // console.log('vegetables Products ==== ' , response.data)
               this.setState({
-                featuredproductsloading:false,
+                vegetableProductsloading:false,
                 vegetableProducts : response.data
               })
             }
             })
             .catch((error)=>{
-                // console.log('error', error);
+                console.log('error', error);
+            })
+    }
+    getFruitsData(){
+      var section = 'Fruits';
+      axios.get("/api/products/get/list/"+section)      
+            .then((response)=>{
+              if(response.data){
+              // console.log('vegetables Products ==== ' , response.data)
+              this.setState({
+                fruitProductsloading:false,
+                fruitProducts : response.data
+              })
+            }
+            })
+            .catch((error)=>{
+                console.log('error', error);
             })
     }
     featuredProductData(){
@@ -122,7 +129,7 @@ class HomePage extends Component {
     }
     discountedproductsData(){
       var productType3 = 'discounted';
-      console.log('productType3==>', productType3);
+      // console.log('productType3==>', productType3);
       axios.get("/api/products/get/listbytype/"+productType3)
             .then((response)=>{
               // console.log('discounted prod response==>', response);
@@ -181,15 +188,9 @@ class HomePage extends Component {
       <div className="container-fluid uniHomepageWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="row">    
-          <AskPincode />       
-            {/* {localStorage.getItem("preferences") === "true"
-              ?
-                <AskPincode />               
-              :
-                null
-            } */}
-            <EcommerceBanner_Unimandai/>
-            <HomePageBanner2 />
+          <AskPincode />        
+          <EcommerceBanner_Unimandai/>
+          <HomePageBanner2 />
 
             {/*-----------------shop by category block---------------------*/}
           <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -218,7 +219,7 @@ class HomePage extends Component {
 
           <FreshFoodBlock />
 
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
+          {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
             {
               this.state.featuredproductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -235,13 +236,13 @@ class HomePage extends Component {
                 : null
               )
             }
-          </div>
-          {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
+          </div> */}
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
             {
-              this.state.featuredproductsloading ?  
+              this.state.vegetableProductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
               :
-              (this.state.featuredProducts.length > 0 ? 
+              (this.state.vegetableProducts.length > 0 ? 
                 <Ecommercenewproductcaro  
                     title={'Vegetables'} 
                     newProducts={this.state.vegetableProducts} 
@@ -253,11 +254,11 @@ class HomePage extends Component {
                 : null
               )
             }
-          </div> */}
+          </div>
         </div>
 
         <Unimandai_SaleProductDivider />
-        <div className="homeRow">
+        {/* <div className="homeRow">
           {
             this.state.exclusiveprloading ?  
             <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -275,14 +276,34 @@ class HomePage extends Component {
               null
             )
           }
+        </div> */}
+        <div className="homeRow">
+          {
+            this.state.fruitProductsloading ?  
+            <Loader type="carouselloader" productLoaderNo = {4}/>      
+            : 
+            (this.state.exclusiveProducts.length > 0 ? 
+              <EcommerceProductCarousel 
+                  title={'FRUITS'} 
+                  newProducts={this.state.fruitProducts}
+                  type={'exclusive'} 
+                  categories={this.state.categories} 
+                  getWishData={this.getWishData.bind(this)} 
+                  wishList={this.state.wishList}
+                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
+              :
+              null
+            )
+          }
         </div>
+            
 
-         <WhychooseUs/>
+        <WhychooseUs/>
 
         {/* <Ceo />*/}
 
         {/* <Blogs /> */}
-        {/* <UnimandaiBlogs /> */}
+        <UnimandaiBlogs />
 
 
       </div>

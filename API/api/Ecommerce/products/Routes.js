@@ -20,13 +20,15 @@ router.patch('/patch/availablequantity', productController.update_availablequant
 
 router.get('/get/list',productController.list_product);
 
+router.get('/get/list/:section',productController.list_product_bySection);
+
 router.get('/get/productcode/:productCode',productController.list_product_code);
 
 //router.get('/get/brandlist',productController.list_brand);
 
 router.get('/get/listbytype/:productType',productController.list_productby_type);
 
-router.get('/get/sectiontype/:section',productController.list_productby_section);
+// router.get('/get/sectiontype/:section',productController.list_productby_section);
 
 router.get('/get/products/listbytype/:productType',productController.list_productby_type_mobile);
 

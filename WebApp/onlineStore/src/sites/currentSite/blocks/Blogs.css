@@ -239,6 +239,7 @@
 .ocWrap{
 	/*margin-top: -84px;*/
 	background-color: #ffffff;
+	/* margin-bottom: 50px; */
 
 }
 .ocWrapmobile{
@@ -376,7 +377,8 @@
 }
 .blog_comment{
 	font: 500 12px/15px "Roboto";
-    color: #898989;
+	/* color: #898989; */
+	color: #555;
 }
 {
 	

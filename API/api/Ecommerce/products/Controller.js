@@ -836,26 +836,25 @@ exports.list_productby_type_mobile = (req,res,next)=>{
     }
     
 };
-exports.list_productby_section = (req,res,next)=>{    
+exports.list_product_bySection = (req,res,next)=>{
     var section = req.params.section;
     // console.log("section: +++++++++++++++++++++++",section);
-    selector={};
-    
-        selector={'section':section,  "status": "Publish"};
-        // Products.find(selector) 
-        Products.find()       
-        .exec()
-        .then(data=>{
-            res.status(200).json(data);
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
+    selector={'section':section,  "status": "Publish"}   
+    // Products.find({"status": "Publish"}).sort({'itemCode': 1})       
+    Products.find({'section':section,  "status": "Publish"}).sort({'itemCode': 1}) 
+    .exec()
+    .then(data=>{
+        res.status(200).json(data);       
+       
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
         });
-    
-}
+    });
+};
+
 exports.list_productby_type = (req,res,next)=>{
     var productType = req.params.productType;
     selector={};

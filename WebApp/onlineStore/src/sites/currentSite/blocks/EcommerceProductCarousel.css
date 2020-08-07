@@ -756,18 +756,25 @@ background-color: transparent !important;
     font-size: 20px;
     font-weight: 700;
 }
-.exclusiveProduct .owl-nav{
-    display: none;
+.exclusiveProduct .owl-nav button.owl-next{
+    /* display: none; */
+    margin-left: 1220px !important;
 }
 /* css for mobile */
 @media only screen and (max-device-width: 480px) {
     .customnNavButton .owl-nav button.owl-next{
-        margin-left: 280px !important;
+        margin-left: 280px;
         margin-top: -37px !important;
         opacity: 1;
     }
     .customnNavButton .owl-nav button.owl-prev{
         margin-left: 9px;
+    }
+    .exclusiveProduct .owl-nav button.owl-next{
+        margin-left: 300px !important;
+    }
+    .featureProjectWrapper .owl-nav button.owl-next{
+        margin-left: 275px !important;
     }
     .productImg{
         height: auto;
@@ -777,7 +784,7 @@ background-color: transparent !important;
     }
 
     .owl-nav{
-        display: none;
+        /* display: none; */
     }
 } 
 

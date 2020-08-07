@@ -69,35 +69,39 @@ class Ecommercenewproductcaro extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
-      for(var i=0;i<nextProps.newProducts.length;i++){      
-          var availableSizes = [];         
-          if(nextProps.newProducts[i].size){
-            // availableSizes.push(
-            //   {
-            //     "productSize": nextProps.newProducts[i].size*1,
-            //     "packSize"   :1,
-            //   },
-            //   {
-            //     "productSize": nextProps.newProducts[i].size*2,
-            //     "packSize"   :2,
-            //   },
-            //   {
-            //     "productSize": nextProps.newProducts[i].size*4,
-            //     "packSize"   :4,
-            //   },
-            // )
-            availableSizes.push(nextProps.newProducts[i].size*1);
-            availableSizes.push(nextProps.newProducts[i].size*2);
-            availableSizes.push(nextProps.newProducts[i].size*4); 
-            nextProps.newProducts[i].availableSizes = availableSizes;           
-          }
-      }
-    } 
-      this.setState({
-        newProducts: nextProps.newProducts,        
-        type: nextProps.type
-      });
+    if(nextProps){
+      console.log("nextProps:===",nextProps);
+      if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
+        for(var i=0;i<nextProps.newProducts.length;i++){      
+            var availableSizes = [];         
+            if(nextProps.newProducts[i].size){
+              // availableSizes.push(
+              //   {
+              //     "productSize": nextProps.newProducts[i].size*1,
+              //     "packSize"   :1,
+              //   },
+              //   {
+              //     "productSize": nextProps.newProducts[i].size*2,
+              //     "packSize"   :2,
+              //   },
+              //   {
+              //     "productSize": nextProps.newProducts[i].size*4,
+              //     "packSize"   :4,
+              //   },
+              // )
+              availableSizes.push(nextProps.newProducts[i].size*1);
+              availableSizes.push(nextProps.newProducts[i].size*2);
+              availableSizes.push(nextProps.newProducts[i].size*4); 
+              nextProps.newProducts[i].availableSizes = availableSizes;           
+            }
+        }
+      } 
+        this.setState({
+          newProducts: nextProps.newProducts,        
+          type: nextProps.type
+        });
+    }
+    
   }
  
   addtocart(event) {
@@ -478,7 +482,7 @@ class Ecommercenewproductcaro extends Component {
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt50 mb50">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <OwlCarousel
-                    className="owl-theme customnNavButton"
+                    className="owl-theme customnNavButton featureProjectWrapper"
                     margin={0}
                     nav={true}
                     responsive={this.state.responsive}
@@ -500,7 +504,7 @@ class Ecommercenewproductcaro extends Component {
                           return (
                             <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12" key={index}>
                               {/* <a > */}
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"> 
                                   <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-10 productInnerWrap NoPadding"> 
                                     <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                       <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
