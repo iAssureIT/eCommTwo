@@ -674,7 +674,7 @@ exports.user_login_using_email = (req, res, next) => {
 					var emailOTP = getRandomInt(1000, 9999);
 					console.log("emailOTP ===>",emailOTP);
 					User.updateOne(
-						{ _id: ObjectID(req.params.ID) },
+						{ "username": emailId.toLowerCase() },
 						{
 							$set: {
 								"profile.otpEmail": emailOTP,
