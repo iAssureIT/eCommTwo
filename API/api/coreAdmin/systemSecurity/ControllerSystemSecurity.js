@@ -671,19 +671,42 @@ exports.user_login_using_email = (req, res, next) => {
 					res.status(200).json({ message: "USER_BLOCK" });
 				} else if ((user.profile.status).toLowerCase() == "unverified") {
 					// res.status(200).json({ message: "USER_UNVERIFIED" });
-
-					res.status(200).json({
-						message: 'USER_UNVERIFIED',
-						userDetails: {
-							firstName: user.profile.firstname,
-							lastName: user.profile.lastname,
-							email: user.profile.email,
-							otpEmail: user.profile.otpEmail,
-							phone: user.profile.phone,
-							user_id: user._id,
-							roles: user.roles,
+					var emailOTP = getRandomInt(1000, 9999);
+					User.updateOne(
+						{ _id: ObjectID(req.params.ID) },
+						{
+							$set: {
+								"profile.otpEmail": emailOTP,
+							}
 						}
-					});
+					)
+						.exec()
+						.then(data => {
+							if (data.nModified === 1) {
+								res.status(200).json({
+									message: 'USER_UNVERIFIED',
+									userDetails: {
+										firstName: user.profile.firstname,
+										lastName: user.profile.lastname,
+										email: user.profile.email,
+										otpEmail: user.profile.otpEmail,
+										phone: user.profile.phone,
+										user_id: user._id,
+										roles: user.roles,
+									}
+								});
+							} else {
+								res.status(200).json({ message: "SUCCESS_OTP_NOT_RESET" });
+							}
+						})
+						.catch(err => {
+							console.log('user error ', err);
+							res.status(500).json({
+								message: "Failed to update Email OTP",
+								error: err
+							});
+						})
+					
 				}
 			} else {
 				res.status(200).json({ message: "NOT_REGISTER" });
