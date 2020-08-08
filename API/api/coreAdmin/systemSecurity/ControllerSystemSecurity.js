@@ -672,6 +672,7 @@ exports.user_login_using_email = (req, res, next) => {
 				} else if ((user.profile.status).toLowerCase() == "unverified") {
 					// res.status(200).json({ message: "USER_UNVERIFIED" });
 					var emailOTP = getRandomInt(1000, 9999);
+					console.log("emailOTP ===>",emailOTP);
 					User.updateOne(
 						{ _id: ObjectID(req.params.ID) },
 						{
@@ -682,6 +683,7 @@ exports.user_login_using_email = (req, res, next) => {
 					)
 						.exec()
 						.then(data => {
+							console.log("emailOTP  data===>",data);
 							if (data.nModified === 1) {
 								res.status(200).json({
 									message: 'USER_UNVERIFIED',
