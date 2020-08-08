@@ -38,7 +38,6 @@ exports.insert_orders = (req, res, next) => {
       Adminpreference.findOne()
         .then(preferenceData => {
           if (preferenceData.websiteModel === "FranchiseModel") {
-            var autogenerateOrderId = Math.round(new Date().getTime() / 1000);
             // console.log("inside adminpreferences, Address===",autogenerateOrderId);
             var pincode = req.body.deliveryAddress.pincode;
             if (pincode) {
@@ -74,10 +73,10 @@ exports.insert_orders = (req, res, next) => {
                             if(distance < franchiseDistance){
                                 franchiseDistance = distance;
                                 allocatedToFranchise = matchedFranchise[i].franchiseID;
-                                console.log("franchiseDistance ==========>", franchiseDistance);
+                                // console.log("franchiseDistance ==========>", franchiseDistance);
                             }
                           }
-                          console.log("allocatedToFranchise available==========>", allocatedToFranchise);
+                          // console.log("allocatedToFranchise available==========>", allocatedToFranchise);
                           saveOrderdata(allocatedToFranchise);
                         } else {
                           // console.log("single franchise available==========");
@@ -285,7 +284,7 @@ exports.insert_orders = (req, res, next) => {
                     }
                   }
                   function allocatefranchisebeforesave(franchiseid) {
-                    console.log("franchiseID=====>", franchiseid);
+                    // console.log("franchiseID=====>", franchiseid);
                     return new Promise(function (resolve, reject) {
                         Entitymaster.findOne({ _id: franchiseid })
                           .then(franchiseData => {
@@ -307,8 +306,6 @@ exports.insert_orders = (req, res, next) => {
             }// end if pincode
 
           } else {
-            // console.log("website model is not franchise model");
-            //if website model !== franchiseModel
             var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
             const order = new Orders({
               _id: new mongoose.Types.ObjectId(),
@@ -352,7 +349,6 @@ exports.insert_orders = (req, res, next) => {
             });
             order.save()
               .then(orderdata => {
-                //  console.log("Inside order response",orderdata);
                 var header = "<table><tbody><tr><td align='center' width='100%'><a><img src='http://http://anashandicrafts.iassureit.com/images/anasLogo.png' style='width:25%'></a></td></tr></table>";
                 var body = "";
                 var footer = "<table width='100%' bgcolor='#232f3e' height='50'><tbody><tr><td>"
