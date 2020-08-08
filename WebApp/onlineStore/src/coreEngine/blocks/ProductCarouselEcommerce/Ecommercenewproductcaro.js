@@ -70,7 +70,7 @@ class Ecommercenewproductcaro extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps){
-      console.log("nextProps:===",nextProps);
+      // console.log("nextProps:===",nextProps);
       if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
         for(var i=0;i<nextProps.newProducts.length;i++){      
             var availableSizes = [];         

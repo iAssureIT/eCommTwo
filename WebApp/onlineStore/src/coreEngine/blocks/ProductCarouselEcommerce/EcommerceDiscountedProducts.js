@@ -61,8 +61,8 @@ class EcommerceDiscountedProducts extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
-      // console.log("nextProps.newProducts:",nextProps.newProducts);
+    if(nextProps){      
+    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){      
       for(var i=0;i<nextProps.newProducts.length;i++){      
           var availableSizes = [];         
           if(nextProps.newProducts[i].size){
@@ -92,6 +92,7 @@ class EcommerceDiscountedProducts extends Component {
         type: nextProps.type
       });
     }
+  }
   async componentDidMount(){
       const websiteModel = localStorage.getItem("websiteModel");      
       const showLoginAs = localStorage.getItem("showLoginAs");      

@@ -87,7 +87,7 @@ componentDidMount(){
 		// console.log("blogs url",blogs);
 		return (
 			<div className="container-fluid AllBlogsBox hidden-xs" style={{padding:"0px"}}>
-          		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">	          		
+          		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{ backgroundColor:"#fff"}}>	          		
                     <div className="container col-lg-12 col-md-12 col-sm-12 col-xs-12 ocWrap">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 
@@ -117,7 +117,7 @@ componentDidMount(){
                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 All1blog1">
                                                             <div className="ohide">	
                                                             </div>
-                                                            <div className="date"><b>Date :</b> <Moment format="DD-MM-YYYY HH:mm">{blogs.createdAt}</Moment></div>
+                                                            {/* <div className="date"><b>Date :</b> <Moment format="DD-MM-YYYY HH:mm">{blogs.createdAt}</Moment></div> */}
                                                             {/* <p className="date">{blogs.createdAt}</p> */}
                                                             <h4 className="blog_content">{blogs.blogTitle}</h4>
                                                             <p className="blog_comment">{blogs.summary}</p>

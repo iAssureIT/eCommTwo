@@ -5,6 +5,9 @@
     margin-bottom: 40px;
     /* background: #fff !important; */
 }
+.homeRow{
+    background-color: #fff;
+}
 .container.container-ver2 {
     width: 1200px;
     padding: 0 15px;

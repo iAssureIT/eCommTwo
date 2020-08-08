@@ -85,7 +85,7 @@ class Routes extends Component{
     if(process.env.REACT_APP_PROJECT_NAME === '4_UniMandai'){  
         if(this.state.loggedIn ===true ){
             const WebLayout = () => (
-              <div className="skin-blue fixed sidebar-mini">    
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding skin-blue fixed sidebar-mini">    
                 <Route path="/" exact strict component={ Unimandai_Homepage } /> 
                 <Route path="/login"                    exact strict component={ Unimandai_Homepage } />
                 <Route path="/signup"                   exact strict component={ Unimandai_Homepage } />
@@ -132,7 +132,7 @@ class Routes extends Component{
               </div>
             );
             return (
-            <div>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
               <Router>
                 <UnimandaiHeader />
                 <Switch>
@@ -147,7 +147,7 @@ class Routes extends Component{
         }  
     else{
         const WebLayout = () => (
-          <div className="skin-blue fixed sidebar-mini">    
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding skin-blue fixed sidebar-mini">    
             <Route path="/" exact strict component={ Unimandai_Homepage } /> 
             <Route path="/login"                    exact strict component={ Login } />
             <Route path="/signup"                   exact strict component={ SignUp } />
@@ -209,7 +209,7 @@ class Routes extends Component{
        if(this.state.loggedIn ===true ){
 
         const WebLayout = () => (
-          <div className="skin-blue fixed sidebar-mini">    
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding skin-blue fixed sidebar-mini">    
             <Route path="/" exact strict component={ HomePage } /> 
             <Route path="/login"                    exact strict component={ HomePage } />
             <Route path="/signup"                   exact strict component={ HomePage } />
@@ -263,7 +263,7 @@ class Routes extends Component{
     else{
         //const weburls = new Array('cart','checkout','my-orders','view-order','shipment-tracking','profile',);
         const WebLayout = () => (
-          <div className="skin-blue fixed sidebar-mini">    
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding skin-blue fixed sidebar-mini">    
             <Route path="/" exact strict component={ HomePage } /> 
             <Route path="/login"                    exact strict component={ Login } />
             <Route path="/signup"                   exact strict component={ SignUp } />
@@ -303,7 +303,7 @@ class Routes extends Component{
           </div>
         );
         return (
-        <div>
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
           <Router>
             <Header />
             <Switch>

@@ -5,7 +5,7 @@
 	  margin-bottom: 0px !important;
   }
   .backColorWhite{
-	  background-color: #ccc !important;
+	  background-color: #fff !important;
   }
   .bannercaro .owl-dots {
 	  display: block;
@@ -191,6 +191,14 @@
 .bannercaroBtn .owl-dots{
     margin-top: -10px !important;
 }
+.bannerImg{
+    height:600px;
+    background-repeat: no-repeat !important;
+    background-position: 100% !important;
+}
+/* .owl-item{
+    width: 100% !important;
+} */
 
 @media only screen and (max-device-width: 480px) {
     .bannercaroBtn .owl-nav  button.owl-next{

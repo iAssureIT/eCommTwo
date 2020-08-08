@@ -54,23 +54,10 @@ export default class EcommerceBanner extends Component {
 			                            dotData={true}
 									>
 									    <div className="item">
-									    	<img className="img img-responsive" src={Background_2} alt="banner" />
-									    	<div className="col-lg-6 col-lg-offset-3 bannerAnimation">
-									    		{/* <div className="BannerTitle NewBannerTitle"> FRESH FOOD  </div> */}
-									    		<div className="bannertext ml16">{/*We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home*/}</div>
-									    		{/* <button className="col-lg-offset-5 viewdetails">VIEW DETAILS</button>  */}
-									    	</div>
+									    	<img className="img img-responsive" src={Background_2} alt="banner" />									    	
 									    </div>
 									    <div className="item">
-									    	<img className="img img-responsive" src={Background_22} alt="banner" />
-									    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 banner2AnimationImg">									    		
-									    	</div>
-									    	<div className="banner2TextBox col-lg-12 col-md-12 col-sm-12 col-xs-12">									    		
-									    		<div className="BannerTitle2"></div>	
-									    		<div className="col-lg-6 col-lg-offset-3 col-md-6 col-sm-8">								    		
-									    			<div className="bannertext1 col-lg-12">{/*We Deliver Organic Fruits And Vegetables Fresh From Our Fields To Your Home*/}</div>									    			 
-									    		</div>
-									    	</div>
+									    	<img className="img img-responsive" src={Background_22} alt="banner" />									    	
 									    </div>
 										<div className="item">
 									    	<img className="img img-responsive" src={AddressBanner1} alt="banner" />									    	
@@ -79,7 +66,7 @@ export default class EcommerceBanner extends Component {
 									    	<img className="img img-responsive" src={AddressBanner2} alt="banner" />									    	
 									    </div>
 									</OwlCarousel>
-							</div>
+							</div> 
 						</div>
 					</div>	
 				</div>

@@ -9,6 +9,7 @@ div, a, p, h1, h2, h3, h4, h5, h6, i, span, label{
 .App{
   padding-left: 0px !important;
   padding-right: 0px !important;
+  background-color: #fff !important;
 }
 .NOpadding{
   padding-left: 0px;

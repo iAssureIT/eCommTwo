@@ -60,7 +60,8 @@ class EcommerceProductCarousel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log("localStorage:",localStorage.getItem('websiteModel'));
+    if(nextProps){
+      // console.log("Productdata==",nextProps);
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
       for(var i=0;i<nextProps.newProducts.length;i++){      
           var availableSizes = [];         
@@ -92,6 +93,7 @@ class EcommerceProductCarousel extends Component {
         type: nextProps.type
       });
     }
+  }
 
   componentDidMount() {
     const websiteModel = localStorage.getItem("websiteModel");      
@@ -469,31 +471,7 @@ class EcommerceProductCarousel extends Component {
                 <h3 className="row">
                   <b>{this.props.title}</b>
                 </h3>
-              </div>
-              
-              {/* <div className="col-lg-5 producttimer producttimerposition">
-                <OwlCarousel
-                  className="owl-theme customnNavButtoncaro1"
-                  margin={0}
-                  nav={true}
-                  responsive={this.state.responsive2}
-                  autoplay={true}
-                  autoplayHoverPause={true}
-                >
-                  {
-                    this.props.categories && this.props.categories.length > 0 ?
-                      this.props.categories.map((data, index) => {
-                        return (
-                          <div className="item" key={index}>
-                            <span className="col-lg-12 row  productcarotext1" id={data._id} onClick={this.getCategoryID.bind(this)}>{data.category}</span>//
-                          </div>
-                        );
-                      })
-                      :
-                      null
-                  }
-                </OwlCarousel>
-              </div> */}
+              </div>              
             </div>
           </div>
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>

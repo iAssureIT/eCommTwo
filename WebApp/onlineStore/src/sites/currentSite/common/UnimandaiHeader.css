@@ -441,7 +441,7 @@ button.button_search {
 .uniHomepageWrapper{
     padding-left: 0px;
     padding-right: 0px;
-    background-color: #fff;
+    background-color: #fff !important;
 }
 .searchBox{
     /* margin-top: -7px; */

@@ -186,8 +186,8 @@ class HomePage extends Component {
   render() {    
     return (
       <div className="container-fluid uniHomepageWrapper">
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div className="row">    
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " style={{ backgroundColor:"#fff"}} >
+          <div className="row">     
           <AskPincode />        
           <EcommerceBanner_Unimandai/>
           <HomePageBanner2 />
@@ -198,7 +198,7 @@ class HomePage extends Component {
           </div>
             
           </div>
-          <div className="homeRow">
+          <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
             {
               this.state.discountedProductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -277,7 +277,7 @@ class HomePage extends Component {
             )
           }
         </div> */}
-        <div className="homeRow">
+        <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
           {
             this.state.fruitProductsloading ?  
             <Loader type="carouselloader" productLoaderNo = {4}/>      
@@ -303,7 +303,7 @@ class HomePage extends Component {
         {/* <Ceo />*/}
 
         {/* <Blogs /> */}
-        <UnimandaiBlogs />
+        {/* <UnimandaiBlogs /> */}
 
 
       </div>

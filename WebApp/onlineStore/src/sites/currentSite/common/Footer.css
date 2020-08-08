@@ -117,7 +117,8 @@
   color: #999999 !important;
 }
 .NoPadding{
-  padding: 0
+  padding: 0;
+  background:#fff !important;
 }
 
 
