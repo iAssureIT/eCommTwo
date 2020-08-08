@@ -678,6 +678,7 @@ exports.user_login_using_email = (req, res, next) => {
 							firstName: user.profile.firstname,
 							lastName: user.profile.lastname,
 							email: user.profile.email,
+							otpEmail: user.profile.otpEmail,
 							phone: user.profile.phone,
 							user_id: user._id,
 							roles: user.roles,
