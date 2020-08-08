@@ -685,8 +685,7 @@ exports.user_login_using_email = (req, res, next) => {
 						.then(data => {
 							console.log("emailOTP  data===>",data);
 							if (data.nModified === 1) {
-								User.updateOne(
-									{ "username": emailId.toLowerCase() })
+								User.find({ "username": emailId.toLowerCase() })
 									.exec()
 									.then(usersdata => {
 										console.log("emailOTP  data===>",usersdata.profile);
