@@ -685,20 +685,20 @@ exports.user_login_using_email = (req, res, next) => {
 						.then(data => {
 							console.log("emailOTP  data===>",data);
 							if (data.nModified === 1) {
-								User.find({ "username": emailId.toLowerCase() })
+								User.find({ "profile.email": emailId.toLowerCase() })
 									.exec()
 									.then(usersdata => {
-										console.log("emailOTP  data===>",usersdata);
+										console.log("emailOTP  data===>",usersdata.profile);
 											res.status(200).json({
 												message: 'USER_UNVERIFIED',
-												// userDetails: {
-												// 	firstName: usersdata.profile.fullName,
-												// 	email: usersdata.profile.email,
-												// 	otpEmail: usersdata.profile.otpEmail,
-												// 	phone: usersdata.profile.phone,
-												// 	user_id: usersdata._id,
-												// 	roles: usersdata.roles,
-												// }
+												userDetails: {
+													firstName: usersdata.profile.fullName,
+													email: usersdata.profile.email,
+													otpEmail: usersdata.profile.otpEmail,
+													phone: usersdata.profile.phone,
+													user_id: usersdata._id,
+													roles: usersdata.roles,
+												}
 											});
 									});
 							} else {
