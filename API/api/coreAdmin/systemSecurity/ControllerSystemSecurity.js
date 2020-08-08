@@ -689,11 +689,11 @@ exports.user_login_using_email = (req, res, next) => {
 									{ "username": emailId.toLowerCase() })
 									.exec()
 									.then(usersdata => {
+										console.log("emailOTP  data===>",usersdata.profile);
 											res.status(200).json({
 												message: 'USER_UNVERIFIED',
 												userDetails: {
-													firstName: usersdata.profile.firstname,
-													lastName: usersdata.profile.lastname,
+													firstName: usersdata.profile.fullName,
 													email: usersdata.profile.email,
 													otpEmail: usersdata.profile.otpEmail,
 													phone: usersdata.profile.phone,
