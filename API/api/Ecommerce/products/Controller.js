@@ -856,12 +856,10 @@ exports.list_product_bySection = (req,res,next)=>{
 };
 exports.list_product_bySection_mobile = (req,res,next)=>{
     var section = req.params.section;
-    // console.log("section: +++++++++++++++++++++++",section);
-    selector={'section':section,  "status": "Publish"}   
-    // Products.find({"status": "Publish"}).sort({'itemCode': 1})       
+    selector={'section':section,  "status": "Publish"}    
     Products.find({'section':section,  "status": "Publish"}).sort({'itemCode': 1}) 
-    .exec()
     .limit(6)
+    .exec()
     .then(data=>{
         res.status(200).json(data);       
        
