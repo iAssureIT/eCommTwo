@@ -688,7 +688,7 @@ exports.user_login_using_email = (req, res, next) => {
 								User.find({ "profile.email": emailId.toLowerCase() })
 									.exec()
 									.then(usersdata => {
-										console.log("emailOTP  data===>",usersdata.profile);
+										console.log("emailOTP  data===>",usersdata);
 											res.status(200).json({
 												message: 'USER_UNVERIFIED',
 												userDetails: {
