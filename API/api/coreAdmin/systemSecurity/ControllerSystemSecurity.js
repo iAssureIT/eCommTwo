@@ -688,16 +688,16 @@ exports.user_login_using_email = (req, res, next) => {
 								User.find({ "profile.email": emailId.toLowerCase() })
 									.exec()
 									.then(usersdata => {
-										console.log("emailOTP  data===>",usersdata);
+										console.log("emailOTP  data===>",usersdata[0].profile);
 											res.status(200).json({
 												message: 'USER_UNVERIFIED',
 												userDetails: {
-													firstName: usersdata.profile.fullName,
-													email: usersdata.profile.email,
-													otpEmail: usersdata.profile.otpEmail,
-													phone: usersdata.profile.phone,
-													user_id: usersdata._id,
-													roles: usersdata.roles,
+													firstName: usersdata[0].profile.fullName,
+													email: usersdata[0].profile.email,
+													otpEmail: usersdata[0].profile.otpEmail,
+													phone: usersdata[0].profile.phone,
+													user_id: usersdata[0]._id,
+													roles: usersdata[0].roles,
 												}
 											});
 									});
