@@ -103,7 +103,7 @@ componentWillMount() {
            <div className="col-lg-5 col-md-5 col-sm-5 col-xs-5 imge2text"style={{padding:"0px"}}>
             <h3 className="imagetext_top" style={{color:"#fff"}}><b>BIG SAVING</b></h3>
             <h1 style={{color:"#fff"}} className="mobile_text"><b>GET 75%</b></h1>
-            <a href="/deals-of-the-day"><div class="btn  new_shopnowbtn" title="Shop Now">Shop Now</div></a>
+            <a href="/deals-of-the-day"><div className="btn  new_shopnowbtn" title="Shop Now">Shop Now</div></a>
           </div>
          </div>
           <div className="col-lg-4 col-md-4 col-sm-10 col-xs-10 imagediv3">

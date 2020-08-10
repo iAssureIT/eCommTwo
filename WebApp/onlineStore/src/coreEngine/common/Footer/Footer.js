@@ -119,10 +119,10 @@ export default class Footer extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Connect</div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="socialMediaIcons"><a href="https://m.facebook.com/anashandicraftts/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href="https://www.instagram.com/anashandicraftts1/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href="https://www.youtube.com/results?search_query=anasHandicrafts" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
-                    <div className="socialMediaIcons"><a href="https://twitter.com/anashandicraft1?lang=en" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></div>                   
+                    <div className="socialMediaIcons"><a href="https://m.facebook.com/anashandicraftts/" target="_blank"><i className="fa fa-facebook" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.instagram.com/anashandicraftts1/" target="_blank"><i className="fa fa-instagram" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.youtube.com/results?search_query=anasHandicrafts" target="_blank"><i className="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
+                    <div className="socialMediaIcons"><a href="https://twitter.com/anashandicraft1?lang=en" target="_blank"><i className="fa fa-twitter" aria-hidden="true"></i></a></div>                   
                 </div>
 
             </div>            

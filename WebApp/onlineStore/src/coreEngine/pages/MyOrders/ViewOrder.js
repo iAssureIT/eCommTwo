@@ -67,7 +67,7 @@ class ViewOrder extends Component {
           </div>
         </div> */}
 
-        <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
+        <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 Invoive_div">
         <br/>
         <br/>
         <h4 className="table-caption">Order Details</h4>
@@ -116,12 +116,13 @@ class ViewOrder extends Component {
                   <span><i className={"fa fa-"+this.state.orderData.currency}> { (this.state.orderData.cartTotal*18)/100 } </i></span> 
                   </div>
                 </div>
-                <div>
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
-                    <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.orderData.totalAmount).toFixed(2) }</i></span>
+               <div>
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
+
+                    <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
+                      <span><i className={"fa fa-" + this.state.orderData.currency}> {parseInt(this.state.orderData.total) + (this.state.orderData.cartTotal*18)/100 }</i></span>
+                    </div>
                   </div>
-                </div>
               </div>
             </div>
            
@@ -151,7 +152,8 @@ class ViewOrder extends Component {
                                 <span className=""><i className="fa fa-inr "></i>&nbsp;{data.originalPrice}</span> 
                               </div>
                           }
-                                          
+                           
+
                           <p>Total: &nbsp;<i className={"fa fa-"+this.state.orderData.currency}> {data.total}</i></p>
                           <p>Quantity: {data.quantity}</p>
                         </div>

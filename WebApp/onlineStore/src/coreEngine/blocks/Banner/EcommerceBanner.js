@@ -44,7 +44,7 @@ export default class EcommerceBanner extends Component {
 		  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 "style={{padding:"0px"}}>
 			 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
 					 <a href="https://www.youtube.com/results?search_query=anasHandicrafts" target="_blank">
-					 <button type="button"  class=" btn-lg madalbtn btnbg"title="Visit Our YouTube Channel">
+					 <button type="button"  className=" btn-lg madalbtn btnbg"title="Visit Our YouTube Channel">
 					  <span className="youtubetxt1">Visit Our</span><i className="fa fa-youtube youtube_icon"></i><span className="youtubetxt2">Channel</span>
 					 {/* <img src={require("../../../sites/currentSite/images/yt_logo_rgb_light.png")} />*/}
 					 </button></a>
@@ -100,7 +100,7 @@ export default class EcommerceBanner extends Component {
 							</div>	
 						</div>
 					</div>
-					<div clasName="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+					<div className="col-lg-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
 
 		         {
 		            this.ServicesData().map((data, index)=>{

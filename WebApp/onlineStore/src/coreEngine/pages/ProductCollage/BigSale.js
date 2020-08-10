@@ -930,51 +930,18 @@ class BigSale extends Component {
 							// Array.isArray(this.state.categoryDetails.length) > 1 ?
 							Array.isArray(this.state.allCategoryDetails) && this.state.allCategoryDetails.length > 0 ?
 								<div className="col-lg-3 col-md-3 filterWrapper">									
-									<div className="nb-brand filterInner col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
+									<div className="nb-brand filterInner_new col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
 									<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
 												<div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
 												{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" > */}
 													<button className="btn btn-link" type="button" data-key="category"   >
-														CATEGORY
+														Deals Of the Day
 						        					</button>
-													<span className="expand"><i className={this.state["toggleIconcategory"] ? this.state["toggleIconcategory"] : "fa fa-plus-circle categoryIcon"} data-key="category"></i></span>
+													<span className="expand"><i></i></span>
 												</div> 
 											</div>
-											<div id="collapseOne" className="collapse in">
-												<div className="card-body">
-													{
-														this.state.allCategoryDetails.length ?
-															this.state.allCategoryDetails.map((data, index) => {
-																// console.log("data in collapse==>",data)
-																return (
-																	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
-																		<li>
-																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "600!important" }}>{data.category.toUpperCase()}</a>
-																			{/* <a href="" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a> */}
-																			<ul>
-																				{
-																					data.subCategory && data.subCategory.map((subcat, subind) => {
-																						return (
-																							<li>
-																								<a href={"/category"+"/"+subcat.subCategoryTitle+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
-																							</li>
-																						);
-																					})
-																				}
-
-																			</ul>
-																		</li> 
-																	</div>
-																);
-															})
-															:
-															<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-																<li>No data Found</li>
-															</div>
-													}
-												</div>
-											</div>
+											
 											</div>
 											
 											
