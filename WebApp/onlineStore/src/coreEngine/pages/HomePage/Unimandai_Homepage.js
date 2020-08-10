@@ -67,7 +67,7 @@ class HomePage extends Component {
     }
     getVegetablesData(){
       var section = 'Vegetables';
-      axios.get("/api/products/get/list/"+section)      
+      axios.get("/api/products/get/listbysection/"+section)      
             .then((response)=>{
               if(response.data){
               // console.log('vegetables Products ==== ' , response.data)
@@ -83,7 +83,7 @@ class HomePage extends Component {
     }
     getFruitsData(){
       var section = 'Fruits';
-      axios.get("/api/products/get/list/"+section)      
+      axios.get("/api/products/get/listbysection/"+section)      
             .then((response)=>{
               if(response.data){
               // console.log('vegetables Products ==== ' , response.data)

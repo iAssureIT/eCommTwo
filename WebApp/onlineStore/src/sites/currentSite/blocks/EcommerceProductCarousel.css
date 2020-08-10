@@ -326,9 +326,9 @@ background-color: transparent !important;
 }
 
 .producttextclass{
-    border-bottom: 2px solid #80b435;
+    border-bottom: 2px solid #555;
     margin:0px!important;
-    color: #80b435;
+    color: #555;
     text-align: left;
     width: auto;
 }

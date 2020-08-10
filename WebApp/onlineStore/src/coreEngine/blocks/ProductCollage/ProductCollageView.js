@@ -38,10 +38,10 @@ class ProductCollageView extends Component {
       masterLimitProducts: this.props.products
     });
     // console.log("Products array :",this.state.products);
-
   }
+
   componentWillReceiveProps(nextProps) {
-    // console.log("nextProps:==",nextProps);
+    console.log("nextProps:==",nextProps); 
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
         var availableSizes = [];  
@@ -474,10 +474,11 @@ class ProductCollageView extends Component {
     })
   }
   colseModal(event){
-    console.log("inside close");
+    // console.log("inside close");
     $('#loginFormModal').hide();
   }
   render(){
+    // console.log("Inside product collage view");
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
         <Message messageData={this.state.messageData} />

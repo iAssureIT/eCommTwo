@@ -1,6 +1,4 @@
 
-
-
 .sidebar{
 	/*width: 85%;*/
 }
@@ -22,7 +20,7 @@
 	background-color:#eee;
 }
 .nb-brand{
-	background-color:#eee;
+	background-color:#eee !important;
 	margin-top: 20px 
 }
 .Featured-Brands-tittle {
