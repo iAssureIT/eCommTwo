@@ -232,7 +232,7 @@ class Wishlist extends Component {
   render() {
 
     return (
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding wishlistProduct">
         <Loader type="fullpageloader" />
         <Message messageData={this.state.messageData} />
         <SmallBanner bannerData={this.state.bannerData} />
@@ -260,7 +260,7 @@ class Wishlist extends Component {
                               <div className="productImg">
                                 <span title="Delete" id={data.wishlist_ID} onClick={this.removefromwishlist.bind(this)} className={"wishRemove fa fa-trash"}></span>
                                 {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
-                                <a href="/" className="product photo product-item-photo collage" tabIndex="-1">
+                                <a href={"/productdetails/" + data.product_ID} className="product photo product-item-photo collage" tabIndex="-1">
                                   <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="Product Picture" />
                                 </a>
                               </div>

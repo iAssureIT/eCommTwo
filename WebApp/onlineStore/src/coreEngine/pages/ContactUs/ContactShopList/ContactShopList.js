@@ -1,5 +1,6 @@
 import React from 'react';
-import './ContactShopList.css';
+// import './ContactShopList.css';
+import  '../../../../sites/currentSite/pages/ContactPage.css';
 import axios from 'axios';
 
 import SiteLogo from '../../../../sites/currentSite/images/Logo.png';

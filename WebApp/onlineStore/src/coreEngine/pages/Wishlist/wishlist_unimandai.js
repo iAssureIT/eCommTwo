@@ -232,7 +232,7 @@ class Wishlist extends Component {
   render() {
 
     return (
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding wishlistProduct">
         <Loader type="fullpageloader" />
         <Message messageData={this.state.messageData} />
         <SmallBanner bannerData={this.state.bannerData} />
@@ -251,7 +251,7 @@ class Wishlist extends Component {
                 this.state.products.map((data, index) => {
 
                   return (
-
+                    <div className="item col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                     <div className="item col-lg-4 col-md-4 col-sm-4 col-xs-4" key={index}>
                       <a href={"/productdetails/" + data.product_ID}>
                         <div className="">
@@ -306,6 +306,7 @@ class Wishlist extends Component {
                           </div>
                         </div>
                       </a>
+                    </div>
                     </div>
                   );
                 })

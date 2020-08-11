@@ -455,6 +455,12 @@ loginPage(event){
     document.getElementByClass("App").style.opacity = "0.5";
   }
   render() {
+
+    // $('#loginFormModal').click(function(){
+    //   $("#pageOpacity").show();
+    //   $('#loginFormModal').show();
+    // });    
+
     $(".modal-backdrop").hide();
     const user_ID = localStorage.getItem("user_ID");    
     return (
@@ -468,7 +474,9 @@ loginPage(event){
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs greenStrip">
             {localStorage.getItem('pincode') && localStorage.getItem('pincode')!== 'undefined'  ?
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
-                {localStorage.getItem('status') === 'NotAllow'?       
+                {/* localStorage.getItem('status') === 'NotAllow'?   */}
+                { this.props.pincodeStatus === "NotAllow" ?  
+
                   <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-12  pull-right showPincode">Delivery Not Available : {this.props.deliveryPincode} </div>
                 :                
                   <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-3 pull-right showPincode">Delivery Available : {this.props.deliveryPincode} </div>
@@ -491,7 +499,6 @@ loginPage(event){
                         </div>
                     </div>
                 </div>
-
                 
                 <div className="col-lg-6 col-md-6 col-sm-1 col-xs-6 megamenuWrapper">
                   <nav>
@@ -526,7 +533,7 @@ loginPage(event){
                             ? 
                                 <li className="dropdown">
                                     <span className="  ">
-                                      <a href="javascript:void(0);" className="faIcon">                         
+                                      <a href="javascript:void(0);" className="faIcon col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">                         
                                           <img src={loginActiveIconImg} className="icon-cart"></img>
                                       </a>
                                     </span>
@@ -898,6 +905,7 @@ const mapStateToProps = (state) => {
     recentCartData : state.recentCartData,
     formToShow     : state.formToShow,
     deliveryPincode: state.deliveryPincode,
+    pincodeStatus  : state.pincodeStatus,
   }
 }
 const mapDispachToProps = (dispatch) => {

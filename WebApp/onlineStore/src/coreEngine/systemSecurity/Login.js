@@ -183,6 +183,8 @@ class Login extends Component {
   openSignUpModal(event){
       event.preventDefault();
       this.props.updateFormValue("signUp");
+      // $("#pageOpacity").show();
+      // $('#loginFormModal').show();
       
   }
   openForgotPasswordModal(event){

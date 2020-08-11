@@ -15,6 +15,7 @@ const initialState = {
 	categoryDetails:[],
 	formToShow :"login",
 	deliveryPincode : '',
+	pincodeStatus   : '',
 }
 const reducer = (state = initialState,action) =>{
 
@@ -54,7 +55,8 @@ const reducer = (state = initialState,action) =>{
 	}
 	if(action.type === "PINCODE_DATA"){
 		newState.deliveryPincode  = action.deliveryPincode;	
-		// console.log("FormtoShow:===",newState.formToShow);	
+		newState.pincodeStatus    = action.pincodeStatus;
+		// console.log("pincodeStatusFormtoShow:===",newState.pincodeStatus);	
 	}
 	return newState;
 }

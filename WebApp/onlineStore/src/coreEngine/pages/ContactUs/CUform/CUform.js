@@ -5,7 +5,7 @@ import $                           from 'jquery';
 import jQuery                      from 'jquery';
 import validate               from 'jquery-validation';
 import Swal from 'sweetalert';
-
+import  '../../../../sites/currentSite/pages/ContactPage.css';
 import Phone_Img from '../../../../sites/currentSite/images/Phone.png';
 import Email_Img from '../../../../sites/currentSite/images/Email.png';
 import Map_Img   from '../../../../sites/currentSite/images/Map.png';

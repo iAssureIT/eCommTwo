@@ -1,8 +1,8 @@
 import React from 'react';
-import './CUMap.css';
+// import './CUMap.css';
+import  '../../../../sites/currentSite/pages/ContactPage.css';
 
 export default class CUMap extends React.Component {
-
 
 	constructor(props) {
 		super(props);

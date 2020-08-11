@@ -22,7 +22,7 @@ class SmallBanner extends Component{
                                 this.props.bannerData.breadcrumb ?
                                     <ul className="bannerUL">
                                         <li><a href="/">Home</a></li>&nbsp;&nbsp;
-                                        <li>/ &nbsp;<strong>{this.props.bannerData.breadcrumb}</strong></li>
+                                        <li>/ &nbsp;<span>{this.props.bannerData.breadcrumb}</span></li>
                                     </ul>
                                 :
                                 null

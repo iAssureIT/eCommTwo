@@ -35,7 +35,9 @@ class AskPincode extends Component {
      componentWillMount(){
         //  console.log("In will mount");
         var pincode = localStorage.getItem('pincode');  
-        this.props.updatePincode(pincode);      
+        var pincodeStatus = localStorage.getItem('status');
+        this.props.updatePincode(pincode,pincodeStatus); 
+        // this.props.updatePincode(pincode);      
         if(pincode){            
             if(localStorage.getItem('status')){
                 axios.get("/api/allowablepincode/checkpincode/"+pincode)
@@ -82,18 +84,18 @@ class AskPincode extends Component {
     closeModal(event){
         event.preventDefault();
         $("#pageOpacity").hide();
+        $('#pincodeModal').hide();
         localStorage.setItem('pincodeFlag',"false");
 
     }
 
       checkDelivery(event){
-        event.preventDefault();
-        var userPincode =  $('.pinocodeInput').val();
-        // console.log("Pincode:",userPincode);
-        // console.log("userPincode===",userPincode);
+        event.preventDefault(); 
+        // $("#pageOpacity").show();
+        var userPincode =  $('.pinocodeInput').val();        
         //create object to store userPincode data into localStorage
         localStorage.setItem("pincode",userPincode);
-        this.props.updatePincode(userPincode); 
+        var pincodeStatus = localStorage.getItem('status');        
         localStorage.setItem('deliveryStatusMsg',"true");
         axios.get("/api/allowablepincode/checkpincode/"+userPincode)
             .then((response)=>{
@@ -111,12 +113,11 @@ class AskPincode extends Component {
                         $('.marginTop').hide();  
                         $('.addPincode').css("margin-top","40px");                     
                         localStorage.setItem("status","Allow");
+                        this.props.updatePincode(userPincode,"Allow"); 
                         // console.log("pincode===",localStorage.getItem('pincode'));
                                           
-                    }else{
-                        // this.setState({
-                        //     NotAllowDeliveryMsg : "Sorry... We can not deliver in your area of Pincode " +this.state.pincode +" . Check again after few days!",
-                        // }); 
+                    }else{                        
+                        this.props.updatePincode(userPincode,"NotAllow"); 
                         $('.NotAllowDeliveryMsg').text("Sorry... We can not deliver in your area of Pincode " +userPincode +" . Check again after few days!")
                         $('.NotAllowDeliveryMsg').show(); 
                         $('.DeliveryStatusMsg').hide();
@@ -139,8 +140,11 @@ class AskPincode extends Component {
         return /^(\d{4}|\d{6})$/.test(pin);
     }
 
-    handleChange(event) {     
-        console.log("Event.target.name:",event.target.name);   
+    handleChange(event) {         
+        $('#pincode').click(function(){
+            $("#pageOpacity").show();        
+        });  
+        // console.log("Event.target.name:",event.target.name);   
         if (event.target.name === 'pincode') {
             this.handlePincode(event.target.value);
         }
@@ -173,12 +177,17 @@ class AskPincode extends Component {
     }
       
   render() {  
-    // $(".modal-backdrop").hide();
+     
+    // $('#pageOpacity').click(function(){
+    //   $("#pageOpacity").show();
+    //   $("#pincodeModal").show();
+    //   $('#loginFormModal').show();
+   // });
 		return (            
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12">                
                     <div id="pincodeModal" className="modal in">
                         <div className="modal-dialog">
-                            <div className="modal-content pincodemodal col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" style={{'background': 'url(' +pincodeModalImg  +')'}}>                            
+                            <div className="modal-content pincodemodal col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" style={{'background': 'url(' +pincodeModalImg  +')'}}>                                                        
                                 <div className="modal-body">   
                                 <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.closeModal.bind(this)}>&times;</button>                       
                                     <form>                                    
@@ -250,6 +259,7 @@ const mapStateToProps = (state) => {
     return {
       
         deliveryPincode : state.deliveryPincode,
+        pincodeStatus  : state.pincodeStatus,
   
   
     }

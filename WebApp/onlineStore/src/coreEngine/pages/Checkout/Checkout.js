@@ -742,6 +742,35 @@ class Checkout extends Component {
                         // console.log("Order Data:--->",orderData);
                         axios.post('/api/orders/post', orderData)
                             .then((result) => {
+                                axios.get('/api/orders/get/one/' + result.data.order_ID)
+                                .then((res) => {                                    
+                                    // =================== Notification OTP ==================
+                                    if(res){
+                                        //  console.log("order data:",res);
+                                        var sendData = {
+                                        "event": "3",
+                                        "toUser_id": res.data.user_ID,
+                                        "toUserRole": "user",
+                                        "variables": {
+                                            "Username": res.data.userFullName,
+                                            "amount": res.data.total,
+                                            "orderid": res.data.orderID,
+                                            "shippingtime": res.data.shippingtime,
+                                        }
+                                        }
+                                        console.log('sendDataToUser==>', sendData);
+                                        axios.post('/api/masternotifications/post/sendNotification', sendData)
+                                        .then((res) => {
+                                            if(res){
+                                                console.log('sendDataToUser in result==>>>', res.data)
+                                            }
+                                            
+                                        })
+                                        .catch((error) => { console.log('notification error: ', error) })
+                                        // =================== Notification ==================
+                                    }
+                                })
+                                // console.log("Order place successfully");                        
                                 this.props.fetchCartData();
                                 this.setState({
                                     messageData: {
@@ -757,6 +786,7 @@ class Checkout extends Component {
                                         messageData: {},
                                     })
                                 }, 3000);
+                               
                                 this.props.history.push('/payment/' + result.data.order_ID);
                             })
                             .catch((error) => {
@@ -950,12 +980,10 @@ class Checkout extends Component {
                     }
                 }
         });
-
-
     }
     render() {        
         return (
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{ backgroundColor: "#ffffff" }}>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutWrapper" style={{ backgroundColor: "#ffffff" }}>
                 <Message messageData={this.state.messageData} />
                 <div className="row">
                     <Loader type="fullpageloader" />
@@ -1206,7 +1234,7 @@ class Checkout extends Component {
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
                                         <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
                                             <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
-                                            <div className="col-lg-10 col-md-10 col-sm-11 col-xs-11 termsWrapper">
+                                            <div className="col-lg-11 col-md-11 col-sm-11 col-xs-11 termsWrapper">
                                                 <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
                                             </div>
                                         </div>

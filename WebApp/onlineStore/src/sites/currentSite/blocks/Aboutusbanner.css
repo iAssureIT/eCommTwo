@@ -9,7 +9,7 @@
   .aboutbread{
     background-color:transparent!important;
     font-size: 16px;
-    color: #A2632C;
+    color: #000;
   }
   .breadcrumb>li+li:before{
     color: #777;
@@ -20,7 +20,7 @@
     margin-top: 50px;
   }
   .aboutbread a{
-    color: #333!important;
+    color: #000!important;
   }
   .aboutbread a:hover{
   text-decoration: none;

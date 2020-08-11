@@ -361,10 +361,36 @@ export default class MyOrders extends Component {
     }
     axios.patch('/api/orders/get/cancelOrder', formValues)
       .then((response) => {
+        console.log("cancel order response:",this.state.orderData);
         $('.fullpageloader').hide();
         this.getMyOrders();
         const el = document.createElement('div')
         el.innerHTML = "<a href='/CancellationPolicy' style='color:blue !important'>View Cancellation Policy</a>"
+        
+        axios.get('/api/orders/get/one/' +id)
+        .then((res) => {                                    
+            // =================== Notification OTP ==================
+        if(res){
+          var sendData = {
+            "event": "4",
+            "toUser_id": this.state.user_id,
+            "toUserRole": "user",
+            "variables": {
+                "Username": res.data.userFullName,
+                "orderId": res.data.orderID,
+                "orderdate": moment(res.data.createdAt).format('DD-MMM-YY LT'),
+            }
+          }        
+        console.log('sendDataToUser==>', sendData)
+        axios.post('/api/masternotifications/post/sendNotification', sendData)
+        .then((res) => { })
+        .catch((error) => { console.log('notification error: ', error) })
+      }
+    })
+      // =================== Notification ==================
+
+
+        
         this.setState({
           messageData: {
             "type": "outpage",
@@ -464,7 +490,7 @@ export default class MyOrders extends Component {
                             {
                             data.products && data.products.length > 0 ?
                                   data.products.map((pdata, index)=>{
-                                    console.log("pdata:",pdata);
+                                    // console.log("pdata:",pdata);
                                     return(
                                       <div  className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding" style={{marginBottom:"20px"}}>
                                         <div className="col-lg-2 col-md-2 col-sm-2 col-xs-3">

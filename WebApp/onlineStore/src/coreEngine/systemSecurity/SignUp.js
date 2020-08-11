@@ -176,7 +176,8 @@ class SignUp extends Component {
 							.then((response) => {
 								
 								if (response.data.message === 'USER_CREATED') {
-									// console.log("user created:", response.data);
+									// console.log("user created:", response.data);							
+
 									var auth = {
 										email: this.state.signupEmail,
 										password: this.state.signupPassword,
@@ -187,6 +188,23 @@ class SignUp extends Component {
 										.then((response) => {
 											this.setState({ btnLoading: false });
 											if (response) {
+												//send notification to user
+												var sendData = {
+													"event": "1",
+													"toUser_id": response.data._id,
+													"toUserRole":"user",
+													"variables": {
+													"Username" : response.data.userDetails.fullName,
+													}
+												}
+													console.log('sendDataToUser==>', sendData)
+													axios.post('/api/masternotifications/post/sendNotification', sendData)
+													.then((res) => {
+													console.log('sendDataToUser in result==>>>', res.data)
+													})
+													.catch((error) => { console.log('notification error: ',error)})
+
+													
 												var userDetails = {
 													firstname	: response.data.userDetails.firstname,
 													lastname	: response.data.userDetails.lastname,
@@ -208,7 +226,7 @@ class SignUp extends Component {
 														// console.log("Port======", port);
 														var previousUrl_split = previousUrl.split(port);
 													}
-													console.log('pincode:',response.data.userDetails.pincode);												
+													// console.log('pincode:',response.data.userDetails.pincode);												
 													// localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
@@ -343,7 +361,9 @@ class SignUp extends Component {
 	}
 	openSignInModal(event){
 		event.preventDefault();
-		this.props.updateFormValue("login");	
+		this.props.updateFormValue("login");
+		$("#pageOpacity").show();
+      	$('#loginFormModal').show();	
 	}
 	render() {		
 		return (

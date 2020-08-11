@@ -34,7 +34,9 @@
 #sidebar{
   height: 100vh!important;
 }
-
+.sidebar-mini{
+  margin-top: 10px;
+}
 .App-link {
   color: #61dafb;
 }

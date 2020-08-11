@@ -17,7 +17,7 @@ var ObjectId = require('mongodb').ObjectID;
 
 
 exports.insert_orders = (req, res, next) => {
-  console.log("Inside order post",req.body); 
+  // console.log("Inside order post",req.body); 
   if (req.body.cartItems.length > 0) {
     for (k = 0; k < req.body.cartItems.length; k++) {
       Products.updateOne(
@@ -41,7 +41,6 @@ exports.insert_orders = (req, res, next) => {
             // console.log("inside adminpreferences, Address===",autogenerateOrderId);
             var pincode = req.body.deliveryAddress.pincode;
             if (pincode) {
-
               Allowablepincode.find()
                 .exec()
                 .then(franchiseObjects => {
@@ -58,7 +57,7 @@ exports.insert_orders = (req, res, next) => {
                           franchiseID = franchiseObj.franchiseID;
                           if (franchiseID !== undefined) {
                             matchedFranchise.push({ franchiseID: franchiseID });
-                            console.log("matchedFranchise ===", matchedFranchise);
+                            // console.log("matchedFranchise ===", matchedFranchise);
                           }
                         }
                       }//end for loop 
@@ -1466,7 +1465,8 @@ exports.cancelOrder = (req, res, next) => {
       // console.log(data);
       if (data.nModified == 1) {
         res.status(200).json({
-          "message": "Order is cancelled Successfully."
+          "message": "Order is cancelled Successfully.",
+          "orderId": req.body.orderID, 
         });
       } else {
         res.status(401).json({

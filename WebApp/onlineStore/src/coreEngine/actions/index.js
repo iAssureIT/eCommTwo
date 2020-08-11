@@ -7,11 +7,13 @@ export function updateForm(formValue) {
     formToShow: formValue
   }
 }
-export function updatePin(pincode) {
+export function updatePin(pincode,status) {
   // console.log("In Action updatePin value ===",pincode);
+  // console.log("In Action updatestatus value ===",status);
   return {
     type: "PINCODE_DATA",
-    deliveryPincode: pincode
+    deliveryPincode: pincode,
+    pincodeStatus  : status
   }
 }
 export function getCartData() {
