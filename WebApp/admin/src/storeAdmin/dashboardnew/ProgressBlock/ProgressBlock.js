@@ -128,11 +128,31 @@ export default class ProgressBlock extends Component{
       <div>
        {this.state.data.length > 0 ? 
        this.state.data.map((data, i)=>{
-        var percent = (data.FieldCount * 100) / this.state.compairFieldCount;
+        var percent = (data.FieldCount / this.state.compairFieldCount) * 100;
         var index = i+1;
           return(
               <div className="col-md-4 col-sm-6 col-xs-12">
-                <div className={"info-box top"+index}>
+                <div className="box box-danger">
+                  <div className="box-header with-border">
+                    <h3 className="box-title">Top Franchise Sale</h3>
+                  </div>
+                  <div className="box-body no-margin">
+                  <div className={"info-box top"+index}>
+                  <span className="info-box-icon"><i class="fa fa-arrow-upp" aria-hidden="true">{i+1}</i></span>
+                    <div className="info-box-content">
+                        <span className="info-box-text">{data.franchiseName}</span>
+                        <span className="info-box-number">{data.FieldCount} / {this.state.compairFieldCount}</span>
+                        <div className="progress">
+                          <div className="progress-bar" style={{"width": this.state.compairFieldCount+"%"}}></div>
+                        </div>  
+                        <span className="progress-description">
+                        {percent}%
+                        </span>              
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                {/* <div className={"info-box top"+index}>
                 <span className="info-box-icon"><i class="fa fa-arrow-upp" aria-hidden="true">{i+1}</i></span>
                   <div className="info-box-content">
                       <span className="info-box-text">{data.franchiseName}</span>
@@ -144,7 +164,7 @@ export default class ProgressBlock extends Component{
                       {percent}%
                       </span>              
                   </div>
-                </div>
+                </div> */}
               </div>
             );
           })
