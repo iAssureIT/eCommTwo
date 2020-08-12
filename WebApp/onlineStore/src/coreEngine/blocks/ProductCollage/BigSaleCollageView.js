@@ -41,7 +41,7 @@ class BigSaleCollageView extends Component {
 
   }
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps:==",nextProps);
+    // console.log("nextProps:==",nextProps);
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
         var availableSizes = [];  

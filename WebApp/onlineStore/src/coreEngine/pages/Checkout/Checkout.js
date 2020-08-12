@@ -1280,7 +1280,6 @@ class Checkout extends Component {
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                                         <div id="termsNconditions col-lg-6 col-md-12"></div>
-
                                     </div>
                                     {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
                                             <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   

@@ -196,6 +196,7 @@ class EcommerceProductCarousel extends Component {
         .then((response) => {
           this.props.fetchCartData();
           console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          window.fbq('track', 'AddToCart');
           this.setState({
             messageData: {
               "type": "outpage",
@@ -240,6 +241,7 @@ class EcommerceProductCarousel extends Component {
         .then((response) => {
           this.props.fetchCartData();
           // console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          window.fbq('track', 'AddToCart');
           this.setState({
             messageData: {
               "type": "outpage",
@@ -387,6 +389,7 @@ class EcommerceProductCarousel extends Component {
       }
       axios.post('/api/wishlist/post', formValues)
         .then((response) => {
+          window.fbq('track', 'AddToWishlist');
           // console.log('res', response.data.message);
           this.setState({
             messageData : {

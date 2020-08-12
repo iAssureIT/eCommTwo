@@ -17,13 +17,13 @@ import Message from '../Message/Message.js';
 import Login          from '../../systemSecurity/Login.js';
 import SignUp         from '../../systemSecurity/SignUp.js';
 import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
+
 const OwlCarousel = Loadable({
   loader: () => import('react-owl-carousel'),
   loading() {
     return <div className="col-sm-12 col-xs-12 col-lg-2 col-lg-offset-5 col-md-12 loadingImg"><img src="../images/loadersglms.gif" className="img-responsive" alt="loading" /></div>
   }
 });
-
 const user_ID = localStorage.getItem("user_ID");
 class Ecommercenewproductcaro extends Component {
   constructor(props) {
@@ -61,7 +61,7 @@ class Ecommercenewproductcaro extends Component {
     };
   }
   
-  async componentDidMount(){ 
+  async componentDidMount(){
     const websiteModel = localStorage.getItem("websiteModel");      
       const showLoginAs = localStorage.getItem("showLoginAs");      
       this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
@@ -70,7 +70,7 @@ class Ecommercenewproductcaro extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps){
-      console.log("nextProps:===",nextProps);
+      // console.log("nextProps:===",nextProps);
       if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
         for(var i=0;i<nextProps.newProducts.length;i++){      
             var availableSizes = [];         
@@ -193,13 +193,17 @@ class Ecommercenewproductcaro extends Component {
       }
     }
   }
-
+  
   addCart(formValues, quantityAdded, availableQuantity){
     if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
       axios.post('/api/carts/post', formValues)
         .then((response) => {
           this.props.fetchCartData();
-          console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          // console.log("this.props.fetchCartData();",this.props.fetchCartData());
+          // console.log("this.response.data ==>;",response.data);
+          console.log("this.response.data in IF==>;",response.data);
+          // window.fbq('track', 'AddToCart');
+          // console.log("this.fbq in IF ===>",window.fbq); 
           this.setState({
             messageData: {
               "type": "outpage",
@@ -242,6 +246,18 @@ class Ecommercenewproductcaro extends Component {
       // console.log("addCart formValues===",formValues);
       axios.post('/api/carts/post', formValues)
         .then((response) => {
+          console.log("this.response.data ==>;",response.data);
+          // document.onreadystatechange = function () {
+          //   if (document.readyState === 'interactive') {
+          //     console.log("this.fbq in IF ===>",window.fbq); 
+          //   }
+          //   else if (document.readyState === 'complete') {
+              window.fbq('track', 'AddToCart');
+              // console.log("this.fbq in IF Else ===>",window.fbq); 
+          //   }else{
+          //     console.log("this.fbq in on load ===>"); 
+          //   }
+          // }
           this.props.fetchCartData();
           // console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
@@ -259,7 +275,7 @@ class Ecommercenewproductcaro extends Component {
             })
           }, 3000);
           // console.log("changrCartCount:",response.data.cartCount);
-          this.props.changeCartCount(response.data.cartCount);
+          // this.props.changeCartCount(response.data.cartCount);
 
         })
         .catch((error) => {
@@ -298,12 +314,8 @@ class Ecommercenewproductcaro extends Component {
     var id = event.target.id;
     if(localStorage.getItem("websiteModel")=== "FranchiseModel"){
       var selectedSize = $('#'+id+"-size").val();
-      // var selectedSize = event.target.value;
-      // console.log("selectedSize:",selectedSize);
       var size = event.target.getAttribute('mainSize');
-      
       var unit = event.target.getAttribute('unit');
-      // console.log("unit:",unit);
     }    
     const userid = localStorage.getItem('user_ID');
     var availableQuantity = event.target.getAttribute('availableQuantity');
@@ -378,8 +390,7 @@ class Ecommercenewproductcaro extends Component {
 
   addtowishlist(event) {
     event.preventDefault();
-    if (user_ID) {
-      
+    if (user_ID) {      
       var id = event.target.id;
       const userid = localStorage.getItem('user_ID');
       const formValues = {
@@ -388,6 +399,8 @@ class Ecommercenewproductcaro extends Component {
       }
       axios.post('/api/wishlist/post', formValues)
       .then((response) => {
+        window.fbq('track', 'AddToWishlist');
+        // console.log("this.fbq in wishlist ===>",window.fbq); 
         this.setState({
           messageData : {
             "type" : "outpage",
@@ -454,7 +467,6 @@ class Ecommercenewproductcaro extends Component {
     $(".toast-success").removeClass('toast');
     $(".toast-info").removeClass('toast');
     $(".toast-warning").removeClass('toast');
-
   }
   
   removeModalBackDrop(event){
@@ -462,7 +474,6 @@ class Ecommercenewproductcaro extends Component {
     $("#pageOpacity").show(); 
   }
   render() {
-    
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 abc">
         <div className="row">
