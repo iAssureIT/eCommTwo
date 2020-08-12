@@ -90,7 +90,7 @@ componentWillMount() {
 getshippingamount(startRange, limitRange){
   axios.get('/api/shipping/get/list-with-limits/' + startRange + '/' + limitRange)
   .then((response) => {
-    console.log('shippingamount = ', response.data[0].shippingcosting);
+    // console.log('shippingamount = ', response.data[0].shippingcosting);
     this.setState({
       minvalueshipping: response.data[0].shippingcosting,
     })
@@ -475,8 +475,7 @@ loginPage(event){
             {localStorage.getItem('pincode') && localStorage.getItem('pincode')!== 'undefined'  ?
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12  pull-right">
                 {/* localStorage.getItem('status') === 'NotAllow'?   */}
-                { this.props.pincodeStatus === "NotAllow" ?  
-
+                { this.props.pincodeStatus === "NotAllow" ?
                   <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-12  pull-right showPincode">Delivery Not Available : {this.props.deliveryPincode} </div>
                 :                
                   <div className = "col-lg-3 col-md-3 col-sm-5 col-xs-3 pull-right showPincode">Delivery Available : {this.props.deliveryPincode} </div>
@@ -519,7 +518,6 @@ loginPage(event){
                         <button className="button_search"  type="button"><i className="fa fa-search"></i></button>
                     </div> 
                 </div> */}
-
                           
                 <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
@@ -566,7 +564,7 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
-                            <span><a href="" className="faIcon col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#loginFormModal" id="loginModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
+                            <span><a href="" className="faIcon " data-toggle="modal" data-target="#loginFormModal" id="loginModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
                               <img src={loginIconImg} className="icon-cart"></img></a>
                             </span>
                           }

@@ -176,7 +176,7 @@ class SignUp extends Component {
 							.then((response) => {
 								
 								if (response.data.message === 'USER_CREATED') {
-									// console.log("user created:", response.data);							
+									console.log("user created:", response.data);							
 
 									var auth = {
 										email: this.state.signupEmail,
@@ -188,26 +188,27 @@ class SignUp extends Component {
 										.then((response) => {
 											this.setState({ btnLoading: false });
 											if (response) {
+												console.log("login response====",response);
 												//send notification to user
 												var sendData = {
 													"event": "1",
-													"toUser_id": response.data._id,
+													"toUser_id": response.data.userDetails.user_id,
 													"toUserRole":"user",
 													"variables": {
-													"Username" : response.data.userDetails.fullName,
+													"Username" : response.data.userDetails.firstName,
 													}
 												}
 													console.log('sendDataToUser==>', sendData)
 													axios.post('/api/masternotifications/post/sendNotification', sendData)
 													.then((res) => {
-													console.log('sendDataToUser in result==>>>', res.data)
+														console.log('sendDataToUser in result==>>>', res.data)
 													})
 													.catch((error) => { console.log('notification error: ',error)})
 
 													
 												var userDetails = {
-													firstname	: response.data.userDetails.firstname,
-													lastname	: response.data.userDetails.lastname,
+													firstname	: response.data.userDetails.firstName,
+													lastname	: response.data.userDetails.lastName,
 													email		: response.data.userDetails.email,
 													mobNumber   : response.data.userDetails.mobile,
 													pincode		: response.data.userDetails.pincode,
@@ -230,8 +231,7 @@ class SignUp extends Component {
 													// localStorage.setItem("pincode", response.data.userDetails.pincode);
 													localStorage.setItem("token", response.data.token);
 													localStorage.setItem("user_ID", response.data.ID);
-													localStorage.setItem("roles", response.data.roles);
-													// localStorage.setItem("pincode", response.data.pincode);
+													localStorage.setItem("roles", response.data.roles);													
 													localStorage.setItem('userDetails', JSON.stringify(userDetails));
 													swal('Congratulations! You have been successfully Login, Now you can place your order.');
 													window.location.reload();

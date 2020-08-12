@@ -238,7 +238,6 @@ class Wishlist extends Component {
         <SmallBanner bannerData={this.state.bannerData} />
 
         <div className="container">
-
           <br />
           <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding mr20">
             <Sidebar />
@@ -249,9 +248,7 @@ class Wishlist extends Component {
             {
               this.state.products && this.state.products.length > 0 ?
                 this.state.products.map((data, index) => {
-
                   return (
-
                     <div className="item col-lg-4 col-md-4 col-sm-4 col-xs-6" key={index}>
                       <a href={"/productdetails/" + data.product_ID}>
                         <div className="">
@@ -313,7 +310,7 @@ class Wishlist extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <div className="alert alert-warning textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
                     <i className="fa fa-exclamation-circle"></i>&nbsp;  You have no items in your wish list.
-                                </div>
+                  </div>
                   <a href="/" className="pull-right mt15 wishBack">Back</a>
                 </div>
             }

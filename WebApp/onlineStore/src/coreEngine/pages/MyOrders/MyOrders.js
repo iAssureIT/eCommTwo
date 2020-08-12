@@ -457,7 +457,7 @@ export default class MyOrders extends Component {
                     this.state.orderData.map((data, index) => {
                       // console.log("orderData:",data);
                       return (
-                        <div style={{marginBottom:"10px"}} className={data.deliveryStatus[data.deliveryStatus.length - 1].status === 'Cancelled' ? "row cancelledorder" : "row"}>
+                        <div style={{marginBottom:"40px"}} className={data.deliveryStatus[data.deliveryStatus.length - 1].status === 'Cancelled' ? "row cancelledorder" : "row"}>
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderIdborder"  >
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding">

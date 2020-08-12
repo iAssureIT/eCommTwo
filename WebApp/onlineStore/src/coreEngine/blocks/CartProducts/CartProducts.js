@@ -60,7 +60,7 @@ class CartProducts extends Component{
     getshippingamount(startRange, limitRange){
         axios.get('/api/shipping/get/list-with-limits/' + startRange + '/' + limitRange)
         .then((response) => {
-          console.log('shippingamount = ', response.data[0].shippingcosting);
+        //   console.log('shippingamount = ', response.data[0].shippingcosting);
           this.setState({
             minvalueshipping: response.data[0].shippingcosting,
           })
@@ -312,6 +312,7 @@ class CartProducts extends Component{
                         })
                     }, 3000);
                     this.props.fetchCartData();
+                    window.location.reload();
                 })
                 .catch((error)=>{
                     console.log('error', error);
@@ -326,7 +327,7 @@ class CartProducts extends Component{
 
     }
     render(){
-        console.log("this.props.recentCartData[0].cartItems===",this.props.recentCartData[0]);
+        // console.log("this.props.recentCartData[0].cartItems===",this.props.recentCartData[0]);
         return(            
             <div className="container">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartHeight">
@@ -335,7 +336,7 @@ class CartProducts extends Component{
                     <Message messageData={this.state.messageData} />
                     {
                         this.props.recentCartData.length > 0 &&  this.props.recentCartData[0].cartItems.length > 0? 
-                        <div className="col-lg-12 col-sm-12 col-xs-12 NOpadding">
+                        <div className="col-lg-12 col-sm-12 col-xs-12 NOpadding" style={{"margin-bottom":"20px"}}>
                             
                             <div className="col-lg-9 col-md-9 col-sm-12 col-xs-12  table-responsive cartProduct">
                                 <table className="table cartProductTable">
@@ -467,7 +468,7 @@ class CartProducts extends Component{
                                                         <td className="textAlignRight">&nbsp; <i className={"fa fa-inr"}></i> {this.props.recentCartData[0].total > 0 ? parseInt(this.props.recentCartData[0].total) : 0.00} </td>
                                                     </tr>
                                                     <tr>
-                                                        {console.log("this.state.minvalueshipping==>",this.state.minvalueshipping)}
+                                                        {/* {console.log("this.state.minvalueshipping==>",this.state.minvalueshipping)} */}
                                                      
                                                              <td>Delivery Charges</td>
                                                         

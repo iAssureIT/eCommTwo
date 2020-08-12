@@ -681,6 +681,7 @@ background-color: transparent !important;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    height: 17px;
 }
 .product-brand:hover{
     color:  #80b435;

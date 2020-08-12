@@ -81,6 +81,7 @@ class Cart extends Component{
       }
 
     render(){
+        console.log("this.state.wishlistedProducts---",this.state.wishlistedProducts);
         return(
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="row">
@@ -90,9 +91,10 @@ class Cart extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 homeRow">
                         {
                         this.state.wishlistProductsloading ?  
-                        <Loader type="carouselloader" productLoaderNo = {4}/>      
+                        null
+                        // <Loader type="carouselloader" productLoaderNo = {4}/>      
                         :
-                        (Array.isArray(this.state.wishlistedProducts) && this.state.wishlistedProducts.length > 0 ? 
+                        Array.isArray(this.state.wishlistedProducts) && this.state.wishlistedProducts.length > 0 ?                        
                             <Ecommercenewproductcaro  
                                 title={'Wishlist'} 
                                 newProducts={this.state.wishlistedProducts} 
@@ -103,7 +105,7 @@ class Cart extends Component{
                                 // changeProductCateWise={this.changeProductCateWise.bind(this)}/>
                                 ></Ecommercenewproductcaro>
                             : null
-                        )
+                        
                         }
                     </div>
                     {/* <GiftOption /> */}

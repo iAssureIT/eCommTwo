@@ -45,7 +45,7 @@ class BigSale extends Component {
 	}
 
 	componentDidMount() {
-
+		
 		// this.getWishData();
 		this.discountedproductsData();
 		this.getCategories();
@@ -813,8 +813,7 @@ class BigSale extends Component {
 												{
 													this.state.categoryDetails.length > 1 ?
 														this.state.categoryDetails.map((data, index) => {
-															return (
-																
+															return (																
 																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<li>
 																			<a href="#productDiv" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
@@ -1167,13 +1166,18 @@ class BigSale extends Component {
 														</div>
 													</div>
 													{
-														<BigSaleCollageView
+														Array.isArray(this.state.discountedProducts) && this.state.discountedProducts.length>0?
+															<BigSaleCollageView
 															products={this.state.discountedProducts}
 															categoryDetails={this.state.categoryDetails}
 															getWishData={this.getWishData.bind(this)} wishList={this.state.wishList}
 															getFilteredProductsFun={this.getFilteredProducts.bind(this)}
 															parameters={this.props.match.params}
 															selector={this.state.selector} />
+														:
+														<div className="alert alert-warning textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
+															<i className="fa fa-exclamation-triangle"></i>&nbsp;   There is no items found.
+														</div>
 													}
 												</div>
 											</div>

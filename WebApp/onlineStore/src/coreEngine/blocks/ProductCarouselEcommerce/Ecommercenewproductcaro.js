@@ -474,6 +474,7 @@ class Ecommercenewproductcaro extends Component {
     $("#pageOpacity").show(); 
   }
   render() {
+    // console.log("this.state.newProducts===",this.state.newProducts);
     return (
       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 abc">
         <div className="row">
