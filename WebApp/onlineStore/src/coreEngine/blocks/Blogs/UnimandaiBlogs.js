@@ -89,10 +89,12 @@ componentDidMount(){
 			<div className="container-fluid AllBlogsBox hidden-xs" style={{padding:"0px"}}>
           		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{ backgroundColor:"#fff"}}>	          		
                     <div className="container col-lg-12 col-md-12 col-sm-12 col-xs-12 ocWrap">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ocTitle txt2c offeredTitle text-center">Unimandai Blogs</div>                                
+                        { blogs && blogs.length > 0 ?
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 blogWrapper" style={{"margin-bottom":'50px'}}>
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ocTitle txt2c offeredTitle text-center">
+                                    <h3>Unimandai Blogs</h3>
+                                </div>                                
                                 <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 courceblockDiv1 movemasterdiv">
                                 <OwlCarousel
                                     className="owl-theme customnNavButtonEcommerceND col-md-12 col-lg-12 col-sm-12 col-xs-12 boxShadow"
@@ -132,22 +134,11 @@ componentDidMount(){
                                     }
                                     </OwlCarousel>
                                 </div>	
-                            </div>
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddiv text-center">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                
-                                </div>  
-                            </div>	
-                        </div>					
-                    </div> 
-					          	
-	        				
-	        				{/* :
-						<img className="img-responsive middlPageImage" src="/images/loader.gif" alt="Bannerpng"/>
-	        				
-	            	}				 */}
-	          		
-	          		
+                            </div>                            
+                        </div>
+                        :null
+                       } 					
+                    </div> 					
           		</div>
 			</div>
 		);

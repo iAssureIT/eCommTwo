@@ -566,7 +566,7 @@ loginPage(event){
                                     </ul>
                                 </li>
                             :
-                            <span><a href="" className="faIcon" data-toggle="modal" data-target="#loginFormModal" id="loginModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
+                            <span><a href="" className="faIcon col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#loginFormModal" id="loginModal"  onClick={this.removeModalBackDrop.bind(this)} area-hidden ="true">                            
                               <img src={loginIconImg} className="icon-cart"></img></a>
                             </span>
                           }
@@ -575,7 +575,7 @@ loginPage(event){
                     <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown faIcon cart hover-menu ">
                       <span>  
                       {user_ID ?                      
-                        <a href={user_ID ? "/cart" : null} className="icon-cart">
+                        <a href={user_ID ? "/cart" : null} className="icon-cart col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <img src={cartIconImg} className="icon-cart" onClick={this.loginPage.bind(this)}></img>
                             {/* <i className="fa fa-shopping-cart icon-cart" aria-hidden="true" onClick={this.loginPage.bind(this)}></i> */}
                           {  this.props.recentCartData.length>0 ?

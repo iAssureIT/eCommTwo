@@ -762,7 +762,7 @@ class ProductCollage extends Component {
 		}
 	}
 	render() {
-		console.log("Category details:-----",this.state.categoryDetails);
+		// console.log("Category details:-----",this.state.categoryDetails);
 		if(this.state.categoryDetails.length < 1){
 			$('.filterWrapper').hide();
 			$('.ProductViewWrapper').removeClass('col-lg-9');
@@ -922,8 +922,8 @@ class ProductCollage extends Component {
 									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
 										<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
-												<div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
-												{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" > */}
+												{/* <div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}> */}
+												<div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" >
 													<button className="btn btn-link" type="button" data-key="category"   >
 														CATEGORY
 						        					</button>

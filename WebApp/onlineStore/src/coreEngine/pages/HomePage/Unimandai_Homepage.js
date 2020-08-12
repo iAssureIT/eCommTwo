@@ -183,7 +183,7 @@ class HomePage extends Component {
         // console.log('error', error);
       })
     }
-  render() {    
+  render() {     
     return (
       <div className="container-fluid uniHomepageWrapper">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 " style={{ backgroundColor:"#fff"}} >
@@ -218,9 +218,25 @@ class HomePage extends Component {
           </div>
 
           <FreshFoodBlock />
-
-          {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
+          
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
             {
+              process.env.REACT_APP_PROJECT_NAME === '4_UniMandai' ?
+                this.state.vegetableProductsloading ?  
+                <Loader type="carouselloader" productLoaderNo = {4}/>      
+                :
+                (this.state.vegetableProducts.length > 0 ? 
+                  <Ecommercenewproductcaro  
+                      title={'Vegetables'} 
+                      newProducts={this.state.vegetableProducts} 
+                      type={'featured'} 
+                      getWishData={this.getWishData.bind(this)} 
+                      wishList={this.state.wishList} 
+                      categories={this.state.categories} 
+                      changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                  : null
+                )
+              :
               this.state.featuredproductsloading ?  
               <Loader type="carouselloader" productLoaderNo = {4}/>      
               :
@@ -236,26 +252,8 @@ class HomePage extends Component {
                 : null
               )
             }
-          </div> */}
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding homeRow">
-            {
-              this.state.vegetableProductsloading ?  
-              <Loader type="carouselloader" productLoaderNo = {4}/>      
-              :
-              (this.state.vegetableProducts.length > 0 ? 
-                <Ecommercenewproductcaro  
-                    title={'Vegetables'} 
-                    newProducts={this.state.vegetableProducts} 
-                    type={'featured'} 
-                    getWishData={this.getWishData.bind(this)} 
-                    wishList={this.state.wishList} 
-                    categories={this.state.categories} 
-                    changeProductCateWise={this.changeProductCateWise.bind(this)}/>
-                : null
-              )
-            }
           </div>
-        </div>
+          </div>
 
         <Unimandai_SaleProductDivider />
         {/* <div className="homeRow">
@@ -295,17 +293,13 @@ class HomePage extends Component {
               null
             )
           }
-        </div>
-            
+        </div>            
 
         <WhychooseUs/>
-
         {/* <Ceo />*/}
-
         {/* <Blogs /> */}
-        {/* <UnimandaiBlogs /> */}
-
-
+        <UnimandaiBlogs />
+        
       </div>
     );
   }

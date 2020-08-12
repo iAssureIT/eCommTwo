@@ -70,7 +70,7 @@ class Ecommercenewproductcaro extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps){
-      // console.log("nextProps:===",nextProps);
+      console.log("nextProps:===",nextProps);
       if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
         for(var i=0;i<nextProps.newProducts.length;i++){      
             var availableSizes = [];         
@@ -514,7 +514,7 @@ class Ecommercenewproductcaro extends Component {
                                           <img src={data.productImage[0] ? data.productImage[0] : notavailable} />
                                         </a>
                                       </div>
-                                      <div className="productDetails">                                      
+                                      <div className="productDetails">                                       
                                         <div className="innerDiv">
                                           <div className="product-brand" title={data.brand}>{data.brand}</div>
                                           <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
@@ -523,7 +523,7 @@ class Ecommercenewproductcaro extends Component {
                                               data.discountPercent ?
                                                 <div className="col-lg-12 col-md-12 NOpadding">
                                                   <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> &nbsp;
-                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;                                     
+                                                  <span className="price"><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}/ {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;                                     
                                                 </div>
                                                 :
                                                 

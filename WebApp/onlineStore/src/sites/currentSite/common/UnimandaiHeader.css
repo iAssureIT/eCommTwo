@@ -130,7 +130,7 @@
     padding: 6px ;
 }
 .cart-dropdown-menu{
-    margin-top: -5px !important;
+    /* margin-top: -5px !important; */
 }
 .box-right .cart{
     padding-left: 0px !important;
@@ -220,7 +220,7 @@ ul.main-nav > li:hover {
     line-height: 18px;
     text-align: center;
     position: absolute;
-    bottom: 75%;
+    bottom: 58%;
     right: -8px;
     font-family: "Montserrat";
     border-radius: 50%;
@@ -346,7 +346,7 @@ ul.main-nav > li:hover {
 }
 .cart-dropdown-menu {
     left: -295px !important;
-    margin: -11px !important;
+    margin: 5px !important;
     min-width: 400px !important;
     background-color: #fff !important;
 }
