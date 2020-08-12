@@ -128,7 +128,6 @@ export default class ProgressBlock extends Component{
       <div>
        {this.state.data.length > 0 ? 
        this.state.data.map((data, i)=>{
-        var percent = (data.FieldCount / this.state.compairFieldCount) * 100;
         var index = i+1;
           return(
               <div className="col-md-4 col-sm-6 col-xs-12">
@@ -146,7 +145,7 @@ export default class ProgressBlock extends Component{
                           <div className="progress-bar" style={{"width": this.state.compairFieldCount+"%"}}></div>
                         </div>  
                         <span className="progress-description">
-                        {percent}%
+                         Top {index} Franchise
                         </span>              
                     </div>
                   </div>
