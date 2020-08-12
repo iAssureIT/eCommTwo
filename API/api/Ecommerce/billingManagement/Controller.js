@@ -438,4 +438,35 @@ exports.get_customers = (req,res,next)=>{
         });
 };
 
+exports.customers_count = (req,res,next)=>{
+    FranchiseCustomers.find({"franchise_id": req.params.franchise_id})  
+        .exec()
+        .then(data=>{
+            res.status(200).json({dataCount: data.length});
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+exports.contact_persons_count = (req,res,next)=>{
+    EntityMaster.find({"_id":ObjectId(req.params.franchise_id)})  
+        .exec()
+        .then(data=>{
+            console.log("contact_persons_count",data);
+            res.status(200).json({dataCount: data[0].contactPersons.length});
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+
+
 

@@ -20,7 +20,7 @@ import Footer               from './coreadmin/common/footer/Footer.js';
 import Leftsidebar          from './storeAdmin/leftSidebar/Leftsidebar.js';
 
 //================== Dashboard ===================
-import Dashboard            from './storeAdmin/dashboard/Dashboard.js'
+import Dashboard            from './storeAdmin/dashboardnew/Dashboard.js'
 //============== Product Management ==============//
 import AddNewShopProduct    from './storeAdmin/product/addNewProduct/AddNewShopProduct/AddNewShopProduct.js';
 import AddNewProductImages  from './storeAdmin/product/addNewProduct/AddNewProductImages/AddNewProductImages.js';

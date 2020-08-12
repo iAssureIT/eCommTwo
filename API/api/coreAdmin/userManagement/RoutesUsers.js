@@ -42,4 +42,6 @@ router.delete('/delete/:ID',UserController.delete_user_ID);
 
 router.get('/get/user/count',UserController.countUsers);
 
+router.get('/get/onlineUserCount/count',UserController.onlineUserCount);
+
 module.exports = router;

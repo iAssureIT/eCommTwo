@@ -1054,6 +1054,26 @@ function fetchUnitOfMeasurment(){
     });
 };
 
+exports.get_total_finish_balance = (req,res,next)=>{
+    PurchaseEntry.aggregate([
+           {"$group": {"_id": null,"TotalFinishGoods": { "$sum": "$balance"}}
+        }])
+        .exec()
+        .then(data=>{
+            if(data){
+                res.status(200).json({count:data[0].TotalFinishGoods});
+            }else{
+                res.status(404).json('PAGE_NOT_FOUND');
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};  
+
 /*Code by madhuri*/
 
 

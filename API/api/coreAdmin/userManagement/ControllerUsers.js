@@ -1621,10 +1621,25 @@ exports.getID = (req,res,next)=>{
 
 
 exports.countUsers = (req,res,next)=>{
-    User.estimatedDocumentCount()    
+     User.find({})   
         .exec()
         .then(data=>{
-            res.status(200).json({dataCount: data});
+            res.status(200).json({dataCount: data.length});
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+
+exports.onlineUserCount = (req,res,next)=>{
+    User.find( { $or: [ { roles: ["admin"] }, { roles: ["franchise"] } ] })  
+        .exec()
+        .then(data=>{
+            res.status(200).json({dataCount: data.length});
         })
         .catch(err =>{
             console.log(err);

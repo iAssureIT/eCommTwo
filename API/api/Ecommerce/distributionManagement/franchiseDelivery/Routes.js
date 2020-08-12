@@ -13,4 +13,5 @@ router.get('/get/deliveryChallansForPo/:id', franchiseDeliveryController.get_del
 
 router.get('/get/FinishGoodsCurrentStock/:itemcode', franchiseDeliveryController.finish_goods_current_stock);
 
+
 module.exports = router; 

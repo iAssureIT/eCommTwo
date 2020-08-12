@@ -16,6 +16,7 @@
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     border-radius: 2px;
     margin-bottom: 15px;
+    padding:0px !important;
 }
 
 .bg-aqua {
@@ -133,6 +134,7 @@
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
     padding: 10px;
+    min-height: 250px !important;
 }
 
 .box-footer {
@@ -162,3 +164,42 @@
     margin: 5px -10px 5px -10px;
     height: 2px;
 }
+
+.stat{
+    padding: 0px !important;
+}
+
+.fontSmall{
+    font-size: small;
+}
+
+.top1{
+    background-color: #00c0ef !important;
+    color: white;
+}
+
+.top2{
+    background-color: #dd4b39 !important;
+    color: white;
+}
+.top3{
+    background-color: #00a65a !important;
+    color: white;
+}
+.top4{
+    background-color: #f39c12 !important;
+    color: white;
+}
+
+.bgWhite{
+    background-color:white;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.unitFont{
+    font-weight: 100;
+}
+

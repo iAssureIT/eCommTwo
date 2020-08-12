@@ -79,6 +79,16 @@ router.post('/get/getBillsByUser/',orderController.list_bill_by_user);
 
 router.patch('/patch/allocateOrderToFranchise', orderController.allocateOrderToFranchise);
 
+router.get('/get/franchisewisecount',orderController.franchise_order_count);
 
+router.get('/get/topFranchiseSale',orderController.top_franchise_sale);
+
+router.get('/get/franchiseCategoryRevenue/:franchiseID',orderController.franchiseCategoryRevenue);
+
+router.post('/get/getMonthwiseOrders',orderController.getMonthwiseOrders);
+
+router.get('/get/billCounts/:franchiseID',orderController.franchise_bill_counts);
+
+router.get('/get/totalSale/',orderController.total_sale_cost);
 
 module.exports = router; 

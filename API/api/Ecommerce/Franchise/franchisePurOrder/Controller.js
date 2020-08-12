@@ -647,4 +647,21 @@ function getFgCurrentStock(itemcode){
     });
 };
 
-
+exports.count_order = (req, res, next) => {
+  var selector = {};
+  var franchise_id = req.params.franchise_id ? req.params.franchise_id : ''
+  if(franchise_id){
+    selector = {"franchise_id":franchise_id}
+  }
+  FranchisePO.find(selector)
+    .exec()
+    .then(data => {
+      res.status(200).json({ "dataCount": data.length });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};

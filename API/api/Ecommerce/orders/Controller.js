@@ -2271,6 +2271,203 @@ exports.allocateOrderToFranchise = (req, res, next) => {
     });
 };
 
+function franchisewise_order_count(franchiseid) {
+      return new Promise(function (resolve, reject) {
+          Orders.find(
+            {
+              "allocatedToFranchise": ObjectId(franchiseid), orderID: { $ne: null }
+            })
+            .exec()
+            .then(data => {
+              resolve(data.length);
+            })
+        })
+}
+
+
+exports.franchise_order_count = (req, res, next) => {
+  Entitymaster.find({entityType:'franchise'})
+  .exec()
+    .then(data => {
+      getData();
+      async function getData(){
+         var franchiseOrderCount = [];
+        for(k = 0 ; k < data.length ; k++){
+            var franchiseCount = await franchisewise_order_count(data[k]._id);
+            if(franchiseCount > 0){
+                 franchiseOrderCount.push({
+                  "franchiseName": data[k].companyName ? data[k].companyName : '',
+                  "orderCount": franchiseCount
+                 })
+            }
+        }
+
+        var count = franchiseOrderCount.sort(function(a, b){return b.orderCount-a.orderCount});    
+        res.status(200).json(franchiseOrderCount);  
+      }
+      
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+  };
+
+function franchisewise_order_sale(franchiseid) {
+      return new Promise(function (resolve, reject) {
+          Orders.aggregate([
+            {"$match": { "allocatedToFranchise":franchiseid}},
+            {"$group": {
+                    "_id": null,
+                    "TotalSale": { "$sum": "$total"},
+
+                  }
+          }])
+            .exec()
+            .then(data => {
+              //console.log("franchisewise_order_sale",data)
+              if(data.length > 0){
+                resolve(data[0].TotalSale);
+              }else{
+                resolve(0);
+              }
+              
+            })
+        })
+}
 
 
 
+exports.top_franchise_sale = (req, res, next) => {
+  Entitymaster.find({entityType:'franchise'})
+  .exec()
+    .then(data => {
+      getData();
+      async function getData(){
+        var franchiseOrderSale = [];
+           for(k = 0 ; k < data.length ; k++){
+            var franchiseCount = await franchisewise_order_sale(data[k]._id);
+              //console.log("top_franchise_sale",franchiseCount);
+            if(franchiseCount > 0){
+              franchiseOrderSale.push({
+               "franchiseName": data[k].companyName ? data[k].companyName : '',
+               "totalSale": franchiseCount
+              })
+            }
+           
+           }
+       
+        var count = franchiseOrderSale.sort(function(a, b){return b.totalSale-a.totalSale});    
+        res.status(200).json(franchiseOrderSale);  
+      }
+      
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+  
+};
+
+
+exports.franchiseCategoryRevenue = (req, res, next) => {
+  Orders.aggregate([
+    {
+      $unwind: "$products"
+    },
+    { "$match": { "allocatedToFranchise": ObjectId(req.params.franchiseID) } },
+    {
+      $group: {
+        "_id": "$products.category",
+        "revenue": { "$sum": { $multiply: ["$products.quantity", "$products.discountedPrice"] } }
+      }
+    },
+    { $limit: 5 }
+  ]).exec()
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+
+exports.getMonthwiseOrders = (req,res,next)=>{
+    let selector = {};
+    let franchiseID = req.body.franchiseID ? req.body.franchiseID : '';
+    if(franchiseID){
+       selector = {'createdAt':{$gte : new Date(req.body.startDate), $lt : new Date(req.body.endDate) },'allocatedToFranchise':req.params.franchiseID}
+    }else{
+        selector = {'createdAt':{$gte : new Date(req.body.startDate), $lt : new Date(req.body.endDate) }}
+    }
+    Orders.aggregate([
+        {$match:selector},
+        {$group: {
+            _id: {$month: "$createdAt"}, 
+            totalCost: {$sum: "$total"}, 
+            numberoforders: {$sum: 1} 
+        }}
+    ])
+    .exec()
+    .then(orderDetails=>{
+        var returnData = []
+        var totalCost = "" ;
+        var totalOrders = "" ;
+        var dataArray = {};
+        var month = "";
+        for(var i=0 ; i<orderDetails.length ; i++){
+            totalCost = orderDetails[i].totalCost;
+            month = moment(orderDetails[i]._id, 'M').format('MMM');
+            totalOrders = orderDetails[i].numberoforders;
+            dataArray={
+                name : month,
+                totalOrders : totalOrders,
+                totalCost : totalCost
+            }
+            returnData.push(dataArray)
+        }//i
+
+        res.status(200).json(returnData);
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
+}
+
+exports.franchise_bill_counts = (req, res, next) => {
+  Orders.find({"allocatedToFranchise":ObjectId(req.params.franchiseID),"billNumber":{$exists: true}})
+    .exec()
+    .then(data => {
+      res.status(200).json({ "dataCount": data.length });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+exports.total_sale_cost = (req, res, next) => {
+Orders.aggregate([
+        {$group: {
+            _id: null, 
+            totalCost: {$sum: "$total"}, 
+        }}
+    ])
+    .exec()
+    .then(orderDetails=>{
+        res.status(200).json(orderDetails[0].totalCost);
+    })
+    .catch(err =>{
+        res.status(500).json({ error: err });
+    });
+}

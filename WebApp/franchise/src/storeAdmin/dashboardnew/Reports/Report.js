@@ -57,7 +57,11 @@ class Report extends Component{
           url: Path
         })
         .then((response)=>{ 
-          this.setState({data:response.data})
+          const result = response.data.filter(function(data,index){
+            return index <= 6
+          });
+
+          this.setState({data:result})
         })
         .catch((err)=>{})
     }
@@ -66,13 +70,12 @@ class Report extends Component{
   viewAll(){
     this.props.history.push(this.state.redirectlink)
   }
-
     
   render(){
     return(
       <div>
       {this.state.display ?
-        <div className="col-md-6">
+        <div className="col-md-8">
           <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
               <h3 className="box-title">{this.state.title}</h3>
@@ -95,14 +98,34 @@ class Report extends Component{
                   }
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="fontSmall">
                   {this.state.data && this.state.data.length > 0 ?
                     this.state.data.map((data,index)=>{
+                      let products = [];
+                      data.products.map((product,index)=>{
+                        products.push(product.productName);
+                      })
+                      let currentStatus  = data.deliveryStatus.length - 1;
+                      let deliveryStatus = data.deliveryStatus[currentStatus].status;
+                      let statusClass = '';
+                      statusClass = deliveryStatus === "New Order"    ? "stat admin-orders-stat-NewOrder"   : 
+                      statusClass = deliveryStatus === "Verified"    ? "stat admin-orders-stat-Verified"   : 
+                      statusClass = deliveryStatus === "Inspection"  ? "stat admin-orders-stat-Inspection" :
+                      statusClass = deliveryStatus === "Dispatch Approved"  ? "stat admin-orders-stat-OrderVerified" :
+                      statusClass = deliveryStatus === "Dispatch"    ? "stat admin-orders-stat-Dispatched" :
+                      statusClass = deliveryStatus === "To Deliver"    ? "stat admin-orders-stat-Dispatched" :
+                      statusClass = deliveryStatus === "Delivery Initiated"    ? "stat admin-orders-stat-Delivered" :
+                      statusClass = deliveryStatus === "Delivered & Paid"   ? "stat admin-orders-stat-Deliveredpaid" : 
+                      statusClass = deliveryStatus === "Returned"   ? "stat admin-orders-stat-Dispatched" : 
+                      statusClass = deliveryStatus === "Cancelled"   ? "stat admin-orders-stat-Dispatched" : ""
                       return(
                         <tr key={index}>
-                          <td>{data.bookingId}</td>
-                          <td>{data.from.address}</td>
-                          <td>{moment(data.createdAt).format('YYYY-MM-DD')}</td>
+                          <td>{data.orderID}</td>
+                          <td>{products.toString()}</td>
+                          <td><div className={statusClass}>
+                             {deliveryStatus}
+                             </div>
+                          </td>
                         </tr>
                       )
                     })

@@ -26,9 +26,11 @@ router.get('/get/filedetails/:fileName' ,FinishedGoodsEntryController.filedetail
 router.post('/post/getReportOfFinishedGoods',FinishedGoodsEntryController.get_finished_goods_report);
 
 router.post('/post/getProductCurrentStockReport',FinishedGoodsEntryController.get_product_current_stock_report);
-
-
 /* Bulk upload code end */
+
+router.get('/get/totalFinishBalance' ,FinishedGoodsEntryController.get_total_finish_balance);
+
+
 
 /*
 router.get('/get/list/:section_ID',PurchaseEntryController.list_category);

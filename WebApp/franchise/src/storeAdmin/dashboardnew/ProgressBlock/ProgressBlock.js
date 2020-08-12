@@ -18,8 +18,9 @@ export default class ProgressBlock extends Component{
       display:props.display,
       FieldName:"",
       Field:props.Field,
-      FieldCount:0,
-      percentage:0,
+      dataCount : 0,
+      compairFieldCount : 0,
+      compairField: props.compairField,
     }
   }
    
@@ -28,6 +29,7 @@ export default class ProgressBlock extends Component{
         this.setState({
           Field: this.props.Field,
           FieldName: this.props.Field.FieldName,
+          compairField: this.props.compairField ? this.props.compairField : '',
           bgColor: this.props.bgColor,
           faIcon: this.props.faIcon,
         },()=>{this.getData()})
@@ -40,6 +42,7 @@ export default class ProgressBlock extends Component{
         this.setState({
           Field: this.props.Field,
           FieldName: this.props.Field.FieldName,
+          compairField: this.props.compairField ? this.props.compairField : '',
           bgColor: this.props.bgColor,
           faIcon: this.props.faIcon,
         },()=>{this.getData()})
@@ -52,6 +55,7 @@ export default class ProgressBlock extends Component{
       this.setState({
         Field: nextProps.Field,
         FieldName: nextProps.Field.FieldName,
+        compairField: nextProps.compairField ? nextProps.compairField : '',
         bgColor: nextProps.bgColor,
         faIcon: nextProps.faIcon,
       },()=>{this.getData()})
@@ -68,21 +72,28 @@ export default class ProgressBlock extends Component{
     })
     .then((response)=>{
       if(response){
-        var tot = response.data[0].total;
-        if(tot === 0 || tot === '0'){
-          var percentage = 'NA'
-        }else{
-          var percentage = (parseInt(response.data[0].value)/parseInt(tot))*100
-        }
-
         this.setState({
-          FieldCount: response.data[0].value,
-          percentage:percentage
+          dataCount : response.data.dataCount
         })
       }
     })
     .catch((err)=>{console.log('ProgressBlock err: ',err)})
 
+    if(this.state.compairField){
+      var compairFieldMethod = this.state.compairField.method;
+      var compairFieldPath = this.state.compairField.path;
+
+      axios({
+        method: compairFieldMethod,
+        url: compairFieldPath
+      })
+      .then((response)=>{
+        this.setState({
+          compairFieldCount:response.data.dataCount
+        })
+      })
+      .catch((err)=>{console.log('compair field err: ',err)})
+    }
   }
 
     
@@ -90,16 +101,15 @@ export default class ProgressBlock extends Component{
     return(
       <div>
       {this.state.display ?
-        <div className="col-md-4 col-sm-6 col-xs-12">
-            <div className={"info-box "+this.state.bgColor}>
+          <div className="col-md-4 col-sm-6 col-xs-12">
+            <div className={"no-padding info-box "+this.state.bgColor}>
               <span className="info-box-icon"><i className={"fa "+this.state.faIcon} aria-hidden="true"></i></span>
               <div className="info-box-content">
                 <span className="info-box-text">{this.state.FieldName}</span>
-                <span className="info-box-number">{this.state.FieldCount}</span>
+                <span className="info-box-number">{this.state.dataCount}/ {this.state.compairFieldCount}</span>
                 <div className="progress">
-                	<div className="progress-bar" style={{"width": this.state.percentage+"%"}}></div>
+                <div className="progress-bar" style={{ width: (this.state.dataCount/ this.state.compairFieldCount)*100+"%" }}></div>
                 </div>
-                <span className="progress-description">{this.state.percentage != 'NA' ? (this.state.percentage+'% '+this.state.FieldName) : 'No Assignments'}</span>
               </div>
             </div>
           </div> 

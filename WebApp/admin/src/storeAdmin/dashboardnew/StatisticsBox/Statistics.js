@@ -19,7 +19,8 @@ export default class Statistics extends Component{
       firstField:"",
       secondField:"",
       firstFieldCount:0,
-      secondFieldCount:0
+      secondFieldCount:0,
+      showUnit : false
     }
   }
    
@@ -32,6 +33,7 @@ export default class Statistics extends Component{
         secondFieldName: this.props.secondField.Field,
         bgColor: this.props.bgColor,
         faIcon: this.props.faIcon,
+        showUnit : this.props.showUnit
       },()=>{this.getData()})
     }
     
@@ -46,6 +48,7 @@ export default class Statistics extends Component{
         secondFieldName: nextProps.secondField.Field,
         bgColor: nextProps.bgColor,
         faIcon: nextProps.faIcon,
+        showUnit : this.props.showUnit
       },()=>{this.getData()})
     }
   }
@@ -91,9 +94,15 @@ export default class Statistics extends Component{
               <span className={"info-box-icon "+this.state.bgColor}><i className={"fa "+this.state.faIcon} aria-hidden="true"></i></span>
               <div className="info-box-content">
                 <span className="info-box-text">{this.state.firstFieldName}</span>
-                <span className="info-box-number">{this.state.firstFieldCount}</span>
+                {this.state.showUnit ? 
+                  <span className="info-box-number">{this.state.firstFieldCount} <small className="unitFont">Units</small></span>:
+                  <span className="info-box-number">{this.state.firstFieldCount}</span>
+                }
                 <span className="info-box-text">{this.state.secondFieldName}</span>
-                <span className="info-box-number">{this.state.secondFieldCount}</span>
+                {this.state.showUnit ? 
+                  <span className="info-box-number">{this.state.secondFieldCount} <small className="unitFont">Units</small></span>:
+                  <span className="info-box-number">{this.state.secondFieldCount}</span>
+                }
               </div>
             </div>
           </div> 

@@ -128,7 +128,7 @@
     }
   }
 
-  .box{
+  .sectionDiv .box{
     height: 75px !important ;
     /* box-sizing: border-box; */
     padding: 6px !important;
@@ -367,7 +367,7 @@ svg{
 }
 
 #dashbordid {
-  width: 100%!important;
+  /* width: 100%!important; */
 }
 
 .button:hover {
@@ -491,7 +491,7 @@ rect{
     display: inline; 
   }
 
-  .box{
+  .sectionDiv .box{
     word-break: break-all;
     height: 63px !important;
   }

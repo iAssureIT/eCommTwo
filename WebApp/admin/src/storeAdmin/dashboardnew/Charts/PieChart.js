@@ -4,11 +4,8 @@ import {Pie} from 'react-chartjs-2';
 import 'chartjs-plugin-labels';
 import axios             from 'axios';
 import moment                   from 'moment';
-
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-
 import '../dashboard.css';
 
 export default class PieChart extends Component{
@@ -71,18 +68,18 @@ export default class PieChart extends Component{
           url: Path
         })
         .then((response)=>{ 
-          var booking = [];
+          var catLables = [];
           var piechartcolor =[];
           var totalEstimate = [];
          if(response.data && response.data.length >0){
             response.data.map((data,index)=>{ 
-              booking.push(data.name);
-              totalEstimate.push(data.totalCost);
+              catLables.push(data._id);
+              totalEstimate.push(data.revenue);
               piechartcolor.push(this.getRandomColor());
             })
           if (totalEstimate.length > 0) {
             data.datasets[0].data = totalEstimate;
-            data.labels = booking;
+            data.labels = catLables;
             data.datasets[0].backgroundColor = piechartcolor;
             data.datasets[0].hoverBackgroundColor = piechartcolor;
             this.setState({
@@ -111,7 +108,7 @@ export default class PieChart extends Component{
     return(
       <div>
       {this.state.display ?
-        <div className="col-md-6">
+        <div className="col-md-4">
           <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
               <h3 className="box-title">{this.state.title}</h3>
@@ -133,9 +130,9 @@ export default class PieChart extends Component{
                   }
                    ]} }} />
                    :
-                   <div>
-                   <img className="chartStyle" src="/images/pie.jpeg"/>
-                   <p className="pull-right noChartData">No Data Found</p>
+                   <div className="text-center">
+                   <img className="chartStyle" src="/images/pie-gif.gif"/>
+                   <p className="noChartData">No Data Found</p>
                    </div>
                  }
             </div>

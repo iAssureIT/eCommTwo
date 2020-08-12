@@ -7,7 +7,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 
 //================== Dashboard ===================
-import Dashboard        from '../../storeAdmin/dashboard/Dashboard.js'
+// import Dashboard        from '../../storeAdmin/dashboardnew/Dashboard.js'
 
 //==============User Management ==================
 import UMListOfUsers    from '../userManagement/UM/UMListOfUsers.js';
@@ -63,8 +63,8 @@ class CoreLayout extends Component {
         return (
             <Switch >
                 {/* Dashboard route */}
-                <Route path="/" component={Dashboard} exact />
-                <Route path="/dashboard" component={Dashboard} exact />
+                {/* <Route path="/" component={Dashboard} exact /> */}
+                {/* <Route path="/dashboard" component={Dashboard} exact /> */}
 
                 {/* Rightsidebar Routes */}
                 <Route path="/umlistofusers" component={UMListOfUsers} exact />

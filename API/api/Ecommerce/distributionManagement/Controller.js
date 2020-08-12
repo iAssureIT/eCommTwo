@@ -77,3 +77,24 @@ function generate_delivery_Challan() {
         .catch(err =>{ reject(err); }); 
     })         
 }
+
+exports.total_franchise_stock = (req, res, next) => {
+  FranchiseGoods.aggregate([
+           {"$match":{"franchise_id":req.params.franchise_id}},
+           {"$group": {"_id": null,"TotalStock": { "$sum": "$balance"}}
+        }])
+        .exec()
+        .then(data=>{
+            if(data){
+                res.status(200).json({count:data[0].TotalStock});
+            }else{
+                res.status(404).json('PAGE_NOT_FOUND');
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+};

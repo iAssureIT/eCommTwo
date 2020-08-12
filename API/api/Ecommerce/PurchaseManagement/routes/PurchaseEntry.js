@@ -29,6 +29,8 @@ router.post('/raw_material_bulk_upload' ,PurchaseEntryController.raw_material_bu
 router.get('/get/filedetails/:fileName' ,PurchaseEntryController.filedetails);
 
 router.get('/get/GeneratePurchaseNumber', PurchaseEntryController.generate_purchase_number);
+/*bulk upload end*/
+router.get('/get/totalRawBalance' ,PurchaseEntryController.get_total_raw_balance);
 
 /*
 router.get('/get/datewisepurchase/:purchaseDate',PurchaseEntryController.get_datewise_purchaceEntry);

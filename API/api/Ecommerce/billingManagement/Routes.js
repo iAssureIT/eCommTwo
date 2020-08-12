@@ -33,5 +33,9 @@ router.post('/saveCustomer',billController.save_customer);
 //get customers list
 router.get('/get/customers/:franchise_id',billController.get_customers);
 
+router.get('/get/customersCount/:franchise_id',billController.customers_count);
+
+router.get('/get/count/contactPersons/:franchise_id',billController.contact_persons_count);
+
 
 module.exports = router;
