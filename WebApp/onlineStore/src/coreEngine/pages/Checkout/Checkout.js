@@ -10,7 +10,7 @@ import Message from '../../blocks/Message/Message.js';
 import 'jquery-validation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
-import 'bootstrap/js/tab.js'; 
+import 'bootstrap/js/tab.js';
 import Loader from "../../common/loader/Loader.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -19,6 +19,7 @@ import "../../../sites/currentSite/pages/Checkout.css";
 import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+const qs = require('querystring')
 
 class Checkout extends Component {
     constructor(props) {
@@ -57,7 +58,6 @@ class Checkout extends Component {
     gettimes(startRange, limitRange) {
         axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
             .then((response) => {
-                // console.log('gettimes ===> ', response.data);
                 this.setState({
                     gettimes: response.data
                 })
@@ -66,6 +66,137 @@ class Checkout extends Component {
                 console.log('error', error);
             });
     }
+    getpaymentgateway = async () => {
+
+        // axios.post(redirecturl,paymentdetails,
+        //     {
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded',               
+        //         }
+        //     })  
+        //         .then((res) => {
+        //             console.log('getpaymentgateway Response===> ', res);
+        //             alert(res);
+
+        //         })
+        //         .catch((error) => {
+        //             console.log('error'+ error);
+        //             // alert(error);
+        //         });
+        var paymentdetails = {
+            MERCHANT_ID: 9445,
+            MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
+            REFERENCE_NO: Math.round(new Date().getTime() / 1000),
+            AMOUNT: 200,
+            PRODUCT_CODE: "testing",
+            CUSTOMER_MOBILE_NO: "8087679825",
+            CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
+        }
+        const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+        // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=EQWEWEE1003&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Methods': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Accept'                      : 'application/json',
+                "Content-Type"                : "application/x-www-form-urlencoded",
+            }
+        }
+        console.log('paymentdetails ===> ', paymentdetails);
+        axios.post(redirecturl,paymentdetails,config)
+            .then(result => {
+                console.log('getpaymentgateway Response===> ', result);
+                // debugger;
+                // alert(result);
+            })
+            .catch(err => {
+                // debugger;
+                console.log('Errr', err);
+            })
+        // // console.log('getpaymentgateway Response===> ', paymentdetails);
+        // console.log('redirecturl Response===> ', redirecturl);
+        // let paymentgatewayint = await axios.post(redirecturl,paymentdetails, config)
+        // fetch('https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL', {
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //     },
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         MERCHANT_ID: 9445,
+        //         MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
+        //         REFERENCE_NO: "hsjfhsfjk",
+        //         AMOUNT: 200,
+        //         PRODUCT_CODE: "testing",
+        //         CUSTOMER_MOBILE_NO: "8087679825",
+        //         CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
+        //     })
+        // })
+        // axios.post('/api/carts/paymentgatewaypinepg/post')
+        //     .then(result => {
+        //         console.log('getpaymentgateway Response===> ', result);
+        //         // debugger;
+        //         // alert(result);
+        //     })
+        //     .catch(err => {
+        //         // debugger;
+        //         console.log('Errr', err);
+        //     })
+        
+        // // axios.post({url:redirecturl,body:paymentdetails,config})
+        //     .then(result => {
+        // console.log('paymentgatewayint===> ', paymentgatewayint);
+        //         // debugger;
+        //         // alert(result);
+        //     })
+        //     .catch(err => {
+        //         debugger;
+        //         console.log('Errr', err);
+        //     });
+        // const options = {
+        //     method: "post",
+        //     headers: {
+        //         'Access-Control-Allow-Origin': 'http://localhost:3000/',
+        //         'Access-Control-Allow-Headers':'http://localhost:3000/',
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //     },
+        //     url: redirecturl,
+        //     params: {
+        //         MERCHANT_ID: 9445,
+        //         MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
+        //         REFERENCE_NO: "EQWEWE21323",
+        //         AMOUNT: 200,
+        //         PRODUCT_CODE: "testing",
+        //         CUSTOMER_MOBILE_NO: "8087679825",
+        //         CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
+        //     }
+        // };
+        // axios(options)
+
+        //     axios.post(
+        //         redirecturl+'?'+paymentdetails,
+        // {
+        //     MERCHANT_ID:9445,
+        //     MERCHANT_ACCESS_CODE:"dc53e787-3e81-427d-9e94-19220eec39ef",
+        //     REFERENCE_NO:"EQWEWE2154",
+        //     AMOUNT:200,
+        //     PRODUCT_CODE:"testing",
+        //     CUSTOMER_MOBILE_NO:"8087679825",
+        //     CUSTOMER_EMAIL_ID:"omkar.ronghe@iassureit.com",
+        // },
+        //     {
+        //       headers: {
+        //         'Access-Control-Allow-Origin': 'http://localhost:3000/',
+        //         'Access-Control-Allow-Headers':'http://localhost:3000/',
+        //         "content-type": "application/x-www-form-urlencoded",
+        //       }
+        //     }
+        //   )
+
+        //   console.log("responsepayment===>",responsepayment);
+    }
+
     componentDidMount() {
         this.getCartData();
         this.gettimes(this.state.startRange, this.state.limitRange);
@@ -80,7 +211,7 @@ class Checkout extends Component {
             return regexpr.test(value);
         }, "Please enter valid mobile number.");
         $.validator.addMethod("regxemail", function (value, element, regexpr) {
-            return regexpr.test(value); 
+            return regexpr.test(value);
         }, "Please enter valid email.");
         $.validator.addMethod("regxaddressLine", function (value, element, regexpr) {
             return regexpr.test(value);
@@ -297,23 +428,23 @@ class Checkout extends Component {
                 console.log('error', error);
             });
     }
-    checkPincode(pincode){        
-        if(localStorage.getItem('websiteModel')==="FranchiseModel"){
-        axios.get("/api/allowablepincode/checkpincode/" + pincode)
-        .then((response) => {
-            if (response) {
-                if (response.data.message !== "Delivery Available") {
-                    console.log("Delevery not possible on this address");
-                    $('.DeliveryNotPoss').show();
-                    $(".placeOrder").attr("disabled", true);
-                }else{
-                    $('.DeliveryNotPoss').hide();
-                    $(".placeOrder").attr("disabled", false);
-                }
-            }
-        });
+    checkPincode(pincode) {
+        if (localStorage.getItem('websiteModel') === "FranchiseModel") {
+            axios.get("/api/allowablepincode/checkpincode/" + pincode)
+                .then((response) => {
+                    if (response) {
+                        if (response.data.message !== "Delivery Available") {
+                            console.log("Delevery not possible on this address");
+                            $('.DeliveryNotPoss').show();
+                            $(".placeOrder").attr("disabled", true);
+                        } else {
+                            $('.DeliveryNotPoss').hide();
+                            $(".placeOrder").attr("disabled", false);
+                        }
+                    }
+                });
+        }
     }
-}
 
     handleChange(event) {
         this.setState({
@@ -325,7 +456,7 @@ class Checkout extends Component {
 
         }
     }
-        handlePincode(pincode) {
+    handlePincode(pincode) {
 
         if (pincode !== '') {
             axios.get("https://api.postalpincode.in/pincode/" + pincode)
@@ -743,33 +874,33 @@ class Checkout extends Component {
                         axios.post('/api/orders/post', orderData)
                             .then((result) => {
                                 axios.get('/api/orders/get/one/' + result.data.order_ID)
-                                .then((res) => {                                    
-                                    // =================== Notification OTP ==================
-                                    if(res){
-                                        //  console.log("order data:",res);
-                                        var sendData = {
-                                        "event": "3",
-                                        "toUser_id": res.data.user_ID,
-                                        "toUserRole": "user",
-                                        "variables": {
-                                            "Username": res.data.userFullName,
-                                            "amount": res.data.total,
-                                            "orderid": res.data.orderID,
-                                            "shippingtime": res.data.shippingtime,
-                                        }
-                                        }
-                                        console.log('sendDataToUser==>', sendData);
-                                        axios.post('/api/masternotifications/post/sendNotification', sendData)
-                                        .then((res) => {
-                                            if(res){
-                                                console.log('sendDataToUser in result==>>>', res.data)
+                                    .then((res) => {
+                                        // =================== Notification OTP ==================
+                                        if (res) {
+                                            //  console.log("order data:",res);
+                                            var sendData = {
+                                                "event": "3",
+                                                "toUser_id": res.data.user_ID,
+                                                "toUserRole": "user",
+                                                "variables": {
+                                                    "Username": res.data.userFullName,
+                                                    "amount": res.data.total,
+                                                    "orderid": res.data.orderID,
+                                                    "shippingtime": res.data.shippingtime,
+                                                }
                                             }
-                                            
-                                        })
-                                        .catch((error) => { console.log('notification error: ', error) })
-                                        // =================== Notification ==================
-                                    }
-                                })
+                                            console.log('sendDataToUser==>', sendData);
+                                            axios.post('/api/masternotifications/post/sendNotification', sendData)
+                                                .then((res) => {
+                                                    if (res) {
+                                                        console.log('sendDataToUser in result==>>>', res.data)
+                                                    }
+
+                                                })
+                                                .catch((error) => { console.log('notification error: ', error) })
+                                            // =================== Notification ==================
+                                        }
+                                    })
                                 // console.log("Order place successfully");                        
                                 this.props.fetchCartData();
                                 this.setState({
@@ -786,7 +917,7 @@ class Checkout extends Component {
                                         messageData: {},
                                     })
                                 }, 3000);
-                               
+
                                 this.props.history.push('/payment/' + result.data.order_ID);
                             })
                             .catch((error) => {
@@ -835,7 +966,7 @@ class Checkout extends Component {
                             "class": "success",
                         }
                     })
-                    
+
                     setTimeout(() => {
                         this.setState({
                             messageData: {},
@@ -959,7 +1090,7 @@ class Checkout extends Component {
     checkDelivery(event) {
         // event.preventDefault();
         var target = event.target.pincode;
-        var id = event.target.value;        
+        var id = event.target.value;
         console.log("addressId =", id);
         $('.notAvailable').hide();
         const pincode = event.target.getAttribute('pincode');
@@ -974,14 +1105,14 @@ class Checkout extends Component {
                         console.log("Delivery not possible on this address");
                         $('#' + id).show();
                         $(".placeOrder").attr("disabled", true);
-                    }else{
+                    } else {
                         $('#' + id).hide();
                         $(".placeOrder").attr("disabled", false);
                     }
                 }
-        });
+            });
     }
-    render() {        
+    render() {
         return (
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutWrapper" style={{ backgroundColor: "#ffffff" }}>
                 <Message messageData={this.state.messageData} />
@@ -1002,9 +1133,10 @@ class Checkout extends Component {
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input disabled name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
+                                            <input onChange={this.getpaymentgateway} name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
+                                        {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                                             <div id="payMethod"></div>
                                         </div>
@@ -1015,28 +1147,28 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingAddress NOpadding">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn shippingAddressTitle">SHIPPING ADDRESS <span className="required">*</span></div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 addressWrapper">
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <label id="checkoutAddess"></label>
-                                            </div>
-                                            {this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
-                                                this.state.deliveryAddress.map((data, index) => {
-                                                    // console.log("checked ==", this.state.addressId === data._id);
-                                                    return (
-                                                        <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div>
-                                                            <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelivery.bind(this)} className="codRadio" /> &nbsp;
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <label id="checkoutAddess"></label>
+                                                </div>
+                                                {this.state.deliveryAddress && this.state.deliveryAddress.length > 0 ?
+                                                    this.state.deliveryAddress.map((data, index) => {
+                                                        // console.log("checked ==", this.state.addressId === data._id);
+                                                        return (
+                                                            <div key={'check' + index} className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 notAvailable" id={data._id}>Delivery is not possible on this address</div>
+                                                                <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelivery.bind(this)} className="codRadio" /> &nbsp;
                                                             {/* <input type="radio" checked={this.state.addressId === data._id} value={data._id} name="checkoutAddess" pincode={data.pincode} required onChange={this.checkDelevery.bind(this)} className="codRadio"/> &nbsp; */}
-                                                            <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br />
-                                                                <span className="checkoutADDCss">Name : {data.name}.</span> <br />
-                                                                {data.addressLine2}, {data.addressLine1},
+                                                                <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br />
+                                                                    <span className="checkoutADDCss">Name : {data.name}.</span> <br />
+                                                                    {data.addressLine2}, {data.addressLine1},
                                                             Pincode - {data.pincode}. <br />
-                                                            Email: {data.email} <br />Mobile: {data.mobileNumber} <br /><br /></span>
-                                                        </div>
-                                                    );
-                                                })
-                                                :
-                                                null
-                                            }                                            
+                                                                    Email: {data.email} <br />Mobile: {data.mobileNumber} <br /><br /></span>
+                                                            </div>
+                                                        );
+                                                    })
+                                                    :
+                                                    null
+                                                }
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
                                                 <button className="btn modalBtn anasBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
@@ -1049,89 +1181,89 @@ class Checkout extends Component {
                                                 <button className="btn modalBtn anasBtn col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="modal" data-target="#checkoutAddressModal">Add New Address</button>
                                             </div> */}
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 addressWrapper">
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
-                                                <input type="text" maxLength="50" ref="username" name="username" id="username" value={this.state.username} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Mobile Number <span className="required">*</span></label>
-                                                <input placeholder="Eg. 9876543210" maxLength="10" type="text" ref="mobileNumber" name="mobileNumber" id="mobileNumber" value={this.state.mobileNumber} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                               
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Email <span className="required">*</span></label>
-                                                <input type="email" ref="email" name="email" id="email" value={this.state.email} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">House No/Office No <span className="required">*</span></label>
-                                                <input type="text" ref="addressLine2" name="addressLine2" id="addressLine2" value={this.state.addressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
-                                                <PlacesAutocomplete value={this.state.addressLine1}
-                                                    onChange={this.handleChangePlaces}
-                                                    onSelect={this.handleSelect}
-                                                >
-                                                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                                                        <div>
-                                                            <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>
-                                                            <input
-                                                                {...getInputProps({
-                                                                    placeholder: 'Start typing ...',
-                                                                    className: 'location-search-input col-lg-12 form-control errorinputText',
-                                                                    id: "addressLine1",
-                                                                    name: "addressLine1"
-                                                                })}
-                                                            />
-                                                            <div className="autocomplete-dropdown-container SearchListContainer">
-                                                                {loading && <div>Loading...</div>}
-                                                                {suggestions.map(suggestion => {
-                                                                    const className = suggestion.active
-                                                                        ? 'suggestion-item--active'
-                                                                        : 'suggestion-item';
-                                                                    // inline style for demonstration purpose
-                                                                    const style = suggestion.active
-                                                                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                                                                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                                                                    return (
-                                                                        <div
-                                                                            {...getSuggestionItemProps(suggestion, {
-                                                                                className,
-                                                                                style,
-                                                                            })}
-                                                                        >
-                                                                            <span>{suggestion.description}</span>
-                                                                        </div>
-                                                                    );
-                                                                })}
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Full Name <span className="required">*</span></label>
+                                                    <input type="text" maxLength="50" ref="username" name="username" id="username" value={this.state.username} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                </div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Mobile Number <span className="required">*</span></label>
+                                                    <input placeholder="Eg. 9876543210" maxLength="10" type="text" ref="mobileNumber" name="mobileNumber" id="mobileNumber" value={this.state.mobileNumber} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+
+                                                </div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Email <span className="required">*</span></label>
+                                                    <input type="email" ref="email" name="email" id="email" value={this.state.email} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                </div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">House No/Office No <span className="required">*</span></label>
+                                                    <input type="text" ref="addressLine2" name="addressLine2" id="addressLine2" value={this.state.addressLine2} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                </div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
+                                                    <PlacesAutocomplete value={this.state.addressLine1}
+                                                        onChange={this.handleChangePlaces}
+                                                        onSelect={this.handleSelect}
+                                                    >
+                                                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                                            <div>
+                                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Search your address here <span className="required">*</span></label>
+                                                                <input
+                                                                    {...getInputProps({
+                                                                        placeholder: 'Start typing ...',
+                                                                        className: 'location-search-input col-lg-12 form-control errorinputText',
+                                                                        id: "addressLine1",
+                                                                        name: "addressLine1"
+                                                                    })}
+                                                                />
+                                                                <div className="autocomplete-dropdown-container SearchListContainer">
+                                                                    {loading && <div>Loading...</div>}
+                                                                    {suggestions.map(suggestion => {
+                                                                        const className = suggestion.active
+                                                                            ? 'suggestion-item--active'
+                                                                            : 'suggestion-item';
+                                                                        // inline style for demonstration purpose
+                                                                        const style = suggestion.active
+                                                                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                                        return (
+                                                                            <div
+                                                                                {...getSuggestionItemProps(suggestion, {
+                                                                                    className,
+                                                                                    style,
+                                                                                })}
+                                                                            >
+                                                                                <span>{suggestion.description}</span>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    )}
-                                                </PlacesAutocomplete>
-                                            </div>                                           
-                                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                        )}
+                                                    </PlacesAutocomplete>
+                                                </div>
+                                                {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                 <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
                                                 <input type="number" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} max="6" onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                                 <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
                                                 {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
                                             </div> */}
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
-                                                <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} maxLength="6" minLength="6" onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                                {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
-                                                <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
+                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
+                                                    <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} maxLength="6" minLength="6" onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                    {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
+                                                    <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
+                                                </div>
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput lastField">
+                                                    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address type <span className="required">*</span></label>
+                                                    <select id="addType" name="addType" ref="addType" value={this.state.addType} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
+                                                        <option value="Home">Home (All day delivery) </option>
+                                                        <option value="Office">Office/Commercial (10 AM - 5 PM Delivery)</option>
+                                                        <option value="Relative">Relative (All day delivery)</option>
+                                                        <option value="Friend">Friend (All day delivery)</option>
+                                                    </select>
+                                                </div>
+
                                             </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput lastField"> 
-                                                <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Address type <span className="required">*</span></label>
-                                                <select id="addType" name="addType" ref="addType" value={this.state.addType} onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control">
-                                                    <option value="Home">Home (All day delivery) </option>
-                                                    <option value="Office">Office/Commercial (10 AM - 5 PM Delivery)</option>
-                                                    <option value="Relative">Relative (All day delivery)</option>
-                                                    <option value="Friend">Friend (All day delivery)</option>
-                                                </select>
-                                            </div>
-                                            
-                                        </div>
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 manageHeight"></div>                                        
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 manageHeight"></div>
                                         </div>
                                 }
                             </div>
@@ -1139,149 +1271,149 @@ class Checkout extends Component {
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderReviews NOpadding table-responsive">
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn orderReviewsTitle">ORDER REVIEWS</div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 orderReviewsWrapper">
-                                    <table className="table orderTable">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Products Name</th>
-                                                <th className="textAlignRight">Price</th>
-                                                <th className="textAlignRight">Quantity</th>
-                                                <th className="textAlignRight">SubTotal</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                this.props.recentCartData && this.props.recentCartData.length > 0 ?
-                                                    this.props.recentCartData[0].cartItems.map((data, index) => {
+                                        <table className="table orderTable">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Products Name</th>
+                                                    <th className="textAlignRight">Price</th>
+                                                    <th className="textAlignRight">Quantity</th>
+                                                    <th className="textAlignRight">SubTotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    this.props.recentCartData && this.props.recentCartData.length > 0 ?
+                                                        this.props.recentCartData[0].cartItems.map((data, index) => {
 
-                                                        return (
-                                                            <tr key={'cartData' + index}>
-                                                                {/* <td><span className="fa fa-times-circle-o crossOrder" id={data._id} onClick={this.Removefromcart.bind(this)}></span></td> */}
-                                                                <td><img className="img orderImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} /></td>
-                                                                <td>
-                                                                    <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productDetail.productName}</h5></a>
+                                                            return (
+                                                                <tr key={'cartData' + index}>
+                                                                    {/* <td><span className="fa fa-times-circle-o crossOrder" id={data._id} onClick={this.Removefromcart.bind(this)}></span></td> */}
+                                                                    <td><img className="img orderImg" src={data.productDetail.productImage[0] ? data.productDetail.productImage[0] : notavailable} /></td>
+                                                                    <td>
+                                                                        <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productDetail.productName}</h5></a>
 
-                                                                    {data.productDetail.discountPercent ?
-                                                                        <div className="col-lg-12 col-md-12 NOpadding">
-                                                                            <span className="cartOldprice"><i className="fa fa-inr cartOldprice"></i>{data.productDetail.originalPrice}</span> &nbsp; &nbsp;
+                                                                        {data.productDetail.discountPercent ?
+                                                                            <div className="col-lg-12 col-md-12 NOpadding">
+                                                                                <span className="cartOldprice"><i className="fa fa-inr cartOldprice"></i>{data.productDetail.originalPrice}</span> &nbsp; &nbsp;
                                                                             <span className="cartPrice"><i className="fa fa-inr"></i>{data.productDetail.discountedPrice}</span> &nbsp; &nbsp;
                                                                             <span className="cartDiscountPercent">({data.productDetail.discountPercent}%)</span>
+                                                                            </div>
+                                                                            :
+                                                                            <span className="price"><i className="fa fa-inr"></i> &nbsp;{data.productDetail.originalPrice}</span>
+                                                                        }
+                                                                        <div>
+                                                                            {data.productDetail.color ? <span className="cartColor">Color : <span style={{ backgroundColor: data.productDetail.color, padding: '0px 5px' }}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span> : null}
+                                                                            {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp; {data.productDetail.unit}</span> : null}
                                                                         </div>
-                                                                        :
-                                                                        <span className="price"><i className="fa fa-inr"></i> &nbsp;{data.productDetail.originalPrice}</span>
-                                                                    }
-                                                                    <div>
-                                                                        {data.productDetail.color ? <span className="cartColor">Color : <span style={{ backgroundColor: data.productDetail.color, padding: '0px 5px' }}>&nbsp;</span> {ntc.name(data.productDetail.color)[1]}, </span> : null}
-                                                                        {data.productDetail.size ? <span className="cartColor">Size : {data.productDetail.size} &nbsp; {data.productDetail.unit}</span> : null}
-                                                                    </div>
-                                                                </td>
-                                                                <td className="textAlignRight">
-                                                                    {
-                                                                        data.productDetail.availableQuantity > 0 ?
-                                                                            // <span className="productPrize textAlignRight"><i className={"fa fa-" + data.productDetail.currency}></i> &nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
-                                                                            <span className="productPrize textAlignRight"><i className="fa fa-inr"></i>&nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
-                                                                            :
-                                                                            <span>-</span>
-                                                                    }
-                                                                </td>
-                                                                <td className="textAlignRight">
-                                                                    {
-                                                                        data.productDetail.availableQuantity > 0 ?
-                                                                            <span className=" textAlignRight">{data.quantity}</span>
-                                                                            :
-                                                                            <span className="textAlignCenter sold">SOLD OUT</span>
-                                                                    }
-                                                                </td>
-                                                                <td className="textAlignRight">
-                                                                    {
-                                                                        data.productDetail.availableQuantity > 0 ?
-                                                                            <span className="productPrize textAlignRight">
-                                                                                <i className="fa fa-inr"></i>
-                                                                                {/* {data.productDetail.currency} */}
-                                                                        &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
-                                                                            :
-                                                                            <span>-</span>
-                                                                    }
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    })
-                                                    :
-                                                    null
-                                            }
-                                        </tbody>
-                                    </table>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
-                                    </div>
-                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight saving">
-                                        {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"}
-                                    </span>
-                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
-                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
-
-
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
-                                    </div>
-                                    <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
-
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
-                                    </div>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
-                                        <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
-                                            <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
-                                            <div className="col-lg-11 col-md-11 col-sm-11 col-xs-11 termsWrapper">
-                                                <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
-                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>
-                                            <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
-                                                <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
-                                                {
-                                                    this.state.gettimes && this.state.gettimes.length > 0 ?
-                                                        this.state.gettimes.map((data, index) => {
-                                                            return (
-                                                                <option key={index} value={data._id}>{data.fromtime}-{data.totime}</option>
+                                                                    </td>
+                                                                    <td className="textAlignRight">
+                                                                        {
+                                                                            data.productDetail.availableQuantity > 0 ?
+                                                                                // <span className="productPrize textAlignRight"><i className={"fa fa-" + data.productDetail.currency}></i> &nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
+                                                                                <span className="productPrize textAlignRight"><i className="fa fa-inr"></i>&nbsp;{parseInt(data.productDetail.discountedPrice).toFixed(2)}</span>
+                                                                                :
+                                                                                <span>-</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td className="textAlignRight">
+                                                                        {
+                                                                            data.productDetail.availableQuantity > 0 ?
+                                                                                <span className=" textAlignRight">{data.quantity}</span>
+                                                                                :
+                                                                                <span className="textAlignCenter sold">SOLD OUT</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td className="textAlignRight">
+                                                                        {
+                                                                            data.productDetail.availableQuantity > 0 ?
+                                                                                <span className="productPrize textAlignRight">
+                                                                                    <i className="fa fa-inr"></i>
+                                                                                    {/* {data.productDetail.currency} */}
+                                                                                    &nbsp;{parseInt(data.subTotal).toFixed(2)}</span>
+                                                                                :
+                                                                                <span>-</span>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
                                                             );
                                                         })
                                                         :
-                                                        <option value='user'>No Timings available</option>
+                                                        null
                                                 }
-                                            </select>
+                                            </tbody>
+                                        </table>
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                         </div>
-                                        <div className="modal col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 checkoutAddressModal" id="termsNconditionsmodal" role="dialog">
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                                    <div className="modal-header checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <img src="../../../sites/currentSite/images/Icon.png" />
-                                                        <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
-                                                        <h4 className="modal-title modalheadingcont">TERMS AND CONDITIONS</h4>
-                                                    </div>
-                                                    <div className="modal-body col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutAddressModal">
-                                                        <ul className="listStyle">
-                                                            <li>The price of products is as quoted on the site from time to time.</li>
-                                                            <li>Price and delivery costs are liable to change at any time, but changes will not affect orders in respect of which we have already sent you a Despatch Confirmation.</li>
-                                                            <li>Products marked as 'non-returnable' on the product detail page cannot be returned.</li>
-                                                            <li>Products may not be eligible for return in some cases, including cases of buyer's remorse such as incorrect model or color of product ordered or incorrect product ordered.</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div className="modal-footer checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <button type="button" className="btn btn-warning" data-dismiss="modal">Cancel</button>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight saving">
+                                            {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"}
+                                        </span>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
 
+
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
+                                        </div>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
+
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
+                                        </div>
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
+                                            <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
+                                                <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
+                                            <div className="col-lg-11 col-md-11 col-sm-11 col-xs-11 termsWrapper">
+                                                    <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
+                                                <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>
+                                                <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
+                                                    <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
+                                                    {
+                                                        this.state.gettimes && this.state.gettimes.length > 0 ?
+                                                            this.state.gettimes.map((data, index) => {
+                                                                return (
+                                                                    <option key={index} value={data._id}>{data.fromtime}-{data.totime}</option>
+                                                                );
+                                                            })
+                                                            :
+                                                            <option value='user'>No Timings available</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div className="modal col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 checkoutAddressModal" id="termsNconditionsmodal" role="dialog">
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div className="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                                        <div className="modal-header checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <img src="../../../sites/currentSite/images/Icon.png" />
+                                                            <button type="button" className="close modalclosebut" data-dismiss="modal">&times;</button>
+                                                            <h4 className="modal-title modalheadingcont">TERMS AND CONDITIONS</h4>
+                                                        </div>
+                                                        <div className="modal-body col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutAddressModal">
+                                                            <ul className="listStyle">
+                                                                <li>The price of products is as quoted on the site from time to time.</li>
+                                                                <li>Price and delivery costs are liable to change at any time, but changes will not affect orders in respect of which we have already sent you a Despatch Confirmation.</li>
+                                                                <li>Products marked as 'non-returnable' on the product detail page cannot be returned.</li>
+                                                                <li>Products may not be eligible for return in some cases, including cases of buyer's remorse such as incorrect model or color of product ordered or incorrect product ordered.</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div className="modal-footer checkoutAddressModal col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <button type="button" className="btn btn-warning" data-dismiss="modal">Cancel</button>
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                                        <div id="termsNconditions col-lg-6 col-md-12"></div>
-                                    </div>
-                                    {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
+                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                            <div id="termsNconditions col-lg-6 col-md-12"></div>
+                                        </div>
+                                        {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
                                             <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
                                             <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
                                                 <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
@@ -1296,7 +1428,7 @@ class Checkout extends Component {
                                                         <option value='user'>No Timings available</option>
                                                 }
                                             </select>
-                                        </div> */}                                    
+                                        </div> */}
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>

@@ -2,7 +2,7 @@ const mongoose	= require("mongoose");
 var ObjectId = require('mongodb').ObjectID;
 const Carts = require('../cart/Model');
 const Orders = require('../orders/Model');
-
+// import axios from 'axios';
 const _ = require('underscore');    
 exports.insert_cartid = (req,res,next)=>{
 	Carts.findOne({"user_ID": req.body.user_ID})
@@ -376,7 +376,6 @@ exports.add_paymentmethod_to_cart = (req, res, next)=>{
 
 //Update products cart 
 exports.update_cart_item = (req, res, next)=>{
-     // console.log("request",req);
     Carts.updateOne(
         {"user_ID":req.body.user_ID,'cartItems.product_ID':req.body.product_ID},
         {
@@ -407,3 +406,55 @@ exports.update_cart_item = (req, res, next)=>{
     });
 };
 
+
+
+
+// ===================== Server side Api call =============
+// exports.paymentgatewaypinepg=(req , res , next)=>{
+//     // const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL?';
+//     // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=EQWEWEE149&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
+//     // console.log("paymentdetails==>",paymentdetails)
+
+//     // fetch.post(redirecturl+paymentdetails)
+//     //             .then(reponse => {
+//     //                console.log("paymentgatewaypinepg==>",reponse)
+//     //                res.status(200).json({
+//     //                 "message": "Test successfully."
+//     //                 });
+//     //             })
+//     //             .catch(err => {
+//     //                 console.log('Errr', err);
+//     //             });
+//     const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=EQWEWEE149&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
+//     const requestOptions = {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json','Accept':'application/json'},
+//         params: {
+//                 MERCHANT_ID: 9445,
+//                 MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
+//                 REFERENCE_NO: "hsjfhsfjk1433",
+//                 AMOUNT: 200,
+//                 PRODUCT_CODE: "testing",
+//                 CUSTOMER_MOBILE_NO: "8087679825",
+//                 CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
+//             }
+//     };
+//     console.log("before post==>",requestOptions)
+
+
+//     let pg = fetch('https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL', requestOptions);
+
+//         // .then(reponse => {
+//            console.log("Response from api==>",pg)
+//         //    res.status(200).json({
+//         //     "message": "Test successfully."
+//         //     });
+//         // })
+//         // .catch(err =>{
+//         //     res.status(500).json({
+//         //     "message": "Test NOT successfully.",
+//         //         error: err
+//         //     });
+//         // });
+
+// }

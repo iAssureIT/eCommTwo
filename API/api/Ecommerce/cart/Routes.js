@@ -5,6 +5,8 @@ const cartController = require('./Controller');
 
 router.post('/post', cartController.insert_cartid);
 
+// router.post('/paymentgatewaypinepg/post', cartController.paymentgatewaypinepg);
+
 router.get('/get/list/:user_ID', cartController.list_cart);
 
 router.get('/get/cartproductlist/:user_ID', cartController.list_cart_product);

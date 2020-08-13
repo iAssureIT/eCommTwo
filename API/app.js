@@ -26,7 +26,8 @@ const blogRoutes 					= require('./api/cms/blogs/routes.js');
 	app.use('/uploads', express.static('uploads'));
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(bodyParser.json());
-
+	// const cors = require('cors');
+	// app.use(cors());
 	app.use((req, res, next) => {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header(
