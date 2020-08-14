@@ -120,9 +120,8 @@ class BigSaleCollageView extends Component {
       }
       axios.post('/api/wishlist/post', formValues)
         .then((response) => {
-
           var previousUrl = window.location.href;
-
+          window.fbq('track', 'AddToWishlist');
           localStorage.setItem("previousUrl", previousUrl);
           this.setState({
             messageData: {
@@ -291,6 +290,7 @@ class BigSaleCollageView extends Component {
       axios.post('/api/carts/post', formValues)
         .then((response) => {
           this.props.fetchCartData();
+          window.fbq('track', 'AddToCart');
           console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
@@ -336,6 +336,7 @@ class BigSaleCollageView extends Component {
         .then((response) => {
           // console.log("Response changeCartCount:",response);
           this.props.fetchCartData();
+          window.fbq('track', 'AddToCart');
           // console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {

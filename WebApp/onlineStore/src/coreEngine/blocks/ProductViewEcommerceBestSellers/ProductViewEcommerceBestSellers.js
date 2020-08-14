@@ -117,6 +117,7 @@ class ProductViewEcommerceBestSellers extends Component {
         axios.post('/api/carts/post', formValues)
           .then((response) => {
           this.props.fetchCartData();
+          window.fbq('track', 'AddToCart');
           this.setState({
             messageData : {
             "type" : "outpage",
@@ -169,6 +170,7 @@ class ProductViewEcommerceBestSellers extends Component {
     }
     axios.post('/api/wishlist/post', formValues)
     .then((response)=>{
+      window.fbq('track', 'AddToWishlist');
       this.setState({
         messageData : {
           "type" : "outpage",

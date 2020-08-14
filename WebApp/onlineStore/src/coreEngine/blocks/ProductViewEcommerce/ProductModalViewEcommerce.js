@@ -9,8 +9,6 @@ import _                      from 'underscore';
 import { connect }                from 'react-redux';
 import Message from '../Message/Message.js';
 
-
-
 const user_ID = localStorage.getItem("user_ID");
 class ProductModalViewEcommerce extends Component {
 	constructor(props){
@@ -199,6 +197,7 @@ class ProductModalViewEcommerce extends Component {
 	          axios.post('/api/wishlist/post', formValues)
 	          .then((response)=>{
               if(response.status === 200){
+		          window.fbq('track', 'AddToWishlist');
                 
                 this.setState({
                   messageData : {

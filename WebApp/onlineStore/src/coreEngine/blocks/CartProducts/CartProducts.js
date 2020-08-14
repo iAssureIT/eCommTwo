@@ -268,6 +268,7 @@ class CartProducts extends Component{
                   })
               }, 6000);
         }else{
+            window.fbq('track', 'InitiateCheckout');
             this.props.history.push('/checkout');
         }
     }

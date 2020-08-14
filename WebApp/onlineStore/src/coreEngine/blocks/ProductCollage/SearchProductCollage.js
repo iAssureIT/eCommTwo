@@ -169,6 +169,7 @@ class SearchProductCollage extends Component {
       axios.post('/api/carts/post', formValues)
         .then((response) => {
           this.props.fetchCartData();
+          window.fbq('track', 'AddToCart');
           console.log("this.props.fetchCartData();",this.props.fetchCartData());
           this.setState({
             messageData: {
@@ -365,6 +366,7 @@ class SearchProductCollage extends Component {
       }
       axios.post('/api/wishlist/post', formValues)
         .then((response) => {
+          window.fbq('track', 'AddToWishlist');
           this.setState({
             messageData: {
               "type": "outpage",

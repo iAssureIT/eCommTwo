@@ -877,6 +877,7 @@ class Checkout extends Component {
                                     .then((res) => {
                                         // =================== Notification OTP ==================
                                         if (res) {
+                                            window.fbq('track', 'Purchase', {value: res.data.total, currency: 'Rs'});
                                             //  console.log("order data:",res);
                                             var sendData = {
                                                 "event": "3",
@@ -1133,7 +1134,7 @@ class Checkout extends Component {
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input disabled  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
+                                            <input disabled onChange={this.getpaymentgateway} name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
