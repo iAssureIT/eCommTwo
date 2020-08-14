@@ -1193,13 +1193,14 @@ exports.fetch_vendorfile_count = (req,res,next)=>{
     });
     
 };
+// changed by madhuri
 exports.delete_file = (req,res,next)=>{
     // console.log("inside delete function");
-    Products.deleteMany({"fileName":req.params.fileName})
+    Products.deleteMany({"fileName":req.body.filename})
     .exec()
     .then(data=>{
         res.status(200).json({
-            "message" : "Products of file "+req.params.fileName+" deleted successfully"
+            "message" : "Products of file "+req.body.filename+" deleted successfully"
         });
     })
     .catch(err =>{

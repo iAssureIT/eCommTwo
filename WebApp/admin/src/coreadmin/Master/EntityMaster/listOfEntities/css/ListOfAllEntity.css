@@ -203,3 +203,7 @@
 .bookingReq{
     font-size: 13px;
 }
+
+.wrapContent{
+    overflow-wrap: break-word;
+}

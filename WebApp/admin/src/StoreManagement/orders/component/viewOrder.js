@@ -161,13 +161,17 @@ class viewOrder extends Component{
                               <img src={data.productImage[0]} style={{width:"100%"}}/>
                             </div>
                             <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-
-                              <p> <a href={"/product-details/"+data.product_ID} className="productname">{data.productName}</a></p>
-                              <span><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span> &nbsp;
-                              <span className="oldprice"><i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span> 
-                                              
-                              <p>Total: &nbsp;<i className={"fa fa-"+this.state.orderData.currency}> {data.total}</i></p>
-                              <p>Quantity: {data.quantity}</p>
+                              <p><a href={"/product-details/"+data.product_ID} className="productname">{data.productName}</a></p>
+                              <p><span>Discount <small>({data.discountPercent}%)</small> : <i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span><br/>
+                              <span className="oldprice">Original Price : <i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span></p>
+                              <p>Quantity: {data.quantity}</p> 
+                              {this.state.orderData.billNumber ?
+                                <p>Total: &nbsp;<i className={"fa fa-"+this.state.orderData.currency}>{data.quantity * (data.originalPrice - data.discountedPrice)}</i></p>
+                                : 
+                                <p>Total: &nbsp;<i className={"fa fa-"+this.state.orderData.currency}></i>{data.quantity * data.originalPrice}</p>
+                              }
+                              
+                              
                             </div>
                           </div>
                           );

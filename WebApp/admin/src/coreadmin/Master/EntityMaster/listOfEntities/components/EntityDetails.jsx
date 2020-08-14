@@ -139,7 +139,7 @@ class EntityDetails extends Component {
 									    <i className="fa fa-trash "  aria-hidden="true" ></i>
 									  </div>
 						    	</div>
-					    		<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+					    		<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 wrapContent">
 					    			<ul className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding listLI">
 											<li><i className="fa fa-envelope changeColor " aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.companyEmail}</li>
 											<li><i className="fa fa-phone changeColor" aria-hidden="true"></i>&nbsp;&nbsp;{this.state.entityInfo.companyPhone}</li>

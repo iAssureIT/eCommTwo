@@ -758,13 +758,7 @@ export default class PurchaseManagement extends React.Component {
 									<div  className="row  NOpadding">
 											<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25 ">
 												<label >Select Product <i className="redFont">*</i></label>
-												{/*<input type="text" className="form-control" id="email"/>*/}
-												{/* { this.state.completeProductName ? 
-													<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="completeProductName" /> 
-												   : <input list="product" type="text" refs="product" className="form-control"    placeholder="Select Product" value={this.state.product}  onChange={this.handleChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="product" />}
-												 */}
-												<input list="product" type="text" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.onChangeProduct.bind(this)} name="completeProductName" autoComplete="off"/> 
-
+												<input list="product" type="search" refs="product" className="form-control" placeholder="Select Product" value={this.state.completeProductName}  onChange={this.onChangeProduct.bind(this)} name="completeProductName" autoComplete="off"/> 
 												<datalist id="product" name="product" className="productDatalist">
 													{
 														this.state.productArray && this.state.productArray.length > 0 ?

@@ -54,7 +54,7 @@ class dispatchModal extends Component{
              if(response.status === 200){
                 
                     swal({
-                        title: 'Order is dispatched Successflly',
+                        title: 'Order is dispatched successfully',
                     });
                     // this.getOrders();
                     var modal = document.getElementById('adminModal');

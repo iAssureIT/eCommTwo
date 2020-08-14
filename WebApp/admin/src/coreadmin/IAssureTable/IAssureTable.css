@@ -106,3 +106,7 @@
 #HideTable{
   display: none;
 }
+
+.downloadBtns{
+  display: flex;
+}

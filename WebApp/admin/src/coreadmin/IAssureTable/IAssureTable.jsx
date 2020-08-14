@@ -117,7 +117,8 @@ class IAssureTable extends Component {
 		let id = (e.target.id).replace(".", "/");
 		axios({
 			method: tableObjects.deleteMethod,
-			url: tableObjects.apiLink + '/delete/' + id
+			url: tableObjects.apiLink + '/delete/',
+			data : {"filename":id}
 		}).then((response) => {
 			this.props.getData(this.state.startRange, this.state.limitRange);
 			this.props.history.push(tableObjects.editUrl);
@@ -552,7 +553,7 @@ class IAssureTable extends Component {
 				{/* {this.state.tableObjects.downloadApply === true ? */}
 					{/* this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 ? */}
 						<React.Fragment>
-							<div className="col-lg-1 col-lg-offset-9 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+							<div className="col-lg-1 col-lg-offset-9 col-md-1 col-xs-12 col-sm-12 downloadBtns NOpadding  pull-right ">
 								<button type="button" className=" pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
 								<ReactHTMLTableToExcel
 									id="table-to-xls"

@@ -1155,7 +1155,7 @@ export default class FinishedGoods extends React.Component {
 										</div>
 										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
 											<label >Select Product <i className="redFont">*</i></label>
-											<input list="productName" type="text" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.onProductChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" autocomplete="off" autocomplete="off"/>
+											<input list="productName" type="search" refs="productName" id="selectProductName" className="form-control"    placeholder="Enter Product Code or Name" value={this.state.productName}  onChange={this.onProductChange.bind(this)}  onBlur={this.handleProduct.bind(this)} name="productName" autocomplete="off" autocomplete="off"/>
 											<datalist id="productName" name="productName" className="productDatalist" autocomplete="off">
 											{
 													this.state.productArray && this.state.productArray.length > 0 ?

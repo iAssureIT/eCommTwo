@@ -6,7 +6,7 @@ import axios             from 'axios';
 import moment                   from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import '../dashboard.css';
+import '../Dashboard.css';
 
 export default class PieChart extends Component{
   

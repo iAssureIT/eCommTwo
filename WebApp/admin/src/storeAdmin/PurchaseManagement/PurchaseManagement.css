@@ -44,3 +44,17 @@
 #report #ActionContent{
   display: none;
 }
+
+input[name=completeProductName]::-webkit-search-cancel-button {
+	-webkit-appearance: searchfield-cancel-button;
+}
+
+input[type=search]::-webkit-search-cancel-button {
+	-webkit-appearance: searchfield-cancel-button;
+}
+
+  /* input[type="search"]{
+	-webkit-appearance: none;
+	/* -webkit-box-sizing: content-box; */
+	/* outline:none; 
+  /* }  */

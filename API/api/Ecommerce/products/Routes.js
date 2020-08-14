@@ -79,7 +79,7 @@ router.get('/get/hotproduct', productController.fetch_hot_product);
 router.delete('/delete/:productID',productController.delete_product);
 
 // router.delete('/file/delete/:fileName',productController.delete_file);
-router.delete('/file/:fileName/xlxs',productController.delete_file);
+router.delete('/file/delete',productController.delete_file);
 
 router.get('/get/adminsearch/:searchstr', productController.admin_search_product);
 
