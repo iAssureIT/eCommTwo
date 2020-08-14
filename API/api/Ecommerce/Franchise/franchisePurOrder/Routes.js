@@ -29,6 +29,8 @@ router.patch('/patch/patch/acceptpurchaseorder', franchisePOController.update_fr
 
 router.delete('/delete/purchaseorder/:purchaseorder_id', franchisePOController.delete_franchisePO);
 
+router.get('/get/count',franchisePOController.count_order);
+
 router.get('/get/count/:franchise_id',franchisePOController.count_order);
 
 

@@ -1,5 +1,17 @@
+/*
+  Ashish Naik
+
+  This Dashboard need to make Componentwise. 
+  Every single thing on Dashboard must be a separate component. 
+  Each component will have its own API. Until that component is loaded, it will show loader. 
+  Dashboard will have placeholder for each component. 
+
+*/
+
+
+
+
 import React,{Component} from 'react';
-// import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import { render } from 'react-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -53,10 +65,6 @@ export default class Dashboard extends Component{
   }
    
   componentDidMount(){
-    var userDetails = (localStorage.getItem('userDetails'));
-    var userData = JSON.parse(userDetails);
-    // console.log('userData==>>>', userData);
-
 
     axios.get("/api/users/get/count")
     .then((response)=>{
@@ -510,7 +518,7 @@ export default class Dashboard extends Component{
   }
   getBarChart(currentDate, chartId){
       var ctx3 = document.getElementById(chartId);
-      return;
+       return;
       // axios.get("/api/orders/get/totalOrdersByPeriod/"+currentDate)
       // .then((response)=>{
       //     console.log('response.data',response.data.length)
@@ -626,9 +634,8 @@ export default class Dashboard extends Component{
   }   
  
   render(){
-    
     return(
-      <div className="col-lg-10 col-lg-offset-2">
+      <div className="col-lg-12">
         <div className="row">
         <br/>
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -883,3 +890,38 @@ export default class Dashboard extends Component{
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React,{Component} from 'react';
+// import { render } from 'react-dom';
+// import $ from 'jquery';
+// import jQuery               from 'jquery';
+
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'font-awesome/css/font-awesome.min.css';
+// import 'bootstrap/js/tab.js';
+
+// export default class Dashboard extends Component{
+//   render(){
+//     return(
+//       <div className="col-lg-12">
+//         <div className="row">
+//           <img src="/images/Dashboard1.png" width="100%" />
+//         </div>
+//       </div>
+//     )
+//   }
+// }
+
+
