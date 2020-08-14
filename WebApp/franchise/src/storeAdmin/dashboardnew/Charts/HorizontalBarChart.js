@@ -27,7 +27,7 @@ export default class HorizontalBarChart extends Component{
           "data" : {
           labels: [],
           datasets: [{
-                label: 'Total Orders',
+                label: 'Product Sale',
                 backgroundColor:'rgba(54, 162, 235, 1)',
                 borderColor: 'rgba(54, 162, 235, 0.5)',
                 borderWidth: 1,
@@ -83,8 +83,8 @@ export default class HorizontalBarChart extends Component{
               var totalEstimate = [];
              if(response.data && response.data.length >0){
                 response.data.map((data,index)=>{ 
-                    catLables.push(data.franchiseName);
-                    totalEstimate.push(data.orderCount);
+                    catLables.push(data.productName);
+                    totalEstimate.push(data.saleCount);
                 })
               if (totalEstimate.length > 0) {
                 data.datasets[0].data = totalEstimate;
@@ -113,7 +113,7 @@ export default class HorizontalBarChart extends Component{
     
   render() {
     return (
-      <div className="col-md-4">
+      <div className="col-md-8">
           <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
               <h3 className="box-title">{this.state.title}</h3>

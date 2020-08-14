@@ -1,11 +1,8 @@
 import React,{Component} from 'react';
 import { render } from 'react-dom';
 import axios                    from 'axios';
-
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-
 import '../dashboard.css';
 
 export default class ProgressBlock extends Component{
@@ -98,6 +95,7 @@ export default class ProgressBlock extends Component{
 
     
   render(){
+    console.log("this.state.compairFieldCount",this.state.compairFieldCount);
     return(
       <div>
       {this.state.display ?
@@ -106,7 +104,7 @@ export default class ProgressBlock extends Component{
               <span className="info-box-icon"><i className={"fa "+this.state.faIcon} aria-hidden="true"></i></span>
               <div className="info-box-content">
                 <span className="info-box-text">{this.state.FieldName}</span>
-                <span className="info-box-number">{this.state.dataCount}/ {this.state.compairFieldCount}</span>
+                <span className="info-box-number">{this.state.dataCount} / {this.state.compairFieldCount}</span>
                 <div className="progress">
                 <div className="progress-bar" style={{ width: (this.state.dataCount/ this.state.compairFieldCount)*100+"%" }}></div>
                 </div>

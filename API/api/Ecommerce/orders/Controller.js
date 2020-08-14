@@ -2294,12 +2294,13 @@ exports.franchise_order_count = (req, res, next) => {
          var franchiseOrderCount = [];
         for(k = 0 ; k < data.length ; k++){
             var franchiseCount = await franchisewise_order_count(data[k]._id);
-            if(franchiseCount > 0){
+              if(franchiseCount > 0){
                  franchiseOrderCount.push({
                   "franchiseName": data[k].companyName ? data[k].companyName : '',
+                  "companyId": data[k].companyID ? data[k].companyID : '',
                   "orderCount": franchiseCount
                  })
-            }
+             }
         }
 
         var count = franchiseOrderCount.sort(function(a, b){return b.orderCount-a.orderCount});    
@@ -2359,8 +2360,8 @@ exports.top_franchise_sale = (req, res, next) => {
            
            }
        
-        var count = franchiseOrderSale.sort(function(a, b){return b.totalSale-a.totalSale});    
-        res.status(200).json(franchiseOrderSale);  
+        var count = franchiseOrderSale.sort(function(a, b){return b.totalSale-a.totalSale});  
+        res.status(200).json(franchiseOrderSale.slice(0,5));  
       }
       
     })
@@ -2399,12 +2400,37 @@ exports.franchiseCategoryRevenue = (req, res, next) => {
     });
 };
 
+exports.franchiseSectionRevenue = (req, res, next) => {
+  Orders.aggregate([
+    {
+      $unwind: "$products"
+    },
+    { "$match": { "allocatedToFranchise": ObjectId(req.params.franchiseID) } },
+    {
+      $group: {
+        "_id": "$products.section",
+        "revenue": { "$sum": { $multiply: ["$products.quantity", "$products.discountedPrice"] } }
+      }
+    },
+    { $limit: 5 }
+  ]).exec()
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
 
 exports.getMonthwiseOrders = (req,res,next)=>{
     let selector = {};
     let franchiseID = req.body.franchiseID ? req.body.franchiseID : '';
     if(franchiseID){
-       selector = {'createdAt':{$gte : new Date(req.body.startDate), $lt : new Date(req.body.endDate) },'allocatedToFranchise':req.params.franchiseID}
+       selector = {'createdAt':{$gte : new Date(req.body.startDate), $lt : new Date(req.body.endDate) },allocatedToFranchise:ObjectId(req.body.franchiseID)}
     }else{
         selector = {'createdAt':{$gte : new Date(req.body.startDate), $lt : new Date(req.body.endDate) }}
     }
@@ -2418,11 +2444,24 @@ exports.getMonthwiseOrders = (req,res,next)=>{
     ])
     .exec()
     .then(orderDetails=>{
+      console.log("orderDetails",orderDetails);
         var returnData = []
         var totalCost = "" ;
         var totalOrders = "" ;
         var dataArray = {};
         var month = "";
+        var allMonths = [{"name":"Jan"}, 
+                         {"name":"Feb"},
+                         {"name":"Mar"},
+                         {"name":"Apr"},
+                         {"name":"May"},
+                         {"name":"Jun"},
+                         {"name":"Jul"},
+                         {"name":"Aug"},
+                         {"name":"Sep"},
+                         {"name":"Oct"},
+                         {"name":"Nov"},
+                         {"name":"Dec"}];
         for(var i=0 ; i<orderDetails.length ; i++){
             totalCost = orderDetails[i].totalCost;
             month = moment(orderDetails[i]._id, 'M').format('MMM');
@@ -2433,9 +2472,16 @@ exports.getMonthwiseOrders = (req,res,next)=>{
                 totalCost : totalCost
             }
             returnData.push(dataArray)
+
+            allMonths.map(function(data,index){
+              if(data.name == month){
+                  allMonths[index].totalOrders = totalOrders;
+                  allMonths[index].totalCost = totalCost
+              }
+            });            
         }//i
 
-        res.status(200).json(returnData);
+        res.status(200).json(allMonths);
     })
     .catch(err =>{
         res.status(500).json({ error: err });
@@ -2471,3 +2517,96 @@ Orders.aggregate([
         res.status(500).json({ error: err });
     });
 }
+
+exports.franchiseTopProductsSale = (req, res, next) => {
+  Orders.find({
+    "allocatedToFranchise":req.params.franchiseID,
+    createdAt: {
+        $gte: moment(req.params.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+        $lte: moment(req.params.endDate).tz('Asia/Kolkata').endOf('day').toDate()
+    }
+  })
+  .exec()
+    .then(data => {
+      getData();
+      async function getData(){
+        var Products = [];
+           for(k = 0 ; k < data.length ; k++){
+            for(j = 0 ; j < data[k].products.length ; j++){
+              let obj = Products.find(p => p.productName === data[k].products[j].productName);
+              if(obj){
+                obj.saleCount = obj.saleCount + data[k].products[j].quantity;
+              }else{
+                 var productObj = {
+                        "productName" : data[k].products[j].productName,
+                        "saleCount"   : data[k].products[j].quantity
+                 }
+                 Products.push(productObj);
+              }             
+            }
+           }
+       
+        var count = Products.sort(function(a, b){return b.saleCount-a.saleCount})
+        res.status(200).json(Products.slice(0, 10));  
+      }
+      
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+  
+};
+
+exports.franchise_daily_orders_count = (req, res, next) => {
+   Orders.find(
+     {
+      allocatedToFranchise: ObjectId(req.params.franchiseID),
+      createdAt: {
+        $gte: moment(req.params.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+        $lte: moment(req.params.endDate).tz('Asia/Kolkata').endOf('day').toDate()
+      }
+    })
+    .exec()
+    .then(data => {
+      var count = data.length > 0 ?  data[0].count : 0;
+      if(count == undefined){
+           res.status(200).json({ "dataCount": 0 });
+      }else{
+           res.status(200).json({ "dataCount": count });
+      }
+     
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+exports.franchise_digital_order_counts = (req, res, next) => {
+  Orders.find({
+    allocatedToFranchise : req.params.franchiseID,
+    createdAt: {
+      $gte: moment().tz('Asia/Kolkata').startOf('year'),
+      $lte: moment().tz('Asia/Kolkata').endOf('day')
+    }
+  }).count()
+    .exec()
+    .then(data => {
+      res.status(200).json({ "dataCount": data });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+
+
+

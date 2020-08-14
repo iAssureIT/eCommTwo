@@ -112,15 +112,16 @@ export default class HorizontalBarChart extends Component{
       }
     
   render() {
+    console.log("data",this.state.data);
     return (
-      <div className="col-md-4">
+      <div className="col-md-6">
           <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
               <h3 className="box-title">{this.state.title}</h3>
             </div>
-            <div className="box-body no-padding">
+            <div className="box-body no-padding horizontalBarBox">
             {this.state.data && this.state.data.datasets[0].data.length > 0 ?
-                <HorizontalBar data={this.state.data} />
+                <HorizontalBar data={this.state.data} options={options} />
              :
             <div className="text-center">
               <img className="chartStyle" src="/images/loading-gif.gif"/>

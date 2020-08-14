@@ -73,8 +73,7 @@ class Report extends Component{
     
   render(){
     return(
-      <div>
-      {this.state.display ?
+      this.state.display ?
         <div className="col-md-8">
           <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
@@ -88,7 +87,7 @@ class Report extends Component{
                   {this.state.tableHeading && this.state.tableHeading.length > 0 ?
                     this.state.tableHeading.map((heading,index)=>{
                       return(
-                        <th key={index}>
+                        <th className="dashboardTableTh" key={index}>
                           {heading}
                         </th>
                         )
@@ -101,6 +100,8 @@ class Report extends Component{
                   <tbody className="fontSmall">
                   {this.state.data && this.state.data.length > 0 ?
                     this.state.data.map((data,index)=>{
+                      var franchiseName = data.allocatedToFranchise ? data.allocatedToFranchise.companyName : '';
+                      console.log("data reports",data.total);
                       let products = [];
                       data.products.map((product,index)=>{
                         products.push(product.productName);
@@ -108,23 +109,23 @@ class Report extends Component{
                       let currentStatus  = data.deliveryStatus.length - 1;
                       let deliveryStatus = data.deliveryStatus[currentStatus].status;
                       let statusClass = '';
-                      statusClass = deliveryStatus === "New Order"    ? "stat admin-orders-stat-NewOrder"   : 
-                      statusClass = deliveryStatus === "Verified"    ? "stat admin-orders-stat-Verified"   : 
-                      statusClass = deliveryStatus === "Inspection"  ? "stat admin-orders-stat-Inspection" :
-                      statusClass = deliveryStatus === "Dispatch Approved"  ? "stat admin-orders-stat-OrderVerified" :
-                      statusClass = deliveryStatus === "Dispatch"    ? "stat admin-orders-stat-Dispatched" :
-                      statusClass = deliveryStatus === "To Deliver"    ? "stat admin-orders-stat-Dispatched" :
-                      statusClass = deliveryStatus === "Delivery Initiated"    ? "stat admin-orders-stat-Delivered" :
-                      statusClass = deliveryStatus === "Delivered & Paid"   ? "stat admin-orders-stat-Deliveredpaid" : 
-                      statusClass = deliveryStatus === "Returned"   ? "stat admin-orders-stat-Dispatched" : 
-                      statusClass = deliveryStatus === "Cancelled"   ? "stat admin-orders-stat-Dispatched" : ""
+                      statusClass = deliveryStatus === "New Order"    ? "label label-warning"   : 
+                      statusClass = deliveryStatus === "Verified"    ? "label label-info"   : 
+                      statusClass = deliveryStatus === "Inspection"  ? "label label-default" :
+                      statusClass = deliveryStatus === "Dispatch Approved"  ? "label label-success" :
+                      statusClass = deliveryStatus === "Dispatch"    ? "label label-success" :
+                      statusClass = deliveryStatus === "To Deliver"    ? "label label-info" :
+                      statusClass = deliveryStatus === "Delivery Initiated"    ? "label label-primary" :
+                      statusClass = deliveryStatus === "Delivered & Paid"   ? "label label-success" : 
+                      statusClass = deliveryStatus === "Returned"   ? "label label-default" : 
+                      statusClass = deliveryStatus === "Cancelled"   ? "label label-danger" : ""
                       return(
                         <tr key={index}>
                           <td>{data.orderID}</td>
                           <td>{products.toString()}</td>
-                          <td><div className={statusClass}>
-                             {deliveryStatus}
-                             </div>
+                          <td>{franchiseName}</td>
+                          <td>{data.total}</td>
+                          <td><span className={statusClass}>{deliveryStatus}</span>
                           </td>
                         </tr>
                       )
@@ -143,9 +144,7 @@ class Report extends Component{
         </div> 
         :
         null
-      }
-      </div>
-        );
+      );
   }
 }
 export default withRouter(Report);

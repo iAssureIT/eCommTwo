@@ -75,6 +75,8 @@ router.get('/get/vendorWiseOrder',orderController.subCategoryRevenue);
 
 router.post('/get/get_orders',orderController.get_orders_with_filters);
 
+//code by madhuri ghute start
+
 router.post('/get/getBillsByUser/',orderController.list_bill_by_user);
 
 router.patch('/patch/allocateOrderToFranchise', orderController.allocateOrderToFranchise);
@@ -85,10 +87,21 @@ router.get('/get/topFranchiseSale',orderController.top_franchise_sale);
 
 router.get('/get/franchiseCategoryRevenue/:franchiseID',orderController.franchiseCategoryRevenue);
 
+router.get('/get/franchiseSectionRevenue/:franchiseID',orderController.franchiseSectionRevenue);
+
 router.post('/get/getMonthwiseOrders',orderController.getMonthwiseOrders);
 
-router.get('/get/billCounts/:franchiseID',orderController.franchise_bill_counts);
+router.get('/get/franchiseTopProductsSale/:franchiseID/:startDate/:endDate',orderController.franchiseTopProductsSale);
+
+router.get('/get/digitalytdorders/:franchiseID',orderController.franchise_digital_order_counts);
 
 router.get('/get/totalSale/',orderController.total_sale_cost);
+
+router.get('/get/franchise-daily-orders-count/:franchiseID/:startDate/:endDate',orderController.franchise_daily_orders_count);
+
+router.get('/get/inStoreBillCounts/:franchiseID',orderController.franchise_bill_counts);
+
+
+//code by madhuri ghute end
 
 module.exports = router; 

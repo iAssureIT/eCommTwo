@@ -181,7 +181,7 @@
 //   }
 // }
 
-
+//@@@@@@
 import React,{Component} from 'react';
 import { render } from 'react-dom';
 import {Bar} from 'react-chartjs-2';
@@ -297,11 +297,9 @@ export default class BarChart extends Component{
   }
 
     
-  render(){
-    
+  render(){ 
     return(
-      <div>
-      {this.state.display ?
+      this.state.display ?
         <div className="col-md-8">
           <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
@@ -321,10 +319,7 @@ export default class BarChart extends Component{
         </div> 
        :
        null
-      }
-      </div>
-        );
-     
+    );
   }
 }
 

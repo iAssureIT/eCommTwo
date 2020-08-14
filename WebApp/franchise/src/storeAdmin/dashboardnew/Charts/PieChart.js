@@ -116,13 +116,13 @@ export default class PieChart extends Component{
             <div className="box-body no-padding">
               
               {this.state.data && this.state.data.datasets[0].data.length > 0 ?
-              <Pie height={150} data={this.state.data} options={{legend: {display: false},
+              <Pie height={170} data={this.state.data} options={{legend: {display: false},
                 plugins: {
                    labels: [{
-                    render: 'label',
-                    position: 'outside',
-                    fontColor: '#000',
-                    textMargin: 8
+                    // render: 'label',
+                    // position: 'outside',
+                    // fontColor: '#000',
+                    // textMargin: 8
                   },
                   {
                     render: 'percentage',

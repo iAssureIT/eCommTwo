@@ -96,13 +96,13 @@ class SimpleMap extends Component {
     let Location = this.state.data;
     console.log("Location Data",Location);
     return (
-      <div className="col-md-8">
+      <div className="col-md-6">
       <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
               <h3 className="box-title">{this.state.title}</h3>
             </div>
-            <div className="box-body no-padding">
-              <div style={{ height: '250px' }}>
+            <div className="box-body no-padding locationBox">
+              <div style={{ height: '345px' }}>
                 <GoogleMapReact
                   bootstrapURLKeys="AIzaSyD1hOxDqrgk8V82oEYXU6W2p_U0-kvvu38"
                   defaultCenter={this.props.center}

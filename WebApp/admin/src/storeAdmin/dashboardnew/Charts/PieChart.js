@@ -106,8 +106,7 @@ export default class PieChart extends Component{
     
   render(){
     return(
-      <div>
-      {this.state.display ?
+     this.state.display ?
         <div className="col-md-4">
           <div className={"box "+this.state.boxColor}>
             <div className="box-header with-border">
@@ -116,13 +115,13 @@ export default class PieChart extends Component{
             <div className="box-body no-padding">
               
               {this.state.data && this.state.data.datasets[0].data.length > 0 ?
-              <Pie height={150} data={this.state.data} options={{legend: {display: false},
+              <Pie height={170} data={this.state.data} options={{legend: {display: false},
                 plugins: {
                    labels: [{
-                    render: 'label',
-                    position: 'outside',
-                    fontColor: '#000',
-                    textMargin: 8
+                    // render: 'label',
+                    // position: 'outside',
+                    // fontColor: '#000',
+                    // textMargin: 8
                   },
                   {
                     render: 'percentage',
@@ -140,8 +139,9 @@ export default class PieChart extends Component{
         </div> 
         :
         null
-      }
-      </div>
         );
   }
 }
+
+
+

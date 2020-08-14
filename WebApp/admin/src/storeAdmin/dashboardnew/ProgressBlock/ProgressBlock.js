@@ -23,6 +23,7 @@ export default class ProgressBlock extends Component{
       data : [],
       compairFieldCount : 0,
       compairField: props.compairField,
+      topCount : 4
     }
   }
    
@@ -75,8 +76,8 @@ export default class ProgressBlock extends Component{
     .then((response)=>{
       if(response){
         var topArray =[];
-        response.data.sort(function(a, b){return b.totalSale-a.totalSale});
-        var arr = response.data.slice(0,4); 
+        // response.data.sort(function(a, b){return b.totalSale-a.totalSale});
+        var arr =  response.data; 
         arr.map(function(data,index){
           var tot = data.totalSale ? data.totalSale : 0;
           if(tot === 0 || tot === '0'){
@@ -91,6 +92,13 @@ export default class ProgressBlock extends Component{
           };
           topArray.push(avgdata);
         });
+
+        if(topArray.length < this.state.topCount){
+          var newarr = this.state.topCount - topArray.length 
+          for (let i = 0; i < newarr; i++) {
+            topArray.push({"FieldCount": 0,"percentage":0,"franchiseName" : ''})
+          }
+        }
         this.setState({
           data:topArray,
         },()=>{
@@ -112,9 +120,6 @@ export default class ProgressBlock extends Component{
           })
           .catch((err)=>{console.log('compair field err: ',err)})
         }
-        
-
-        
       }
     })
     .catch((err)=>{console.log('ProgressBlock err: ',err)})
@@ -125,50 +130,41 @@ export default class ProgressBlock extends Component{
   render(){
     return(
       this.state.display ?
-      <div>
+      <div className="col-md-4 col-sm-6 col-xs-12">
        {this.state.data.length > 0 ? 
-       this.state.data.map((data, i)=>{
-        var index = i+1;
-          return(
-              <div className="col-md-4 col-sm-6 col-xs-12">
-                <div className="box box-danger">
-                  <div className="box-header with-border">
-                    <h3 className="box-title">Top Franchise Sale</h3>
-                  </div>
-                  <div className="box-body no-margin">
-                  <div className={"info-box top"+index}>
-                  <span className="info-box-icon"><i class="fa fa-arrow-upp" aria-hidden="true">{i+1}</i></span>
-                    <div className="info-box-content">
-                        <span className="info-box-text">{data.franchiseName}</span>
-                        <span className="info-box-number">{data.FieldCount} / {this.state.compairFieldCount}</span>
-                        <div className="progress">
-                          <div className="progress-bar" style={{"width": this.state.compairFieldCount+"%"}}></div>
-                        </div>  
-                        <span className="progress-description">
-                         Top {index} Franchise
-                        </span>              
-                    </div>
-                  </div>
-                  </div>
-                </div>
-                {/* <div className={"info-box top"+index}>
-                <span className="info-box-icon"><i class="fa fa-arrow-upp" aria-hidden="true">{i+1}</i></span>
-                  <div className="info-box-content">
-                      <span className="info-box-text">{data.franchiseName}</span>
-                      <span className="info-box-number">{data.FieldCount} / {this.state.compairFieldCount}</span>
-                      <div className="progress">
-                        <div className="progress-bar" style={{"width": this.state.compairFieldCount+"%"}}></div>
-                      </div>  
-                      <span className="progress-description">
-                      {percent}%
-                      </span>              
-                  </div>
-                </div> */}
+           <div className="box box-danger">
+              <div className="box-header with-border">
+                  <h3 className="box-title">Top Franchise Sale</h3>
               </div>
-            );
-          })
+              <div className="box-body no-margin">
+                {this.state.data.map((data, i)=>{
+                  var index = i+1;
+                  var topClass = data.FieldCount !== 0 ? index : 0;
+                    return(
+                          <div>
+                            <div className={"info-box top"+topClass}>
+                            <span className="info-box-icon"><i class="fa fa-arrow-upp" aria-hidden="true">{i+1}</i></span>
+                              {data.FieldCount > 0 ? 
+                               <div className="info-box-content">
+                                  <span className="info-box-text">{data.franchiseName}</span>
+                                  <span className="info-box-number">{data.FieldCount} / {this.state.compairFieldCount}</span>
+                                  <div className="progress">
+                                    <div className="progress-bar bg-white" style={{"width": this.state.compairFieldCount+"%"}}></div>
+                                  </div>  
+                                  <span className="progress-description">
+                                  {index} Best Franchise/Sale Revenue
+                                  </span>              
+                              </div>
+                              : ''}
+                            </div>
+                          </div>
+                      );
+                    })
+                }
+              </div>
+            </div>
         : 
-          <div className="col-md-4 col-sm-6 col-xs-12 text-center">
+          // <div className="col-md-4 col-sm-6 col-xs-12 text-center">
              <div className="box box-danger">
                 <div className="box-header with-border">
                   <h3 className="box-title">Top Franchise Sale</h3>
@@ -178,7 +174,7 @@ export default class ProgressBlock extends Component{
                   <p className="noChartData">No Data Found</p>
                 </div>
             </div>
-          </div>
+          // </div>
         }
       </div>
       : null

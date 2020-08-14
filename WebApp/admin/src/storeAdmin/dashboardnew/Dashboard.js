@@ -99,31 +99,29 @@ export default class Dashboard extends Component{
             <div className="row">
               <Report
                 display={true}
-                tableHeading={["OrderId","Item","Status"]}
+                tableHeading={["OrderId","Item","Franchise","Total Cost","Status"]}
                 boxColor="box-primary"
                 title="Latest Orders"
                 api={{"method":"get","path":"/api/orders/get/list"}}
                 redirectlink="/allorders" />
-              <div className="row">
-                <ProgressBlock 
+              <ProgressBlock 
                   display={true}
                   bgColor="bg-yellow"
                   faIcon="fa-user"
                   Field={{"FieldName":"Top Franchise Sale","method":"get","path":"/api/orders/get/topFranchiseSale/"}}
                   compairField={{"method":"get","path":"/api/orders/get/totalSale/"}}
-                />
-              </div>
+              />
             </div>
            	<div className="row">
            		<BarChart
                 display={true}
            			boxColor="box-warning"
-           			title="Month-wise Sale"
+           			title="Monthwise Sale"
                 api={{"method":"post","path":"/api/orders/get/getMonthwiseOrders/" ,"PostData":{"startDate":this.state.yearStart,"endDate":this.state.yearEnd}}}/>
               <PieChart
                 display={true}
            			boxColor="box-success"
-           			title="Category-wise Sale"
+           			title="Categorywise Sale"
                 api={{"method":"get","path":"/api/orders/get/categoryRevenue"}} />
               {/* <BarChart
                 display={false}
@@ -141,7 +139,7 @@ export default class Dashboard extends Component{
               <HorizontalBar
                 display={true}
            			boxColor="box-success"
-           			title="Franchise-wise Number of orders"
+           			title="Franchisewise Number of orders"
                 api={{"method":"get","path":"/api/orders/get/franchisewisecount"}} />
            	</div>
            </section>

@@ -15,30 +15,37 @@ export default class Dashboard extends Component{
 	constructor(props) {
 	   super(props);
 	    this.state = {
-	      monthStart    : "",
-	      monthEnd      : "",
-	      yearStart     : "",
-        yearEnd       : "",
-        fromToDateObj : {}, 
-        yearObj       : {},
-        orderFilterData : {},
-        franchiseID    : '',
-        franchiseName  : ''
+	      monthStart       : "",
+	      monthEnd         : "",
+	      yearStart        : "",
+        yearEnd          : "",
+        fromToDateObj    : {}, 
+        yearObj          : {},
+        orderFilterData  : {},
+        franchiseID      : '',
+        franchiseName    : '',
+        franchiseLatLong : '',
+        todayDate        : moment(new Date()).format('YYYY-MM-DD'),
+        startOfWeek      : "",
+        endOfWeek        : ""
 	    }
-	}
-	   
+  }
+  
 	componentDidMount(){
     var userDetails = (localStorage.getItem('userDetails'));
     var userData = JSON.parse(userDetails);
-    axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+    axios.get("/api/entitymaster/getCompany/"+userData.companyID)
       .then((resdata)=>{
       var orderFilterData= {};
       orderFilterData.franchiseID = resdata.data._id;
       this.setState({
         franchiseID     : resdata.data._id,
         orderFilterData : orderFilterData,
-        franchiseName   : resdata.data.companyName
+        franchiseName   : resdata.data.companyName,
+        franchiseLatLong : resdata.data.locations
       })
+
+      console.log("franchiseLatLong",this.state.franchiseLatLong)
      })
     var yyyy = moment().format("YYYY");
     var monthNum = moment().format("MM");
@@ -47,8 +54,8 @@ export default class Dashboard extends Component{
     var monthDateStart = new Date(moment(currentMonth).month("YYYY-MM"));//Find out first day of month with currentMonth
     var monthDateEnd = new Date(moment(currentMonth).add(1,"M"));
     this.setState({
-      monthStart:monthDateStart,
-      monthEnd:monthDateEnd,
+      monthStart:moment(monthDateStart).format('YYYY-MM-DD'),
+      monthEnd:moment(monthDateEnd).format('YYYY-MM-DD'),
       fromToDateObj : {'startDate':monthDateStart,'endDate':monthDateEnd}
     });
 
@@ -60,10 +67,15 @@ export default class Dashboard extends Component{
     var startDateString = moment(startDate).format('YYYY-MM-DD'); // 2016-07-15
     var endDateString = moment(endDate).format('YYYY-MM-DD'); // 2016-07-15
 
+    var startOfWeek = moment().startOf('week').toDate();
+    var endOfWeek   = moment().endOf('week').toDate();
+    console.log("startOfWeek",startOfWeek,"endOfWeek",endOfWeek);
     this.setState({
-      yearStart : startDateString,
-      yearEnd: endDateString,
-      yearObj : {'startDate':yearDateStart,'endDate':yearDateEnd}
+      yearStart   : startDateString,
+      yearEnd     : endDateString,
+      yearObj     : {'startDate':yearDateStart,'endDate':yearDateEnd},
+      startOfWeek : moment(startOfWeek).format('YYYY-MM-DD'),
+      endOfWeek   : moment(endOfWeek).format('YYYY-MM-DD')
     },()=>{
     })
     
@@ -71,7 +83,7 @@ export default class Dashboard extends Component{
 
 
   render(){
-    //console.log("franchiseID",this.state.franchiseID);
+    console.log("franchiseID",this.state.franchiseLatLong);
     return(
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
            <section className="content">
@@ -95,8 +107,8 @@ export default class Dashboard extends Component{
                 display={true}
 	           		bgColor="bg-green"
                 faIcon="fa fa-building"
-                firstField={{"Field":"Total Orders","method":"get","path":"/api/orders/get/ytdorders/"+this.state.franchiseID}}
-                secondField={{"Field":"Total Bills","method":"get","path":"/api/orders/get/billCounts/"+this.state.franchiseID}} 
+                firstField={{"Field":"Digital Orders","method":"get","path":"/api/orders/get/digitalytdorders/"+this.state.franchiseID}}
+                secondField={{"Field":"In-store Orders","method":"get","path":"/api/orders/get/inStoreBillCounts/"+this.state.franchiseID}} 
 	           	/>
 	           	<Statistics 
                 display={true}
@@ -106,48 +118,42 @@ export default class Dashboard extends Component{
 	           		secondField={{"Field":"Total Stock","method":"get","path":"/api/franchisegoods/get/totalFranchiseStock/"+this.state.franchiseID,"showUnit":true}} 
 	            />
            	</div>
-           
-           	<div className="row">
-           		{/* <PieChart
-                display={true}
-           			boxColor="box-success"
-           			title="Car Category-wise Booking"
-                api={{"method":"get","path":"/api/bookingmaster/get/categorywiseBookingForVendor/"+this.state.yearStart+"/"+this.state.yearEnd+"/"+localStorage.getItem("company_Id")}} />
-           		<PieChart
-                display={true}
-           			boxColor="box-default"
-           			title="Corporate-wise Booking" 
-                api={{"method":"get","path":"/api/bookingmaster/get/corporatewiseBookingForvendor/"+this.state.yearStart+"/"+this.state.yearEnd+"/"+localStorage.getItem("company_Id")}} /> */}
-           	</div>
             <div className="row">
               <Report
                 display={true}
-                tableHeading={["OrderId","Item","Status"]}
+                tableHeading={["OrderId","Item","Distance","Total Cost","Status"]}
                 boxColor="box-primary"
                 title="Latest Orders"
-                api={{"method":"post","path":"/api/orders/get/get_orders","PostData":this.state.orderFilterData}}
+                api={{"method":"post","path":"/api/orders/get/get_orders","PostData":this.state.orderFilterData,"address":this.state.franchiseLatLong[0]}}
                 redirectlink="/allorders" />
               <div className="row">
                 <ProgressBlock 
                   display={true}
                   bgColor="bg-yellow"
                   faIcon="fa-shopping-bag"
-                  Field={{"FieldName":"New Orders","method":"get","path":"/api/orders/get/neworderscount"}}
-                  compairField={{"method":"get","path":"/api/orders/get/count"}}
+                  Field={{"FieldName":"Daily Orders","method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.todayDate+'/'+this.state.todayDate}}
+                  compairField={{"method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.startOfWeek+'/'+this.state.endOfWeek}}
                 />
                 <ProgressBlock 
                   display={true}
                   bgColor="bg-green"
                   faIcon="fa-undo"
-                  Field={{"FieldName":"Return Products","method":"get","path":"/api/returnedProducts/get/PendingCount"}}
-                  compairField={{"method":"get","path":"/api/returnedProducts/get/count"}}
+                  Field={{"FieldName":"Weekly Orders","method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.startOfWeek+'/'+this.state.endOfWeek}}
+                  compairField={{"method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.monthStart+'/'+this.state.monthEnd}}
                 />
-                <ProgressBlock 
+                {/* <ProgressBlock 
                   display={true}
                   bgColor="bg-red"
                   faIcon="fas fa-ban"
                   Field={{"FieldName":"Out of Stock","method":"get","path":"/api/products/get/outofstockproducts"}}
                   compairField={{"method":"get","path":"/api/products/get/count"}}
+                /> */}
+                <ProgressBlock 
+                  display={true}
+                  bgColor="bg-red"
+                  faIcon="fa-undo"
+                  Field={{"FieldName":"Monthly Orders","method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.monthStart+'/'+this.state.monthEnd}}
+                  compairField={{"method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.yearStart+'/'+this.state.yearEnd}}
                 />
                 <ProgressBlock 
                   display={true}
@@ -162,26 +168,26 @@ export default class Dashboard extends Component{
            	  <BarChart
                 display={true}
            			boxColor="box-warning"
-           			title="Month-wise Sale"
+           			title="Monthwise Sale"
                  api={{"method":"post","path":"/api/orders/get/getMonthwiseOrders/" ,"PostData":{"startDate":this.state.yearStart,"endDate":this.state.yearEnd,"franchiseID":this.state.franchiseID}}}/>
               <PieChart
                 display={true}
            			boxColor="box-success"
-           			title="Category-wise Sale"
-                api={{"method":"get","path":"/api/orders/get/franchiseCategoryRevenue/"+this.state.franchiseID}} />
+           			title="Sectionwise Sale"
+                api={{"method":"get","path":"/api/orders/get/franchiseSectionRevenue/"+this.state.franchiseID}} />
            	</div>
              <div className="row">
-           		<GoogleMapChart
-                display={true}
-           			boxColor="box-danger"
-                title={this.state.franchiseName+" Location"}
-                key="AIzaSyD1hOxDqrgk8V82oEYXU6W2p_U0-kvvu38"
-                api={{"method":"get","path":"/api/entityMaster/get/one/franchise/"+this.state.franchiseID}} />
+           
               <HorizontalBar
                 display={true}
            			boxColor="box-success"
-           			title="Franchisewise Number of orders"
-                api={{"method":"get","path":"/api/orders/get/franchisewisecount"}} />
+           			title="Monthwise Top 10 Products Sale"
+                api={{"method":"get","path":"/api/orders/get/franchiseTopProductsSale/"+this.state.franchiseID+'/'+this.state.monthStart+'/'+this.state.monthEnd}} />
+              <PieChart
+                display={true}
+           			boxColor="box-danger"
+           			title="Categorywise Sale"
+                api={{"method":"get","path":"/api/orders/get/franchiseCategoryRevenue/"+this.state.franchiseID}} />
            	</div>
            </section>
         </div>

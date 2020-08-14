@@ -20,11 +20,12 @@ class Report extends Component{
       redirectlink:props.redirectlink,
       display:props.display,
       tableHeading:props.tableHeading,
-      data:[]
+      data:[],
     }
   }
    
   componentDidMount(){
+    console.log("componentDidMount display",this.props);
     if(this.props.display){
       this.setState({
         boxColor: this.props.boxColor,
@@ -32,6 +33,7 @@ class Report extends Component{
         tableHeading: this.props.tableHeading,
         redirectlink: this.props.redirectlink,
         apiData : this.props.api,
+        address  : this.props.api.address
       },()=>{this.getData()})
     }
   }
@@ -44,6 +46,7 @@ class Report extends Component{
         tableHeading: nextProps.tableHeading,
         redirectlink: nextProps.redirectlink,
         apiData : nextProps.api,
+        address  : nextProps.api.address
       },()=>{this.getData()})
     }
   }
@@ -60,10 +63,33 @@ class Report extends Component{
           const result = response.data.filter(function(data,index){
             return index <= 6
           });
-
           this.setState({data:result})
         })
         .catch((err)=>{})
+    }
+  }
+
+  findDistance(lat1, lon1, lat2, lon2, unit) {
+    console.log("distance========",lat1, lon1, lat2, lon2, unit);
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+      return 0;
+    }
+    else {
+      var radlat1 = Math.PI * lat1 / 180;
+      var radlat2 = Math.PI * lat2 / 180;
+      var theta = lon1 - lon2;
+      var radtheta = Math.PI * theta / 180;
+      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = dist * 180 / Math.PI;
+      dist = dist * 60 * 1.1515;
+      if (unit == "K") { dist = dist * 1.609344 }
+      if (unit == "N") { dist = dist * 0.8684 }
+      console.log("distance========",dist);
+      return dist;
     }
   }
 
@@ -72,6 +98,7 @@ class Report extends Component{
   }
     
   render(){
+    console.log("deliveryAddress",this.state.address)
     return(
       <div>
       {this.state.display ?
@@ -102,26 +129,39 @@ class Report extends Component{
                   {this.state.data && this.state.data.length > 0 ?
                     this.state.data.map((data,index)=>{
                       let products = [];
+                      let distance = 0;
+                      if(data.deliveryAddress){
+                        let Clatitude = data.deliveryAddress.latitude ? data.deliveryAddress.latitude : null;
+                        let Clongitude = data.deliveryAddress.longitude ? data.deliveryAddress.longitude : null;
+                        let Flatitude = this.state.address.latitude ? this.state.address.latitude : null;
+                        let Flongitude = this.state.address.longitude ? this.state.address.longitude : null;
+                        if(Object.keys(this.state.address).length){
+                          distance = this.findDistance(Clatitude, Clongitude, Flatitude, Flongitude,"K");
+                          console.log("distance = ", distance);
+                        }
+                      }
                       data.products.map((product,index)=>{
                         products.push(product.productName);
                       })
                       let currentStatus  = data.deliveryStatus.length - 1;
                       let deliveryStatus = data.deliveryStatus[currentStatus].status;
                       let statusClass = '';
-                      statusClass = deliveryStatus === "New Order"    ? "stat admin-orders-stat-NewOrder"   : 
-                      statusClass = deliveryStatus === "Verified"    ? "stat admin-orders-stat-Verified"   : 
-                      statusClass = deliveryStatus === "Inspection"  ? "stat admin-orders-stat-Inspection" :
-                      statusClass = deliveryStatus === "Dispatch Approved"  ? "stat admin-orders-stat-OrderVerified" :
-                      statusClass = deliveryStatus === "Dispatch"    ? "stat admin-orders-stat-Dispatched" :
-                      statusClass = deliveryStatus === "To Deliver"    ? "stat admin-orders-stat-Dispatched" :
-                      statusClass = deliveryStatus === "Delivery Initiated"    ? "stat admin-orders-stat-Delivered" :
-                      statusClass = deliveryStatus === "Delivered & Paid"   ? "stat admin-orders-stat-Deliveredpaid" : 
-                      statusClass = deliveryStatus === "Returned"   ? "stat admin-orders-stat-Dispatched" : 
-                      statusClass = deliveryStatus === "Cancelled"   ? "stat admin-orders-stat-Dispatched" : ""
+                      statusClass = deliveryStatus === "New Order"    ? "label label-warning"   : 
+                      statusClass = deliveryStatus === "Verified"    ? "label label-info"   : 
+                      statusClass = deliveryStatus === "Inspection"  ? "label label-default" :
+                      statusClass = deliveryStatus === "Dispatch Approved"  ? "label label-success" :
+                      statusClass = deliveryStatus === "Dispatch"    ? "label label-success" :
+                      statusClass = deliveryStatus === "To Deliver"    ? "label label-info" :
+                      statusClass = deliveryStatus === "Delivery Initiated"    ? "label label-primary" :
+                      statusClass = deliveryStatus === "Delivered & Paid"   ? "label label-success" : 
+                      statusClass = deliveryStatus === "Returned"   ? "label label-default" : 
+                      statusClass = deliveryStatus === "Cancelled"   ? "label label-danger" : ""
                       return(
                         <tr key={index}>
                           <td>{data.orderID}</td>
                           <td>{products.toString()}</td>
+                          <td>{distance.toFixed(2) +" Km"} </td>
+                          <td>{data.total}</td>
                           <td><div className={statusClass}>
                              {deliveryStatus}
                              </div>
