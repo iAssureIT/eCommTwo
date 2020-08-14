@@ -155,7 +155,7 @@ class Layout extends Component  {
                   <Header />
                 </div> 
               </div>
-              <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding" >
+              <div id="dashbordid" className="col-lg-10 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 NOpadding BM-dashbord dashboard-component" >
                 <div className="" >
                   <div className=" mainContentBottom NOpadding" >
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding mainContentBackground" >

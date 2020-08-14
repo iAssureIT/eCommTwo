@@ -61,8 +61,9 @@ export class Bill extends React.Component {
 		// $('#headerid').attr('style',"width : 100% !important");
 		$('#headerid').hide();
 		$('#dashbordid').css('top',0);
-		$('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
-		$('#dashbordid').removeClass('dashboardeffect');
+		// $('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');
+		// $('#dashbordid').removeClass('dashboardeffect');
+	
 		this.props.fetchCartData();
 		this.getCategories();
 		this.getSections();
