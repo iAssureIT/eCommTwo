@@ -3,6 +3,10 @@ import $ from 'jquery';
 import jQuery from 'jquery';
 import swal from 'sweetalert';
 import axios from 'axios';
+
+import { connect } from 'react-redux';
+import { bindActionCreators }     from 'redux';
+import {getForm,updateForm} from '../actions/index';
 import '../../sites/currentSite/common/SignUp.css'
 
 class ResetPassword extends Component {
@@ -22,7 +26,8 @@ class ResetPassword extends Component {
     }
     resetPassword(event) {
         event.preventDefault();
-        var userID = this.props.match.params.user_ID;
+        // var userID = this.props.match.params.user_ID;
+        var userID = localStorage.getItem("userID");
         var formValues = {
             "pwd" : this.refs.newPassword.value
         }
@@ -104,10 +109,14 @@ class ResetPassword extends Component {
         $('.hidePwd2').toggleClass('hidePwd3');
         return $('#confirmPassword').attr('type', 'password');
     }
+    openSignInModal(event){
+		event.preventDefault();
+		this.props.updateFormValue("login");	
+  }
     render() {
         return (
             <div style={{'height': window.innerHeight+'px', 'width': window.innerWidth+'px'}} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
-                <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 col-xs-12 formShadow mb100 mt100">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
                         <h3>Reset Password</h3>
                     </div>
@@ -135,8 +144,8 @@ class ResetPassword extends Component {
                                 <br/>
                                 <div id="confirmPass"></div>
                             </div>
-                            <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 mt25 mb25">
-                                <button className="btn resetBtn" onClick={this.resetPassword.bind(this)}>Reset Password</button>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25 mb25">
+                                <button className="btn loginBtn loginBtn_uni" onClick={this.resetPassword.bind(this)}>Reset Password</button>
                             </div>
                         </form>
                         </div>
@@ -145,7 +154,9 @@ class ResetPassword extends Component {
                             <p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25 textAlignCenter">Your password has been reset successfully!</p>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                                 <div className="row loginforgotpass textAlignCenter"> Please &nbsp;
-                                    <a href='/login' className=""><b>Click here</b></a> to Sign In.
+                                    {/* <a href='/login' className=""><b>Click here</b></a> */}
+                                    <span className=""onClick={this.openSignInModal.bind(this)} style={{'cursor':'pointer'}} ><b>Click here</b> &nbsp;</span>
+                                     to Sign In.
                                 </div>
                             </div>
                         </div>
@@ -156,4 +167,15 @@ class ResetPassword extends Component {
     }
 }
 
-export default ResetPassword;
+const mapStateToProps = (state) => {
+	return {
+	  formToShow     : state.formToShow,
+  
+	}
+  }
+  
+  const mapDispachToProps = (dispatch) => {
+	return  bindActionCreators({formToShow :getForm, updateFormValue: updateForm}, dispatch)
+  }
+
+  export default connect(mapStateToProps, mapDispachToProps)(ResetPassword);

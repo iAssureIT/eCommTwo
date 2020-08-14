@@ -495,10 +495,10 @@ class SearchProductCollage extends Component {
                   var tooltipMsg = 'Remove from wishlist';
                 }
                 return (
-                  <div className="item col-lg-3 col-md-3 col-sm-6 col-xs-12 NoPadding" key={index}>
+                  <div className="item col-lg-3 col-md-3 col-sm-6 col-xs-6 NoPadding" key={index}>
                     {/* <a href={"/productdetails/" + data.productUrl + "/" + data._id}> */}
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 productInnerWrap NoPadding">
+                        <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-12 productInnerWrap NoPadding">
                           <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12  NoPadding">
                             <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                               <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>

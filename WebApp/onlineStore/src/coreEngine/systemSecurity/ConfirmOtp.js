@@ -42,26 +42,27 @@ class ConfirmOtp extends Component {
   }
   confirmOTP(event) {
     event.preventDefault();
-    var url = this.props.match.params;
+    var userID = localStorage.getItem('userID');
+    // var url = this.props.match.params;
     var formValues = {
-      "user_ID": this.props.match.params.userID,
+      "user_ID": userID,
       "emailOTP": parseInt(this.refs.emailotp.value),
       "status": "Active"
     }
     if ($("#OTPMobMail").valid()) {
-      axios.get('/api/auth/get/checkemailotp/usingID/' + this.props.match.params.userID + '/' + this.refs.emailotp.value)
+      axios.get('/api/auth/get/checkemailotp/usingID/' +userID + '/' + this.refs.emailotp.value)
         .then((response) => {
-
           if (response.data.message === 'SUCCESS') {
+            this.props.updateFormValue("resetPassword");	
             swal('OTP Verified Successfully.');
-            var url = localStorage.getItem('previousUrl');
-            if (url === 'forgotpassword') {
-              localStorage.removeItem("previousUrl");
-              this.props.history.push('/reset-pwd/' + this.props.match.params.userID);
-            } else {
-              localStorage.removeItem("previousUrl");
-              this.props.history.push('/login');
-            }
+            // var url = localStorage.getItem('previousUrl');
+            // if (url === 'forgotpassword') {
+            //   localStorage.removeItem("previousUrl");
+            //   this.props.history.push('/reset-pwd/' + this.props.match.params.userID);
+            // } else {
+            //   localStorage.removeItem("previousUrl");
+            //   this.props.history.push('/login');
+            // }
           } else {
             swal('Please enter valid OTP.');
           }
@@ -81,7 +82,8 @@ class ConfirmOtp extends Component {
     }
   }
   resendOtp(event) {
-    const userid = this.props.match.params.userID;
+    // const userid = this.props.match.params.userID;
+    var userid = localStorage.getItem('userID');
     if ($("#OTPMobMail").valid()) {
     document.getElementById("resendOtpBtn").innerHTML = 'Please wait...';
       var formValues = {
@@ -91,6 +93,38 @@ class ConfirmOtp extends Component {
       axios.patch('/api/auth/patch/setsendemailotpusingID/' + userid, formValues)
         .then((response) => {
           document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
+          //Notification code
+          axios.get('/api/ecommusers/' +userid)                    
+          .then((res) => {
+          // console.log("res.data==>", res.data);
+          this.setState({
+          fullName: res.data.profile.fullName,
+          userid:res.data._id
+          }, () => {
+          var sendData = {
+          "event": "5",
+          "toUser_id": res.data._id,
+          "toUserRole": "user",
+          "variables": {
+          "Username": res.data.profile.fullName,
+          "OTP": res.data.profile.otpEmail,
+          }
+          }
+              // console.log('sendDataToUser==>', sendData);
+              axios.post('/api/masternotifications/post/sendNotification', sendData)
+              .then((res) => {
+                  // console.log('sendDataToUser in result==>>>', res.data)
+              })
+              .catch((error) => { 
+                  console.log('notification error: ', error) })
+              })                  
+
+          })
+          .catch((error) => {
+          console.log('error', error)
+          });//end notification
+
+
           swal("OTP re-sent to your registered Email ID.");
         })
       .catch((error) => {
@@ -127,7 +161,7 @@ class ConfirmOtp extends Component {
       // <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
       //   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
       //   </div>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt100 mb100 NoPadding">
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

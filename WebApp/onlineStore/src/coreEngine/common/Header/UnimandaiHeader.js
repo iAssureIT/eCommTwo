@@ -13,6 +13,7 @@ import Login          from '../../systemSecurity/Login.js';
 import SignUp         from '../../systemSecurity/SignUp.js';
 import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 import ConfirmOtp     from '../../systemSecurity/ConfirmOtp.js';
+import ResetPassword  from '../../systemSecurity/ResetPassword.js';
 import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
 import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
@@ -903,6 +904,12 @@ loginPage(event){
                       {this.props.formToShow === "confirmOtp" ?
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
                               <ConfirmOtp />
+                          </div>  
+                      : null
+                      } 
+                      {this.props.formToShow === "resetPassword" ?
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
+                              <ResetPassword />
                           </div>  
                       : null
                       }                                                                

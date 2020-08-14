@@ -256,8 +256,26 @@ class HomePage extends Component {
           </div>
 
         <Unimandai_SaleProductDivider />
-        {/* <div className="homeRow">
+                
+        <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
           {
+            process.env.REACT_APP_PROJECT_NAME === '4_UniMandai' ?
+            this.state.fruitProductsloading ?  
+            <Loader type="carouselloader" productLoaderNo = {4}/>      
+            : 
+            (this.state.exclusiveProducts.length > 0 ? 
+              <EcommerceProductCarousel 
+                  title={'FRUITS'} 
+                  newProducts={this.state.fruitProducts}
+                  type={'exclusive'} 
+                  categories={this.state.categories} 
+                  getWishData={this.getWishData.bind(this)} 
+                  wishList={this.state.wishList}
+                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
+              :
+              null
+            )
+            :
             this.state.exclusiveprloading ?  
             <Loader type="carouselloader" productLoaderNo = {4}/>      
             : 
@@ -274,27 +292,7 @@ class HomePage extends Component {
               null
             )
           }
-        </div> */}
-        <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-          {
-            this.state.fruitProductsloading ?  
-            <Loader type="carouselloader" productLoaderNo = {4}/>      
-            : 
-            (this.state.exclusiveProducts.length > 0 ? 
-              <EcommerceProductCarousel 
-                  title={'FRUITS'} 
-                  newProducts={this.state.fruitProducts}
-                  type={'exclusive'} 
-                  categories={this.state.categories} 
-                  getWishData={this.getWishData.bind(this)} 
-                  wishList={this.state.wishList}
-                  changeProductCateWise={this.changeProductCateWise.bind(this)} />
-              :
-              null
-            )
-          }
-        </div>            
-
+        </div>
         <WhychooseUs/>
         {/* <Ceo />*/}
         {/* <Blogs /> */}

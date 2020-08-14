@@ -30,7 +30,7 @@ class Address extends Component {
         $.validator.addMethod("modalregxmobileNumber", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid mobile number.");
-        $.validator.addMethod("modalregxemail", function (value, element, regexpr) {
+        $.validator.addMethod("regxmodalemail", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid email address.");
         $.validator.addMethod("regexmodaladdressLine", function (value, element, regexpr) {
@@ -75,6 +75,7 @@ class Address extends Component {
                 },
                 modalemail: {
                     required: true,
+                    regxmodalemail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
                 },
                 modaladdressLine1: {
                     required: true,

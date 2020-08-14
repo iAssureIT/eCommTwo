@@ -40,14 +40,15 @@ class ForgotPassword extends Component {
             $('.fullpageloader').show();
             axios.patch('/api/auth/patch/setsendemailotpusingEmail/' + email, formValues)
                 .then((response) => {
-                    console.log("response============",response);
+                    // console.log("response============",response);
                     this.setState({ btnLoading: false });
                     document.getElementById("sendlink").innerHTML = 'Reset Password';
                     localStorage.setItem('previousUrl', 'forgotpassword');
-                    $('.fullpageloader').hide();                    
+                    $('.fullpageloader').hide();    
+                    localStorage.setItem('userID',response.data.userID);
                         axios.get('/api/ecommusers/' +response.data.userID)                    
                         .then((res) => {
-                        console.log("res.data==>", res.data);
+                        // console.log("res.data==>", res.data);
                         this.setState({
                         fullName: res.data.profile.fullName,
                         userid:res.data._id

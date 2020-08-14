@@ -225,7 +225,7 @@ class Login extends Component {
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
                 <div className=" col-lg-8 col-lg-offset-2 siteLogo NoPadding" style={{'background': 'url(' +logo  +')'}}></div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <h4>Sign In</h4>
+                  <h3>SIGN IN</h3>
                 </div>
               </div>
               <form id="login" onSubmit={this.userlogin.bind(this)}>

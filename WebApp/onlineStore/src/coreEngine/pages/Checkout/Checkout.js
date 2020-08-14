@@ -4,6 +4,7 @@ import axios from 'axios';
 import jQuery from 'jquery';
 import { ntc } from '../../ntc/ntc.js';
 import Address from '../Address/Address.js';
+import swal from 'sweetalert';
 import _ from 'underscore';
 import SmallBanner from '../../blocks/SmallBanner/SmallBanner.js';
 import Message from '../../blocks/Message/Message.js';
@@ -213,33 +214,33 @@ class Checkout extends Component {
         $.validator.addMethod("regxemail", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid email.");
-        $.validator.addMethod("regxaddressLine", function (value, element, regexpr) {
+        $.validator.addMethod("regxaddressLine1", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid address.");
-        $.validator.addMethod("regxcountry", function (value, element, arg) {
-            return arg !== value;
-        }, "Please select the country.");
-        $.validator.addMethod("regxstate", function (value, element, arg) {
-            return arg !== value;
-        }, "Please select the state");
+        // $.validator.addMethod("regxcountry", function (value, element, arg) {
+        //     return arg !== value;
+        // }, "Please select the country.");
+        // $.validator.addMethod("regxstate", function (value, element, arg) {
+        //     return arg !== value;
+        // }, "Please select the state");
         // $.validator.addMethod("regxblock", function (value, element, regexpr) {
         //     return regexpr.test(value);
         // }, "Please enter valid block name.");
-        $.validator.addMethod("regxdistrict", function (value, element, arg) {
-            return arg !== value;
-        }, "Please select the district");
-        $.validator.addMethod("regxcity", function (value, element, regexpr) {
-            return regexpr.test(value);
-        }, "Please enter valid city name");
+        // $.validator.addMethod("regxdistrict", function (value, element, arg) {
+        //     return arg !== value;
+        // }, "Please select the district");
+        // $.validator.addMethod("regxcity", function (value, element, regexpr) {
+        //     return regexpr.test(value);
+        // }, "Please enter valid city name");
         $.validator.addMethod("regxpincode", function (value, element, regexpr) {
             return regexpr.test(value);
-        }, "Please enter valid pincode.");
+        }, "Please enter valid pincode.");        
         $.validator.addMethod("regxaddType", function (value, element, arg) {
             return arg !== value;
         }, "Please select the address type.");
-        $.validator.addMethod("regxaddType", function (value, element, arg) {
+        $.validator.addMethod("regxtermsNconditions", function (value, element, arg) {
             return arg !== value;
-        }, "Please select the address type.");
+        }, "Please select the terms and condition.");
         jQuery.validator.setDefaults({
             debug: true,
             success: "valid"
@@ -255,11 +256,12 @@ class Checkout extends Component {
                     required: true,
                 },
                 email: {
+                    regxemail: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
                     required: true,
                 },
                 addressLine1: {
                     required: true,
-                    regxaddressLine: /^[A-Za-z0-9_@./#&+-]/,
+                    regxaddressLine1: /^[A-Za-z0-9_@./#&+-]/,
                 },
                 // addressLine2: {
                 //     required: true,
@@ -272,19 +274,19 @@ class Checkout extends Component {
                 state: {
                     required: true,
                     regxstate: "Select State"
-                },
+                },                
                 // block: {
                 //     required: true,
                 //     regxblock : /^[A-Za-z][A-Za-z\-\s]*$/,
                 // },
-                district: {
-                    required: true,
-                    regxdistrict: "Select District"
-                },
-                city: {
-                    required: true,
-                    regxcity: /^[A-Za-z][A-Za-z\-\s]*$/,
-                },
+                // district: {
+                //     required: true,
+                //     regxdistrict: "Select District"
+                // },
+                // city: {
+                //     required: true,
+                //     regxcity: /^[A-Za-z][A-Za-z\-\s]*$/,
+                // },
                 pincode: {
                     required: true,
                     regxpincode: /^[1-9][0-9]{5}$/,
@@ -304,7 +306,8 @@ class Checkout extends Component {
                 //     regxTermandCondition: "check type"
                 // }
                 termsNconditions: {
-                    required: true
+                    required: true,
+                    regxtermsNconditions: "Select Type"
                 }
             },
             errorPlacement: function (error, element) {
@@ -453,7 +456,6 @@ class Checkout extends Component {
         if (event.target.name === 'pincode') {
             this.handlePincode(event.target.value);
             this.checkPincode(event.target.value);
-
         }
     }
     handlePincode(pincode) {
@@ -794,7 +796,9 @@ class Checkout extends Component {
                     "latitude": this.state.latitude,
                     "longitude": this.state.longitude,
                 }
-                console.log("inside if address values====", addressValues);
+                // console.log("inside if address values====", addressValues);
+                // this.handlePincode(this.state.pincode);
+                //  this.checkDelivery(this.state.pincode);
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     // console.log("addressValues:===",addressValues);
@@ -871,6 +875,10 @@ class Checkout extends Component {
                             paymentMethod: this.props.recentCartData[0].paymentMethod
                         }
                         // console.log("Order Data:--->",orderData);
+                        
+                        // if($(".acceptTerms").attr("aria-invalid", true)){  
+                        // if(document.querySelector('.acceptTerms:checked') !== null){  
+                        // if($('.acceptTerms:checkbox:checked').length > 0){                     
                         axios.post('/api/orders/post', orderData)
                             .then((result) => {
                                 axios.get('/api/orders/get/one/' + result.data.order_ID)
@@ -890,11 +898,11 @@ class Checkout extends Component {
                                                     "shippingtime": res.data.shippingtime,
                                                 }
                                             }
-                                            console.log('sendDataToUser==>', sendData);
+                                            // console.log('sendDataToUser==>', sendData);
                                             axios.post('/api/masternotifications/post/sendNotification', sendData)
                                                 .then((res) => {
                                                     if (res) {
-                                                        console.log('sendDataToUser in result==>>>', res.data)
+                                                        // console.log('sendDataToUser in result==>>>', res.data)
                                                     }
 
                                                 })
@@ -925,6 +933,12 @@ class Checkout extends Component {
                                 console.log("return to checkout");
                                 console.log(error);
                             })
+
+                        // }else{
+                        //     console.log("$('.acceptTerms:checkbox:checked').length===",$('.acceptTerms:checkbox:checked').length);
+                        //     swal("Please check Terms and condition and add your delivery address properly");
+                        
+                        // }
                     })
                     .catch((error) => {
                         console.log('error', error);
@@ -1088,6 +1102,10 @@ class Checkout extends Component {
     opDones() {
         this.getUserAddress();
     }
+    handleCheckbox(event){
+        event.preventDefault();
+    //   console.log("terms value ....",$('.acceptTerms:checkbox:checked').length);
+    }
     checkDelivery(event) {
         // event.preventDefault();
         var target = event.target.pincode;
@@ -1095,7 +1113,7 @@ class Checkout extends Component {
         console.log("addressId =", id);
         $('.notAvailable').hide();
         const pincode = event.target.getAttribute('pincode');
-        console.log("target:", pincode);
+        // console.log("target:", pincode);
         this.setState({
             "addressId": id,
         })
@@ -1103,7 +1121,7 @@ class Checkout extends Component {
             .then((response) => {
                 if (response) {
                     if (response.data.message !== "Delivery Available") {
-                        console.log("Delivery not possible on this address");
+                        // console.log("Delivery not possible on this address");
                         $('#' + id).show();
                         $(".placeOrder").attr("disabled", true);
                     } else {
@@ -1121,7 +1139,6 @@ class Checkout extends Component {
                     <Loader type="fullpageloader" />
                     <Address opDone={this.opDones.bind(this)} />
                     <SmallBanner bannerData={this.state.bannerData} />
-
                     <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
                         <form id="checkout">
                             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -1366,8 +1383,8 @@ class Checkout extends Component {
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
                                             <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
-                                                <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
-                                            <div className="col-lg-11 col-md-11 col-sm-11 col-xs-11 termsWrapper">
+                                                <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-2" required /> &nbsp;
+                                                <div className="col-lg-11 col-md-11 col-sm-11 col-xs-9 termsWrapper">
                                                     <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
                                                 </div>
                                             </div>
