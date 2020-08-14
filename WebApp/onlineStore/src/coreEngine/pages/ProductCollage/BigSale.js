@@ -928,16 +928,20 @@ class BigSale extends Component {
 						{
 							// Array.isArray(this.state.categoryDetails.length) > 1 ?
 							Array.isArray(this.state.allCategoryDetails) && this.state.allCategoryDetails.length > 0 ?
-								<div className="col-lg-3 col-md-3 filterWrapper">									
+								<div className="col-lg-3 col-md-3 col-sm-3 col-xs-12 filterWrapper">									
 									<div className="nb-brand filterInner col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
 									<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
-												<div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>
-												{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" > */}
+												{/* <div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>												
 													<button className="btn btn-link" type="button" data-key="category"   >
 														CATEGORY
 						        					</button>
 													<span className="expand"><i className={this.state["toggleIconcategory"] ? this.state["toggleIconcategory"] : "fa fa-plus-circle categoryIcon"} data-key="category"></i></span>
+												</div>  */}
+												<div className="pagefilter collapsed" onClick={this.handleToggle.bind(this)}>												
+													<button className="btn btn-link" type="button" data-key="category"   >
+														CATEGORY
+						        					</button>													
 												</div> 
 											</div>
 											<div id="collapseOne" className="collapse in">

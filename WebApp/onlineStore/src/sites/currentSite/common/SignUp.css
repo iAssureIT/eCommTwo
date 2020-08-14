@@ -17,6 +17,9 @@
 {
 	width:43px; height:43px; position:absolute;
 }
+.forgotPassBtn{
+  margin-top: 25px !important;
+}
 .cssload-ballcolor
 {
 	width: 19px;

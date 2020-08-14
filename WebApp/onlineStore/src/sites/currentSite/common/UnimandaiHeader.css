@@ -340,13 +340,12 @@ ul.main-nav > li:hover {
     background-color: #80b435 !important;
     /* border: solid 1px #80b435 !important; */
 }
-
 .logout-list-menu .signInOutBtn{
     margin: 20px 15px !important;   
 }
 .cart-dropdown-menu {
     left: -295px !important;
-    margin: 5px !important;
+    margin-top: 8px !important;
     min-width: 400px !important;
     background-color: #fff !important;
 }

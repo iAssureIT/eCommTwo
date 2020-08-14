@@ -30,6 +30,22 @@ exports.user_details = (req, res, next) => {
 			});
 		});
 };
+exports.get_user_details = (req, res, next) => {
+	var email = req.params.email;
+	User.findOne({ "profile.email": email })
+		// .select("profile")
+		.exec()
+		.then(users => {
+			res.status(200).json(users);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({
+				error: err
+			});
+		});
+};
+
 // Handle delete contact
 exports.delete_user = function (req, res, next) {
 	User.findOne({ _id: req.params.userID })

@@ -188,7 +188,7 @@ class SignUp extends Component {
 										.then((response) => {
 											this.setState({ btnLoading: false });
 											if (response) {
-												console.log("login response====",response);
+												// console.log("login response====",response);
 												//send notification to user
 												var sendData = {
 													"event": "1",

@@ -40,16 +40,50 @@ class ForgotPassword extends Component {
             $('.fullpageloader').show();
             axios.patch('/api/auth/patch/setsendemailotpusingEmail/' + email, formValues)
                 .then((response) => {
+                    console.log("response============",response);
                     this.setState({ btnLoading: false });
                     document.getElementById("sendlink").innerHTML = 'Reset Password';
                     localStorage.setItem('previousUrl', 'forgotpassword');
-                    $('.fullpageloader').hide();
+                    $('.fullpageloader').hide();                    
+                        axios.get('/api/ecommusers/' +response.data.userID)                    
+                        .then((res) => {
+                        console.log("res.data==>", res.data);
+                        this.setState({
+                        fullName: res.data.profile.fullName,
+                        userid:res.data._id
+                        }, () => {
+                        var sendData = {
+                        "event": "5",
+                        "toUser_id": res.data._id,
+                        "toUserRole": "user",
+                        "variables": {
+                        "Username": res.data.profile.fullName,
+                        "OTP": res.data.profile.otpEmail,
+                        }
+                        }
+                            console.log('sendDataToUser==>', sendData);
+                            axios.post('/api/masternotifications/post/sendNotification', sendData)
+                            .then((res) => {
+                                console.log('sendDataToUser in result==>>>', res.data)
+                            })
+                            .catch((error) => { 
+                                console.log('notification error: ', error) })
+                            })                  
+
+                        })
+                        .catch((error) => {
+                        console.log('error', error)
+                        });
+
                     swal("OTP sent to your registered Email ID.");
-                    this.props.history.push('/confirm-otp/' + response.data.userID);
+                    console.log("response.data.userID===",response.data.userID);
+                    this.props.updateFormValue("confirmOtp");
+                    // this.props.history.push('/confirm-otp/' +response.data.userID);
                 })
                 .catch((error) => {
-                    document.getElementById("sendlink").innerHTML = 'Reset Password';
+                    document.getElementById("sendlink").innerHTML = 'Resend OTP';
                     swal("This Email ID is not registered");
+                    console.log("error===",error);
                     $('.fullpageloader').hide();
                 })
         }
@@ -124,9 +158,8 @@ class ForgotPassword extends Component {
                       					        <span className="spinner"><i className="fa fa-refresh fa-spin"></i></span>
                                             </div>
                                             :
-                                            <div className="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12 mt15">
-                                                <button id="signUpBtn" type="button"  onClick={this.sendLink.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni waves-effect">Send OTP</button>
-                                                
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 forgotPassBtn">
+                                                <button id="sendlink" type="button"  onClick={this.sendLink.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  btn loginBtn loginBtn_uni waves-effect">Send OTP</button>                                                
                                             </div>
                                     }
                                     {/* <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 mt25 mb25">

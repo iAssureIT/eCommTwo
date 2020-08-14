@@ -164,7 +164,7 @@ class ProductCollage extends Component {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				console.log(" Section Products:",products);
+				// console.log(" Section Products:",products);
 				this.setState({
 					loading: false,
 					products: products
@@ -763,6 +763,7 @@ class ProductCollage extends Component {
 	}
 	render() {
 		// console.log("Category details:-----",this.state.categoryDetails);
+		console.log("this.state.loading===",this.state.loading);
 		if(this.state.categoryDetails.length < 1){
 			$('.filterWrapper').hide();
 			$('.ProductViewWrapper').removeClass('col-lg-9');
@@ -777,7 +778,7 @@ class ProductCollage extends Component {
 			$('.ProductViewWrapper').removeClass('col-md-12');	
 		}		
 		return (
-			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv">
+			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv" style={{"min-height":"200px"}}>
 				<div className="row">
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -923,11 +924,16 @@ class ProductCollage extends Component {
 										<div className="accordion" id="accordionExample">
 											<div className="card-header" id="headingOne">
 												{/* <div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}> */}
-												<div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" >
+												{/* <div className="pagefilter" data-toggle="collapse" data-target="#collapseOne" data-key="category" >
 													<button className="btn btn-link" type="button" data-key="category"   >
 														CATEGORY
 						        					</button>
 													<span className="expand"><i className={this.state["toggleIconcategory"] ? this.state["toggleIconcategory"] : "fa fa-plus-circle categoryIcon"} data-key="category"></i></span>
+												</div>  */}
+												<div className="pagefilter" >
+													<button className="btn btn-link" type="button" data-key="category"   >
+														CATEGORY
+						        					</button>													
 												</div> 
 											</div>
 											<div id="collapseOne" className="collapse in">
@@ -1155,6 +1161,7 @@ class ProductCollage extends Component {
 														</div>
 													</div>
 													{
+														Array.isArray(this.state.products) && this.state.products.length>0?
 														<ProductCollageView
 															products={this.state.products}
 															categoryDetails={this.state.categoryDetails}
@@ -1162,6 +1169,10 @@ class ProductCollage extends Component {
 															getFilteredProductsFun={this.getFilteredProducts.bind(this)}
 															parameters={this.props.match.params}
 															selector={this.state.selector} />
+														:
+														<div className="alert alert-warning textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
+															<i className="fa fa-exclamation-triangle"></i>&nbsp;   There is no items found.
+														</div>
 													}
 												</div>
 											</div>
@@ -1170,7 +1181,11 @@ class ProductCollage extends Component {
 					    </div>
 										</div>
 									</div>
-									: <div className="text-center"><img src="../../../sites/currentSite/images/noproducts.jpeg" alt="" /></div>
+									: 
+									<div className="alert alert-warning textAlignCenter col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12 mt25">
+										<i className="fa fa-exclamation-triangle"></i>&nbsp;   There is no items found.
+									</div>
+									// <div className="text-center"><img src="../../../sites/currentSite/images/noproducts.jpeg" alt="" /></div>
 						}
 					</div>
 

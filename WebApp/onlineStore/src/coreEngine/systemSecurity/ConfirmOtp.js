@@ -4,7 +4,11 @@ import $ from "jquery";
 import jQuery from 'jquery';
 import axios from 'axios';
 // import './SignUp.css';
-import '../../sites/currentSite/common/SignUp.css'
+import '../../sites/currentSite/common/SignUp.css';
+import { connect } from 'react-redux';
+import { bindActionCreators }     from 'redux';
+import {getForm,updateForm} from '../actions/index';
+
 class ConfirmOtp extends Component {
   constructor(props) {
     super(props);
@@ -107,6 +111,12 @@ class ConfirmOtp extends Component {
     $(".toast-warning").removeClass('toast');
 
   }
+
+  openSignInModal(event){
+		event.preventDefault();
+		this.props.updateFormValue("login");	
+  }
+  
   render() {
 
     var resendOtpWrap = "resendOtpWrap resendOtpWrapcss";
@@ -114,11 +124,11 @@ class ConfirmOtp extends Component {
     var resendOtp = "";
 
     return (
-      <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
-        </div>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt100 mb100">
-          <div className="col-lg-4 col-lg-offset-7 col-md-4 col-md-offset-7 col-sm-12 col-xs-12 formShadow">
+      // <div style={{ 'height': window.innerHeight + 'px', 'width': window.innerWidth + 'px' }} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 LoginWrapper">
+      //   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innloginwrap">
+      //   </div>
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt100 mb100 NoPadding">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
@@ -134,7 +144,6 @@ class ConfirmOtp extends Component {
                     </div>
                     <form id="OTPMobMail" className="textAlignLeft">
                       <div className="">
-
                         <br />
                         <div className="input-group " id="emailotp">
                           <input type="text" className="form-control" ref="emailotp" name="emailotp" placeholder="Enter OTP" onBlur={this.inputEffect.bind(this)} aria-describedby="basic-addon1" maxLength="4" pattern="(0|[0-9]*)" required />
@@ -142,16 +151,16 @@ class ConfirmOtp extends Component {
                         </div>
                       </div>
                       <div className="loginforgotpass mt25">
-                        <lable>Found your Password?</lable>&nbsp;<a href='/login' className="">Sign In <b>&#8702;</b></a>
+                        <lable>Found your Password?</lable>&nbsp;<a href="" onClick={this.openSignInModal.bind(this)} className="" >Sign In <b>&#8702;</b></a>
                       </div>
                       <div className="mt30 col-lg-12 mb25">
-                        <div className="col-lg-6">
-                          <div id="resendOtpBtn" onClick={this.resendOtp.bind(this)} className="col-lg-12 btn  systemsecBtn">
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                          <div id="resendOtpBtn" onClick={this.resendOtp.bind(this)} className="col-lg-12 btn loginBtn_uni  systemsecBtn">
                             Resend OTP
                           </div>
                         </div>
-                        <div className="col-lg-6">
-                          <button type="submit" onClick={this.confirmOTP.bind(this)} className="col-lg-12 btn loginBtn systemsecBtn">Submit</button>
+                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                          <button type="submit" onClick={this.confirmOTP.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn loginBtn_uni systemsecBtn">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -160,17 +169,28 @@ class ConfirmOtp extends Component {
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <p className="textAlignCenter">Your Account is verified successfully! Please Sign In to access your account.<br /></p>
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
-                      <a href="/login" className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 button3  btn btn-warning  signupbtn">Sign In</a>
+                      <a href="" className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 button3  btn btn-warning  signupbtn" onClick={this.openSignInModal.bind(this)}>Sign In</a>
                     </div>
                   </div>
               }
 
             </div>
           </div>
-
         </div>
-      </div>
+      // </div>
     );
   }
 }
-export default ConfirmOtp;
+
+const mapStateToProps = (state) => {
+	return {
+	  formToShow     : state.formToShow,
+  
+	}
+  }
+  
+  const mapDispachToProps = (dispatch) => {
+	return  bindActionCreators({formToShow :getForm, updateFormValue: updateForm}, dispatch)
+  }
+
+  export default connect(mapStateToProps, mapDispachToProps)(ConfirmOtp);

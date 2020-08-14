@@ -12,6 +12,7 @@ import $                          from "jquery";
 import Login          from '../../systemSecurity/Login.js';
 import SignUp         from '../../systemSecurity/SignUp.js';
 import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
+import ConfirmOtp     from '../../systemSecurity/ConfirmOtp.js';
 import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
 import loginIconImg    from "../../../sites/currentSite/images/userIcon.png";
 import modalImg        from "../../../sites/currentSite/images/mapIcon.png";
@@ -644,10 +645,16 @@ loginPage(event){
                                 </div>
                             }
                             </div>
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropborder">
-                              <div className="col-lg-6 NOpaddingLeft">
-                                <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
-                              </div>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropborder">                              
+                              {this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0  &&  this.state.minvalueshipping <= this.props.recentCartData[0].total?
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpaddingLeft">  
+                                    <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
+                                  </div>
+                                :
+                                <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 NOpaddingLeft">  
+                                  <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
+                                </div>
+                                }
                               {
                               this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0  &&  this.state.minvalueshipping <= this.props.recentCartData[0].total?  
                                 <div className="col-lg-6 NOpaddingRight">
@@ -811,11 +818,17 @@ loginPage(event){
                                   </div>
                               }
                               </div>
-                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropborder">
-
-                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpaddingLeft">
+                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 cartdropborder">                                
+                                {this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0  &&  this.state.minvalueshipping <= this.props.recentCartData[0].total?
+                                  <div className="col-lg-6 col-md-6  col-sm-6 col-xs-6 NOpaddingLeft">  
+                                    <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
+                                  </div>
+                                :
+                                <div className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3 NOpaddingLeft">  
                                   <a href="/cart"><div className="btn cartdropbtn2_un col-lg-12" title="VIEW CART">VIEW CART</div></a>
                                 </div>
+                                }
+                                
                                 {
                                 this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length > 0  &&  this.state.minvalueshipping <= this.props.recentCartData[0].total?  
                                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpaddingRight">
@@ -884,6 +897,12 @@ loginPage(event){
                       {this.props.formToShow === "forgotPassword" ?
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
                               <ForgotPassword />
+                          </div>  
+                      : null
+                      }  
+                      {this.props.formToShow === "confirmOtp" ?
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginForm">
+                              <ConfirmOtp />
                           </div>  
                       : null
                       }                                                                
