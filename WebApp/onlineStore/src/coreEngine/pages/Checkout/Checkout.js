@@ -84,17 +84,17 @@ class Checkout extends Component {
         //             console.log('error'+ error);
         //             // alert(error);
         //         });
-        var paymentdetails = {
-            MERCHANT_ID: 9445,
-            MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
-            REFERENCE_NO: Math.round(new Date().getTime() / 1000),
-            AMOUNT: 200,
-            PRODUCT_CODE: "testing",
-            CUSTOMER_MOBILE_NO: "8087679825",
-            CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
-        }
+        // var paymentdetails = {
+        //     MERCHANT_ID: 9445,
+        //     MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
+        //     REFERENCE_NO: Math.round(new Date().getTime() / 1000),
+        //     AMOUNT: 200,
+        //     PRODUCT_CODE: "testing",
+        //     CUSTOMER_MOBILE_NO: "8087679825",
+        //     CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
+        // }
         const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-        // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=EQWEWEE1003&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
+        const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=EQWEWEE1003&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
         const config = {
             headers: {
                 'Access-Control-Allow-Origin' : '*',
@@ -1151,7 +1151,7 @@ class Checkout extends Component {
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input disabled onChange={this.getpaymentgateway} name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
+                                            <input  onChange={this.getpaymentgateway} name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
@@ -1179,7 +1179,7 @@ class Checkout extends Component {
                                                                 <span className="checkoutADDCss"><b>{data.addType} Address&nbsp;</b> <br />
                                                                     <span className="checkoutADDCss">Name : {data.name}.</span> <br />
                                                                     {data.addressLine2}, {data.addressLine1},
-                                                            Pincode - {data.pincode}. <br />
+                                                                    Pincode - {data.pincode}. <br />
                                                                     Email: {data.email} <br />Mobile: {data.mobileNumber} <br /><br /></span>
                                                             </div>
                                                         );
