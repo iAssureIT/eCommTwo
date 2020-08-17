@@ -41,11 +41,12 @@ class ProductCollage extends Component {
 		this.handlePriceChange = this.handlePriceChange.bind(this);
 
 	}
-
+	componentWillMount(){
+		console.log("2.inside Willmount");
+	}
 	componentDidMount() {
-
+		console.log("3. Component DID mount");
 		this.getWishData();
-
 		var envVariable = process.env.REACT_APP_PROJECT_NAME;
 		this.setState({
 			envVariable: envVariable
@@ -153,10 +154,10 @@ class ProductCollage extends Component {
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
 		} else {
-			if (this.state.envVariable == '4_UniMandai') {
-				limit = "10";
-			} else {
+			if (this.state.envVariable === '4_UniMandai') {
 				limit = "50";
+			} else {
+				limit = "10";
 			}
 		}
 		axios.get("/api/products/get/list/" + sectionID)
@@ -763,7 +764,9 @@ class ProductCollage extends Component {
 	}
 	render() {
 		// console.log("Category details:-----",this.state.categoryDetails);
-		console.log("this.state.loading===",this.state.loading);
+		// console.log("this.state.loading===",this.state.loading);
+		console.log("1.inside Render");
+		// console.log("this.state.envvariable====",this.state.envVariable);
 		if(this.state.categoryDetails.length < 1){
 			$('.filterWrapper').hide();
 			$('.ProductViewWrapper').removeClass('col-lg-9');
@@ -1144,10 +1147,10 @@ class ProductCollage extends Component {
 																<label className="col-lg-5 col-md-5 col-sm-10 col-xs-10 NoPadding labeldiv">Show</label>
 																{this.state.envVariable == '4_UniMandai' ?
 																	<select className="limitProducts col-lg-6 col-md-6 col-sm-6 col-xs-10 NoPadding" onChange={this.limitProducts.bind(this)}>
-																		<option value="10">50</option>
-																		<option value="20">100</option>
-																		<option value="30">150</option>
-																		<option value="40">200</option>
+																		<option value="50">50</option>
+																		<option value="100">100</option>
+																		<option value="150">150</option>
+																		<option value="200">200</option>
 																	</select>
 																	:
 																	<select className="limitProducts col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding" onChange={this.limitProducts.bind(this)}>

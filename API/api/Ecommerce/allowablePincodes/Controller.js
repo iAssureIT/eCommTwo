@@ -24,7 +24,7 @@ exports.add_allowablePincodes = (req, res, next) => {
                     )
                     .exec()
                     .then(data=>{
-                        console.log("data:======",data);
+                        // console.log("data:======",data);
                         res.status(200).json({
                             "message": "Allowable Pincodes Updated Successfully."
                         });
@@ -84,7 +84,7 @@ exports.get_allowablePincodes = (req, res, next)=>{
 
 exports.check_delivery = (req, res, next)=>{
     var pincode = req.params.pincode;
-    console.log("Pincode:======",pincode);
+    // console.log("Pincode:======",pincode);
     Allowablepincode.find()
     .exec()
     .then(data=>{
@@ -97,7 +97,7 @@ exports.check_delivery = (req, res, next)=>{
                     break;
                 }                
             }
-            console.log("Delivery status=========",delivery);
+            // console.log("Delivery status=========",delivery);
             if(delivery === "available"){
                 res.status(200).json({ message: "Delivery Available" });
             }else{

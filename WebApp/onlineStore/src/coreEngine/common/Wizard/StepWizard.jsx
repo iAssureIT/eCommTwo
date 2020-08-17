@@ -14,7 +14,7 @@ export default class StepWizard extends Component{
 		}
 	}
 	componentWillReceiveProps(nextProps){
-		console.log('nextProps',nextProps);
+		// console.log('nextProps',nextProps);
 	}
 	componentDidMount(){
 		// var pathname = window.location.pathname;
@@ -40,10 +40,12 @@ export default class StepWizard extends Component{
 			this.props.data.deliveryStatus[this.props.data.deliveryStatus.length-1].status === 'Inspection' ||
 			this.props.data.deliveryStatus[this.props.data.deliveryStatus.length-1].status === 'Dispatch Approved' ){
 			$('#cartbg'+this.props.data._id).addClass('neworderstatus');
+			// console.log("inside New order--------------");
 		}
 		if(this.props.data.deliveryStatus[this.props.data.deliveryStatus.length-1].status ==='Dispatch'){
-			$('#cartbg'+this.props.data._id).addClass('neworderstatus');
+			// console.log("inside dispatch");
 			$('#outfrdelivery'+this.props.data._id).addClass('neworderstatus');
+			$('#cartbg'+this.props.data._id).addClass('neworderstatus');			
 		}
 		if(this.props.data.deliveryStatus[this.props.data.deliveryStatus.length-1].status ==='Delivery Initiated'){
 			$('#cartbg'+this.props.data._id).addClass('neworderstatus');
