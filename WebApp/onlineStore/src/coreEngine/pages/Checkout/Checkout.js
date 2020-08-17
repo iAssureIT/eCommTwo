@@ -37,16 +37,16 @@ class Checkout extends Component {
             totalIndPrice: 0,
             addressId: "",
             bannerData: {
-                title: "CHECKOUT",
-                breadcrumb: 'Checkout',
-                backgroungImage: checkoutBanner,
+                title           : "CHECKOUT",
+                breadcrumb      : 'Checkout',
+                backgroungImage : checkoutBanner,
             },
             discountCode: false,
             comment: false,
             giftOption: false,
             deliveryAddress: [],
             pincodeExists: true,
-            payMethod: "Cash On Delivery",
+            paymentmethods: "cod",
             addressLine1: "",
             "startRange": 0,
             "limitRange": 10,
@@ -297,26 +297,27 @@ class Checkout extends Component {
             });
         }
     }
-    getpaymentgateway = async () => {
-        const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-        const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-        const config = {
-            headers: {
-                'Access-Control-Allow-Origin' : '*',
-                'Accept'                      : 'application/json',
-                "Content-Type"                : "application/x-www-form-urlencoded",
-            }
-        }
-        console.log('paymentdetails ===> ', paymentdetails);
-        axios.post(redirecturl,paymentdetails,config)
-            .then(result => {
-                console.log('getpaymentgateway Response===> ', result);
-                window.location.replace(result.data.PAYMENT_URL);
-            })
-            .catch(err => {
-                console.log('Errr', err);
-            })
-    }
+  
+    // getpaymentgateway = async () => {
+    //     const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+    //     const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
+    //     const config = {
+    //         headers: {
+    //             'Access-Control-Allow-Origin' : '*',
+    //             'Accept'                      : 'application/json',
+    //             "Content-Type"                : "application/x-www-form-urlencoded",
+    //         }
+    //     }
+    //     console.log('paymentdetails ===> ', paymentdetails);
+    //     axios.post(redirecturl,paymentdetails,config)
+    //         .then(result => {
+    //             console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
+    //             window.location.replace(result.data.PAYMENT_URL);
+    //         })
+    //         .catch(err => {
+    //             console.log('Errr', err);
+    //         })
+    // }
     getUserAddress() {
         var user_ID = localStorage.getItem('user_ID');
         axios.get("/api/ecommusers/" + user_ID)
@@ -740,13 +741,13 @@ class Checkout extends Component {
                 }
             }
             // console.log('pls');
-            axios.patch('/api/carts/payment', formValues)
-                .then((response) => {
+            // axios.patch('/api/carts/payment', formValues)
+            //     .then((response) => {
 
-                })
-                .catch((error) => {
-                    console.log('error', error);
-                })
+            //     })
+            //     .catch((error) => {
+            //         console.log('error', error);
+            //     })
             if ($('#checkout').valid() && this.state.pincodeExists) {
                 axios.patch('/api/carts/address', addressValues)
                     .then(async (response) => {
@@ -794,6 +795,46 @@ class Checkout extends Component {
                         // if($('.acceptTerms:checkbox:checked').length > 0){                     
                         axios.post('/api/orders/post', orderData)
                             .then((result) => {
+                                if(this.state.paymentmethods === 'cod'){
+                                    console.log('IN COD ===> ');
+                                    this.props.fetchCartData();
+                                    this.setState({
+                                        messageData: {
+                                            "type": "outpage",
+                                            "icon": "fa fa-check-circle",
+                                            "message": "Order Placed Successfully ",
+                                            "class": "success",
+                                            "autoDismiss": true
+                                        }
+                                    })
+                                    setTimeout(() => {
+                                        this.setState({
+                                            messageData: {},
+                                        })
+                                    }, 3000);
+    
+                                    this.props.history.push('/payment/' + result.data.order_ID);
+                                }else{
+                                    console.log('IN Credit Card ===>');
+                                    const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+                                    const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
+                                    const config = {
+                                        headers: {
+                                            'Access-Control-Allow-Origin' : '*',
+                                            'Accept'                      : 'application/json',
+                                            "Content-Type"                : "application/x-www-form-urlencoded",
+                                        }
+                                    }
+                                    console.log('paymentdetails ===> ', paymentdetails);
+                                    axios.post(redirecturl,paymentdetails,config)
+                                        .then(result => {
+                                            console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
+                                            window.location.replace(result.data.PAYMENT_URL);
+                                        })
+                                        .catch(err => {
+                                            console.log('Errr', err);
+                                        })
+                                }
                                 axios.get('/api/orders/get/one/' + result.data.order_ID)
                                     .then((res) => {
                                         // =================== Notification OTP ==================
@@ -823,41 +864,15 @@ class Checkout extends Component {
                                             // =================== Notification ==================
                                         }
                                     })
-                                // console.log("Order place successfully");                        
-                                this.props.fetchCartData();
-                                this.setState({
-                                    messageData: {
-                                        "type": "outpage",
-                                        "icon": "fa fa-check-circle",
-                                        "message": "Order Placed Successfully ",
-                                        "class": "success",
-                                        "autoDismiss": true
-                                    }
-                                })
-                                setTimeout(() => {
-                                    this.setState({
-                                        messageData: {},
-                                    })
-                                }, 3000);
-
-                                this.props.history.push('/payment/' + result.data.order_ID);
                             })
                             .catch((error) => {
                                 console.log("return to checkout");
                                 console.log(error);
                             })
-
-                        // }else{
-                        //     console.log("$('.acceptTerms:checkbox:checked').length===",$('.acceptTerms:checkbox:checked').length);
-                        //     swal("Please check Terms and condition and add your delivery address properly");
-                        
-                        // }
                     })
                     .catch((error) => {
                         console.log('error', error);
                     })
-
-
             }
         }
     }
@@ -1061,11 +1076,14 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn paymentMethodTitle">PAYMENT METHOD <span className="required">*</span></div>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input name="payMethod" ref="payMethod" type="radio" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" />
+                                            {/* <input name="payMethod" ref="payMethod" type="radio" value={this.state.payMethod} className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" /> */}
+                                            <input name="paymentmethods" type="radio" value="cod" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                             checked={this.state.paymentmethods === "cod"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input onChange={this.getpaymentgateway}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
+                                            {/* <input value={this.state.payMethod} onChange={this.creditndebit}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" /> */}
+                                            <input name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
@@ -1362,20 +1380,9 @@ class Checkout extends Component {
                                             </select>
                                         </div> */}
                                     </div>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
-                                    </div>
-                                    {/* {
-                                        this.state.payMethod === "Cash On Delivery" ? 
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
                                             </div>
-                                            : 
-                                   
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                              <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.getpaymentgateway()}>Place Order</button>
-                                            </div>
-                                    } */}
                                 </div>
                             </div>
                         </form>
