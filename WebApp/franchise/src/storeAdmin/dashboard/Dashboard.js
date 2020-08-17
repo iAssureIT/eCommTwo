@@ -46,8 +46,7 @@ export default class Dashboard extends Component{
         franchiseName   : resdata.data.companyName,
         franchiseLatLong : resdata.data.locations
       })
-
-      console.log("franchiseLatLong",this.state.franchiseLatLong)
+     // console.log("franchiseLatLong",this.state.franchiseLatLong)
      })
     var yyyy = moment().format("YYYY");
     var monthNum = moment().format("MM");
@@ -71,7 +70,7 @@ export default class Dashboard extends Component{
 
     var startOfWeek = moment().startOf('week').toDate();
     var endOfWeek   = moment().endOf('week').toDate();
-    console.log("startOfWeek",startOfWeek,"endOfWeek",endOfWeek);
+  //  console.log("startOfWeek",startOfWeek,"endOfWeek",endOfWeek);
     this.setState({
       yearStart   : startDateString,
       yearEnd     : endDateString,
@@ -80,7 +79,6 @@ export default class Dashboard extends Component{
       endOfWeek   : moment(endOfWeek).format('YYYY-MM-DD')
     },()=>{
     })
-    
   }
 
 

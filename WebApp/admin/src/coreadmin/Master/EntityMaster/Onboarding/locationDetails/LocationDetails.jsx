@@ -1212,10 +1212,10 @@ class LocationDetails extends Component {
     }
 
 	render() {
-		 const searchOptions = {
-      // types: ['(cities)'],
-      componentRestrictions: {country: "in"}
-     }
+		const searchOptions = {
+         // types: ['(cities)'],
+         componentRestrictions: {country: "in"}
+        }
 
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -1317,7 +1317,7 @@ class LocationDetails extends Component {
 																		{/*<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />*/}
 																		 {this.state.gmapsLoaded ?
 																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
-																<PlacesAutocomplete value={this.state.addressLine}
+																<PlacesAutocomplete value={this.state.addressLine1}
 																		onChange={this.handleChangePlaces}
 																		onSelect={this.handleSelect}
 																>
