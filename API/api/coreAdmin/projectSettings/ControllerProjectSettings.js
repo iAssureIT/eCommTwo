@@ -21,8 +21,16 @@ exports.create_projectSettings = (req, res, next) => {
             conditionQuery      = req.body.googleapikey;
             listRequiredFields  = "googleapikey";
             break;
+        case 'PG'   :
+            conditionQuery      =   req.body.environment &&
+                                    req.body.namepayg &&
+                                    req.body.partnerid &&
+                                    req.body.secretkey &&
+                                    req.body.status;
+            listRequiredFields  = "environment,namepayg,partnerid,secretkey,status";
+            break;
         default         :
-            res.status(200).json("type can be either S3 or SMS or GOOGLE");
+            res.status(200).json("type can be either S3 or SMS or GOOGLE or PG");
             break;
     }
     if(conditionQuery){
@@ -52,6 +60,12 @@ exports.create_projectSettings = (req, res, next) => {
                     port           : req.body.port,
                     emailHost      : req.body.emailHost,
                     projectName    : req.body.projectName,
+                    
+                    environment    : req.body.environment,
+                    namepayg       : req.body.namepayg,
+                    partnerid      : req.body.partnerid,
+                    secretkey      : req.body.secretkey,
+                    status         : req.body.status,
 
                     type            : req.body.type
                 });

@@ -68,6 +68,7 @@ class SmsGateway extends Component {
       // if($("#CompanyPaymentGatewayForm").valid()){
           axios.post('/api/paymentgateway/post',paymentgateway)
           .then((response)=> {
+            console.log("response in paymentgateway ==>>",response.data);
             this.getData(this.state.startRange, this.state.limitRange);
             swal({                
                   text: "Payment Gateway details added successfully!",

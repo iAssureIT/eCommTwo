@@ -97,20 +97,22 @@ class CompanyPaymentGateway extends Component {
             .catch((error) => {});
   }
   submitPaymentInfo(event){
-      event.preventDefault();
+      event.preventDefault(); 
         var paymentgateway ={
-          companyId   : this.state.companyId,
           namepayg    : this.state.namepayg,
           environment : this.state.environment,
           status      : this.state.status,
           secretkey   : this.state.secretkey,
           partnerid   : this.state.partnerid,
           createdBy   : this.state.createdBy,
+          type        : 'PG',
         }
+        console.log("paymentgateway ==>>",paymentgateway);
        
       // if($("#CompanyPaymentGatewayForm").valid()){
-          axios.post('/api/paymentgateway/post',paymentgateway)
+          axios.post('/api/projectsettings/post',paymentgateway)
           .then((response)=> {
+            console.log("response in paymentgateway ==>>",response.data);
             this.getData(this.state.startRange, this.state.limitRange);
             swal({                
                   text: "Payment Gateway details added successfully!",

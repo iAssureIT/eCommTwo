@@ -68,33 +68,31 @@ class Checkout extends Component {
             });
     }
     getpaymentgateway = async () => {
-
-        // axios.post(redirecturl,paymentdetails,
-        //     {
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded',               
-        //         }
-        //     })  
-        //         .then((res) => {
-        //             console.log('getpaymentgateway Response===> ', res);
-        //             alert(res);
-
-        //         })
-        //         .catch((error) => {
-        //             console.log('error'+ error);
-        //             // alert(error);
-        //         });
-        // var paymentdetails = {
-        //     MERCHANT_ID: 9445,
-        //     MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
-        //     REFERENCE_NO: Math.round(new Date().getTime() / 1000),
-        //     AMOUNT: 200,
-        //     PRODUCT_CODE: "testing",
-        //     CUSTOMER_MOBILE_NO: "8087679825",
-        //     CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
+        // const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+        // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=abcdefg&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
+        // // const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'.00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
+        // const config = {
+        //     headers: {
+        //         "Access-Control-Allow-Origin": "*",
+        //         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        //         'Accept'                      : 'application/json',
+        //         "Content-Type"                : "application/x-www-form-urlencoded",
+        //     }
         // }
+        // console.log('paymentdetails ===> ', paymentdetails);
+        // axios.post(redirecturl,paymentdetails,config)
+        //     .then(result => {
+        //         console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
+        //         window.location.replace(result.data.PAYMENT_URL);
+        //     })
+        //     .catch(err => {
+        //         console.log('Errr', err);
+        //     })
+        //   console.log("responsepayment===>",responsepayment);
         const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-        const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=EQWEWEE1003&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
+        // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
+        const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'.00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
+
         const config = {
             headers: {
                 'Access-Control-Allow-Origin' : '*',
@@ -115,87 +113,6 @@ class Checkout extends Component {
                 // debugger;
                 console.log('Errr', err);
             })
-        // // console.log('getpaymentgateway Response===> ', paymentdetails);
-        // console.log('redirecturl Response===> ', redirecturl);
-        // let paymentgatewayint = await axios.post(redirecturl,paymentdetails, config)
-        // fetch('https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL', {
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     method: 'POST',
-        //     body: JSON.stringify({
-        //         MERCHANT_ID: 9445,
-        //         MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
-        //         REFERENCE_NO: "hsjfhsfjk",
-        //         AMOUNT: 200,
-        //         PRODUCT_CODE: "testing",
-        //         CUSTOMER_MOBILE_NO: "8087679825",
-        //         CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
-        //     })
-        // })
-        // axios.post('/api/carts/paymentgatewaypinepg/post')
-        //     .then(result => {
-        //         console.log('getpaymentgateway Response===> ', result);
-        //         // debugger;
-        //         // alert(result);
-        //     })
-        //     .catch(err => {
-        //         // debugger;
-        //         console.log('Errr', err);
-        //     })
-        
-        // // axios.post({url:redirecturl,body:paymentdetails,config})
-        //     .then(result => {
-        // console.log('paymentgatewayint===> ', paymentgatewayint);
-        //         // debugger;
-        //         // alert(result);
-        //     })
-        //     .catch(err => {
-        //         debugger;
-        //         console.log('Errr', err);
-        //     });
-        // const options = {
-        //     method: "post",
-        //     headers: {
-        //         'Access-Control-Allow-Origin': 'http://localhost:3000/',
-        //         'Access-Control-Allow-Headers':'http://localhost:3000/',
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     url: redirecturl,
-        //     params: {
-        //         MERCHANT_ID: 9445,
-        //         MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
-        //         REFERENCE_NO: "EQWEWE21323",
-        //         AMOUNT: 200,
-        //         PRODUCT_CODE: "testing",
-        //         CUSTOMER_MOBILE_NO: "8087679825",
-        //         CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
-        //     }
-        // };
-        // axios(options)
-
-        //     axios.post(
-        //         redirecturl+'?'+paymentdetails,
-        // {
-        //     MERCHANT_ID:9445,
-        //     MERCHANT_ACCESS_CODE:"dc53e787-3e81-427d-9e94-19220eec39ef",
-        //     REFERENCE_NO:"EQWEWE2154",
-        //     AMOUNT:200,
-        //     PRODUCT_CODE:"testing",
-        //     CUSTOMER_MOBILE_NO:"8087679825",
-        //     CUSTOMER_EMAIL_ID:"omkar.ronghe@iassureit.com",
-        // },
-        //     {
-        //       headers: {
-        //         'Access-Control-Allow-Origin': 'http://localhost:3000/',
-        //         'Access-Control-Allow-Headers':'http://localhost:3000/',
-        //         "content-type": "application/x-www-form-urlencoded",
-        //       }
-        //     }
-        //   )
-
-        //   console.log("responsepayment===>",responsepayment);
     }
 
     componentDidMount() {
@@ -203,6 +120,31 @@ class Checkout extends Component {
         this.gettimes(this.state.startRange, this.state.limitRange);
         this.getUserAddress();
         this.validation();
+        axios.get('/api/users/get/'+localStorage.getItem("user_ID"))
+        .then(result => {
+            this.setState({
+                mobile: result.data.mobile,
+                email: result.data.email,
+            })
+        })
+        .catch(err => {
+            console.log('Errr', err);
+        })
+        var type = "PG"
+        axios.post('/api/projectsettings/getS3Details/'+type)
+           .then(result => {
+            //    console.log('projectsettings Response===> ', result.data);
+               this.setState({
+                   environment: result.data.environment,
+                   namepayg: result.data.namepayg,
+                   partnerid: result.data.partnerid,
+                   secretkey: result.data.secretkey,
+                   status: result.data.status,
+               })
+           })
+           .catch(err => {
+               console.log('Errr', err);
+           })
     }
     validation() {
         $.validator.addMethod("regxusername", function (value, element, regexpr) {

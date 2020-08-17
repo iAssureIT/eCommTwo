@@ -16,6 +16,13 @@ const projectSettingsSchema = mongoose.Schema({
     port            : Number,
     emailHost       : String,
     projectName     : String,
+    
+    environment    : String,
+    namepayg       : String,
+    partnerid      : String,
+    secretkey      : String,
+    status         : String,
+
     createdBy   : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt   : { type: Date, default: Date.now() },
     updateLog           : [
