@@ -297,7 +297,7 @@
     margin-bottom: 20px;
     cursor: pointer;
     width: 60%;
-    height: 68px;
+    /* height: 68px; */
 }
 
 .productView:hover{

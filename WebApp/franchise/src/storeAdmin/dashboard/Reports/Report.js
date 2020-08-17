@@ -21,6 +21,7 @@ class Report extends Component{
       display:props.display,
       tableHeading:props.tableHeading,
       data:[],
+      address:{}
     }
   }
    
@@ -133,9 +134,10 @@ class Report extends Component{
                       if(data.deliveryAddress){
                         let Clatitude = data.deliveryAddress.latitude ? data.deliveryAddress.latitude : null;
                         let Clongitude = data.deliveryAddress.longitude ? data.deliveryAddress.longitude : null;
-                        let Flatitude = this.state.address.latitude ? this.state.address.latitude : null;
-                        let Flongitude = this.state.address.longitude ? this.state.address.longitude : null;
-                        if(Object.keys(this.state.address).length){
+                        let Flatitude = this.state.address ? this.state.address.latitude : null;
+                        let Flongitude = this.state.address ? this.state.address.longitude : null;
+                        
+                        if(this.state.address  && Object.keys(this.state.address).length){
                           distance = this.findDistance(Clatitude, Clongitude, Flatitude, Flongitude,"K");
                           console.log("distance = ", distance);
                         }

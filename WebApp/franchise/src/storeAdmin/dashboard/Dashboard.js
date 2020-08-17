@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import { render } from 'react-dom';
 import moment     from 'moment';
 import axios                  from 'axios';
-
+import jQuery, { isNumeric, data } from 'jquery';
+import $ from 'jquery';
 import Statistics     from './StatisticsBox/Statistics.js'
 import PieChart       from './Charts/PieChart.js'
 import BarChart       from './Charts/BarChart.js'
@@ -32,6 +33,7 @@ export default class Dashboard extends Component{
   }
   
 	componentDidMount(){
+    $('.dashboard-component').removeClass('BM-dashbord');
     var userDetails = (localStorage.getItem('userDetails'));
     var userData = JSON.parse(userDetails);
     axios.get("/api/entitymaster/getCompany/"+userData.companyID)

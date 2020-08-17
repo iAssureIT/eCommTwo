@@ -151,7 +151,6 @@ class ResetPassword extends Component {
 
     return(
       <div>
-        
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainBackgroundImg"></div>
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
           <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}>
