@@ -20,7 +20,6 @@ import "../../../sites/currentSite/pages/Checkout.css";
 import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-const qs = require('querystring')
 
 class Checkout extends Component {
     constructor(props) {
@@ -47,6 +46,7 @@ class Checkout extends Component {
             giftOption: false,
             deliveryAddress: [],
             pincodeExists: true,
+            payMethod: "Cash On Delivery",
             addressLine1: "",
             "startRange": 0,
             "limitRange": 10,
@@ -56,65 +56,6 @@ class Checkout extends Component {
         this.getUserAddress();
         this.camelCase = this.camelCase.bind(this)
     }
-    gettimes(startRange, limitRange) {
-        axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
-            .then((response) => {
-                this.setState({
-                    gettimes: response.data
-                })
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
-    }
-    getpaymentgateway = async () => {
-        // const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-        // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO=abcdefg&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
-        // // const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'.00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-        // const config = {
-        //     headers: {
-        //         "Access-Control-Allow-Origin": "*",
-        //         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        //         'Accept'                      : 'application/json',
-        //         "Content-Type"                : "application/x-www-form-urlencoded",
-        //     }
-        // }
-        // console.log('paymentdetails ===> ', paymentdetails);
-        // axios.post(redirecturl,paymentdetails,config)
-        //     .then(result => {
-        //         console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
-        //         window.location.replace(result.data.PAYMENT_URL);
-        //     })
-        //     .catch(err => {
-        //         console.log('Errr', err);
-        //     })
-        //   console.log("responsepayment===>",responsepayment);
-        const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-        // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=200&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=omkar.ronghe@iassureit.com&PRODUCT_CODE=testing';
-        const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'.00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-
-        const config = {
-            headers: {
-                'Access-Control-Allow-Origin' : '*',
-                'Access-Control-Allow-Methods': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Accept'                      : 'application/json',
-                "Content-Type"                : "application/x-www-form-urlencoded",
-            }
-        }
-        console.log('paymentdetails ===> ', paymentdetails);
-        axios.post(redirecturl,paymentdetails,config)
-            .then(result => {
-                console.log('getpaymentgateway Response===> ', result);
-                // debugger;
-                // alert(result);
-            })
-            .catch(err => {
-                // debugger;
-                console.log('Errr', err);
-            })
-    }
-
     componentDidMount() {
         this.getCartData();
         this.gettimes(this.state.startRange, this.state.limitRange);
@@ -356,7 +297,29 @@ class Checkout extends Component {
             });
         }
     }
-
+    // creditndebit = async () => {
+    //     this.setState({ payMethod: "Creditndebit" });
+    // }
+    getpaymentgateway = async () => {
+        const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+        const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin' : '*',
+                'Accept'                      : 'application/json',
+                "Content-Type"                : "application/x-www-form-urlencoded",
+            }
+        }
+        console.log('paymentdetails ===> ', paymentdetails);
+        axios.post(redirecturl,paymentdetails,config)
+            .then(result => {
+                console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
+                window.location.replace(result.data.PAYMENT_URL);
+            })
+            .catch(err => {
+                console.log('Errr', err);
+            })
+    }
     getUserAddress() {
         var user_ID = localStorage.getItem('user_ID');
         axios.get("/api/ecommusers/" + user_ID)
@@ -391,6 +354,17 @@ class Checkout extends Component {
         }
     }
 
+    gettimes(startRange, limitRange) {
+        axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
+            .then((response) => {
+                this.setState({
+                    gettimes: response.data
+                })
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+    }
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
@@ -1044,6 +1018,7 @@ class Checkout extends Component {
     opDones() {
         this.getUserAddress();
     }
+
     handleCheckbox(event){
         event.preventDefault();
     //   console.log("terms value ....",$('.acceptTerms:checkbox:checked').length);
@@ -1089,11 +1064,11 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn paymentMethodTitle">PAYMENT METHOD <span className="required">*</span></div>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input name="payMethod" type="radio" value="Cash On Delivery" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" />
+                                            <input name="payMethod" ref="payMethod" type="radio" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input  onChange={this.getpaymentgateway} name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
+                                            <input onChange={this.getpaymentgateway}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
@@ -1390,9 +1365,17 @@ class Checkout extends Component {
                                             </select>
                                         </div> */}
                                     </div>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
-                                    </div>
+                                    {
+                                        this.state.payMethod === "Cash On Delivery" ? 
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
+                                            </div>
+                                            : 
+                                   
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                              <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.getpaymentgateway()}>Place Order</button>
+                                            </div>
+                                    }
                                 </div>
                             </div>
                         </form>
