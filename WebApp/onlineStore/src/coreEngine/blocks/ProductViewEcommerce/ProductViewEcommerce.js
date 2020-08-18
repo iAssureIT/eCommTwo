@@ -48,14 +48,16 @@ class ProductViewEcommerce extends Component {
 			"imgsrc": "",
 			"wishIconClass" : "viewWishList",
 			"wishTooltip"   : "Add to wishlist",
-			"productData"   : {
-				"availableQuantity" : 1
-			}
+			"productData"   : 	{
+									"availableQuantity" : 1
+								}
 		};
 		this.changeImage = this.changeImage.bind(this);
 	}
 
 	async componentDidMount(){
+		
+
 		const websiteModel = localStorage.getItem("websiteModel");      
 		const showLoginAs = localStorage.getItem("showLoginAs");      
 		this.setState({showLoginAs: showLoginAs,websiteModel:websiteModel}); 
@@ -69,6 +71,7 @@ class ProductViewEcommerce extends Component {
 				selectedColor : response.data.color,
 				selectedSize : response.data.size
 			},()=>{
+				window.fbq('track', 'CustomizeProduct',this.state.productData.productName,this.state.productData.originalPrice);
 				console.log('selectedColor',this.state.selectedColor);
 				this.getProductData();
 				this.getProductSizeData();
