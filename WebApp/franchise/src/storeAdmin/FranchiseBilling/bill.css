@@ -432,6 +432,10 @@ input[type=search]::-webkit-search-cancel-button {
   padding-top : 30px  !important;
 }
 
+.paddingBottom{
+  padding-bottom : 20px  !important;
+}
+
 .textWhite{
   color:white !important;
 }
@@ -444,8 +448,13 @@ input[type=search]::-webkit-search-cancel-button {
   top:30px;
 }
 
-.padding5Px{
-  padding: 5px;
+.paddingTop10 {
+  padding-top: 13px;
+}
+
+.bill-cust-info{
+  font-size: medium;
+  color: gray;
 }
 
 rect{

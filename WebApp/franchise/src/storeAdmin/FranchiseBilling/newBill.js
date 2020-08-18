@@ -267,7 +267,6 @@ export class Bill extends React.Component {
 	}
 
 	getProductListByCategory(categoryId){
-		// ? this.state.franchise_id :"5f06f58c67c0b03c2c4faed6"
 		var franchiseId = this.state.franchise_id ;
 		axios.get("/api/billingmaster/get/listbycategory/"+categoryId+'/'+franchiseId)
         .then((response)=>{
@@ -409,11 +408,8 @@ export class Bill extends React.Component {
 				});
 			}
 			
-			this.setState({
-				totalAmt : totalAmt
-			})
-	
             this.setState({
+				totalAmt : totalAmt,
                 cartData : response.data
             })
           })
@@ -1028,7 +1024,7 @@ export class Bill extends React.Component {
 							{/* </div> */}
 							</div>
 							<div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 billDiv">
-							    <div className="row padding5Px">
+							    <div className="row paddingTop10 paddingBottom">
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
 									</div>
@@ -1050,8 +1046,9 @@ export class Bill extends React.Component {
 							
 								{Object.keys(this.props.recentCustomerData).length > 0 ?
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small className="">Name: {this.props.recentCustomerData.customerName}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12"><small className="">Phone: {this.props.recentCustomerData.mobile}&nbsp;&nbsp;&nbsp;&nbsp;</small>&nbsp;&nbsp;&nbsp;&nbsp;<i className="fa fa-pencil" onClick={this.showCustomerModal.bind(this)} title="Update Customer"></i></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><i className="fa fa-user bill-cust-info"></i> {this.props.recentCustomerData.customerName}</div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12"><i className="fa fa-phone bill-cust-info"></i> {this.props.recentCustomerData.mobile}&nbsp;&nbsp;&nbsp;&nbsp;
+								   <i className="fa fa-pencil pull-right" onClick={this.showCustomerModal.bind(this)} title="Update Customer"></i></div>
 								</div>
 								: <div className="row">
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft">
@@ -1087,12 +1084,12 @@ export class Bill extends React.Component {
 															<td> 
 													            {data.quantity} {data.productDetail.unit}
 																<br/>
-													            {data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}
+													            <small>{data.CGST}<i className="fa fa-percent"></i>  {parseFloat(data.CGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>
 																{data.rate}
 																<br/>
-													            {data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}
+													            <small>{data.SGST}<i className="fa fa-percent"></i>  {parseFloat(data.SGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>{data.discountPercent}<i className="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
@@ -1178,23 +1175,23 @@ export class Bill extends React.Component {
 														:
 														<td colSpan="4">Items/Qty 0</td>
 													}
-													<td colSpan="4">Total Amount: <i className="fa fa-inr"></i> { parseFloat(this.state.total).toFixed(2)}</td>
+													<td colSpan="4">Total Amount: <span className="pull-right"><i className="fa fa-inr"></i> { parseFloat(this.state.total).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">Discount: <i className="fa fa-inr"></i> {parseFloat(this.state.discount).toFixed(2)}</td>
+												   <td className="" colSpan="4">Discount: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.discount).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">Subtotal: <i className="fa fa-inr"></i> {parseFloat(this.state.subtotal).toFixed(2)}</td>
+												   <td className="" colSpan="4">Subtotal: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.subtotal).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">GST TAX: <i className="fa fa-inr"></i> {parseFloat(this.state.gstTax).toFixed(2)}</td>
+												   <td className="" colSpan="4">GST TAX: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.gstTax).toFixed(2)}</span></td>
 												</tr>
 												<tr className="totalNetAmount" colSpan="4">
 												   <td colSpan="4"></td>
-												   <td className="totalNetAmount" colSpan="4">Amount Payable : <i className="fa fa-inr"></i> {parseFloat(this.state.amountPayable).toFixed(2)}</td>
+												   <td className="totalNetAmount" colSpan="4">Amount Payable : <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.amountPayable).toFixed(2)}</span></td>
 												</tr>
 											</tfoot>
 											</table>

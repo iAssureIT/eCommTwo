@@ -22,7 +22,8 @@ class customerModal extends Component{
             selectCustomer : '',
             gmapsLoaded: false,
             updateCustomer : false,
-            disableSubmit  : true
+            disableSubmit  : true,
+            pincode : "",
         }
         window.scrollTo(0, 0);
     }
@@ -128,7 +129,8 @@ class customerModal extends Component{
         const {name,value} = event.target;
 
         this.setState({ 
-            [name]:value
+            [name]:value,
+            disableSubmit :false
         })
     }
 
@@ -136,7 +138,7 @@ class customerModal extends Component{
         this.setState({
             'franchise_id' : nextProps.franchise_id,
             "showCustForm" : nextProps.updateCustomer ? true : false,
-            "disableSubmit" : nextProps.updateCustomer ? false : true,
+            // "disableSubmit" : nextProps.updateCustomer ? false : true,
             "showCustInfoDiv" : nextProps.updateCustomer == 'update' ? false : '',
         })
         this.getCustomer();
@@ -164,6 +166,7 @@ class customerModal extends Component{
     onSearchCustomer(event){
         event.preventDefault();
         const {name,value} = event.target;
+        
         this.setState({ 
             [name]:value
         })
@@ -177,12 +180,25 @@ class customerModal extends Component{
                     "address"        : data.address,
                     "showCustInfoDiv": true,
                     "showCustForm"   : false,
-                    "disableSubmit"  : true
+                    //"disableSubmit"  : true
                 })
 			}else{
-                this.setState({
-                    // "showCustForm"   : true
-                })
+                if(!this.state.showCustInfoDiv){
+                    if(/^\d+$/.test(value)){
+                        this.setState({ 
+                            "mobile":value,
+                            "disableSubmit"  : false
+                        })
+                     }
+                     
+                     if(/^[A-Za-z]+$/.test(value)){
+                        this.setState({ 
+                            "customerName":value,
+                            "disableSubmit"  : false
+                        })
+                     }
+                } 
+                
             }
 		});
 
@@ -194,11 +210,12 @@ class customerModal extends Component{
         var userDetails = JSON.parse(localStorage.getItem('userDetails'));
 
         var formValues = {
-            "Name"   : this.state.customerName,
-            "mobile" : this.state.mobile,
-            "email"  : this.state.email,
+            "Name"    : this.state.customerName,
+            "mobile"  : this.state.mobile,
+            "email"   : this.state.email,
             "address" : this.state.address,
-            "houseNo"  : this.state.houseNo
+            "houseNo" : this.state.houseNo,
+            "pincode" : this.state.pincode
         }; 
 
         if($('.customerForm').valid()){
@@ -240,8 +257,8 @@ class customerModal extends Component{
             this.setState({
                 showCustForm    : true,
                 showCustInfoDiv : false,
-                customerName    : '',
-                mobile          : '',
+                // customerName    : '',
+                // mobile          : '',
                 email           : '',
                 address         : '',
                 _id             : ''
@@ -257,15 +274,71 @@ class customerModal extends Component{
 
     geocodeByAddress(address)
       geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => this.setState({'latLng': latLng}))
+      .then((results) => {
+        getLatLng(results[0]);
+        var pincode = '';
+        for (var i = 0; i < results[0].address_components.length; i++) {
+            for (var b = 0; b < results[0].address_components[i].types.length; b++) {
+                if(results[0].address_components[i].types[b]) {
+                        pincode = results[0].address_components[i].long_name;
+                }
+            }
+        }
+        this.setState({ address : address,pincode:pincode});
+
+      })
       .catch(error => console.error('Error', error));
      
-      this.setState({ address : address});
-  };
+    };
+
+    handlePincode(event) {
+		event.preventDefault();
+		this.setState({
+			[event.target.name]: event.target.value
+		})
+		console.log("event.target.name",event.target.value)
+		if (event.target.value !== '') {
+			axios.get("https://api.postalpincode.in/pincode/" + event.target.value)
+				.then((response) => {
+					console.log("response",response)
+					if ($("[name='pincode']").valid()) {
+						if (response.data[0].Status === 'Success') {
+							this.setState({ pincodeExists: true })
+						} else {
+							this.setState({ pincodeExists: false })
+						}
+					} else {
+						this.setState({ pincodeExists: true })
+					}
+
+				})
+				.catch((error) => {
+					this.setState({ pincodeExists: "NotAvailable" })
+					console.log("No pincode Found")
+				})
+		} else {
+			this.setState({ pincodeExists: true })
+		}
+    }
+    
+    keyPressNumber = (e) => {
+		if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 189]) !== -1 ||
+			// Allow: Ctrl+A, Command+A
+			(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+			(e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
+			(e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+			// Allow: home, end, left, right, down, up
+			(e.keyCode >= 35 && e.keyCode <= 40) || e.keyCode === 189 || e.keyCode === 32) {
+			// let it happen, don't do anything
+			return;
+		}
+		// Ensure that it is a number and stop the keypress
+		if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 58)) && (e.keyCode < 96 || e.keyCode > 105 || e.keyCode === 190 || e.keyCode === 46)) {
+			e.preventDefault();
+		}
+	}
 
     render(){
-        console.log("disableSubmit",this.state.disableSubmit);
         return( 
           <div className="col-lg-12">
                 {
@@ -279,7 +352,7 @@ class customerModal extends Component{
                       <form className="customerForm">
                         <div className="row inputrow">
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingTop">
-                             <label>Search Customer</label>
+                             <label className="labelform">Search Customer</label>
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                 <input list="CustomerDatalist" type="search"  onChange={this.onSearchCustomer.bind(this)}  onKeyPress={this.handleEnter.bind(this)}  refs="selectCustomer" className="form-control" placeholder="Search by Mobile Number or Name..."  name="selectCustomer" value={this.state.selectCustomer}  autoComplete="off"
                                     /> 
@@ -304,27 +377,27 @@ class customerModal extends Component{
                             <div className="customerFormDiv col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group paddingTop">
                                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 customerDiv">
-                                        <label>Customer Name</label><span className="astrick redFont"> *</span>
-                                        <input type="text" name="customerName" className="form-control customerName" placeholder="Enter Name" onChange={this.onChangeInput.bind(this)} value={this.state.customerName} required/>
+                                        <label className="labelform">Customer Name</label><span className="astrick redFont"> *</span>
+                                        <input type="text" name="customerName" className="form-control" placeholder="Enter Name" onChange={this.onChangeInput.bind(this)} value={this.state.customerName} required/>
                                     </div>
                                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 mobileNumberDiv">
-                                        <label>Mobile Number</label><span className="astrick redFont"> *</span>
+                                        <label className="labelform">Mobile Number</label><span className="astrick redFont"> *</span>
                                         <input type="tel" name="mobile" className="form-control mobile" placeholder="Enter Mobile Number"  onChange={this.onChangeInput.bind(this)} value={this.state.mobile} minlength="10" maxlength="10" required/>
                                     </div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
                                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <label>Email</label>
+                                        <label className="labelform">Email</label>
                                         <input type="email" name="email" className="form-control email" placeholder="Enter Email" onChange={this.onChangeInput.bind(this)} value={this.state.email}/>
                                     </div>
                                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <label>House No</label>
+                                        <label className="labelform">House No</label>
                                         <input type="text" name="houseNo" className="form-control houseNo" placeholder="Enter House Number" onChange={this.onChangeInput.bind(this)} value={this.state.houseNo}/>
                                     </div>
                                 </div>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
                                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                        <label>Address</label>
+                                        <label className="labelform">Address</label>
                                         {this.state.gmapsLoaded ?
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" style={{padding: "0px"}}>
                                             <PlacesAutocomplete value={this.state.address} 
@@ -373,6 +446,10 @@ class customerModal extends Component{
                                         }
                                         {/* <input type="text" name="address" className="form-control address"  onChange={this.onChangeInput.bind(this)} value={this.state.address}/> */}
                                     </div>
+                                    <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12  " >
+                                        <label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Pincode</label>
+                                        <input maxLength="6" onChange={this.handlePincode.bind(this)} type="text" id="pincode" placeholder="Enter Pincode" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.pincode} ref="pincode" name="pincode" onKeyDown={this.keyPressNumber.bind(this)} />
+                                    </div>
                                 </div>
                         </div>
                         : null}
@@ -398,6 +475,20 @@ class customerModal extends Component{
                                     <label><i class="fa fa-map-marker" aria-hidden="true"></i> Address </label>
                                     <p>{this.state.address}</p>
                                 </div>
+                            </div>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
+                                {this.state.houseNo ? 
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label><i class="fa fa-home" aria-hidden="true"></i> House No</label>
+                                    <p>{this.state.houseNo}</p>
+                                </div>
+                                : null }
+                                {this.state.pincode ? 
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label><i class="fa fa-map-marker" aria-hidden="true"></i> Pincode </label>
+                                    <p>{this.state.pincode}</p>
+                                </div>
+                                : null }
                             </div>
                           </div>
                         </div>

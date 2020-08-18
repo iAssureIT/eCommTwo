@@ -8,6 +8,7 @@ const customerSchema = mongoose.Schema({
     houseNo                   : String,
     address                   : String,
     franchise_id              : String,  
+    pincode                   : Number,
     createdBy                 : { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     createdAt                 : Date,
 });

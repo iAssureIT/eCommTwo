@@ -54,7 +54,8 @@ exports.insert_orders = (req, res, next) => {
                       for (var franchiseObj of franchiseObjects) {
                         // console.log("Pincodes:",franchiseObj.allowablePincodes.includes(pincode));
                         if (franchiseObj.allowablePincodes.includes(pincode)) {
-                          franchiseID = franchiseObj.franchiseID;
+                          franchiseID = req.body.franchise_id ? req.body.franchise_id : franchiseObj.franchiseID; //code by madhuri
+                          
                           if (franchiseID !== undefined) {
                             matchedFranchise.push({ franchiseID: franchiseID });
                             // console.log("matchedFranchise ===", matchedFranchise);
@@ -90,6 +91,8 @@ exports.insert_orders = (req, res, next) => {
 
                           var status = req.body.status == 'Paid' ? "Paid" : "UnPaid";
                           var obj = { "orderNum": Math.round(new Date().getTime() / 1000), "orderDate": new Date(), "orderQty": req.body.cartItems[i].quantity, "Unit": req.body.cartItems[i].unit, "orderDeliveryStatus": status }
+                          var franchise_id = req.body.franchise_id ?  req.body.franchise_id  : allocatedToFranchise
+
                           var franchiseGoodsOrder = await addOrderToFranchiseGoods(productId, obj, req.body.franchise_id);
                         }
 

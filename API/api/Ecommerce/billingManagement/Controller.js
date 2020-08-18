@@ -363,6 +363,7 @@ exports.save_customer = (req,res,next)=>{
                         email                     : req.body.email,
                         houseNo                   : req.body.houseNo,
                         address                   : req.body.address, 
+                        pincode                   : req.body.pincode
                     }
 
                 },
@@ -399,6 +400,7 @@ exports.save_customer = (req,res,next)=>{
                 houseNo                   : req.body.houseNo,
                 address                   : req.body.address,
                 createdBy                 : req.body.createdBy,
+                pincode                   : req.body.pincode,
                 createdAt                 : new Date()
             });
             franchiseCustomers.save()

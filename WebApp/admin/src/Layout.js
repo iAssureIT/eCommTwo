@@ -279,6 +279,7 @@ render() {
                                                         <Route path="/project-master-data"          render={(props)=><MasterData {...props}/> } exact />
                                                         <Route path="/project-master-data/:editId"  render={(props)=><MasterData {...props}/> } exact />
                                                         <Route path="/project-master-data/oneField/:oneFieldEditId" render={(props)=><MasterData {...props}/> } exact />
+                                                        <Route path="/reset-password" exact strict component={ResetPwd} />
                                                       </Switch>
                                                 </div>
                                             </div>
@@ -302,7 +303,7 @@ render() {
                             <Route path="/signup" exact strict component={SignUp} />
                             <Route path="/forgotpassword" exact strict component={ForgotPassword} />
                             <Route path="/reset-pwd/:user_ID" exact strict component={ResetPassword} />
-                            <Route path="/reset-password" exact strict component={ResetPwd} />
+                            {/* <Route path="/reset-password" exact strict component={ResetPwd} /> */}
                             <Route path="/confirm-otp/:userID" exact strict component={ConfirmOtp} />
                         </Switch>
                     </Router>

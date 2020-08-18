@@ -504,7 +504,7 @@ export class printBill extends React.Component {
 						    {/* View bill div start */}
 							{this.state.showReturnProductDiv === false ? 
 							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6 col-xs-12 viewBillDiv">
-								<div className="row ">
+								<div className="row paddingTop10 paddingBottom">
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
 									</div>
@@ -526,8 +526,8 @@ export class printBill extends React.Component {
 							    {this.state.customerDetail ?
                                 Object.keys(this.state.customerDetail).length > 0 ?
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Name: {this.state.customerDetail.customerName}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Phone: {this.state.customerDetail.mobile}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><i className="fa fa-user bill-cust-info"></i>  {this.state.customerDetail.customerName}</div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><i className="fa fa-phone bill-cust-info"></i>  Phone: {this.state.customerDetail.mobile}</div>
 								</div>
                                 : null
                                 :null}
@@ -542,7 +542,7 @@ export class printBill extends React.Component {
 												<th scope="col">QTY <br/>CGST</th>
 												<th scope="col">RATE<br/>SGST</th>
 												<th scope="col">DISCOUNT</th>
-												<th scope="col" className="width20">AMOUNT</th>
+												<th scope="col" className="pull-right">AMOUNT</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -557,15 +557,15 @@ export class printBill extends React.Component {
 															<td> 
 													              <small>{data.quantity} {data.unit}</small>
 																  <br/>
-													              {data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}
+													              <small>{data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>
 																{data.originalPrice}
 															    <br/>
-													            {data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}
+													            <small>{data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
-															<td>{data.subTotal}</td>
+															<td className="pull-right">{data.subTotal}</td>
 													    </tr>
 													)
 												   
@@ -582,23 +582,23 @@ export class printBill extends React.Component {
 														:
 														<td colSpan="3">Items/Qty 0</td>
 													}
-													<td colSpan="3">Total Amount: <i className="fa fa-inr"></i> { parseFloat(this.state.orderData.total).toFixed(2)}</td>
+													<td colSpan="3">Total Amount: <span className="pull-right"><i className="fa fa-inr"></i> { parseFloat(this.state.orderData.total).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="3"></td>
-												   <td className="" colSpan="3">Discount: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.discount).toFixed(2)}</td>
+												   <td className="" colSpan="3">Discount: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.discount).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="3"></td>
-												   <td className="" colSpan="3">Subtotal: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.subTotal).toFixed(2)}</td>
+												   <td className="" colSpan="3">Subtotal: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.subTotal).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="3"></td>
-												   <td className="" colSpan="3">GST TAX: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.gstTax).toFixed(2)}</td>
+												   <td className="" colSpan="3">GST TAX: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.gstTax).toFixed(2)}</span></td>
 												</tr>
 												<tr className="totalNetAmount" colSpan="4">
 												   <td colSpan="3"></td>
-												   <td className="totalNetAmount" colSpan="3">Amount Paid : <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.amountPayable).toFixed(2)}</td>
+												   <td className="totalNetAmount" colSpan="3">Amount Paid : <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.amountPayable).toFixed(2)}</span></td>
 												</tr>
 											</tfoot>
 											</table>
@@ -620,9 +620,9 @@ export class printBill extends React.Component {
 							/* View Bill div end */
 							/* Return product div start */
 							Object.keys(this.state.orderData).length > 0 ? 
-							<div className="paddingTop">
+							<div className="">
 							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6 col-xs-12 viewBillDiv">
-								<div className="row padding5Px">
+								<div className="row paddingTop10 paddingBottom">
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
 									</div>
@@ -676,12 +676,12 @@ export class printBill extends React.Component {
 															<td> 
 													              <small>{data.quantity} {data.unit}</small>
 																  <br/>
-													              {data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}
+													              <small>{data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>
 																{data.originalPrice}
 															    <br/>
-													            {data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}
+													            <small>{data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>{data.discountPercent}<i className="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
@@ -792,23 +792,23 @@ export class printBill extends React.Component {
 														:
 														<td colSpan="4">Items/Qty 0</td>
 													}
-													<td colSpan="4">Total Amount: <i className="fa fa-inr"></i> { parseFloat(this.state.orderData.total).toFixed(2)}</td>
+													<td colSpan="4">Total Amount: <span className="pull-right"><i className="fa fa-inr"></i> { parseFloat(this.state.orderData.total).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">Discount: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.discount).toFixed(2)}</td>
+												   <td className="" colSpan="4">Discount: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.discount).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">Subtotal: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.subTotal).toFixed(2)}</td>
+												   <td className="" colSpan="4">Subtotal: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.subTotal).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">GST TAX: <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.gstTax).toFixed(2)}</td>
+												   <td className="" colSpan="4">GST TAX: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.gstTax).toFixed(2)}</span></td>
 												</tr>
 												<tr className="totalNetAmount" colSpan="4">
 												   <td colSpan="4"></td>
-												   <td className="totalNetAmount" colSpan="4">Amount Paid : <i className="fa fa-inr"></i> {parseFloat(this.state.orderData.amountPayable).toFixed(2)}</td>
+												   <td className="totalNetAmount" colSpan="4">Amount Paid : <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.orderData.amountPayable).toFixed(2)}</span></td>
 												</tr>
 											</tfoot>
 											</table>
@@ -835,9 +835,9 @@ export class printBill extends React.Component {
 												<th scope="col">QTY <br/>CGST</th>
 												<th scope="col">RATE<br/>SGST</th>
 												<th scope="col">DISCOUNT</th>
-												<th scope="col">AMOUNT</th>
 												<th scope="col">PAYMENT</th>
 												<th scope="col">RETURNED DATE</th>
+												<th scope="col">AMOUNT</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -851,17 +851,17 @@ export class printBill extends React.Component {
 															<td> 
 													              <small>{data.quantity} {data.unit}</small>
 																  <br/>
-													              {data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}
+													              <small>{data.CGST}<i className="fa fa-percent"></i> {parseFloat(data.CGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>
 																{data.originalPrice}
 															    <br/>
-													            {data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}
+													            <small>{data.SGST}<i className="fa fa-percent"></i> {parseFloat(data.SGSTAmt).toFixed(2)}</small>
 															</td>
 															<td>{data.discountPercent}<i class="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
-															<td>{data.subTotal}</td>
 															<td>{data.paymentMethod}</td>
 															<td>{moment(data.returnedDate).format("DD MMM YYYY")}</td>
+															<td>{data.subTotal}</td>
 													    </tr>
 													)
 												   
@@ -877,23 +877,23 @@ export class printBill extends React.Component {
 														:
 														<td colSpan="4">Items/Qty 0</td>
 													}
-													<td colSpan="4">Total Amount: <i className="fa fa-inr"></i> { parseFloat(this.state.returnTotal).toFixed(2)}</td>
+													<td colSpan="4">Total Amount: <span className="pull-right"><i className="fa fa-inr"></i> { parseFloat(this.state.returnTotal).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">Discount: <i className="fa fa-inr"></i> {parseFloat(this.state.returnDiscount).toFixed(2)}</td>
+												   <td className="" colSpan="4">Discount: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.returnDiscount).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">Subtotal: <i className="fa fa-inr"></i> {parseFloat(this.state.returnSubtotal).toFixed(2)}</td>
+												   <td className="" colSpan="4">Subtotal: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.returnSubtotal).toFixed(2)}</span></td>
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">GST TAX: <i className="fa fa-inr"></i> {parseFloat(this.state.returnGstTax).toFixed(2)}</td>
+												   <td className="" colSpan="4">GST TAX: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.returnGstTax).toFixed(2)}</span></td>
 												</tr>
 												<tr className="totalNetAmount" colSpan="4">
 												   <td colSpan="4"></td>
-												   <td className="totalNetAmount" colSpan="4">Amount Paid : <i className="fa fa-inr"></i> {parseFloat(this.state.returnAmountPayable).toFixed(2)}</td>
+												   <td className="totalNetAmount" colSpan="4">Amount Paid : <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.returnAmountPayable).toFixed(2)}</span></td>
 												</tr>
 											</tfoot>
 											</table>

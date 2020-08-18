@@ -11,7 +11,6 @@ import './SignUp.css';
 import axios from 'axios';
 
 class ResetPassword extends Component {
-
   constructor(){
       super();
         this.state = {  
@@ -31,10 +30,13 @@ class ResetPassword extends Component {
       })
     }
     componentDidMount() {
-        var Uid = localStorage.getItem("admin_id");
-        var emailId = localStorage.getItem("email");
+        var userDetails = JSON.parse(localStorage.getItem("userDetails"));
+        // var Uid = localStorage.getItem("admin_id");
+        // var emailId = localStorage.getItem("email");
+        var Uid = userDetails.user_id;
+        var emailId = userDetails.email;
         this.setState({user_ID:Uid,emailId:emailId})          
-        console.log("emailId==>>>",emailId);
+        console.log("emailId==>>>",emailId,"userId==>",Uid);
 
       }
     oldpasswordChange = (oldpassword,emailId,newpassword,confirmPassword,user_id,value,key)=>{
@@ -148,12 +150,12 @@ class ResetPassword extends Component {
   render(){
     var winHeight = window.innerHeight;
     var divHeight = winHeight/4.5+'px';
-
     return(
       <div>
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainBackgroundImg"></div>
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mainBackgroundImg ">
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">
-          <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}>
+          <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap ">
+          {/* <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{"height": divHeight}}> */}
             <div className="divLoginInWrap">
             <form id="resetPassword" >
                   <div className="form-group loginFormGroup pdleftclr veribtm col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -192,6 +194,7 @@ class ResetPassword extends Component {
                 </form>
             </div>
           </div>
+        </div>
         </div>
     </div>
     );
