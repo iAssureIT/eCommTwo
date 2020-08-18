@@ -527,14 +527,14 @@ export class printBill extends React.Component {
                                 Object.keys(this.state.customerDetail).length > 0 ?
 								<div className="row">
 								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><i className="fa fa-user bill-cust-info"></i>  {this.state.customerDetail.customerName}</div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><i className="fa fa-phone bill-cust-info"></i>  Phone: {this.state.customerDetail.mobile}</div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><i className="fa fa-phone bill-cust-info"></i>  {this.state.customerDetail.mobile}</div>
 								</div>
                                 : null
                                 :null}
 								
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsEditForm" id="productsEditForm">
-									<div className="table-responsive">
+									<div className="table-responsive billTable marginBottom50">
 										<table className="table table-borderless commontable billTable">
 											<thead>
 												<tr>
@@ -644,14 +644,14 @@ export class printBill extends React.Component {
 							    {this.state.customerDetail ?
                                 Object.keys(this.state.customerDetail).length > 0 ?
 								<div className="row">
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><small class="">Customer Name: {this.state.customerDetail.customerName}</small></div>
-								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullright"><small class="">Mobile: {this.state.customerDetail.mobile}</small></div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12 pullleft"><i className="fa fa-user bill-cust-info"></i>  {this.state.customerDetail.customerName}</div>
+								   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12"><i className="fa fa-phone bill-cust-info"></i>   {this.state.customerDetail.mobile}</div>
 								</div>
                                 : null
                                 :null}
 								<div className="row" style={{"padding": "15px"}}> 
 									<form className="productsViewForm" id="productsViewForm">
-									<div className="table-responsive">
+									<div className="table-responsive billTable">
 										<table className="table table-borderless commontable viewBillTable">
 											<thead>
 												<tr>
@@ -814,7 +814,7 @@ export class printBill extends React.Component {
 											</table>
 										</div>
 										{
-										this.state.orderData.length > 0 ?
+										this.state.orderData ?
 											this.state.orderData.paymentMethod ? 
 											<div className="row" style={{"padding": "15px"}}>
 													<span><b>Payment Method</b> : {this.state.orderData.paymentMethod}</span>
@@ -826,9 +826,9 @@ export class printBill extends React.Component {
 										this.state.orderData ? 
 										this.state.orderData.returnedProduct.length > 0 ?
 										<div>
-										<div className="table-responsive returnItemsTable">
+										<div className="table-responsive billTable returnItemsTable">
 											<h5><b>Returned Items</b></h5>
-											<table className="table table-borderless commontable viewBillTable">
+											<table className="table table-borderless commontable">
 											<thead>
 												<tr>
 												<th scope="col">ITEM</th>

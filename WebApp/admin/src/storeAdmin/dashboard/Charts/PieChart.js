@@ -115,7 +115,10 @@ export default class PieChart extends Component{
             <div className="box-body no-padding">
               
               {this.state.data && this.state.data.datasets[0].data.length > 0 ?
-              <Pie height={200} data={this.state.data} options={{legend: {display: true},
+              <Pie height={200} data={this.state.data}options={{legend: {display: true, position: 'bottom',align:'start',
+                labels: {
+                  boxWidth: 15
+                }},
                 plugins: {
                    labels: [{
                      

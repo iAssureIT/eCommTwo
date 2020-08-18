@@ -229,7 +229,7 @@
   .billTable{
     font-size: smaller;
     margin-top: 10px; 
-    margin-bottom: 50% !important;
+    /* margin-bottom: 50% !important; */
   }
 
   .returnItemsTable{
@@ -242,7 +242,7 @@
   }
 
   .viewBillTable{
-    font-size: smaller;
+    /* font-size: smaller; */
     margin-top: 10px; 
     margin-bottom: 10% !important;
   }
@@ -283,7 +283,11 @@
   .commontable .fa {
     font-size: smaller !important;
     /* color: #3c3939c9 !important; */
-   }
+  }
+  
+  .marginBottom50{
+    margin-bottom: 50% !important;
+  }
   
   .trashIcon{
     color: #ff0000bf !important;

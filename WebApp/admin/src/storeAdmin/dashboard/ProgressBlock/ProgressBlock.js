@@ -146,7 +146,7 @@ export default class ProgressBlock extends Component{
                               {data.FieldCount > 0 ? 
                                <div className="info-box-content">
                                   <span className="info-box-text">{data.franchiseName}</span>
-                                  <span className="info-box-number">{data.FieldCount} / {this.state.compairFieldCount}</span>
+                                  <span className="info-box-number"><i className={"fa fa-inr"}></i> {data.FieldCount} / {this.state.compairFieldCount}</span>
                                   <div className="progress">
                                     <div className="progress-bar bg-white" style={{width: (data.FieldCount/ this.state.compairFieldCount)*100+"%"}}></div>
                                   </div>  

@@ -155,25 +155,41 @@ class viewOrder extends Component{
               {
                 this.state.orderData.products && this.state.orderData.products.length > 0 ?
                       this.state.orderData.products.map((data, index)=>{
+                        var discountedPrice = parseFloat(data.originalPrice) - parseFloat((data.originalPrice * data.discountPercent) / 100).toFixed(2)
                         return(
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{marginBottom:"10px"}}>
                             <div className="col-lg-2 col-md-2 col-sm-2 col-xs-3">
                               <img src={data.productImage[0]} style={{width:"100%"}}/>
                             </div>
-                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                              <p><a href={"/product-details/"+data.product_ID} className="productname">{data.productName}</a></p>
-                              <p><span>Discount <small>({data.discountPercent}%)</small> : <i className="fa fa-inr"></i>&nbsp;{data.discountedPrice}</span><br/>
-                              <span className="oldprice">Original Price : <i className="fa fa-inr oldprice"></i>&nbsp;{data.originalPrice}</span></p>
-                              <p>Quantity: {data.quantity}</p> 
-                              {this.state.orderData.billNumber ?
-                                <p>Total: &nbsp;<i className={"fa fa-"+this.state.orderData.currency}>{data.quantity * (data.originalPrice - data.discountedPrice)}</i></p>
-                                : 
-                                <p>Total: &nbsp;<i className={"fa fa-"+this.state.orderData.currency}></i>{data.quantity * data.originalPrice}</p>
-                              }
-                              
-                              
+                            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                              <strong class="box-title">
+                               <a href={"/product-details/"+data.product_ID} className="productname">{data.productName}</a><br/>
+                              </strong>
+                              <br/>
+                              <div className="box-content"> 
+                                <div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Original Price:</span>  </div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}></i> {data.originalPrice}</span></div> 
+                                </div>
+                                <div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Discount:</span></div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">{data.discountPercent}%</div>
+                                </div>
+                                <div>
+                                  <div className="col-lg-8 col-md-8 col-sm-8 col-xs-6 NOpadding"><span>Discounted Price:</span></div>
+                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{discountedPrice}</div>
+                                </div>
+                                <div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Quantity:</span></div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{data.quantity}</div>
+                                </div>
+                                <div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total:</span></div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{data.quantity * discountedPrice}</div>
+                                </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
                           );
                       })
                       : null

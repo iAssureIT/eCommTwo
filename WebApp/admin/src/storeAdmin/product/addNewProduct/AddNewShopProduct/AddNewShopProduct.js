@@ -325,7 +325,7 @@ class AddNewShopProduct extends Component {
 				return null;
 			});
 
-			console.log("getUom",unitOfMeasurementArray);
+			//console.log("getUom",unitOfMeasurementArray);
 			this.setState({
 				 unitOfMeasurementArray : unitOfMeasurementArray
 			},()=>{
@@ -732,11 +732,11 @@ class AddNewShopProduct extends Component {
       [event.target.name]: event.target.value,
 
     });
-    if (event.target.value !== 0) {
+    if(event.target.value !== 0) {
       this.setState({
         showDiscount: false
       })
-    } else {
+    }else{
       this.setState({
         showDiscount: true,
         discountPercent: "",
@@ -746,12 +746,13 @@ class AddNewShopProduct extends Component {
     var discountPercent = parseFloat(this.refs.discountPercent.value);
     var discountedPrice = parseFloat(this.refs.discountedPrice.value);
 
-    if (discountPercent) {
+    if(discountPercent){
       this.setState({
         discountedPrice: parseFloat(event.target.value) - parseFloat((event.target.value * discountPercent) / 100).toFixed(2)
       });
     }
-    if (discountedPrice) {
+
+    if(discountedPrice){
       this.setState({
         discountPercent: parseFloat((event.target.value - discountedPrice / event.target.value) * 100).toFixed(2)
       });

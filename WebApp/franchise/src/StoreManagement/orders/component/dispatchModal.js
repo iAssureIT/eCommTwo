@@ -26,7 +26,13 @@ class dispatchModal extends Component{
     }
 
     componentDidMount() {
-
+      var websiteModel = (localStorage.getItem('websiteModel'));
+      this.setState({
+        websiteModel: websiteModel
+      },()=>{
+        // FranchiseModel
+       console.log("websiteModel==>",this.state.websiteModel)
+      })
     }
     addDispatchDetails(event){
         event.preventDefault();
@@ -174,30 +180,32 @@ class dispatchModal extends Component{
                     <div className="modal-body">
                       <form className="dispatchForm" onSubmit={this.addDispatchDetails.bind(this)} id={this.props.orderId}>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      
-                      <div className="row inputrow">
-                          <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                          <div className="form-group">
-                              <br/>
-                              <label>Business Associate</label><span className="astrick">*</span>
-                              <div className="input-group">
-                              <span className="input-group-addon" id="basic-addon1"><i className="fa fa-gg" aria-hidden="true"></i></span>
-                                <select className="form-control" id="businessAssociate">
-                                { this.props.baList && this.props.baList.length > 0 ?
-                                    this.props.baList.map( (data, index)=>{
-                                        return (
-                                          <option key={index} value={data.userID}>{data.companyName}{ data.locationDetails.length > 0 ?  ' ( '+ data.locationDetails[0].area +''+'-'+  data.locationDetails[0].pincode +' )' : ''}</option>
-                                        );
-                                      })
-                                      :
-                                      null
-                                }
-                                </select>
-                              
-                              </div>
-                          </div>
-                          </div>
+                      {this.state.websiteModel !== 'FranchiseModel' ? 
+                       <div className="row inputrow">
+                        <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <div className="form-group">
+                            <br/>
+                            <label>Business Associate</label><span className="astrick">*</span>
+                            <div className="input-group">
+                            <span className="input-group-addon" id="basic-addon1"><i className="fa fa-gg" aria-hidden="true"></i></span>
+                              <select className="form-control" id="businessAssociate">
+                              { this.props.baList && this.props.baList.length > 0 ?
+                                  this.props.baList.map( (data, index)=>{
+                                      return (
+                                        <option key={index} value={data.userID}>{data.companyName}{ data.locationDetails.length > 0 ?  ' ( '+ data.locationDetails[0].area +''+'-'+  data.locationDetails[0].pincode +' )' : ''}</option>
+                                      );
+                                    })
+                                    :
+                                    null
+                              }
+                              </select>
+                            
+                            </div>
+                        </div>
+                       </div>
                       </div>
+                      : null }
+                     
                       <div className="row inputrow">
                           <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                           <div className="form-group">
