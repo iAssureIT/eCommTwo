@@ -209,18 +209,18 @@
   .pullleft{
     float: left;
   }
-  .commontable thead{
+  .billTable .commontable thead{
     font-size: smaller;
     border-top: 1px dashed #66666673;
     border-bottom: 1px dashed #66666673;
   }
 
-  .commontable tfoot{
+  .billTable .commontable tfoot{
     border-top: 1px dashed #66666673;
     border-bottom: 1px dashed #66666673;
   }
 
-  .commontable th,  td { 
+  .billTable .commontable th,  td { 
     padding:5px !important;
     border-top: none !important; 
     border-bottom: none !important; 

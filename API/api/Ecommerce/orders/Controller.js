@@ -2482,7 +2482,7 @@ exports.getMonthwiseOrders = (req,res,next)=>{
                   allMonths[index].totalCost = totalCost
               }
             });            
-        }//i
+        }
 
         res.status(200).json(allMonths);
     })
@@ -2564,17 +2564,21 @@ exports.franchiseTopProductsSale = (req, res, next) => {
 };
 
 exports.franchise_daily_orders_count = (req, res, next) => {
-   Orders.find(
-     {
-      allocatedToFranchise: ObjectId(req.params.franchiseID),
-      createdAt: {
-        $gte: moment(req.params.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
-        $lte: moment(req.params.endDate).tz('Asia/Kolkata').endOf('day').toDate()
-      }
-    })
+    Orders.aggregate([
+      {
+        "$match": {
+            "allocatedToFranchise": ObjectId(req.params.franchiseID),
+            createdAt: {
+                $gte: moment(req.params.startDate).tz('Asia/Kolkata').startOf('day').toDate(),
+                $lte: moment(req.params.endDate).tz('Asia/Kolkata').endOf('day').toDate()
+            }
+        }
+      },
+    ])
     .exec()
     .then(data => {
-      var count = data.length > 0 ?  data[0].count : 0;
+      console.log("datatatatta",data);
+      var count = data.length > 0 ?  data.length : 0;
       if(count == undefined){
            res.status(200).json({ "dataCount": 0 });
       }else{

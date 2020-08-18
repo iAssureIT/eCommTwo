@@ -34,6 +34,7 @@ export default class Dashboard extends Component{
   
 	componentDidMount(){
     $('.dashboard-component').removeClass('BM-dashbord');
+    $('.dashboard-component').removeClass('billTable');
     var userDetails = (localStorage.getItem('userDetails'));
     var userData = JSON.parse(userDetails);
     axios.get("/api/entitymaster/getCompany/"+userData.companyID)
@@ -83,9 +84,18 @@ export default class Dashboard extends Component{
 
 
   render(){
-    console.log("franchiseID",this.state.franchiseLatLong);
     return(
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
+            <section class="content-header">
+              <h1>
+                Dashboard
+                <small></small>
+              </h1>
+              <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Dashboard</li>
+              </ol>
+           </section>
            <section className="content">
            	<div className="row">
 	           	<Statistics 
@@ -121,7 +131,7 @@ export default class Dashboard extends Component{
             <div className="row">
               <Report
                 display={true}
-                tableHeading={["OrderId","Item","Distance","Total Cost","Status"]}
+                tableHeading={["Order Id","Item","Distance","Amount","Status"]}
                 boxColor="box-primary"
                 title="Latest Orders"
                 api={{"method":"post","path":"/api/orders/get/get_orders","PostData":this.state.orderFilterData,"address":this.state.franchiseLatLong[0]}}
@@ -130,14 +140,14 @@ export default class Dashboard extends Component{
                 <ProgressBlock 
                   display={true}
                   bgColor="bg-yellow"
-                  faIcon="fa-shopping-bag"
+                  faIcon="fa-calendar-check-o"
                   Field={{"FieldName":"Daily Orders","method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.todayDate+'/'+this.state.todayDate}}
                   compairField={{"method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.startOfWeek+'/'+this.state.endOfWeek}}
                 />
                 <ProgressBlock 
                   display={true}
                   bgColor="bg-green"
-                  faIcon="fa-undo"
+                  faIcon="fa-calendar-check-o"
                   Field={{"FieldName":"Weekly Orders","method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.startOfWeek+'/'+this.state.endOfWeek}}
                   compairField={{"method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.monthStart+'/'+this.state.monthEnd}}
                 />
@@ -151,7 +161,7 @@ export default class Dashboard extends Component{
                 <ProgressBlock 
                   display={true}
                   bgColor="bg-red"
-                  faIcon="fa-undo"
+                  faIcon="fa-calendar-check-o"
                   Field={{"FieldName":"Monthly Orders","method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.monthStart+'/'+this.state.monthEnd}}
                   compairField={{"method":"get","path":"/api/orders/get/franchise-daily-orders-count/"+this.state.franchiseID+'/'+this.state.yearStart+'/'+this.state.yearEnd}}
                 />

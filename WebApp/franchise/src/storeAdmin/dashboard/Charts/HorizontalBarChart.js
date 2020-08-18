@@ -27,7 +27,7 @@ export default class HorizontalBarChart extends Component{
           "data" : {
           labels: [],
           datasets: [{
-                label: 'Product Sale',
+                label: 'Total Orders',
                 backgroundColor:'rgba(54, 162, 235, 1)',
                 borderColor: 'rgba(54, 162, 235, 0.5)',
                 borderWidth: 1,

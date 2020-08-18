@@ -54,12 +54,19 @@ export default class Dashboard extends Component{
     })
   }
   
-  // 	           		firstField={{"Field":"Total Franchise","method":"get","path":"/api/entitymaster/get/count/franchise"}} 
-
-
   render(){
     return(
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOPadding">
+           <section class="content-header">
+              <h1>
+                Dashboard
+                <small></small>
+              </h1>
+              <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Dashboard</li>
+              </ol>
+           </section>
            <section className="content">
            	<div className="row">
 	           	<Statistics 
@@ -99,7 +106,7 @@ export default class Dashboard extends Component{
             <div className="row">
               <Report
                 display={true}
-                tableHeading={["OrderId","Item","Franchise","Total Cost","Status"]}
+                tableHeading={["Order Id","Item","Franchise","Amount","Status"]}
                 boxColor="box-primary"
                 title="Latest Orders"
                 api={{"method":"get","path":"/api/orders/get/list"}}

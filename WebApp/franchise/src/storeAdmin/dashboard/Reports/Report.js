@@ -3,11 +3,8 @@ import { render } from 'react-dom';
 import axios             from 'axios';
 import moment                   from 'moment';
 import { withRouter } from 'react-router-dom';
-
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-
 import '../dashboard.css';
 
 class Report extends Component{
@@ -26,7 +23,7 @@ class Report extends Component{
   }
    
   componentDidMount(){
-    console.log("componentDidMount display",this.props);
+    //console.log("componentDidMount display",this.props);
     if(this.props.display){
       this.setState({
         boxColor: this.props.boxColor,
@@ -108,9 +105,9 @@ class Report extends Component{
             <div className="box-header with-border">
               <h3 className="box-title">{this.state.title}</h3>
             </div>
-            <div className="box-body no-padding">
+            <div className="box-body">
               <div className="table-responsive">
-                <table className="table no-margin">
+                <table className="table no-margin dashboard-ordertable">
                   <thead>
                   <tr>
                   {this.state.tableHeading && this.state.tableHeading.length > 0 ?
@@ -126,7 +123,7 @@ class Report extends Component{
                   }
                   </tr>
                   </thead>
-                  <tbody className="fontSmall">
+                  <tbody className="fontSmall dashboard-tbody">
                   {this.state.data && this.state.data.length > 0 ?
                     this.state.data.map((data,index)=>{
                       let products = [];
@@ -160,7 +157,7 @@ class Report extends Component{
                       statusClass = deliveryStatus === "Cancelled"   ? "label label-danger" : ""
                       return(
                         <tr key={index}>
-                          <td>{data.orderID}</td>
+                          <td><a className="href-link" href={"/viewOrder/"+products._id}>{data.orderID}</a></td>
                           <td>{products.toString()}</td>
                           <td>{distance.toFixed(2) +" Km"} </td>
                           <td>{data.total}</td>

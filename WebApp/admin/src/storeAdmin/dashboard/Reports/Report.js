@@ -121,7 +121,7 @@ class Report extends Component{
                       statusClass = deliveryStatus === "Cancelled"   ? "label label-danger" : ""
                       return(
                         <tr key={index}>
-                          <td>{data.orderID}</td>
+                          <td><a className="href-link" href={"/viewOrder/"+data._id}>{data.orderID}</a></td>
                           <td>{products.toString()}</td>
                           <td>{franchiseName}</td>
                           <td>{data.total}</td>

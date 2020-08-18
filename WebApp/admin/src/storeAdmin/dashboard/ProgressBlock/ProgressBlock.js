@@ -141,7 +141,6 @@ export default class ProgressBlock extends Component{
                   var index = i+1;
                   var topClass = data.FieldCount !== 0 ? index : 0;
                     return(
-                          <div>
                             <div className={"info-box top"+topClass}>
                             <span className="info-box-icon"><i class="fa fa-arrow-upp" aria-hidden="true">{i+1}</i></span>
                               {data.FieldCount > 0 ? 
@@ -149,15 +148,25 @@ export default class ProgressBlock extends Component{
                                   <span className="info-box-text">{data.franchiseName}</span>
                                   <span className="info-box-number">{data.FieldCount} / {this.state.compairFieldCount}</span>
                                   <div className="progress">
-                                    <div className="progress-bar bg-white" style={{"width": this.state.compairFieldCount+"%"}}></div>
+                                    <div className="progress-bar bg-white" style={{width: (data.FieldCount/ this.state.compairFieldCount)*100+"%"}}></div>
                                   </div>  
                                   <span className="progress-description">
                                   {index} Best Franchise/Sale Revenue
                                   </span>              
+                               </div>
+                              : 
+                              <div className="info-box-content">
+                                  <span className="info-box-text">{data.franchiseName}</span>
+                                  <span className="info-box-number emptyText"></span>
+                                  <div className="progress">
+                                    <div className="progress-bar bg-white" style={{width: (data.FieldCount/ this.state.compairFieldCount)*100+"%"}}></div>
+                                  </div>  
+                                  <span className="progress-description">
+                                  {/* {index} Best Franchise/Sale Revenue */}
+                                  </span>              
                               </div>
-                              : ''}
+                              }
                             </div>
-                          </div>
                       );
                     })
                 }

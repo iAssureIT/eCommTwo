@@ -345,7 +345,7 @@ class customerModal extends Component{
                 <div className="modal-dialog customerModal-dialog">
                   <div className="modal-content">
                     <div className="modal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">    
-                      <h4 className="WightFont textAlignCenter col-lg-11 col-md-11 col-sm-11 col-xs-11">Customer Information</h4>
+                      <h3 className="WightFont textAlignCenter col-lg-11 col-md-11 col-sm-11 col-xs-11">Customer Information</h3>
                     </div>
                     <div className="modal-body textAlignLeft">
                         {/* onSubmit={this.addDispatchDetails.bind(this)} */}

@@ -18,6 +18,9 @@ const options = {
         stacked: true,
           }],
     },
+    plugins: {
+      labels: false
+    },
     responsive: true,
     maintainAspectRatio: false     
 };
