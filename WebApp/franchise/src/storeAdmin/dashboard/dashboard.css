@@ -219,4 +219,7 @@
     text-decoration: none;
 }
 
+.display-flex{
+    display: flex;
+}
 

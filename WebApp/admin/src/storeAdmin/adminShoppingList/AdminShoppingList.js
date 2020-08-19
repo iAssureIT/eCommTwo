@@ -55,9 +55,11 @@ export default class AdminShoppingList extends React.Component {
 		axios.get('/api/franchisepo/get/purchaseorderList/'+dateOfOrder)
           .then((franchisePurOrders) => {
 						this.setState({
-		             "allFrachiseList" : franchisePurOrders.data,
+		                   "allFrachiseList" : franchisePurOrders.data,
+						},()=>{
+							this.getCurrentStock();
 						})
-						this.getCurrentStock();
+						
 					})
 					.catch(error=>{
 						console.log("error in getCurrentStock = ", error);
@@ -70,23 +72,20 @@ export default class AdminShoppingList extends React.Component {
 		    .then(prodlist => {
 					var prodStockOrder = [];
 					if(Array.isArray(prodlist.data) && prodlist.data.length > 0){						
-						console.log("prodlist = ",prodlist.data);
-
+						//console.log("prodlist = ",prodlist.data);
 						//Separate out the Unique values of Units 
 						const units = [...new Set(prodlist.data.map(item => item.unit))];
 						this.setState({
-		          "units" : units,
+		                    "units" : units,
 						})
 
-						if ( Array.isArray(this.state.allFrachiseList) && 
+						if (Array.isArray(this.state.allFrachiseList) && 
 								 this.state.allFrachiseList.length > 0) {						
-	
-							console.log("this.state.allFrachiseList = ",this.state.allFrachiseList);
 							var allFranchiseOrders = []; 
 							for (var i = 0; i < prodlist.data.length; i++) {
 								var totOrder = 0;
 								var obj = {};
- 								var index = -1;
+								var index = -1;
 								for (var j = 0; j < this.state.allFrachiseList.length; j++) {
 									obj.franchise_id 		= 	this.state.allFrachiseList[j].franchise_id;
 									obj.productCode 	  = 	prodlist.data[i].productCode;
@@ -118,9 +117,9 @@ export default class AdminShoppingList extends React.Component {
 								obj.totOrder = totOrder;
 								obj.totUnit  = prodlist.data[i].unit;
 
-								if(totOrder > 0){
+								 if(totOrder > 0){
 									allFranchiseOrders.push(obj);	
-								}								
+								 }								
 							}//for i
 
 							if(i == prodlist.data.length){
@@ -128,7 +127,9 @@ export default class AdminShoppingList extends React.Component {
 								this.setState({"allFranchiseOrders" : allFranchiseOrders});
 							}
 
-						}//if
+						 }else{
+							this.setState({"allFranchiseOrders" : allFranchiseOrders});
+						 }//if
 					}else{
 						swal("Franchise Orders Not Yet Submitted","error");
 					}
@@ -246,7 +247,7 @@ export default class AdminShoppingList extends React.Component {
 										    	Array.isArray(this.state.allFranchiseOrders) && this.state.allFranchiseOrders.length > 0
 										    	? 
 										    		this.state.allFranchiseOrders.map((result, index)=>{
-															// console.log('result', result);
+															console.log('result', result);
 															return( 
 																<tr key={index}>
 												        	<td>{result.productCode}</td>
@@ -257,7 +258,7 @@ export default class AdminShoppingList extends React.Component {
 
 												        	<td>
 													        	<div className="form-group">
-								                      <div className="input-group">
+								                                <div className="input-group">
 														        		<input type="number" className="form-control width90" 
 														        				 name={"orderedItems_"+index} 
 														        				 id={result.productCode+"-"+result.itemCode} 
@@ -287,15 +288,17 @@ export default class AdminShoppingList extends React.Component {
 													        </td>
 
 																	{
+																	   Array.isArray(this.state.allFrachiseList) && this.state.allFrachiseList.length > 0
+																		?
 																		Object.values(result).map((fieldValue,index,allFields)=>{																			
 																			if(index>6){
 																				if(index%2 === 0)
 																					//Use Only even values like 8, 10, 12, etc
 																					return (<td> {allFields[index-1]+" "+allFields[index]} </td>)
 																			}
-
-																				
 																		})
+																		: 
+																		null
 																	}
 															  </tr>
 															)

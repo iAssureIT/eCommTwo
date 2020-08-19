@@ -131,7 +131,7 @@ class Report extends Component{
                       )
                     })
                     :
-                    <tr><td colSpan="3" className="textAlignCenter">No Data Found</td></tr>
+                    <tr><td colSpan="5" className="textAlignCenter">No Data Found</td></tr>
                   }
                   </tbody>
                 </table>

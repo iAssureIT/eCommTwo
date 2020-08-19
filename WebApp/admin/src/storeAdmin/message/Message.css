@@ -20,3 +20,6 @@
 .inpagemessage{
 	line-height: 20px;
 }
+.alert-warning {
+	color: #8a6d3b !important;
+}

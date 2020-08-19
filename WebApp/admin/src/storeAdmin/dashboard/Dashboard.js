@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { render } from 'react-dom';
 import moment     from 'moment';
-
+import $ from "jquery";
 import Statistics     from './StatisticsBox/Statistics.js'
 import PieChart       from './Charts/PieChart.js'
 import BarChart       from './Charts/BarChart.js'
@@ -24,11 +24,11 @@ export default class Dashboard extends Component{
 	}
 	   
 	componentDidMount(){
-
+    $('#dashbordid').removeClass('dashboard-component');
     var yyyy = moment().format("YYYY");
     var monthNum = moment().format("MM");
     var currentMonth = yyyy+"-"+monthNum;
-
+    
     var monthDateStart = new Date(moment(currentMonth).month("YYYY-MM"));//Find out first day of month with currentMonth
     var monthDateEnd = new Date(moment(currentMonth).add(1,"M"));
     this.setState({

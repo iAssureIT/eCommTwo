@@ -122,12 +122,11 @@ export default class HorizontalBarChart extends Component{
             {this.state.data && this.state.data.datasets[0].data.length > 0 ?
                 <HorizontalBar data={this.state.data} />
              :
-            <div className="text-center">
+            <div className="display-flex">
               <img className="chartStyle" src="/images/loading-gif.gif"/>
               <p className="noChartData">No Data Found</p>
             </div>
             }
-           
             </div>
           </div>
       </div>
