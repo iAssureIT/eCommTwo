@@ -147,6 +147,7 @@ class Layout extends Component  {
   render() {
         var pageUrl = window.location.pathname;
         let a = pageUrl ? pageUrl.split('/') : "";
+        console.log("a:",a);
     if (this.state.loggedIn) {
             return (
                 <Router>
@@ -279,6 +280,11 @@ class Layout extends Component  {
 
                                                       {/* Admin shopping List AdminShoppingList*/}
                                                       <Route path="/admin-shopping-list"                           exact strict component={AdminShoppingList} />
+                                                    
+                                                      <Route path="/franchise-billing"                                exact strict component={Bill} />
+                                                      <Route path="/view-bill/:orderId"                               exact strict component={viewBill} />
+                                                      <Route path="/return-bill"                                      exact strict component={viewBill} />
+                                                      <Route path="/return-bill/:billNo"                              exact strict component={viewBill} />
                                                     </Switch>
                                                 </div>
                                             </div>

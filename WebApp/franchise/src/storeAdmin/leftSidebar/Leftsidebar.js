@@ -92,13 +92,9 @@ export default class AdminDashboard extends Component{
     // console.log("currentURL",localStorage.getItem("currentURL"));
   }
 
-  test(e){
-    // var key = $(e.currentTarget).attr('data-key');
-    console.log("e===",e.currentTarget.getAttribute('data-key'));
-    // var key = e.currentTarget.data-key.value();
+  openSubmenu(e){
+    // console.log("e===",e.currentTarget.getAttribute('data-key'));
     var key = e.currentTarget.getAttribute('data-key');
-    
-    // console.log("Key===",$(e.target).attr('data-key'));
     let {menuValues} = this.state;
     Object.keys(menuValues).map((data) => {
       menuValues[data] = (data===key) ? !menuValues[key] :false;
@@ -111,15 +107,12 @@ export default class AdminDashboard extends Component{
         $('.treeview-menu').css("display","none");
         $(e.currentTarget).next('ul').css("display","block");
       }
-      // $(e.currentTarget).find('.treeview-menu').css("display","block");
-      console.log("menuvalues====",this.state.menuValues);
+      // console.log("menuvalues====",this.state.menuValues);
     });
     this.setState({menuValues});
     $('.singleTreeview').removeClass('active')
   }
-  openMenu = (key) => {
-    // console.log("Key===",$(e.target).attr('data-key'));
-    
+  openMenu = (key) => {    
     let {menuValues} = this.state;
     Object.keys(menuValues).map((data) => {
       menuValues[data] = (data===key) ? !menuValues[key] :false;
@@ -170,7 +163,7 @@ export default class AdminDashboard extends Component{
 
             <li className="treeview" >
               {/* <a href="JavaScript:void(0);" onClick={(e)=>this.openMenu("ordermanagement")} title="Order Management"> */}
-              <a href="JavaScript:void(0);" data-key="ordermanagement" onClick={this.test.bind(this)} title="Order Management">
+              <a href="JavaScript:void(0);" data-key="ordermanagement" onClick={this.openSubmenu.bind(this)} title="Order Management">
                 <i className="fa fa-file" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Order Management</span>
                 <span className="pull-right-container">
@@ -219,7 +212,7 @@ export default class AdminDashboard extends Component{
             </li>
 
             <li className="treeview" >
-              <a href="JavaScript:void(0);" data-key="inventoryData" onClick={this.test.bind(this)} title="Inventory Management ">
+              <a href="JavaScript:void(0);" data-key="inventoryData" onClick={this.openSubmenu.bind(this)} title="Inventory Management ">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Inventory Management </span>
                 <span className="pull-right-container">
@@ -242,7 +235,7 @@ export default class AdminDashboard extends Component{
             </li>       
 
             <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("myOrder")} title="My Order">
+              <a href="JavaScript:void(0);" data-key="myOrder" onClick={this.openSubmenu.bind(this)} title="My Order">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">My Orders </span>
                 <span className="pull-right-container">
@@ -263,14 +256,12 @@ export default class AdminDashboard extends Component{
                 </li>  
               </ul>
             </li>   
-
-
-            <li className="treeview" > 
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("billingData")} title="Billing Management">
+            <li className="treeview" >
+              <a href="JavaScript:void(0);" data-key="myOrder" data-key="billingData" onClick={this.openSubmenu.bind(this)} title="Billing">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Billing Management </span>
                 <span className="pull-right-container">
-                  <i className={"fa pull-right menu-icon-toggle"+(billingData?this.openIcon:this.closeIcon)} />
+                  <i className={"fa pull-right menu-icon-toggle "+(billingData?this.openIcon:this.closeIcon)} />
                 </span>
               </a>
               <ul className="treeview-menu" >    
@@ -286,10 +277,10 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
               </ul>
-            </li>
+            </li>           
 
             <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("reportData")} title="Billing Management">
+              <a href="JavaScript:void(0);" data-key="reportData" onClick={this.openSubmenu.bind(this)} title="Reports">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Reports </span>
                 <span className="pull-right-container">
