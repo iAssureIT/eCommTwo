@@ -22,6 +22,8 @@ router.get('/get/list',productController.list_product);
 
 router.get('/get/listbysection/:section',productController.list_product_bySection);
 
+router.get('/get/list/:section',productController.list_product_bySection);
+
 router.get('/get/list/mobile/:section',productController.list_product_bySection_mobile);
 
 router.get('/get/productcode/:productCode',productController.list_product_code);
