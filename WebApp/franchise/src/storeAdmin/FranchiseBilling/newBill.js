@@ -46,7 +46,8 @@ export class Bill extends React.Component {
 				paymentMethod         : 'cash',
 				customerDetail        : {},
 				unitRate              : 0,
-				updateCustomer        : false
+				updateCustomer        : false,
+				orderFrom             : 'In-store'
 		  };
 		//   this.escFunction = this.escFunction.bind(this);
 		
@@ -111,7 +112,28 @@ export class Bill extends React.Component {
 			  }
 		   }
 		})
-
+		
+		if ($(window).width() < 768) {
+			// do something for small screens
+		}
+		else if ($(window).width() >= 768 &&  $(window).width() <= 992) {
+			// do something for medium screens
+			this.setState({
+				"orderFrom" : 'Van'
+			})
+		}
+		else if ($(window).width() > 992 &&  $(window).width() <= 1200) {
+			// do something for big screens
+			this.setState({
+				"orderFrom" : 'In-store'
+			})
+		}
+		else  {
+			// do something for huge screens
+			this.setState({
+				"orderFrom" : 'In-store'
+			})
+		}
 		
 	}
 	
@@ -1226,7 +1248,7 @@ export class Bill extends React.Component {
 							{/* add customer indformation */}
 							<div id="customerModal" className="modal ssmodal">
 								<button type="button" className="close CustomerModalClose" onClick={this.closeModal.bind(this)}>CLOSE</button>
-								<CustomerModal franchise_id={this.state.franchise_id} updateCustomer={this.state.updateCustomer}/>
+										<CustomerModal franchise_id={this.state.franchise_id} updateCustomer={this.state.updateCustomer}/>
 							</div>
 						 {/* </div> */}
 					</div>
