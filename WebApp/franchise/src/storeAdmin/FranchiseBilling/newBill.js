@@ -60,6 +60,8 @@ export class Bill extends React.Component {
 		$('.leftsidebarbackgroundcolor').hide();
 		// $('#headerid').css('width',"100% !important");
 		// $('#headerid').attr('style',"width : 100% !important");
+		//$('.main-sidebar').hide();
+		//$('.main-header').hide();
 		$('#headerid').hide();
 		$('#dashbordid').css('top',0);
 		// $('#dashbordid').removeClass('col-lg-10 col-lg-offset-2').addClass('col-lg-12');

@@ -216,10 +216,10 @@ class Layout extends Component  {
                                                       <Route path="/delivery_challan/:purchaseId"                     exact strict component = { DeliveryChallans }  />
                                                       <Route path="/franchise-product-stock"                          exact strict component={FranchiseCurrentStock} />
                                                       {/*Billing*/}
-                                                      <Route path="/franchise-billing"                                exact strict component={Bill} />
+                                                      {/* <Route path="/franchise-billing"                                exact strict component={Bill} />
                                                       <Route path="/view-bill/:orderId"                               exact strict component={viewBill} />
                                                       <Route path="/return-bill"                                      exact strict component={viewBill} />
-                                                      <Route path="/return-bill/:billNo"                                      exact strict component={viewBill} />
+                                                      <Route path="/return-bill/:billNo"                                      exact strict component={viewBill} /> */}
                                                       { /*Order List*/}
                                                       <Route path="/allorders"                                        exact strict component={AllOrdersList} />
                                                       <Route path="/new-orders-list"                                  exact strict component={NewOrdersList} />
@@ -308,6 +308,22 @@ class Layout extends Component  {
                 </div>
             );
         }
+
+    /* Routes for billing managements */
+    if(a[1] === 'franchise-billing' || a[1] === 'view-bill' || a[1] === 'return-bill' || a[1] === 'return-bill'){
+            return (
+                <div>
+                    <Router >
+                        <Switch >
+                            <Route path="/franchise-billing"                                exact strict component={Bill} />
+                            <Route path="/view-bill/:orderId"                               exact strict component={viewBill} />
+                            <Route path="/return-bill"                                      exact strict component={viewBill} />
+                            <Route path="/return-bill/:billNo"                              exact strict component={viewBill} />
+                        </Switch>
+                    </Router>
+                </div>
+            );
+    }
     }
 }
 
