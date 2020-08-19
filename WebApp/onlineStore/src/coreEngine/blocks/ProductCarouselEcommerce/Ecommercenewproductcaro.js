@@ -70,7 +70,7 @@ class Ecommercenewproductcaro extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps){
-      // console.log("nextProps:===",nextProps);
+      console.log("nextProps:===",nextProps);
       if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
         for(var i=0;i<nextProps.newProducts.length;i++){      
             var availableSizes = [];         
@@ -520,7 +520,11 @@ class Ecommercenewproductcaro extends Component {
                                   <div className="card blockCard col-lg-12 col-md-12 col-sm-12 col-xs-10 productInnerWrap NoPadding"> 
                                     <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                                       <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-                                        <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>
+                                        {this.state.type === "wishlist"?
+                                          <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"} ></button>
+                                          :                                        
+                                          <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart"+wishClass} onClick={this.addtowishlist.bind(this)}></button>
+                                        }
                                         {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null} 
                                         <a href={"/productdetails/"+data.productUrl+"/" + data._id} className="product photo product-item-photo" tabIndex="-1">
                                           <img src={data.productImage[0] ? data.productImage[0] : notavailable} />

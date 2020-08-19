@@ -59,7 +59,7 @@ import BroadcastSystem from "../BroadcastSystem/BroadcastSystem.js";
 
 class CoreLayout extends Component {
     render() {
-        {console.log("userDetails in corporate layout==>",this.props.userDetails)}
+        // {console.log("userDetails in corporate layout==>",this.props.userDetails)}
         return (
             <Switch >
                 {/* Dashboard route */}
@@ -85,8 +85,7 @@ class CoreLayout extends Component {
                 <Route path="/designation/:fieldID" exact strict component={Designation} />              
 
                 {/* access-management */}
-                <Route path="/access-management" exact strict component={AccessManagement} />
-                               
+                <Route path="/access-management" exact strict component={AccessManagement} />                               
                 <Route path="/umlistofusers" component={UMListOfUsers} exact />
                 <Route path="/umroleslist" component={UMRolesList}strict exact />
                 <Route path="/umroleslist/:fieldID" exact strict component={UMRolesList} />
@@ -95,25 +94,19 @@ class CoreLayout extends Component {
                 <Route path="/ViewTemplates" component={ViewTemplates} exact />
                 <Route path="/global-masters" component={GlobalMasters} exact />
 
-
                  { /* Orgnizational Setting */}
                 <Route path="/org-settings/basic-details" exact strict component={OrgnizationalBasicInfo} />
                 <Route path="/org-settings/basic-details/:entityID" exact strict component={OrgnizationalBasicInfo} />
                 <Route path="/org-settings/location-details" exact strict component={OrganizationalLocationDetails} />
                 <Route path="/org-settings/location-details/:entityID" exact strict component={OrganizationalLocationDetails} />
-                {/*<Route path="/org-settings/location-details/:fieldID" exact strict component={OrganizationalLocationDetails} />*/}
                 <Route path="/org-settings/location-details/:entityID/:locationID" exact strict component={OrganizationalLocationDetails} />
-                {/*<Route path="/org-settings/location-details/:entityID/:locationID" exact strict component={OrganizationalLocationDetails} />*/}
-               
+                {/*<Route path="/org-settings/location-details/:fieldID" exact strict component={OrganizationalLocationDetails} />*/}                
+                {/*<Route path="/org-settings/location-details/:entityID/:locationID" exact strict component={OrganizationalLocationDetails} />*/}               
                 {/* access-management */}
-               {/* <Route path="/access-management" exact strict component={AccessManagement} />*/}
-
-
+                {/* <Route path="/access-management" exact strict component={AccessManagement} />*/}
                 {/* <Route path="*" component={Notfound} /> */}
-
                 {/* Broadcast-System /*}
-                {/<Route path="/broadcast-system" exact strict component={BroadcastSystem} />*/}
-                
+                {/<Route path="/broadcast-system" exact strict component={BroadcastSystem} />*/}                
             </Switch>
         );
     }

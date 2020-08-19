@@ -69,8 +69,7 @@ class viewOrder extends Component{
       }
       return true;
     }
-    render(){
-      
+    render(){      
         return(         
         <div className="container-fluid">
           <section className="content">
@@ -81,7 +80,6 @@ class viewOrder extends Component{
                 <a href="/allorders" className="backtoMyOrders"><i class="fa fa-chevron-circle-left"></i> Back to Orders</a>
               </div>
               <h4 className="table-caption">Order Details</h4>
-
               <p>Ordered on {moment(this.state.orderData.createdAt).format("DD MMMM YYYY")}  | Order {this.state.orderData.orderID}</p>
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerbox">
                 <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">

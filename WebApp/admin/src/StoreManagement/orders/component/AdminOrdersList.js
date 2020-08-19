@@ -530,7 +530,6 @@ class AdminOrdersList extends Component{
               <div className="row"> 
                 <div className="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                 <div className="formWrapper">
-
                   <section className="content">
                     <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent marginBottomCSS">
                     <br/>

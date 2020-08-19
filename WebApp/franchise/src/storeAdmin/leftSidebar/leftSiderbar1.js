@@ -9,18 +9,16 @@ import './dashboard.css';
 
 
 export default class AdminDashboard extends Component{
-
   constructor(props){
     super(props);
     this.state = {
       menuValues : {
-        ordermanagement : false,
-        inventoryData   : false,
-        billingData     : false,
-        reportData      : false,   
-        myOrder         : false,     
+        vendorData             : false,
+        supplierData           : false,
+        corporateData          : false,
+        contractmanagement     : false,
+        masterData             : false
       }
-     
     };
     this.closeIcon   = 'fa-angle-left';
     this.openIcon    = 'fa-angle-down';
@@ -76,7 +74,6 @@ export default class AdminDashboard extends Component{
     // console.log('event.currentTarget',event.currentTarget);
     event.preventDefault();
     var a =event.currentTarget
-    console.log("a===",a);
     var pathname = event.currentTarget.getAttribute("data-id"); 
     // console.log('pathname',pathname);
     window.location = pathname
@@ -95,7 +92,6 @@ export default class AdminDashboard extends Component{
     let {menuValues} = this.state;
     Object.keys(menuValues).map((data) => {
       menuValues[data] = (data==key) ? !menuValues[key] :false;
-      console.log("menuvalues====",this.state.menuValues);
     });
     this.setState({menuValues});
     $('.singleTreeview').removeClass('active')
@@ -125,12 +121,13 @@ export default class AdminDashboard extends Component{
   }
 
   render(){
-    let {dashboard,ordermanagement,inventoryData,myOrder,billingData,reportData} = this.state.menuValues;
+    let {dashboard,vendorData,supplierData,corporateData,contractmanagement,masterData} = this.state.menuValues;
 
     return(
       <aside className="main-sidebar control-sidebar sidebarWrapper scrollBox">
         <section className="sidebar noPadLR sidebar-menu-wrapper">
           <ul className="sidebar-menu" data-widget="tree">
+
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/dashboard"  title="Dashboard" onClick={()=>this.openMenu("dashboard")}>
                 <i className="fa fa-dashboard" aria-hidden="true"></i>
@@ -139,11 +136,11 @@ export default class AdminDashboard extends Component{
             </li>
 
             <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("ordermanagement")} title="Order Management">
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("contractmanagement")} title="Contract Management">
                 <i className="fa fa-file" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Order Management</span>
                 <span className="pull-right-container">
-                  <i className={"fa pull-right menu-icon-toggle "+(ordermanagement?this.openIcon:this.closeIcon)} />
+                  <i className={"fa pull-right menu-icon-toggle "+(contractmanagement?this.openIcon:this.closeIcon)} />
                 </span>
               </a>
               <ul className="treeview-menu" >                    
@@ -161,7 +158,7 @@ export default class AdminDashboard extends Component{
                   <a href="/verified-orders-list" data-id="/verified-orders-list" title="Verified Order List" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Verified Order List
                   </a> 
-                </li>        
+                </li>  
                 <li className="noPadLR"> 
                   <a href="/packed-orders-list" data-id="/packed-orders-list" title="Packed Order List" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Packed Order List
@@ -186,98 +183,80 @@ export default class AdminDashboard extends Component{
 
               </ul>
             </li>
-
+            
             <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("inventoryData")} title="Inventory Management ">
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("corporateData")} title="Corporate Master">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Inventory Management </span>
                 <span className="pull-right-container">
-                  <i className={"fa pull-right menu-icon-toggle "+(inventoryData?this.openIcon:this.closeIcon)} />
+                  <i className={"fa pull-right menu-icon-toggle "+(corporateData?this.openIcon:this.closeIcon)} />
                 </span>
               </a>
-              <ul className="treeview-menu" >    
+              <ul className="treeview-menu" >                    
+                <li className="noPadLR"> 
+                  <a href="/purchase-management" data-id="/purchase-management" title="Raw Material Inward" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Raw Material
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/finished-goods" data-id="/finished-goods" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Finished Goods
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/franchise-shopping-list" data-id="/franchise-shopping-list" title="Franchise Purchase Order" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Franchise Purchase Order
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/admin-shopping-list" data-id="/admin-shopping-list" title="Consolidate Purchase Orders" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Consolidate Purchase Orders
+                  </a> 
+                </li>  
+                <li className="noPadLR"> 
+                  <a href="/franchise-order-summary" data-id="/franchise-order-summary" title="Franchise Order Summary" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Franchise Order Summary
+                  </a> 
+                </li>  
                 <li className="noPadLR">
-                  <a href="/franchise-product-stock" data-id="/franchise-product-stock" title="Franchise Product Stock" onClick={this.activeMenu.bind(this)}>
+                  <a href="/franchise-product-stock" data-id="/franchise-product-stock" title="Franchise Order Summary" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
-                    <span className="sidebarMenuTitle">Products Current Stock</span>
+                    <span className="sidebarMenuTitle">Franchise Product Stock</span>
                   </a>
                 </li>
                 <li className="noPadLR"> 
-                  <a href="/franchise-allowable-pincode" data-id="/franchise-allowable-pincode" title="Franchise Allowable Pincode" onClick={this.activeMenu.bind(this)}>
+                  <a href="/franchise-allowable-pincode" data-id="/franchise-allowable-pincode" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" />Allowable Pincode
-                  </a> 
-                </li>  
-              </ul>
-            </li>       
-
-            <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("myOrder")} title="My Order">
-                <i className="fa fa-users" aria-hidden="true"></i>
-                <span className="smsidenames sidebarMenuTitle">My Orders </span>
-                <span className="pull-right-container">
-                  <i className={"fa pull-right menu-icon-toggle "+(myOrder?this.openIcon:this.closeIcon)} />
-                </span>
-              </a>
-              <ul className="treeview-menu" >    
-                <li className="noPadLR">
-                  <a href="/franchise-shopping-list" data-id="/franchise-shopping-list" title="Franchise Shopping List" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
-                    <span className="sidebarMenuTitle">Add Order</span>
-                  </a>
-                </li>
-                <li className="noPadLR"> 
-                  <a href="/franchise-order-summary" data-id="/franchise-order-summary" title="Finished Goods Inward" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Order Summary
-                  </a> 
-                </li>  
-              </ul>
-            </li>   
-
-
-            <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("billingData")} title="Billing Management">
-                <i className="fa fa-users" aria-hidden="true"></i>
-                <span className="smsidenames sidebarMenuTitle">Billing Management </span>
-                <span className="pull-right-container">
-                  <i className={"fa pull-right menu-icon-toggle"+(billingData?this.openIcon:this.closeIcon)} />
-                </span>
-              </a>
-              <ul className="treeview-menu" >    
-                <li className="noPadLR">
-                  <a href="/franchise-billing" data-id="/franchise-billing" title="New Bill" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
-                    <span className="sidebarMenuTitle">New Bill</span>
-                  </a>
-                </li>
-                <li className="noPadLR"> 
-                  <a href="/return-bill" data-id="/return-bill" title="Return Products" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Return Products
                   </a> 
                 </li>  
               </ul>
             </li>
 
             <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("reportData")} title="Billing Management">
-                <i className="fa fa-users" aria-hidden="true"></i>
-                <span className="smsidenames sidebarMenuTitle">Reports </span>
+              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("vendorData")} title="Vendor Master">
+                <i className="fa fa-book" aria-hidden="true"></i>
+                <span className="smsidenames sidebarMenuTitle">Reports</span>
                 <span className="pull-right-container">
-                  <i className={"fa pull-right menu-icon-toggle "+(reportData?this.openIcon:this.closeIcon)} />
+                  <i className={"fa pull-right menu-icon-toggle "+(vendorData?this.openIcon:this.closeIcon)} />
                 </span>
               </a>
-              {/* <ul className="treeview-menu" >    
-                <li className="noPadLR">
-                  <a href="/report" data-id="/report" title="Sales Report" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
-                    <span className="sidebarMenuTitle">Sales Report</span>
-                  </a>
-                </li>
+              <ul className="treeview-menu" >                    
                 <li className="noPadLR"> 
-                  <a href="/category-wise-reports" data-id="/category-wise-reports" title="Category Wise Sales Report" onClick={this.activeMenu.bind(this)}>
-                    <i className="fa fa-circle-o dashr" />Category Wise Sales Report
+                  <a href="/report" data-id="/report" title="Sales Report" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Sales Report
                   </a> 
                 </li>  
-              </ul> */}
+                <li className="noPadLR"> 
+                  <a href="/raw-material-stock-report" data-id="/raw-material-stock-report" title="Raw Material Stock Report" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Raw Material Stock Report
+                  </a> 
+                </li>  
+                {/* <li className="noPadLR" > 
+                  <a href="/ba-list" data-id="/ba-list" title="Category Wise Sales Report" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Category Wise Sales Report
+                  </a> 
+                </li>     */}
+              </ul>
             </li>
             
           </ul>

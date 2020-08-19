@@ -145,6 +145,9 @@ h6,
   display: block;
   margin-top: 5px;
 }
+.main-container{
+    min-height: 570px;
+}
 /*
  * Component: Main Header
  * ----------------------
@@ -555,7 +558,7 @@ h6,
   position: fixed;
   height: 100%;
   overflow-y: auto;
-  margin-top: 50px;
+  background: #222d32;
 }
 .nav-tabs.control-sidebar-tabs > li:first-of-type > a,
 .nav-tabs.control-sidebar-tabs > li:first-of-type > a:hover,
@@ -1011,11 +1014,6 @@ h6,
   height:100px;
 }
 /*========Anuja Added=====*/
-
-
-
-
-
 .bdbtm{
   background: #1e282c;
   height: 23px;

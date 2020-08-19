@@ -232,7 +232,7 @@ export default class FranchiseCurrentStock extends React.Component {
     
 	render() {
 		return (
-			<div  className="col-lg-10 col-lg-offset-2 col-md-12 col-xs-12 col-sm-12">
+			<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
 				<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 					<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 						<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
