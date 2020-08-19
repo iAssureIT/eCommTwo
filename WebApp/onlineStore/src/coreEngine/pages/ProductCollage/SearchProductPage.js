@@ -28,7 +28,7 @@ class SearchProduct extends Component {
 		this.handlePriceChange = this.handlePriceChange.bind(this);
 	}
 
-	componentDidMount() {		
+	componentDidMount() {
 		$('div[data-toggle="collapse"]').click(function () {
 			$(this).find('i').toggleClass('fa fa-minus fa fa-plus');
 		});
@@ -39,7 +39,6 @@ class SearchProduct extends Component {
 			categoryDetails: this.props.categoryDetails
 		}, () => { });
 		this.getWishData();
-		this.getCategories();
 	}
 	componentWillReceiveProps(nextProps) {
 
@@ -70,26 +69,6 @@ class SearchProduct extends Component {
 
 
 		})
-	}
-	getCategories(){
-		axios.get("/api/category/get/list")
-		.then((response)=>{
-		  console.log("All Category response:",response.data);
-		  this.setState({
-			allCategoryDetails : response.data
-		  })
-		})
-		.catch((error)=>{
-		  // console.log('error', error);
-		})
-	  }
-	  handleToggle(event) {
-		var currentIcon = $('.' + event.target.getAttribute('data-key') + "Icon").attr('class');
-		if (currentIcon === "fa fa-plus-circle " + event.target.getAttribute('data-key') + "Icon") {
-			this.setState({ ['toggleIcon' + event.target.getAttribute('data-key')]: "fa fa-minus-circle " + event.target.getAttribute('data-key') + "Icon" }, () => { })
-		} else {
-			this.setState({ ['toggleIcon' + event.target.getAttribute('data-key')]: "fa fa-plus-circle " + event.target.getAttribute('data-key') + "Icon" }, () => { })
-		}
 	}
 	getWishData() {
 		var user_ID = localStorage.getItem('user_ID');
@@ -200,70 +179,34 @@ class SearchProduct extends Component {
 
 						</ul>
 					</div>
-
-					{/* Unimandai left side filter */}
-					{Array.isArray(this.state.allCategoryDetails) && this.state.allCategoryDetails.length > 0 ?
-						<div className="col-lg-3 col-md-3 col-sm-3 col-xs-12 filterWrapper">	
-							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">								
-							<div className="nb-brand filterInner col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-								<div className="accordion" id="accordionExample">
-									<div className="card-header" id="headingOne">
-										{/* <div className="pagefilter collapsed" data-toggle="collapse" data-target="#collapseOne" data-key="category" onClick={this.handleToggle.bind(this)}>												
-											<button className="btn btn-link" type="button" data-key="category"   >
-												CATEGORY
-											</button>
-											<span className="expand"><i className={this.state["toggleIconcategory"] ? this.state["toggleIconcategory"] : "fa fa-plus-circle categoryIcon"} data-key="category"></i></span>
-										</div>  */}
-										<div className="pagefilter collapsed" onClick={this.handleToggle.bind(this)}>												
-											<button className="btn btn-link" type="button" data-key="category"   >
-												CATEGORY
-											</button>													
-										</div> 
-									</div>
-									<div id="collapseOne" className="collapse in">
-										<div className="card-body">
-											{
-												this.state.allCategoryDetails.length ?
-													this.state.allCategoryDetails.map((data, index) => {
-														// console.log("data in collapse==>",data)
-														return (
-															<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
-																<li>
-																	<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "600!important" }}>{data.category.toUpperCase()}</a>
-																	{/* <a href="" className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category}</a> */}
-																	<ul>
-																		{
-																			data.subCategory && data.subCategory.map((subcat, subind) => {
-																				return (
-																					<li>
-																						<a href={"/category"+"/"+subcat.subCategoryTitle+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={subcat._id} onClick={this.onSelectedItemsChange.bind(this, 'subcategory')} style={{ fontWeight: "100!important" }}>{subcat.subCategoryTitle}</a>
-																					</li>
-																				);
-																			})
-																		}
-
-																	</ul>
-																</li> 
-															</div>
-														);
-													})
-													:
-													<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-align-center">
-														<li>No data Found</li>
-													</div>
-											}
-										</div>
-									</div>
-								</div>
-								</div>
-								</div>
-							</div>
-						:
-						null
-					}
-
 					 <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 hidden-xs">
-						
+						{/*<div className="forSearchDiv">
+						</div>
+						<br />
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nb-brand">
+							<div className="Featured-Brands-tittle">Featured Brands</div>
+
+							<br />
+							{this.state.brands && this.state.brands.length > 0 ?
+								this.state.brands.map((data, index) => {
+
+									return (
+										<div className="col-lg-9 col-md-12 col-sm-12 col-xs-12 " key={index}>
+											<div>
+												<div className="centreDetailContainerEcommerce col-lg-1 row">
+													<input type="checkbox" name="brands[]" onChange={this.onSelectedItemsChange.bind(this, "brands")} value={data} />
+													<span className="centreDetailCheckEcommerce"></span>
+												</div>
+												<span className="centreDetaillistItemEcommerce">{data}</span>
+											</div>
+										</div>
+									);
+								})
+								: ''
+
+							}
+
+						</div>*/}
 					</div> 
 					<div className="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 						<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
@@ -273,11 +216,7 @@ class SearchProduct extends Component {
 
 									{
 										this.props.searchCriteria.loading === undefined || this.props.searchCriteria.loading ?
-											// <Loader type="collageloader" productLoaderNo={3} />
-											
-											<div className="alert alert-warning textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
-												<i className="fa fa-exclamation-triangle"></i>&nbsp;   There is no items found.
-											</div>
+											<Loader type="collageloader" productLoaderNo={3} />
 											:
 											<SearchProductCollage products={this.state.products}
 												loading={this.props.searchCriteria.loading}

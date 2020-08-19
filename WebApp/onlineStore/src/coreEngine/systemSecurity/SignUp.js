@@ -201,7 +201,7 @@ class SignUp extends Component {
 													console.log('sendDataToUser==>', sendData)
 													axios.post('/api/masternotifications/post/sendNotification', sendData)
 													.then((res) => {
-														console.log('sendDataToUser in result==>>>', res.data)
+														// console.log('sendDataToUser in result==>>>', res.data)
 													})
 													.catch((error) => { console.log('notification error: ',error)})
 
