@@ -3,6 +3,7 @@ import { render }                                     from 'react-dom';
 import $                                              from "jquery";
 import { BrowserRouter, Route, Switch,Link  } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import 'font-awesome/css/font-awesome.min.css'; 
 import './Leftsidebar.css';
 import './dashboard.css';
@@ -10,7 +11,7 @@ import './dashboard.css';
 
 export default class AdminDashboard extends Component{
 
-  constructor(props){
+  constructor(props){ 
     super(props);
     this.state = {
       menuValues : {
@@ -73,7 +74,7 @@ export default class AdminDashboard extends Component{
   }
 
   activeMenu(event){
-    // console.log('event.currentTarget',event.currentTarget);
+    console.log('event.currentTarget',event.currentTarget);
     event.preventDefault();
     var a =event.currentTarget
     console.log("a===",a);
@@ -91,10 +92,39 @@ export default class AdminDashboard extends Component{
     // console.log("currentURL",localStorage.getItem("currentURL"));
   }
 
-  openMenu = (key) => {
+  test(e){
+    // var key = $(e.currentTarget).attr('data-key');
+    console.log("e===",e.currentTarget.getAttribute('data-key'));
+    // var key = e.currentTarget.data-key.value();
+    var key = e.currentTarget.getAttribute('data-key');
+    
+    // console.log("Key===",$(e.target).attr('data-key'));
     let {menuValues} = this.state;
     Object.keys(menuValues).map((data) => {
-      menuValues[data] = (data==key) ? !menuValues[key] :false;
+      menuValues[data] = (data===key) ? !menuValues[key] :false;
+      if($(e.currentTarget).next('ul').is(':visible')){
+        $(e.currentTarget).parent(".treeview").removeClass('menu-open');
+        $(e.currentTarget).next('ul').css("display","none");
+      }else{
+        $(".treeview").removeClass('menu-open');
+        $(e.currentTarget).parent(".treeview").addClass('menu-open');
+        $('.treeview-menu').css("display","none");
+        $(e.currentTarget).next('ul').css("display","block");
+      }
+      // $(e.currentTarget).find('.treeview-menu').css("display","block");
+      console.log("menuvalues====",this.state.menuValues);
+    });
+    this.setState({menuValues});
+    $('.singleTreeview').removeClass('active')
+  }
+  openMenu = (key) => {
+    // console.log("Key===",$(e.target).attr('data-key'));
+    
+    let {menuValues} = this.state;
+    Object.keys(menuValues).map((data) => {
+      menuValues[data] = (data===key) ? !menuValues[key] :false;
+      $(this).parent().addClass('menu-open');
+      $(this).find('.treeview-menu').css("display","block");
       console.log("menuvalues====",this.state.menuValues);
     });
     this.setState({menuValues});
@@ -139,7 +169,8 @@ export default class AdminDashboard extends Component{
             </li>
 
             <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("ordermanagement")} title="Order Management">
+              {/* <a href="JavaScript:void(0);" onClick={(e)=>this.openMenu("ordermanagement")} title="Order Management"> */}
+              <a href="JavaScript:void(0);" data-key="ordermanagement" onClick={this.test.bind(this)} title="Order Management">
                 <i className="fa fa-file" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Order Management</span>
                 <span className="pull-right-container">
@@ -188,7 +219,7 @@ export default class AdminDashboard extends Component{
             </li>
 
             <li className="treeview" >
-              <a href="JavaScript:void(0);" onClick={()=>this.openMenu("inventoryData")} title="Inventory Management ">
+              <a href="JavaScript:void(0);" data-key="inventoryData" onClick={this.test.bind(this)} title="Inventory Management ">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Inventory Management </span>
                 <span className="pull-right-container">
@@ -234,7 +265,7 @@ export default class AdminDashboard extends Component{
             </li>   
 
 
-            <li className="treeview" >
+            <li className="treeview" > 
               <a href="JavaScript:void(0);" onClick={()=>this.openMenu("billingData")} title="Billing Management">
                 <i className="fa fa-users" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Billing Management </span>

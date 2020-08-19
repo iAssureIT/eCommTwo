@@ -119,7 +119,6 @@ export default class AdminDashboard extends Component{
     $('.treeview').not(event.currentTarget).removeClass('menu-open')
     $('.treeview-menu').css({'display':'none'})
     $(event.currentTarget).addClass('active')
-
   }
 
   render(){

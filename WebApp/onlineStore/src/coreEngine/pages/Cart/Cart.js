@@ -99,7 +99,7 @@ class Cart extends Component{
                                 title={'Wishlist'} 
                                 newProducts={this.state.wishlistedProducts} 
                                 type={'wishlist'} 
-                                // getWishData={this.getWishData.bind(this)} 
+                                getWishData={this.getWishlistData.bind(this)}   
                                 // wishList={this.state.wishList} 
                                 // categories={this.state.categories} 
                                 // changeProductCateWise={this.changeProductCateWise.bind(this)}/>

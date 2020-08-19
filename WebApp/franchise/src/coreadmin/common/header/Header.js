@@ -18,7 +18,7 @@ export default class Header2 extends Component{
       showNotification: false,
       inAppNotifications:[],
       inAppNotificationsCount:0
-    
+     
     }
   }
   // componentDidMount(){
