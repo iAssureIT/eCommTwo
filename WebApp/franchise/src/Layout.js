@@ -149,6 +149,21 @@ class Layout extends Component  {
         let a = pageUrl ? pageUrl.split('/') : "";
         console.log("a:",a);
     if (this.state.loggedIn) {
+        /* Routes for billing managements */
+        if(a[1] === 'franchise-billing' || a[1] === 'view-bill' || a[1] === 'return-bill' || a[1] === 'return-bill'){
+            return (
+                <div>
+                    <Router >
+                        <Switch >
+                            <Route path="/franchise-billing"                                exact strict component={Bill} />
+                            <Route path="/view-bill/:orderId"                               exact strict component={viewBill} />
+                            <Route path="/return-bill"                                      exact strict component={viewBill} />
+                            <Route path="/return-bill/:billNo"                              exact strict component={viewBill} />
+                        </Switch>
+                    </Router>
+                </div>
+            );
+        }else{        
             return (
                 <Router>
                     <div className="hold-transition skin-blue fixed sidebar-mini">
@@ -280,11 +295,11 @@ class Layout extends Component  {
 
                                                       {/* Admin shopping List AdminShoppingList*/}
                                                       <Route path="/admin-shopping-list"                           exact strict component={AdminShoppingList} />
-                                                    
+{/*                                                     
                                                       <Route path="/franchise-billing"                                exact strict component={Bill} />
                                                       <Route path="/view-bill/:orderId"                               exact strict component={viewBill} />
                                                       <Route path="/return-bill"                                      exact strict component={viewBill} />
-                                                      <Route path="/return-bill/:billNo"                              exact strict component={viewBill} />
+                                                      <Route path="/return-bill/:billNo"                              exact strict component={viewBill} /> */}
                                                     </Switch>
                                                 </div>
                                             </div>
@@ -296,7 +311,8 @@ class Layout extends Component  {
                         <Footer />
                     </div>
                 </Router>
-            );        
+            );    
+        }    
     } else {
             return (
                 <div>
@@ -315,21 +331,7 @@ class Layout extends Component  {
             );
         }
 
-    /* Routes for billing managements */
-    if(a[1] === 'franchise-billing' || a[1] === 'view-bill' || a[1] === 'return-bill' || a[1] === 'return-bill'){
-            return (
-                <div>
-                    <Router >
-                        <Switch >
-                            <Route path="/franchise-billing"                                exact strict component={Bill} />
-                            <Route path="/view-bill/:orderId"                               exact strict component={viewBill} />
-                            <Route path="/return-bill"                                      exact strict component={viewBill} />
-                            <Route path="/return-bill/:billNo"                              exact strict component={viewBill} />
-                        </Switch>
-                    </Router>
-                </div>
-            );
-    }
+    
     }
 }
 

@@ -996,7 +996,7 @@ export class Bill extends React.Component {
 							</div>
 							<div className="col-lg-6 col-md-6 col-sm-4 col-xs-12 productDiv">
 							    <ul className="row nav nav-pills">
-									<li className="active col-lg-3 col-md-3 col-sm-4 col-xs-12 NOpadding"><a data-toggle="pill" className="all" href="#all" onClick={this.getProductListBySection.bind(this,this.state.section_ID)}>All</a></li>
+									<li className="active col-lg-3 col-md-3 col-sm-3 col-xs-12 NOpadding"><a data-toggle="pill" className="all" href="#all" onClick={this.getProductListBySection.bind(this,this.state.section_ID)}>All</a></li>
 									{
 									Array.isArray(this.state.SectionCategoriesData) && this.state.SectionCategoriesData.map((data,index)=>{
 										return(

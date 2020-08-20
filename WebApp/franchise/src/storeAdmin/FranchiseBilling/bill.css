@@ -264,8 +264,9 @@
   }
 
   .ListProduct {
-    overflow-y: scroll;
-    height: 81rem;
+    /* overflow-y: scroll; */
+    overflow: auto;
+    height: 810px;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     background: #80808021;

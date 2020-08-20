@@ -149,7 +149,6 @@ export default class AdminDashboard extends Component{
 
   render(){
     let {dashboard,ordermanagement,inventoryData,myOrder,billingData,reportData} = this.state.menuValues;
-
     return(
       <aside className="main-sidebar control-sidebar sidebarWrapper scrollBox">
         <section className="sidebar noPadLR sidebar-menu-wrapper">
