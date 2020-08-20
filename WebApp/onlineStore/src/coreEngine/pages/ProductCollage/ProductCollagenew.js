@@ -55,7 +55,6 @@ class ProductCollage extends Component {
 				this.setState({
 					categoryDetails: response.data
 				})
-
 			})
 			.catch((error) => {
 				console.log('error', error);
