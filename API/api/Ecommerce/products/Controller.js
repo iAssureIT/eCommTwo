@@ -10,7 +10,7 @@ var UnitOfMeasurmentMaster = require('../departmentMaster/ModelUnitofmeasurment'
 const franchisegoods = require('../distributionManagement/Model');
 
 exports.insert_product = (req,res,next)=>{
-    console.log("response",res);
+    // console.log("response",res);
     Products.find({"itemCode" : req.body.itemCode,"vendor_ID":req.body.vendor_ID})
         .exec()
         .then(data =>{
@@ -425,6 +425,7 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
         productDuplicateControl();
         async function productDuplicateControl(){
             var productPresent = await findProduct(data.productCode, data.itemCode,data.productName);
+            console.log("productPresent",productPresent);
             var vendor = '';
             if(data.unit){
                var insertUOM = await insertUnitOfMeasurment(data.unit);
@@ -436,7 +437,8 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
                 vendor =  null;
             }
             if (productPresent==0) {
-                    const productObj = new Products({
+                console.log("if productPresent",productPresent);
+                    const products = new Products({
                         _id                       : new mongoose.Types.ObjectId(),   
                         user_ID                   : vendor,  
                         vendor_ID                 : vendor, 
@@ -480,9 +482,10 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
                         createdAt                 : new Date()
                     });
              
-                productObj
+                products
                 .save()
                 .then(data=>{
+                    console.log("inserted",data);
                     resolve(data._id);
                 })
                 .catch(err =>{
@@ -514,13 +517,12 @@ function findProduct(productCode, itemCode, productName) {
 }
 exports.filedetails = (req,res,next)=>{
     var finaldata = {};
-    //console.log(req.params.fileName)
-    Products.find({fileName:req.params.fileName})
+    Products.find({fileName:req.body.fileName})
     .exec()
     .then(data=>{
         //finaldata.push({goodrecords: data})
         finaldata.goodrecords = data;
-        FailedRecords.find({fileName:req.params.fileName})  
+        FailedRecords.find({fileName:req.body.fileName})  
             .exec()
             .then(badData=>{
                 finaldata.failedRecords = badData[0].failedRecords

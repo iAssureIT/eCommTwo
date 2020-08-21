@@ -10,7 +10,9 @@ router.post('/post/bulkUploadProduct', productController.bulkUploadProduct);
 
 router.post('/post/bulkUploadProductUpdate', productController.bulkUploadProductUpdate);
 
-router.get('/get/filedetails/:fileName',productController.filedetails);
+// router.get('/get/filedetails/:fileName',productController.filedetails);
+
+router.post('/get/filedetails/',productController.filedetails);
 
 router.post('/get/wishlist/product', productController.wishlist_product);
 

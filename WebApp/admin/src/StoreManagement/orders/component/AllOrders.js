@@ -82,7 +82,7 @@ export default class AllOrders extends Component{
                   UsersArray.push(UserArray);
                 }
 
-                console.log("UsersArray",UsersArray);
+              //  console.log("UsersArray",UsersArray);
 
                 this.setState({
                   data: UsersArray,

@@ -5,9 +5,10 @@ import ReactTable             from "react-table";
 import moment                 from "moment";
 // import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
-import _                      from 'underscore';
+import _, { object }                      from 'underscore';
 import DispatchModal          from './dispatchModal.js';
 import AllocateToFranchiseModal from './AllocateToFranchiseModal.js';
+import { CSVLink, CSVDownload } from "react-csv";
 
 import '../css/AdminOrdersList.css';
 
@@ -30,7 +31,8 @@ class AdminOrdersList extends Component{
                 "status"  : '',
                 "currentViewStatus" : '',
                 "filteredProductArray" : [],
-                "productQty" : ''
+                "productQty" : '',
+                "csvData"    : []
                 // "notificationData" :Meteor.subscribe("notificationTemplate"),
             };
         } else{
@@ -44,7 +46,8 @@ class AdminOrdersList extends Component{
                 "status"  : '',
                 "currentViewStatus" : '',
                 "filteredProductArray" : [],
-                "productQty" : ''
+                "productQty" : '',
+                "csvData"    : []
             };
         }
         window.scrollTo(0, 0);
@@ -243,6 +246,7 @@ class AdminOrdersList extends Component{
             .then((response)=>{
               // console.log("response.data of order==>",response.data)
               var UsersArray = [];
+              var CsvDataArray = [];
                 for (let i = 0; i < response.data.length; i++) {
                   var _id = response.data[i]._id;
                   var orderID = response.data[i].orderID;
@@ -263,6 +267,7 @@ class AdminOrdersList extends Component{
                   // var billNumber = response.data[i].billNumber ? response.data[i].billNumber : '';
 
                   var UserArray = [];
+                  var CsvArray = [];
                   UserArray.push(orderID);
                   // UserArray.push(billNumber);
                   if(this.state.websiteModel === 'FranchiseModel'){
@@ -282,12 +287,32 @@ class AdminOrdersList extends Component{
                   UserArray.push(createdAt);
                   UserArray.push({status : status, deliveryStatus : deliveryStatus});
                   UserArray.push({_id:_id, viewOrder:viewOrder, deliveryStatus:deliveryStatus});
-                  
                   UsersArray.push(UserArray);
-                }
 
+                  //Array for csv download
+                  CsvArray.push(orderID);
+                  if(this.state.websiteModel === 'FranchiseModel'){
+                    if(allocatedToFranchise){
+                      CsvArray.push(allocatedToFranchise);
+                    }else{
+                      CsvArray.push("");
+                    }
+                  }else{
+                    UserArray.push("");
+                    CsvArray.push("");
+                  }
+                  CsvArray.push(userFullName);
+                  CsvArray.push(productarr.toString());
+                  CsvArray.push((parseInt(totalAmount)).toFixed(2));
+                  CsvArray.push(moment(response.data[i].createdAt).format("DD/MM/YYYY hh:mm a"));
+                  CsvArray.push(deliveryStatus);
+                  CsvArray.push(status);
+                  CsvDataArray.push(CsvArray);
+                }
+               
                 this.setState({
                   data: UsersArray,
+                  csvData : CsvDataArray
                 });
 
                 this.setState({
@@ -355,22 +380,34 @@ class AdminOrdersList extends Component{
       
     }
 
-    
     render(){
-      const data = this.state.data; 
+      const csvColumns = ["Order Id", "Franchise Name", "Customer Name","Total Items","Total Price","Order Date","deliveryStatus","Status"];
+      const csvData = [
+        csvColumns
+      ];
+      if(csvData){
+        this.state.csvData.map((val,ind)=>{
+          csvData.push(val);
+        })
+      } 
+      const data = this.state.data;
       var franchiseColumn = {};
       if(this.state.websiteModel === 'FranchiseModel'){
         franchiseColumn =  {name:"Franchise Name",options: {display: true}};
       }else{
         franchiseColumn =  {name:"Franchise Name",options: {display: false}};
       }
+      
       const options = {
         print: true, 
-        download: true,
+        download: false,
         viewColumns: true,
         filter: false,
         responsive: "stacked",
-        selectableRows: 'none'
+        selectableRows: 'none',
+        customToolbar: () => { return (<CSVLink className="downloadCsv"  filename={this.props.tableTitle ? this.props.tableTitle+'.csv' : 'Order List.csv'} data={csvData}>  <i class="fa fa-cloud-download" aria-hidden="true" style={{color:'gray'}}></i>
+        </CSVLink>) },
+        
       };
       const columns = [
           { name:"Order Id" },
@@ -419,6 +456,8 @@ class AdminOrdersList extends Component{
           {
             name: "Action",
             options: {
+              download:false,
+              print:false,
               filter: true,
               sort: false,
               selectableRows: false, 

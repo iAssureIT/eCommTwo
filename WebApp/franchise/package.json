@@ -36,6 +36,7 @@
     "react-barcode": "^1.4.0",
     "react-chartjs-2": "^2.9.0",
     "react-ckeditor-component": "^1.1.0",
+    "react-csv": "^2.0.3",
     "react-dom": "^16.8.6",
     "react-google-charts": "^3.0.15",
     "react-helmet": "^6.0.0",

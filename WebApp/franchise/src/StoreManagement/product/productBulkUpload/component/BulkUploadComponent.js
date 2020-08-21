@@ -315,7 +315,7 @@ constructor(props) {
                     
                     $('.filedetailsDiv').show()
                     axios
-                        .get(this.props.fileDetailUrl+this.state.fileName)
+                        .post(this.props.fileDetailUrl,{"fileName":this.state.fileName})
                         .then((response)=> {
                         $('.fullpageLoader').hide();  
                         if (response) {
