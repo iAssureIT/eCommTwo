@@ -61,7 +61,7 @@ class SearchProduct extends Component {
                 this.getBrands(catArray);
             } else {
                 nextProps.searchResult.map((data, index) => {
-                    console.log('data', data);
+                    // console.log('data', data);
                     catArray.push(data.category_ID)
                 })
                 this.getBrands(catArray);
@@ -74,7 +74,7 @@ class SearchProduct extends Component {
     getCategories(){
         axios.get("/api/category/get/list")
         .then((response)=>{
-         console.log("All Category response:",response.data);
+        //  console.log("All Category response:",response.data);
          this.setState({
             allCategoryDetails : response.data
           })
@@ -262,15 +262,12 @@ class SearchProduct extends Component {
                         null
                     }
 
-                     <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 hidden-xs">
-                        
+                     <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 hidden-xs">                        
                     </div>
                     <div className="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                         <div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                             <div id="products" className="col-lg-12 col-md-12 col-sm-12 tab-pane fade in active">
-
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-
                                     {
                                         this.props.searchCriteria.loading === undefined || this.props.searchCriteria.loading ?
                                             // <Loader type="collageloader" productLoaderNo={3} />
@@ -279,11 +276,12 @@ class SearchProduct extends Component {
                                                 <i className="fa fa-exclamation-triangle"></i>&nbsp; There is no items found.
                                             </div>
                                             :
-                                            <SearchProductCollage products={this.state.products}
+                                            <SearchProductCollage 
+                                                products={this.state.products}
                                                 loading={this.props.searchCriteria.loading}
                                                 getWishData={this.getWishData.bind(this)}
                                                 wishList={this.state.wishList}
-                                            />
+                                            />                                            
                                     }
                                 </div>
                             </div>

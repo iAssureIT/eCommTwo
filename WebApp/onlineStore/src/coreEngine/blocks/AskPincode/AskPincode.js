@@ -216,15 +216,15 @@ class AskPincode extends Component {
                                                                     <span className="NoPadding"style={{padding:"0px"}}>Check the delivery in your area. </span>
                                                                 </div>
                                                                 
-                                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"style={{"text-align":"center"}}>What’s your area pincode? </div>
+                                                                <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding"style={{"textAlign":"center"}}>What’s your area pincode? </div>
                                                             </div>
                                                             <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding pincodeBtnwrapper">   
                                                                 <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">  
                                                                     <div className=" col-lg-6 col-md-6 col-sm-6 col-xs-7">
                                                                         
                                                                     <div className="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                        <span className="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
-                                                                        <input id="pincode" type="text" class="form-control pinocodeInput" minLength="6" maxLength="6" name="pincode" placeholder="Pincode..."  onChange={this.handleChange.bind(this)}/>
+                                                                        <span className="input-group-addon"><i className="fa fa-map-marker" aria-hidden="true"></i></span>
+                                                                        <input id="pincode" type="text" className="form-control pinocodeInput" minLength="6" maxLength="6" name="pincode" placeholder="Pincode..."  onChange={this.handleChange.bind(this)}/>
                                                                         
                                                                         {/* <input class="form-control error pinocodeInput" id="pincode" type="text" id="pincode" className="pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input> */}
                                                                     </div> 

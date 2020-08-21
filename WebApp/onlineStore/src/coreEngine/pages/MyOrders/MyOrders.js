@@ -446,7 +446,7 @@ export default class MyOrders extends Component {
 
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
               <br />
-              <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 NOpadding mr20">
+              <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 myOrderSidebar NOpadding mr20">
                 <Sidebar />
               </div>
 

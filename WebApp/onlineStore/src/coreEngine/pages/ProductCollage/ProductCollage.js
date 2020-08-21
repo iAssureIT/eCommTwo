@@ -84,13 +84,11 @@ class ProductCollage extends Component {
 			this.getSize();
 			this.getColor();
 			this.getAttributes();
+			console.log("this.props.match.params.sectionID===",this.props.match.params.sectionID);
 			this.getProductsBySection(this.props.match.params.sectionID);
 		}
 		this.getSectionDetails(this.props.match.params.sectionID);
 		// this.getCategoryDetails(this.props.match.params.categoryID);
-
-
-
 
 		this.getPriceLimits();
 
@@ -112,7 +110,7 @@ class ProductCollage extends Component {
 		// console.log("getSectionDetails sectionID",sectionID);
 		axios.get("/api/category/get/" + sectionID)
 			.then((response) => {
-				// console.log('/api/category/get/sectionId response.data==>', response.data);
+				console.log('/api/category/get/sectionId response.data==>', response.data);
 				this.setState({
 					categoryDetails: response.data
 				})
@@ -149,7 +147,7 @@ class ProductCollage extends Component {
 			})
 	}
 	getProductsBySection(sectionID) {
-		// console.log(" getProductsBySection Section ID:",sectionID);
+		console.log(" getProductsBySection Section ID:",sectionID);
 		var limit;
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
@@ -160,12 +158,13 @@ class ProductCollage extends Component {
 				limit = "10";
 			}
 		}
+
 		axios.get("/api/products/get/list/" + sectionID)
 			.then((response) => {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				// console.log(" Section Products:",products);
+				console.log(" Section Products:",products);
 				this.setState({
 					loading: false,
 					products: products
@@ -177,7 +176,7 @@ class ProductCollage extends Component {
 			})
 	}
 
-	getProductsByCategory(categoryID) {
+	getProductsByCategory(categoryID){
 		var limit;
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
@@ -193,7 +192,6 @@ class ProductCollage extends Component {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-
 
 				this.setState({
 					loading: false,
@@ -390,7 +388,6 @@ class ProductCollage extends Component {
 			})
 	}
 	getFilteredProducts_uni(selector) {
-
 		if ($('.limitProducts').val()) {
 			selector.limit = $('.limitProducts').val();
 		} else {
@@ -408,7 +405,6 @@ class ProductCollage extends Component {
 	}
 
 	filterProducts(subcategoryID, selectedbrands, price, color, size) {
-
 		if (subcategoryID !== '') {
 
 			var products = this.state.masterproducts.filter((array_el) => {
@@ -747,7 +743,6 @@ class ProductCollage extends Component {
 			this.setState({
 				products: this.state.products.sort((a, b) => -(a[field] || "").toString().localeCompare((b[field] || "").toString()))
 			});
-
 		}
 		if (sortBy === "priceAsc") {
 			let field = 'discountedPrice';
@@ -765,7 +760,7 @@ class ProductCollage extends Component {
 	render() {
 		// console.log("Category details:-----",this.state.categoryDetails);
 		// console.log("this.state.loading===",this.state.loading);
-		console.log("1.inside Render");
+		// console.log("1.inside Render");
 		// console.log("this.state.envvariable====",this.state.envVariable);
 		if(this.state.categoryDetails.length < 1){
 			$('.filterWrapper').hide();
@@ -773,7 +768,6 @@ class ProductCollage extends Component {
 			$('.ProductViewWrapper').removeClass('col-md-9');			
 			$('.ProductViewWrapper').addClass('col-lg-12');
 			$('.ProductViewWrapper').addClass('col-md-12');
-
 		}else{
 			$('.ProductViewWrapper').addClass('col-lg-9');
 			$('.ProductViewWrapper').addClass('col-md-9');
@@ -807,8 +801,7 @@ class ProductCollage extends Component {
 												{
 													this.state.categoryDetails.length > 1 ?
 														this.state.categoryDetails.map((data, index) => {
-															return (
-																
+															return (																
 																		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 categoriesContainerEcommerce" key={index} >
 																		<li>
 																			<a href={"/category"+"/"+data.categoryUrl+"/"+data.section_ID+"/"+data._id} className="subcategory" data-id={data._id} onClick={this.onSelectedItemsChange.bind(this, 'category')} style={{ fontWeight: "100!important" }}>{data.category.toUpperCase()}</a>
@@ -850,7 +843,6 @@ class ProductCollage extends Component {
 												<li className="dropdown-submenu">
 													<a className="test" tabindex="-1" href="/">COLOR <span className="caret"></span></a>
 													<ul className="dropdown-menu">
-
 														{this.state.colors ?
 															this.state.colors.map((data, index) => {
 																return (
@@ -917,10 +909,8 @@ class ProductCollage extends Component {
 									</ul>
 								</div>
 							</div>
-						</div>
-						
-					{/*============for lg and md=============*/} 
-						{
+						</div>						
+					{/*============category filter=============*/} 						{
 							Array.isArray(this.state.categoryDetails) && this.state.categoryDetails.length > 0 ?
 								<div className="col-lg-3 col-md-3 filterWrapper">									
 									<div className="nb-brand col-lg-10 col-md-10 col-sm-12 col-xs-12 NoPadding">
@@ -1107,8 +1097,7 @@ class ProductCollage extends Component {
 											: ''
 										}
 									</div> */}
-						</div>{/*} end accordian div*/}
-								
+						</div>{/*} end accordian div*/}								
 						</div>
 						 : null
 						}

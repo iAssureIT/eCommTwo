@@ -49,6 +49,9 @@ class Checkout extends Component {
             addressLine1: "",
             "startRange": 0,
             "limitRange": 10,
+            isChecked: false,
+            isCheckedError: [],
+
         }
         this.getCartData();
         // this.getCompanyDetails();
@@ -74,6 +77,7 @@ class Checkout extends Component {
         this.validation();
     }
     validation() {
+        
         $.validator.addMethod("regxusername", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Name should only contain letters.");
@@ -106,11 +110,12 @@ class Checkout extends Component {
         }, "Please enter valid pincode.");
         $.validator.addMethod("regxaddType", function (value, element, arg) {
             return arg !== value;
-        }, "Please select the address type.");
+        }, "Please select the address type.");        
         jQuery.validator.setDefaults({
             debug: true,
             success: "valid"
         });
+
         $("#checkout").validate({
             rules: {
                 username: {
@@ -166,9 +171,9 @@ class Checkout extends Component {
                 payMethod: {
                     required: true
                 },
-                termsNconditions: {
-                    required: true
-                }
+                // termsNconditions: {
+                //     required: true
+                // }
             },
             errorPlacement: function (error, element) {
                 if (element.attr("name") === "username") {
@@ -210,15 +215,33 @@ class Checkout extends Component {
                 if (element.attr("name") === "payMethod") {
                     error.insertAfter("#payMethod");
                 }
-                if (element.attr("name") === "termsNconditions") {
-                    error.insertAfter("#termsNconditions");
-                }
+                // if (element.attr("name") === "termsNconditions") {
+                //     error.insertAfter("#termsNconditions");
+                // }
                 if (element.attr("name") === "checkoutAddess") {
                     error.insertAfter("#checkoutAddess");
                 }
             }
         });
     }
+    // checkboxClick = () => {
+    checkboxClick(event){
+        let isChecked = !this.state.isChecked;
+        console.log("isChecked:",isChecked);
+        this.setState({ isChecked }, () => {
+          if (isChecked) {
+            this.setState({
+              isCheckedError: []
+            });
+          } else {
+            this.setState({
+              isCheckedError: ["Please accept the terms & conditions."]
+            });
+            console.log("isCheckedError==",this.state.isCheckedError);
+          }
+        });
+      }
+
     getCartData() {
         $('.fullpageloader').show();
         const userid = localStorage.getItem('user_ID');
@@ -565,6 +588,7 @@ class Checkout extends Component {
     //place order function
     placeOrder(event) {
         event.preventDefault();
+        console.log("inside place order");
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
         var checkoutAddess = $("input[name='checkoutAddess']:checked").val();
@@ -576,7 +600,12 @@ class Checkout extends Component {
             return a.productDetail.availableQuantity <= 0;
         })
         if (soldProducts.length > 0) {
-            this.setState({
+            this.setState({else {
+                //          this.setState({
+                //            isCheckedError: ["Please accept the terms & conditions."]
+                //          });
+                //          swal("Please accept the terms & conditions.");
+                // }
                 messageData: {
                     "type": "outpage",
                     "icon": "fa fa-exclamation-circle",
@@ -596,7 +625,7 @@ class Checkout extends Component {
                 var deliveryAddress = this.state.deliveryAddress.filter((a, i) => {
                     return a._id === checkoutAddess
                 })
-                // console.log("Delivery address:",deliveryAddress);
+                console.log("Delivery address:",deliveryAddress);
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
                     "name": deliveryAddress.length > 0 ? deliveryAddress[0].name : "",
@@ -616,9 +645,9 @@ class Checkout extends Component {
                     "latitude": deliveryAddress.length > 0 ? deliveryAddress[0].latitude : "",
                     "longitude": deliveryAddress.length > 0 ? deliveryAddress[0].longitude : "",
                 }
-                // console.log("inside if address values====",addressValues);               
+                console.log("inside if address values====",addressValues);               
             } else {
-                // console.log("inside else new address");
+                console.log("inside else new address");
                 addressValues = {
                     "user_ID": localStorage.getItem('user_ID'),
                     "name": this.state.username,
@@ -638,7 +667,7 @@ class Checkout extends Component {
                     "latitude": this.state.latitude,
                     "longitude": this.state.longitude,
                 }
-                console.log("inside if address values====", addressValues);
+                // console.log("inside if address values====", addressValues);
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     // console.log("addressValues:===",addressValues);
@@ -848,7 +877,13 @@ class Checkout extends Component {
                             paymentMethod: this.props.recentCartData[0].paymentMethod
                         }
                         // console.log("Order Data:--->",orderData);
-                        axios.post('/api/orders/post', orderData)
+                        console.log("this.state.isChecked:==",this.state.isChecked);
+                        // if(this.state.isChecked){
+                        $('input[type="checkbox"]').click(function(){
+                            if($(this).is(":checked")){
+                                console.log("Checkbox is checked.");
+                                                              
+                            axios.post('/api/orders/post', orderData)
                             .then((result) => {
                                 this.props.fetchCartData();
                                 this.setState({
@@ -871,6 +906,18 @@ class Checkout extends Component {
                                 console.log("return to checkout");
                                 console.log(error);
                             })
+                        }
+                        // else {
+                        //          this.setState({
+                        //            isCheckedError: ["Please accept the terms & conditions."]
+                        //          });
+                        //          swal("Please accept the terms & conditions.");
+                        // }   
+                        else if($(this).is(":not(:checked)")){
+                            console.log("Checkbox is unchecked.");
+                        }
+                    });                        
+                        
                     })
                     .catch((error) => {
                         console.log('error', error);
@@ -1353,10 +1400,11 @@ class Checkout extends Component {
                                     </div>
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
                                         <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
-                                            <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
+                                            <input type="checkbox" name="termsNconditions" isChecked={this.state.isChecked} title="Please Read and Accept Terms & Conditions" onChange={this.checkboxClick().bind(this)} className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
                                             <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 termsWrapper">
                                                 <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
                                             </div>
+                                            {this.state.isCheckedError ? <label style={{ color: "red", fontWeight: "100" }}>Please accept terms and conditions!</label> : null}
                                         </div>
                                         <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
                                             <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>

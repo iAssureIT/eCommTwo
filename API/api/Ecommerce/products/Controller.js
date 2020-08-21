@@ -1342,6 +1342,7 @@ exports.remove_photo = (req,res,next)=>{
     });
 };
 exports.list_productby_section = (req,res,next)=>{
+    console.log("inside list product by section===",req.params.sectionID);
     Products.find({section_ID : req.params.sectionID, "status": "Publish"})
     .exec()
     .then(data=>{
@@ -1865,7 +1866,7 @@ exports.filter_products = (req,res,next)=>{
             if (key == 'attributes') {
                 req.body.attributes
                 for (var attrkey in req.body.attributes) {
-                    console.log('dsmf',req.body.attributes[attrkey])
+                    // console.log('dsmf',req.body.attributes[attrkey])
                     var elemMatch = {};
                     elemMatch.attributeName = { $eq: req.body.attributes[attrkey].attributeName };
                     elemMatch.attributeValue = { $eq: req.body.attributes[attrkey].attributeValue };
@@ -2245,7 +2246,7 @@ var insertUnitOfMeasurment = async(unit,created) =>{
                     })
                     unitOfMeasurmentMaster.save()
                     .then(data=>{
-                        console.log("saved");
+                        // console.log("saved");
                         resolve( data._id );
                     })
                     .catch(err =>{

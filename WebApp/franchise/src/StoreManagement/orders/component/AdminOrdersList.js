@@ -344,6 +344,7 @@ class AdminOrdersList extends Component{
                     <div className="admin-orders-stat1">
                         {value.status}
                     </div>
+                    {/* <div className="col-lg-12 col-md-12 col-sm-6 col-xs-6 NoPadding"> */}
                     <div className={ 
                       value.deliveryStatus === "New Order" ?
                        "admin-orders-stat-NewOrder" : ( value.deliveryStatus === "Packed" ? "admin-orders-stat-Packed" : 
@@ -356,13 +357,14 @@ class AdminOrdersList extends Component{
                           value.deliveryStatus === "Delivered & Paid"   ? "admin-orders-stat-Deliveredpaid" : 
                           value.deliveryStatus === "Returned"   ? "admin-orders-stat-Dispatched" : 
                           value.deliveryStatus === "Cancelled"   ? "admin-orders-stat-Dispatched" : ""
-                              ) 
+                              )  +"col-lg-12 col-md-12 col-sm-6 col-xs-12"
                                                                                       
                         }>
                         {
                            value.deliveryStatus === "Dispatch" ? "Dispatched" : value.deliveryStatus
                         }
                     </div>
+                    
                     </div>
                   );
                 }
@@ -597,7 +599,7 @@ class AdminOrdersList extends Component{
                         </div>
                         
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 table-responsive orderTableWrapper">
                           <MUIDataTable
                             title={this.props.tableTitle ? this.props.tableTitle : 'Order List'}
                             options={options}

@@ -41,26 +41,25 @@ class SearchProductCollage extends Component {
     // console.log("componentWillReceiveProps:",nextProps.products);
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
-        var availableSizes = [];
-      
+        var availableSizes = [];      
         if(nextProps.products[i].size){
-          availableSizes.push(
-            {
-              "productSize": nextProps.products[i].size*1,
-              "packSize"   :1,
-            },
-            {
-              "productSize": nextProps.products[i].size*2,
-              "packSize"   :2,
-            },
-            {
-              "productSize": nextProps.products[i].size*4,
-              "packSize"   :4,
-            },
-          )
-          // availableSizes.push(nextProps.products[i].size*1);
-          // availableSizes.push(nextProps.products[i].size*2);
-          // availableSizes.push(nextProps.products[i].size*4); 
+          // availableSizes.push(
+          //   {
+          //     "productSize": nextProps.products[i].size*1,
+          //     "packSize"   :1,
+          //   },
+          //   {
+          //     "productSize": nextProps.products[i].size*2,
+          //     "packSize"   :2,
+          //   },
+          //   {
+          //     "productSize": nextProps.products[i].size*4,
+          //     "packSize"   :4,
+          //   },
+          // )
+          availableSizes.push(nextProps.products[i].size*1);
+          availableSizes.push(nextProps.products[i].size*2);
+          availableSizes.push(nextProps.products[i].size*4); 
           nextProps.products[i].availableSizes = availableSizes;
           // console.log("availableSizes=======",availableSizes);    
         }
@@ -487,12 +486,15 @@ class SearchProductCollage extends Component {
 
         <div className="row">
           {
-            this.props.products && this.props.products.length > 0 ?
-              this.props.products && this.props.products.map((data, index) => {
+            Array.isArray(this.props.products) && this.props.products.length > 0 ?
+            Array.isArray(this.props.products) && this.props.products.map((data, index) => {
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 if (x && x.length > 0) {
                   var wishClass = '';
                   var tooltipMsg = 'Remove from wishlist';
+                } else {
+                  wishClass = '-o';
+                  tooltipMsg = 'Add To Wishlist';
                 }
                 return (
                   <div className="item col-lg-3 col-md-3 col-sm-6 col-xs-6 NoPadding" key={index}>
@@ -500,7 +502,7 @@ class SearchProductCollage extends Component {
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="card col-lg-12 col-md-12 col-sm-12 col-xs-8 productInnerWrap NoPadding">
                           <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12  NoPadding">
-                            <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                            <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">                              
                               <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
                               {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}                              
                               <a href={"/productdetails/" + data.productUrl + "/" + data._id} className="product photo product-item-photo collage" tabIndex="-1">
@@ -532,16 +534,16 @@ class SearchProductCollage extends Component {
                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
                                         <div className="selectSizeBox col-lg-6 col-md-6 col-sm-6 col-xs-6 NoPadding ">                                                                              
                                         <select class="selectdropdown valid availablesize col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
-                                        { Array.isArray(data.availableSizes) && data.availableSizes.map((availablesize, index) => {
+                                        { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
                                               return(  
-                                                <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option> 
-                                                  // size === 1000?                                                  
-                                                  // <option className="" value={size}> 1 KG</option>
-                                                  // :
-                                                  // data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
-                                                  //   <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
-                                                  // :
-                                                  // <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
+                                                // <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option> 
+                                                  size === 1000?                                                  
+                                                  <option className="" value={size}> 1 KG</option>
+                                                  :
+                                                  data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?
+                                                    <option className="selectedSize" value={size}>{data.unit}&nbsp;of&nbsp;{size}</option>
+                                                  :
+                                                  <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
                                               )                                                        
                                             })
                                           }

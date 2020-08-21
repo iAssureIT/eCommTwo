@@ -81,10 +81,10 @@ class Account extends Component{
                 <Address addressId={this.state.addressId} opDone={this.opDone.bind(this)}/>
                 <div className="container">
                     <br/>
-                    <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4 NOpadding mr20">
+                    <div className="col-lg-2 col-md-2 col-sm-4 col-xs-12 NOpadding mr20">
                         <Sidebar />
                     </div>
-                    <div className="col-lg-9 col-md-9 col-sm-8 col-xs-8 NOpadding mt25">
+                    <div className="col-lg-9 col-md-9 col-sm-8 col-xs-12 NOpadding mt25">
                         <h4 className="accountTitle">Account Dashboard</h4>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
                             <p><label>Hello {this.state.firstName}</label></p>                            

@@ -13,9 +13,9 @@ export default class Aboutusmultistore extends Component {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
 				<div className="row">
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<h2 className="col-lg-12 col-md-12 col-sm-12 hidden-xs mt50">Unicorn Fresh</h2>
-						<h2 className="hidden-lg hidden-md">Unicorn Fresh</h2>
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 contactcontent">
+						<h3 className="col-lg-12 col-md-12 col-sm-12 hidden-xs mt50">Unicorn Fresh</h3>
+						<h4 className="hidden-lg hidden-md">Unicorn Fresh</h4>
 						<div className="col-lg-10 col-lg-offset-1">
 							<p className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20  uniFreshPara">
 								We often take care of our loved ones, family and friends. Always asks them to avoid junk food and street food. But ever we noticed, when we buy vegetables or fruits, they are on open carts, unhygienic mandi or on polluted streets.

@@ -136,8 +136,6 @@ export default class AdminDashboard extends Component{
               </a>
             </li>
 
-
-
             <li className="treeview" >
               <a href="JavaScript:void(0);" onClick={()=>this.openMenu("contractmanagement")} title="Contract Management">
                 <i className="fa fa-file" aria-hidden="true"></i>

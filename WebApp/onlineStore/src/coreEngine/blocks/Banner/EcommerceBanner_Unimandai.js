@@ -10,10 +10,9 @@ import $                  from 'jquery';
 
 import AddressBanner2  from "../../../sites/currentSite/images/AddressBanner2.png";
 import AddressBanner1  from "../../../sites/currentSite/images/AddressBanner1.png";
-import Background_2  from "../../../sites/currentSite/images/Fruits1.png";
-import Background_22  from "../../../sites/currentSite/images/VeggiesBanner1.png";
-
-
+import Background_2    from "../../../sites/currentSite/images/Fruits1.png";
+import Background_22   from "../../../sites/currentSite/images/VeggiesBanner1.png";
+import OrganicItem     from "../../../sites/currentSite/images/organicItem5.jpg";
 
 export default class EcommerceBanner extends Component {
 	constructor(props){
@@ -65,6 +64,10 @@ export default class EcommerceBanner extends Component {
 										<div className="item">
 									    	<img className="img img-responsive" src={AddressBanner2} alt="banner" />									    	
 									    </div>
+										{/* <div className="item">
+									    	<img className="img img-responsive" src={OrganicItem} alt="banner" />									    	
+									    </div> */}
+										
 									</OwlCarousel>
 							</div> 
 						</div>

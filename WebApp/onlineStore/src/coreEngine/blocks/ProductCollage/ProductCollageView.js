@@ -485,9 +485,7 @@ class ProductCollageView extends Component {
         <div className="row">
           {
             Array.isArray(this.state.products) && this.state.products.length > 0 ? 
-            Array.isArray(this.state.products) && this.state.products.map((data, index) => {                
-              
-
+            Array.isArray(this.state.products) && this.state.products.map((data, index) => {  
                 var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
                 var wishClass = '';
                 var tooltipMsg = '';

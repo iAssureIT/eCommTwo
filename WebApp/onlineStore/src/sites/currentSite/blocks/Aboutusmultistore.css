@@ -9,6 +9,10 @@
 .aboutheading{
 	margin-top: 90px !important;
 }
+.contactcontent h2{
+	font-weight: bold;
+	text-transform: uppercase;
+}
 .textparaabout{
 	line-height: 20px;
 	/*color: #999;*/

@@ -235,12 +235,12 @@ class EditAccount extends Component{
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
             <Message messageData={this.state.messageData} />
                 <div className="container">
-                    {/*<Loader type="fullpageloader" />*/} 
+                    <Loader type="fullpageloader" /> 
                     <br/>
-                    <div className="col-lg-2 col-md-2 col-sm-4 col-xs-4 NOpadding mr20">
+                    <div className="col-lg-2 col-md-2 col-sm-4 col-xs-12 NOpadding mr20">
                         <Sidebar />
                     </div>
-                    <div className="col-lg-9 col-md-9 col-sm-8 col-xs-8 NOpadding mt25">
+                    <div className="col-lg-9 col-md-9 col-sm-8 col-xs-12 NOpadding mt25">
                         <h4 className="accountTitle">Account Information</h4>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                             <form id="editAccount">

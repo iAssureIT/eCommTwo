@@ -7,8 +7,6 @@
     background: #dd4b39;
     color: #fff;
 }
-
-
 .admin-orders-stat-NewOrder {
     background: #f36512;
     color: #fff;
@@ -86,9 +84,6 @@
     padding:8px 10px;
     
 }
-
-
-
 .admin-order-view {
     display: inline-block;
     padding: 5px 10px;
@@ -161,4 +156,13 @@
 .MuiTableCell-head{
     background: #7f7f7f !important;
     color: #fff !important;    
+}
+@media (min-width: 768px) and (max-width:900px){
+    .MuiTableBody-root tr{
+        height: 230px;
+    }
+    .orderTableWrapper .admin-order-view{
+        margin-top:10px;
+
+    }
 }
