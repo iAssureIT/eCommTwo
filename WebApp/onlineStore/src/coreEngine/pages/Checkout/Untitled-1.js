@@ -1,3 +1,6 @@
+
+
+
 import React, { Component } from 'react';
 import $, { post } from 'jquery';
 import axios from 'axios';
@@ -20,7 +23,6 @@ import "../../../sites/currentSite/pages/Checkout.css";
 import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-const qs = require('querystring')
 
 class Checkout extends Component {
     constructor(props) {
@@ -38,15 +40,16 @@ class Checkout extends Component {
             totalIndPrice: 0,
             addressId: "",
             bannerData: {
-                title: "CHECKOUT",
-                breadcrumb: 'Checkout',
-                backgroungImage: checkoutBanner,
+                title           : "CHECKOUT",
+                breadcrumb      : 'Checkout',
+                backgroungImage : checkoutBanner,
             },
             discountCode: false,
             comment: false,
             giftOption: false,
             deliveryAddress: [],
             pincodeExists: true,
+            paymentmethods: "cod",
             addressLine1: "",
             "startRange": 0,
             "limitRange": 10,
@@ -56,179 +59,11 @@ class Checkout extends Component {
         this.getUserAddress();
         this.camelCase = this.camelCase.bind(this)
     }
-    gettimes(startRange, limitRange) {
-        axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
-            .then((response) => {
-                this.setState({
-                    gettimes: response.data
-                })
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
-    }
-    getpaymentgateway = async () => {
-
-        // axios.post(redirecturl,paymentdetails,
-        //     {
-        //         headers: {
-        //             'Content-Type': 'application/x-www-form-urlencoded',               
-        //         }
-        //     })  
-        //         .then((res) => {
-        //             console.log('getpaymentgateway Response===> ', res);
-        //             alert(res);
-
-        //         })
-        //         .catch((error) => {
-        //             console.log('error'+ error);
-        //             // alert(error);
-        //         });
-        // var paymentdetails = {
-        //     MERCHANT_ID: 9445,
-        //     MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
-        //     REFERENCE_NO: Math.round(new Date().getTime() / 1000),
-        //     AMOUNT: 200,
-        //     PRODUCT_CODE: "testing",
-        //     CUSTOMER_MOBILE_NO: "8087679825",
-        //     CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
-        // }
-        // const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-       
-        axios.get('/api/users/get/'+localStorage.getItem("user_ID"))
-        .then(result => {
-            this.setState({
-                mobile: result.data.mobile,
-                email: result.data.email,
-            })
-        })
-        .catch(err => {
-            console.log('Errr', err);
-        })
-        var type = "PG"
-        axios.post('/api/projectsettings/getS3Details/'+type)
-           .then(result => {
-            //    console.log('projectsettings Response===> ', result.data);
-               this.setState({
-                   environment: result.data.environment,
-                   namepayg: result.data.namepayg,
-                   partnerid: result.data.partnerid,
-                   secretkey: result.data.secretkey,
-                   status: result.data.status,
-               })
-           })
-           .catch(err => {
-               console.log('Errr', err);
-           })
-        const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-        const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-        const config = {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-                'Accept'                      : 'application/json',
-                "Content-Type"                : "application/x-www-form-urlencoded",
-            }
-        }
-        console.log('paymentdetails ===> ', paymentdetails);
-        axios.post(redirecturl,paymentdetails,config)
-            .then(result => {
-                console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
-                window.location.replace(result.data);
-            })
-            .catch(err => {
-                console.log('Errr', err);
-            })
-        // // console.log('getpaymentgateway Response===> ', paymentdetails);
-        // console.log('redirecturl Response===> ', redirecturl);
-        // let paymentgatewayint = await axios.post(redirecturl,paymentdetails, config)
-        // fetch('https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL', {
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     method: 'POST',
-        //     body: JSON.stringify({
-        //         MERCHANT_ID: 9445,
-        //         MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
-        //         REFERENCE_NO: "hsjfhsfjk",
-        //         AMOUNT: 200,
-        //         PRODUCT_CODE: "testing",
-        //         CUSTOMER_MOBILE_NO: "8087679825",
-        //         CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
-        //     })
-        // })
-        // axios.post('/api/carts/paymentgatewaypinepg/post')
-        //     .then(result => {
-        //         console.log('getpaymentgateway Response===> ', result);
-        //         // debugger;
-        //         // alert(result);
-        //     })
-        //     .catch(err => {
-        //         // debugger;
-        //         console.log('Errr', err);
-        //     })
-        
-        // // axios.post({url:redirecturl,body:paymentdetails,config})
-        //     .then(result => {
-        // console.log('paymentgatewayint===> ', paymentgatewayint);
-        //         // debugger;
-        //         // alert(result);
-        //     })
-        //     .catch(err => {
-        //         debugger;
-        //         console.log('Errr', err);
-        //     });
-        // const options = {
-        //     method: "post",
-        //     headers: {
-        //         'Access-Control-Allow-Origin': 'http://localhost:3000/',
-        //         'Access-Control-Allow-Headers':'http://localhost:3000/',
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     url: redirecturl,
-        //     params: {
-        //         MERCHANT_ID: 9445,
-        //         MERCHANT_ACCESS_CODE: "dc53e787-3e81-427d-9e94-19220eec39ef",
-        //         REFERENCE_NO: "EQWEWE21323",
-        //         AMOUNT: 200,
-        //         PRODUCT_CODE: "testing",
-        //         CUSTOMER_MOBILE_NO: "8087679825",
-        //         CUSTOMER_EMAIL_ID: "omkar.ronghe@iassureit.com",
-        //     }
-        // };
-        // axios(options)
-
-        //     axios.post(
-        //         redirecturl+'?'+paymentdetails,
-        // {
-        //     MERCHANT_ID:9445,
-        //     MERCHANT_ACCESS_CODE:"dc53e787-3e81-427d-9e94-19220eec39ef",
-        //     REFERENCE_NO:"EQWEWE2154",
-        //     AMOUNT:200,
-        //     PRODUCT_CODE:"testing",
-        //     CUSTOMER_MOBILE_NO:"8087679825",
-        //     CUSTOMER_EMAIL_ID:"omkar.ronghe@iassureit.com",
-        // },
-        //     {
-        //       headers: {
-        //         'Access-Control-Allow-Origin': 'http://localhost:3000/',
-        //         'Access-Control-Allow-Headers':'http://localhost:3000/',
-        //         "content-type": "application/x-www-form-urlencoded",
-        //       }
-        //     }
-        //   )
-
-        //   console.log("responsepayment===>",responsepayment);
-    }
-
     componentDidMount() {
         this.getCartData();
         this.gettimes(this.state.startRange, this.state.limitRange);
         this.getUserAddress();
         this.validation();
-        this.projectsettingspaymentdets();
-        
         axios.get('/api/users/get/'+localStorage.getItem("user_ID"))
         .then(result => {
             this.setState({
@@ -239,8 +74,6 @@ class Checkout extends Component {
         .catch(err => {
             console.log('Errr', err);
         })
-    }
-    projectsettingspaymentdets(){
         var type = "PG"
         axios.post('/api/projectsettings/getS3Details/'+type)
            .then(result => {
@@ -270,21 +103,6 @@ class Checkout extends Component {
         $.validator.addMethod("regxaddressLine1", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid address.");
-        // $.validator.addMethod("regxcountry", function (value, element, arg) {
-        //     return arg !== value;
-        // }, "Please select the country.");
-        // $.validator.addMethod("regxstate", function (value, element, arg) {
-        //     return arg !== value;
-        // }, "Please select the state");
-        // $.validator.addMethod("regxblock", function (value, element, regexpr) {
-        //     return regexpr.test(value);
-        // }, "Please enter valid block name.");
-        // $.validator.addMethod("regxdistrict", function (value, element, arg) {
-        //     return arg !== value;
-        // }, "Please select the district");
-        // $.validator.addMethod("regxcity", function (value, element, regexpr) {
-        //     return regexpr.test(value);
-        // }, "Please enter valid city name");
         $.validator.addMethod("regxpincode", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid pincode.");        
@@ -467,7 +285,27 @@ class Checkout extends Component {
             });
         }
     }
-
+  
+    // getpaymentgateway = async () => {
+    //     const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+    //     const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
+    //     const config = {
+    //         headers: {
+    //             'Access-Control-Allow-Origin' : '*',
+    //             'Accept'                      : 'application/json',
+    //             "Content-Type"                : "application/x-www-form-urlencoded",
+    //         }
+    //     }
+    //     console.log('paymentdetails ===> ', paymentdetails);
+    //     axios.post(redirecturl,paymentdetails,config)
+    //         .then(result => {
+    //             console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
+    //             window.location.replace(result.data.PAYMENT_URL);
+    //         })
+    //         .catch(err => {
+    //             console.log('Errr', err);
+    //         })
+    // }
     getUserAddress() {
         var user_ID = localStorage.getItem('user_ID');
         axios.get("/api/ecommusers/" + user_ID)
@@ -502,6 +340,17 @@ class Checkout extends Component {
         }
     }
 
+    gettimes(startRange, limitRange) {
+        axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
+            .then((response) => {
+                this.setState({
+                    gettimes: response.data
+                })
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+    }
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
@@ -880,13 +729,13 @@ class Checkout extends Component {
                 }
             }
             // console.log('pls');
-            axios.patch('/api/carts/payment', formValues)
-                .then((response) => {
+            // axios.patch('/api/carts/payment', formValues)
+            //     .then((response) => {
 
-                })
-                .catch((error) => {
-                    console.log('error', error);
-                })
+            //     })
+            //     .catch((error) => {
+            //         console.log('error', error);
+            //     })
             if ($('#checkout').valid() && this.state.pincodeExists) {
                 axios.patch('/api/carts/address', addressValues)
                     .then(async (response) => {
@@ -934,6 +783,47 @@ class Checkout extends Component {
                         // if($('.acceptTerms:checkbox:checked').length > 0){                     
                         axios.post('/api/orders/post', orderData)
                             .then((result) => {
+                                if(this.state.paymentmethods === 'cod'){
+                                    console.log('IN COD ===> ');
+                                    this.props.fetchCartData();
+                                    this.setState({
+                                        messageData: {
+                                            "type": "outpage",
+                                            "icon": "fa fa-check-circle",
+                                            "message": "Order Placed Successfully ",
+                                            "class": "success",
+                                            "autoDismiss": true
+                                        }
+                                    })
+                                    setTimeout(() => {
+                                        this.setState({
+                                            messageData: {},
+                                        })
+                                    }, 3000);
+    
+                                    this.props.history.push('/payment/' + result.data.order_ID);
+                                }else{
+                                    console.log('IN Credit Card ===>');
+                                    const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+                                    // const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
+                                    const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=MERCHANT_ACCESS_CODE: dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=2000&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=&PRODUCT_CODE=testing';
+                                    const config = {
+                                        headers: {
+                                            'Access-Control-Allow-Origin' : '*',
+                                            'Accept'                      : 'application/json',
+                                            "Content-Type"                : "application/x-www-form-urlencoded",
+                                        }
+                                    } 
+                                    console.log('paymentdetails ===> ', paymentdetails);
+                                    axios.post(redirecturl,paymentdetails,config)
+                                        .then(result => {
+                                            console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
+                                            window.location.replace(result.data.PAYMENT_URL);
+                                        })
+                                        .catch(err => {
+                                            console.log('Errr', err);
+                                        })
+                                }
                                 axios.get('/api/orders/get/one/' + result.data.order_ID)
                                     .then((res) => {
                                         // =================== Notification OTP ==================
@@ -963,41 +853,15 @@ class Checkout extends Component {
                                             // =================== Notification ==================
                                         }
                                     })
-                                // console.log("Order place successfully");                        
-                                this.props.fetchCartData();
-                                this.setState({
-                                    messageData: {
-                                        "type": "outpage",
-                                        "icon": "fa fa-check-circle",
-                                        "message": "Order Placed Successfully ",
-                                        "class": "success",
-                                        "autoDismiss": true
-                                    }
-                                })
-                                setTimeout(() => {
-                                    this.setState({
-                                        messageData: {},
-                                    })
-                                }, 3000);
-
-                                this.props.history.push('/payment/' + result.data.order_ID);
                             })
                             .catch((error) => {
                                 console.log("return to checkout");
                                 console.log(error);
                             })
-
-                        // }else{
-                        //     console.log("$('.acceptTerms:checkbox:checked').length===",$('.acceptTerms:checkbox:checked').length);
-                        //     swal("Please check Terms and condition and add your delivery address properly");
-                        
-                        // }
                     })
                     .catch((error) => {
                         console.log('error', error);
                     })
-
-
             }
         }
     }
@@ -1155,6 +1019,7 @@ class Checkout extends Component {
     opDones() {
         this.getUserAddress();
     }
+
     handleCheckbox(event){
         event.preventDefault();
     //   console.log("terms value ....",$('.acceptTerms:checkbox:checked').length);
@@ -1200,11 +1065,14 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 anasBtn paymentMethodTitle">PAYMENT METHOD <span className="required">*</span></div>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input name="payMethod" type="radio" value="Cash On Delivery" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" />
+                                            {/* <input name="payMethod" ref="payMethod" type="radio" value={this.state.payMethod} className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" /> */}
+                                            <input name="paymentmethods" type="radio" value="cod" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
+                                                             checked={this.state.paymentmethods === "cod"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
-                                            <input  onChange={this.getpaymentgateway} name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" />
+                                            {/* <input value={this.state.payMethod} onChange={this.creditndebit}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" /> */}
+                                            <input  name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
@@ -1501,9 +1369,9 @@ class Checkout extends Component {
                                             </select>
                                         </div> */}
                                     </div>
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
-                                    </div>
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
+                                            </div>
                                 </div>
                             </div>
                         </form>
