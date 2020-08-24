@@ -807,9 +807,8 @@ class Checkout extends Component {
                         
                         if(this.state.isChecked){                        
                         axios.post('/api/orders/post', orderData)
-                            .then((result) => {
-                                if(this.state.paymentmethods === 'cod'){
-                                    // console.log('IN COD ===> ');
+                            .then((result) => {              
+
                                     this.props.fetchCartData();
                                     this.setState({
                                         messageData: {
@@ -827,49 +826,7 @@ class Checkout extends Component {
                                     }, 3000);
     
                                     this.props.history.push('/payment/' + result.data.order_ID);
-                                }else{
-                                    console.log('IN Credit Card ===>');
-                                    const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-                                    const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-                                    const config = {
-                                        headers: {
-                                            'Access-Control-Allow-Origin' : '*',
-                                            'Accept'                      : 'application/json',
-                                            "Content-Type"                : "application/x-www-form-urlencoded",
-                                        }
-                                    } 
-                                    console.log('paymentdetails ===> ', paymentdetails);
-                                    axios.post(redirecturl,paymentdetails,config)
-                                        .then(result => {
-                                            console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
-                                            window.location.replace(result.data.PAYMENT_URL);
-                                        })
-                                        .catch(err => {
-                                            console.log('Errr', err);
-                                        })
-                                }
 
-                                // }else{
-                                //     console.log('IN Credit Card ===>');
-                                //     const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-                                //     const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-                                //     const config = {
-                                //         headers: {
-                                //             'Access-Control-Allow-Origin' : '*',
-                                //             'Accept'                      : 'application/json',
-                                //             "Content-Type"                : "application/x-www-form-urlencoded",
-                                //         }
-                                //     }
-                                //     console.log('paymentdetails ===> ', paymentdetails);
-                                //     axios.post(redirecturl,paymentdetails,config)
-                                //         .then(result => {
-                                //             console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
-                                //             window.location.replace(result.data.PAYMENT_URL);
-                                //         })
-                                //         .catch(err => {
-                                //             console.log('Errr', err);
-                                //         })
-                                // }
                                 axios.get('/api/orders/get/one/' + result.data.order_ID)
                                     .then((res) => {
                                         // =================== Notification OTP ==================
@@ -1127,7 +1084,7 @@ class Checkout extends Component {
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
                                             {/* <input value={this.state.payMethod} onChange={this.creditndebit}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" /> */}
-                                            <input  name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
+                                            <input disabled name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
