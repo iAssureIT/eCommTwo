@@ -9,7 +9,6 @@
     text-transform: none;
     margin:auto auto;
 }
-
 .ocLine{
 	/*margin-top: 25px;*/
 	height: 2px;
@@ -18,7 +17,6 @@
 	/*margin-top: 5px;*/ 
 
 }
-
 .AllBlogsBox{
 	background-color: #f6f6f6;
 	/* border: 1px solid #eaeaea; */
@@ -87,12 +85,6 @@
     -webkit-transform-origin: right;
             transform-origin: right;
   }
-}
-
-.Allblog{
-
-	/*background-color: #888;*/
-	
 }
 .ohide{
 	overflow: hidden;

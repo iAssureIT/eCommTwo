@@ -114,20 +114,19 @@ class AddressBook extends Component{
         this.getUserAddresses();
     }
     render(){
-        return(
-        <div className="row">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+        return(        
+        <div className="container">
             <Loader type="fullpageloader" />
             <Address addressId={this.state.addressId} opDone={this.opDone.bind(this)}/>
             <div className="pagealertnone col-lg-12 col-md-12 col-sm-12">
               <Message messageData={this.state.messageData} />
             </div>
-                <div className="container">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                     <br/>
                     <div className="col-lg-2 col-md-2 col-sm-4 col-xs-12 NOpadding mr20">
                         <Sidebar />
                     </div>
-                    <div className="col-lg-9 col-md-9 col-sm-8 col-xs-12 NOpadding mt25">
+                    <div className="col-lg-9 col-md-9 col-sm-7 col-xs-12 NOpadding mt25">
                         <h4 className="addTitle">Default Addresses</h4>
                         <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 mt15 mb15">
                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -218,8 +217,7 @@ class AddressBook extends Component{
                         </div>
                     </div>
                     </div>
-                </div>
-            </div>
+                </div>            
         </div>
         )
     }

@@ -347,7 +347,7 @@ class Address extends Component {
     saveAddress(event){
         event.preventDefault();
         var id = localStorage.getItem("user_ID");
-        console.log("address id :",id);
+        // console.log("address id :",id);
         var deliveryAddressID = this.props.addressId;
         // console.log("deliveryAddressID :",deliveryAddressID);
         // console.log("pincode:",this.state.modalPincode);
@@ -410,7 +410,7 @@ class Address extends Component {
             }
         }else{ 
             if($("#modalAddressForm").valid() && this.state.pincodeExists){
-                console.log('else form deliveryAddressID', formValues);
+                // console.log('else form deliveryAddressID', formValues);
                 axios.get("/api/allowablepincode/checkpincode/" + formValues.pincode)
                 .then((response) => {
                     if (response) {

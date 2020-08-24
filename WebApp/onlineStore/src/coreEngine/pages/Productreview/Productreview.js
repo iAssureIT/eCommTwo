@@ -162,16 +162,16 @@ class Productreview extends Component {
   }
   render() {
     return (
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
         <Message messageData={this.state.messageData} />
         <SmallBanner bannerData={this.state.bannerData} />
 
-        <div className="container">
+        <div className=" container">
           <br />
-          <div className="col-lg-3 col-md-3 col-sm-4 col-xs-4 NOpadding">
+          <div className="col-lg-3 col-md-3 col-sm-4 col-xs-12 NOpadding">
             <Sidebar />
           </div>
-          <div className="col-lg-9 col-md-9 col-sm-8 col-xs-8 NOpadding">
+          <div className="col-lg-9 col-md-9 col-sm-8 col-xs-12 NOpadding">
             <div className="mt25 col-lg-12 col-md-12 col-sm-12 col-xs-12">
               {
                 this.state.reviewData && this.state.reviewData.length > 0 ?

@@ -225,10 +225,9 @@ class Edituser extends Component{
   }
     
   render(){      
-    return (
-        <div>
-          <div>                 
-              <div className="">                  
+    return (       
+                          
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                  
               <Message messageData={this.state.messageData} />
                     <section className="content viewContent">
                       <div className="row">
@@ -406,9 +405,7 @@ class Edituser extends Component{
                   </div>
                   </section>
                 </div>
-              </div>
-                  
-            </div>
+              
           );
   } 
 

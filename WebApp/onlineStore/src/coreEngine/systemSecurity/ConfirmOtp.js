@@ -84,7 +84,7 @@ class ConfirmOtp extends Component {
   resendOtp(event) {
     // const userid = this.props.match.params.userID;
     var userid = localStorage.getItem('userID');
-    if ($("#OTPMobMail").valid()) {
+    // if ($("#OTPMobMail").valid()) {
     document.getElementById("resendOtpBtn").innerHTML = 'Please wait...';
       var formValues = {
         "emailSubject": "Email Verification",
@@ -131,7 +131,7 @@ class ConfirmOtp extends Component {
           swal(" Failed to resent OTP");
           document.getElementById("resendOtpBtn").innerHTML = 'Resend OTP';
      })
-    }
+    //}
   }
   Closepagealert(event) {
     event.preventDefault();

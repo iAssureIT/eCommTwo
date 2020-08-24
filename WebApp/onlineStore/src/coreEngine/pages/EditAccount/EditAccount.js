@@ -231,16 +231,15 @@ class EditAccount extends Component{
     }
     render(){
         return(
-            <div className="row">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+            <div className="container">            
             <Message messageData={this.state.messageData} />
-                <div className="container">
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                     <Loader type="fullpageloader" /> 
                     <br/>
                     <div className="col-lg-2 col-md-2 col-sm-4 col-xs-12 NOpadding mr20">
                         <Sidebar />
                     </div>
-                    <div className="col-lg-9 col-md-9 col-sm-8 col-xs-12 NOpadding mt25">
+                    <div className="col-lg-9 col-md-9 col-sm-7 col-xs-12 NOpadding mt25">
                         <h4 className="accountTitle">Account Information</h4>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                             <form id="editAccount">
@@ -341,8 +340,7 @@ class EditAccount extends Component{
                             </form>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>            
         </div>    
         )
     }
