@@ -1,5 +1,5 @@
 import React from 'react';
-import './PurchaseManagement.css';
+import './Distribution.css';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';

@@ -1,5 +1,5 @@
 import React, { version } from 'react';
-import './PurchaseManagement.css';
+import './Distribution.css';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
@@ -348,25 +348,24 @@ export default class DeliveryChallans extends React.Component {
                                                         {/* <td><i onClick={this.changeAttribute.bind(this)} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted") ? "true" : "false"} title={ (result.status === "deliveryAccepted" )? "Disable It" : "Enable It" } className={'fa fa-check-circle prodCheckboxDim ' + ( result.status === "deliveryAccepted" ? "prodCheckboxDimSelected" : "prodCheckboxDimNotSelected" )} aria-hidden="true"></i></td>	 */}
                                                         <td>
                                                         <button onClick={this.changeAttribute.bind(this)} data-orderedqty={result.orderedQty} data-suppliedqty={result.suppliedQty} data-attribute="deliveryAccepted" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryAccepted" || result.status == "deliveryCompleted") ? "true" : "false"} title="When you accept,this quantity will be added to your current stock" className={'btn btn-success btn-sm inactiveAccept ' + ( result.status === "deliveryAccepted" || result.status == "deliveryCompleted" ? "Accepted" : "NotClicked" )}>Accept</button>
-                                                        <button data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={' btn btn-warning btn-sm ' + ( result.status === "deliveryRejected" ? " rejected" : "NotClicked" )}>Reject</button>
-                                                        <div className="modal" id={"showDeleteModal-" + (result.itemCode)} role="dialog">
-																<div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <button type="button" data-toggle="modal" data-target={"#showDeleteModal-"+(result.itemCode)}  data-attribute="deliveryRejected" data-itemcode={result.itemCode} data-attributeValue={(result.status == "deliveryRejected") ? "true" : "false"} title="When you reject,this quantity will not be added to your current stock"  className={' btn btn-warning btn-sm ' + ( result.status === "deliveryRejected" ? " rejected" : "NotClicked" )} data-backdrop="false">Reject</button>
+                                                        <div className="modal fade" id={"showDeleteModal-" + (result.itemCode)} role="dialog">
+																<div className=" adminModal adminModal-dialog modal-centered col-lg-12 col-md-12 col-sm-12 col-xs-12">
 																	<div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
 																		<div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-																			<div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-																				<button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-" + (result.itemCode)}>&times;</button>
-																			</div>
-
+                                                                            <h4 class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">Reject Product</h4>
+                                                                            <div className="adminCloseCircleDiv pull-right  col-lg-6 col-md-6 col-sm-6 col-xs-12 NOpadding-left NOpadding-right pull-right">
+                                                                                    <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-" + (result.itemCode)}>&times;</button>
+                                                                            </div>
 																		</div>
-																		<div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12" style={{paddingBottom:"0"}}>
-                                                                            <h4 class="modal-title">Reject Product</h4>
-                                                                            <h5>Product Name : {result.productName}</h5>
-                                                                            <h5>Product Code : {result.productCode}</h5>
-                                                                            <h5>Item Code    : {result.itemCode}</h5>
-                                                                            <hr/>
+																		<div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingTop5" style={{paddingBottom:"0"}}>                                                                            
+                                                                            <div className="row">
+                                                                               <h5><b>Product Name : {result.productName}</b>  (Product Code : {result.productCode} Item Code    : {result.itemCode})</h5>
+                                                                            </div>
+                                                                            <br/>
                                                                             <div className="row">
                                                                                 <form className="remarkForm">
-                                                                                <div className="form-group col-lg-12 col-md-12 col-xs-12 col-sm-12 mbt25">
+                                                                                <div className="form-group text-align-left col-lg-12 col-md-12 col-xs-12 col-sm-12 mbt25">
                                                                                     <label>Remark <i className="redFont">*</i></label>
                                                                                     <textarea type="textarea" name="remark" className="rejectRemark form-control" data-itemcode={result.itemCode} value={this.state.rejectRemark} onChange={this.addRejectRemark.bind(this)} required/>
                                                                                 </div>

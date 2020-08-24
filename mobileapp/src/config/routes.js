@@ -42,8 +42,6 @@ import AccountInformation from'../Screens/AccountDashboard/AccountInformation.js
 import MyProductReview from'../Screens/MyProductReview/MyProductReview.js';
 import OrderSummary from'../Screens/OrderSummary/OrderSummary.js';
 import PaymentMethod from '../Screens/PaymentMethod/PaymentMethod.js';
-// import searchProducts from '../Screens/Search/searchProducts.js';
-// import SearchComponent from '../Screens/Search/SearchComponent.js';
 
 let SlideFromRight = (index, position, width)=>{
   const translateX = position.interpolate({
@@ -197,12 +195,6 @@ PaymentMethod:{
      header: null,
     }
 }, 
-// SearchComponent:{
-//   screen:SearchComponent,
-//    navigationOptions:{
-//     header: null,
-//    }
-// }, 
    
 },{
   transitionConfig: TransitionConfiguration

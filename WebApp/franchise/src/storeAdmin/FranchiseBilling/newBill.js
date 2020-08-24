@@ -1118,7 +1118,7 @@ export class Bill extends React.Component {
 															<td>{data.discountPercent}<i className="fa fa-percent"></i>&nbsp;&nbsp;&nbsp;&nbsp;{data.discountedPrice}</td>
 															<td>{data.subTotal}</td>
 															<td> 
-																<span className="fa fa-pencil" data-toggle="modal" onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
+																<span className="fa fa-pencil" data-toggle="modal" data-backdrop="false" data-target={"#editPoItem"+ data._id} onClick={this.editCart.bind(this,data._id)} data-target={"#editPoItem"+ data._id} id={data._id}></span>
 																{/* <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
 																Launch demo modal
 																</button> */}

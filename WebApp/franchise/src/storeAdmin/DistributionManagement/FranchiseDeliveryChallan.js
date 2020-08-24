@@ -1,5 +1,5 @@
 import React, { version } from 'react';
-import './PurchaseManagement.css';
+import './Distribution.css';
 import swal from 'sweetalert';
 import axios from 'axios';
 import moment from 'moment';
@@ -123,7 +123,8 @@ export default class FranchiseDeliveryChallan extends React.Component {
     }
 
     changeAttribute(event){
-		event.preventDefault();
+        event.preventDefault();
+        $(event.currentTarget).attr('disabled','disabled');
 		var attribute = event.target.getAttribute('data-attribute');
     	var attributeValue = event.target.getAttribute('data-attributeValue');
         var itemcode  = event.currentTarget.getAttribute('data-itemcode');
@@ -148,9 +149,6 @@ export default class FranchiseDeliveryChallan extends React.Component {
                 itemcode            : itemcode,
                 FranchiseDeliveryId : this.state.FranchiseDeliveryId,
             }
-
-            console.log("data",data);
-
 
             if(attribute == "accepted"){
                 

@@ -625,7 +625,7 @@ export default class PurchaseManagement extends React.Component {
 				.post('/api/purchaseentry/post',formValues1)
 				.then((response) => {
 				// handle success
-					swal("Thank you. Raw Material addeed successfully.");
+					swal("Thank you. Raw Material added successfully.");
 				})
 				.catch(function (error) {
 				// handle error

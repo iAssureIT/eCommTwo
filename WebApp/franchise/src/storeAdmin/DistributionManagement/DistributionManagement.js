@@ -1,5 +1,5 @@
 import React from 'react';
-import './PurchaseManagement.css';
+import './Distribution.css';
 import IAssureTable           from '../../coreadmin/IAssureTable/IAssureTable.jsx';
 import swal from 'sweetalert';
 import axios from 'axios';

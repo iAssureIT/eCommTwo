@@ -267,6 +267,8 @@ class ProductList extends Component {
                 this.setState({
                     tableData: response.data,
 
+                },()=>{
+                    this.productCountByStatus();
                 })
                 //this.getData(this.state.startRange, this.state.limitRange);
             })
@@ -298,28 +300,37 @@ class ProductList extends Component {
         axios.patch('/api/products/patch/productBulkAction', formValues)
             .then((response) => {
                 $('#bulkActionModal').hide();
+                var selectedAction = this.state.selectedAction.toLowerCase();
+                if(selectedAction === 'delete'){
+                    selectedAction = 'deleted';
+                }else{
+                    selectedAction = this.state.selectedAction.toLowerCase()+'ed';
+                }
                 this.setState({
                     messageData: {
                         "type": "outpage",
                         "icon": "fa fa-correct",
-                        "message": "Selected products are " + this.state.selectedAction.toLowerCase() + " successfully.",
+                        "message": "Selected products are " + selectedAction + " successfully.",
                         "class": "success",
                         "autoDismiss": true
                     }
+                },()=>{
+                    this.getData();
+                    this.productCountByStatus();
                 })
 
-                axios.post('/api/products/post/list/adminFilterProducts', this.state.selector)
-                    .then((response) => {
-                        this.setState({
-                            tableData: response.data
-                        },()=>{
-                          //  this.getData(this.state.startRange, this.state.limitRange);
-                        })
-                        //this.getData(this.state.startRange, this.state.limitRange);
-                    })
-                    .catch((error) => {
-                        console.log("error = ", error);
-                    })
+                // axios.post('/api/products/post/list/adminFilterProducts', this.state.selector)
+                //     .then((response) => {
+                //         this.setState({
+                //             tableData: response.data
+                //         },()=>{
+                //           //  this.getData(this.state.startRange, this.state.limitRange);
+                //         })
+                //         //this.getData(this.state.startRange, this.state.limitRange);
+                //     })
+                //     .catch((error) => {
+                //         console.log("error = ", error);
+                //     })
                 //this.getData(this.state.startRange, this.state.limitRange);
             })
             .catch((error) => {

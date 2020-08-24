@@ -58,3 +58,22 @@
 	border-color: darkgray;
 	color:white;
 }
+
+.fade.in {
+    display: block !important;
+    opacity: 1;
+}
+
+.paddingTop5{
+	padding-top: 5px !important;
+}
+
+.text-align-left{
+	text-align: left !important;
+}
+
+.modal-centered{
+	top: 100px;
+    left: 65px;
+}
+
