@@ -73,7 +73,7 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 	// const unitOfMeasurment       = require("./api/Ecommerce/unitOfMeasurement/RoutesUnitOfMeasurment");
 	const unitOfMeasurment    = require("./api/Ecommerce/departmentMaster/RoutesUnitofmeasurment");
 
-	const orderLevelDiscount    = require("./api/Ecommerce/orderLevelDiscount/Routes.js");
+	const DiscountManagement    = require("./api/Ecommerce/DiscountManagement/Routes.js");
 
 	//=========== Global master ===============
 	const departmentRoute           = require("./api/coreAdmin/departmentMaster/RoutesDepartmentMaster");
@@ -149,7 +149,7 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 	app.use("/api/bulkUploadTemplate", BulkUploadTemplate);
 	// app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
 	app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
-	app.use("/api/orderdiscount",orderLevelDiscount);
+	app.use("/api/discount",DiscountManagement);
 
 	app.use("/api/EventToken", 		EventTokenRoutes);
 	//=========== Franchisemaster ==============
