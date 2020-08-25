@@ -84,7 +84,7 @@ class ProductCollage extends Component {
 			this.getSize();
 			this.getColor();
 			this.getAttributes();
-			console.log("this.props.match.params.sectionID===",this.props.match.params.sectionID);
+			// console.log("this.props.match.params.sectionID===",this.props.match.params.sectionID);
 			this.getProductsBySection(this.props.match.params.sectionID);
 		}
 		this.getSectionDetails(this.props.match.params.sectionID);
@@ -147,7 +147,7 @@ class ProductCollage extends Component {
 			})
 	}
 	getProductsBySection(sectionID) {
-		console.log(" getProductsBySection Section ID:",sectionID);
+		// console.log(" getProductsBySection Section ID:",sectionID);
 		var limit;
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
@@ -164,10 +164,11 @@ class ProductCollage extends Component {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				console.log(" Section Products:",products);
+				// console.log(" Section Products:",products);
 				this.setState({
 					loading: false,
-					products: products
+					products: products,
+					// productscategoryName: response.data[0].section,
 				})
 			})
 			.catch((error) => {
@@ -775,7 +776,7 @@ class ProductCollage extends Component {
 			$('.ProductViewWrapper').removeClass('col-md-12');	
 		}		
 		return (
-			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv" style={{"min-height":"200px"}}>
+			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv" style={{"minHeight":"200px"}}>
 				<div className="row">
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -786,7 +787,7 @@ class ProductCollage extends Component {
 										{this.state.categoryDetails[0].section}</a> /</li>
 									: ""
 								}
-								<li><a href="/">{this.state.productscategoryName}</a></li>
+								{/* <li><a href="/">{this.state.productscategoryName}</a></li> */}
 							</ul>
 						</div>
 						<div className="hidden-lg hidden-md hidden-sm hidden-xs col-sm-12 col-xs-12 menudiv1">
@@ -841,7 +842,7 @@ class ProductCollage extends Component {
 										{
 											this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" && this.state.envVariable != '4_UniMandai' ?
 												<li className="dropdown-submenu">
-													<a className="test" tabindex="-1" href="/">COLOR <span className="caret"></span></a>
+													<a className="test" tabIndex="-1" href="/">COLOR <span className="caret"></span></a>
 													<ul className="dropdown-menu">
 														{this.state.colors ?
 															this.state.colors.map((data, index) => {
@@ -864,7 +865,7 @@ class ProductCollage extends Component {
 										{
 											this.state.categoryDetails[0] && this.state.categoryDetails[0].section !== "Grocery" &&
 											<li className="dropdown-submenu">
-												<a className="test" tabindex="-1" href="/">SIZE <span className="caret"></span></a>
+												<a className="test" tabIndex="-1" href="/">SIZE <span className="caret"></span></a>
 												<ul className="dropdown-menu">
 													<select onChange={this.onSelectedItemsChange.bind(this, "size")}>
 														{this.state.sizes ?
@@ -885,7 +886,7 @@ class ProductCollage extends Component {
 						   		<span className="caret"></span></button>
 									<ul className="dropdown-menu">
 										<li className="dropdown-submenu">
-											<a className="test" tabindex="-2" href="/">FEATURED BRANDS<span className="caret"></span></a>
+											<a className="test" tabIndex="-2" href="/">FEATURED BRANDS<span className="caret"></span></a>
 											<ul className="dropdown-menu">
 
 												{this.state.brands && this.state.brands.length > 0 ?
@@ -1104,7 +1105,7 @@ class ProductCollage extends Component {
 
 						{
 							this.state.loading ?
-								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3 ProductViewWrapper" id="productDiv">
+								<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 col-lg-offset-3" id="productDiv">
 									<Loader type="collageloader" productLoaderNo={6} />
 								</div>
 								:

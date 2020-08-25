@@ -331,46 +331,27 @@ exports.update_user_details = (req, res, next) => {
 
 exports.add_user_address = (req, res, next) => {
 	// var roleData = req.body.role;
-	console.log("inside update user address",req.body);
+	// console.log("inside update user address",req.body);
 	User.updateOne(
-		{ "_id": req.body.user_ID, "deliveryAddress[0]._id": req.body.deliveryAddressID },
-		{
-			// $set: { 
-			// 	"deliveryAddress.$.name": req.body.name,
-			// 	"deliveryAddress.$.email": req.body.email,
-			// 	"deliveryAddress.$.addressLine1": req.body.addressLine1,
-			// 	"deliveryAddress.$.addressLine2": req.body.addressLine2,
-			// 	"deliveryAddress.$.pincode": req.body.pincode,
-			// 	"deliveryAddress.$.block": req.body.block,
-			// 	"deliveryAddress.$.district" : req.body.district,
-			// 	"deliveryAddress.$.country": req.body.country,
-			// 	"deliveryAddress.$.countryCode": req.body.countryCode,
-			// 	"deliveryAddress.$.city": req.body.city,
-			// 	"deliveryAddress.$.state": req.body.state,
-			// 	"deliveryAddress.$.stateCode": req.body.stateCode,
-			// 	"deliveryAddress.$.mobileNumber": req.body.mobileNumber,
-			// 	"deliveryAddress.$.addType": req.body.addType,
-			// }
-			$push: {
-				"deliveryAddress": [{
-					"name": req.body.name,
-					"email": req.body.email,
-					"addressLine1": req.body.addressLine1,
-					"addressLine2": req.body.addressLine2,
-					"pincode": req.body.pincode,
-					"block": req.body.block,
-					"district" : req.body.district,
-					"city": req.body.city,
-					"stateCode": req.body.stateCode,
-					"state": req.body.state,
-					"countryCode": req.body.countryCode,
-					"country": req.body.country,
-					"mobileNumber": req.body.mobileNumber,
-					"addType": req.body.addType,
-					"latitude"    :req.body.latitude,
-					"longitude"   : req.body.longitude
-				}]
+		{ "_id": req.body.user_ID, "deliveryAddress._id": req.body.deliveryAddressID },
+		{		
+			$set: { 
+				"deliveryAddress.$.name": req.body.name,
+				"deliveryAddress.$.email": req.body.email,
+				"deliveryAddress.$.addressLine1": req.body.addressLine1,
+				"deliveryAddress.$.addressLine2": req.body.addressLine2,
+				"deliveryAddress.$.pincode": req.body.pincode,
+				"deliveryAddress.$.block": req.body.block,
+				"deliveryAddress.$.district" : req.body.district,
+				"deliveryAddress.$.country": req.body.country,
+				"deliveryAddress.$.countryCode": req.body.countryCode,
+				"deliveryAddress.$.city": req.body.city,
+				"deliveryAddress.$.state": req.body.state,
+				"deliveryAddress.$.stateCode": req.body.stateCode,
+				"deliveryAddress.$.mobileNumber": req.body.mobileNumber,
+				"deliveryAddress.$.addType": req.body.addType,
 			}
+			
 		}
 	)
 		.exec()
@@ -388,8 +369,8 @@ exports.add_user_address = (req, res, next) => {
 		});
 };
 exports.add_delivery_address = (req, res, next) => {
-	console.log("inside add delivery req body:",req.body);
-	console.log("userId:===",req.body.user_ID);
+	// console.log("inside add delivery req body:",req.body);
+	// console.log("userId:===",req.body.user_ID);
 	User.updateOne(
 		{ '_id': req.body.user_ID },
 		{
