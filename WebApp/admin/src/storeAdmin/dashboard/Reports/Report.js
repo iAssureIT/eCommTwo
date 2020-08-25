@@ -81,7 +81,7 @@ class Report extends Component{
             </div>
             <div className="box-body no-padding">
               <div className="table-responsive">
-                <table className="table no-margin">
+                <table className="table no-margin dashboard-table">
                   <thead>
                   <tr>
                   {this.state.tableHeading && this.state.tableHeading.length > 0 ?
@@ -122,7 +122,7 @@ class Report extends Component{
                       return(
                         <tr key={index}>
                           <td><a className="href-link" href={"/viewOrder/"+data._id}>{data.orderID}</a></td>
-                          <td>{products.toString()}</td>
+                          <td className="itemtd">{products.toString()}</td>
                           <td>{franchiseName}</td>
                           <td>{data.total}</td>
                           <td><span className={statusClass}>{deliveryStatus}</span>

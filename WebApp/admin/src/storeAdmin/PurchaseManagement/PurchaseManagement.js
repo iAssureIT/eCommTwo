@@ -30,7 +30,7 @@ export default class PurchaseManagement extends React.Component {
 						           },
 		             "tableHeading"     : {
 						date            : 'Pur Date',
-						PurchaseNumber  : 'Pur Number',
+						PurchaseNumber  : 'PR Number',
 						Details         : 'Details',
 						Supplier        : 'Supplier',
 						PurchasedBy     : 'Purchased By',
@@ -804,8 +804,8 @@ export default class PurchaseManagement extends React.Component {
 										<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 											<label >Quantity <i className="redFont">*</i></label>
 											<div className="quantityDiv">
-												<input type="number" placeholder="Enter quantity " className="h34 col-lg-7 col-md-7 col-xs-8 col-sm-8" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
-												<select id="Units" className="col-lg-5 col-md-5 col-xs-4 col-sm-4 h34" name="Units" value={this.state.Units} refs="Units" onChange={this.onChangeUnit.bind(this)}  >
+												<input type="number" placeholder="Enter quantity " className="h34 col-lg-7 col-md-7 col-xs-8 col-sm-8 quantityinput" value={ this.state.quantity} name="quantity" refs="quantity" onChange={this.handleChange.bind(this)} id="quantity" min="1" onBlur={this.calculateAmount.bind(this)}/>
+												<select id="Units" className="col-lg-5 col-md-5 col-xs-4 col-sm-4 h34 quantityinput" name="Units" value={this.state.Units} refs="Units" onChange={this.onChangeUnit.bind(this)}  >
 												    <option selected={true} disabled={true}>-- Select --</option>
 													{
 														this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?

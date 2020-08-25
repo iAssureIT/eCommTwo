@@ -108,14 +108,27 @@ exports.bulkUploadProduct = (req,res,next)=>{
                         var categoryObject = await categoryInsert(productData[k].category,productData[k].subCategory,productData[k].section,sectionObject.section_ID);
                         
                         if (productData[k].itemCode != undefined) {
-                            var insertProductObject = await insertProduct(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
-                            console.log('insertProductObject',insertProductObject)
-                            if (insertProductObject != 0) {
-                                Count++;
+                            if(typeof(productData[k].discountPercent) === 'number' && productData[k].discountPercent >= 0){
+                                 if(typeof(productData[k].discountedPrice) === 'number' && productData[k].discountedPrice >= 0){
+                                    if(typeof(productData[k].originalPrice) === 'number' && productData[k].originalPrice >= 0 ){
+                                        var insertProductObject = await insertProduct(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
+                                        console.log('insertProductObject',insertProductObject)
+                                        if (insertProductObject != 0) {
+                                            Count++;
+                                        }else{
+                                            DuplicateCount++;
+                                            remark += "Item code should not be duplicate, ";
+                                        }
+                                    }else{
+                                       remark += "Original Price should be number"; 
+                                    }
+                                 }else{
+                                    remark += "Discount Price should be number";
+                                 }  
                             }else{
-                                DuplicateCount++;
-                                remark += "Item code should not be duplicate, ";
-                            }
+                               remark += "Discount Percent should be number";
+                            }  
+                           
                         }  
                     }
                 }

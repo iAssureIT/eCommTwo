@@ -315,23 +315,21 @@ class ProductList extends Component {
                         "autoDismiss": true
                     }
                 },()=>{
-                    this.getData();
-                    this.productCountByStatus();
+                     $('.filterDropdown').val('-- Select --');
+                     this.productCountByStatus();
                 })
 
-                // axios.post('/api/products/post/list/adminFilterProducts', this.state.selector)
-                //     .then((response) => {
-                //         this.setState({
-                //             tableData: response.data
-                //         },()=>{
-                //           //  this.getData(this.state.startRange, this.state.limitRange);
-                //         })
-                //         //this.getData(this.state.startRange, this.state.limitRange);
-                //     })
-                //     .catch((error) => {
-                //         console.log("error = ", error);
-                //     })
-                //this.getData(this.state.startRange, this.state.limitRange);
+                axios.post('/api/products/post/list/adminFilterProducts', this.state.selector)
+                    .then((response) => {
+                        this.setState({
+                            tableData: response.data
+                        },()=>{
+                         this.getData(this.state.startRange, this.state.limitRange);
+                        })
+                    })
+                    .catch((error) => {
+                        console.log("error = ", error);
+                    })
             })
             .catch((error) => {
                 this.setState({
@@ -469,7 +467,7 @@ class ProductList extends Component {
                                         <div className="searchProductFromList col-lg-12 col-md-12 col-sm-12 col-xs-12 marginTopp NoPadding">
                                             <div className="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkEmployeeContent">
                                                 <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left">Bulk Action</label>
-                                                <select className="form-control selectRole" ref="filterDropdown" name="filterDropdown"  onChange={this.bulkActionChange.bind(this)} style={{width:'200px'}} >
+                                                <select className="form-control selectRole filterDropdown" ref="filterDropdown" name="filterDropdown"  onChange={this.bulkActionChange.bind(this)} style={{width:'200px'}} >
                                                     <option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" disabled selected>-- Select --</option>   
                                                     <option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Publish">Publish selected products</option>
                                                     <option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Draft">Draft selected products</option>

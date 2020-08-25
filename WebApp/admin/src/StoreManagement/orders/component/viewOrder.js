@@ -181,7 +181,7 @@ class viewOrder extends Component{
                                 </div>
                                 <div>
                                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Quantity:</span></div>
-                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{data.quantity}</div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">{data.quantity}</div>
                                 </div>
                                 <div>
                                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total:</span></div>

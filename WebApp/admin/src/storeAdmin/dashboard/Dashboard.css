@@ -259,6 +259,15 @@
      padding: 0px;
 }
 
+.progress-bar{
+    background-color:white !important;
+}
+.dashboard-table>tbody>tr>.itemtd{
+     word-break: break-word;
+}
+
+
+
 
 
 

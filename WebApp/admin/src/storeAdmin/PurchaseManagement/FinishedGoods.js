@@ -119,6 +119,19 @@ export default class FinishedGoods extends React.Component {
 			return value === '' || value.trim().length !== 0;
 		}, "No space please and don't leave it empty");
 
+		$.validator.addMethod("valueNotEquals", function (value, element, arg) {
+			console.log(arg,value);
+			return arg !== value && value!== null;
+		}, "Please select unit of measurement");
+		jQuery.extend(jQuery.validator.messages, {
+			required: "Please enter some valid value",
+		})
+		$.validator.addMethod("valueNotEmpty", function (value, element, arg) {
+			return value !== '' && value!== null;
+		}, "Please enter some valid value");
+
+		
+
 		jQuery.validator.setDefaults({
 			debug: true,
 			success: "valid"
@@ -146,32 +159,32 @@ export default class FinishedGoods extends React.Component {
 				noSpace:true
 			  },
 			  fgTotalQty:{
-				required:true,
+				valueNotEmpty:true,
 				noSpace:true
 			  },
 			  OutwardRawMaterial:{
-				required:true,
+				required: true,
 				noSpace:true
 			  },
 			  OutwardUnit:{
-				required:true,
+				valueNotEquals: "-- Select --"
 			  },
 			  fgUnitQty:{
-				required:true,
+				valueNotEmpty:true,
 				noSpace:true
 			  },
 			  fgUnitWt:{
-				required:true,
+				valueNotEquals: "-- Select --"
 			  },
 			  scrapUnit:{
-				required:true,
+				valueNotEquals: "-- Select --"
 			  },
 			  finishedBy:{
 				required:true,
 				noSpace:true
 			  },
 			  finishedGoodsUnit:{
-				required:true,
+				valueNotEquals: "-- Select --"
 			  },
 			  fgUnitQtyforFG:{
 				required:true,
@@ -179,6 +192,7 @@ export default class FinishedGoods extends React.Component {
 
 			},
 			errorPlacement: function (error, element) {
+				console.log("element",element);
 			  if (element.attr("name") === "Date") {
 				error.insertAfter("#Date");
 			  }
@@ -197,11 +211,15 @@ export default class FinishedGoods extends React.Component {
 			  if (element.attr("name") === "fgTotalQty") {
 				error.insertAfter("#fgTotalQty");
 			  }
-			  if (element.attr("name") === "OutwardRawMaterial" || element.attr("name") === "OutwardUnit") {
+			  if(element.attr("name") === "OutwardUnit") {
 				error.insertAfter(".outwardRawMatDiv");
 			  }
+			  if (element.attr("name") === "OutwardRawMaterial") {
+				error.insertAfter(".outwardRawMatDiv");
+			  }
+			 
 			  if (element.attr("name") === "fgUnitQty") {
-				error.insertAfter(".fgUnitQtyPerUnitDiv");
+				error.insertAfter(".WeightPerUnitDiv");
 			  }
 			  if (element.attr("name") === "finishedBy") {
 				error.insertAfter("#finishedBy");
@@ -707,7 +725,7 @@ export default class FinishedGoods extends React.Component {
 			})
 		}
 	 }else{
-		swal("Please check fields contaning astrick(*) are required.");
+		// swal("Please check fields contaning astrick(*) are required.");
 	 }
 	}
 	update(event){
@@ -1203,7 +1221,7 @@ export default class FinishedGoods extends React.Component {
 											<label>Weight Per Finished Product Unit<i className="redFont">*</i></label>
 											<div className="WeightPerUnitDiv">
 												{/* onChangefgTotalQty called bcoz both are for same calculation */}
-												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.onChangefgUnitQty.bind(this)} id="fgUnitQty" min="1"/>
+												<input type="number" placeholder="Enter fgUnitQty" className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.fgUnitQty} name="fgUnitQty" refs="fgUnitQty" onChange={this.onChangefgUnitQty.bind(this)} id="fgUnitQty" min="1" required/>
 												<select id="fgUnitWt"  name="fgUnitWt" value={this.state.fgUnitWt} refs="Unit" onChange={this.onChangefgUnitQty.bind(this)}  className="col-lg-6 col-md-6 col-xs-4 col-sm-4 h34" >
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{

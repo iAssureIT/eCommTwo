@@ -25,7 +25,7 @@ const blogRoutes 					= require('./api/cms/blogs/routes.js');
 	app.use(morgan("dev"));
 	app.use('/uploads', express.static('uploads'));
 	app.use(bodyParser.urlencoded({ extended: false }));
-	app.use(bodyParser.json());
+	app.use(bodyParser.json({ limit: '50mb'}));
 	// const cors = require('cors');
 	// app.use(cors());
 	app.use((req, res, next) => {
