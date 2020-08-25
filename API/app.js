@@ -1,18 +1,18 @@
 	const express 						= require ('express');
 	const app 						    = express();
-	const morgan 						= require('morgan');// morgan call next function if problem occure
+	const morgan 							= require('morgan');// morgan call next function if problem occure
 	const bodyParser 					= require('body-parser');// this package use to formate json data 
 	const mongoose 						= require ('mongoose');
 	var   nodeMailer					= require('nodemailer');
-	const globalVariable			    = require('./nodemon.js');
-	const fs 							= require('fs');
+	const globalVariable			= require('./nodemon.js');
+	const fs 									= require('fs');
 
 // Routes - CMS
 /*const blockRoutes 					= require('./api/cms/routes/blocks.js');
 const pageRoutes 					= require('./api/cms/routes/pages.js');*/
 const blockRoutes 					= require('./api/cms/blocks/routes.js');
-const pageRoutes 					= require('./api/cms/pages/routes.js');
-const blogRoutes 					= require('./api/cms/blogs/routes.js');
+const pageRoutes 						= require('./api/cms/pages/routes.js');
+const blogRoutes 						= require('./api/cms/blogs/routes.js');
 
 // console.log("globalVariable.dbname",dbname);
 	mongoose.connect('mongodb://localhost/'+globalVariable.dbname,{
@@ -72,6 +72,8 @@ const blogRoutes 					= require('./api/cms/blogs/routes.js');
 
 	// const unitOfMeasurment       = require("./api/Ecommerce/unitOfMeasurement/RoutesUnitOfMeasurment");
 	const unitOfMeasurment    = require("./api/Ecommerce/departmentMaster/RoutesUnitofmeasurment");
+
+	const orderLevelDiscount    = require("./api/Ecommerce/orderLevelDiscount/Routes.js");
 
 	//=========== Global master ===============
 	const departmentRoute           = require("./api/coreAdmin/departmentMaster/RoutesDepartmentMaster");
@@ -147,6 +149,7 @@ const blogRoutes 					= require('./api/cms/blogs/routes.js');
 	app.use("/api/bulkUploadTemplate", BulkUploadTemplate);
 	// app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
 	app.use("/api/unitofmeasurmentmaster",unitOfMeasurment);
+	app.use("/api/orderdiscount",orderLevelDiscount);
 
 	app.use("/api/EventToken", 		EventTokenRoutes);
 	//=========== Franchisemaster ==============
