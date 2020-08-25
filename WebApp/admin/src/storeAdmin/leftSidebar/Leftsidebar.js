@@ -353,6 +353,7 @@ export default class AdminDashboard extends Component{
                 <span className="sidebarMenuTitle">Master Data</span>
               </a>
             </li>
+         
 
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/franchise/list" title="Franchise Master" onClick={()=>this.openMenu("dashboard")}>
@@ -360,6 +361,13 @@ export default class AdminDashboard extends Component{
                 <span className="sidebarMenuTitle">Franchise Master</span>
               </a>
             </li>
+            <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
+              <a href="/discount-management" title="Discount Management" onClick={()=>this.openMenu("dashboard")}>
+                <i className="fa fa-th-large" aria-hidden="true"></i>
+                <span className="sidebarMenuTitle">Discount Management</span>
+              </a>
+            </li>
+
 
             <li className="singleTreeview" onClick={this.clickDashboard.bind(this)}>
               <a href="/cms/dashboard" title="cms" onClick={()=>this.openMenu("dashboard")}>

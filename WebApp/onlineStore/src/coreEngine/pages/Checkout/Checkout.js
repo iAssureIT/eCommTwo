@@ -20,6 +20,7 @@ import "../../../sites/currentSite/pages/Checkout.css";
 import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import moment from 'moment';
 
 class Checkout extends Component {
     constructor(props) {
@@ -63,6 +64,7 @@ class Checkout extends Component {
         this.gettimes(this.state.startRange, this.state.limitRange);
         this.getUserAddress();
         this.validation();
+        this.getdiscounteddata(this.state.startRange, this.state.limitRange);
         axios.get('/api/users/get/'+localStorage.getItem("user_ID"))
         .then(result => {
             this.setState({
@@ -73,6 +75,7 @@ class Checkout extends Component {
         .catch(err => {
             console.log('Errr', err);
         })
+
         var type = "PG"
         axios.post('/api/projectsettings/getS3Details/'+type)
            .then(result => {
@@ -89,7 +92,23 @@ class Checkout extends Component {
                console.log('Errr', err);
            })
     }
-
+    getdiscounteddata(startRange, limitRange) {
+        axios.get('/api/discount/get/list-with-limits/' + startRange + '/' + limitRange)
+        .then((response) => {
+            console.log('tableData = ', response.data[0]);
+            this.setState({
+                discountdata : response.data[0],
+                discounttype  : response.data[0].discounttype,
+                discountin    : response.data[0].discountin,
+                discountvalue : response.data[0].discountvalue,
+                startdate     : moment(response.data[0].startdate).format("YYYY-MM-DD"),
+                enddate       : moment(response.data[0].enddate).format("YYYY-MM-DD"),
+            })
+        })
+        .catch((error) => {
+            console.log('error', error);
+        });
+    }
     validation() {
         var valid;
         if (this.state.isChecked) {
@@ -1300,7 +1319,13 @@ class Checkout extends Component {
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight saving">
-                                            {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"}
+                                            {/* {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"} */}
+                                            {
+                                                this.state.discounttype === "Order Base"  ?
+                                                    <span>{this.state.discountin === "Amount" ?  <i className="fa fa-inr" />:null } {this.state.discountvalue > 1  ? this.state.discountvalue: 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null } </span> 
+                                                : "0.00"
+                                            }
+                                            
                                         </span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
@@ -1309,7 +1334,20 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                         </div>
-                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
+                                        {/* <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span> */}
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Grand Total</span>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> 
+                                        {
+                                            this.props.recentCartData.length > 0 ?
+                                              this.state.discountdata !==  undefined ?
+                                            
+                                                this.props.recentCartData.length > 0  &&  this.state.discountin === "Precent"? 
+                                                    parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                                :  parseInt(this.props.recentCartData[0].total) -  this.state.discountvalue 
+                                            : parseInt(this.props.recentCartData[0].total) 
+                                            : "0.00"
+                                        }
+                                        </span>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>

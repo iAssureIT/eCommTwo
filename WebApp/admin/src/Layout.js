@@ -46,6 +46,8 @@ import DeliveryInitiatedOrders from './StoreManagement/orders/component/Delivery
 import DeliveredOrders      from './StoreManagement/orders/component/DeliveredOrders.js';
 import ReturnProducts       from './StoreManagement/orders/component/ReturnProducts.js';
 
+import DiscountManagement       from './storeAdmin/DiscountManagement/DiscountManagement.js';
+
 import BaList               from './storeAdmin/baManagement/listOfBAs/components/BusinessAssociateList.js';
 import AddNewBA             from './storeAdmin/baManagement/BAOnboarding/basicInfo/basicInfo.js';
 import ProductDetails       from './StoreManagement/product/ProductDetails/ProductDetails.js';
@@ -271,6 +273,9 @@ render() {
                                                         <Route path="/franchise_distribution/:orderId"                  exact strict component = { FranchiseDistribution }  />
                                                         <Route path="/delivery_challan/:purchaseId"                     exact strict component = { DeliveryChallans }  />
 
+                                                        <Route path="/discount-management"                     exact strict component = { DiscountManagement }  />
+                                                        <Route path="/discount-management/:editId"                     exact strict component = { DiscountManagement }  />
+
                                                         
                                                         {/* Admin shopping List AdminShoppingList*/}
                                                         <Route path="/admin-shopping-list"                              exact strict component={AdminShoppingList} />
@@ -280,6 +285,9 @@ render() {
                                                         <Route path="/project-master-data/:editId"  render={(props)=><MasterData {...props}/> } exact />
                                                         <Route path="/project-master-data/oneField/:oneFieldEditId" render={(props)=><MasterData {...props}/> } exact />
                                                         <Route path="/reset-password" exact strict component={ResetPwd} />
+                                                        
+                                                        {/* discount-management */}
+                                                        
                                                       </Switch>
                                                 </div>
                                             </div>
