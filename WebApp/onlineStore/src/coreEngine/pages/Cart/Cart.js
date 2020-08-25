@@ -34,8 +34,7 @@ class Cart extends Component{
     }
     getWishlistData() {
         // $('.fullpageloader').show();
-        var user_ID = localStorage.getItem('user_ID');
-    
+        var user_ID = localStorage.getItem('user_ID');    
         axios.get('/api/wishlist/get/userwishlist/' + user_ID)
           .then((response) => {
             // $('.fullpageloader').hide();
@@ -43,19 +42,21 @@ class Cart extends Component{
             response.data.map((a, i) => {
               axios.get('/api/products/get/one/' + a.product_ID)
                 .then((res) => {
-                  console.log('data1', res);
+                  // console.log('data1', res);
                   var products = this.state.products;
                   products.push({
-                    "productName": res.data.productName,
-                    "originalPrice": res.data.originalPrice,
+                    "_id"              : res.data._id,
+                    "productName"      : res.data.productName,
+                    "productUrl"       : res.data.productUrl,
+                    "originalPrice"    : res.data.originalPrice,
                     "availableQuantity": res.data.availableQuantity,
                     "size"             : res.data.size,
                     "shortDescription" : res.data.shortDescription,
                     "unit"             : res.data.unit, 
-                    "bestSeller": res.data.bestSeller,
-                    "brand": res.data.brand,
-                    "category": res.data.category,
-                    "currency": res.data.currency,
+                    "bestSeller"       : res.data.bestSeller,
+                    "brand"            : res.data.brand,
+                    "category"         : res.data.category,
+                    "currency"         : res.data.currency,
                     "discountPercent": res.data.discountPercent,
                     "discountedPrice": res.data.discountedPrice,
                     "productCode": res.data.productCode,

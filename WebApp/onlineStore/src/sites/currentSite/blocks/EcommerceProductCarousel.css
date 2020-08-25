@@ -785,7 +785,13 @@ background-color: transparent !important;
     }
 
     .owl-nav{
-        /* display: none; */
+        display: none;
+    }
+    .shippingBlock h3{
+        font-size: 12px;
+    }
+    .shippingBlock p{
+        font-size: 8px;
     }
 } 
 

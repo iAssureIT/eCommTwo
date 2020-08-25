@@ -42,16 +42,18 @@ class ProductCollage extends Component {
 
 	}
 	componentWillMount(){
-		console.log("2.inside Willmount");
-	}
-	componentDidMount() {
-		console.log("3. Component DID mount");
-		this.getWishData();
+		// console.log("2.inside Willmount");
 		var envVariable = process.env.REACT_APP_PROJECT_NAME;
+		// console.log("envVariable===",envVariable);
+
 		this.setState({
 			envVariable: envVariable
 
 		})
+	}
+	componentDidMount() {
+		// console.log("3. Component DID mount");
+		this.getWishData();		
 
 		var selector = this.state.selector;
 		if (this.props.match.params.categoryID && this.props.match.params.subcategoryID) {
@@ -158,13 +160,13 @@ class ProductCollage extends Component {
 				limit = "10";
 			}
 		}
-
+		console.log("limit====:",limit);
 		axios.get("/api/products/get/list/" + sectionID)
 			.then((response) => {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				// console.log(" Section Products:",products);
+				console.log(" Section Products:",products);
 				this.setState({
 					loading: false,
 					products: products,
@@ -240,7 +242,7 @@ class ProductCollage extends Component {
 				brands.push(checkboxes[i].value);
 			}
 		}
-		if (filterType === 'category') {
+		if(filterType === 'category') {
 			var selector = this.state.selector;
 			delete selector.subCategory_ID;
 			selector.section_ID = this.props.match.params.sectionID;
@@ -370,7 +372,7 @@ class ProductCollage extends Component {
 			})
 		}
 	}
-	getFilteredProducts(selector) {
+	getFilteredProducts(selector){
 
 		//console.log('limitProducts',$('.limitProducts').val());
 		if ($('.limitProducts').val()) {

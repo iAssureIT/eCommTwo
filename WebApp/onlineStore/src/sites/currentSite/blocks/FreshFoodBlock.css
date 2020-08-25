@@ -81,6 +81,16 @@
         margin-top: 100px;
         padding-left: 15px;
     }
+    .shippingBlock h3{
+        font-size: 11px;
+    }
+    .shippingBlock p{
+        font-size: 8px;
+    }
+    .flatSaleBlock {
+        font: 300 20px/50px "Roboto Slab";
+        margin-left: 0px;
+    }
 }
 
 

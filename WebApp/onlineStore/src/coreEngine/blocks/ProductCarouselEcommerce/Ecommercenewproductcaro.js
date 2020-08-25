@@ -286,11 +286,15 @@ class Ecommercenewproductcaro extends Component {
   }
   
   submitCart(event) { 
+    event.preventDefault();
+    // console.log("inside submitCart method");
     const user_ID = localStorage.getItem('user_ID');
     if(user_ID){
+      // console.log("userID==",user_ID);
       if(this.props.recentCartData[0] && this.props.recentCartData[0].cartItems.length>0){
         var cartLength = this.props.recentCartData[0].cartItems.length;
         var productId = event.target.id;
+        console.log("productId==",productId);
         for(let i=0;i<cartLength;i++){
             if(this.props.recentCartData[0].cartItems[i].product_ID === productId){
               this.setState({
