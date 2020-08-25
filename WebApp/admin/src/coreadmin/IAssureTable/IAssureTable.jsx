@@ -115,10 +115,12 @@ class IAssureTable extends Component {
 		e.preventDefault();
 		var tableObjects = this.props.tableObjects;
 		let id = (e.target.id).replace(".", "/");
+		id = (e.target.id).replace(" ", "S");
+
 		axios({
 			method: tableObjects.deleteMethod,
 			url: tableObjects.apiLink + '/delete/'+id,
-			data : {"filename":id}
+			data : {"id":e.target.id}
 		}).then((response) => {
 			this.props.getData(this.state.startRange, this.state.limitRange);
 			this.props.history.push(tableObjects.editUrl);

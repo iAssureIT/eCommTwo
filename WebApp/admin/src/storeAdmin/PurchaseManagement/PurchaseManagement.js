@@ -600,7 +600,8 @@ export default class PurchaseManagement extends React.Component {
 		})
     }
     Submit(event){
-      event.preventDefault();
+	  event.preventDefault();
+	//   $(event.target).addClass()
 	  var productDatalist = $(".productDatalist").find("option[value='" + this.state.product + "']");
       const formValues1 = {
         "amount"         	: this.state.amount ,

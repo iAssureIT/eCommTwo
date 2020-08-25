@@ -454,7 +454,7 @@ class AdminOrdersList extends Component{
               }    
           },
           {
-            name: "Action",
+            name: "Actions",
             options: {
               download:false,
               print:false,

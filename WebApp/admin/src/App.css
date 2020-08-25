@@ -662,10 +662,16 @@ th{
 }
 .main-footer{
   padding-top: 12px !important;
+  position: fixed;
+  bottom: 0;
 }
 .pageHeader{
   margin-top: -10px !important;
 }
 .fieldTab{
   font-size: 13px;
+}
+
+btnClicked{
+  
 }

@@ -1210,12 +1210,19 @@ exports.fetch_vendorfile_count = (req,res,next)=>{
 };
 // changed by madhuri
 exports.delete_file = (req,res,next)=>{
-    // console.log("inside delete function");
-    Products.deleteMany({"fileName":req.body.filename})
+    console.log("inside delete function",req.body.id);
+    let filename = (req.params.fileName).toString();
+    filename     = filename.replace('/',".");
+    filename    = filename.replace('S'," ");
+    filename    = filename.replace('%'," ");
+    let file = req.body.id ? req.body.id : filename;
+    console.log(filename);
+
+    Products.deleteMany({"fileName" : filename})
     .exec()
     .then(data=>{
         res.status(200).json({
-            "message" : "Products of file "+req.body.filename+" deleted successfully"
+            "message" : "Products of file "+file+" deleted successfully"
         });
     })
     .catch(err =>{

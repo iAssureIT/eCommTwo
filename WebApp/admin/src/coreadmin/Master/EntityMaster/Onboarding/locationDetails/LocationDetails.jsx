@@ -1313,7 +1313,7 @@ class LocationDetails extends Component {
 																		<input id="Line2" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine2} ref="addressLine2" name="addressLine2" onChange={this.handleChange} />
 																	</div>
 																	<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12  " >
-																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address Line 2 <i className="astrick">*</i></label>
+																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address<i className="astrick">*</i></label>
 																		{/*<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />*/}
 																		 {this.state.gmapsLoaded ?
 																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >

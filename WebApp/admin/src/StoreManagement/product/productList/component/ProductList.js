@@ -525,6 +525,7 @@ class ProductList extends Component {
                                                     <Inject services={[CheckBoxSelection]} />
                                                 </MultiSelectComponent>
                                             </div>
+                                        
                                         </div>
                                     </div> 
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

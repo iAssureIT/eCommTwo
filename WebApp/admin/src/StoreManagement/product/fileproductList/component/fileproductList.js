@@ -45,15 +45,15 @@ class FileWiseProductList extends Component{
       }
       axios.post('/api/products/get/files', data)
       .then((response)=>{
-        console.log(response.data);
+        // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
-            fileName: a.fileName !== null ? a.fileName.replace(/\s+/, "")  : "-", 
+            fileName: a.fileName !== null ? a.fileName  : "-", 
             productCount: a.productCount !== NaN ? "<p>"+a.productCount+"</p>" : "a", 
-            _id: a._id !== null ? a._id.replace(/\s+/, "")  : "-", 
+            _id: a._id !== null ? a._id  : "-", 
           }
         })
-        console.log('tableData', tableData)
+        // console.log('tableData', tableData)
         this.setState({
           tableData : tableData
         })
@@ -65,7 +65,7 @@ class FileWiseProductList extends Component{
     getCount(){
       axios.get('/api/products/get/files/count')
       .then((response)=>{
-        console.log(response.data)
+        // console.log(response.data)
         this.setState({
           dataCount : response.data
         })
