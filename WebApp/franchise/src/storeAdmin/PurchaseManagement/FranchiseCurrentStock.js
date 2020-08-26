@@ -26,7 +26,7 @@ export default class FranchiseCurrentStock extends React.Component {
 		             "tableHeading"     : {
 					
                         productName         : "Product Name",
-                        franchiseName       : "Franchise Name",
+                        // franchiseName       : "Franchise Name",
                         totalStock          : 'Total Stock',	 
                       
 					},
@@ -123,7 +123,7 @@ export default class FranchiseCurrentStock extends React.Component {
 						return {
 							_id                  : a._id,
 							productName 	     : a.productName  ? a.productName +' - '+ a.productCode +' - '+ a.itemCode: "" ,
-							franchiseName          : a.franchiseName ? a.franchiseName :'',
+							// franchiseName          : a.franchiseName ? a.franchiseName :'',
 							totalStock           : a.totalStock    ? a.totalStock +' '+ a.StockUnit : 0,
 							
 						}

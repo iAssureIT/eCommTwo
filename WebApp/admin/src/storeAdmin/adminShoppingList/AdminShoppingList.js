@@ -204,7 +204,7 @@ export default class AdminShoppingList extends React.Component {
 					<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 						<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 							<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
-								<h1 className="text-center">Admin Shopping List</h1>
+								<h3 className="text-center">Admin Shopping List</h3>
 							</div>
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtopbotm15">
 								<div className="col-lg-4 col-md-8 col-sm-12 col-xs-12 pull-right">

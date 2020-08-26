@@ -1221,7 +1221,7 @@ export class Bill extends React.Component {
 											</table>
 										</div>										
 										<div className="row" style={{"padding": "15px"}}>
-											Payment Method : <div className="btn-group btn-group-toggle" data-toggle="buttons">
+											Payment Method : <div className="btn-group btn-group-toggle paymentMethods" data-toggle="buttons">
 													<label className="btn btn-secondary active" onClick={this.onChangePaymentMethod.bind(this,"cash")}>
 														<input type="radio" name="paymentmethod" id="option1" autoComplete="off" value={this.state.paymentMethod}  defaultChecked={this.state.paymentMethod == 'cash'}/> Cash
 													</label>

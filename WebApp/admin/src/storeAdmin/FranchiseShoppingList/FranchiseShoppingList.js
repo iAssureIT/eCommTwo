@@ -254,7 +254,7 @@ export default class FranchiseShoppingList extends React.Component {
 					<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pmcontentWrap">
 						<div className='col-lg-12 col-md-12 col-xs-12 col-sm-12 pmpageContent'>
 							<div  className="col-lg-12 col-md-12 col-xs-12 col-sm-12 mtop20">
-								<h1 className="text-center">Franchise Shopping List</h1>
+								<h3 className="text-center">Franchise Shopping List</h3>
 							</div>
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtopbotm15">
 

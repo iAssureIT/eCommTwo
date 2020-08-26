@@ -77,7 +77,7 @@ import UnitOfMeasurment   from  './UnitOfMeasurment/UnitOfMeasurmentMaster';
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact NOpadding">
                     <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right ">
-                        <h4 className="weighttitle col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Master Data</h4>
+                        <h4 className="col-lg-11 col-md-11 col-xs-11 col-sm-11 NOpadding-right">Master Data</h4>
                     </div>
                   </div>     
                   <div className="boxMinHeight boxMinHeighttab addMarginTop">

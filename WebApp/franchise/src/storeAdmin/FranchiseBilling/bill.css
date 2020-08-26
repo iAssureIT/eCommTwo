@@ -5,6 +5,10 @@
     display: block !important;
     opacity: 1;
   }
+ 
+  .paymentMethods .focus{
+    color: black
+  }
   
   /* Create three equal columns that floats next to each other */
   .column {

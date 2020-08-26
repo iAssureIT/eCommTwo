@@ -490,7 +490,7 @@ class ListOfEntities extends Component {
 						<section className="content">
 							<div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-									<h4 className="weighttitle col-lg-5 col-md-11 col-xs-11 col-sm-11">{this.state.pathname ? this.state.pathname : "Entity"} List</h4>
+									<h4 className="col-lg-5 col-md-11 col-xs-11 col-sm-11">{this.state.pathname ? this.state.pathname : "Entity"} List</h4>
 									<div className="col-lg-5 col-md-12 col-sm-12 col-xs-12 pull-right">
 										<span className="col-lg-6 col-lg-offset-6 sentanceCase addButtonList" onClick={this.redirectTo.bind(this)}><i  className="fa fa-plus-circle"></i>&nbsp;&nbsp;{"Add "+this.state.pathname} 
 										</span>

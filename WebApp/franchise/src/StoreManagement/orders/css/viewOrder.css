@@ -116,8 +116,10 @@
     cursor: pointer;
 }
 .admin-order-view:hover, .admin-order-changeStat:hover {
-    color: #fff !important;
-    background: #444;
+    color: #337ab7;
+
+    /* color: #fff !important;
+    background: #444; */
 }
 
 /* .admin-order-view:visited, .admin-order-changeStat:visited {

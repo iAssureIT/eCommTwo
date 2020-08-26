@@ -653,3 +653,17 @@ th{
 .pageHeader{
   margin-top: -10px !important;
 }
+
+
+.btn:hover  {
+  opacity: 0.6;
+  transition: 0.3s;
+  box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8),
+          6px 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover :after {
+  opacity: 1;
+  right: 0;
+  transition: 0.3s;
+}

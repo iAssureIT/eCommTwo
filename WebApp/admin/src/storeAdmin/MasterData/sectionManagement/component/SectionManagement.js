@@ -240,14 +240,14 @@ class SectionManagement extends Component {
 
   render() {
     return (
-      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+      <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 companyDisplayForm">
         <div className="row">
           <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12">
           <div className="formWrapper">
             <section className="content">
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
-                  <div className="box">
+                  <div className="">
                     <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                       <h4 className="NOpadding-right">Section Master </h4>
                     </div>

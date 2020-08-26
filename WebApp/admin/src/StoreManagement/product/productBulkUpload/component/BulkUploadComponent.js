@@ -26,7 +26,7 @@ constructor(props) {
         "originalPrice"   : 'Original Price', 
         "discountedPrice" : 'Discounted Price', 
         "size"            : 'Size', 
-        "color"           : 'Color',  
+        // "color"           : 'Color',  
     },
     failedtableHeading :{
         "remark"          : 'Remark',
@@ -39,7 +39,7 @@ constructor(props) {
         "originalPrice"   : 'Original Price', 
         "discountedPrice" : 'Discounted Price', 
         "size"            : 'Size', 
-        "color"           : 'Color',  
+        // "color"           : 'Color',  
     },
     tableObjects : {
         paginationApply : false,
@@ -335,7 +335,7 @@ constructor(props) {
                                 "originalPrice" : a.originalPrice ? "<i class='fa fa-"+a.currency.toLowerCase()+"'></i> "+a.originalPrice.toString() : '-',
                                 "discountedPrice" : a.discountedPrice ? "<i class='fa fa-"+a.currency.toLowerCase()+"'></i> "+a.discountedPrice.toString() : '-', 
                                 "size"   : a.size     ? a.size : '-', 
-                                "color"   : a.color     ? a.color : '-'
+                                // "color"   : a.color     ? a.color : '-'
                             }
                           })
 
@@ -352,7 +352,7 @@ constructor(props) {
                               "originalPrice" : a.originalPrice ? "<i class='fa fa-"+a.currency.toLowerCase()+"'></i> "+a.originalPrice.toString() : '-',
                               "discountedPrice" : a.discountedPrice ? "<i class='fa fa-"+a.currency.toLowerCase()+"'></i> "+a.discountedPrice.toString() : '-',
                               "size"          : a.size     ? a.size : '-', 
-                              "color"         : a.color     ? a.color : '-',
+                              // "color"         : a.color     ? a.color : '-',
                           }
                           })
                           this.setState({
@@ -485,7 +485,7 @@ constructor(props) {
                         <th>unit</th>
                         <th>feature list</th>
                         <th>size</th>
-                        <th>color</th>
+                        {/* <th>color</th> */}
                         <th>tags</th>
                         <th>taxInclude</th>
                         <th>taxRate</th>
@@ -538,7 +538,7 @@ constructor(props) {
                             <td>{data.unit ? data.unit : null}</td>
                             <td>{data.featureList ? featuresString : null}</td>
                             <td>{data.size ? data.size : null}</td>
-                            <td>{data.color ? data.color : null}</td>
+                            {/* <td>{data.color ? data.color : null}</td> */}
                             <td>{data.tags ? data.tags.join(",#") : null}</td>
                             <td>{data.taxInclude ? "yes" : "no"}</td>
                             <td>{data.taxRate ? data.taxRate : 0}</td>

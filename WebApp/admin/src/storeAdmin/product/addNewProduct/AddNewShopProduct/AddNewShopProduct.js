@@ -30,7 +30,8 @@ class AddNewShopProduct extends Component {
       taxRateData : [],
       taxInclude: true,
       color: '',
-      editId: this.props.match.params ? this.props.match.params.productID : ''
+      editId: this.props.match.params ? this.props.match.params.productID : '',
+      section:'Select Section'
     };
     this.handleChange = this.handleChange.bind(this);
     this.addNewRow = this.addNewRow.bind(this);
@@ -859,7 +860,7 @@ class AddNewShopProduct extends Component {
                                   <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 inputFields sectionDiv">
                                     <label>Section <i className="redFont">*</i></label>
                                     <select onChange={this.showRelevantCategories.bind(this)} value={this.state.section} name="section" className="form-control allProductCategories" aria-describedby="basic-addon1" id="section" ref="section">
-                                      <option defaultValue="">Select Section</option>
+                                      <option defaultValue="" disabled>Select Section</option>
                                       {this.state.sectionArray && this.state.sectionArray.length > 0 ?
                                         this.state.sectionArray.map((data, index) => {
                                           return (

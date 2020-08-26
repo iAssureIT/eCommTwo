@@ -1098,7 +1098,7 @@ class DepartmentBulkUpload extends Component {
             <section className="content">
               <div className="pageContent col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                  <h4 className="weighttitle col-lg-9 col-md-6 col-xs-6 col-sm-6 NOpadding-right">{"Add  "+this.state.pathname}</h4>
+                  <h4 className="col-lg-9 col-md-6 col-xs-6 col-sm-6 NOpadding-right">{"Add  "+this.state.pathname}</h4>
                   <ul className="nav tabNav nav-pills col-lg-3 col-md-3 col-sm-12 col-xs-12">
                     {/*<li className=" col-lg-5 col-md-5 col-xs-5 col-sm-5 NOpadding text-center"><a data-toggle="pill"  href="#manual">Manual</a></li>*/}
                     <li className="active col-lg-6 col-md-6 col-xs-6 col-sm-6 NOpadding  text-center"><a data-toggle="pill"  href="#bulk">Bulk Upload</a></li>

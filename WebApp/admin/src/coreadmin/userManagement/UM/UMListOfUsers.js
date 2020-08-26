@@ -351,6 +351,7 @@ class UMListOfUsers extends Component {
 					checkedUsersList = []
 					if (this.state.blockswal === true) {
 						swal(" ", "Account blocked successfully");
+
 					}
 				})
 			}
@@ -440,6 +441,7 @@ class UMListOfUsers extends Component {
 					checkedUsersList = []
 					if (this.state.blockswal === true) {
 						swal(" ", "Account deleted successfully");
+						window.location.reload();
 					}
 				})
 			}
