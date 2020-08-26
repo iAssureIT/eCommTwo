@@ -133,6 +133,9 @@ class Checkout extends Component {
         $.validator.addMethod("regxaddressLine1", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid address.");
+        $.validator.addMethod("regxaddressLine2", function (value, element, regexpr) {
+            return regexpr.test(value);
+        }, "Please enter valid address.");
         $.validator.addMethod("regxpincode", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid pincode.");        
@@ -164,7 +167,10 @@ class Checkout extends Component {
                     required: true,
                     regxaddressLine1: /^[A-Za-z0-9_@./#&+-]/,
                 },
-                
+                addressLine2: {
+                    required: true,
+                    regxaddressLine2: /^[A-Za-z0-9_@./#&+-]/,
+                },
                 country: {
                     required: true,
                     regxcountry: "Select Country"
@@ -210,9 +216,9 @@ class Checkout extends Component {
                 if (element.attr("name") === "addressLine1") {
                     error.insertAfter("#addressLine1");
                 }
-                //   if (element.attr("name") === "addressLine2") {
-                //     error.insertAfter("#addressLine2");
-                //   }
+                  if (element.attr("name") === "addressLine2") {
+                    error.insertAfter("#addressLine2");
+                  }
                 if (element.attr("name") === "countryCode") {
                     error.insertAfter("#country");
                 }
@@ -660,7 +666,7 @@ class Checkout extends Component {
         event.preventDefault();
 
         let isChecked = this.state.isChecked;        
-          if (isChecked) {
+          if (isChecked && this.state.pincode!="" && this.state.addressLine1!="" && this.state.addressLine2!="") {
                 this.setState({
                 isCheckedError: []
                 });
@@ -668,10 +674,10 @@ class Checkout extends Component {
                 this.setState({
                 isCheckedError: ["Please accept the terms & conditions."]
                 });
-                swal("Please accept the terms & conditions and provide your correct delivery Address");
+                swal("Please accept the terms & conditions and provide your valid delivery Address");
             }
         
-        console.log("inside place order");
+        // console.log("inside place order");
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
         var checkoutAddess = $("input[name='checkoutAddess']:checked").val();

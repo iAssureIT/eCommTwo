@@ -77,7 +77,7 @@ class ForgotPassword extends Component {
                         });
 
                     swal("OTP sent to your registered Email ID.");
-                    console.log("response.data.userID===",response.data.userID);
+                    // console.log("response.data.userID===",response.data.userID);
                     this.props.updateFormValue("confirmOtp");
                     // this.props.history.push('/confirm-otp/' +response.data.userID);
                 })

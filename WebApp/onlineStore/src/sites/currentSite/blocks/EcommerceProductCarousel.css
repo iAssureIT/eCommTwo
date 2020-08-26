@@ -787,12 +787,8 @@ background-color: transparent !important;
     .owl-nav{
         display: none;
     }
-    .shippingBlock h3{
-        font-size: 12px;
-    }
-    .shippingBlock p{
-        font-size: 8px;
-    }
+
+   
 } 
 
 /* css for iPad */

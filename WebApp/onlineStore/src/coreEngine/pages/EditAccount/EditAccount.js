@@ -139,7 +139,7 @@ class EditAccount extends Component{
               messageData : {
                 "type" : "outpage",
                 "icon" : "fa fa-check-circle",
-                "message" : "&nbsp; "+response.data.message,
+                "message" : "&nbsp; "+"User data updated successfully",
                 "class": "success",
                 "autoDismiss" : true
               }
