@@ -372,7 +372,7 @@ class OneFieldForm extends React.Component {
                         <div className={this.props.masterFieldForm ? "OneFieldModal" : "col-lg-12 col-md-12 col-sm-12 col-xs-12 pageContent"}>
                             <div className="row">
                                 <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
-                                    <h4 className="weighttitle col-lg-9 col-md-9 col-xs-12 col-sm-12 NOpadding-right">{this.props.fields.title === "Location Type"? this.props.fields.title+"s" : this.props.fields.title } </h4>
+                                    <h4 className=" col-lg-9 col-md-9 col-xs-12 col-sm-12 NOpadding-right">{this.props.fields.title === "Location Type"? this.props.fields.title+"s" : this.props.fields.title } </h4>
                                     {
                                         this.props.bulkRequired ?
                                             <ul className="nav tabNav nav-pills col-lg-3 col-md-3 col-sm-12 col-xs-12">

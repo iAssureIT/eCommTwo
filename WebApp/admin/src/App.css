@@ -684,3 +684,7 @@ th{
   right: 0;
   transition: 0.3s;
 }
+
+.weighttitle{
+  font-weight: normal !important;
+}

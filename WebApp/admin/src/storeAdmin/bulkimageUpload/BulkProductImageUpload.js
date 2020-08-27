@@ -213,7 +213,6 @@ class BulkProductImageUpload extends Component{
             <section className="content">
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
-                 <div className="">
                     <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                           <h4 className="NOpadding-right">  Product Image Bulk Upload</h4>
                     </div>
@@ -339,7 +338,6 @@ class BulkProductImageUpload extends Component{
                         </div>
                       </div>
                     </div>
-                </div>
 
                 </div>
               </div>

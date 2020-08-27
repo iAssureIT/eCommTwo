@@ -116,6 +116,7 @@ exports.bulkUploadProduct = (req,res,next)=>{
                                         if (insertProductObject != 0) {
                                             Count++;
                                         }else{
+                                            console.log("in else");
                                             DuplicateCount++;
                                             remark += "Item code should not be duplicate, ";
                                         }
@@ -438,7 +439,6 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
         productDuplicateControl();
         async function productDuplicateControl(){
             var productPresent = await findProduct(data.productCode, data.itemCode,data.productName);
-            console.log("productPresent",productPresent);
             var vendor = '';
             if(data.unit){
                var insertUOM = await insertUnitOfMeasurment(data.unit);
@@ -450,7 +450,6 @@ var insertProduct = async (section_ID, section, categoryObject, data) => {
                 vendor =  null;
             }
             if (productPresent==0) {
-                console.log("if productPresent",productPresent);
                     const products = new Products({
                         _id                       : new mongoose.Types.ObjectId(),   
                         user_ID                   : vendor,  
@@ -2311,10 +2310,12 @@ exports.bulkUploadProductUpdate = (req,res,next)=>{
                         
                         if (productData[k].itemCode != undefined) {
                             var updateProductObject = await updateProductBulk(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
-                            // console.log('updateProductBulk',updateProductObject)
+                             console.log('updateProductBulk',updateProductObject)
                             if (updateProductObject != 0) {
                                 Count++;
                             }else{
+                                console.log('else updateProductBulk',updateProductObject)
+
                                 DuplicateCount++;
                                 remark += "Item code should not be duplicate, ";
                             }

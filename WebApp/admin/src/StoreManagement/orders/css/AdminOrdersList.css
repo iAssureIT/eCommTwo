@@ -148,10 +148,12 @@
 } */
 
 .MuiTypography-h6{
-    font-size:2.25rem !important;
+    /* font-size:2.25rem !important; */
+    font-size: 18px !important;
 }
 .MuiTableCell-head{
-    font-size:1.5em !important;
+    font-size: 18px !important;
+    /* font-size:1.5em !important; */
 }
 .MuiTableCell-root{
     font-size:1.2rem !important;
