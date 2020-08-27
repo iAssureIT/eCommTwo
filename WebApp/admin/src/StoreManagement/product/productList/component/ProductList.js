@@ -292,11 +292,38 @@ class ProductList extends Component {
         })
     }
     productBulkAction(event) {
-
+        var selectedAction = this.state.selectedAction
         var formValues = {
             selectedProducts: this.state.checkedProducts,
             selectedAction: this.state.selectedAction
         }
+        console.log("formValues--",formValues);
+        
+        //when user unplish any product that time that product should be removed from cart collection if any user alredy added to his cart
+        // if(selectedAction === "Unpublish"){
+        //     axios.patch("/api/carts/removeproductfromcart" ,formValues)
+        //     .then((response)=>{
+        //         this.setState({
+        //             messageData : {
+        //             "type" : "outpage",
+        //             "icon" : "fa fa-check-circle",
+        //             "message" : response.data.message,
+        //             "class": "success",
+        //             "autoDismiss" : false
+        //             }
+        //         })
+        //         setTimeout(() => {
+        //             this.setState({
+        //                 messageData   : {},
+        //             })
+        //         }, 3000);
+                
+        //     })
+        //     .catch((error)=>{
+        //     console.log('error', error);
+        //     })
+        // }
+
         axios.patch('/api/products/patch/productBulkAction', formValues)
             .then((response) => {
                 $('#bulkActionModal').hide();
@@ -344,7 +371,7 @@ class ProductList extends Component {
             })
     }
     bulkActionChange(event) {
-        // console.log(event.target.value);
+        console.log(event.target.value);
         if (event.target.value) {
             this.setState({ unCheckedProducts: false, selectedAction: event.target.value, messageData: {} })
             $('#bulkActionModal').show();

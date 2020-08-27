@@ -234,6 +234,40 @@ exports.remove_cart_items = (req, res, next)=>{
         });
     });
 };
+
+exports.remove_product_from_cart = (req, res, next)=>{
+    console.log("selected products=",req.body.selectedProducts.length);
+    for(let i=0;i<=req.body.selectedProducts;i++){
+    Carts.update(
+        // {"cartItems.$.product_ID": req.body.selectedProducts[0]},
+        {},
+        {
+            '$pull':{ 'cartItems':{'product_ID': req.body.selectedProducts[0] }},
+            
+			// $pull: { "cartItems": { "product_ID": req.body.selectedProducts[0] } }
+        },
+        {new:true,multi:true},
+    )
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            res.status(200).json({
+                "message": "Product removed from cart successfully.",
+            });
+        }else{
+            res.status(401).json({
+                "message": "Cart Not Found"
+            });
+        }
+    })
+    .catch(err =>{
+        res.status(500).json({
+            error: err
+        });
+    });
+}
+}
+
 exports.change_cart_item_quantity = (req, res, next)=>{
     Carts.updateOne(
         {"user_ID":req.body.user_ID,'cartItems.product_ID':req.body.product_ID},

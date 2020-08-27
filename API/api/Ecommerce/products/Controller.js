@@ -5,6 +5,7 @@ const Category      = require('../categories/Model');
 const Sections      = require('../sections/Model');
 const FailedRecords = require('../failedRecords/Model');
 const Orders        = require('../orders/Model');
+const Carts = require('../cart/Model');
 var ObjectId        = require('mongodb').ObjectID;
 var UnitOfMeasurmentMaster = require('../departmentMaster/ModelUnitofmeasurment');
 const franchisegoods = require('../distributionManagement/Model');
@@ -2144,9 +2145,18 @@ exports.productBulkAction = (req, res, next) => {
             )
             .exec()
             .then(data => {
+                main();
+                async function main() {
+                    for(let i=0;i<=req.body.selectedProducts.length;i++){
+                        console.log("req.body.selectedProducts===",req.body.selectedProducts[i]);
+                        await remove_product_from_cart(req.body.selectedProducts[i]);
+                    }
+                }
+
                 return res.status(200).json({
                     "msg": 'Selected products are unpublished.',
                 });
+
             })
             .catch(err => {
                 res.status(500).json({
@@ -2172,7 +2182,31 @@ exports.productBulkAction = (req, res, next) => {
     }
 };
  
- 
+
+var remove_product_from_cart = async(productId) =>{
+    console.log("selected products=",productId);
+    
+    Carts.update(
+        // {"cartItems.$.product_ID": req.body.selectedProducts[0]},
+        {},
+        {
+            '$pull':{ 'cartItems':{'product_ID': productId }},
+            
+			// $pull: { "cartItems": { "product_ID": req.body.selectedProducts[0] } }
+        },
+        {new:true,multi:true},
+    )
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            resolve(data);
+        }
+    })
+    .catch(err =>{
+        resolve(0);
+    });
+}
+
 exports.getattributes = (req,res,next)=>{
     Products.distinct("attributes",{ "section_ID": req.params.sectionID })
     .exec()

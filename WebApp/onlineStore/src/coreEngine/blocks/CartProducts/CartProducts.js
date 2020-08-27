@@ -39,7 +39,7 @@ class CartProducts extends Component{
 
     async componentDidMount(){
         await this.props.fetchCartData();
-        console.log("fetchCartData===",this.props.recentCartData[0].cartItems);
+        // console.log("fetchCartData===",this.props.recentCartData[0].cartItems);
 
         
         this.getshippingamount(this.state.startRange, this.state.limitRange);

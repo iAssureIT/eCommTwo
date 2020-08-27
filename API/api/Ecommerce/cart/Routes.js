@@ -25,6 +25,9 @@ router.patch('/address', cartController.add_address_to_cart);
 
 router.patch('/payment', cartController.add_paymentmethod_to_cart);
 
+//route for remove product from cart if that product get unpublish
+router.patch('/removeproductfromcart',cartController.remove_product_from_cart);
+
 //code by madhuri ghute
 
 router.patch('/updateCart', cartController.update_cart_item);

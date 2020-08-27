@@ -177,7 +177,7 @@ class AskPincode extends Component {
     }
       
   render() {  
-     
+    
     // $('#pageOpacity').click(function(){
     //   $("#pageOpacity").show();
     //   $("#pincodeModal").show();
@@ -185,7 +185,7 @@ class AskPincode extends Component {
    // });
 		return (            
 			<div className="col-lg-8 col-md-8 col-sm-10 col-xs-12">                
-                    <div id="pincodeModal" className="modal in">
+                    <div id="pincodeModal" className="modal in" data-backdrop="static" data-keyboard="false">
                         <div className="modal-dialog">
                             <div className="modal-content pincodemodal col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" style={{'background': 'url(' +pincodeModalImg  +')'}}>                                                        
                                 <div className="modal-body">   

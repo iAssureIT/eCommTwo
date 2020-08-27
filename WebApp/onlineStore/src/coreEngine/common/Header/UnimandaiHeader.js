@@ -877,7 +877,7 @@ loginPage(event){
 
         <AskPincode />  
          
-        <div id="loginFormModal" className="modal in" style={{'background': 'url(' +signupBgImg  +')'}} >
+        <div id="loginFormModal" className="modal in" style={{'background': 'url(' +signupBgImg  +')'}} data-backdrop="static" data-keyboard="false" >
           <div className="modal-dialog" >                                        
               {/* <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +signupBgImg  +')'}}>                             */}
               <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">                            
