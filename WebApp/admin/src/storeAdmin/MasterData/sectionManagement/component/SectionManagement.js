@@ -25,7 +25,7 @@ class SectionManagement extends Component {
       },
       "tableObjects": {
         deleteMethod: 'delete',
-        apiLink: '/api/sections/',
+        apiLink: '/api/sections',
         paginationApply: true,
         searchApply: false,
         editUrl: '/project-master-data'
@@ -81,6 +81,9 @@ class SectionManagement extends Component {
           required: true,
           regxA1: /^[a-zA-Z0-9@&()_+-\s]*$/i,
         },
+        sectionRank: {
+          required: true,
+        },
         // /^[^-\s][a-zA-Z0-9_\s-]+$/
       },
       errorPlacement: function (error, element) {
@@ -88,8 +91,8 @@ class SectionManagement extends Component {
           error.insertAfter("#section");
         }
 
-        if (element.attr("name") === "section") {
-          error.insertAfter("#section");
+        if (element.attr("name") === "sectionRank") {
+          error.insertAfter("#sectionRank");
         }
       }
     });
@@ -228,12 +231,16 @@ class SectionManagement extends Component {
       [name]: event.target.value,
     });
     var url = event.target.value;
-    // console.log('url',url);
+    console.log('url',url);
     if (url) {
       url = url.replace(/\s+/g, '-').toLowerCase();
       // $(".productUrl").val(url);
       this.setState({
         sectionUrl: url
+      })
+    }else{
+      this.setState({
+        sectionUrl: ''
       })
     }
   }
@@ -269,7 +276,7 @@ class SectionManagement extends Component {
                           <div className="col-lg-12 fieldWrapper">
                             <div className="col-lg-10">
                                   <label>Section Rank <i className="redFont">*</i></label>                                                                    
-                                  <input value={this.state.sectionRank} onChange={this.handleChange.bind(this)} id="sectionRank" name="sectionRank" type="number" className="form-control sectionRank" placeholder="Section Rank" ref="sectionRank"  />
+                                  <input value={this.state.sectionRank} onChange={this.handleChange.bind(this)} id="sectionRank" name="sectionRank" type="number" className="form-control sectionRank" placeholder="Section Rank" ref="sectionRank" min="1"  required/>
                             </div>
                           </div>
                         

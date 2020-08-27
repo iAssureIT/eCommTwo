@@ -126,7 +126,7 @@ class IAssureTable extends Component {
 			this.props.history.push(tableObjects.editUrl);
 			swal({
 				title : " ",
-				text  : "Record deleted successfully",
+				text  : response.data.message ? response.data.message : "Record deleted successfully",
 			});
 		}).catch((error) => {
 		});

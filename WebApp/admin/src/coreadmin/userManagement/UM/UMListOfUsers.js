@@ -713,10 +713,12 @@ class UMListOfUsers extends Component {
 
 				case 'block_selected':
 					this.blockSelected(checkedUsersList);
+					window.location.reload();
 					break;
 
 				case 'active_selected':
-					this.activeSelected(checkedUsersList)
+					this.activeSelected(checkedUsersList);
+					window.location.reload();
 					break;
 				case 'cancel_selected':
 					swal({

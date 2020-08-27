@@ -59,3 +59,13 @@ input[type=search]::-webkit-search-cancel-button {
     border-color:#3d88e6;
     box-shadow:0 0 10px #9ecaed;
 }
+
+.input-group-addon {
+    padding: 8px 12px!important;
+	height: 34px !important;
+    padding: 3px 12px;
+}
+
+.inputIcon{
+	font-size: 18px !important;
+}

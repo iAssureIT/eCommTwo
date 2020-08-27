@@ -351,7 +351,7 @@ class ProductList extends Component {
                         this.setState({
                             tableData: response.data
                         },()=>{
-                         this.getData(this.state.startRange, this.state.limitRange);
+                            window.location.reload();
                         })
                     })
                     .catch((error) => {

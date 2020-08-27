@@ -296,34 +296,46 @@ function sectionInsert(sectionName) {
 
             var sectionUrl = sectionName.replace(/\s+/g, '-').toLowerCase();
             if(sectionPresent === 0){
-                const sectionObj = new Sections({
+                  Sections.find().sort({sectionRank:-1}).limit(1)
+                 .exec()
+                 .then(data=>{
+                    var sectionrank = 1;
+                    if(data.length > 0){
+                        console.log("section dta",data[0]);
+                        sectionrank = data[0].sectionRank + 1;
+                    }   
+                    console.log("sectionrank",sectionrank);
+                     const sectionObj = new Sections({
                         _id                       : new mongoose.Types.ObjectId(),
                         section                   : sectionName,
                         sectionUrl                : sectionUrl, 
+                        sectionRank               : sectionrank,
                         createdAt                 : new Date()
                     });
 
                     sectionObj
                     .save()
                     .then(data=>{
-                        //console.log('insertCategory',data.subCategory[0]._id);
+                        console.log('insertdection',data);
                         resolve({ section_ID : data._id, section: sectionName });
                     })
                     .catch(err =>{
                         console.log(err);
                         reject(err);
                     });
+                 })
+                   
             }else{
                 Sections.findOne({ section : { "$regex": sectionName, $options: "i"} })
-                        .exec()
-                        .then(sectionObject=>{
-                            if(sectionObject){
-                                //console.log('section',sectionObject);
-                                resolve({section_ID : sectionObject._id, section : sectionObject.section});
-                            }else{
-                                resolve(0);
-                            }
-                        })
+                .exec()
+                .then(sectionObject=>{
+                    if(sectionObject){
+                        //console.log('section',sectionObject);
+                        resolve({section_ID : sectionObject._id, section : sectionObject.section});
+                    }else{
+                        resolve(0);
+                    }
+                })
             }
         }
 
@@ -2343,16 +2355,29 @@ exports.bulkUploadProductUpdate = (req,res,next)=>{
                         var categoryObject = await categoryInsert(productData[k].category,productData[k].subCategory,productData[k].section,sectionObject.section_ID);
                         
                         if (productData[k].itemCode != undefined) {
-                            var updateProductObject = await updateProductBulk(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
-                             console.log('updateProductBulk',updateProductObject)
-                            if (updateProductObject != 0) {
-                                Count++;
-                            }else{
-                                console.log('else updateProductBulk',updateProductObject)
+                            if(typeof(productData[k].discountPercent) === 'number' && productData[k].discountPercent >= 0){
+                                 if(typeof(productData[k].discountedPrice) === 'number' && productData[k].discountedPrice >= 0){
+                                    if(typeof(productData[k].originalPrice) === 'number' && productData[k].originalPrice >= 0 ){
+                                        var updateProductObject = await updateProductBulk(sectionObject.section_ID, sectionObject.section, categoryObject,productData[k]);
+                                         console.log('updateProductBulk',updateProductObject)
+                                        if (updateProductObject != 0) {
+                                            Count++;
+                                        }else{
+                                            console.log('else updateProductBulk',updateProductObject)
 
-                                DuplicateCount++;
-                                remark += "Item code should not be duplicate, ";
-                            }
+                                            DuplicateCount++;
+                                            remark += "Item code should not be duplicate, ";
+                                        }
+                                    }else{
+                                       remark += "Original Price should be number"; 
+                                    }
+                                 }else{
+                                    remark += "Discount Price should be number";
+                                 }  
+                            }else{
+                               remark += "Discount Percent should be number";
+                            } 
+                            
                         }  
                     }
                 }

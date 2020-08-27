@@ -325,14 +325,14 @@ export default class FinishedGoods extends React.Component {
 
 	getReportBetweenDates(){
 		var reportFilterData = this.state.reportFilterData;
-		if(this.state.filterByProduct !== "Select Product" && this.state.filterByProduct !== ""){
-			reportFilterData.itemcode = this.state.filterByProduct;
+		if(this.state.reportfilterByProduct !== "Select Product" && this.state.reportfilterByProduct !== ""){
+			reportFilterData.itemcode = this.state.reportfilterByProduct;
 		}else{
 			delete reportFilterData["itemcode"];
 		}
 		reportFilterData.fromDate = this.state.fromDate;
 		reportFilterData.toDate = this.state.toDate;
-		//console.log("reportFilterData",this.state.filterByProduct);
+		//console.log("reportFilterData",this.state.reportfilterByProduct);
 		axios
 		.post('/api/finishedGoodsEntry/post/getReportOfFinishedGoods/',reportFilterData)
 		.then((response)=>{
@@ -1137,7 +1137,7 @@ export default class FinishedGoods extends React.Component {
 	   });
     }
     handleToChange(event){
-        event.preventDefault();
+       event.preventDefault();
        const target = event.target;
        const name = target.name;
 
@@ -1148,6 +1148,17 @@ export default class FinishedGoods extends React.Component {
 	   });
     }
 
+	reportFilterChange(event){
+		event.preventDefault();
+		const target = event.target;
+		const name = target.name;
+ 
+		this.setState({
+		   [name] : event.target.value,
+		},()=>{
+		   this.getReportBetweenDates();
+		});
+	}
    
    /* Weight Convertor end*/
 	render() {
@@ -1347,7 +1358,7 @@ export default class FinishedGoods extends React.Component {
 									
 									<div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12 mbt25">
 										<label>Product Name:</label>
-										<select className="form-control productFilter" aria-describedby="basic-addon1" name="filterByProduct" id="filterByProduct" ref="filterByProduct" value={this.state.filterByProduct} onChange={this.filterChange.bind(this)}>
+										<select className="form-control productFilter" aria-describedby="basic-addon1" name="reportfilterByProduct" id="reportfilterByProduct" ref="reportfilterByProduct" value={this.state.reportfilterByProduct} onChange={this.reportFilterChange.bind(this)}>
 										<option value="Select Product" disabled="">Select Product</option>
 										{
 											this.state.productArray && this.state.productArray.length > 0 ?

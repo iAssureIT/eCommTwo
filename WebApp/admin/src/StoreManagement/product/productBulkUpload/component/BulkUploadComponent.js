@@ -443,7 +443,7 @@ constructor(props) {
 
                 {this.state.fileDetails.failedRecords.length} bad {this.state.fileDetails.failedRecords.length > 1 ? "records were " : "record was " }found.
                 </h5>
-                  <div className="text-right">
+                  {/* <div className="text-right">
                   <br/>
                    <ReactHTMLTableToExcel
                       id="test-table-xls-button"
@@ -453,7 +453,7 @@ constructor(props) {
                       sheet="tablexls"
                       buttonText="Download as XLS"/>
                       <br/>
-                    </div>  
+                    </div>   */}
                     <div style={{overflowX: "auto"}}>
 
                     <IAssureTable 
