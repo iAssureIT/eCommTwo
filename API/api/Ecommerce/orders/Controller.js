@@ -14,7 +14,7 @@ const gloabalVariable = require('../../../nodemon');
 const moment = require('moment-timezone');
 const FranchiseGoods = require('../distributionManagement/Model');
 var ObjectId = require('mongodb').ObjectID;
-
+const axios             = require('axios');
 
 exports.insert_orders = (req, res, next) => {
   // console.log("Inside order post",req.body); 
@@ -575,8 +575,6 @@ exports.insert_orders = (req, res, next) => {
   }
 
 };
-
-
 exports.update_order = (req, res, next) => {
   Orders.updateOne(
     { _id: req.body.order_ID },
@@ -2169,8 +2167,6 @@ exports.list_bill_by_user = (req, res, next) => {
       });
     });
 };
-
-
 exports.get_orders_with_filters = (req, res, next) => {
   let selector = {};
   let status = req.body.status ? req.body.status : '';
@@ -2243,8 +2239,6 @@ exports.get_orders_with_filters = (req, res, next) => {
   }
 
 };
-
-
 exports.allocateOrderToFranchise = (req, res, next) => {
   Orders.updateOne(
     { orderID: req.body.orderID },
@@ -2273,7 +2267,6 @@ exports.allocateOrderToFranchise = (req, res, next) => {
       });
     });
 };
-
 function franchisewise_order_count(franchiseid) {
       return new Promise(function (resolve, reject) {
           Orders.find(
@@ -2286,8 +2279,6 @@ function franchisewise_order_count(franchiseid) {
             })
         })
 }
-
-
 exports.franchise_order_count = (req, res, next) => {
   Entitymaster.find({entityType:'franchise'})
   .exec()
@@ -2341,9 +2332,6 @@ function franchisewise_order_sale(franchiseid) {
             })
         })
 }
-
-
-
 exports.top_franchise_sale = (req, res, next) => {
   Entitymaster.find({entityType:'franchise'})
   .exec()
@@ -2376,8 +2364,6 @@ exports.top_franchise_sale = (req, res, next) => {
     });
   
 };
-
-
 exports.franchiseCategoryRevenue = (req, res, next) => {
   Orders.aggregate([
     {
@@ -2402,7 +2388,6 @@ exports.franchiseCategoryRevenue = (req, res, next) => {
       });
     });
 };
-
 exports.franchiseSectionRevenue = (req, res, next) => {
   Orders.aggregate([
     {
@@ -2427,8 +2412,6 @@ exports.franchiseSectionRevenue = (req, res, next) => {
       });
     });
 };
-
-
 exports.getMonthwiseOrders = (req,res,next)=>{
     let selector = {};
     let franchiseID = req.body.franchiseID ? req.body.franchiseID : '';
@@ -2490,7 +2473,6 @@ exports.getMonthwiseOrders = (req,res,next)=>{
         res.status(500).json({ error: err });
     });
 }
-
 exports.franchise_bill_counts = (req, res, next) => {
   Orders.find({"allocatedToFranchise":ObjectId(req.params.franchiseID),"billNumber":{$exists: true}})
     .exec()
@@ -2504,7 +2486,6 @@ exports.franchise_bill_counts = (req, res, next) => {
       });
     });
 };
-
 exports.total_sale_cost = (req, res, next) => {
 Orders.aggregate([
         {$group: {
@@ -2615,5 +2596,33 @@ exports.franchise_digital_order_counts = (req, res, next) => {
 };
 
 
-
-
+// =============== Payment gateway ==========
+exports.paymentgatewaycall = (req, res, next) => {
+  // console.log('IN Credit Card ===>',req.body);
+      const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+      const paymentdetails = 'MERCHANT_ID='+req.body.MERCHANT_ID+'&MERCHANT_ACCESS_CODE='+req.body.MERCHANT_ACCESS_CODE+'&REFERENCE_NO='+req.body.REFERENCE_NO+'&AMOUNT='+req.body.AMOUNT+'00&CUSTOMER_MOBILE_NO='+req.body.CUSTOMER_MOBILE_NO+'&CUSTOMER_EMAIL_ID='+req.body.CUSTOMER_EMAIL_ID+'&PRODUCT_CODE=testing';
+      // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=MERCHANT_ACCESS_CODE:dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=2000&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=&PRODUCT_CODE=testing';
+      const config = {
+          headers: {
+              'Access-Control-Allow-Origin' : '*',
+              'Accept'                      : 'application/json',
+              "Content-Type"                : "application/x-www-form-urlencoded",
+          }
+      } 
+      console.log('paymentdetails ===> ', paymentdetails);
+      axios.post(redirecturl,paymentdetails,config)
+          .then(result => {
+              console.log('getpaymentgateway Response===> ', result.data);
+              res.status(200).json({
+                "message": "Payment gateway Successfully Got URL.",
+                "result": result.data
+              });
+              // window.location.replace(result.data.PAYMENT_URL);
+          })
+          .catch(err => {
+              console.log('Errr', err);
+              res.status(500).json({
+                "message": "Payment gateway URL Not Got.",
+              });
+          })
+};

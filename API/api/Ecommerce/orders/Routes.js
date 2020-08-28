@@ -5,6 +5,8 @@ const orderController = require('./Controller');
 
 router.post('/post', orderController.insert_orders);
 
+router.post('/pgcall/post', orderController.paymentgatewaycall);
+
 router.patch('/', orderController.update_order);
 
 router.patch('/patch/updateDeliveryStatus', orderController.updateDeliveryStatus);
