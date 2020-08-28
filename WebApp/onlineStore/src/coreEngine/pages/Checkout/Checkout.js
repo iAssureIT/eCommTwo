@@ -848,7 +848,7 @@ class Checkout extends Component {
                                             })
                                         }, 3000);
 
-                                        // this.props.history.push('/payment/' + result.data.order_ID);
+                                        this.props.history.push('/payment/' + result.data.order_ID);
                                     } else {
                                         this.setState({paymethods : true})
                                         var paymentdetails = {
@@ -870,7 +870,7 @@ class Checkout extends Component {
                                         axios.post('/api/orders/pgcall/post', paymentdetails)
                                             .then((payurl) => {
                                                 console.log('sendDataToUser in payurl==>>>', payurl.data)
-                                                // window.location.replace(payurl.data.result.PAYMENT_URL);
+                                                window.location.replace(payurl.data.result.PAYMENT_URL);
                                                 this.setState({paymethods : false})
                                             })
                                             .catch((error) => {
