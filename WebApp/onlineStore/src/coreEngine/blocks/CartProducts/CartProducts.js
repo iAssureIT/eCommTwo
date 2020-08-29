@@ -41,11 +41,25 @@ class CartProducts extends Component{
         await this.props.fetchCartData();
         // console.log("fetchCartData===",this.props.recentCartData[0].cartItems);
 
-        
+        this.getdiscounteddata(this.state.startRange, this.state.limitRange);
         this.getshippingamount(this.state.startRange, this.state.limitRange);
     }
+    getdiscounteddata(startRange, limitRange) {
+        axios.get('/api/discount/get/list-with-limits/' + startRange + '/' + limitRange)
+            .then((response) => {
+                console.log('tableData = ', response.data[0]);
+                this.setState({
+                    discountdata: response.data[0],
+                    discounttype: response.data[0].discounttype,
+                    discountin: response.data[0].discountin,
+                    discountvalue: response.data[0].discountvalue,
+                })
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+    }
     componentWillReceiveProps(nextProps) { 
-       
     }
     getCartData(){
         const userid = localStorage.getItem('user_ID');
@@ -465,7 +479,10 @@ class CartProducts extends Component{
                                                     
                                                     <tr>
                                                         <td>Discount</td>
-                                                        <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >= 1 ? <span> - <i className="fa fa-inr"></i>{this.props.recentCartData[0].discount} </span> : 0.00}</td>
+                                                        {/* <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >= 1 ? <span> - <i className="fa fa-inr"></i>{this.props.recentCartData[0].discount} </span> : 0.00}</td> */}
+                                                        <td className="textAlignRight saving">&nbsp; 
+                                                            <span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null} </span>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>Order Total</td>

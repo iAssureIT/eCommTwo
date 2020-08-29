@@ -309,27 +309,6 @@ class Checkout extends Component {
             });
         }
     }
-
-    // getpaymentgateway = async () => {
-    //     const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-    //     const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-    //     const config = {
-    //         headers: {
-    //             'Access-Control-Allow-Origin' : '*',
-    //             'Accept'                      : 'application/json',
-    //             "Content-Type"                : "application/x-www-form-urlencoded",
-    //         }
-    //     }
-    //     console.log('paymentdetails ===> ', paymentdetails);
-    //     axios.post(redirecturl,paymentdetails,config)
-    //         .then(result => {
-    //             console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
-    //             window.location.replace(result.data.PAYMENT_URL);
-    //         })
-    //         .catch(err => {
-    //             console.log('Errr', err);
-    //         })
-    // }
     getUserAddress() {
         var user_ID = localStorage.getItem('user_ID');
         axios.get("/api/ecommusers/" + user_ID)
