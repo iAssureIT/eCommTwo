@@ -675,7 +675,7 @@ class Checkout extends Component {
             this.setState({
                 isCheckedError: ["Please accept the terms & conditions."]
                 });
-                swal("Please accept the terms & conditions and provide your valid delivery Address");
+                // swal("Please accept the terms & conditions and provide your valid delivery Address");
             }
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
@@ -828,7 +828,7 @@ class Checkout extends Component {
                         if (this.state.isChecked) {
                             axios.post('/api/orders/post', orderData)
                                 .then((result) => {
-                                    if (this.state.paymentmethods === 'cod') {
+                                    // if (this.state.paymentmethods === 'cod') {
                                         this.setState({paymethods : true})
                                         this.props.fetchCartData();
                                         this.setState({
@@ -849,53 +849,60 @@ class Checkout extends Component {
                                         }, 3000);
 
                                         this.props.history.push('/payment/' + result.data.order_ID);
-                                    } else {
-                                        this.setState({paymethods : true})
-                                        var paymentdetails = {
-                                            MERCHANT_ID: this.state.partnerid,
-                                            MERCHANT_ACCESS_CODE: this.state.secretkey,
-                                            REFERENCE_NO: Math.round(new Date().getTime() / 1000),
-                                            AMOUNT: this.props.recentCartData.length > 0 ?
-                                                this.state.discountdata !== undefined ?
-                                                    this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
-                                                        parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
-                                                        : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
-                                                    : parseInt(this.props.recentCartData[0].total)
-                                                : "0.00",
-                                            CUSTOMER_MOBILE_NO: this.state.mobile,
-                                            CUSTOMER_EMAIL_ID: this.state.email,
-                                            PRODUCT_CODE: "testing",
-                                        }
-                                        console.log('paymentdetails in result==>>>', paymentdetails)
-                                        axios.post('/api/orders/pgcall/post', paymentdetails)
-                                            .then((payurl) => {
-                                                console.log('sendDataToUser in payurl==>>>', payurl.data)
-                                                window.location.replace(payurl.data.result.PAYMENT_URL);
-                                                this.setState({paymethods : false})
-                                            })
-                                            .catch((error) => {
-                                                console.log("return to checkout");
-                                                console.log(error);
-                                            })
-                                    }
+                                    // } else {
+                                    //     this.setState({paymethods : true})
+                                    //     var paymentdetails = {
+                                    //         MERCHANT_ID: this.state.partnerid,
+                                    //         MERCHANT_ACCESS_CODE: this.state.secretkey,
+                                    //         // REFERENCE_NO: Math.round(new Date().getTime() / 1000),
+                                    //         REFERENCE_NO: result.data.order_ID,
+                                    //         AMOUNT: this.props.recentCartData.length > 0 ?
+                                    //             this.state.discountdata !== undefined ?
+                                    //                 this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                    //                     parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                    //                     : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                    //                 : parseInt(this.props.recentCartData[0].total)
+                                    //             : "0.00",
+                                    //         CUSTOMER_MOBILE_NO: this.state.mobile,
+                                    //         CUSTOMER_EMAIL_ID: this.state.email,
+                                    //         PRODUCT_CODE: "testing",
+                                    //     }
+                                    //     console.log('paymentdetails in result==>>>', paymentdetails)
+                                    //     axios.post('/api/orders/pgcall/post', paymentdetails)
+                                    //         .then((payurl) => {
+                                    //             console.log('sendDataToUser in payurl==>>>', payurl.data)
+                                    //             if(payurl.data.result.RESPONSE_MESSAGE  === 'SUCCESS'){
+                                    //                 window.location.replace(payurl.data.result.PAYMENT_URL);
+                                    //             }
+                                    //             this.setState({paymethods : false})
+                                    //         })
+                                    //         .catch((error) => {
+                                    //             console.log("return to checkout");
+                                    //             console.log(error);
+                                    //         })
+                                    // }
                                     axios.get('/api/orders/get/one/' + result.data.order_ID)
                                         .then((res) => {
                                             // =================== Notification OTP ==================
                                             if (res) {
                                                 window.fbq('track', 'Purchase', {value: res.data.total, currency: 'Rs'});
-                                                //  console.log("order data:",res);
                                                 var sendData = {
                                                     "event": "3",
                                                     "toUser_id": res.data.user_ID,
                                                     "toUserRole": "user",
                                                     "variables": {
                                                         "Username": res.data.userFullName,
-                                                        "amount": res.data.total,
+                                                        "amount": this.props.recentCartData.length > 0 ?
+                                                                    this.state.discountdata !== undefined ?
+                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                                            parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                                                            : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                                                        : parseInt(this.props.recentCartData[0].total)
+                                                                    : "0.00",
                                                         "orderid": res.data.orderID,
                                                         "shippingtime": res.data.shippingtime,
                                                     }
                                                 }
-                                                // console.log('sendDataToUser==>', sendData);
                                                 axios.post('/api/masternotifications/post/sendNotification', sendData)
                                                     .then((res) => {
                                                         if (res) {

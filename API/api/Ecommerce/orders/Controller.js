@@ -852,8 +852,6 @@ exports.list_order_by_ba = (req, res, next) => {
       });
     });
 };
-
-
 exports.list_order_with_limits = (req, res, next) => {
   Orders.find({})
     .sort({ createdAt: -1 })
@@ -911,7 +909,6 @@ exports.delete_order = (req, res, next) => {
       });
     });
 };
-
 exports.updateDeliveryStatus = (req, res, next) => {
   var status = req.body.status == "Delivered & Paid" ? "Paid" : "UnPaid";
   // console.log(req.body.status);
@@ -1114,8 +1111,6 @@ exports.updateDeliveryStatus = (req, res, next) => {
       });
     });
 };
-
-
 exports.changeToPreviousStatus = (req, res, next) => {
   Orders.updateOne(
     { _id: ObjectId(req.body.orderID) },
@@ -1131,7 +1126,6 @@ exports.changeToPreviousStatus = (req, res, next) => {
       res.status(500).json({ error: err });
     });
 };
-
 exports.dispatchOrder = (req, res, next) => {
 
   /*Masternotifications.findOne({"templateType":"SMS","templateName":"Order Dispatched"})
@@ -1405,9 +1399,6 @@ exports.dispatchOrder = (req, res, next) => {
       });
     });
 };
-
-
-
 exports.list_order_by_user = (req, res, next) => {
   //  console.log('user_ID',req.params.userID);
 
@@ -1444,7 +1435,6 @@ exports.list_order_by_user = (req, res, next) => {
       });
     });
 };
-
 exports.cancelOrder = (req, res, next) => {
   //console.log("Order cancelled");
   Orders.updateOne(
@@ -1778,8 +1768,6 @@ exports.ytdorders = (req, res, next) => {
       });
     });
 };
-
-
 exports.mtdorders = (req, res, next) => {
 
   Orders.find({
@@ -1799,8 +1787,6 @@ exports.mtdorders = (req, res, next) => {
       });
     });
 };
-
-
 exports.todaysorders = (req, res, next) => {
   Orders.aggregate([
     {
@@ -1894,8 +1880,6 @@ exports.totalOrdersByPeriod = (req, res, next) => {
       });
     });
 };
-
-
 exports.totalOrdersByState = (req, res, next) => {
   //console.log('sdash',moment(req.params.startTime).tz('Asia/Kolkata').startOf('day').toDate())
   Orders.aggregate([
@@ -1922,7 +1906,6 @@ exports.totalOrdersByState = (req, res, next) => {
       });
     });
 };
-
 exports.sectionRevenue = (req, res, next) => {
   Orders.aggregate([
     {
@@ -1946,8 +1929,6 @@ exports.sectionRevenue = (req, res, next) => {
       });
     });
 };
-
-
 exports.categoryRevenue = (req, res, next) => {
   Orders.aggregate([
     {
@@ -2040,7 +2021,6 @@ exports.vendorWiseOrder = (req, res, next) => {
       });
     });
 };
-
 function addOrderToFranchiseGoods(productId, obj, franchise_id) {
   return new Promise(function (resolve, reject) {
     FranchiseGoods.find({ productId: productId, balance: { $gt: 0 }, franchise_id: franchise_id })
@@ -2137,7 +2117,6 @@ function addOrderToFranchiseGoods(productId, obj, franchise_id) {
       });
   });
 }
-
 var updateOtherFranchiseGoods = async (itemCode, obj) => {
   // console.log('Data',data);
   return new Promise(function (resolve, reject) {
@@ -2147,8 +2126,6 @@ var updateOtherFranchiseGoods = async (itemCode, obj) => {
     }
   })
 }
-
-
 exports.list_bill_by_user = (req, res, next) => {
   //console.log('user_ID',req.body.userid);
   Orders.find(
@@ -2501,7 +2478,6 @@ Orders.aggregate([
         res.status(500).json({ error: err });
     });
 }
-
 exports.franchiseTopProductsSale = (req, res, next) => {
   Orders.find({
     "allocatedToFranchise":req.params.franchiseID,
@@ -2543,7 +2519,6 @@ exports.franchiseTopProductsSale = (req, res, next) => {
     });
   
 };
-
 exports.franchise_daily_orders_count = (req, res, next) => {
     Orders.aggregate([
       {
@@ -2574,7 +2549,6 @@ exports.franchise_daily_orders_count = (req, res, next) => {
       });
     });
 };
-
 exports.franchise_digital_order_counts = (req, res, next) => {
   Orders.find({
     allocatedToFranchise : req.params.franchiseID,
@@ -2598,7 +2572,7 @@ exports.franchise_digital_order_counts = (req, res, next) => {
 
 // =============== Payment gateway ==========
 exports.paymentgatewaycall = (req, res, next) => {
-  console.log('IN Credit Card ===>',req.body.AMOUNT+00);
+  // console.log('IN Credit Card ===>',req.body.AMOUNT);
       const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
       const paymentdetails = 'MERCHANT_ID='+req.body.MERCHANT_ID+'&MERCHANT_ACCESS_CODE='+req.body.MERCHANT_ACCESS_CODE+'&REFERENCE_NO='+req.body.REFERENCE_NO+'&AMOUNT='+req.body.AMOUNT+'00&CUSTOMER_MOBILE_NO='+req.body.CUSTOMER_MOBILE_NO+'&CUSTOMER_EMAIL_ID='+req.body.CUSTOMER_EMAIL_ID+'&PRODUCT_CODE=testing';
       // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=MERCHANT_ACCESS_CODE:dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=2000&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=&PRODUCT_CODE=testing';
@@ -2625,4 +2599,37 @@ exports.paymentgatewaycall = (req, res, next) => {
                 "message": "Payment gateway URL Not Got.",
               });
           })
+};
+
+exports.update_order_payment = (req, res, next) => {
+  Orders.updateOne(
+    { _id: req.params.order_ID },
+    {
+      $set: {
+          status : req.body.status,
+          RESPOSE_CODE : req.body.RESPOSE_CODE,
+          RESPOSE_MESSAGE :req.body.RESPOSE_MESSAGE,
+          REFERENCE_NO :req.body.REFERENCE_NO,
+        createdAt: new Date()
+      }
+    }
+  )
+    .exec()
+    .then(data => {
+      if (data.nModified == 1) {
+        res.status(200).json({
+          "message": "Order Updated Successfully."
+        });
+      } else {
+        res.status(401).json({
+          "message": "Order Not Found"
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
 };

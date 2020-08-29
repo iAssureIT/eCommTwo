@@ -29,6 +29,7 @@ import SignUp                                    from '../systemSecurity/SignUp.
 import VerifyAccount                             from '../systemSecurity/VerifyAccount.js';
 import Cart                                      from '../pages/Cart/Cart.js';
 import Checkout                                  from '../pages/Checkout/Checkout.js';
+import Paymentgateway                            from '../pages/Checkout/Paymentgateway.js';
 import ViewOrder                                 from '../pages/MyOrders/ViewOrder.js'
 import Edituser                                  from '../pages/Edituser/Edituser.js';
 import MyOrders                                  from '../pages/MyOrders/MyOrders.js';
@@ -95,6 +96,7 @@ class Routes extends Component{
                 <Route path="/confirm-otp/:user_ID"     exact strict component={ Unimandai_Homepage } /> 
                 <Route path="/cart"                     exact strict component={ Cart } />
                 <Route path="/checkout"                 exact strict component={ Checkout } />
+                <Route path="/transaction-process"      exact strict component={ Paymentgateway } />
                 <Route path="/my-orders"                exact strict component={ MyOrders } />
                 <Route path="/my-ordersUni"             exact strict component={ MyOrders_Unimandai } />
                 <Route path="/view-order/:order_ID"     exact strict component={ ViewOrder } />
@@ -131,19 +133,21 @@ class Routes extends Component{
                 <Route path="/legal-notice" exact strict component={LegalNotice}  />            
               </div>
             );
-            return (
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
-              <Router>
-                <UnimandaiHeader />
-                <Switch>
-                    <Route path="/" component={ WebLayout } />
-                    {/*<Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> */}
-
-                </Switch>
-                <Footer_Unimandai />
-              </Router>
-            </div>
-            );
+            
+              return (
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                   <Router>
+                      <UnimandaiHeader />
+                      <Switch>
+                          <Route path="/" component={ WebLayout } />
+                          {/*<Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> */}
+    
+                      </Switch>
+                      <Footer_Unimandai />
+                    </Router>
+                </div>
+              );
+            
         }  
     else{
         const WebLayout = () => (

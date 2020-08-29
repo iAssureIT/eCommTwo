@@ -1,6 +1,3 @@
-
-
-
 import React, { Component } from 'react';
 import $, { post } from 'jquery';
 import axios from 'axios';
@@ -15,6 +12,7 @@ import 'jquery-validation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 import 'bootstrap/js/tab.js';
+import Loaderspinner from 'react-loader-spinner'
 import Loader from "../../common/loader/Loader.js";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,6 +21,7 @@ import "../../../sites/currentSite/pages/Checkout.css";
 import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import moment from 'moment';
 
 class Checkout extends Component {
     constructor(props) {
@@ -40,9 +39,9 @@ class Checkout extends Component {
             totalIndPrice: 0,
             addressId: "",
             bannerData: {
-                title           : "CHECKOUT",
-                breadcrumb      : 'Checkout',
-                backgroungImage : checkoutBanner,
+                title: "CHECKOUT",
+                breadcrumb: 'Checkout',
+                backgroungImage: checkoutBanner,
             },
             discountCode: false,
             comment: false,
@@ -50,9 +49,12 @@ class Checkout extends Component {
             deliveryAddress: [],
             pincodeExists: true,
             paymentmethods: "cod",
+            paymethods: false,
             addressLine1: "",
             "startRange": 0,
             "limitRange": 10,
+            isChecked: false,
+            isCheckedError: [],
         }
         this.getCartData();
         // this.getCompanyDetails();
@@ -64,33 +66,63 @@ class Checkout extends Component {
         this.gettimes(this.state.startRange, this.state.limitRange);
         this.getUserAddress();
         this.validation();
-        axios.get('/api/users/get/'+localStorage.getItem("user_ID"))
-        .then(result => {
-            this.setState({
-                mobile: result.data.mobile,
-                email: result.data.email,
+        this.getdiscounteddata(this.state.startRange, this.state.limitRange);
+        axios.get('/api/users/get/' + localStorage.getItem("user_ID"))
+            .then(result => {
+                this.setState({
+                    mobile: result.data.mobile,
+                    email: result.data.email,
+                })
             })
-        })
-        .catch(err => {
-            console.log('Errr', err);
-        })
+            .catch(err => {
+                console.log('Errr', err);
+            })
+
         var type = "PG"
-        axios.post('/api/projectsettings/getS3Details/'+type)
-           .then(result => {
-            //    console.log('projectsettings Response===> ', result.data);
-               this.setState({
-                   environment: result.data.environment,
-                   namepayg: result.data.namepayg,
-                   partnerid: result.data.partnerid,
-                   secretkey: result.data.secretkey,
-                   status: result.data.status,
-               })
-           })
-           .catch(err => {
-               console.log('Errr', err);
-           })
+        axios.post('/api/projectsettings/getS3Details/' + type)
+            .then(result => {
+                //    console.log('projectsettings Response===> ', result.data);
+                this.setState({
+                    environment: result.data.environment,
+                    namepayg: result.data.namepayg,
+                    partnerid: result.data.partnerid,
+                    secretkey: result.data.secretkey,
+                    status: result.data.status,
+                })
+            })
+            .catch(err => {
+                console.log('Errr', err);
+            })
+    }
+    getdiscounteddata(startRange, limitRange) {
+        axios.get('/api/discount/get/list-with-limits/' + startRange + '/' + limitRange)
+            .then((response) => {
+                console.log('tableData = ', response.data[0]);
+                this.setState({
+                    discountdata: response.data[0],
+                    discounttype: response.data[0].discounttype,
+                    discountin: response.data[0].discountin,
+                    discountvalue: response.data[0].discountvalue,
+                    startdate: moment(response.data[0].startdate).format("YYYY-MM-DD"),
+                    enddate: moment(response.data[0].enddate).format("YYYY-MM-DD"),
+                })
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
     }
     validation() {
+        var valid;
+        if (this.state.isChecked) {
+            this.setState({ isCheckedError: "" });
+        }
+        else {
+            this.setState({
+                isCheckedError: ["Please accept the terms & conditions."]
+            });
+            valid = true;
+        }
+
         $.validator.addMethod("regxusername", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Name should only contain letters.");
@@ -103,15 +135,18 @@ class Checkout extends Component {
         $.validator.addMethod("regxaddressLine1", function (value, element, regexpr) {
             return regexpr.test(value);
         }, "Please enter valid address.");
+        $.validator.addMethod("regxaddressLine2", function (value, element, regexpr) {
+            return regexpr.test(value);
+        }, "Please enter valid address.");
         $.validator.addMethod("regxpincode", function (value, element, regexpr) {
             return regexpr.test(value);
-        }, "Please enter valid pincode.");        
+        }, "Please enter valid pincode.");
         $.validator.addMethod("regxaddType", function (value, element, arg) {
             return arg !== value;
         }, "Please select the address type.");
-        $.validator.addMethod("regxtermsNconditions", function (value, element, arg) {
-            return arg !== value;
-        }, "Please select the terms and condition.");
+        // $.validator.addMethod("regxtermsNconditions", function (value, element, arg) {
+        //     return arg !== value;
+        // }, "Please select the terms and condition.");
         jQuery.validator.setDefaults({
             debug: true,
             success: "valid"
@@ -134,10 +169,10 @@ class Checkout extends Component {
                     required: true,
                     regxaddressLine1: /^[A-Za-z0-9_@./#&+-]/,
                 },
-                // addressLine2: {
-                //     required: true,
-                //     regxaddressLine : /^[A-Za-z0-9_@./#&+-]/,
-                // },
+                addressLine2: {
+                    required: true,
+                    regxaddressLine2: /^[A-Za-z0-9_@./#&+-]/,
+                },
                 country: {
                     required: true,
                     regxcountry: "Select Country"
@@ -145,19 +180,8 @@ class Checkout extends Component {
                 state: {
                     required: true,
                     regxstate: "Select State"
-                },                
-                // block: {
-                //     required: true,
-                //     regxblock : /^[A-Za-z][A-Za-z\-\s]*$/,
-                // },
-                // district: {
-                //     required: true,
-                //     regxdistrict: "Select District"
-                // },
-                // city: {
-                //     required: true,
-                //     regxcity: /^[A-Za-z][A-Za-z\-\s]*$/,
-                // },
+                },
+
                 pincode: {
                     required: true,
                     regxpincode: /^[1-9][0-9]{5}$/,
@@ -172,14 +196,14 @@ class Checkout extends Component {
                 payMethod: {
                     required: true
                 },
-                // termsNconditions: {
-                //     required: true,
-                //     regxTermandCondition: "check type"
-                // }
                 termsNconditions: {
                     required: true,
-                    regxtermsNconditions: "Select Type"
+                    // regxTermandCondition: "check type"
                 }
+                // termsNconditions: {
+                //     required: true,
+                //     regxtermsNconditions: "Select Type"
+                // }
             },
             errorPlacement: function (error, element) {
                 if (element.attr("name") === "username") {
@@ -194,9 +218,9 @@ class Checkout extends Component {
                 if (element.attr("name") === "addressLine1") {
                     error.insertAfter("#addressLine1");
                 }
-                //   if (element.attr("name") === "addressLine2") {
-                //     error.insertAfter("#addressLine2");
-                //   }
+                  if (element.attr("name") === "addressLine2") {
+                    error.insertAfter("#addressLine2");
+                  }
                 if (element.attr("name") === "countryCode") {
                     error.insertAfter("#country");
                 }
@@ -285,7 +309,7 @@ class Checkout extends Component {
             });
         }
     }
-  
+
     // getpaymentgateway = async () => {
     //     const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
     //     const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
@@ -322,6 +346,23 @@ class Checkout extends Component {
                 console.log('error', error);
             });
     }
+    checkboxClick(event) {
+        let isChecked = !this.state.isChecked;
+        console.log("isChecked:", isChecked);
+        this.setState({ isChecked }, () => {
+            if (isChecked) {
+                this.setState({
+                    isCheckedError: []
+                });
+            } else {
+                this.setState({
+                    isCheckedError: ["Please accept the terms & conditions."]
+                });
+                console.log("isCheckedError==", this.state.isCheckedError);
+            }
+        });
+    }
+
     checkPincode(pincode) {
         if (localStorage.getItem('websiteModel') === "FranchiseModel") {
             axios.get("/api/allowablepincode/checkpincode/" + pincode)
@@ -625,6 +666,17 @@ class Checkout extends Component {
     }
     placeOrder(event) {
         event.preventDefault();
+        let isChecked = this.state.isChecked;        
+          if (isChecked && this.state.pincode!="" && this.state.addressLine1!="" && this.state.addressLine2!="") {
+                this.setState({
+                isCheckedError: []
+            });
+        } else {
+            this.setState({
+                isCheckedError: ["Please accept the terms & conditions."]
+                });
+                // swal("Please accept the terms & conditions and provide your valid delivery Address");
+            }
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
         var checkoutAddess = $("input[name='checkoutAddess']:checked").val();
@@ -698,9 +750,6 @@ class Checkout extends Component {
                     "latitude": this.state.latitude,
                     "longitude": this.state.longitude,
                 }
-                // console.log("inside if address values====", addressValues);
-                // this.handlePincode(this.state.pincode);
-                //  this.checkDelivery(this.state.pincode);
                 if ($('#checkout').valid() && this.state.pincodeExists) {
                     $('.fullpageloader').show();
                     // console.log("addressValues:===",addressValues);
@@ -728,14 +777,6 @@ class Checkout extends Component {
                         });
                 }
             }
-            // console.log('pls');
-            // axios.patch('/api/carts/payment', formValues)
-            //     .then((response) => {
-
-            //     })
-            //     .catch((error) => {
-            //         console.log('error', error);
-            //     })
             if ($('#checkout').valid() && this.state.pincodeExists) {
                 axios.patch('/api/carts/address', addressValues)
                     .then(async (response) => {
@@ -769,95 +810,124 @@ class Checkout extends Component {
                             user_ID: localStorage.getItem('user_ID'),
                             cartItems: cartItems,
                             shippingtime: this.state.shippingtiming,
-                            total: this.props.recentCartData[0].total,
+                            total: this.props.recentCartData.length > 0 ?
+                                this.state.discountdata !== undefined ?
+                                    this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                        parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                        : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                    : parseInt(this.props.recentCartData[0].total)
+                                : "0.00",
                             cartTotal: this.props.recentCartData[0].cartTotal,
-                            discount: this.props.recentCartData[0].discount,
+                            // discount: this.props.recentCartData[0].discount,
+                            discount: this.state.discountvalue,
                             cartQuantity: this.props.recentCartData[0].cartQuantity,
                             deliveryAddress: this.props.recentCartData[0].deliveryAddress,
-                            paymentMethod: this.props.recentCartData[0].paymentMethod
+                            paymentMethod: this.state.paymentmethods === 'cod' ? "Cash On Delivery" : "Credit/Debit Card",
                         }
-                        // console.log("Order Data:--->",orderData);
-                        
-                        // if($(".acceptTerms").attr("aria-invalid", true)){  
-                        // if(document.querySelector('.acceptTerms:checked') !== null){  
-                        // if($('.acceptTerms:checkbox:checked').length > 0){                     
-                        axios.post('/api/orders/post', orderData)
-                            .then((result) => {
-                                if(this.state.paymentmethods === 'cod'){
-                                    console.log('IN COD ===> ');
-                                    this.props.fetchCartData();
-                                    this.setState({
-                                        messageData: {
-                                            "type": "outpage",
-                                            "icon": "fa fa-check-circle",
-                                            "message": "Order Placed Successfully ",
-                                            "class": "success",
-                                            "autoDismiss": true
-                                        }
-                                    })
-                                    setTimeout(() => {
-                                        this.setState({
-                                            messageData: {},
-                                        })
-                                    }, 3000);
-    
-                                    this.props.history.push('/payment/' + result.data.order_ID);
-                                }else{
-                                    console.log('IN Credit Card ===>');
-                                    const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-                                    // const paymentdetails = 'MERCHANT_ID='+this.state.partnerid+'&MERCHANT_ACCESS_CODE='+this.state.secretkey+'&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT='+this.props.recentCartData[0].total+'00&CUSTOMER_MOBILE_NO='+this.state.mobile+'&CUSTOMER_EMAIL_ID='+this.state.email+'&PRODUCT_CODE=testing';
-                                    const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=MERCHANT_ACCESS_CODE: dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=2000&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=&PRODUCT_CODE=testing';
-                                    const config = {
-                                        headers: {
-                                            'Access-Control-Allow-Origin' : '*',
-                                            'Accept'                      : 'application/json',
-                                            "Content-Type"                : "application/x-www-form-urlencoded",
-                                        }
-                                    } 
-                                    console.log('paymentdetails ===> ', paymentdetails);
-                                    axios.post(redirecturl,paymentdetails,config)
-                                        .then(result => {
-                                            console.log('getpaymentgateway Response===> ', result.data.PAYMENT_URL);
-                                            window.location.replace(result.data.PAYMENT_URL);
-                                        })
-                                        .catch(err => {
-                                            console.log('Errr', err);
-                                        })
-                                }
-                                axios.get('/api/orders/get/one/' + result.data.order_ID)
-                                    .then((res) => {
-                                        // =================== Notification OTP ==================
-                                        if (res) {
-                                            window.fbq('track', 'Purchase', {value: res.data.total, currency: 'Rs'});
-                                            //  console.log("order data:",res);
-                                            var sendData = {
-                                                "event": "3",
-                                                "toUser_id": res.data.user_ID,
-                                                "toUserRole": "user",
-                                                "variables": {
-                                                    "Username": res.data.userFullName,
-                                                    "amount": res.data.total,
-                                                    "orderid": res.data.orderID,
-                                                    "shippingtime": res.data.shippingtime,
-                                                }
-                                            }
-                                            // console.log('sendDataToUser==>', sendData);
-                                            axios.post('/api/masternotifications/post/sendNotification', sendData)
-                                                .then((res) => {
-                                                    if (res) {
-                                                        // console.log('sendDataToUser in result==>>>', res.data)
-                                                    }
 
-                                                })
-                                                .catch((error) => { console.log('notification error: ', error) })
-                                            // =================== Notification ==================
-                                        }
-                                    })
-                            })
-                            .catch((error) => {
-                                console.log("return to checkout");
-                                console.log(error);
-                            })
+                        if (this.state.isChecked) {
+                            axios.post('/api/orders/post', orderData)
+                                .then((result) => {
+                                    // if (this.state.paymentmethods === 'cod') {
+                                        this.setState({paymethods : true})
+                                        this.props.fetchCartData();
+                                        this.setState({
+                                            messageData: {
+                                                "type": "outpage",
+                                                "icon": "fa fa-check-circle",
+                                                "message": "Order Placed Successfully ",
+                                                "class": "success",
+                                                "autoDismiss": true
+                                            }
+                                        })
+                                        
+                                        setTimeout(() => {
+                                            this.setState({
+                                                messageData: {},
+                                                paymethods : false,
+                                            })
+                                        }, 3000);
+
+                                        this.props.history.push('/payment/' + result.data.order_ID);
+                                    // } else {
+                                    //     this.setState({paymethods : true})
+                                    //     var paymentdetails = {
+                                    //         MERCHANT_ID: this.state.partnerid,
+                                    //         MERCHANT_ACCESS_CODE: this.state.secretkey,
+                                    //         REFERENCE_NO: Math.round(new Date().getTime() / 1000),
+                                    //         AMOUNT: this.props.recentCartData.length > 0 ?
+                                    //             this.state.discountdata !== undefined ?
+                                    //                 this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                    //                     parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                    //                     : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                    //                 : parseInt(this.props.recentCartData[0].total)
+                                    //             : "0.00",
+                                    //         CUSTOMER_MOBILE_NO: this.state.mobile,
+                                    //         CUSTOMER_EMAIL_ID: this.state.email,
+                                    //         PRODUCT_CODE: "testing",
+                                    //     }
+                                    //     console.log('paymentdetails in result==>>>', paymentdetails)
+                                    //     axios.post('/api/orders/pgcall/post', paymentdetails)
+                                    //         .then((payurl) => {
+                                    //             console.log('sendDataToUser in payurl==>>>', payurl.data)
+                                    //             if(payurl.data.result.RESPONSE_MESSAGE  === 'SUCCESS'){
+                                    //                 window.location.replace(payurl.data.result.PAYMENT_URL);
+                                    //             }else{
+                                                    
+                                    //             }
+                                                
+                                    //             this.setState({paymethods : false})
+                                    //         })
+                                    //         .catch((error) => {
+                                    //             console.log("return to checkout");
+                                    //             console.log(error);
+                                    //         })
+                                    // }
+                                    axios.get('/api/orders/get/one/' + result.data.order_ID)
+                                        .then((res) => {
+                                            // =================== Notification OTP ==================
+                                            if (res) {
+                                                window.fbq('track', 'Purchase', {value: res.data.total, currency: 'Rs'});
+                                                var sendData = {
+                                                    "event": "3",
+                                                    "toUser_id": res.data.user_ID,
+                                                    "toUserRole": "user",
+                                                    "variables": {
+                                                        "Username": res.data.userFullName,
+                                                        "amount": this.props.recentCartData.length > 0 ?
+                                                                    this.state.discountdata !== undefined ?
+                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                                            parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                                                            : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                                                        : parseInt(this.props.recentCartData[0].total)
+                                                                    : "0.00",
+                                                        "orderid": res.data.orderID,
+                                                        "shippingtime": res.data.shippingtime,
+                                                    }
+                                                }
+                                                axios.post('/api/masternotifications/post/sendNotification', sendData)
+                                                    .then((res) => {
+                                                        if (res) {
+                                                            // console.log('sendDataToUser in result==>>>', res.data)
+                                                        }
+
+                                                    })
+                                                    .catch((error) => { console.log('notification error: ', error) })
+                                                // =================== Notification ==================
+                                            }
+                                        })
+                                })
+
+                                .catch((error) => {
+                                    console.log("return to checkout");
+                                    console.log(error);
+                                })
+                        } else {
+                            this.setState({
+                                isCheckedError: ["Please accept the terms & conditions."]
+                            });
+                        }//end isChecked                      
+
                     })
                     .catch((error) => {
                         console.log('error', error);
@@ -865,6 +935,7 @@ class Checkout extends Component {
             }
         }
     }
+
     saveModalAddress(event) {
         event.preventDefault();
         this.modalvalidation();
@@ -914,6 +985,7 @@ class Checkout extends Component {
                 });
         }
     }
+
     Closepagealert(event) {
         event.preventDefault();
         $(".toast-error").html('');
@@ -1020,9 +1092,9 @@ class Checkout extends Component {
         this.getUserAddress();
     }
 
-    handleCheckbox(event){
+    handleCheckbox(event) {
         event.preventDefault();
-    //   console.log("terms value ....",$('.acceptTerms:checkbox:checked').length);
+        //   console.log("terms value ....",$('.acceptTerms:checkbox:checked').length);
     }
     checkDelivery(event) {
         // event.preventDefault();
@@ -1067,12 +1139,12 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
                                             {/* <input name="payMethod" ref="payMethod" type="radio" value={this.state.payMethod} className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" checked="true" /> */}
                                             <input name="paymentmethods" type="radio" value="cod" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2"
-                                                             checked={this.state.paymentmethods === "cod"} onClick={this.handleChange.bind(this)} />
+                                                checked={this.state.paymentmethods === "cod"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Cash On Delivery</span>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
                                             {/* <input value={this.state.payMethod} onChange={this.creditndebit}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" /> */}
-                                            <input  name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
+                                            <input name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
@@ -1187,8 +1259,8 @@ class Checkout extends Component {
                                             </div> */}
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                     <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
-                                                    <input type="text" ref="pincode" name="pincode" id="pincode" value={this.state.pincode} maxLength="6" minLength="6" onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
-                                                    {this.state.pincodeExists ? null : <label style={{ color: "red", fontWeight: "100" }}>This pincode does not exists!</label>}
+                                                    <input type="text" ref="pincode" name="pincode" id="pincode" defaultValue={this.state.pincode} maxLength="6" minLength="6" onBlur={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                    {this.state.pincodeExists ? null : <label className="DeliveryNotPoss" style={{ color: "red" }}>This pincode does not exists!</label>}
                                                     <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
                                                 </div>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput lastField">
@@ -1288,7 +1360,13 @@ class Checkout extends Component {
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight saving">
-                                            {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"}
+                                            {/* {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"} */}
+                                            {
+                                                this.state.discounttype === "Order Base" ?
+                                                    <span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null} </span>
+                                                    : "0.00"
+                                            }
+
                                         </span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
@@ -1297,17 +1375,31 @@ class Checkout extends Component {
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                         </div>
-                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
+                                        {/* <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span> */}
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Grand Total</span>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i>
+                                            {
+                                                this.props.recentCartData.length > 0 ?
+                                                    this.state.discountdata !== undefined ?
+
+                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                            parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                                            : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                                        : parseInt(this.props.recentCartData[0].total)
+                                                    : "0.00"
+                                            }
+                                        </span>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
                                             <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
-                                                <input type="checkbox" name="termsNconditions" title="Please Read and Accept Terms & Conditions" className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-2" required /> &nbsp;
+                                                <input type="checkbox" name="termsNconditions" isChecked={this.state.isChecked} title="Please Read and Accept Terms & Conditions" onClick={this.checkboxClick.bind(this)} className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
                                                 <div className="col-lg-11 col-md-11 col-sm-11 col-xs-9 termsWrapper">
                                                     <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
                                                 </div>
+                                                {/* <label className="error">{this.state.isCheckedError}</label> */}
                                             </div>
                                             <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
                                                 <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>
@@ -1369,9 +1461,23 @@ class Checkout extends Component {
                                             </select>
                                         </div> */}
                                     </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
-                                            </div>
+                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    {
+                                        !this.state.paymethods ?
+                                        <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button>
+                                        :
+                                        <div className="col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 " >
+                                                <Loaderspinner
+                                                type="ThreeDots"
+                                                color="#80b435"
+                                                height={40}
+                                                width={40}
+                                                // timeout={5000} //3 secs
+                                            />
+                                        </div>
+                                    }
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </form>
