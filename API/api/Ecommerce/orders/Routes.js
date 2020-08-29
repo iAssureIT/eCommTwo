@@ -9,7 +9,7 @@ router.post('/pgcall/post', orderController.paymentgatewaycall);
 
 router.patch('/', orderController.update_order);
 
-router.patch('/paymentorder', orderController.update_order_payment);
+router.patch('/paymentorder/:order_ID', orderController.update_order_payment);
 
 router.patch('/patch/updateDeliveryStatus', orderController.updateDeliveryStatus);
 

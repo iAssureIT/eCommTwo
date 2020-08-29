@@ -5,7 +5,7 @@ import 'jquery-validation';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 import 'bootstrap/js/tab.js';
-import Loader from "../../common/loader/Loader.js";
+import Loaderspinner from 'react-loader-spinner'
 import "../../../sites/currentSite/pages/Checkout.css";
 
 class Paymentgateway extends Component {
@@ -17,22 +17,26 @@ class Paymentgateway extends Component {
         }
     }
     componentDidMount() {
-        var order_ID = "" //this.props.match.params.editId
-        var paymentdetails = {
-            RESPOSE_CODE :"",
-            RESPOSE_MESSAGE :"",
-            REFERENCE_NO :"",
-            Status :"Paid"
-        }
-        axios.patch('/api/orders/paymentorder'+order_ID,paymentdetails)
-        .then((payurl) => {
-            console.log('sendDataToUser in payurl==>>>', payurl.data)
-        
-        })
-        .catch((error) => {
-            console.log("return to checkout");
-            console.log(error);
-        })
+        // var order_ID = "5f48e5491017612d1089e5c6" //this.props.match.params.editId
+        // var paymentdetails = {
+        //     RESPOSE_CODE :"1",
+        //     RESPOSE_MESSAGE :"Success",
+        //     REFERENCE_NO :"5f48e5491017612d1089e5c6",
+        //     status :"Paid"
+        // }
+        // axios.patch('/api/orders/paymentorder/'+order_ID,paymentdetails)
+        // .then((payurl) => {
+        //     console.log('sendDataToUser in payurl==>>>', payurl.data.message)
+        //     if(payurl.data.message === "Order Updated Successfully."){
+        //         this.props.history.push('/payment/'+order_ID);
+        //     }else{
+
+        //     }
+        // })
+        // .catch((error) => {
+        //     console.log("return to checkout");
+        //     console.log(error);
+        // })
     }
  
     getpaymentData() {
@@ -42,16 +46,19 @@ class Paymentgateway extends Component {
 
     render() {
         return (
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutWrapper" style={{ backgroundColor: "#ffffff" }}>
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutWrapper" style={{backgroundColor: "#ffffff"}}>
                
-                <div className="row">
-                    
-                    <Loader type="fullpageloader" />
-                    {/* <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12"> */}
+                    <div className="col-lg-5 col-lg-offset-5 col-md-2 col-sm-12 col-xs-12 loadercircle" >
+                        <Loaderspinner
+                            type="Circles"
+                            color="#80b435"
+                            height={140}
+                            width={140}
+                        />
+                    </div>
+                    <div className="row transaction">
                     <span className="col-lg-12 col-md-6 col-sm-6 col-xs-6 transactionpageText">Processing ...</span>
                     <span className="col-lg-12 col-md-6 col-sm-6 col-xs-6 transactionpageText">Please do not refresh the page</span>
-
-                    {/* </div> */}
                 </div>
             </div>
         );

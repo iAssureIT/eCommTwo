@@ -147,6 +147,14 @@
     font-weight: bold;
     text-align: center;
     color: #4b4a4a;
+    
+}
+.transaction{
+    margin-top: 300px;
+}
+.loadercircle{
+    margin-top: 100px;
+    align-content: center;
 }
 .orderTotalPrize{
     color: #A2632C !important;

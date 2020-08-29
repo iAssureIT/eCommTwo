@@ -477,13 +477,7 @@ class CartProducts extends Component{
                                                         <td className="textAlignRight">&nbsp; <i className={"fa fa-inr"}></i> {this.props.recentCartData[0].cartTotal > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : 0.00} </td>
                                                     </tr>
                                                     
-                                                    <tr>
-                                                        <td>Discount</td>
-                                                        {/* <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >= 1 ? <span> - <i className="fa fa-inr"></i>{this.props.recentCartData[0].discount} </span> : 0.00}</td> */}
-                                                        <td className="textAlignRight saving">&nbsp; 
-                                                            <span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null} </span>
-                                                        </td>
-                                                    </tr>
+                                                    
                                                     <tr>
                                                         <td>Order Total</td>
                                                         <td className="textAlignRight">&nbsp; <i className={"fa fa-inr"}></i> {this.props.recentCartData[0].total > 0 ? parseInt(this.props.recentCartData[0].total) : 0.00} </td>
@@ -503,6 +497,7 @@ class CartProducts extends Component{
                                                                 "Free"
                                                             }
                                                         </td>
+                                                        
                                                         {/* <td className="textAlignRight saving">&nbsp;{ 
                                                             this.state.minvalueshipping >= this.props.recentCartData[0].total ?
                                                                 "Make minimum purchase of Rs."+this.state.minvalueshipping+" to checkout your order."
@@ -512,8 +507,24 @@ class CartProducts extends Component{
                                                         </td> */}
                                                     </tr>
                                                     <tr>
-                                                        <td className="cartTotal">Total</td>
-                                                        <td className="textAlignRight cartTotal">&nbsp; <i className={"fa fa-inr"}></i> {this.props.recentCartData[0].total > 0 ? parseInt(this.props.recentCartData[0].total) : 0.00}</td>
+                                                        <td>Discount</td>
+                                                        {/* <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >= 1 ? <span> - <i className="fa fa-inr"></i>{this.props.recentCartData[0].discount} </span> : 0.00}</td> */}
+                                                        <td className="textAlignRight saving">&nbsp; 
+                                                            <span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null} </span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="cartTotal">Grand Total</td>
+                                                        {/* <td className="textAlignRight cartTotal">&nbsp; <i className={"fa fa-inr"}></i> {this.props.recentCartData[0].total > 0 ? parseInt(this.props.recentCartData[0].total) : 0.00}</td> */}
+                                                        <td className="textAlignRight cartTotal">&nbsp; <i className={"fa fa-inr"}></i>
+                                                         {this.props.recentCartData.length > 0 ?
+                                                                    this.state.discountdata !== undefined ?
+                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                                            parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                                                            : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                                                        : parseInt(this.props.recentCartData[0].total)
+                                                                    : "0.00"}
+                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

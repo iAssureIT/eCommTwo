@@ -133,7 +133,23 @@ class Routes extends Component{
                 <Route path="/legal-notice" exact strict component={LegalNotice}  />            
               </div>
             );
-            
+            var pageUrl = window.location.pathname;
+            let a = pageUrl ? pageUrl.split('/') : "";
+            console.log("a:",a);
+            if(a[1] === 'transaction-process' ){
+              return (
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
+                   <Router>
+                      {/* <UnimandaiHeader /> */}
+                      <Switch>
+                          <Route path="/" component={ WebLayout } />
+                          {/*<Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> */}
+                      </Switch>
+                      {/* <Footer_Unimandai /> */}
+                    </Router>
+                </div>
+              );
+            }else{
               return (
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                    <Router>
@@ -141,12 +157,12 @@ class Routes extends Component{
                       <Switch>
                           <Route path="/" component={ WebLayout } />
                           {/*<Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> */}
-    
                       </Switch>
                       <Footer_Unimandai />
                     </Router>
                 </div>
               );
+            }
             
         }  
     else{

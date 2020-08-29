@@ -21,6 +21,9 @@ const orderSchema = mongoose.Schema({
     currency                  : String,
     transactionID             : Number,
     status                    : String,
+    RESPOSE_CODE              : String,
+    RESPOSE_MESSAGE           : String,
+    REFERENCE_NO              : String,
     createdAt                 : Date,
     products                  : [
         {

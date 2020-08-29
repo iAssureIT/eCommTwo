@@ -4,7 +4,6 @@ import axios from 'axios';
 import jQuery from 'jquery';
 import { ntc } from '../../ntc/ntc.js';
 import Address from '../Address/Address.js';
-import swal from 'sweetalert';
 import _ from 'underscore';
 import SmallBanner from '../../blocks/SmallBanner/SmallBanner.js';
 import Message from '../../blocks/Message/Message.js';
@@ -1335,19 +1334,14 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                         </div>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
+                                        
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
+                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight saving">
                                             {/* {this.props.recentCartData.length > 0 ? <span> <i className="fa fa-inr"></i> {this.props.recentCartData[0].discount >= 1 ? this.props.recentCartData[0].discount : 0.00}</span> : "0.00"} */}
-                                            {
-                                                this.state.discounttype === "Order Base" ?
-                                                    <span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null} </span>
-                                                    : "0.00"
-                                            }
-
+                                            {this.state.discounttype === "Order Base" ?<span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null} </span>: "0.00"}
                                         </span>
-                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
-                                        <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
-
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15">
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
@@ -1358,7 +1352,6 @@ class Checkout extends Component {
                                             {
                                                 this.props.recentCartData.length > 0 ?
                                                     this.state.discountdata !== undefined ?
-
                                                         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
                                                             parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
                                                             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
