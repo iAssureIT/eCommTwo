@@ -903,7 +903,6 @@ class Checkout extends Component {
                                 isCheckedError: ["Please accept the terms & conditions."]
                             });
                         }//end isChecked                      
-
                     })
                     .catch((error) => {
                         console.log('error', error);

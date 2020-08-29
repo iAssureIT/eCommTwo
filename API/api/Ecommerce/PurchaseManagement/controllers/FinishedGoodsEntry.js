@@ -572,6 +572,8 @@ var insertFinishedGoodsEntry = async (data) => {
                     scrapUnit                 : data.scrapUnit,
                     fileName                  : data.fileName,
                     finishedBy                : data.finishedBy,
+                    balance                   : data.OutwardRawMaterial,
+                    balanceUnit               : data.OutwardUnit,
                     createdBy                 : data.createdBy,
                     createdAt                 : new Date(),
                 });
