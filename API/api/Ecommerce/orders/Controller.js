@@ -2574,7 +2574,7 @@ exports.franchise_digital_order_counts = (req, res, next) => {
 exports.paymentgatewaycall = (req, res, next) => {
   // console.log('IN Credit Card ===>',req.body.AMOUNT);
       const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-      const paymentdetails = 'MERCHANT_ID='+req.body.MERCHANT_ID+'&MERCHANT_ACCESS_CODE='+req.body.MERCHANT_ACCESS_CODE+'&REFERENCE_NO='+req.body.REFERENCE_NO+'&AMOUNT='+req.body.AMOUNT+'00&CUSTOMER_MOBILE_NO='+req.body.CUSTOMER_MOBILE_NO+'&CUSTOMER_EMAIL_ID='+req.body.CUSTOMER_EMAIL_ID+'&PRODUCT_CODE=testing';
+      const paymentdetails = 'MERCHANT_ID='+req.body.MERCHANT_ID+'&MERCHANT_ACCESS_CODE='+req.body.MERCHANT_ACCESS_CODE+'&REFERENCE_NO='+req.body.REFERENCE_NO+'&AMOUNT='+req.body.AMOUNT+'&CUSTOMER_MOBILE_NO='+req.body.CUSTOMER_MOBILE_NO+'&CUSTOMER_EMAIL_ID='+req.body.CUSTOMER_EMAIL_ID+'&PRODUCT_CODE=testing';
       // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=MERCHANT_ACCESS_CODE:dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=2000&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=&PRODUCT_CODE=testing';
       const config = {
           headers: {

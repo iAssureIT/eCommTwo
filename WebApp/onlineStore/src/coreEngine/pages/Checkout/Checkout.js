@@ -106,13 +106,16 @@ class Checkout extends Component {
                     enddate: moment(response.data[0].enddate).format("YYYY-MM-DD"),
                 },()=>{
                     var amountofgrandtotal = this.props.recentCartData.length > 0 ?
-                     this.state.discountdata !== undefined ?
-                         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
-                             parseInt(this.props.recentCartData[0].total) - (this.props.recentCartData[0].total * this.state.discountvalue)/ 100
-                             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
-                         : parseInt(this.props.recentCartData[0].total)
-                     : "0.00";
-                console.log('amountofgrandtotal = ', amountofgrandtotal*100/1);
+                                                this.state.discountdata !== undefined ?
+                                                    this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                        parseInt(this.props.recentCartData[0].total) - (this.props.recentCartData[0].total * this.state.discountvalue)/ 100
+                                                        : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                                    : parseInt(this.props.recentCartData[0].total)
+                                                : "0.00";
+                // var amt =(100/1)*amountofgrandtotal;
+                // var rsamt = amt/100;
+                // console.log('amountofgrandtotal = ', amt);
+                // console.log('amountofgrandtotal = ',rsamt);
                 this.setState({amountofgrandtotal : amountofgrandtotal})
                  })
             })
