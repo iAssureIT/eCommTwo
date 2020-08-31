@@ -136,7 +136,7 @@ class Routes extends Component{
             var pageUrl = window.location.pathname;
             let a = pageUrl ? pageUrl.split('/') : "";
             console.log("a:",a);
-            if(a[1] === '/transaction-process/' ){
+            if(a[1] === 'transaction-process' ){
               return (
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                    <Router>
