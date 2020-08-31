@@ -41,8 +41,8 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                         fgInwardUnit              : req.body.fgInwardUnit,
                         scrapQty                  : req.body.scrapQty,
                         scrapUnit                 : req.body.scrapUnit,
-                        balance                   : req.body.OutwardRawMaterial,
-                        balanceUnit               : req.body.OutwardUnit,
+                        balance                   : req.body.finishedGoodsTotalQty,
+                        balanceUnit               : req.body.finishedGoodsUnit,
                         finishedBy                : req.body.finishedBy,
                         createdBy                 : req.body.createdBy,
                         createdAt                 : new Date(),
@@ -111,8 +111,8 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
                     scrapQty                  : req.body.scrapQty,
                     scrapUnit                 : req.body.scrapUnit,
                     finishedBy                : req.body.finishedBy,
-                    balance                   : req.body.OutwardRawMaterial,
-                    balanceUnit               : req.body.OutwardUnit
+                    balance                   : req.body.finishedGoodsTotalQty,
+                    balanceUnit               : req.body.finishedGoodsUnit,
                     // createdBy                 : req.body.createdBy,
                     // createdAt                 : new Date()
                 }
@@ -572,8 +572,8 @@ var insertFinishedGoodsEntry = async (data) => {
                     scrapUnit                 : data.scrapUnit,
                     fileName                  : data.fileName,
                     finishedBy                : data.finishedBy,
-                    balance                   : data.OutwardRawMaterial,
-                    balanceUnit               : data.OutwardUnit,
+                    balance                   : data.finishedGoodsTotalQty,
+                    balanceUnit               : data.finishedGoodsUnit,
                     createdBy                 : data.createdBy,
                     createdAt                 : new Date(),
                 });
