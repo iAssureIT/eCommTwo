@@ -2160,7 +2160,7 @@ exports.productBulkAction = (req, res, next) => {
                 main();
                 async function main() {
                     for(let i=0;i<=req.body.selectedProducts.length;i++){
-                        console.log("req.body.selectedProducts===",req.body.selectedProducts[i]);
+                        // console.log("req.body.selectedProducts===",req.body.selectedProducts[i]);
                         await remove_product_from_cart(req.body.selectedProducts[i]);
                     }
                 }
@@ -2194,17 +2194,14 @@ exports.productBulkAction = (req, res, next) => {
     }
 };
  
-
+//if product is unpublish by admin and that product is available in cart collection then it should be removed from cart collection 
 var remove_product_from_cart = async(productId) =>{
-    console.log("selected products=",productId);
-    
-    Carts.update(
-        // {"cartItems.$.product_ID": req.body.selectedProducts[0]},
+    // console.log("selected products=",productId);
+    Carts.update(        
         {},
         {
-            '$pull':{ 'cartItems':{'product_ID': productId }},
-            
-			// $pull: { "cartItems": { "product_ID": req.body.selectedProducts[0] } }
+            '$pull':{ 'cartItems':{'product_ID': productId }},            
+			
         },
         {new:true,multi:true},
     )

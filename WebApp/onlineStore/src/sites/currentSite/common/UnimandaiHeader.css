@@ -520,10 +520,33 @@ button.button_search {
         min-width: 392px !important;
         margin-top: 10px !important;
     }
-}
+} 
 @media only screen and (min-width: 768px) and (max-width: 1024px) { 
     .mega-menu span{
-        font-size: 10px !important;
+        font-size: 8px !important;
+    }
+    ul.main-nav > li > a{
+        padding: 10px 8px;
+    }
+    ul.main-nav > li{
+        padding: 0px 2px;
+    }
+    .shippingBlock p{
+        font-size: 9px;
+    }
+    .shippingBlock h3{
+        font-size: 10px;
+    }
+    .owl-next,
+    .owl-prev{
+        /* margin-left: 932px;  */
+        display: none !important;
+    }
+    .whyUsDiv{
+        padding:0px !important;
+    }
+    .owl-dots{
+        display: none;
     }
 }
 @media only screen and (min-width: 481px) and (max-width: 768px) { 

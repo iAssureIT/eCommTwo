@@ -501,7 +501,7 @@ loginPage(event){
                     </div>
                 </div>
                 
-                <div className="col-lg-6 col-md-6 col-sm-1 col-xs-6 megamenuWrapper">
+                <div className="col-lg-6 col-md-5 col-sm-1 col-xs-6 megamenuWrapper">
                   <nav>
                       <Megamenu />
                   </nav>
@@ -521,7 +521,7 @@ loginPage(event){
                     </div> 
                 </div> */}
                           
-                <div className="col-lg-1 col-md-1 col-sm-2 col-xs-4 box-right">  
+                <div className="col-lg-1 col-md-2 col-sm-2 col-xs-4 box-right">  
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
                       <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">                          
                           <span className="  "><a href="" className="faIcon " data-toggle="modal" data-target="#pincodeModal" area-hidden ="true" onClick={this.removeModalBackDrop.bind(this)}>

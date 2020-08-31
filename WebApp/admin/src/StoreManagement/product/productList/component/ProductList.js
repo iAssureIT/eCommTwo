@@ -297,7 +297,7 @@ class ProductList extends Component {
             selectedProducts: this.state.checkedProducts,
             selectedAction: this.state.selectedAction
         }
-        console.log("formValues--",formValues);
+        // console.log("formValues--",formValues);
         
         //when user unplish any product that time that product should be removed from cart collection if any user alredy added to his cart
         // if(selectedAction === "Unpublish"){

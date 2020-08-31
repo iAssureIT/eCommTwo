@@ -420,11 +420,11 @@ class EcommerceDiscountedProducts extends Component {
           <Message messageData={this.state.messageData} />
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productcomponentheading text-center">
-              <div className="producttextclass  col-lg-2">
+              <div className="producttextclass  col-lg-2 col-md-12 col-sm-12 col-xs-12">
                 <h3 className="row">
                   <b>{this.props.title}</b>
                 </h3>
-              </div>       
+              </div>     
               
             </div>
           </div>
@@ -472,7 +472,7 @@ class EcommerceDiscountedProducts extends Component {
                                         <div className="innerDiv">
                                           <div className="product-brand" title={data.brand}>{data.brand}</div>
                                           <div className="product-item-link" title={data.productName}>{data.productName} (<span className="marathiName">{data.shortDescription}</span>) </div>
-                                          <div className="col-lg-12 col-md-12 NOpadding">
+                                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                             {
                                               data.discountPercent ?                                                
                                                   localStorage.getItem("websiteModel")=== "FranchiseModel" ?

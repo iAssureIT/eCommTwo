@@ -82,8 +82,8 @@ export default class OurCources extends React.Component {
 				<div className="col-lg-12 col-md-12 hidden-xs hidden-sm ocWrap WCUWrap " style={{marginbottom:"100px"}}>
 					<div className="mtop65">
 					 <div className="ocTitle txt2c offeredTitle text-center"><h3>Why Choose Us</h3></div>
-					  <div className="col-lg-12 ">
-						<div className="col-lg-8 col-lg-offset-2 text-center whyusText">
+					  <div className="col-lg-12 col-md-12 ">
+						<div className="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 text-center whyusText">
 							<p>
 								There are various motivations to work with Consumer Fresh Produce. We give the freshest, most 
 								excellent Fruits and Vegetables. Our absolute duty towards the customers, our imaginative utilization 
@@ -97,8 +97,8 @@ export default class OurCources extends React.Component {
 						</div>
 					  </div> 
 					  {/* <div className="col-lg-12 whyUsDiv" style={{background: "url("+why_choose_BgImg +")"}}> */}
-					  <div className="col-lg-12 whyUsDiv">
-							<div className="col-lg-3  courceblockDiv1 courceblockDiv12">
+					  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 whyUsDiv">
+							<div className="col-lg-3 col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1 col-xs-12 courceblockDiv1 courceblockDiv12">
 							{
 		                		data && data.length > 0 ?
 				      				data.map((data, index)=>{
@@ -122,21 +122,21 @@ export default class OurCources extends React.Component {
 	                				null
 		                		}
 		                	</div>
-							<div className="col-lg-4 whychooseUsImg">
+							<div className="col-lg-4 col-md-4 col-sm-4 whychooseUsImg">
 								<img src={images_choose} className="WhyChooseUsImg"/>
 							</div>
-                            <div className="col-lg-offset-1 col-lg-3 courceblockDiv1 movemasterdiv">
+                            <div className="col-lg-offset-1 col-lg-3 col-md-3 col-md-offset-1  courceblockDiv1 movemasterdiv">
                            {/*  <div className=" col-md-2"></div>*/}
 							{
 		                		data1 && data1.length > 0 ?
 				      				data1.map((data1, index)=>{
 	                					return(
-						          		<div className="col-lg-12 Allblog whyUsSubDiv">
-						          			 <div className="col-lg-12">
-												<div className= "col-lg-10">
+						          		<div className="col-lg-12 col-md-12 col-sm-12 Allblog whyUsSubDiv">
+						          			 <div className="col-lg-12 col-md-12 col-sm-12">
+												<div className= "col-lg-10 col-md-10 col-sm-10">
 													<p className="subtext_choose">{data1.blogTitle}</p>
 												</div>
-												<div className="col-lg-2">
+												<div className="col-lg-2 col-md-2 col-sm-2">
 													<img src={data1.blogsubimg}/>
 												</div>
                                               </div>

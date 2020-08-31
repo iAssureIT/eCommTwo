@@ -132,7 +132,7 @@ background-color: transparent !important;
     position: absolute;
  }
 .customnNavButton .owl-nav button.owl-prev{
-    display: block !important;
+    display: block;
     background: transparent !important;
     border-radius: 0px !important;
     margin-top: -200px !important;
@@ -147,7 +147,7 @@ background-color: transparent !important;
     font: inherit;
 }
 .customnNavButton .owl-nav  button.owl-next{
-   display: block !important;
+   display: block;
     background: transparent !important;
     border-radius: 0px !important;
     margin-top: -50px;

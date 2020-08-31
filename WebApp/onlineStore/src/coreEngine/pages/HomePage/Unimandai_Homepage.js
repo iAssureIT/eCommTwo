@@ -255,8 +255,7 @@ class HomePage extends Component {
           </div>
           </div>
 
-        <Unimandai_SaleProductDivider />
-                
+        <Unimandai_SaleProductDivider />                
         <div className="homeRow col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
           {
             process.env.REACT_APP_PROJECT_NAME === '4_UniMandai' ?

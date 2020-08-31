@@ -187,14 +187,14 @@ class ConfirmOtp extends Component {
                       <div className="loginforgotpass mt25">
                         <lable>Found your Password?</lable>&nbsp;<a href="" onClick={this.openSignInModal.bind(this)} className="" >Sign In <b>&#8702;</b></a>
                       </div>
-                      <div className="mt30 col-lg-12 mb25">
+                      <div className="mt30 col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25">
                         <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                          <div id="resendOtpBtn" onClick={this.resendOtp.bind(this)} className="col-lg-12 btn loginBtn_uni  systemsecBtn">
-                            Resend OTP
+                          <div id="resendOtpBtn" onClick={this.resendOtp.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn_uni  systemsecBtn">
+                              Resend OTP
                           </div>
                         </div>
-                        <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
-                          <button type="submit" onClick={this.confirmOTP.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn loginBtn_uni systemsecBtn">Submit</button>
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                           <button type="submit" onClick={this.confirmOTP.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn loginBtn loginBtn_uni systemsecBtn">Submit</button>
                         </div>
                       </div>
                     </form>
