@@ -848,7 +848,6 @@ class Checkout extends Component {
                                         var paymentdetails = {
                                             MERCHANT_ID: this.state.partnerid,
                                             MERCHANT_ACCESS_CODE: this.state.secretkey,
-                                            // REFERENCE_NO: Math.round(new Date().getTime() / 1000),
                                             REFERENCE_NO: result.data.order_ID,
                                             AMOUNT: this.state.amountofgrandtotal*100,
                                             // AMOUNT: this.props.recentCartData.length > 0 ?
