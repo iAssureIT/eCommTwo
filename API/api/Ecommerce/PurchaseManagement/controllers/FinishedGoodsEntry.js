@@ -41,8 +41,8 @@ exports.insert_FinishedGoodsEntry = (req,res,next)=>{
                         fgInwardUnit              : req.body.fgInwardUnit,
                         scrapQty                  : req.body.scrapQty,
                         scrapUnit                 : req.body.scrapUnit,
-                        balance                   : req.body.finishedGoodsTotalQty,
-                        balanceUnit               : req.body.finishedGoodsUnit,
+                        balance                   : req.body.fgInwardQty,
+                        balanceUnit               : req.body.fgInwardUnit,
                         finishedBy                : req.body.finishedBy,
                         createdBy                 : req.body.createdBy,
                         createdAt                 : new Date(),
@@ -111,8 +111,8 @@ exports.update_FinishedGoodsEntry = (req,res,next)=>{
                     scrapQty                  : req.body.scrapQty,
                     scrapUnit                 : req.body.scrapUnit,
                     finishedBy                : req.body.finishedBy,
-                    balance                   : req.body.finishedGoodsTotalQty,
-                    balanceUnit               : req.body.finishedGoodsUnit,
+                    balance                   : req.body.fgInwardQty,
+                    balanceUnit               : req.body.fgInwardUnit,
                     // createdBy                 : req.body.createdBy,
                     // createdAt                 : new Date()
                 }
