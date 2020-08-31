@@ -850,7 +850,7 @@ class Checkout extends Component {
                                             MERCHANT_ACCESS_CODE: this.state.secretkey,
                                             // REFERENCE_NO: Math.round(new Date().getTime() / 1000),
                                             REFERENCE_NO: result.data.order_ID,
-                                            AMOUNT: this.state.amountofgrandtotal,
+                                            AMOUNT: this.state.amountofgrandtotal*100,
                                             // AMOUNT: this.props.recentCartData.length > 0 ?
                                             //     this.state.discountdata !== undefined ?
                                             //         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
