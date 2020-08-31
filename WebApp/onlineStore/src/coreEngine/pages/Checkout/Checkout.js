@@ -112,11 +112,11 @@ class Checkout extends Component {
                                                         : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
                                                     : parseInt(this.props.recentCartData[0].total)
                                                 : "0.00";
-                // var amt =(100/1)*amountofgrandtotal;
-                // var rsamt = amt/100;
-                // console.log('amountofgrandtotal = ', amt);
-                // console.log('amountofgrandtotal = ',rsamt);
-                this.setState({amountofgrandtotal : amountofgrandtotal})
+                    // var amt =(100/1)*amountofgrandtotal;
+                    // var rsamt = amt/100;
+                    // console.log('amountofgrandtotal = ', amt);
+                    // console.log('amountofgrandtotal = ',rsamt);
+                    this.setState({amountofgrandtotal : amountofgrandtotal})
                  })
             })
             .catch((error) => {
@@ -850,7 +850,7 @@ class Checkout extends Component {
                                             MERCHANT_ACCESS_CODE: this.state.secretkey,
                                             // REFERENCE_NO: Math.round(new Date().getTime() / 1000),
                                             REFERENCE_NO: result.data.order_ID,
-                                            AMOUNT: this.state.amountofgrandtotal*100/1,
+                                            AMOUNT: this.state.amountofgrandtotal,
                                             // AMOUNT: this.props.recentCartData.length > 0 ?
                                             //     this.state.discountdata !== undefined ?
                                             //         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
