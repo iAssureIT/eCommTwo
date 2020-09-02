@@ -9,9 +9,13 @@
 .aboutheading{
 	margin-top: 90px !important;
 }
-.contactcontent h2{
+.contactcontent h2, 
+.contactcontent h4{
 	font-weight: bold;
 	text-transform: uppercase;
+}
+.contactcontent h4{
+	margin-top: 40px;
 }
 .textparaabout{
 	line-height: 20px;

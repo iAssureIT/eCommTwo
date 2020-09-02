@@ -26,6 +26,7 @@ class AskPincode extends Component {
             "pincode"             : "",
             "pincodeExists"       : "",
             "deliveryPincode"     :"",
+            "pinValid"            :"",
         }        
       }  
      componentDidMount(){
@@ -137,17 +138,31 @@ class AskPincode extends Component {
         
       }
       validatePIN (pin) {
-        return /^(\d{4}|\d{6})$/.test(pin);
-    }
+		if(pin.length === 4 ||  pin.length === 6 ) {
+		  if( /[0-9]/.test(pin))  {
+			return true;
+		  }else {return false;}
+		}else {
+			return false;
+			}
+	 }
 
     handleChange(event) {         
         $('#pincode').click(function(){
             $("#pageOpacity").show();        
         });  
-        // console.log("Event.target.name:",event.target.name);   
-        if (event.target.name === 'pincode') {
-            this.handlePincode(event.target.value);
-        }
+         
+        // if (event.target.name === 'pincode') {
+        //     this.handlePincode(event.target.value);
+        // }
+
+        if(event.target.name ==="pincode"){
+			var pinValid = this.validatePIN(event.target.value);
+			this.setState({
+				pinValid : pinValid,
+			}); 
+			console.log("pincode valid ==",pinValid);
+		}
     }
     handlePincode(pincode){        
         if (pincode !== '') {
@@ -224,10 +239,14 @@ class AskPincode extends Component {
                                                                         
                                                                     <div className="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                                         <span className="input-group-addon"><i className="fa fa-map-marker" aria-hidden="true"></i></span>
-                                                                        <input id="pincode" type="text" className="form-control pinocodeInput" minLength="6" maxLength="6" name="pincode" placeholder="Pincode..."  onChange={this.handleChange.bind(this)}/>
+                                                                        <input id="pincode" type="number" className="form-control pinocodeInput" minLength="6" maxLength="6" name="pincode" placeholder="Pincode..."  onChange={this.handleChange.bind(this)}/>
                                                                         
-                                                                        {/* <input class="form-control error pinocodeInput" id="pincode" type="text" id="pincode" className="pinocodeInput" ref="pincode" name="pincode" placeholder = "Enter Pincode..." aria-invalid="true"></input> */}
                                                                     </div> 
+                                                                    {this.state.pinValid=== false?
+                                                                        <label className="error">Please enter valid pincode</label>
+                                                                    :
+                                                                        null 
+                                                                    }
                                                                     {/* {this.state.pincodeExists ? null : <label className="error" style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}   */}
                                                                     </div>                                           
                                                                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-5">

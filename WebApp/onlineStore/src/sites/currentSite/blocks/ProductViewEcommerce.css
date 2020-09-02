@@ -457,10 +457,6 @@
     color: #fff;
 }
 
-
-
-
-
 .prod-detail-filpCommon {
     /* position: absolute; */
     /*border: 1px solid #aaa;*/
@@ -1056,6 +1052,12 @@ position:relative;
 }
 .boxBorderInner{
     margin-top: 0px !important;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.boxBorder{
+    padding-right:0px;
+    padding-left:0px;
 }
 .productview .owl-nav button.owl-next{
     margin-left: 240px;
@@ -1064,4 +1066,5 @@ position:relative;
 .productview .owl-nav button.owl-prev{
     margin-top: -155px !important;
 }
+
 }

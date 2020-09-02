@@ -799,4 +799,7 @@ and (max-device-width : 1024px) {
    .customnNavButton .owl-nav button.owl-next{
         margin-left: 650px;
    }
+.owl-dot{
+    display: none !important;
+}
 }

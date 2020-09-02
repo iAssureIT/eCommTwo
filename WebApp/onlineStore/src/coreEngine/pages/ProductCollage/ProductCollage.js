@@ -780,7 +780,7 @@ class ProductCollage extends Component {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv" style={{"minHeight":"200px"}}>
 				<div className="row">
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 caraousalWrapper">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<ul className="links">
 								<li><a href="/">Home /</a></li>

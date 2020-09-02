@@ -501,7 +501,7 @@ loginPage(event){
                     </div>
                 </div>
                 
-                <div className="col-lg-6 col-md-5 col-sm-1 col-xs-6 megamenuWrapper">
+                <div className="col-lg-6 col-md-5 col-sm-6 col-xs-6 megamenuWrapper">
                   <nav>
                       <Megamenu />
                   </nav>
@@ -880,7 +880,7 @@ loginPage(event){
         <div id="loginFormModal" className="modal in" style={{'background': 'url(' +signupBgImg  +')'}} data-backdrop="static" data-keyboard="false" >
           <div className="modal-dialog" >                                        
               {/* <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12" style={{'background': 'url(' +signupBgImg  +')'}}>                             */}
-              <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">                            
+              <div className="modal-content loginModalContent col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">                            
                   <div className="modal-body">   
                   <button type="button" className="close"  data-dismiss="modal" aria-hidden="true" onClick={this.CloseModal.bind(this)}>&times;</button>                                                            
                       {this.props.formToShow === "login" ?

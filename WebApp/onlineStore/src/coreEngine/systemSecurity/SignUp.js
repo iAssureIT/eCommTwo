@@ -44,8 +44,10 @@ class SignUp extends Component {
 			termsCondition: ["The price of products  is as quoted on the site from time to time.",
 				"Price and delivery costs are liable to change at any time, but changes will not affect orders in respect of which we have already sent you a Despatch Confirmation.",
 				"Products marked as 'non-returnable' on the product detail page cannot be returned.",
-				"Products may not be eligible for return in some cases, including cases of buyer's remorse such as incorrect model or color of product ordered or incorrect product ordered."]
-		}
+				"Products may not be eligible for return in some cases, including cases of buyer's remorse such as incorrect model or color of product ordered or incorrect product ordered."],
+			pinValid: ""
+			}
+			
 		this.handleChange = this.handleChange.bind(this);
 	}
 	componentDidMount() {
@@ -106,9 +108,8 @@ class SignUp extends Component {
 				pincode: {
 					required: true,
 					regxpincode: /^[1-9][0-9]{5}$/,
+					// regxpincode: /^[1-9]{1}[0-9]{2}\\s{0, 1}[0-9]{3}$/
 				}
-
-
 			},
 			messages: {
 				signupConfirmPassword: "Password do not match"
@@ -306,12 +307,10 @@ class SignUp extends Component {
 		if (event.target.value !== '') {
 			axios.get('/get/checkUserExists/' + event.target.value)
 				.then((response) => {
-
 					if (response.data.length > 0) {
 						$(".checkUserExistsError").show();
 						$('.button3').attr('disabled', 'disabled');
 						this.setState({ checkUserExists: 1 })
-
 					} else {
 						$(".checkUserExistsError").hide();
 						$('.button3').removeAttr('disabled');
@@ -325,12 +324,28 @@ class SignUp extends Component {
 		}
 	}
 
-	handleChange(event) {
+	handleChange(event){		
 		this.setState({
 			[event.target.name]: event.target.value
-		});
+		}); 
+		if(event.target.name ==="pincode"){
+			var pinValid = this.validatePIN(event.target.value);
+			this.setState({
+				pinValid : pinValid,
+			}); 
+			console.log("pincode valid ==",pinValid);
+		}
 	}
-	acceptcondition(event) {
+	validatePIN (pin) {
+		if(pin.length === 4 ||  pin.length === 6 ) {
+		  if( /[0-9]/.test(pin))  {
+			return true;
+		  }else {return false;}
+		}else {
+			return false;
+			}
+	}
+	acceptcondition(event){
 		var conditionaccept = event.target.value;
 		if (conditionaccept === "acceptedconditions") {
 			$(".acceptinput").removeAttr('disabled');
@@ -412,7 +427,12 @@ class SignUp extends Component {
 							</div>
 							<div className="form-group frmhgt textAlignLeft col-lg-6 col-md-12 col-sm-12 col-xs-12 mt15">
 								<label>Pincode</label><label className="astricsign">*</label>
-								<input minLength="6" maxLength="6" type="text" className="form-control" id="pincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
+								<input minLength="6" maxLength="6" type="number" className="form-control" id="pincode" ref="pincode" placeholder="" name="pincode" onChange={this.handleChange} />
+								{this.state.pinValid=== false?
+									<label className="error">Please enter valid pincode</label>
+								:
+									null 
+								}
 							</div>
 
 
