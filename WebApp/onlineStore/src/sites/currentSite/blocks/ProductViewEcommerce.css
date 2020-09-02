@@ -1059,6 +1059,9 @@ position:relative;
     padding-right:0px;
     padding-left:0px;
 }
+/* .owl-dot{
+    display: none;
+} */
 .productview .owl-nav button.owl-next{
     margin-left: 240px;
     margin-top: -35px !important;

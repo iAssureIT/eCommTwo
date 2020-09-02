@@ -491,7 +491,7 @@ class ProductViewEcommerce extends Component {
 		})
 	}
 	render() {
-		console.log("product data: =====",this.state.productData);
+		// console.log("product data: =====",this.state.productData);
 		const props = { width: 400, height: 350, zoomWidth: 750, offset: { vertical: 0, horizontal: 30 }, zoomLensStyle: 'cursor: zoom-in;', zoomStyle: 'z-index:1000;background-color:#fff; height:500px;width:750px;box-shadow: 0 4px 20px 2px rgba(0,0,0,.2);border-radius: 8px;', img: this.state.selectedImage ? this.state.selectedImage : notavailable };
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 mb20 boxBorder">
@@ -499,10 +499,10 @@ class ProductViewEcommerce extends Component {
 					<div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 stickyDiv">
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageContainer imgCont">
 							<div className="prod-detail-slider prod-detail-filpCommon col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-								<div id="react-app" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-xs item img-responsiveProduct">
+								<div id="react-app" className="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-sm hidden-xs item img-responsiveProduct">
 									<ReactImageZoom {...props} />
 								</div> 
-								<div id="" className="hidden-lg hidden-md col-sm-12 col-xs-12">
+								<div id="" className="hidden-lg hidden-md col-sm-8 col-sm-offset-2 col-xs-12">
 								<OwlCarousel
 									className="owl-theme productview"
 									margin={0}
@@ -552,7 +552,7 @@ class ProductViewEcommerce extends Component {
 								null
 						}
 						</div> */}
-						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageContainer mt50 hidden-xs">
+						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imageContainer mt50 hidden-sm hidden-xs">
 							<div className="">
 								<OwlCarousel
 									className="owl-theme productview"
@@ -654,7 +654,7 @@ class ProductViewEcommerce extends Component {
 								</div>
 								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 adCart ">
 									<div className="row spc">
-										<form id="productView" className="col-lg-7 col-md-7 col-sm-12 col-xs-12 NOpadding">
+										<form id="productView" className="col-lg-7 col-md-12 col-sm-12 col-xs-12 NOpadding">
 										{
                                             this.state.productData.availableQuantity > 0 ?
 												<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 NOpadding">

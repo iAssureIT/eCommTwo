@@ -1136,9 +1136,9 @@ class ProductCollage extends Component {
 															</div>
 
 															<div className="col-lg-2 col-md-2 col-sm-3 col-xs-4 pull-right NoPadding">
-																<label className="col-lg-5 col-md-5 col-sm-10 col-xs-10 NoPadding labeldiv">Show</label>
+																<label className="col-lg-5 col-md-12 col-sm-12 col-xs-12 NoPadding labeldiv">Show</label>
 																{this.state.envVariable == '4_UniMandai' ?
-																	<select className="limitProducts col-lg-6 col-md-6 col-sm-6 col-xs-10 NoPadding" onChange={this.limitProducts.bind(this)}>
+																	<select className="limitProducts col-lg-6 col-md-12 col-sm-12 col-xs-12 NoPadding" onChange={this.limitProducts.bind(this)}>
 																		<option value="50">50</option>
 																		<option value="100">100</option>
 																		<option value="150">150</option>

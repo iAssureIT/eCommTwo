@@ -141,10 +141,8 @@
     background-color: #fff !important;
 }
 .mega-menu span{
-    font-size: 12px !important;
-}
-.mega-menu span{
     text-transform: uppercase !important;
+    font-size: 12px;
 }
 ::placeholder{
     font-size: 12px !important;
@@ -523,7 +521,7 @@ button.button_search {
 } 
 @media only screen and (min-width: 768px) and (max-width: 1024px) { 
     .mega-menu span{
-        font-size: 8px !important;
+        /* font-size: 8px !important; */
     }
     ul.main-nav > li > a{
         padding: 10px 8px;
@@ -549,6 +547,19 @@ button.button_search {
         display: none;
     }
 }
+
+@media only screen and (min-width: 1024px) and (max-width: 1024px) {
+    .box-right .cart .cart-count{
+        right: 12px;
+    }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1290px) {
+    .mega-menu span{
+       font-size: 9px !important;
+    }
+}
+
 @media only screen and (min-width: 481px) and (max-width: 768px) { 
 .menuDropDown .dropbtn{
     /* border-bottom: 0px solid #ccc !important; */

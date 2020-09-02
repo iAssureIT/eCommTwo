@@ -599,7 +599,7 @@ loginPage(event){
                       }
                       </span>
                         {user_ID ?                            
-                          <ul className="dropdown-menu cart-dropdown-menu" role="menu" aria-labelledby="menu1">
+                          <ul className="dropdown-menu cart-dropdown-menu hidden-sm hidden-md" role="menu" aria-labelledby="menu1">
                             <div className="checkoutBtn">
                             <div>
                               <p className="categoryDetails"><b>Cart Details</b></p>
