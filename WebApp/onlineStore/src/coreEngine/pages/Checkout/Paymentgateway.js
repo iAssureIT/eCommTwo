@@ -50,22 +50,20 @@ class Paymentgateway extends Component {
     render() {
         return (
             <div>
-               
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutWrapper" style={{backgroundColor: "#ffffff"}}>                   
-                        <div className="col-lg-5 col-lg-offset-5 col-md-2 col-sm-12 col-xs-12 loadercircle" >
-                            <Loaderspinner
-                                type="Circles"
-                                color="#80b435"
-                                height={140}
-                                width={140}
-                            />
-                        </div>
-                        <div className="row transaction">
-                            <span className="col-lg-12 col-md-6 col-sm-6 col-xs-6 transactionpageText">Processing ...</span>
-                            <span className="col-lg-12 col-md-6 col-sm-6 col-xs-6 transactionpageText">Please do not refresh the page</span>
-                        </div>
+                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutWrapper" style={{backgroundColor: "#ffffff"}}>                   
+                    <div className="col-lg-5 col-lg-offset-5 col-md-2 col-sm-12 col-xs-12 loadercircle" >
+                        <Loaderspinner
+                            type="Circles"
+                            color="#80b435"
+                            height={140}
+                            width={140}
+                        />
                     </div>
-                
+                    <div className="row transaction">
+                        <span className="col-lg-12 col-md-6 col-sm-6 col-xs-6 transactionpageText">Processing ...</span>
+                        <span className="col-lg-12 col-md-6 col-sm-6 col-xs-6 transactionpageText">Please do not refresh the page</span>
+                    </div>
+                </div>
             </div>   
         );
     }
