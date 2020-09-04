@@ -86,6 +86,7 @@ class ProductCollage extends Component {
 			this.getSize();
 			this.getColor();
 			this.getAttributes();
+
 			// console.log("this.props.match.params.sectionID===",this.props.match.params.sectionID);
 			this.getProductsBySection(this.props.match.params.sectionID);
 		}
@@ -149,7 +150,7 @@ class ProductCollage extends Component {
 			})
 	}
 	getProductsBySection(sectionID) {
-		// console.log(" getProductsBySection Section ID:",sectionID);
+		console.log(" getProductsBySection Section ID:",sectionID);
 		var limit;
 		if ($('.limitProducts').val()) {
 			limit = $('.limitProducts').val();
@@ -160,7 +161,6 @@ class ProductCollage extends Component {
 				limit = "10";
 			}
 		}
-		console.log("limit====:",limit);
 		axios.get("/api/products/get/list/" + sectionID)
 			.then((response) => {
 				var products = response.data.filter((array_el, index) => {

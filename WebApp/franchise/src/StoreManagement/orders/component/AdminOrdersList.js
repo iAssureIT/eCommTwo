@@ -351,8 +351,9 @@ class AdminOrdersList extends Component{
                           value.deliveryStatus === "Delivered & Paid"   ? "admin-orders-stat-Deliveredpaid" : 
                           value.deliveryStatus === "Returned"   ? "admin-orders-stat-Dispatched" : 
                           value.deliveryStatus === "Cancelled"   ? "admin-orders-stat-Dispatched" : ""
+
                               )  +" col-lg-12 col-md-12 col-sm-6 col-xs-12"
-                                                                                      
+                                                          
                         }>
                         {
                            value.deliveryStatus === "Dispatch" ? "Dispatched" : value.deliveryStatus

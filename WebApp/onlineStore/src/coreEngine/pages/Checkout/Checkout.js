@@ -21,7 +21,6 @@ import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from 'moment';
-import swal from 'sweetalert';
 
 class Checkout extends Component {
     constructor(props) {
@@ -327,7 +326,7 @@ class Checkout extends Component {
         axios.get("/api/ecommusers/" + user_ID)
             .then((response) => {
                 console.log('userData res', response.data.deliveryAddress);
-                
+               
                 this.setState({
                     "deliveryAddress": response.data.deliveryAddress,
                     "username": response.data.profile.fullName,
@@ -499,7 +498,7 @@ class Checkout extends Component {
                                 // 'effectiveDateTo'   : effectiveDateTo,
                                 'timeStamp': createdAt,
                             });
-                        } // for loop j 
+                        } // for loop j
                         var taxesAllowed = _.pluck(taxes, "taxName");
                         var uniqueTaxes = _.uniq(taxesAllowed);
                         if (uniqueTaxes) {
@@ -579,8 +578,8 @@ class Checkout extends Component {
                                             'taxTotalDisplay': (parseFloat(calTax[d].taxTotal)),
                                             'timeStamp': calTax[d].timeStamp,
                                         }); // end array
-                                    } // end if 
-                                }  // end of d loop   
+                                    } // end if
+                                }  // end of d loop  
                             } // end else
                         }
 
@@ -611,14 +610,14 @@ class Checkout extends Component {
                                     var taxCalc = {
                                         'finalTotal': (parseFloat(finalTotal)),
                                         'taxes': calculateTax,
-                                    } // end of taxCalc         
+                                    } // end of taxCalc        
                                 }
                             } else {
 
                                 var taxCalc = {
                                     'finalTotal': (parseFloat(finalTotal)),
                                     'taxes': calculateTax,
-                                } // end of taxCalc                            
+                                } // end of taxCalc                           
 
 
                             }
@@ -659,7 +658,7 @@ class Checkout extends Component {
     }
     placeOrder(event) {
         event.preventDefault();
-        let isChecked = this.state.isChecked;        
+        let isChecked = this.state.isChecked;       
           if (isChecked && this.state.pincode!="" && this.state.addressLine1!="" && this.state.addressLine2!="") {
                 this.setState({
                 isCheckedError: []
@@ -668,7 +667,7 @@ class Checkout extends Component {
             this.setState({
                 isCheckedError: ["Please accept the terms & conditions."]
                 });
-                swal("Please accept the terms & conditions and provide your valid delivery Address");
+                // swal("Please accept the terms & conditions and provide your valid delivery Address");
             }
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
@@ -721,7 +720,7 @@ class Checkout extends Component {
                     "latitude": deliveryAddress.length > 0 ? deliveryAddress[0].latitude : "",
                     "longitude": deliveryAddress.length > 0 ? deliveryAddress[0].longitude : "",
                 }
-                // console.log("inside if address values====",addressValues);               
+                // console.log("inside if address values====",addressValues);              
             } else {
                 // console.log("inside else new address");
                 addressValues = {
@@ -817,7 +816,7 @@ class Checkout extends Component {
                             //         : parseInt(this.props.recentCartData[0].total)
                             //     : "0.00",
                             // discount: this.props.recentCartData[0].discount,
-                            
+                           
                         }
 
                         if (this.state.isChecked) {
@@ -835,7 +834,7 @@ class Checkout extends Component {
                                                 "autoDismiss": true
                                             }
                                         })
-                                        
+                                       
                                         setTimeout(() => {
                                             this.setState({
                                                 messageData: {},
@@ -920,7 +919,7 @@ class Checkout extends Component {
                             this.setState({
                                 isCheckedError: ["Please accept the terms & conditions."]
                             });
-                        }//end isChecked                      
+                        }//end isChecked                     
                     })
                     .catch((error) => {
                         console.log('error', error);
@@ -1073,7 +1072,7 @@ class Checkout extends Component {
                 // console.log('Successfully got latitude and longitude', { lat, lng });
             });
         this.setState({ addressLine1: address });
-    }; //end google api   
+    }; //end google api  
     camelCase(str) {
         return str
             .toLowerCase()
@@ -1351,7 +1350,7 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                         </div>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
-                                        
+                                       
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
@@ -1366,7 +1365,7 @@ class Checkout extends Component {
                                         {/* <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Order Total</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span> */}
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderTotalText">Grand Total</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight orderTotalPrize"><i className={"fa fa-inr"}></i>
-                                            {/* {
+                                            {
                                                 this.props.recentCartData.length > 0 ?
                                                     this.state.discountdata !== undefined ?
                                                         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
@@ -1374,8 +1373,8 @@ class Checkout extends Component {
                                                             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
                                                         : parseInt(this.props.recentCartData[0].total)
                                                     : "0.00"
-                                            } */}
-                                            {this.state.amountofgrandtotal}
+                                            }
+                                            {/* {this.state.amountofgrandtotal} */}
                                         </span>
 
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt15 mb15">
@@ -1433,7 +1432,7 @@ class Checkout extends Component {
                                             <div id="termsNconditions col-lg-6 col-md-12"></div>
                                         </div>
                                         {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
-                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
+                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>  
                                             <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
                                                 <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
                                                 {
@@ -1464,7 +1463,7 @@ class Checkout extends Component {
                                             />
                                         </div>
                                     }
-                                        
+                                       
                                     </div>
                                 </div>
                             </div>
