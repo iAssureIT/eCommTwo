@@ -17,7 +17,7 @@ export default class AdminDashboard extends Component{
       menuValues : {
         ordermanagement : false,
         inventoryData   : false,
-        billingData     : false,
+        billingDaReportsta     : false,
         reportData      : false,   
         myOrder         : false,     
       }
@@ -286,7 +286,7 @@ export default class AdminDashboard extends Component{
                   <i className={"fa pull-right menu-icon-toggle "+(reportData?this.openIcon:this.closeIcon)} />
                 </span>
               </a>
-              {/* <ul className="treeview-menu" >    
+              <ul className="treeview-menu" >    
                 <li className="noPadLR">
                   <a href="/report" data-id="/report" title="Sales Report" onClick={this.activeMenu.bind(this)}>
                     <i className="fa fa-circle-o dashr" aria-hidden="true"></i>
@@ -298,7 +298,7 @@ export default class AdminDashboard extends Component{
                     <i className="fa fa-circle-o dashr" />Category Wise Sales Report
                   </a> 
                 </li>  
-              </ul> */}
+              </ul>
             </li>
             
           </ul>

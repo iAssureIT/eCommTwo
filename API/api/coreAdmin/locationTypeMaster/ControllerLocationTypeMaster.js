@@ -19,7 +19,7 @@ exports.insertLocationType = (req,res,next)=>{
                             _id                         : new mongoose.Types.ObjectId(),
                             companyID                   : req.body.companyID,
                             locationType                : req.body.fieldValue,
-                            createdBy                   : req.body.createdBy,
+                            createdBy                   : req.body.createdBy ? req.body.createdBy : null,
                             createdAt                   : new Date()
                         })
                         locationTypeMaster.save()

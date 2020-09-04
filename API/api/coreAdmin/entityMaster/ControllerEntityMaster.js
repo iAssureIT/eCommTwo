@@ -26,7 +26,7 @@ exports.insertEntity = (req,res,next)=>{
             }else{
                 const entity = new EntityMaster({
                     _id                       : new mongoose.Types.ObjectId(),
-                    supplierOf                : req.body.supplierOf,
+                    supplierOf                : req.body.supplierOf ? req.body.supplierOf : null,
                     entityType                : req.body.entityType,
                     profileStatus             : req.body.profileStatus,
                     companyNo                 : getnext ? getnext : 1,
@@ -42,7 +42,7 @@ exports.insertEntity = (req,res,next)=>{
                     companyPhone              : req.body.companyPhone,
                     companyEmail              : req.body.companyEmail,
                     userID                    : req.body.userID,  
-                    createdBy                 : req.body.createdBy,
+                    createdBy                 : req.body.createdBy ? req.body.createdBy : null,
                     createdAt                 : new Date()
                 })
                 entity.save()
