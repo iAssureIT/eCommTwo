@@ -5,7 +5,8 @@ const Category      = require('../categories/Model');
 const Sections      = require('../sections/Model');
 const FailedRecords = require('../failedRecords/Model');
 const Orders        = require('../orders/Model');
-const Carts = require('../cart/Model');
+const Carts         = require('../cart/Model');
+const Wishlists     = require('../wishlist/Model');
 var ObjectId        = require('mongodb').ObjectID;
 var UnitOfMeasurmentMaster = require('../departmentMaster/ModelUnitofmeasurment');
 const franchisegoods = require('../distributionManagement/Model');
@@ -2162,6 +2163,7 @@ exports.productBulkAction = (req, res, next) => {
                     for(let i=0;i<=req.body.selectedProducts.length;i++){
                         // console.log("req.body.selectedProducts===",req.body.selectedProducts[i]);
                         await remove_product_from_cart(req.body.selectedProducts[i]);
+                        await remove_product_from_wishlist(req.body.selectedProducts[i]);
                     }
                 }
 
@@ -2205,6 +2207,20 @@ var remove_product_from_cart = async(productId) =>{
         },
         {new:true,multi:true},
     )
+    .exec()
+    .then(data=>{
+        if(data.nModified == 1){
+            resolve(data);
+        }
+    })
+    .catch(err =>{
+        resolve(0);
+    });
+}
+//if product is unpublish by admin and that product is available in wishlist collection then it should be removed from wishlist collection 
+var remove_product_from_wishlist = async(productId) =>{
+    console.log("selected products to remove=",productId);      
+    Wishlists.deleteMany({ 'product_ID': productId})
     .exec()
     .then(data=>{
         if(data.nModified == 1){

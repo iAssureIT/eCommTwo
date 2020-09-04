@@ -82,7 +82,7 @@ class Cart extends Component{
       }
 
     render(){
-        console.log("this.state.wishlistedProducts---",this.state.wishlistedProducts);
+        // console.log("this.state.wishlistedProducts---",this.state.wishlistedProducts);
         return(
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="row">

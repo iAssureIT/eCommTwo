@@ -364,11 +364,11 @@ class SignUp extends Component {
 		$(".checkUserExistsError").hide();
 	}
 	//working
-	showSignUpPass() {
+	showSignUpPass() { 
 		$('.showPwd').toggleClass('showPwd1');
 		$('.hidePwd').toggleClass('hidePwd1');
 		return $('#signupPassword').attr('type', 'text');
-	}
+	}	
 	hideSignUpPass() {
 		$('.showPwd').toggleClass('showPwd1');
 		$('.hidePwd').toggleClass('hidePwd1');

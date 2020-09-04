@@ -56,7 +56,7 @@ import ContactPage                               from '../pages/ContactPage/Cont
 import TermsAndCondition                         from '../pages/TermsAndCondition/TermsAndCondition.js';
 import LegalNotice                               from '../pages/LeagalNotice/LeagalNotice.js';
 import SiteMap                                   from '../pages/SiteMap/SiteMap.js';
-
+import PhotoGallery                              from '../pages/PhotoGallery/PhotoGallery.js';
 import MasterPage                from '../MasterPage/MasterPage.js';
 
 /*unimandai static blocks*/
@@ -131,6 +131,7 @@ class Routes extends Component{
                 <Route path="/sitemap" exact strict component={SiteMap}  />
                 <Route path="/contact-us" exact strict component={ContactPage}  />
                 <Route path="/legal-notice" exact strict component={LegalNotice}  />            
+                <Route path="/photo-gallery" exact strict component={PhotoGallery}  />            
               </div>
             );
             var pageUrl = window.location.pathname;
@@ -207,7 +208,8 @@ class Routes extends Component{
             <Route path="/terms-conditions" exact strict component={TermsAndCondition}  />
             <Route path="/legal-notice" exact strict component={LegalNotice}  /> 
             <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> 
-            <Route path="/blog-view/:blogId"       exact strict component={ BlogView } />           
+            <Route path="/blog-view/:blogId"       exact strict component={ BlogView } />
+            <Route path="/photo-gallery" exact strict component={PhotoGallery}  />                     
             
           </div>
         );

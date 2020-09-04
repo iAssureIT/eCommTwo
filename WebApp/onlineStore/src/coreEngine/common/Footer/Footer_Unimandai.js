@@ -106,6 +106,7 @@ export default class Footer extends Component {
                     <div className="categortTitle"><a href="/legal-notice"><span>Legal Notice</span></a></div>
                     <div className="categortTitle"><a href="/sitemap"><span>Site Map</span></a></div> 
                     <div className="categortTitle"><a href="/contact-us"><span>Contact Us</span></a></div>    
+                    <div className="categortTitle"><a href="/photo-gallery"><span>Photo Gallery</span></a></div>    
                                   
                 </div>
             </div>

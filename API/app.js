@@ -107,10 +107,13 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 
 
    /*WreHouse Master*/
-   const WareHouseRoutes					= require("./api/Ecommerce/warehouseMaster/RoutesWareHouseMaster.js");
+   const WareHouseRoutes				= require("./api/Ecommerce/warehouseMaster/RoutesWareHouseMaster.js");
 
    // Billing management
    const BillingEntry					= require("./api/Ecommerce/billingManagement/Routes.js");
+
+   //gallery
+   const Gallery                        = require("./api/Ecommerce/Gallery/Routes.js");
 
 	app.use("/api/users",systemRoutes);
 	app.use("/api/auth",systemRoutes);
@@ -181,6 +184,9 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 
 	//=========== Billing Management =========
 	app.use("/api/billingmaster", BillingEntry);
+
+	//============Photo Gallery routes ========
+	app.use("/api/gallery",Gallery);
 
 	app.post('/send-email', (req, res)=> {
 	console.log("inside app.js req:");
