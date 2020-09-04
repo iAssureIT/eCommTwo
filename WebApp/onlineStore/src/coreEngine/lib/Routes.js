@@ -90,22 +90,22 @@ class Routes extends Component{
                 <Route path="/" exact strict component={ Unimandai_Homepage } /> 
                 <Route path="/login"                    exact strict component={ Unimandai_Homepage } />
                 <Route path="/signup"                   exact strict component={ Unimandai_Homepage } />
-                <Route path="/forgotpassword"           exact strict component={ Unimandai_Homepage } />
-                <Route path="/resetpassword/:user_ID"   exact strict component={ Unimandai_Homepage } /> 
-                <Route path="/verify-account"           exact strict component={ VerifyAccount } />
-                <Route path="/confirm-otp/:user_ID"     exact strict component={ Unimandai_Homepage } /> 
-                <Route path="/cart"                     exact strict component={ Cart } />
-                <Route path="/checkout"                 exact strict component={ Checkout } />
-                <Route path="/transaction-process/:MERCHANT_ID/:MERCHANT_ACCESS_CODE/:REFERENCE_NO/:AMOUNT/:CUSTOMER_MOBILE_NO/:CUSTOMER_EMAIL_ID/:PRODUCT_CODE"     exact strict component={ Paymentgateway } />
-                <Route path="/my-orders"                exact strict component={ MyOrders } />
-                <Route path="/my-ordersUni"             exact strict component={ MyOrders_Unimandai } />
-                <Route path="/view-order/:order_ID"     exact strict component={ ViewOrder } />
-                <Route path="/shipment-tracking"        exact strict component={ ShipmentTracking } />
-                <Route path="/productdetails/:productID"exact strict component={ ProductDetailsEcommerce } />
+                <Route path="/forgotpassword"             exact strict component={ Unimandai_Homepage } />
+                <Route path="/resetpassword/:user_ID"     exact strict component={ Unimandai_Homepage } /> 
+                <Route path="/verify-account"             exact strict component={ VerifyAccount } />
+                <Route path="/confirm-otp/:user_ID"       exact strict component={ Unimandai_Homepage } /> 
+                <Route path="/cart"                       exact strict component={ Cart } />
+                <Route path="/checkout"                   exact strict component={ Checkout } />
+                <Route path="/transaction-process/"       exact strict component={ Paymentgateway } />
+                <Route path="/my-orders"                  exact strict component={ MyOrders } />
+                <Route path="/my-ordersUni"               exact strict component={ MyOrders_Unimandai } />
+                <Route path="/view-order/:order_ID"       exact strict component={ ViewOrder } />
+                <Route path="/shipment-tracking"          exact strict component={ ShipmentTracking } />
+                <Route path="/productdetails/:productID"  exact strict component={ ProductDetailsEcommerce } />
                 <Route path="/productdetails/:productURL/:productID"             exact strict component={ ProductDetailsEcommerce } />
-                <Route path="/searchProducts"           exact strict component={ SearchProduct } />
-                <Route path="/deals-of-the-day"                  exact strict component={ BigSale } />
-                <Route path="/section/:url/:sectionID"  exact strict component={ ProductCollage } />
+                <Route path="/searchProducts"             exact strict component={ SearchProduct } />
+                <Route path="/deals-of-the-day"           exact strict component={ BigSale } />
+                <Route path="/section/:url/:sectionID"    exact strict component={ ProductCollage } />
                 <Route path="/category/:url/:sectionID/:categoryID"            exact strict component={ ProductCollage } />
                 <Route path="/subcategory/:sectionID/:categoryID/:subcategoryID"            exact strict component={ ProductCollage } />
                 <Route path="/product-collage/:categoryID/:subcategoryID"   exact strict component={ ProductCollage } />

@@ -1,18 +1,13 @@
 import React, { Component }   from 'react';
 import $                      from 'jquery';
 import axios                  from 'axios';
-import ReactTable             from "react-table";
 import moment                 from "moment";
-// import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
 import DispatchModal          from './dispatchModal.js'
-import '../css/AdminOrdersList.css';
-import { CSVLink, CSVDownload } from "react-csv";
-
-//npm i mui-datatables
-//npm i @material-ui/core
-import MUIDataTable from "mui-datatables";
+import                             '../css/AdminOrdersList.css';
+import { CSVLink }            from "react-csv";
+import MUIDataTable           from "mui-datatables";
 
 class AdminOrdersList extends Component{ 
     constructor(props) {
@@ -22,7 +17,6 @@ class AdminOrdersList extends Component{
             this.state = {
                 "orderData":[],
                 "orderId": '',
-                // "notificationData" :Meteor.subscribe("notificationTemplate"),
                 "fromDate"     :'',
                 "toDate"       : '',
                 "status"  : '',
@@ -384,8 +378,8 @@ class AdminOrdersList extends Component{
                     <div>
 
                     {
-                    value.deliveryStatus === "Cancelled" || value.deliveryStatus === "Returned" || 
-                    value.deliveryStatus === "Dispatch" || value.deliveryStatus === "Delivery Initiated" 
+                    value.deliveryStatus === "Cancelled" || value.deliveryStatus === "Returned"  
+                    // value.deliveryStatus === "Dispatch" || value.deliveryStatus === "Delivery Initiated" 
                     ||  value.deliveryStatus === "Delivered & Paid" || value.deliveryStatus === "New Order"? 
                             ""
                           :
@@ -408,7 +402,7 @@ class AdminOrdersList extends Component{
                     </a>
                     
                     {
-                      value.deliveryStatus === "Dispatch" || value.deliveryStatus === "Delivery Initiated" || value.deliveryStatus === "Delivered & Paid" ? 
+                      value.deliveryStatus === "Delivered & Paid" ? 
                       ""
                       :
                       <div className={

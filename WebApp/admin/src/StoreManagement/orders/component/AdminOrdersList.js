@@ -431,7 +431,8 @@ class AdminOrdersList extends Component{
                     </div>
                     <div className={ 
                       value.deliveryStatus === "New Order" ?
-                       "admin-orders-stat-NewOrder" : ( value.deliveryStatus === "Packed" ? "admin-orders-stat-Packed" : 
+                       "admin-orders-stat-NewOrder" : ( 
+                          value.deliveryStatus === "Packed" ? "admin-orders-stat-Packed" : 
                           value.deliveryStatus === "Verified"    ? "admin-orders-stat-Verified"   : 
                           value.deliveryStatus === "Inspection"  ? "admin-orders-stat-Inspection" :
                           value.deliveryStatus === "Dispatch Approved"  ? "admin-orders-stat-OrderVerified" :
@@ -479,6 +480,7 @@ class AdminOrdersList extends Component{
                                   value.deliveryStatus === "Packed"             ? "Verify Order" :
                                   value.deliveryStatus === "Inspection"         ? "Order Packed" :
                                   value.deliveryStatus === "Dispatch Approved"  ? "Inspect The Order" : 
+                                  value.deliveryStatus === "Dispatch"           ? "Delivered" : 
                                   value.deliveryStatus === "Delivered & Paid"   ? "Done" : "Done"
                               } 
                               
@@ -492,41 +494,41 @@ class AdminOrdersList extends Component{
                     </a>
                     
                     {
-                      value.deliveryStatus === "Dispatch" || value.deliveryStatus === "Delivery Initiated" || value.deliveryStatus === "Delivered & Paid" ? 
+                      value.deliveryStatus === "Delivered & Paid" ? 
                       ""
                       :
                       <div className={
-                        value.deliveryStatus === "New Order" ?
-                           "col-lg-2" : ( value.deliveryStatus === "Packed" ? "col-lg-2" : 
-                            value.deliveryStatus === "Verified"    ? "col-lg-2"   : 
-                            value.deliveryStatus === "Inspection"  ? "col-lg-2" :
-                            value.deliveryStatus === "Dispatch Approved"  ? "col-lg-2" :
-                            value.deliveryStatus === "Dispatch"    ? "col-lg-2" :
-                            value.deliveryStatus === "To Deliver"    ? "col-lg-2" :
-                            value.deliveryStatus === "Delivery Initiated"    ? "col-lg-2" :
-                            value.deliveryStatus === "Delivered & Paid"   ? "col-lg-2" : 
-                            value.deliveryStatus === "Returned"   ? "col-lg-2" : 
-                            value.deliveryStatus === "Cancelled"   ? "col-lg-2" : ""
+                            value.deliveryStatus === "New Order"            ? "col-lg-2" : ( value.deliveryStatus === "Packed" ? "col-lg-2" : 
+                            value.deliveryStatus === "Verified"             ? "col-lg-2"   : 
+                            value.deliveryStatus === "Inspection"           ? "col-lg-2" :
+                            value.deliveryStatus === "Dispatch Approved"    ? "col-lg-2" :
+                            value.deliveryStatus === "Dispatch"             ? "col-lg-2" :
+                            value.deliveryStatus === "To Deliver"           ? "col-lg-2" :
+                            value.deliveryStatus === "Delivery Initiated"   ? "col-lg-2" :
+                            value.deliveryStatus === "Delivered & Paid"     ? "col-lg-2" : 
+                            value.deliveryStatus === "Returned"             ? "col-lg-2" : 
+                            value.deliveryStatus === "Cancelled"            ? "col-lg-2" : ""
                                 ) 
                                                                                       
-                        } onClick={  value.deliveryStatus !== "Dispatch Approved" ? this.changeOrderStatus.bind(this) : this.openModal.bind(this) } 
+                        } 
+                          onClick={  value.deliveryStatus !== "Dispatch Approved" ? this.changeOrderStatus.bind(this) : this.openModal.bind(this) } 
                             data-id={value._id} data-status={
-                            value.deliveryStatus === "New Order"         ? "Verified" :  
-                            value.deliveryStatus === "Verified"          ? "Packed" :  
-                            value.deliveryStatus === "Packed"            ? "Inspection" :  
-                            value.deliveryStatus === "Inspection"        ? "Dispatch Approved" :  
+                            value.deliveryStatus === "New Order"            ? "Verified" :  
+                            value.deliveryStatus === "Verified"             ? "Packed" :  
+                            value.deliveryStatus === "Packed"               ? "Inspection" :  
+                            value.deliveryStatus === "Inspection"           ? "Dispatch Approved" :  
                             value.deliveryStatus === "Dispatch Approved"    ? "Dispatch" :  
-                            value.deliveryStatus === "Dispatch"          ? "Delivery Initiated" :  
-                            value.deliveryStatus === "Delivery Initiated"         ? "Delivered & Paid" :
-                            value.deliveryStatus === "Delivered & Paid"  ? "Done" : "Done"
+                            value.deliveryStatus === "Dispatch"             ? "Delivery Initiated" :  
+                            value.deliveryStatus === "Delivery Initiated"   ? "Delivered & Paid" :
+                            value.deliveryStatus === "Delivered & Paid"     ? "Done" : "Done"
                           } 
                             title={
                               value.deliveryStatus === "New Order"          ? "Verify The Order" :  
                               value.deliveryStatus === "Verified"           ? "Order Packing" :  
                               value.deliveryStatus === "Packed"             ? "Inspect The Order" :  
                               value.deliveryStatus === "Inspection"         ? "Verify For Dispatch" :  
-                              value.deliveryStatus== "Dispatch Approved"     ? "Dispatch Order" :  
-                              value.deliveryStatus== "Dispatch"           ? "Initiate Order Delivery" :  
+                              value.deliveryStatus === "Dispatch Approved"  ? "Dispatch Order" :  
+                              value.deliveryStatus === "Dispatch"           ? "Delivery Initiated" :  
                               value.deliveryStatus === "Delivery Initiated" ? "Delivered & Paid" :  
                               value.deliveryStatus === "Delivered & Paid"   ? "Done" : "Done"
                             }

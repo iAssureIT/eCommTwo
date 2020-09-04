@@ -77,7 +77,6 @@ export default class VerifiedOrdersList extends Component{
           console.log('error', error);
       })
   }
-
   render(){
     return(
       <div>

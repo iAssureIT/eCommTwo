@@ -43,7 +43,7 @@ class Paymentgateway extends Component {
     }
  
     getpaymentData() {
-        
+            
     }
     
 

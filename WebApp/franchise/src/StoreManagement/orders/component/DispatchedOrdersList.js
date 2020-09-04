@@ -1,17 +1,11 @@
 import React,{Component} from 'react';
-// import TrackerReact from 'meteor/ultimatejs:tracker-react';
-import { render } from 'react-dom';
-import { BrowserRouter, Route, Switch,Link,location } from 'react-router-dom';
-import axios                  from 'axios';
+import axios             from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import $ from "jquery";
-import moment from 'moment';
-import AdminOrdersList from './AdminOrdersList.js';
+import moment            from 'moment';
+import AdminOrdersList   from './AdminOrdersList.js';
 
-
-export default class DispatchedOrdersList extends Component{
-  
+export default class DispatchedOrdersList extends Component{  
   constructor(props) {
    super(props);
     this.state = {
@@ -20,7 +14,6 @@ export default class DispatchedOrdersList extends Component{
     }
     this.getOrders = this.getOrders.bind(this);
   }
-   
   componentDidMount(){
     this.getOrders();
   }  
@@ -82,7 +75,7 @@ export default class DispatchedOrdersList extends Component{
   render(){
     return(
       <div>
-      <AdminOrdersList tableTitle={'Dispatched Order List'} data={this.state.data} allProductsArray={this.state.allProductsArray} showStatusFilter="false" status="Dispatch" getOrdersFun={this.getOrders}/>
+        <AdminOrdersList tableTitle={'Dispatched Order List'} data={this.state.data} allProductsArray={this.state.allProductsArray} showStatusFilter="false" status="Dispatch" getOrdersFun={this.getOrders}/>
       </div>
       );
     
