@@ -21,6 +21,7 @@ import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from 'moment';
+import swal from 'sweetalert';
 
 class Checkout extends Component {
     constructor(props) {
@@ -667,7 +668,7 @@ class Checkout extends Component {
             this.setState({
                 isCheckedError: ["Please accept the terms & conditions."]
                 });
-                // swal("Please accept the terms & conditions and provide your valid delivery Address");
+                swal("Please accept the terms & conditions and provide your valid delivery Address");
             }
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();

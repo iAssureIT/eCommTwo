@@ -246,7 +246,7 @@ class Gallery extends Component{
                                         :                                        
                                         <div className="divideCatgRows categoryImgWrapper">
                                             <label>Gallery Image</label>                                                                    
-                                            <input type="file" onChange={this.uploadImage.bind(this)} title="Click to Edit Photo" className="" accept=".jpg,.jpeg,.png" />
+                                            <input type="file" onChange={this.uploadImage.bind(this)} title="Click to Edit Photo" multiple className="" accept=".jpg,.jpeg,.png" />
                                         </div>
                                       }
                                       {

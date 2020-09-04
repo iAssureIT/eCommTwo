@@ -489,7 +489,7 @@ class CartProducts extends Component{
                                                         
                                                         {/* <td className="textAlignRight saving">&nbsp;{this.state.shippingCharges > 0 ? (this.state.shippingCharges).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "Free"} </td> */}
                                                         <td className="textAlignRight saving">&nbsp;{ 
-                                                            this.state.minvalueshipping >= this.props.recentCartData[0].total ?
+                                                            this.state.minvalueshipping > this.props.recentCartData[0].total ?
                                                                 // "This store requires minimum order of Rs."+this.state.minvalueshipping
                                                                 // "Make minimum purchase of Rs."+this.state.minvalueshipping+" to checkout your order."
                                                                 "No Delivery"

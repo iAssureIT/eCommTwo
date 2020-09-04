@@ -39,8 +39,7 @@ componentDidMount(){
 							<div className="col-lg-12 col-md-12 col-sm-12 ">
 							<h4 className="text-center">UniMandai Photo Gallery</h4>
 							</div>
-						</div>					
-					
+						</div>0
 					</div> acha*/}
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					{
