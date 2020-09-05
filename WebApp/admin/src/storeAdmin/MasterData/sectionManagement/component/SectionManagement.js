@@ -200,7 +200,8 @@ class SectionManagement extends Component {
             "editId" : '',
             "sectionRank": '',
           });
-          this.props.history.push('/section-management');
+          
+          window.location.href ='/project-master-data';
         })
         .catch((error) => {
           console.log('error', error);

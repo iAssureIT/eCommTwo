@@ -38,7 +38,8 @@ class CategoryManagement extends Component{
             "sectionsList"              : [],
             "startRange"                : 0,
             "limitRange"                : 10,
-            "editId"                    : this.props.editId ? this.props.editId : ''
+            "editId"                    : this.props.editId ? this.props.editId : '',
+            "section"                   : 'Select Section'
         };
     }
     handleChange(event){ 
@@ -82,7 +83,7 @@ class CategoryManagement extends Component{
       }, "Please select the section");
       $.validator.addMethod("valueNotEquals", function(value, element, arg){
         return arg !== value;
-      }, "Please select the category");
+      }, "Please select the section");
 
       // $.validator.addMethod("regxA1", function(value, element, regexpr) {          
       //   return regexpr.test(value);
@@ -97,12 +98,15 @@ class CategoryManagement extends Component{
         rules: {
           section: {
             required: true,
-            regxsection: "Select Section"
+            valueNotEquals: "Select Section"
           },
           category: {
             required: true,
             // regxA1: /^[A-Za-z][A-Za-z0-9\-\s]/, 
           },
+          categoryRank:{
+            required:true
+          }
           // categoryDescription: {
           //   required: true,
           //   // regxA1: /^[A-Za-z][A-Za-z0-9\-\s]/, 
@@ -115,6 +119,10 @@ class CategoryManagement extends Component{
           if (element.attr("name") === "category"){
             error.insertAfter("#category");
           }
+          if (element.attr("name") === "categoryRank"){
+            error.insertAfter("#categoryRank");
+          }
+         
           // if (element.attr("name") === "categoryDescription"){
           //   error.insertAfter("#categoryDescription");
           // }         
@@ -144,7 +152,7 @@ class CategoryManagement extends Component{
 
       axios.post('/api/category/get/list', data)
       .then((response)=>{
-        // console.log('tableData', response.data);
+        console.log('category tableData', response.data);
         this.setState({
           tableData : response.data
         })
@@ -357,7 +365,8 @@ class CategoryManagement extends Component{
                 "subcatgArr"                    : [],
                 categoryImage : "",
               });
-              this.props.history.push('/category-management');
+            //  this.props.history.push('/category-management');
+              window.location.href ='/project-master-data';
             })
             .catch((error)=>{
               console.log('error', error);
@@ -591,8 +600,8 @@ class CategoryManagement extends Component{
                                   <div className="col-lg-6 col-md-12 col-xs-12 col-sm-12  NOpadding">
                                       <div className="col-lg-12 fieldWrapper">
                                           <label>Section <i className="redFont">*</i></label>
-                                          <select onChange={this.sectionChange.bind(this)} value={this.state.section+'|'+this.state.section_ID}  name="section" className="form-control allProductCategories" aria-describedby="basic-addon1" id="section" ref="section">
-                                          <option value="Select Section">Select Section</option>
+                                          <select onChange={this.sectionChange.bind(this)} value={this.state.section+'|'+this.state.section_ID}  name="section" className="form-control allProductCategories" aria-describedby="basic-addon1" id="section" ref="section" required>
+                                          <option selected value="Select Section">Select Section</option>
                                             {
                                               this.state.sectionsList && this.state.sectionsList.length>0 ?
                                               this.state.sectionsList.map((data, index)=>{

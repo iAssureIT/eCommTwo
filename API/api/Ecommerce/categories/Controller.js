@@ -127,6 +127,7 @@ exports.list_category_with_limits = (req,res,next)=>{
                 "_id"                   : x._id,
                 "section"               : x.section,
                 "category"              : x.category,
+                "categoryRank"          : x.categoryRank ? x.categoryRank : '',
                 "subCategory"           : ((x.subCategory.map((a, i)=>{return '<p>'+a.subCategoryTitle+'</p>'})).toString()).replace(/,/g, " "),
                 "categoryDescription"   : x.categoryDescription,
                 "categoryImage"         : x.categoryImage,

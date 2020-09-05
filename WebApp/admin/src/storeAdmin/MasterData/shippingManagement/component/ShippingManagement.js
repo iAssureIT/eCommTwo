@@ -191,7 +191,9 @@ class ShippingManagement extends Component {
             "editId" : '',
             "shippingcost": '',
           });
-          this.props.history.push('/project-master-data');
+          //this.props.history.push('/project-master-data');
+          window.location.href ='/project-master-data';
+
           this.getData(this.state.startRange, this.state.limitRange);
         })
         .catch((error) => {
