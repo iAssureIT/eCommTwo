@@ -91,20 +91,22 @@ exports.update_delivery_attribute = (req,res,next)=>{
     }else{
         remark = '';
     }
- 
-    FranchiseDelivery.updateOne(
+         FranchiseDelivery.updateOne(
          { "_id" : req.body.FranchiseDeliveryId, "supply.itemCode": req.body.itemcode }, 
          { "$set": { "supply.$.status": req.body.attribute,"supply.$.remark" : remark}}, 
         )
         .exec()
         .then(data=>{
-            getData();
-            async function getData(){
-                    if(data.nModified == 1){
+                              
+            
+                if(data.nModified == 1){
                        if(req.body.attribute == "deliveryAccepted" || req.body.attribute == "deliveryCompleted"){
                             //if accepted insert into frinchise goods
-                            var updateFinishedGoods = await update_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
-                            console.log("updateFinishedGoods",updateFinishedGoods);
+                            getData();
+                            async function getData(){
+                              var updateFinishedGoods = await update_franchise_goods(req.body.FranchiseDeliveryId,req.body.itemcode);
+                              // console.log("updateFinishedGoods",updateFinishedGoods);
+                            }
                        }
 
                        if(req.body.attribute == "deliveryRejected"){
@@ -121,7 +123,6 @@ exports.update_delivery_attribute = (req,res,next)=>{
                 res.status(200).json({
                     "message": "Success",
                 });
-            }
           
         })
         .catch(err =>{

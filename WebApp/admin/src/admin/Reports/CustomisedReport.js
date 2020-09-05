@@ -81,6 +81,7 @@ export default class CustomisedReport extends Component{
         }
         axios.post("/api/orders/get/report/"+startRange+'/'+limitRange, formvalues)
         .then((response)=>{
+            console.log("tables data",response.data);
           this.setState({ 
             tableData : response.data
           },()=>{ 
