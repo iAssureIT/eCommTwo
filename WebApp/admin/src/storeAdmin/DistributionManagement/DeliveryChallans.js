@@ -145,11 +145,11 @@ export default class DeliveryChallans extends React.Component {
         axios.get("/api/entitymaster/get/one/"+this.state.FranchiseId)
         .then((response)=>{
             this.setState({
-                franchise_name : response.data.companyName,
-                entityInfo 	: response.data,
-                contacts 	: response.data.contactData,
-                locations 	: response.data.locations.reverse(),
-                entityType 	: response.data.entityType
+                franchise_name : response.data[0].companyName,
+                entityInfo 	: response.data[0],
+                contacts 	: response.data[0].contactData,
+                locations 	: response.data[0].locations.reverse(),
+                entityType 	: response.data[0].entityType
             });
         })
         .catch((error)=>{

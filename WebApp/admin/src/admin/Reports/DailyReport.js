@@ -57,11 +57,22 @@ class DailyReport extends Component{
 
     axios.post("/api/orders/get/report/"+startRange+'/'+limitRange, formvalues)
     .then((response)=>{
-      this.setState({ 
-        tableData : response.data
-      },()=>{ 
-        console.log("tableData",this.state.tableData);
-      })
+      var tableData = response.data.map((a, i)=>{
+        return {
+            "orderID"                    : a.orderID,
+            "cratedAt"                   : a.createdAt,
+            "userFullName"               : a.userFullName,
+            "totalAmount"                : '<i className="fa fa-inr"></i>'+ a.total,
+            "deliveryStatus"             : a.status +' '+ a.deliveryStatus[0].status,
+
+        }
+    })
+
+  this.setState({ 
+    tableData : tableData
+  },()=>{ 
+    console.log("tableData tableData",tableData);
+  })
     })
     .catch((error)=>{
         console.log('error', error);

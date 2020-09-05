@@ -84,10 +84,21 @@ export default class WeeklyReport extends Component{
 
         axios.post("/api/orders/get/report/"+startRange+'/'+limitRange, formvalues)
         .then((response)=>{
+            var tableData = response.data.map((a, i)=>{
+                return {
+                    "orderID"                    : a.orderID,
+                    "cratedAt"                   : a.createdAt,
+                    "userFullName"               : a.userFullName,
+                    "totalAmount"                : '<i className="fa fa-inr"></i>'+ a.total,
+                    "deliveryStatus"             : a.status +' '+ a.deliveryStatus[0].status,
+        
+                }
+            })
+
           this.setState({ 
-            tableData : response.data
+            tableData : tableData
           },()=>{ 
-            console.log("tableData",this.state.tableData);
+            console.log("tableData tableData",tableData);
           })
         })
         .catch((error)=>{

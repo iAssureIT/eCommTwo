@@ -108,14 +108,18 @@ export default class FranchiseDeliveryChallan extends React.Component {
     }
 
     getFranchiseDetails(){
+        console.log("franchise_name","getFranchiseDetails");
         axios.get("/api/entitymaster/get/one/"+this.state.FranchiseId)
         .then((response)=>{
+            console.log("franchise_name",response.data);
+
             this.setState({
-                franchise_name : response.data.companyName,
+                franchise_name : response.data[0].companyName,
                 entityInfo 	: response.data,
-                contacts 	: response.data.contactData,
-                locations 	: response.data.locations.reverse(),
-                entityType 	: response.data.entityType
+                contacts 	: response.data[0].contactData,
+                locations 	: response.data[0].locations.reverse(),
+                entityType 	: response.data[0].entityType
+            },()=>{
             });
         })
         .catch((error)=>{
