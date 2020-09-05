@@ -213,8 +213,13 @@ padding: 5px 5px;
 }
 
 #bulkActionModalbtn{
+    float: right;
     background-color: #337ab7;
-    color: white
+    color: white;
+}
+
+#bulkActionModalclose{
+    float: left;
 }
 
 
@@ -240,4 +245,8 @@ padding: 5px 5px;
 
 .alert-success{
     color: #155724 !important;
+}
+
+.bulk-modal-content{
+    text-align: center;
 }

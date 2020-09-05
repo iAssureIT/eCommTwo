@@ -1316,7 +1316,7 @@ class LocationDetails extends Component {
 																		<label className="labelform col-lg-12 col-md-12 col-sm-12 col-xs-12">Address<i className="astrick">*</i></label>
 																		{/*<input id="addressLine1" type="text" className="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" value={this.state.addressLine1} ref="addressLine1" name="addressLine1" onChange={this.handleChange} />*/}
 																		 {this.state.gmapsLoaded ?
-																<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
+																// <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput" >
 																<PlacesAutocomplete value={this.state.addressLine1}
 																		onChange={this.handleChangePlaces}
 																		onSelect={this.handleSelect}
@@ -1357,7 +1357,7 @@ class LocationDetails extends Component {
 																				</div>
 																		)}
 																</PlacesAutocomplete>
-														</div>        
+														/* </div>         */
 																		//  <PlacesAutocomplete
 								                    //                     value={this.state.addressLine1}
 								                    //                     onChange={this.handleChangePlaces}

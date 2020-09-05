@@ -383,7 +383,7 @@ class CategoryManagement extends Component{
       console.log("edit Id send to axios:",editId);
       axios.get('/api/category/get/one/'+editId)
       .then((response)=>{
-        // console.log('record to be edit', response.data);
+        console.log('record to be edit', response.data);
         if(response.data){
             this.setState({
               "section"                   : response.data.section,

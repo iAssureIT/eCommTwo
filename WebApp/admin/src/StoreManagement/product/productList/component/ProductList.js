@@ -583,7 +583,7 @@ class ProductList extends Component {
                             </div>
                             <div className="modal" id="bulkActionModal" role="dialog">
                               <div className="modal-dialog">
-                                <div className="modal-content">
+                                <div className="modal-content bulk-modal-content">
                                   <div className="modal-header">
                                     <button type="button" className="close" onClick={this.closeModal.bind(this)} data-dismiss="modal">&times;</button>
                                     <h3 className="modalTitle">Bulk Action</h3>
@@ -598,8 +598,8 @@ class ProductList extends Component {
                                     <br />
                                 </div>
                                 <div className="modal-footer"> 
+                                     <button type="button" className="btn btn-default" id="bulkActionModalclose" onClick={this.closeModal.bind(this)} data-dismiss="modal">Close</button>
                                       <a href="#" className="btn btn-info" id="bulkActionModalbtn" data-dismiss="modal" onClick={this.productBulkAction.bind(this)} style={{"margin-bottom": 0,"margin-left": "5px"}}>Yes</a>
-                                      <button type="button" className="btn btn-default" onClick={this.closeModal.bind(this)} data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
