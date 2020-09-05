@@ -74,12 +74,14 @@ class ShippingManagement extends Component {
       success: "valid"
     });
 
-    $("#ShippingManagement").validate({
+    $("#timemanagement").validate({
       rules: {
         
-        section: {
+        fromtime: {
           required: true,
-          regxA1: /^[a-zA-Z0-9@&()_+-\s]*$/i,
+        },
+        totime: {
+          required: true,
         },
       },
       errorPlacement: function (error, element) {
@@ -134,7 +136,7 @@ class ShippingManagement extends Component {
 
   submitsection(event) {
     event.preventDefault();
-    // if ($('#ShippingManagement').valid()) {
+     if ($('#timemanagement').valid()) {
       var formValues = {
         "fromtime"   : this.state.fromtime,
         "totime"     : this.state.totime,
@@ -157,7 +159,7 @@ class ShippingManagement extends Component {
           console.log('error', error);
         });
 
-    // }
+     }
   }
   updatesection(event) {
     event.preventDefault();
@@ -231,17 +233,17 @@ class ShippingManagement extends Component {
                       <h4 className="NOpadding-right">Time Master </h4>
                     </div>
                       <div className="col-lg-12 col-md-12 marginTopp NOpadding">
-                      <form id="ShippingManagement" className="">
+                      <form id="timemanagement" className="">
                           <div className="col-lg-5 fieldWrapper">
                             <div className="col-lg-12">
                               <label>Shipping From Time <i className="redFont">*</i></label>
-                              <input value={this.state.fromtime} name="fromtime" id="fromtime" onChange={this.createsectionUrl.bind(this)} type="text" className="form-control edit-catg-new" placeholder="From Time" ref="fromtime" />
+                              <input value={this.state.fromtime} name="fromtime" id="fromtime" onChange={this.createsectionUrl.bind(this)} type="text" className="form-control edit-catg-new" placeholder="From Time" ref="fromtime" required/>
                             </div>
                           </div> 
                           <div className="col-lg-5 fieldWrapper">
                             <div className="col-lg-12">
                               <label>Shipping To Time <i className="redFont">*</i></label>
-                              <input value={this.state.totime} onChange={this.handleChange.bind(this)} id="totime" name="totime" type="text" className="form-control totime" placeholder="To Time" ref="totime" />
+                              <input value={this.state.totime} onChange={this.handleChange.bind(this)} id="totime" name="totime" type="text" className="form-control totime" placeholder="To Time" ref="totime" required/>
                             </div>                            
                           </div>
                           <div className="col-lg-12">

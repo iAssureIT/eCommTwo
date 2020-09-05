@@ -212,7 +212,7 @@ export default class AdminDashboard extends Component{
 
             <li className="treeview" >
               <a href="JavaScript:void(0);" data-key="inventoryData" onClick={this.openSubmenu.bind(this)} title="Inventory Management ">
-                <i className="fa fa-users" aria-hidden="true"></i>
+                <i className="fa fa-file" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Inventory Management </span>
                 <span className="pull-right-container">
                   <i className={"fa pull-right menu-icon-toggle "+(inventoryData?this.openIcon:this.closeIcon)} />
@@ -235,7 +235,7 @@ export default class AdminDashboard extends Component{
 
             <li className="treeview" >
               <a href="JavaScript:void(0);" data-key="myOrder" onClick={this.openSubmenu.bind(this)} title="My Order">
-                <i className="fa fa-users" aria-hidden="true"></i>
+                <i className="fa fa-file" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">My Orders </span>
                 <span className="pull-right-container">
                   <i className={"fa pull-right menu-icon-toggle "+(myOrder?this.openIcon:this.closeIcon)} />
@@ -257,7 +257,7 @@ export default class AdminDashboard extends Component{
             </li>   
             <li className="treeview" >
               <a href="JavaScript:void(0);" data-key="myOrder" data-key="billingData" onClick={this.openSubmenu.bind(this)} title="Billing">
-                <i className="fa fa-users" aria-hidden="true"></i>
+                <i className="fa fa-money" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Billing Management </span>
                 <span className="pull-right-container">
                   <i className={"fa pull-right menu-icon-toggle "+(billingData?this.openIcon:this.closeIcon)} />
@@ -280,7 +280,7 @@ export default class AdminDashboard extends Component{
 
             <li className="treeview" >
               <a href="JavaScript:void(0);" data-key="reportData" onClick={this.openSubmenu.bind(this)} title="Reports">
-                <i className="fa fa-users" aria-hidden="true"></i>
+                <i className="fa fa-book" aria-hidden="true"></i>
                 <span className="smsidenames sidebarMenuTitle">Reports </span>
                 <span className="pull-right-container">
                   <i className={"fa pull-right menu-icon-toggle "+(reportData?this.openIcon:this.closeIcon)} />

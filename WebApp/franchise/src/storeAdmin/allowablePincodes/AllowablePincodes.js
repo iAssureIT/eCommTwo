@@ -27,7 +27,14 @@ class AllowablePincodes extends Component {
         this.getAllowablePincode();
     }
     getAllowablePincode(){
-        axios.get("/api/allowablepincode/get")
+        var userDetails = (localStorage.getItem('userDetails'));
+        var userData = JSON.parse(userDetails);
+        axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
+        .then((resdata)=>{
+        
+        var entityType = "franchise";
+        var franchiseid = resdata.data._id;
+        axios.get("/api/allowablepincode/get/"+franchiseid)
 			.then((response) => {
 				if(response){
 					// console.log("allowable pincodes list:",response);
@@ -40,6 +47,10 @@ class AllowablePincodes extends Component {
 			.catch((error) => {
                 console.log("Error while getting pincodes:",error);
 			})
+        })
+        .catch((error) => {
+            console.log("Error while getting franchise detail:",error);
+        })
     }
 
     getEntityList(){
@@ -71,8 +82,8 @@ class AllowablePincodes extends Component {
                         finalList[i] = {
                             "franchiseID"       : this.state.franchiseList[i]._id,
                             "companyID"         : this.state.franchiseList[i].companyID,
-                            "allowablePincodes" : this.state.allowablePincodeList[i].allowablePincodes,
-                            "PincodesID"        : this.state.allowablePincodeList[i]._id
+                            "allowablePincodes" : this.state.allowablePincodeList,
+                            "PincodesID"        : this.state.allowablePincodeList._id
                         }
                     }
                     console.log("finalList:" ,finalList);

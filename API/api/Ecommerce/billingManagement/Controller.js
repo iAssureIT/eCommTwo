@@ -156,8 +156,9 @@ exports.list_product = (req,res,next)=>{
           for(i = 0 ; i < data.length ; i++){
              var franchiseStock = await get_current_stock_of_franchise(data[i].itemCode,req.params.franchiseId);
              data[i].availableQuantity = franchiseStock.totalStock ? franchiseStock.totalStock : 0;
+
           }
-          const result = data.filter(product => product.availableQuantity > 0);
+          const result = data.filter(product => product.availableQuantity !== 0);
           res.status(200).json(result);
        }
     })

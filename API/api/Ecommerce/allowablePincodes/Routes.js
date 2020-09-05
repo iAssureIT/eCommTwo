@@ -7,6 +7,7 @@ const allowablePincodeController = require('./Controller');
 router.post('/post', allowablePincodeController.add_allowablePincodes);
 router.get('/get', allowablePincodeController.get_allowablePincodes);
 router.get('/checkpincode/:pincode', allowablePincodeController.check_delivery);
+router.get('/get/:franchiseID', allowablePincodeController.get_allowablePincodes_franchise);
 
 
 module.exports = router;

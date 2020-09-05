@@ -53,9 +53,11 @@ class Report extends Component{
     if(this.state.apiData){
       var Method = this.state.apiData.method;
       var Path = this.state.apiData.path;
+      var postdata =  this.state.apiData.PostData ? this.state.apiData.PostData : null ;
         axios({
           method: Method,
-          url: Path
+          url: Path,
+          data : postdata
         })
         .then((response)=>{ 
           const result = response.data.filter(function(data,index){

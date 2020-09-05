@@ -322,11 +322,11 @@ class Login extends Component {
                 }
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt30 mb25">
                   <div className="row">
-                    <div className="textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
+                    {/* <div className="textAlignCenter col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                       <div className="row loginforgotpass">
                         <a href='/forgotpassword' className="">Forgot Password?</a>
                       </div>
-                    </div>
+                    </div> */}
                     {process.env.REACT_APP_USERID ?
                     <div className="col-lg-12 sampleTable">
                     <div className="table-responsive col-lg-12 col-md-12">
