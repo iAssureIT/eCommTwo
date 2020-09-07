@@ -653,7 +653,7 @@ class Address extends Component {
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 shippingInput">
                                         <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
-                                        <input type="text" minLength="6" maxLength="6" ref="modalPincode" name="modalPincode" id="modalPincode" value={this.state.modalPincode}  onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                        <input type="number" minLength="6" maxLength="6" ref="modalPincode" name="modalPincode" id="modalPincode" value={this.state.modalPincode}  onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
                                         {this.state.pincodeExists ? null : <label className="error" style={{color: "red", fontWeight: "100"}}>This pincode does not exists!</label>}
                                     </div>
                                     {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">

@@ -21,6 +21,7 @@ import checkoutBanner from "../../../sites/currentSite/images/checkout.png";
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from 'moment';
+import swal from 'sweetalert';
 
 class Checkout extends Component {
     constructor(props) {
@@ -54,6 +55,7 @@ class Checkout extends Component {
             "limitRange": 10,
             isChecked: false,
             isCheckedError: [],
+            pinValid      :false,
         }
         this.getCartData();
         // this.getCompanyDetails();
@@ -210,12 +212,8 @@ class Checkout extends Component {
                 },
                 termsNconditions: {
                     required: true,
-                    // regxTermandCondition: "check type"
-                }
-                // termsNconditions: {
-                //     required: true,
-                //     regxtermsNconditions: "Select Type"
-                // }
+                    
+                }            
             },
             errorPlacement: function (error, element) {
                 if (element.attr("name") === "username") {
@@ -618,7 +616,11 @@ class Checkout extends Component {
                                     'finalTotal': (parseFloat(finalTotal)),
                                     'taxes': calculateTax,
                                 } // end of taxCalc                           
-
+                                // {this.state.pinValid === false?
+                                //     <label className="error">Please enter valid pincode</label>
+                                // :
+                                //     null 
+                                // }
 
                             }
 
@@ -658,17 +660,6 @@ class Checkout extends Component {
     }
     placeOrder(event) {
         event.preventDefault();
-        let isChecked = this.state.isChecked;       
-          if (isChecked && this.state.pincode!="" && this.state.addressLine1!="" && this.state.addressLine2!="") {
-                this.setState({
-                isCheckedError: []
-            });
-        } else {
-            this.setState({
-                isCheckedError: ["Please accept the terms & conditions."]
-                });
-                // swal("Please accept the terms & conditions and provide your valid delivery Address");
-            }
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
         var checkoutAddess = $("input[name='checkoutAddess']:checked").val();
@@ -1251,7 +1242,7 @@ class Checkout extends Component {
                                             </div> */}
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 shippingInput">
                                                     <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">Zip/Postal Code <span className="required">*</span></label>
-                                                    <input type="text" ref="pincode" name="pincode" id="pincode" defaultValue={this.state.pincode} maxLength="6" minLength="6" onBlur={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" />
+                                                    <input type="number" ref="pincode" name="pincode" id="pincode" defaultValue={this.state.pincode} maxLength="6" minLength="6" onBlur={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-control" required />
                                                     {this.state.pincodeExists ? null : <label className="DeliveryNotPoss" style={{ color: "red" }}>This pincode does not exists!</label>}
                                                     <div className="DeliveryNotPoss">Delivery is not possible on this pincode</div>
                                                 </div>
@@ -1382,11 +1373,12 @@ class Checkout extends Component {
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mgbtm20">
                                             <div className="col-lg-7 col-md-7 col-sm-12 col-xs-12 shippingtimes">
-                                                <input type="checkbox" name="termsNconditions" isChecked={this.state.isChecked} title="Please Read and Accept Terms & Conditions" onClick={this.checkboxClick.bind(this)} className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" />  &nbsp;
+                                                <input type="checkbox" name="termsNconditions" isChecked={this.state.isChecked} title="Please Read and Accept Terms & Conditions" onClick={this.checkboxClick.bind(this)} className="acceptTerms col-lg-1 col-md-1 col-sm-1 col-xs-1" required />  &nbsp;
                                                 <div className="col-lg-11 col-md-11 col-sm-11 col-xs-9 termsWrapper">
                                                     <span className="termsNconditionsmodal" data-toggle="modal" data-target="#termsNconditionsmodal">I agree, to the Terms & Conditions</span> <span className="required">*</span>
                                                 </div>
-                                                {/* <label className="error">{this.state.isCheckedError}</label> */}
+                                                <label id="termsNconditions" className="error"></label>
+                                                {/* <label id="termsNconditions" className="error">{this.state.isCheckedError}</label> */}
                                             </div>
                                             <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12 NOpaddingRight">
                                                 <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required"></span></span>
@@ -1428,9 +1420,9 @@ class Checkout extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                        {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                                             <div id="termsNconditions col-lg-6 col-md-12"></div>
-                                        </div>
+                                        </div> */}
                                         {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
                                             <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>  
                                             <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
@@ -1468,7 +1460,6 @@ class Checkout extends Component {
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>

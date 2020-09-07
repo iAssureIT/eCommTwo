@@ -553,9 +553,8 @@ class CartProducts extends Component{
                             </div>
                         </div>
                         : 
-                        <div className="col-lg-12 textAlignCenter">
-                          <img src={emptyCartImg} alt="" />
-                          
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 textAlignCenter">
+                          <img className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12" src={emptyCartImg} alt="" />                          
                         </div>   
                     }
                     
