@@ -96,7 +96,7 @@ class Routes extends Component{
                 <Route path="/confirm-otp/:user_ID"       exact strict component={ Unimandai_Homepage } /> 
                 <Route path="/cart"                       exact strict component={ Cart } />
                 <Route path="/checkout"                   exact strict component={ Checkout } />
-                <Route path="/transaction-process/"       exact strict component={ Paymentgateway } />
+                <Route path="/transaction-process/:order-Id"       exact strict component={ Paymentgateway } />
                 <Route path="/my-orders"                  exact strict component={ MyOrders } />
                 <Route path="/my-ordersUni"               exact strict component={ MyOrders_Unimandai } />
                 <Route path="/view-order/:order_ID"       exact strict component={ ViewOrder } />

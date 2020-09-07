@@ -19,27 +19,27 @@ class Paymentgateway extends Component {
     }
     componentDidMount() {
         
-        // var order_ID = "5f48e5491017612d1089e5c6" //this.props.match.params.editId
-        // var paymentdetails = {
-        //     RESPOSE_CODE :"1",
-        //     RESPOSE_MESSAGE :"Success",
-        //     REFERENCE_NO :"5f48e5491017612d1089e5c6",
-        //     status :"Paid"
-        // }
-        // axios.patch('/api/orders/paymentorder/'+order_ID,paymentdetails)
-        // .then((payurl) => {
-        //     console.log('sendDataToUser in payurl==>>>', payurl.data.message)
-        //     if(payurl.data.message === "Order Updated Successfully."){
-        //         this.setState({paymethods : false})
-        //         this.props.history.push('/payment/'+order_ID);
-        //     }else{
+        var order_ID = "5f48e5491017612d1089e5c6" //this.props.match.params.editId
+        var paymentdetails = {
+            RESPOSE_CODE :"1",
+            RESPOSE_MESSAGE :"Success",
+            REFERENCE_NO :"5f48e5491017612d1089e5c6",
+            status :"Paid"
+        }
+        axios.patch('/api/orders/paymentorder/'+order_ID,paymentdetails)
+        .then((payurl) => {
+            console.log('sendDataToUser in payurl==>>>', payurl.data.message)
+            if(payurl.data.message === "Order Updated Successfully."){
+                this.setState({paymethods : false})
+                this.props.history.push('/payment/'+order_ID);
+            }else{
 
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.log("return to checkout");
-        //     console.log(error);
-        // })
+            }
+        })
+        .catch((error) => {
+            console.log("return to checkout");
+            console.log(error);
+        })
     }
  
     getpaymentData() {
