@@ -167,11 +167,11 @@ class dispatchModal extends Component{
                   <div className="modal-content">
                     <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">                                                                              
                       <h4 className="WightFont textAlignCenter col-lg-11 col-md-11 col-sm-11 col-xs-11">DISPATCH ORDER</h4>
-                      <div className="adminCloseCircleDiv pull-right  col-lg-1 col-md-1 col-sm-1 col-xs-12 NOpadding-left NOpadding-right">
-                        <button type="button" className="adminCloseButton" data-dismiss="modal" onClick={this.closeModal.bind(this)} >&times;</button>
-                      </div>
                     </div>
                     <div className="modal-body">
+                      <div className="adminCloseCircleDiv pull-right  col-lg-1 col-md-1 col-sm-1 col-xs-12 NOpadding-left NOpadding-right" style={{'marginTop':'-48px'}}>
+                        <button type="button" className="adminCloseButton" data-dismiss="modal" onClick={this.closeModal.bind(this)} >&times;</button>
+                      </div>
                       <form className="dispatchForm" onSubmit={this.addDispatchDetails.bind(this)} id={this.props.orderId}>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       

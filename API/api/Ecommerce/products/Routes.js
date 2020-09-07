@@ -145,6 +145,8 @@ router.get('/get/attributesbysubcategory/:subCategoryID', productController.geta
 
 router.get('/get/franchisestock', productStock.getfranchisestock);
 
+router.get('/get/franchisestock/:franchise_id', productStock.getFranchiseCurrentStock);
+
 // router.get('/get/warehousestock', productStock.getwarehousestock);
 
 

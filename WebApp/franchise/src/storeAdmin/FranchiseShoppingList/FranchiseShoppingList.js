@@ -4,7 +4,8 @@ import axios from 'axios';
 import moment from 'moment';
 import swal from 'sweetalert';
 import './FranchiseShoppingList.css';
-
+import jQuery from 'jquery';
+import $ from 'jquery';
 
 export default class FranchiseShoppingList extends React.Component {
 
@@ -20,7 +21,8 @@ export default class FranchiseShoppingList extends React.Component {
 	                date 			: "" ,
 	                editId 			: "" ,
 					user_ID 		: "",
-					selectedFranchise : ""
+					selectedFranchise : "",
+					search            : ""
    	};
 	}
 
@@ -101,8 +103,14 @@ export default class FranchiseShoppingList extends React.Component {
 	}*/
 
 	getProductStock(){
-
-      axios.get('/api/products/get/franchisestock')
+		var userDetails = JSON.parse(localStorage.getItem('userDetails'));
+		axios.get('/api/billingmaster/getCompany/'+userDetails.companyID)
+        .then((response) => {
+			var franchiseId = '';
+			response.data.map(function(val,ind){
+                franchiseId       = val._id;
+			});
+          axios.get('/api/products/get/franchisestock/'+franchiseId)
           .then(franchisestock => {
           	  console.log("franchisestock = ",franchisestock.data);
 							var prodStockOrder = [];
@@ -138,6 +146,10 @@ export default class FranchiseShoppingList extends React.Component {
 					.catch(error=>{
 						console.log("error in getCurrentStock = ", error);
 					})
+				})
+				.catch(error=>{
+					console.log("error in getCurrentStock = ", error);
+				})
 	}
 
 	getCurrentStock(productCode,itemCode){
@@ -246,7 +258,17 @@ export default class FranchiseShoppingList extends React.Component {
 		},()=>{
 				console.log("date = ",this.state.date);
 			});
+	}
 
+	onSearch(event){
+		event.preventDefault();
+		this.setState({
+			search:event.target.value
+		})
+		var value = event.target.value.toLowerCase();
+    $(".franchise-shopping-table  tbody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
 	}
 
 	render() {
@@ -259,15 +281,18 @@ export default class FranchiseShoppingList extends React.Component {
 								<h1 className="text-center">Franchise Shopping List</h1>
 							</div>
 							<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mtopbotm15">
-
-								<div className="col-lg-4 col-lg-offset-4 col-md-8 col-sm-12 col-xs-12">
+								<div className="col-lg-4 col-lg-offset-1 col-md-8 col-sm-12 col-xs-12">
 								    <label className="col-lg-12 col-md-12 col-sm-12 col-xs-12">Order Date :</label>
 								    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								      <input 	id="theDate" type="date" className=" form-control"
-								      				onChange={this.onChageOrderDate.bind(this)} 
-								      				value={this.state.date} min={moment(new Date()).format("YYYY-MM-DD")}/>
+								      		onChange={this.onChageOrderDate.bind(this)} 
+								      		value={this.state.date} min={moment(new Date()).format("YYYY-MM-DD")}/>
 								    </div>
 								</div>
+								<div className="col-lg-4 col-lg-offset-1 col-md-8 col-sm-12 col-xs-12"> 
+									<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">Search </label>
+									<input type="search" className="form-control" placeholder="Search" name="serach" value={this.state.search} onChange={this.onSearch.bind(this)} />
+							    </div>
 							
 								{/* <div className="col-lg-4 col-md-8 col-sm-12 col-xs-12"> 
 									<label className="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding">Select Franchise </label>
@@ -303,7 +328,7 @@ export default class FranchiseShoppingList extends React.Component {
 							<hr/>
 							<div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 								<div className="table-responsive">          
-							    	<table className="table table-bordered table-striped table-hover">
+							    	<table className="franchise-shopping-table table table-bordered table-striped table-hover">
 									    <thead className="thead-dark text-center">
 									      	<tr>
 										        <th>ProductID</th>
@@ -311,6 +336,7 @@ export default class FranchiseShoppingList extends React.Component {
 										        <th>Product Name</th>
 										        <th>Current Stock</th>
 										        <th>Order Quantity</th>
+												<th>Unit Per Pack</th>
 									      	</tr>
 									    </thead>
 									    <tbody>
@@ -329,14 +355,14 @@ export default class FranchiseShoppingList extends React.Component {
 													        	<td>{result.currentStock}</td>
 													        	<td>
 													        	<div class="form-group">
-								                      <div className="input-group width60p">
+								                                    <div className="input-group width60p">
 														        		<input type="number" className="form-control" 
 														        				 name={"orderedItems"+"-"+index} 
 														        				 id={result.productCode+"-"+result.itemCode} 
 														        				 value={result.orderQty} 
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
-														        		<div className="input-group-addon">
+														        		{/* <div className="input-group-addon">
 																			  	<select id={"Units"+"-"+index} name={"Units"+"-"+index} 
 																			  			  value={result.unit} refs="Units" 
 																			  			  onChange={this.setUnit.bind(this)}  
@@ -346,11 +372,12 @@ export default class FranchiseShoppingList extends React.Component {
 																					  	<option value="Gm"> Gm 		</option>
 																					  	<option value="Ltr">Ltr 	</option>
 																					  	<option value="Num">Number </option>
-																					</select>
-																		  	</div>
-																			</div>
-																		</div>
-													        </td>													       
+																				</select>
+																		</div> */}
+																	</div>
+																</div>
+													        </td>	
+															<td>{result.fgUnitQty+' '+result.unit}</td>												       												       
 													      </tr>
 														:
 														this.state.selectedSection === "All Sections" ?
@@ -361,16 +388,16 @@ export default class FranchiseShoppingList extends React.Component {
 													        	<td>{result.currentStock}</td>
 													        	<td>
 													        	<div class="form-group">
-								                      <div className="input-group width60p">
+								                                     <div className="input-group width60p">
 														        		<input type="number" className="form-control" 
 														        				 name={"orderedItems"+"-"+index} 
 														        				 id={result.productCode+"-"+result.itemCode} 
 														        				 value={result.orderQty} 
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
-														        		<div className="input-group-addon unitbox">
+														        		{/* <div className="input-group-addon unitbox">
 																				<td  className=" width66h">{result.fgUnitQty}</td>
-																				<td  className=" width66h">{result.unit}</td>
+																				<td  className=" width66h">{result.unit}</td> */}
 																		  	{/* <select id={"Units"+"-"+index} name={"Units"+"-"+index} 
 																		  			  value={result.unit} refs="Units" 
 																		  			  onChange={this.setUnit.bind(this)}  
@@ -381,10 +408,11 @@ export default class FranchiseShoppingList extends React.Component {
 																			  	<option value="Ltr">Ltr 	</option>
 																			  	<option value="Num">Number </option>
 																			</select> */}
-																	  	</div>
+																	  	{/* </div> */}
 																	</div>
 																</div>
-													        </td>													       
+													        </td>	
+															<td>{result.fgUnitQty+' '+result.unit}</td>												       												       
 													      </tr>
 														:null
 													:
@@ -402,7 +430,7 @@ export default class FranchiseShoppingList extends React.Component {
 														        				 value={result.orderQty} 
 														        				 onChange={this.setOrderQty.bind(this)}
 														        		/>
-														        		<div className="input-group-addon">
+														        		{/* <div className="input-group-addon">
 																		  	<select id={"Units"+"-"+index} name={"Units"+"-"+index} 
 																		  			  value={result.unit} refs="Units" 
 																		  			  onChange={this.setUnit.bind(this)}  
@@ -413,12 +441,12 @@ export default class FranchiseShoppingList extends React.Component {
 																			  	<option value="Ltr">Ltr 	</option>
 																			  	<option value="Num">Number </option>
 																			</select>
-																	  	</div>
+																	  	</div> */}
 																	</div>
 																</div>
-													        </td>													       
+													        </td>	
+															<td>{result.fgUnitQty+' '+result.unit}</td>												       												       
 													      </tr>
-
 													)
 												})
 											:
