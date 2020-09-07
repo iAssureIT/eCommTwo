@@ -1444,7 +1444,7 @@ class LocationDetails extends Component {
 											                                          <div className="col-lg-2 col-md-2 col-sm-12 col-xs-12 nopadding CustomImageUploadLDProfile">
 											                                            <div className="col-lg-8 col-md-12 col-sm-12 col-xs-12 NOpadding marginsBottom" id="hide">
 											                                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 brdlogos locationDocsImg" id="LogoImageUpOne">
-											                                                      <img src="/images/loading.gif" className="img-responsive logoStyle"/>
+											                                                      <img src="/images/loading.gif" className="img-responsive logoStyle" style={{'height':'auto'}}/>
 											                                                </div>
 											                                            </div>
 											                                          </div>
