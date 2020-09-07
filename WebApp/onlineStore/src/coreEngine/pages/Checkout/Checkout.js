@@ -324,7 +324,7 @@ class Checkout extends Component {
         axios.get("/api/ecommusers/" + user_ID)
             .then((response) => {
                 console.log('userData res', response.data.deliveryAddress);
-               
+                
                 this.setState({
                     "deliveryAddress": response.data.deliveryAddress,
                     "username": response.data.profile.fullName,
@@ -496,7 +496,7 @@ class Checkout extends Component {
                                 // 'effectiveDateTo'   : effectiveDateTo,
                                 'timeStamp': createdAt,
                             });
-                        } // for loop j
+                        } // for loop j 
                         var taxesAllowed = _.pluck(taxes, "taxName");
                         var uniqueTaxes = _.uniq(taxesAllowed);
                         if (uniqueTaxes) {
@@ -576,8 +576,8 @@ class Checkout extends Component {
                                             'taxTotalDisplay': (parseFloat(calTax[d].taxTotal)),
                                             'timeStamp': calTax[d].timeStamp,
                                         }); // end array
-                                    } // end if
-                                }  // end of d loop  
+                                    } // end if 
+                                }  // end of d loop   
                             } // end else
                         }
 
@@ -608,7 +608,7 @@ class Checkout extends Component {
                                     var taxCalc = {
                                         'finalTotal': (parseFloat(finalTotal)),
                                         'taxes': calculateTax,
-                                    } // end of taxCalc        
+                                    } // end of taxCalc         
                                 }
                             } else {
 
@@ -620,7 +620,9 @@ class Checkout extends Component {
                                 //     <label className="error">Please enter valid pincode</label>
                                 // :
                                 //     null 
-                                // }
+                                // }                       
+
+
 
                             }
 
@@ -660,6 +662,18 @@ class Checkout extends Component {
     }
     placeOrder(event) {
         event.preventDefault();
+        let isChecked = this.state.isChecked;        
+          if (isChecked && this.state.pincode!="" && this.state.addressLine1!="" && this.state.addressLine2!="") {
+                this.setState({
+                isCheckedError: []
+            });
+        } else {
+            this.setState({
+                isCheckedError: ["Please accept the terms & conditions."]
+                });
+                // swal("Please accept the terms & conditions and provide your valid delivery Address");
+            }
+
         var addressValues = {};
         var payMethod = $("input[name='payMethod']:checked").val();
         var checkoutAddess = $("input[name='checkoutAddess']:checked").val();
@@ -711,7 +725,7 @@ class Checkout extends Component {
                     "latitude": deliveryAddress.length > 0 ? deliveryAddress[0].latitude : "",
                     "longitude": deliveryAddress.length > 0 ? deliveryAddress[0].longitude : "",
                 }
-                // console.log("inside if address values====",addressValues);              
+                // console.log("inside if address values====",addressValues);               
             } else {
                 // console.log("inside else new address");
                 addressValues = {
@@ -807,13 +821,13 @@ class Checkout extends Component {
                             //         : parseInt(this.props.recentCartData[0].total)
                             //     : "0.00",
                             // discount: this.props.recentCartData[0].discount,
-                           
+                            
                         }
 
                         if (this.state.isChecked) {
                             axios.post('/api/orders/post', orderData)
                                 .then((result) => {
-                                    if (this.state.paymentmethods === 'cod') {
+                                    // if (this.state.paymentmethods === 'cod') {
                                         this.setState({paymethods : true})
                                         this.props.fetchCartData();
                                         this.setState({
@@ -825,7 +839,7 @@ class Checkout extends Component {
                                                 "autoDismiss": true
                                             }
                                         })
-                                       
+                                        
                                         setTimeout(() => {
                                             this.setState({
                                                 messageData: {},
@@ -834,39 +848,39 @@ class Checkout extends Component {
                                         }, 3000);
 
                                         this.props.history.push('/payment/' + result.data.order_ID);
-                                    } else {
-                                        this.setState({paymethods : true})
-                                        var paymentdetails = {
-                                            MERCHANT_ID: this.state.partnerid,
-                                            MERCHANT_ACCESS_CODE: this.state.secretkey,
-                                            REFERENCE_NO: result.data.order_ID,
-                                            AMOUNT: this.state.amountofgrandtotal*100,
-                                            // AMOUNT: this.props.recentCartData.length > 0 ?
-                                            //     this.state.discountdata !== undefined ?
-                                            //         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
-                                            //             parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
-                                            //             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
-                                            //         : parseInt(this.props.recentCartData[0].total)
-                                            //     : "0.00",
-                                            CUSTOMER_MOBILE_NO: this.state.mobile,
-                                            CUSTOMER_EMAIL_ID: this.state.email,
-                                            PRODUCT_CODE: "testing",
-                                        }
-                                        console.log('paymentdetails in result==>>>', paymentdetails)
-                                        axios.post('/api/orders/pgcall/post', paymentdetails)
-                                            .then((payurl) => {
-                                                console.log('sendDataToUser in payurl==>>>', payurl.data)
-                                                if(payurl.data.result.RESPONSE_MESSAGE  === 'SUCCESS'){
-                                                    window.location.replace(payurl.data.result.PAYMENT_URL);
-                                                }
-                                                this.setState({paymethods : false})
-                                            })
-                                            .catch((error) => {
-                                                console.log("return to checkout");
-                                                console.log(error);
-                                                this.setState({paymethods : false})
-                                            })
-                                    }
+                                    // } else {
+                                    //     this.setState({paymethods : true})
+                                    //     var paymentdetails = {
+                                    //         MERCHANT_ID: this.state.partnerid,
+                                    //         MERCHANT_ACCESS_CODE: this.state.secretkey,
+                                    //         REFERENCE_NO: result.data.order_ID,
+                                    //         AMOUNT: this.state.amountofgrandtotal*100,
+                                    //         // AMOUNT: this.props.recentCartData.length > 0 ?
+                                    //         //     this.state.discountdata !== undefined ?
+                                    //         //         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                    //         //             parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
+                                    //         //             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
+                                    //         //         : parseInt(this.props.recentCartData[0].total)
+                                    //         //     : "0.00",
+                                    //         CUSTOMER_MOBILE_NO: this.state.mobile,
+                                    //         CUSTOMER_EMAIL_ID: this.state.email,
+                                    //         PRODUCT_CODE: "testing",
+                                    //     }
+                                    //     console.log('paymentdetails in result==>>>', paymentdetails)
+                                    //     axios.post('/api/orders/pgcall/post', paymentdetails)
+                                    //         .then((payurl) => {
+                                    //             console.log('sendDataToUser in payurl==>>>', payurl.data)
+                                    //             if(payurl.data.result.RESPONSE_MESSAGE  === 'SUCCESS'){
+                                    //                 window.location.replace(payurl.data.result.PAYMENT_URL);
+                                    //             }
+                                    //             this.setState({paymethods : false})
+                                    //         })
+                                    //         .catch((error) => {
+                                    //             console.log("return to checkout");
+                                    //             console.log(error);
+                                    //             this.setState({paymethods : false})
+                                    //         })
+                                    // }
                                     axios.get('/api/orders/get/one/' + result.data.order_ID)
                                         .then((res) => {
                                             // =================== Notification OTP ==================
@@ -910,7 +924,7 @@ class Checkout extends Component {
                             this.setState({
                                 isCheckedError: ["Please accept the terms & conditions."]
                             });
-                        }//end isChecked                     
+                        }//end isChecked                      
                     })
                     .catch((error) => {
                         console.log('error', error);
@@ -1063,7 +1077,7 @@ class Checkout extends Component {
                 // console.log('Successfully got latitude and longitude', { lat, lng });
             });
         this.setState({ addressLine1: address });
-    }; //end google api  
+    }; //end google api   
     camelCase(str) {
         return str
             .toLowerCase()
@@ -1127,7 +1141,7 @@ class Checkout extends Component {
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
                                             {/* <input value={this.state.payMethod} onChange={this.creditndebit}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" /> */}
-                                            <input  name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
+                                            <input disabled name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}
@@ -1341,7 +1355,7 @@ class Checkout extends Component {
                                             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 checkoutBorder"></div>
                                         </div>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Cart Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].cartTotal) : "0.00"}</span>
-                                       
+                                        
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Order Total :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-6 textAlignRight"><i className={"fa fa-inr"}></i> {this.props.recentCartData.length > 0 ? parseInt(this.props.recentCartData[0].total) : "0.00"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-7">Delivery Charges :</span><span className="col-lg-6 col-md-6 col-sm-6 col-xs-5 textAlignRight saving">{this.state.shippingCharges > 0 ? this.state.shippingCharges : "Free"}</span>
                                         <span className="col-lg-6 col-md-6 col-sm-6 col-xs-6">Discount :</span>
@@ -1424,7 +1438,7 @@ class Checkout extends Component {
                                             <div id="termsNconditions col-lg-6 col-md-12"></div>
                                         </div> */}
                                         {/* <div className="col-lg-5  col-md-12 col-sm-12 col-xs-12 NOpaddingRight">
-                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>  
+                                            <span className="col-lg-12 col-md-12 col-xs-12 col-sm-12 nopadding">Select Shipping Time<span className="required">*</span></span>   
                                             <select onChange={this.selectedTimings.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="shippingtime" name="shippingtime" >
                                                 <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
                                                 {
@@ -1455,7 +1469,7 @@ class Checkout extends Component {
                                             />
                                         </div>
                                     }
-                                       
+                                        
                                     </div>
                                 </div>
                             </div>
