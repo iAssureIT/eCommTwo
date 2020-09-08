@@ -31,7 +31,7 @@ class dispatchModal extends Component{
         websiteModel: websiteModel
       },()=>{
         // FranchiseModel
-       console.log("websiteModel==>",this.state.websiteModel)
+       //console.log("websiteModel==>",this.state.websiteModel)
       })
     }
     addDispatchDetails(event){
@@ -49,11 +49,11 @@ class dispatchModal extends Component{
                           "userid"              :  localStorage.getItem('admin_ID'),
                           "businessAssociateId" : businessAssociate
                           }
-          console.log(formValues);
+          //console.log(formValues);
 
           axios.patch('/api/orders/patch/dispatchOrder', formValues)
           .then((response)=>{
-            console.log('response', response);
+            //console.log('response', response);
             swal({
               title : response.data.message,
             });

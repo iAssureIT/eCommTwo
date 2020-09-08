@@ -69,16 +69,16 @@ class AllowablePincodes extends Component {
 
 			.then((response) => {
 				if(response){
-                    console.log("franchise list:",response);
+                    //console.log("franchise list:",response);
                     this.getAllowablePincode();
 					this.setState({
 						franchiseList  : response.data,						
 						
                     });
                     var finalList = [];
-                    console.log("list length:",this.state.franchiseList.length);
+                   // console.log("list length:",this.state.franchiseList.length);
                     for(let i=0;i<this.state.franchiseList.length;i++){
-                        console.log("inside for loop");
+                        //console.log("inside for loop");
                         finalList[i] = {
                             "franchiseID"       : this.state.franchiseList[i]._id,
                             "companyID"         : this.state.franchiseList[i].companyID,
@@ -86,7 +86,7 @@ class AllowablePincodes extends Component {
                             "PincodesID"        : this.state.allowablePincodeList._id
                         }
                     }
-                    console.log("finalList:" ,finalList);
+                   // console.log("finalList:" ,finalList);
                 }
             })            			
 			.catch((error) => {
@@ -108,17 +108,17 @@ class AllowablePincodes extends Component {
                                 "franchiseID" : id,
                               }
        
-        console.log("allowablepincods object:",this.state.allowablePincodes);
+       // console.log("allowablepincods object:",this.state.allowablePincodes);
        
     }
     submit(event){
         event.preventDefault();    
                 var formValues = this.state.allowablePincodes         
-                 console.log('formValues', formValues);
+                 //console.log('formValues', formValues);
                 if($("#allowablePincodeId").valid()){        
                     axios.post('/api/allowablepincode/post', formValues)
                     .then((response)=>{                
-                        console.log("response after insert pincode:",response.data.message); 
+                       // console.log("response after insert pincode:",response.data.message); 
                         swal({
                             text : response.data.message
                         })               
@@ -163,7 +163,7 @@ class AllowablePincodes extends Component {
                                                             {Array.isArray(this.state.franchiseList && this.state.allowablePincodeList) &&
                                                                 this.state.franchiseList.map((data, index) => {
                                                                     return (
-                                                                        <tr className ="pincodesRow">
+                                                                        <tr className ="pincodesRow" key={index}>
                                                                             <td>{index +1}</td>
                                                                             <td>
                                                                                 {data.companyName},<br/>
@@ -183,7 +183,7 @@ class AllowablePincodes extends Component {
                                                             {this.state.franchiseList.length === 0 
                                                                 ?
                                                                 <tr className="trAdmin">
-                                                                    <td colspan="3" class="noTempData textAlignCenter">No Record Found!</td>
+                                                                    <td colSpan="3" className="noTempData textAlignCenter">No Record Found!</td>
                                                                 </tr> 
                                                                 :null
                                                             }

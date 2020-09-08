@@ -63,7 +63,7 @@ class Reports extends Component{
   
   render(){
     return( 
-      <div className="container-fluid col-lg-10 col-lg-offset-2 col-md-12 col-xs-12 col-sm-12">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div className="formWrapper">
@@ -71,7 +71,7 @@ class Reports extends Component{
               <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 pageContent">
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 titleaddcontact">
-                    <div className="box">                    
+                    <div className="">                    
                      <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12">
                         <h4 className="NOpadding-right">Category Reports</h4>
                       </div>         

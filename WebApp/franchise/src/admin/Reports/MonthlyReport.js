@@ -47,9 +47,9 @@ export default class MonthlyReport extends Component{
             endDate     : moment().endOf('month').format('YYYY-MM-DD')
             },
             ()=>{
-            console.log('month',this.state.selectedYearMonth);
-            console.log('startDate',this.state.startDate);
-            console.log('endDate',this.state.endDate);
+            // console.log('month',this.state.selectedYearMonth);
+            // console.log('startDate',this.state.startDate);
+            // console.log('endDate',this.state.endDate);
             this.getCount();
             this.getData(this.state.startRange, this.state.limitRange )    
         })  
@@ -94,7 +94,7 @@ export default class MonthlyReport extends Component{
         }
         var userDetails = (localStorage.getItem('userDetails'));
         var userData = JSON.parse(userDetails);
-        console.log("userData.companyID===>",userData.companyID)
+        //console.log("userData.companyID===>",userData.companyID)
         axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
         .then((resdata)=>{
             axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
@@ -149,9 +149,9 @@ export default class MonthlyReport extends Component{
             endDate     : moment(startDate).endOf('month').format('YYYY-MM-DD')
             },
             ()=>{
-            console.log('month',this.state.selectedYearMonth);
-            console.log('startDate',this.state.startDate);
-            console.log('endDate',this.state.endDate);
+            // console.log('month',this.state.selectedYearMonth);
+            // console.log('startDate',this.state.startDate);
+            // console.log('endDate',this.state.endDate);
             this.getData(this.state.startRange, this.state.limitRange )    
         }) 
 	}
@@ -181,7 +181,7 @@ export default class MonthlyReport extends Component{
     
     
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+       // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });

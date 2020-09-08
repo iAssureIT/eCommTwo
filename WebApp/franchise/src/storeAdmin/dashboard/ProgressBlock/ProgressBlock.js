@@ -95,7 +95,7 @@ export default class ProgressBlock extends Component{
 
     
   render(){
-    console.log("this.state.compairFieldCount",this.state.compairFieldCount);
+    //console.log("this.state.compairFieldCount",this.state.compairFieldCount);
     return(
       <div>
       {this.state.display ?

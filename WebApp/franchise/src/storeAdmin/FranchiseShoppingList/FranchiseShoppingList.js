@@ -44,7 +44,7 @@ export default class FranchiseShoppingList extends React.Component {
 				editId 	: editId,
 				user_ID : user_ID,
 			},()=>{
-					console.log("editId = ",this.state.editId);
+					//console.log("editId = ",this.state.editId);
 					if(typeof this.state.editId !== 'undefined'){
 						this.getEditData();
 					}
@@ -112,7 +112,7 @@ export default class FranchiseShoppingList extends React.Component {
 			});
           axios.get('/api/products/get/franchisestock/'+franchiseId)
           .then(franchisestock => {
-          	  console.log("franchisestock = ",franchisestock.data);
+          	//  console.log("franchisestock = ",franchisestock.data);
 							var prodStockOrder = [];
 							if(franchisestock.data.length > 0){
 									for (var i = 0; i<franchisestock.data.length; i++) {
@@ -136,7 +136,7 @@ export default class FranchiseShoppingList extends React.Component {
 										this.setState({
 											prodStockOrder : prodStockOrder,
 										},()=>{
-											console.log("prodStockOrder ===> ",this.state.prodStockOrder);
+										//	console.log("prodStockOrder ===> ",this.state.prodStockOrder);
 										});										
 									}
   
@@ -182,11 +182,11 @@ export default class FranchiseShoppingList extends React.Component {
       orderItems                : ProdArray,
       createdBy                 : this.state.user_ID,
     };
-    console.log("formValues1",formValues1);
+    //console.log("formValues1",formValues1);
     axios.post('/api/franchisepo/post',formValues1)
 	  	.then(function (response) {
 				var id = response.data.order_id;
-				console.log("data in franchise_id========",id);
+				//console.log("data in franchise_id========",id);
 				
 				swal("Thank You!","Your Order has been placed successfully!!")
 				this.props.history.push("/franchise-order-view/"+id);
@@ -206,12 +206,12 @@ export default class FranchiseShoppingList extends React.Component {
 	        user_id                   : this.state.user_ID,
 	       
         };
-        console.log("formValues1",formValues1);
+       // console.log("formValues1",formValues1);
         axios
 			.patch('/api/franchisepo/patch/purchaseorder',formValues1)
 		  	.then(function (response) {
 		    // handle success
-		    	console.log("Order Updated========",response.data);
+		    	//console.log("Order Updated========",response.data);
 		    	swal("Thank you. Your Product Order Updated successfully.");
 		    	 // window.location.reload();
 		  	})
@@ -344,7 +344,7 @@ export default class FranchiseShoppingList extends React.Component {
 									    	Array.isArray(this.state.prodStockOrder) && this.state.prodStockOrder.length > 0
 									    	? 
 									    		this.state.prodStockOrder.map((result, index)=>{
-													console.log("prodStockOrder",result);
+												//	console.log("prodStockOrder",result);
 													return( 
 													this.state.selectedSection ?
 														result.section === this.state.selectedSection ? 

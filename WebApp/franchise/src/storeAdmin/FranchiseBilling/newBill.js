@@ -425,8 +425,9 @@ export class Bill extends React.Component {
         const userid = localStorage.getItem('user_ID');
         axios.get("/api/carts/get/cartproductlist/"+userid)
           .then((response)=>{ 
+			//console.log("response.data",response.data.length);
 			var totalAmt = 0;
-			if(response.data){
+			if(response.data.length > 0){
 				totalAmt = response.data.reduce(function(prev,current){
 					return prev+current.subTotal
 				});

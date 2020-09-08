@@ -86,12 +86,12 @@ export default class YearlyReport extends Component{
         // console.log("companyID response.data==>",companyID);
         var userDetails = (localStorage.getItem('userDetails'));
         var userData = JSON.parse(userDetails);
-        console.log("userData.companyID===>",userData.companyID)
+        //console.log("userData.companyID===>",userData.companyID)
         axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
         .then((resdata)=>{
             axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
             .then((response)=>{
-            console.log("companyID response.data==>",response.data);
+            //console.log("companyID response.data==>",response.data);
 
             var tableData = response.data.map((a, i)=>{
                 return {
@@ -175,7 +175,7 @@ export default class YearlyReport extends Component{
     }
    
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+       // console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });

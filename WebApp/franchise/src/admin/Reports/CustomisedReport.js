@@ -189,7 +189,7 @@ export default class CustomisedReport extends Component{
     }
    
     getSearchText(searchText, startRange, limitRange){
-        console.log(searchText, startRange, limitRange);
+        //console.log(searchText, startRange, limitRange);
         this.setState({
             tableData : []
         });

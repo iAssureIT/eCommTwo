@@ -70,7 +70,7 @@ class Report extends Component{
   }
 
   findDistance(lat1, lon1, lat2, lon2, unit) {
-    console.log("distance========",lat1, lon1, lat2, lon2, unit);
+    //console.log("distance========",lat1, lon1, lat2, lon2, unit);
     if ((lat1 == lat2) && (lon1 == lon2)) {
       return 0;
     }
@@ -88,7 +88,7 @@ class Report extends Component{
       dist = dist * 60 * 1.1515;
       if (unit == "K") { dist = dist * 1.609344 }
       if (unit == "N") { dist = dist * 0.8684 }
-      console.log("distance========",dist);
+     // console.log("distance========",dist);
       return dist;
     }
   }
@@ -98,7 +98,7 @@ class Report extends Component{
   }
     
   render(){
-    console.log("deliveryAddress",this.state.address)
+    //console.log("deliveryAddress",this.state.address)
     return(
       <div>
       {this.state.display ?
@@ -138,7 +138,7 @@ class Report extends Component{
                         
                         if(this.state.address  && Object.keys(this.state.address).length){
                           distance = this.findDistance(Clatitude, Clongitude, Flatitude, Flongitude,"K");
-                          console.log("distance = ", distance);
+                        //  console.log("distance = ", distance);
                         }
                       }
                       data.products.map((product,index)=>{

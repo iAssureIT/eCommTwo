@@ -32,13 +32,13 @@ export default class AdminDashboard extends Component{
     var preferencedata = (localStorage.getItem('preferencedata'));
       const websiteModel = localStorage.getItem("websiteModel");      
       const showLoginAs = localStorage.getItem("showLoginAs");      
-    console.log("preferencedata==>",preferencedata)
-    console.log("websiteModel==>",websiteModel)
-    console.log("showLoginAs==>",showLoginAs)
+    // console.log("preferencedata==>",preferencedata)
+    // console.log("websiteModel==>",websiteModel)
+    // console.log("showLoginAs==>",showLoginAs)
     this.setState({
       websiteModel: websiteModel
     },()=>{
-      console.log("websiteModel==>",this.state.websiteModel)
+    //  console.log("websiteModel==>",this.state.websiteModel)
     })
     if (!$('body').hasClass('adminLte')) {
       var adminLte = document.createElement("script");
@@ -74,10 +74,10 @@ export default class AdminDashboard extends Component{
   }
 
   activeMenu(event){
-    console.log('event.currentTarget',event.currentTarget);
+   // console.log('event.currentTarget',event.currentTarget);
     event.preventDefault();
     var a =event.currentTarget
-    console.log("a===",a);
+  //  console.log("a===",a);
     var pathname = event.currentTarget.getAttribute("data-id"); 
     // console.log('pathname',pathname);
     window.location = pathname
@@ -118,7 +118,7 @@ export default class AdminDashboard extends Component{
       menuValues[data] = (data===key) ? !menuValues[key] :false;
       $(this).parent().addClass('menu-open');
       $(this).find('.treeview-menu').css("display","block");
-      console.log("menuvalues====",this.state.menuValues);
+     // console.log("menuvalues====",this.state.menuValues);
     });
     this.setState({menuValues});
     $('.singleTreeview').removeClass('active')

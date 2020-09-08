@@ -62,7 +62,7 @@ class FranchiseOrderSummary extends Component {
 				"selectedFranchise": response.data._id,
 			},()=>{
 				this.getData(data);
-				console.log("selectedFranchise",this.state.selectedFranchise);
+				//console.log("selectedFranchise",this.state.selectedFranchise);
 				})
 			})
 	      .catch((error) => {
@@ -78,12 +78,12 @@ class FranchiseOrderSummary extends Component {
 		axios.get('/api/franchisepo/get/franchiseorderlist/' + this.state.selectedFranchise, data)
 		.then((res) => {
 			var tableData = res.data.map((a, i) => {
-				console.log('tableData A==>>>',a.distributionData.length);
+				//console.log('tableData A==>>>',a.distributionData.length);
 				if(a.distributionData.length > 0){
 					for (i= 0; i < a.distributionData.length; i++) {
 						if(a.orderItems[i]){
 							if(a.distributionData[i].itemCode == a.orderItems[i].itemCode){
-								console.log(a.orderItems[i].orderQty, a.distributionData[i].suppliedQty)
+								//console.log(a.orderItems[i].orderQty, a.distributionData[i].suppliedQty)
 								if(a.orderItems[i].orderQty === a.distributionData[i].suppliedQty){
 									a.status = "Order Completed";
 								}else{

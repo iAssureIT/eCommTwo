@@ -97,7 +97,7 @@ export default class Header2 extends Component{
     if(Token){
       // var comapanyID = parseInt(1)
     
-      console.log("userData.userDetails===>",userDetails.companyID)
+    //  console.log("userData.userDetails===>",userDetails.companyID)
 
       axios.get('/api/entitymaster/get/companyName/1')
           .then(companyDetails=>{

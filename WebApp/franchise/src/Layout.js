@@ -147,7 +147,7 @@ class Layout extends Component  {
   render() {
         var pageUrl = window.location.pathname;
         let a = pageUrl ? pageUrl.split('/') : "";
-        console.log("a:",a);
+       // console.log("a:",a);
     if (this.state.loggedIn) {
         /* Routes for billing managements */
         if(a[1] === 'franchise-billing' || a[1] === 'view-bill' || a[1] === 'return-bill' || a[1] === 'return-bill'){

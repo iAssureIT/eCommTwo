@@ -55,7 +55,7 @@ class DailyReport extends Component{
     }
     var userDetails = (localStorage.getItem('userDetails'));
     var userData = JSON.parse(userDetails);
-    console.log("userData.companyID===>",userData.companyID)
+    //console.log("userData.companyID===>",userData.companyID)
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
       axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
@@ -86,7 +86,7 @@ class DailyReport extends Component{
           startDate : this.state.currentDate,
           endDate   : this.state.currentDate
         }
-        console.log('formvalues', formvalues);
+        //console.log('formvalues', formvalues);
 
         axios.post("/api/orders/get/report-count", formvalues)
         .then((response)=>{

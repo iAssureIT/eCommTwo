@@ -88,7 +88,7 @@ export default class WeeklyReport extends Component{
             this.setState({ 
                 tableData : response.data
             },()=>{ 
-                console.log("tableData",this.state.tableData);
+              //  console.log("tableData",this.state.tableData);
             })
             })
             .catch((error)=>{

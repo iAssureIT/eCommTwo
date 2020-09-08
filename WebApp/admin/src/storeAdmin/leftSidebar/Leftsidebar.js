@@ -30,13 +30,13 @@ export default class AdminDashboard extends Component{
     var preferencedata = (localStorage.getItem('preferencedata'));
       const websiteModel = localStorage.getItem("websiteModel");      
       const showLoginAs = localStorage.getItem("showLoginAs");      
-    console.log("preferencedata==>",preferencedata)
-    console.log("websiteModel==>",websiteModel)
-    console.log("showLoginAs==>",showLoginAs)
+    //console.log("preferencedata==>",preferencedata)
+    //console.log("websiteModel==>",websiteModel)
+    //console.log("showLoginAs==>",showLoginAs)
     this.setState({
       websiteModel: websiteModel
     },()=>{
-      console.log("websiteModel==>",this.state.websiteModel)
+      //console.log("websiteModel==>",this.state.websiteModel)
     })
     if (!$('body').hasClass('adminLte')) {
       var adminLte = document.createElement("script");

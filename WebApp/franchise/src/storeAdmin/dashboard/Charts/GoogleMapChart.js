@@ -66,7 +66,7 @@ class SimpleMap extends Component {
           url: Path,
         })
         .then((response)=>{ 
-         console.log("response map",response.data);
+         //console.log("response map",response.data);
           var piechartcolor = [];
           var totalEstimate = [];
           var locations = [];
@@ -86,7 +86,7 @@ class SimpleMap extends Component {
         this.setState({
           "data" : locations
         })
-        console.log("loct",this.state.data)
+        //console.log("loct",this.state.data)
       })
       .catch((error)=>{  
         console.log('error=>',error)      
@@ -97,7 +97,7 @@ class SimpleMap extends Component {
  
   render() {
     let Location = this.state.data;
-    console.log("Location Data",Location);
+    //console.log("Location Data",Location);
     return (
       <div className="col-md-8">
       <div className={"box "+this.state.boxColor}>

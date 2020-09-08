@@ -289,7 +289,7 @@ class AdminOrdersList extends Component{
                   data: UsersArray,
                   csvData:CsvDataArray
                 },()=>{
-                  console.log("csvData",CsvDataArray);
+                 // console.log("csvData",CsvDataArray);
                 });
 
                 this.setState({
@@ -559,7 +559,7 @@ class AdminOrdersList extends Component{
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                                   <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Status </label>
                                   <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="status" name="status" value={this.state.status} onChange={this.onStatusChange.bind(this)} >
-                                    <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+                                    <option name="roleListDDOption" disabled="disabled" defaultValue="-- Select --">-- Select --</option>
                                     <option value="all" name="roleListDDOption">Show All</option>
                                     <option value="New Order">New Order</option>
                                     <option value="Verified">Verified</option>
@@ -577,7 +577,7 @@ class AdminOrdersList extends Component{
                             <div className="form-group col-lg-3 col-md-3 col-xs-12 col-sm-12">
                             <label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left">Select Product</label>
                                 <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="product" name="product" value={this.state.product} onChange={this.onProductChange.bind(this)} >
-                                  <option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+                                  <option name="roleListDDOption" disabled="disabled" defaultValue="-- Select --">-- Select --</option>
                                   {
                                     this.state.filteredProductArray && this.state.filteredProductArray.length > 0 ?
                                       this.state.filteredProductArray.map((data, i)=>{

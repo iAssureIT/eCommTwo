@@ -30,12 +30,12 @@ export default class AllOrders extends Component{
     var allProductsArray = [];
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
-      console.log("resdata===>",resdata.data._id)
+      //console.log("resdata===>",resdata.data._id)
       var orderFilterData= {};
       orderFilterData.franchiseID = resdata.data._id;
       axios.post("/api/orders/get/get_orders",orderFilterData)
             .then((response)=>{
-              console.log("resdata===>",response.data)
+              //console.log("resdata===>",response.data)
 
               var UsersArray = [];
                 for (let i = 0; i < response.data.length; i++) {
