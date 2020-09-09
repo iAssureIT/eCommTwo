@@ -252,7 +252,7 @@ export default class FranchiseShoppingList extends React.Component {
 			search:event.target.value
 		})
 		var value = event.target.value.toLowerCase();
-    $(".franchise-shopping-table tbody tr").filter(function() {
+    $(".franchise-shopping-table  tbody tr").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 	}
