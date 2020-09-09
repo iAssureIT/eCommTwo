@@ -17,13 +17,11 @@ import HomePage                 from '../pages/HomePage/HomePage.js';
 import Unimandai_Homepage       from '../pages/HomePage/Unimandai_Homepage.js';
 import UnimandaiHeader          from '../common/Header/UnimandaiHeader.js';
 
-//-----------Syatem Security Rout.................//
+//-----------System Security Routes.................//
 
 import Login                                     from '../systemSecurity/Login.js';
 import ConfirmOtp                                from '../systemSecurity/ConfirmOtp.js'; 
-// import ForgotPasswordOld                         from '../systemSecurity/ForgotPasswordOld.js';
 import ForgotPassword                            from '../systemSecurity/ForgotPassword.js';
-// import ResetPasswordOld                          from '../systemSecurity/ResetPasswordOld.js';
 import ResetPassword                             from '../systemSecurity/ResetPassword.js';
 import SignUp                                    from '../systemSecurity/SignUp.js';
 import VerifyAccount                             from '../systemSecurity/VerifyAccount.js';
@@ -58,6 +56,9 @@ import LegalNotice                               from '../pages/LeagalNotice/Lea
 import SiteMap                                   from '../pages/SiteMap/SiteMap.js';
 import PhotoGallery                              from '../pages/PhotoGallery/PhotoGallery.js';
 import MasterPage                from '../MasterPage/MasterPage.js';
+
+/* eComm3 version Route */
+import ProductPage                                from '../pages/ProductPage/ProductViewPage.js'; 
 
 /*unimandai static blocks*/
 
@@ -131,12 +132,14 @@ class Routes extends Component{
                 <Route path="/sitemap" exact strict component={SiteMap}  />
                 <Route path="/contact-us" exact strict component={ContactPage}  />
                 <Route path="/legal-notice" exact strict component={LegalNotice}  />            
-                <Route path="/photo-gallery" exact strict component={PhotoGallery}  />            
+                <Route path="/photo-gallery" exact strict component={PhotoGallery}  />     
+
+                <Route path="/productview"  exact strict component={ ProductPage } />         
               </div>
             );
             var pageUrl = window.location.pathname;
             let a = pageUrl ? pageUrl.split('/') : "";
-            console.log("a:",a);
+            // console.log("a:",a);
             if(a[1] === 'transaction-process' ){
               return (
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
@@ -209,7 +212,10 @@ class Routes extends Component{
             <Route path="/legal-notice" exact strict component={LegalNotice}  /> 
             <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> 
             <Route path="/blog-view/:blogId"       exact strict component={ BlogView } />
-            <Route path="/photo-gallery" exact strict component={PhotoGallery}  />                     
+            <Route path="/photo-gallery" exact strict component={PhotoGallery}  />  
+
+            <Route path="/productview"  exact strict component={ ProductPage } />                   
+            {/* <Route path="/product-view" exact strict component={PhotoGallery}  />                     */}
             
           </div>
         );

@@ -533,7 +533,8 @@ loginPage(event){
                             ? 
                                 <li className="dropdown">
                                     <span className="  ">
-                                      <a href="javascript:void(0);" className="faIcon col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">                         
+                                      {/* <a href="javascript:void(0);" className="faIcon col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">                          */}
+                                      <a href="" className="faIcon col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">     
                                           <img src={loginActiveIconImg} className="icon-cart"></img>
                                       </a>
                                     </span>
@@ -709,7 +710,7 @@ loginPage(event){
                             {user_ID 
                               ? 
                                   <li className="dropdown">
-                                      <span className="  "><a href="javascript:void(0);" className="faIcon" area-hidden ="true">                         
+                                      <span className="  "><a href="" className="faIcon" area-hidden ="true">                         
                                       <img src={loginActiveIconImg} className="icon-cart"></img>
                                   </a></span>
                                       <ul className="col-lg-3 col-md-3 col-sm-3 col-xs-3 dropdown-menu list-menu">                                        
@@ -860,7 +861,7 @@ loginPage(event){
                   </div>
 
             <div className="col-sm-2 menuIcon">
-                <a href="javascript:void(0);" className="icon" onClick={this.responsiveNav.bind(this)}><i className="fa fa-bars NoPadding"></i></a>   
+                <a href="" className="icon" onClick={this.responsiveNav.bind(this)}><i className="fa fa-bars NoPadding"></i></a>   
             </div>
           </div>
           
