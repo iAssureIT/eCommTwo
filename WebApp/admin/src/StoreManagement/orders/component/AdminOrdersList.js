@@ -76,7 +76,7 @@ class AdminOrdersList extends Component{
     //         })  
     // }
     componentWillReceiveProps(nextProps){
-      // console.log("componentWillReceiveProps",nextProps)
+      console.log("componentWillReceiveProps",nextProps)
         if(nextProps){
           var ProductList = [];
           nextProps.allProductsArray.filter(function(item,index){

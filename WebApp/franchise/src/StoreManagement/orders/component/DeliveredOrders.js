@@ -27,7 +27,7 @@ export default class DeliveredOrders extends Component{
  
   getOrders(){
     var orderFilterData= {};
-    orderFilterData.status = "Delivery Initiated";
+    orderFilterData.status = "Delivered & Paid";
     var userDetails = (localStorage.getItem('userDetails'));
     var userData = JSON.parse(userDetails);
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
@@ -78,6 +78,8 @@ export default class DeliveredOrders extends Component{
           console.log('error', error);
       })
   }
+
+
 
 
   render(){

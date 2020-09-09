@@ -228,6 +228,18 @@ export default class AdminDashboard extends Component{
                   </a> 
                 </li>  
 
+                <li className="noPadLR"> 
+                  <a href="/delivery-initiated-orders" data-id="/delivery-initiated-orders" title="Delivered Initiated Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Delivered Initiated Orders
+                  </a> 
+                </li>  
+
+                <li className="noPadLR"> 
+                  <a href="/delivered-orders-list" data-id="/delivered-orders-list" title="Delivered Order List" onClick={this.activeMenu.bind(this)}>
+                    <i className="fa fa-circle-o dashr" />Delivered Order List
+                  </a> 
+                </li>  
+
               </ul>
             </li>
 
