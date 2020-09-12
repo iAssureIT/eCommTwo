@@ -38,6 +38,7 @@ componentDidMount(){
              axios
                 .get('/api/blocks/get/'+this.props.block_id)
                 .then((response)=>{
+					console.log("about multi strore",response.data);
                     if(response.data){
                       this.setState({
                           blocks:response.data
@@ -65,7 +66,7 @@ componentDidMount(){
 						</div>
 					</div>
 					<div className="col-lg-10 col-lg-offset-1 mt50">
-						<div className="col-lg-4">
+						{/* <div className="col-lg-4">
 						  <div className="col-lg-12">
 						  	<i className="fa fa-inbox multiicon" aria-hidden="true"></i>
 						  </div>
@@ -73,8 +74,8 @@ componentDidMount(){
 						  <h3><b>{this.state.blocks.repeatedBlocks[0].Title}</b></h3>
 						  <h4>{this.state.blocks.repeatedBlocks[0].SubTitle}</h4>
 						  </div>
-						</div>
-						<div className="col-lg-4">
+						</div> */}
+						{/* <div className="col-lg-4">
 						  <div className="col-lg-12">
 						  	<i className="fa fa-shopping-cart multiicon" aria-hidden="true"></i>
 						  </div>
@@ -91,7 +92,7 @@ componentDidMount(){
 						  <h3><b>{this.state.blocks.repeatedBlocks[2].Title}</b></h3>
 						  <h4>{this.state.blocks.repeatedBlocks[2].SubTitle}</h4>
 						  </div>
-						</div>
+						</div> */}
 					</div>
 					
 					<div className="col-lg-10 col-lg-offset-1">

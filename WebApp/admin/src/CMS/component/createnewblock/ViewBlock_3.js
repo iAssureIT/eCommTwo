@@ -197,7 +197,7 @@ export default class ViewBlock_3 extends React.Component {
 										this.state.ListOfBlocks && this.state.ListOfBlocks.length> 0
 										?
 											this.state.ListOfBlocks.map((result, index)=>{
-												var component = result.blockComponentName ? result.blockComponentName : "TitleDesc";
+												var component = result.blockComponentName ? result.blockComponentName : "Typecomponent1";
 												const NewPageComponent = React.lazy(() => import('../blockTemplate/'+component+'/'+component+'.js'));
 												var block_id=result._id;
 												return(

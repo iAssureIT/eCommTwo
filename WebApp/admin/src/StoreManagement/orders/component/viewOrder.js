@@ -12,7 +12,8 @@ class viewOrder extends Component{
         if(!this.props.loading){
             this.state = {
                 "orderData":[],
-                companyInfo:[]
+                companyInfo:[],
+              
                 // "notificationData" :Meteor.subscribe("notificationTemplate"),
             };
         }else{
@@ -29,11 +30,12 @@ class viewOrder extends Component{
       var orderID = this.props.match.params.orderID;
       this.getOneOrder(orderID);
       this.getCompanyDetails(); 
+      this.getdiscounteddata(this.state.startRange, this.state.limitRange);
     }
     getOneOrder(orderID){
       axios.get("/api/orders/get/one/"+orderID)
             .then((response)=>{
-              console.log('response.data orderID ====>',response.data.deliveryAddress.mobileNumber);
+             // console.log('response.data orderID ====>',response.data.deliveryAddress.mobileNumber);
               this.setState({
                   orderData : response.data,
                   mobilenum : response.data.deliveryAddress.mobileNumber,
@@ -62,6 +64,37 @@ class viewOrder extends Component{
           this.basicPageTracker.stop();
     }
 
+    getdiscounteddata(startRange, limitRange) {
+      axios.get('/api/discount/get/list-with-limits/' + startRange + '/' + limitRange)
+          .then((response) => {
+              //console.log('tableData = ', response.data[0]);
+              this.setState({
+                  discountdata: response.data[0],
+                  discounttype: response.data[0].discounttype,
+                  discountin: response.data[0].discountin.toLowerCase(),
+                  discountvalue: response.data[0].discountvalue,
+                  startdate: moment(response.data[0].startdate).format("YYYY-MM-DD"),
+                  enddate: moment(response.data[0].enddate).format("YYYY-MM-DD"),
+              },()=>{
+                  var amountofgrandtotal = 
+                                              this.state.orderData ?
+                                                   this.state.discountin === "Percent" ?
+                                                      parseInt(this.state.orderData.total) - (this.state.orderData.total * this.state.discountvalue)/ 100
+                                                      : parseInt(this.state.orderData.total) - this.state.discountvalue
+                                                  : parseInt(this.state.orderData.total)
+                                            
+                  // var amt =(100/1)*amountofgrandtotal;
+                  // var rsamt = amt/100;
+                  // console.log('amountofgrandtotal = ', amt);
+                 // console.log('amountofgrandtotal = ');
+                  this.setState({amountofgrandtotal : amountofgrandtotal})
+               })
+          })
+          .catch((error) => {
+              console.log('error', error);
+          });
+  }
+
     
     
     isEmpty(obj) {
@@ -72,7 +105,7 @@ class viewOrder extends Component{
       return true;
     }
     render(){
-      
+    //  console.log("orderData",this.state.orderData);
         return(         
         <div className="container-fluid">
           <section className="content">
@@ -122,7 +155,10 @@ class viewOrder extends Component{
                     </div>
                     <div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Shipping:  </span></div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}> 0</i></span> </div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
+                        {/* <span><i className={"fa fa-"+this.state.orderData.currency}> Free</i></span>  */}
+                        <span>Free</span> 
+                      </div>
                     </div>
                     {this.state.companyInfo ? <div>
                     <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>GST ({ this.state.companyInfo.taxSettings && this.state.companyInfo.taxSettings[0].taxRating} %):  </span></div>
@@ -143,6 +179,23 @@ class viewOrder extends Component{
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
                         <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.orderData.total).toFixed(2) }</i></span>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Discount </span></div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
+                        {this.state.discountin == 'percent' ? 
+                            <span>{ parseInt(this.state.orderData.discount).toFixed(2) }%</span>
+                        :
+                           <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.orderData.discount).toFixed(2) }</i></span>
+                          
+                        }
+                      </div>
+                    </div>
+                    <div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Grand Total: </span></div>
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
+                        <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.amountofgrandtotal).toFixed(2) }</i></span>
                       </div>
                     </div>
                   </div>

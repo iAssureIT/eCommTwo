@@ -45,6 +45,7 @@ componentDidMount(){
               });
 } 
   render() {
+    console.log('bg image',this.state.blocks)
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
 				<div className="row">

@@ -251,7 +251,7 @@ class DiscountManagement extends Component {
                     <label>Discount In<i className="redFont">*</i></label>
                     <select onChange={this.handleChange.bind(this)} value={this.state.discountin} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="discountin" name="discountin" >
                       <option  name="No Select"  >-- Select Discount In --</option>
-                      <option name="precent" value ="Precent" >Precent</option>
+                      <option name="percent" value ="Percent" >Percent</option>
                       <option name="amount"  value ="Amount"  >Amount</option>
                     </select>
                   </div>
