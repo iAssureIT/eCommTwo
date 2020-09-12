@@ -7,6 +7,7 @@ import "../../../sites/currentSite/blocks/Banner.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';
+import axios                  from 'axios';
 
 import AddressBanner2  from "../../../sites/currentSite/images/AddressBanner2.png";
 import AddressBanner1  from "../../../sites/currentSite/images/AddressBanner1.png";
@@ -31,7 +32,23 @@ export default class EcommerceBanner extends Component {
           },
  	
 	    };
-  	}  
+	  }
+	  componentDidMount(){
+		this.getBannerImages();
+	  }
+	  
+	  getBannerImages(){
+		axios.get('/api/bannerimgs/get')
+		.then((res)=>{
+		  console.log('Banner Images ===>', res.data);
+		  this.setState({
+			bannerList : res.data
+		  })
+		})
+		.catch((error)=>{
+		  console.log('error', error);
+		})
+	  }  
   render() {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
@@ -41,32 +58,39 @@ export default class EcommerceBanner extends Component {
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bannerContainerEcomm">
 							<div className="row">
 						 		<OwlCarousel
-									    className="owl-theme bannercaro bannercaroBtn"
-									    loop
-                            			responsive={this.state.responsive} 
+									  className="owl-theme bannercaro bannercaroBtn"
+									  loop
+                    responsive={this.state.responsive} 
 										autoplay={true}
-										// margin={0}
-										// nav={true}
-			                            autoplayHoverPause={true}
+										autoplayHoverPause={true}
 										dots={true}
-										
-			                            dotData={true}
-									>
+										dotData={true}>
+									 	
+											{/* {
+												Array.isArray(this.state.bannerList) && this.state.bannerList.map((data, index)=>{                                                
+													return(
+														<div className="item">
+															<img className="img img-responsive" src={data.bannerimages} alt="banner"></img>
+														</div>
+													)
+												})
+											} */}
+									
 									    <div className="item">
 									    	<img className="img img-responsive" src={Background_2} alt="banner" />									    	
 									    </div>
 									    <div className="item">
 									    	<img className="img img-responsive" src={Background_22} alt="banner" />									    	
 									    </div>
-										<div className="item">
-									    	<img className="img img-responsive" src={AddressBanner1} alt="banner" />									    	
-									    </div>
-										<div className="item">
-									    	<img className="img img-responsive" src={AddressBanner2} alt="banner" />									    	
-									    </div>
+											<div className="item">
+													<img className="img img-responsive" src={AddressBanner1} alt="banner" />									    	
+												</div>
+											<div className="item">
+													<img className="img img-responsive" src={AddressBanner2} alt="banner" />									    	
+											</div> 
 										{/* <div className="item">
 									    	<img className="img img-responsive" src={OrganicItem} alt="banner" />									    	
-									    </div> */}
+									    </div>*/}
 										
 									</OwlCarousel>
 							</div> 

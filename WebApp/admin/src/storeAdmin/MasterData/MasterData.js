@@ -13,6 +13,7 @@ import TaxRate            from  './TaxRate/TaxRate.js';
 // import UnitOfMeasurment   from  './UnitOfMeasurment/UnitOfMeasurmentMaster.js';
 import UnitOfMeasurment   from  './UnitOfMeasurment/UnitOfMeasurmentMaster.js';
 import PhotoGallery       from './Gallery/component/Gallery.js';
+import BannerImages       from './BannerImages/component/BannerImages.js';
 
 
 // import '../../coreadmin/companysetting/css/CompanySetting.css';
@@ -92,6 +93,7 @@ import PhotoGallery       from './Gallery/component/Gallery.js';
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#UnitOfMeasurment" data-toggle="tab">Unit of Measurement </a></li>
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#ShippingManagement" data-toggle="tab">Shipping Management </a></li>
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#TimeManagement" data-toggle="tab">Time Management </a></li>
+                          {/* <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#PhotoGallery" data-toggle="tab">Banner Images </a></li> */}
                           <li className="col-lg-12 col-md-12 col-xs-12 col-sm-12"><a className="tabLeft lettersp tablefthr" href="#PhotoGallery" data-toggle="tab">Photo Gallery </a></li>
 
                           
@@ -103,6 +105,7 @@ import PhotoGallery       from './Gallery/component/Gallery.js';
                         <div className="tab-pane" id="UnitOfMeasurment"><UnitOfMeasurment  editId={this.state.editId}/>  </div>  
                         <div className="tab-pane" id="ShippingManagement"><ShippingManagement editId={this.state.editId}/>  </div>  
                         <div className="tab-pane" id="TimeManagement"><TimeManagement editId={this.state.editId}/>  </div>  
+                        {/* <div className="tab-pane" id="PhotoGallery"><BannerImages editId={this.state.editId}/>  </div>   */}
                         <div className="tab-pane" id="PhotoGallery"><PhotoGallery editId={this.state.editId}/>  </div>  
 
                         {/* <div className="tab-pane" id="TaxName">         <TaxName           editId={this.state.editId}/>  </div>

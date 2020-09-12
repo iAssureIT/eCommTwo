@@ -99,25 +99,24 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 	const FinishedGoodsEntry   			= require("./api/Ecommerce/PurchaseManagement/routes/FinishedGoodsEntry");
 	const FranchisePORoutes				= require("./api/Ecommerce/Franchise/franchisePurOrder/Routes.js");
 	const FranchiseGoods       			= require("./api/Ecommerce/distributionManagement/Routes.js");
-    const FranchiseDeliveryRoutes		= require("./api/Ecommerce/distributionManagement/franchiseDelivery/Routes.js");
+  const FranchiseDeliveryRoutes		= require("./api/Ecommerce/distributionManagement/franchiseDelivery/Routes.js");
 
 
 	const AdminPORoutes					= require("./api/Ecommerce/adminShoppingList/Routes.js");
 
-
-
    /*WreHouse Master*/
-   const WareHouseRoutes				= require("./api/Ecommerce/warehouseMaster/RoutesWareHouseMaster.js");
+   const WareHouseRoutes			= require("./api/Ecommerce/warehouseMaster/RoutesWareHouseMaster.js");
 
    // Billing management
    const BillingEntry					= require("./api/Ecommerce/billingManagement/Routes.js");
 
    //gallery
-   const Gallery                        = require("./api/Ecommerce/Gallery/Routes.js");
+   const Gallery              = require("./api/Ecommerce/Gallery/Routes.js");
+
+	 const BannerImages         = require("./api/Ecommerce/BannerImages/Routes.js");
 
 	app.use("/api/users",systemRoutes);
 	app.use("/api/auth",systemRoutes);
-
 	app.use("/api/users",usersRoutes);	
 	app.use("/api/ecommusers",eCommUsersRoutes);
 	app.use("/api/users",eCommUsersRoutes);
@@ -125,7 +124,6 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 	app.use("/api/projectSettings",projectSettingsurl);
 	app.use("/api/companysettings",companySettingRoutes);
 	app.use("/api/taxsettings",taxSetting);
-
 	app.use("/api/masternotifications",notificationRoutes);
 	app.use("/api/locationtypemaster",locationTypeMasterRoutes);
 	
@@ -187,6 +185,9 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 
 	//============Photo Gallery routes ========
 	app.use("/api/gallery",Gallery);
+	
+	//============Photo Gallery routes ========
+	app.use("/api/bannerimgs",BannerImages);
 
 	app.post('/send-email', (req, res)=> {
 	console.log("inside app.js req:");
