@@ -107,7 +107,7 @@ class Checkout extends Component {
                 },()=>{
                     var amountofgrandtotal = this.props.recentCartData.length > 0 ?
                                                 this.state.discountdata !== undefined ?
-                                                    this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                    this.props.recentCartData.length > 0 && this.state.discountin === "Percent" ?
                                                         parseInt(this.props.recentCartData[0].total) - (this.props.recentCartData[0].total * this.state.discountvalue)/ 100
                                                         : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
                                                     : parseInt(this.props.recentCartData[0].total)
@@ -813,7 +813,7 @@ class Checkout extends Component {
                             paymentMethod: this.state.paymentmethods === 'cod' ? "Cash On Delivery" : "Credit/Debit Card",
                             // total: this.props.recentCartData.length > 0 ?
                             //     this.state.discountdata !== undefined ?
-                            //         this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                            //         this.props.recentCartData.length > 0 && this.state.discountin === "Percent" ?
                             //             parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
                             //             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
                             //         : parseInt(this.props.recentCartData[0].total)
@@ -825,7 +825,7 @@ class Checkout extends Component {
                         if (this.state.isChecked) {
                             axios.post('/api/orders/post', orderData)
                                 .then((result) => {
-                                    if (this.state.paymentmethods === 'cod') {
+                                    // if (this.state.paymentmethods === 'cod') {
                                         this.setState({paymethods : true})
                                         this.props.fetchCartData();
                                         this.setState({
@@ -846,32 +846,32 @@ class Checkout extends Component {
                                         }, 3000);
 
                                         this.props.history.push('/payment/' + result.data.order_ID);
-                                    } else {
-                                        this.setState({paymethods : true})
-                                        var paymentdetails = {
-                                            MERCHANT_ID: this.state.partnerid,
-                                            MERCHANT_ACCESS_CODE: this.state.secretkey,
-                                            REFERENCE_NO: result.data.order_ID,
-                                            AMOUNT: this.state.amountofgrandtotal*100,
-                                            CUSTOMER_MOBILE_NO: this.state.mobile,
-                                            CUSTOMER_EMAIL_ID: this.state.email,
-                                            PRODUCT_CODE: "testing",
-                                        }
-                                        console.log('paymentdetails in result==>>>', paymentdetails)
-                                        axios.post('/api/orders/pgcall/post', paymentdetails)
-                                            .then((payurl) => {
-                                                console.log('sendDataToUser in payurl==>>>', payurl.data)
-                                                if(payurl.data.result.RESPONSE_MESSAGE  === 'SUCCESS'){
-                                                    window.location.replace(payurl.data.result.PAYMENT_URL);
-                                                }
-                                                this.setState({paymethods : false})
-                                            })
-                                            .catch((error) => {
-                                                console.log("return to checkout");
-                                                console.log(error);
-                                                this.setState({paymethods : false})
-                                            })
-                                    }
+                                    // } else {
+                                    //     this.setState({paymethods : true})
+                                    //     var paymentdetails = {
+                                    //         MERCHANT_ID: this.state.partnerid,
+                                    //         MERCHANT_ACCESS_CODE: this.state.secretkey,
+                                    //         REFERENCE_NO: result.data.order_ID,
+                                    //         AMOUNT: this.state.amountofgrandtotal*100,
+                                    //         CUSTOMER_MOBILE_NO: this.state.mobile,
+                                    //         CUSTOMER_EMAIL_ID: this.state.email,
+                                    //         PRODUCT_CODE: "testing",
+                                    //     }
+                                    //     console.log('paymentdetails in result==>>>', paymentdetails)
+                                    //     axios.post('/api/orders/pgcall/post', paymentdetails)
+                                    //         .then((payurl) => {
+                                    //             console.log('sendDataToUser in payurl==>>>', payurl.data)
+                                    //             if(payurl.data.result.RESPONSE_MESSAGE  === 'SUCCESS'){
+                                    //                 window.location.replace(payurl.data.result.PAYMENT_URL);
+                                    //             }
+                                    //             this.setState({paymethods : false})
+                                    //         })
+                                    //         .catch((error) => {
+                                    //             console.log("return to checkout");
+                                    //             console.log(error);
+                                    //             this.setState({paymethods : false})
+                                    //         })
+                                    // }
                                     axios.get('/api/orders/get/one/' + result.data.order_ID)
                                         .then((res) => {
                                             // =================== Notification OTP ==================
@@ -885,7 +885,7 @@ class Checkout extends Component {
                                                         "Username": res.data.userFullName,
                                                         "amount": this.props.recentCartData.length > 0 ?
                                                                     this.state.discountdata !== undefined ?
-                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Percent" ?
                                                                             parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
                                                                             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
                                                                         : parseInt(this.props.recentCartData[0].total)
@@ -1132,7 +1132,7 @@ class Checkout extends Component {
                                         </div>
                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paymentInput">
                                             {/* <input value={this.state.payMethod} onChange={this.creditndebit}  name="payMethod" type="radio" value="Credit Card Direct Post" className="col-lg-1 col-md-1 col-sm-2 col-xs-2 codRadio" /> */}
-                                            <input  name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
+                                            <input disabled name="paymentmethods" type="radio" value="crdbt" className="webModelInput col-lg-1 col-md-1 col-sm-2 col-xs-2" checked={this.state.paymentmethods === "crdbt"} onClick={this.handleChange.bind(this)} />
                                             <span className="col-lg-11 col-md-11 col-sm-10 col-xs-10">Credit / Debit Card</span>
                                         </div>
                                         {/*  <button className="btn anasBtn col-lg-3 col-lg-offset-9 col-md-2 col-md-offset-10 col-sm-12 col-xs-12 placeOrder" onClick={this.placeOrder.bind(this)}>Place Order</button> */}

@@ -97,7 +97,7 @@ class Routes extends Component{
                 <Route path="/confirm-otp/:user_ID"       exact strict component={ Unimandai_Homepage } /> 
                 <Route path="/cart"                       exact strict component={ Cart } />
                 <Route path="/checkout"                   exact strict component={ Checkout } />
-                <Route path="/transaction-process"       exact strict component={ Paymentgateway } />
+                <Route path="/transaction-process"        exact strict component={ Paymentgateway } />
                 <Route path="/my-orders"                  exact strict component={ MyOrders } />
                 <Route path="/my-ordersUni"               exact strict component={ MyOrders_Unimandai } />
                 <Route path="/view-order/:order_ID"       exact strict component={ ViewOrder } />
@@ -114,15 +114,15 @@ class Routes extends Component{
                 <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> 
                 
                 
-                <Route path="/profile"              exact strict component={ Edituser } />
-                <Route path="/payment/:order_ID"            exact strict component={ Payment } />
-                <Route path="/wishlist"            exact strict component={ Wishlist } />
+                <Route path="/profile"                exact strict component={ Edituser } />
+                <Route path="/payment/:order_ID"      exact strict component={ Payment } />
+                <Route path="/wishlist"               exact strict component={ Wishlist } />
                 <Route path="/wishlistuni"            exact strict component={ wishlist_unimandai } />
-                <Route path="/productreview"            exact strict component={ Productreview } />
-                <Route path="/account"            exact strict component={ Account } />
-                <Route path="/edit"            exact strict component={ EditAccount } />
-                <Route path="/address-book"            exact strict component={ AddressBook } />
-                <Route path="/blog-view/:blogId"       exact strict component={ BlogView } />
+                <Route path="/productreview"          exact strict component={ Productreview } />
+                <Route path="/account"                exact strict component={ Account } />
+                <Route path="/edit"                   exact strict component={ EditAccount } />
+                <Route path="/address-book"           exact strict component={ AddressBook } />
+                <Route path="/blog-view/:blogId"      exact strict component={ BlogView } />
                 
                 {/* <Route path="/address/:deliveryAddressID"            exact strict component={ Address } /> */}
                 {/* <Route path="/address"            exact strict component={ Address } /> */}

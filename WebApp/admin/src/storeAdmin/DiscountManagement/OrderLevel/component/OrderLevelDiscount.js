@@ -231,7 +231,7 @@ class OrderLevelDiscount extends Component {
                              <label>Discount In<i className="redFont">*</i></label>
                                <select onChange={this.handleChange.bind(this)} className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding  form-control" ref="discountin" name="discountin" >
                                 <option name="shippingtime" disabled="disabled" selected="true">-- Select --</option>
-                                <option name="precent" selected="true">Precent</option>
+                                <option name="Percent" selected="true">Percent</option>
                                 <option name="amount" selected="true">Amount</option>
                             </select>
                           </div>

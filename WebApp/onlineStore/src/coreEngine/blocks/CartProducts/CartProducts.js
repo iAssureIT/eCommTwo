@@ -510,7 +510,7 @@ class CartProducts extends Component{
                                                         <td>Discount</td>
                                                         {/* <td className="textAlignRight saving">&nbsp; {this.props.recentCartData[0].discount >= 1 ? <span> - <i className="fa fa-inr"></i>{this.props.recentCartData[0].discount} </span> : 0.00}</td> */}
                                                         <td className="textAlignRight saving">&nbsp; 
-                                                            <span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Precent" ? <i className="fa fa-percent" /> : null} </span>
+                                                            <span>{this.state.discountin === "Amount" ? <i className="fa fa-inr" /> : null} {this.state.discountvalue > 1 ? this.state.discountvalue : 0.00} {this.state.discountin === "Percent" ? <i className="fa fa-percent" /> : null} </span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -519,7 +519,7 @@ class CartProducts extends Component{
                                                         <td className="textAlignRight cartTotal">&nbsp; <i className={"fa fa-inr"}></i>
                                                          {this.props.recentCartData.length > 0 ?
                                                                     this.state.discountdata !== undefined ?
-                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Precent" ?
+                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Percent" ?
                                                                             parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
                                                                             : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
                                                                         : parseInt(this.props.recentCartData[0].total)
