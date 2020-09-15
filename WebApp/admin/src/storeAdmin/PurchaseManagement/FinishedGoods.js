@@ -120,7 +120,7 @@ export default class FinishedGoods extends React.Component {
 		}, "No space please and don't leave it empty");
 
 		$.validator.addMethod("valueNotEquals", function (value, element, arg) {
-			console.log(arg,value);
+			//console.log(arg,value);
 			return arg !== value && value!== null;
 		}, "Please select unit of measurement");
 		jQuery.extend(jQuery.validator.messages, {
@@ -192,7 +192,7 @@ export default class FinishedGoods extends React.Component {
 
 			},
 			errorPlacement: function (error, element) {
-				console.log("element",element);
+			//	console.log("element",element);
 			  if (element.attr("name") === "Date") {
 				error.insertAfter("#Date");
 			  }
@@ -525,7 +525,7 @@ export default class FinishedGoods extends React.Component {
 	getCurrentStock(){
 		    axios.get('/api/purchaseEntry/get/RawMaterialCurrentStock/'+this.state.ItemCode)
 		    .then(response => {
-				console.log("getCurrentStock",response.data);
+				//console.log("getCurrentStock",response.data);
 				if(response.data){
 					this.setState({
 						CurrentStock     : response.data.totalStock ? response.data.totalStock : 0,
@@ -615,7 +615,7 @@ export default class FinishedGoods extends React.Component {
 			}
 		}else{
 			if(TotalFcInward == this.state.OutwardRawMaterial){
-				console.log("this.state.fgUnitWt",this.state.fgUnitWt);
+				//console.log("this.state.fgUnitWt",this.state.fgUnitWt);
 				var compareVariable = this.compareVariable(this.state.fgUnitWt.toLowerCase(),finishgoodUnitWt.toLowerCase(),ScrapUnit.toLowerCase());
 				if(compareVariable){
 					OutwardError =  "";
@@ -985,6 +985,7 @@ export default class FinishedGoods extends React.Component {
    calculateWeightPerFP(){
 	// var firstEntered;
 	var TotalFcWt = this.state.fgUnitQty * this.state.fgTotalQty;
+	//console.log("TotalFcWt",TotalFcWt);
 	if(this.state.fgUnitQtyforFG == 0  && this.state.scrapQty == 0 || this.state.fgUnitQtyforFG == "NaN"  && this.state.scrapQty == ""){
 		this.setState({
 			firstEntered      : "Product_unit",
@@ -1005,6 +1006,7 @@ export default class FinishedGoods extends React.Component {
 		this.setState({
 			firstEntered   : "Product_unit",
 			fgUnitQtyforFG : TotalFcWt,
+			finishedGoodsUnit : this.state.OutwardUnit,
 			fgUnitWt       : this.state.fgUnitWt,
 			scrapQty       : this.state.OutwardRawMaterial - TotalFcWt > 0.01 ? this.state.OutwardRawMaterial - TotalFcWt : 0,
 			scrapUnit      : this.state.fgUnitWt,
@@ -1090,11 +1092,12 @@ export default class FinishedGoods extends React.Component {
 		// Kilograms to Gram
 		if(this.state.OutwardUnit.toLowerCase() == 'kg' && this.state.fgUnitWt.toLowerCase() == "gm"){
 			//convert fgunit to kg and calculate
-			var FgUnitKg=this.state.fgUnitQty*1000;
+			//console.log('check',900/1000);
+			var FgUnitKg=this.state.fgUnitQty/1000;
 			var fgTotalQtyToKg = this.state.fgUnitQtyforFG/1000;
 			var Scrap =  this.state.OutwardRawMaterial-(this.state.fgUnitQty * this.state.fgTotalQty/1000);
 			this.setState({
-				fgUnitQtyforFG    : (this.state.fgUnitQty/1000) * (this.state.fgTotalQty),
+				fgUnitQtyforFG    : (this.state.fgUnitQty * this.state.fgTotalQty) / 1000,
 				scrapQty          : Scrap > 0 ? Scrap : 0,
 				scrapUnit         : this.state.OutwardUnit,
 			},() => {
@@ -1210,7 +1213,7 @@ export default class FinishedGoods extends React.Component {
 										<div className="form-group col-lg-3 col-md-4 col-xs-12 col-sm-12">
 											<label >Outward From Raw Material <i className="redFont">*</i></label>
 											<div className="outwardRawMatDiv">
-												<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.OutwardRawMaterial} name="OutwardRawMaterial" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward" min="1"/>
+												<input type="number" placeholder="Enter outward from raw material " className="h34 col-lg-6 col-md-6 col-xs-8 col-sm-8" value={ this.state.OutwardRawMaterial} name="OutwardRawMaterial" refs="outward" onChange={this.onOutwardRawMaterialChange.bind(this)} id="outward"/>
 												<select id="OutwardUnit"  name="OutwardUnit" value={this.state.OutwardUnit} refs="OutwardUnit" onChange={this.handleChange.bind(this)}  className="col-lg-6 col-md-6 col-xs-4 col-sm-4 h34">
 												    <option key={0} selected={true} disabled={true}>-- Select --</option>
 													{
