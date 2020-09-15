@@ -77,7 +77,7 @@ export default class ProgressBlock extends Component{
       if(response){
         var topArray =[];
         response.data.sort(function(a, b){return b.totalSale-a.totalSale});
-        var arr =  response.data.slice(0,5); 
+        var arr =  response.data.slice(0,4); 
         arr.map(function(data,index){
           var tot = data.totalSale ? data.totalSale : 0;
           if(tot === 0 || tot === '0'){
