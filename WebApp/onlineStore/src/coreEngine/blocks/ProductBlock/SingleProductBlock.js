@@ -17,16 +17,18 @@ import AssuredImg from '../../../sites/currentSite/images/assured.png';
 import './ProductBlock.css';
 const user_ID = localStorage.getItem("user_ID");
 
-class ProductBlock extends Component {
+class SingleProductBlock extends Component {
   constructor(props) {
     super(props);
     this.state = {
       products: [],
+      data:{},
       masterLimitProducts: [],
       categoryDetails: [],
       modalIDNew: [],
       sizeCollage: false,
-      relatedProductArray: []
+      relatedProductArray: [],
+      productSettings:{}
     }
   }
   async componentDidMount() {
@@ -41,57 +43,33 @@ class ProductBlock extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("3.componentWillReecived props");
-    // console.log("nextProps componentWillReceiveProps :==",nextProps); 
-    if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
-    for(var i=0;i<nextProps.products.length;i++){      
-        var availableSizes = [];             
-        if(nextProps.products[i].size){          
-          availableSizes.push(nextProps.products[i].size*1);
-          availableSizes.push(nextProps.products[i].size*2);
-          availableSizes.push(nextProps.products[i].size*4); 
-          nextProps.products[i].availableSizes = availableSizes;                     
-        }
-    }
-  }
+    // console.log("3.componentWillReecived props");
+    console.log("singleProduct Block componentWillReceiveProps :==",nextProps); 
+//     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
+//     for(var i=0;i<nextProps.products.length;i++){      
+//         var availableSizes = [];             
+//         if(nextProps.products[i].size){          
+//           availableSizes.push(nextProps.products[i].size*1);
+//           availableSizes.push(nextProps.products[i].size*2);
+//           availableSizes.push(nextProps.products[i].size*4); 
+//           nextProps.products[i].availableSizes = availableSizes;                     
+//         }
+//     }
+//   }
     
+//     this.setState({
+//       products: nextProps.products,
+//       masterLimitProducts: nextProps.products,
+//       categoryDetails: nextProps.categoryDetails,
+//       productSettings: nextProps.productSettings
+//     });
     this.setState({
-      products: nextProps.products,
-      masterLimitProducts: nextProps.products,
-      categoryDetails: nextProps.categoryDetails,
+      data : nextProps.data,
+      index: nextProps.index,
       productSettings: nextProps.productSettings
+      
     });
   }
-  getProductData(id, clr) {
-    axios.get("/api/products/get/productcode/" + id)
-      .then((response) => {
-        let mymap = new Map();
-        var colorFilter = response.data.filter(x => x.color === clr);
-        var unique = colorFilter.filter(el => {
-          const val = mymap.get(el.size);
-          if (val) {
-            if (el._id < val) {
-              mymap.delete(el.size);
-              mymap.set(el.size, el._id);
-              return true;
-            } else {
-              return false;
-            }
-          }
-          mymap.set(el.size, el._id);
-          return true;
-        });
-
-        this.setState({
-          relatedProductArray: unique,
-          productSizeArray: unique,
-        })
-      })
-      .catch((error) => {
-        console.log('error', error);
-      })
-  } 
-
 
   addtowishlist(event) {
     event.preventDefault();
@@ -437,21 +415,13 @@ class ProductBlock extends Component {
     }//end else
   }
   }
-  
   showRatingBlock(event){
-    event.preventDefault();
-    // console.log("event:",event);
+
   }
+
   render(){
     // console.log("Inside product collage view");
-    return (
-      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-        <Message messageData={this.state.messageData} />
-        <div className="row">
-          {
-            Array.isArray(this.state.products) && this.state.products.length > 0 ? 
-            Array.isArray(this.state.products) && this.state.products.map((data, index) => {  
-                var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
+    var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === this.state.data._id) : [];
                 var wishClass = '';
                 var tooltipMsg = '';
                 if (x && x.length > 0) {
@@ -461,125 +431,125 @@ class ProductBlock extends Component {
                   wishClass = '-o';
                   tooltipMsg = 'Add To Wishlist';
                 }
-                return (                  
-                  <div className="col-lg-3 col-md-3 col-sm-4 col-xs-6 customePadding"  key={index}>
-                    {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding"> */}
-                      <div className="productBlock col-lg-12 col-md-12 col-sm-12 col-xs-12 productInnerWrap NOpadding">
-                        <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                          <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                            {this.state.productSettings.displayWishtlistIcon === true?
-                                <button type="submit" id={data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
+    return (
+      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+        <Message messageData={this.state.messageData} />
+        <div className="row">         
+            <div className="col-lg-12 col-md-3 col-sm-4 col-xs-6 customePadding"  key={this.state.index}>
+                <div className="productBlock col-lg-12 col-md-12 col-sm-12 col-xs-12 productInnerWrap NOpadding">
+                <div className="item-top col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                    <div className="productImg col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                    {this.state.productSettings.displayWishtlistIcon === true?
+                        <button type="submit" id={this.state.data._id} title={tooltipMsg} className={"wishIcon fa fa-heart" + wishClass} onClick={this.addtowishlist.bind(this)}></button>
+                    :null
+                    }
+                    {this.state.data.discountPercent ? <div className="btn-warning discounttag">{this.state.data.discountPercent} % </div> : null}
+                    <a className="product photo product-item-photo collage" tabIndex="-1" href={"/productdetails/" + this.state.data.productUrl + "/" + this.state.data._id}>
+                        <img src={this.state.data.productImage ? this.state.data.productImage[0] : notavailable} alt="ProductImg" />
+                    </a>
+                    </div>
+                    <div className="productDetails col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                             
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innerDiv">
+                        {this.state.productSettings.displayBrand === true ?
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-brand" title={this.state.data.brand}>{this.state.data.brand}</div>
+                        :null
+                        }
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding product-item-link" title={this.state.data.productName}>{this.state.data.productName} 
+                        {this.state.data.shortDescription ?                                                        
+                            <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding marathiName"><span className="bracket">(</span> {this.state.data.shortDescription} <span className="bracket">)</span></span>                        
+                        :null
+                        }
+                        </div>
+                        <div className="col-lg-12 col-md-12 NOpadding">
+                        {
+                            localStorage.getItem("websiteModel")=== "FranchiseModel"?                                  
+                            this.state.data.discountPercent ?                                      
+                                <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{this.state.data.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {this.state.data.discountedPrice} / {this.state.data.size}&nbsp;<span className="ProSize">{this.state.data.unit}</span></span>       
+                            :
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                <span className="price"><i className="fa fa-inr price"></i>&nbsp;{this.state.data.originalPrice} / {this.state.data.size}&nbsp;<span className="ProSize">{this.state.data.unit}</span></span> &nbsp;                                       
+                                </div>
+
+                            :                                    
+                            this.state.data.discountPercent ?
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{this.state.data.originalPrice} </span><i className="fa fa-inr"></i>&nbsp;{this.state.data.discountedPrice} / {this.state.data.size}&nbsp;<span className="ProSize">{this.state.data.unit}</span></span>
+                            </div>
+                            :  
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                                <span className="price"><i className="fa fa-inr price"></i>&nbsp;{this.state.data.originalPrice} /{this.state.data.size}&nbsp;<span className="ProSize">{this.state.data.unit}</span></span> &nbsp;                                      
+                            </div>                              
+
+                        }
+                        </div>
+                        {this.state.productSettings.displayRating === true ?
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 displayRating customePadding">
+                            <span id="productRating" className="col-lg-3 col-md-3 col-sm-3 col-xs-3 NoPadding" onMouseOver={this.showRatingBlock.bind(this)} >
+                                <div className="showRating col-lg-12 col-md-12 col-sm-12 col-xs-12"> 4 <i className="fas fa-star"></i></div>                                        
+                            </span>  
+                            {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ratingBlock">
+                                <RatingBlock />
+                            </div>                                   */}
+                            <span className="col-lg-5 col-md-5-col-sm-5 col-xs-5 customePadding">(&nbsp;162 &nbsp;)</span>
+                            {this.state.productSettings.displayAssuranceIcon === true ?
+                                <span className="col-lg-4 col-md-4 col-sm-4 col-xs-4 NoPadding assurenceIcon">
+                                <img className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" src={AssuredImg} alt="Assured Img" />                                      </span>
                             :null
                             }
-                            {data.discountPercent ? <div className="btn-warning discounttag">{data.discountPercent} % </div> : null}
-                            <a className="product photo product-item-photo collage" tabIndex="-1" href={"/productdetails/" + data.productUrl + "/" + data._id}>
-                              <img src={data.productImage[0] ? data.productImage[0] : notavailable} alt="ProductImg" />
-                            </a>
-                          </div>
-                          <div className="productDetails col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                             
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 innerDiv">
-                              {this.state.productSettings.displayBrand === true ?
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 product-brand" title={data.brand}>{data.brand}</div>
-                              :null
-                              }
-                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding product-item-link" title={data.productName}>{data.productName} 
-                              {data.shortDescription ?                                                        
-                                  <span className="marathiName"><span className="bracket">(</span> {data.shortDescription} <span className="bracket">)</span></span>                        
-                              :null
-                              }
-                              </div>
-                              <div className="col-lg-12 col-md-12 NOpadding">
-                                {
-                                  localStorage.getItem("websiteModel")=== "FranchiseModel"?                                  
-                                    data.discountPercent ?                                      
-                                      <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{data.originalPrice} </span>&nbsp; <i className="fa fa-inr "></i> {data.discountedPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>       
-                                    :
-                                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                        <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;                                       
-                                      </div>
-
-                                  :                                    
-                                    data.discountPercent ?
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                      <span className="price"><span className="oldprice"><i className="fa fa-inr "></i>&nbsp;{data.originalPrice} </span><i className="fa fa-inr"></i>&nbsp;{data.discountedPrice} / {data.size}&nbsp;<span className="ProSize">{data.unit}</span></span>
-                                    </div>
-                                    :  
-                                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                      <span className="price"><i className="fa fa-inr price"></i>&nbsp;{data.originalPrice} /{data.size}&nbsp;<span className="ProSize">{data.unit}</span></span> &nbsp;                                      
-                                    </div>                              
-
-                                }
-                              </div>
-                              {this.state.productSettings.displayRating === true ?
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 displayRating customePadding">
-                                    <span id="productRating" className="col-lg-3 col-md-3 col-sm-3 col-xs-3 NoPadding" onMouseOver={this.showRatingBlock.bind(this)} >
-                                        <div className="showRating col-lg-12 col-md-12 col-sm-12 col-xs-12"> 4 <i className="fas fa-star"></i></div>                                        
-                                    </span>  
-                                    {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding ratingBlock">
-                                        <RatingBlock />
-                                    </div>                                   */}
-                                    <span className="col-lg-5 col-md-5-col-sm-5 col-xs-5 customePadding">(&nbsp;162 &nbsp;)</span>
-                                    {this.state.productSettings.displayAssuranceIcon === true ?
-                                      <span className="col-lg-4 col-md-4 col-sm-4 col-xs-4 NoPadding assurenceIcon">
-                                        <img className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding" src={AssuredImg} alt="Assured Img" />                                      </span>
-                                    :null
-                                    }
-                                </div>
-                                :null
-                              }                              
-                              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
-                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                                  
-                                  {
-                                    localStorage.getItem("websiteModel")=== "FranchiseModel"?
-                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
-                                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 selectSizeBox NoPadding ">                                                                              
-                                        <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12 selectdropdown valid availablesize NoPadding" currPro={data._id} id={data._id +"-size"} mainSize={data.size} unit={data.unit} name="size" aria-invalid="false">
-                                          { Array.isArray(data.availableSizes) && data.availableSizes.map((size, index) => {
-                                              return( 
-                                                // <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
-                                                
-                                                  size === 1000?                                                  
-                                                  <option className="" value={size}> 1 KG</option>
-                                                  :
-                                                  data.unit === "Box" || data.unit === "Wrap" || data.unit === "Pack" || data.unit==="pounch" ?                                                    
-                                                    <option className="selectedSize" value={size}>{size} Pack</option>
-                                                      :
-                                                  <option className="selectedSize" value={size}>{size}&nbsp;{data.unit}</option>                                                        
-                                              )                                                        
-                                            })
-                                          }
-                                        </select>                                     
-                                      </div>    
-                                      <button type="submit" color={data.color} id={data._id} productCode={data.productCode} availableQuantity={data.availableQuantity} currPro={data._id} mainSize={data.size} unit={data.unit}  onClick={this.submitCart.bind(this)} 
-                                        title="Add to Cart" className="col-lg-6 col-md-6 col-sm-6 col-xs-6 homeCart fa fa-shopping-cart">                                                                         
-                                         &nbsp;Add
-                                      </button>                          
-                                    </div>
-                                    :
-                                    data.availableQuantity > 0 ?
-                                      <button type="submit" id={data._id} className="homeCart fa fa-shopping-cart pull-right" color={data.color} productCode={data.productCode} availableQuantity={data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" >
-                                        &nbsp;Add To Cart
-                                      </button>
-                                      :
-                                      <div className="outOfStock">Sold Out</div>
-                                  }
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
-                      </div>
-                  </div>
-                );
-              })
-              :
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        :null
+                        }                              
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">                                  
+                            {
+                            localStorage.getItem("websiteModel")=== "FranchiseModel"?
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 btnWrap NoPadding">                                                                             
+                                <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 selectSizeBox NoPadding ">                                                                              
+                                <select className="col-lg-12 col-md-12 col-sm-12 col-xs-12 selectdropdown valid availablesize NoPadding" currPro={this.state.data._id} id={this.state.data._id +"-size"} mainSize={this.state.data.size} unit={this.state.data.unit} name="size" aria-invalid="false">
+                                    { Array.isArray(this.state.data.availableSizes) && this.state.data.availableSizes.map((size, index) => {
+                                        return( 
+                                        // <option className="selectedSize" value={availablesize.productSize}>{availablesize.packSize} Pack</option>
+                                        
+                                            size === 1000?                                                  
+                                            <option className="" value={size}> 1 KG</option>
+                                            :
+                                            this.state.data.unit === "Box" || this.state.data.unit === "Wrap" || this.state.data.unit === "Pack" || this.state.data.unit==="pounch" ?                                                    
+                                            <option className="selectedSize" value={size}>{size} Pack</option>
+                                                :
+                                            <option className="selectedSize" value={size}>{size}&nbsp;{this.state.data.unit}</option>                                                        
+                                        )                                                        
+                                    })
+                                    }
+                                </select>                                     
+                                </div>    
+                                <button type="submit" color={this.state.data.color} id={this.state.data._id} productCode={this.state.data.productCode} availableQuantity={this.state.data.availableQuantity} currPro={this.state.data._id} mainSize={this.state.data.size} unit={this.state.data.unit}  onClick={this.submitCart.bind(this)} 
+                                title="Add to Cart" className="col-lg-6 col-md-6 col-sm-6 col-xs-6 homeCart fa fa-shopping-cart">                                                                         
+                                    &nbsp;Add
+                                </button>                          
+                            </div>
+                            :
+                            this.state.data.availableQuantity > 0 ?
+                                <button type="submit" id={this.state.data._id} className="homeCart fa fa-shopping-cart pull-right" color={this.state.data.color} productCode={this.state.data.productCode} availableQuantity={this.state.data.availableQuantity} onClick={this.addtocart.bind(this)} title="Add to Cart" >
+                                &nbsp;Add To Cart
+                                </button>
+                                :
+                                <div className="outOfStock">Sold Out</div>
+                            }
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+              {/* <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="wishlistNoProduct col-lg-12 col-md-12 col-sm-12 col-xs-12 mt25">
                   <i className="fa fa-exclamation-triangle"></i>&nbsp;  There is no items in this category.
                 </div>
                 <a href="/" className="pull-right mt15 wishBack">Back</a>
               </div>
-          }
+          } */}
         </div>
       </div>
     );
@@ -593,4 +563,4 @@ const mapStateToProps = (state) => {
 const mapDispachToProps = (dispatch) => {
   return bindActionCreators({ fetchCartData: getCartData }, dispatch)
 }
-export default connect(mapStateToProps, mapDispachToProps)(ProductBlock);
+export default connect(mapStateToProps, mapDispachToProps)(SingleProductBlock);

@@ -91,7 +91,7 @@ componentWillMount() {
             {
               Array.isArray(this.state.categoryData) && this.state.categoryData.map((data,index)=>{
                   return(
-                    <li key={index} className="top-level-link">
+                    <li className="top-level-link" key={index}>
                       <a className="mega-menu" href={"/section/"+data.sectionUrl+'/'+data._id}><span>{data.section}</span></a>
                       {data.categorylist.length > 0 ?
                       <div className="col-lg-4 col-md-4 sub-menu-block textAlignLeft">
@@ -102,7 +102,7 @@ componentWillMount() {
                              data.categorylist.map((cateoryDetails,catindex)=>{                                
                                 // if(!cateoryDetails.subCategory.length > 0){
                                   return(
-                                    <div key={catindex} className="col-md-12 col-lg-12 col-sm-12 megamenusubwidth1">
+                                    <div className="col-md-12 col-lg-12 col-sm-12 megamenusubwidth1" key={catindex}>
                                       {/* <h1 className="sub-menu-head"><a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a></h1> */}   
                                           <li>
                                               <a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id}>{cateoryDetails.category}</a>

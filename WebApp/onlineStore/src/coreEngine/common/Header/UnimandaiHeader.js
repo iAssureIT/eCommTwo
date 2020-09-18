@@ -66,7 +66,7 @@ componentWillMount() {
       // console.log(position);
       if(position){
         $.get( "http://maps.googleapis.com/maps/api/geocode/json?latlng="+ position.coords.latitude + "," + position.coords.longitude +"&sensor=false", function(data) {
-          console.log(data);
+          // consodatale.log();
         })
       }
     });   
@@ -305,6 +305,7 @@ getshippingamount(startRange, limitRange){
   }
   getUserData() {
     const userid = localStorage.getItem('user_ID');
+    if(userid){
     axios.get('/api/users/' + userid)
       .then((res) => {
         if(res.data.profile){
@@ -329,6 +330,7 @@ getshippingamount(startRange, limitRange){
       .catch((error) => {
         console.log("error fetch user data = ", error);
       });
+    }
   }
   getWishlistCount() {
     const userid = localStorage.getItem('user_ID');

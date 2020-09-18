@@ -190,8 +190,8 @@ class Edituser extends Component{
 
   handleChange(event){
       event.preventDefault();
-          const target = event.target;
-          const name   = target.name;
+          // const target = event.target;
+          // const name   = target.name;
           this.setState({
             [event.target.name] : event.target.value
           })

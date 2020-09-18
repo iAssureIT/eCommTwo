@@ -17,7 +17,7 @@ class VerifyAccount extends Component {
 
   render(){
     var winHeight = window.innerHeight;
-    var divHeight = winHeight/4.5+'px';
+    // var divHeight = winHeight/4.5+'px';
 
     return(
       <div style={{'height': window.innerHeight+'px'}} className="col-lg-12 col-md-12 col-sm-12 col-xs-12 signUpWrapper">

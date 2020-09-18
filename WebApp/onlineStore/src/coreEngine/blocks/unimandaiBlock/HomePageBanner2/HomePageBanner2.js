@@ -79,14 +79,14 @@ class HomePageBanner2 extends Component{
       }  
     render(){
         return(
-            // <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12 HomePageBanner2">
+            
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 HomePageBanner2">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div className="row">
                         {
                             Array.isArray(this.state.sectionDetails) && this.state.sectionDetails.map((data, index) => {                                                               
                                 return (
-                                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 imageBlock">
+                                    <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3 imageBlock" key={index}>
                                         <a className="hover-images col-lg-12 col-md-12 col-sm-12 col-xs-12" href={"/section/"+data.section+"/"+data.sectionId} >                                                              
                                             <img className="img-responsive zoomImg" src={data.sectionImg} alt="banner" />                                            
                                         </a>                        

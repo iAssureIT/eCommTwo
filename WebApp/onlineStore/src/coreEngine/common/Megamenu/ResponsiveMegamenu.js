@@ -76,20 +76,18 @@ addtocart(event){
 
   render() {  
         return (
-        <header className=" col-sm-12 col-xs-12 megamenu-top">      
-          
+        <header className=" col-sm-12 col-xs-12 megamenu-top">    
           {
               Array.isArray(this.state.categoryData) && this.state.categoryData.map((data,index)=>{
                   return(
-                    <div className="dropdown menuDropDown col-sm-3 NoPadding col-xs-12">
+                    <div className="dropdown menuDropDown col-sm-3 NoPadding col-xs-12" key={index}>
                         <button className="dropbtn">{data.section} 
                             {/* <i className="fa fa-caret-down"></i> */}
                         </button>                        
                         {
-                              data.categorylist.map((cateoryDetails,catindex)=>{                                
-                                
+                              data.categorylist.map((cateoryDetails,catindex)=>{      
                                   return(
-                                    <div className="dropdown-content dropdownContent">
+                                    <div className="dropdown-content dropdownContent" key={catindex}>
                                         <a href={"/category/"+cateoryDetails.categoryUrl+'/'+data._id+'/'+cateoryDetails._id} className="topNavCategory">{cateoryDetails.category}</a>
                                     </div>
                                   );
@@ -100,8 +98,7 @@ addtocart(event){
                   );
 
                   })
-            }
-    
+            }    
     </header>  
     );  
   }

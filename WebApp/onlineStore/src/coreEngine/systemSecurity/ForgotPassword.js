@@ -168,7 +168,7 @@ class ForgotPassword extends Component {
                                 </div> */}
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                                         <div className="row loginforgotpass textAlignCenter">
-                                            <a href='' className="" onClick={this.openSignInModal.bind(this)}>Sign In</a>
+                                            <a href='/' className="" onClick={this.openSignInModal.bind(this)}>Sign In</a>
                                         </div>
                                     </div>
                                 </form>

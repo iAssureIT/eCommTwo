@@ -15,6 +15,7 @@ import Footer                   from '../common/Footer/Footer.js';
 import Footer_Unimandai         from '../common/Footer/Footer_Unimandai.js'; 
 import HomePage                 from '../pages/HomePage/HomePage.js';
 import Unimandai_Homepage       from '../pages/HomePage/Unimandai_Homepage.js';
+import UnimandaiHomepage        from '../pages/HomePage/UnimandaiHomePage.js';
 import UnimandaiHeader          from '../common/Header/UnimandaiHeader.js';
 
 //-----------System Security Routes.................//
@@ -31,7 +32,7 @@ import Paymentgateway                            from '../pages/Checkout/Payment
 import ViewOrder                                 from '../pages/MyOrders/ViewOrder.js'
 import Edituser                                  from '../pages/Edituser/Edituser.js';
 import MyOrders                                  from '../pages/MyOrders/MyOrders.js';
-import MyOrders_Unimandai                        from '../pages/MyOrders/MyOrders_Unimandai.js';
+// import MyOrders_Unimandai                        from '../pages/MyOrders/MyOrders_Unimandai.js';
 import ShipmentTracking                          from '../pages/ShipmentTracking/ShipmentTracking.js';
 import ProductDetailsEcommerce                   from '../pages/ProductDetailsEcommerce/ProductDetailsEcommerce.js';
 import SearchProduct                             from '../pages/ProductCollage/SearchProductPage.js';
@@ -87,8 +88,9 @@ class Routes extends Component{
     if(process.env.REACT_APP_PROJECT_NAME === '4_UniMandai'){  
         if(this.state.loggedIn ===true ){
             const WebLayout = () => (
-              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding skin-blue fixed sidebar-mini">    
-                <Route path="/" exact strict component={ Unimandai_Homepage } /> 
+              <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding skin-blue fixed sidebar-mini">  
+                {/* <Route path="/" exact strict component={ Unimandai_Homepage } />    */}
+                <Route path="/" exact strict component={ UnimandaiHomepage } /> 
                 <Route path="/login"                    exact strict component={ Unimandai_Homepage } />
                 <Route path="/signup"                   exact strict component={ Unimandai_Homepage } />
                 <Route path="/forgotpassword"             exact strict component={ Unimandai_Homepage } />
@@ -99,7 +101,7 @@ class Routes extends Component{
                 <Route path="/checkout"                   exact strict component={ Checkout } />
                 <Route path="/transaction-process"        exact strict component={ Paymentgateway } />
                 <Route path="/my-orders"                  exact strict component={ MyOrders } />
-                <Route path="/my-ordersUni"               exact strict component={ MyOrders_Unimandai } />
+                {/* <Route path="/my-ordersUni"               exact strict component={ MyOrders_Unimandai } /> */}
                 <Route path="/view-order/:order_ID"       exact strict component={ ViewOrder } />
                 <Route path="/shipment-tracking"          exact strict component={ ShipmentTracking } />
                 <Route path="/productdetails/:productID"  exact strict component={ ProductDetailsEcommerce } />
@@ -113,10 +115,16 @@ class Routes extends Component{
                 
                 <Route path="/masterpage/:pageurl"     exact strict  component={ MasterPage } /> 
                 
+
                 
                 <Route path="/profile"                exact strict component={ Edituser } />
                 <Route path="/payment/:order_ID"      exact strict component={ Payment } />
                 <Route path="/wishlist"               exact strict component={ Wishlist } />
+
+                {/* <Route path="/profile"              exact strict component={ Edituser } />
+                <Route path="/payment/:order_ID"            exact strict component={ Payment } />
+                <Route path="/wishlist"            exact strict component={ Wishlist } /> */}
+
                 <Route path="/wishlistuni"            exact strict component={ wishlist_unimandai } />
                 <Route path="/productreview"          exact strict component={ Productreview } />
                 <Route path="/account"                exact strict component={ Account } />
@@ -172,7 +180,8 @@ class Routes extends Component{
     else{
         const WebLayout = () => (
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding skin-blue fixed sidebar-mini">    
-            <Route path="/" exact strict component={ Unimandai_Homepage } /> 
+            {/* <Route path="/" exact strict component={ Unimandai_Homepage } /> */}
+            <Route path="/" exact strict component={ UnimandaiHomepage } />
             <Route path="/login"                    exact strict component={ Login } />
             <Route path="/signup"                   exact strict component={ SignUp } />
             <Route path="/forgotpassword"           exact strict component={ ForgotPassword } />

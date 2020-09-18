@@ -12,7 +12,7 @@ import {ntc} from '../../ntc/ntc.js';
 import emptyCartImg from '../../../sites/currentSite/images/emptycart.png';
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 
-import { size } from 'underscore';
+// import { size } from 'underscore';
 class CartProducts extends Component{
     constructor(props) {
         super(props);
@@ -208,7 +208,7 @@ class CartProducts extends Component{
     	event.preventDefault();
         const userid     = localStorage.getItem('user_ID');
         const cartitemid = event.target.getAttribute('id'); 
-        const size       = event.target.getAttribute('size');
+        // const size       = event.target.getAttribute('size');
         const quantity   = parseInt(event.target.getAttribute('dataquntity'));
 
         const quantityAdded = parseInt(quantity-1) <= 0 ? 1 : parseInt(quantity-1);

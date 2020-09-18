@@ -60,7 +60,7 @@ export default class Loader extends Component {
           {
             tempdata.map((data, index) => {
               return (
-                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <div className="col-lg-3 col-md-3 col-sm-3 col-xs-3" key={index}>
                   <div className="card">
                     <div className="item-top">
                       <div className="loaderImg">

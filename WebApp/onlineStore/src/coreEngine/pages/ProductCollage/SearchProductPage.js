@@ -7,7 +7,7 @@ import 'react-input-range/lib/css/index.css';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Loader from "../../common/loader/Loader.js";
+// import Loader from "../../common/loader/Loader.js";
 import _ from "underscore";
 
 class SearchProduct extends Component {

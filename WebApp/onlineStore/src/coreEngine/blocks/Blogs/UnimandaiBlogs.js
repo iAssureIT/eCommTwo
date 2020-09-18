@@ -64,7 +64,7 @@ getBlogData(){
 	axios
       .get('/api/blogs/get/all/list')
       .then((response)=>{
-       console.log("===>",response.data);
+    //    console.log("===>",response.data);
       	this.setState({
       			Blogs:response.data
       		});
@@ -91,7 +91,7 @@ componentDidMount(){
                     <div className="container col-lg-12 col-md-12 col-sm-12 col-xs-12 ocWrap">
                         { blogs && blogs.length > 0 ?
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                                
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 blogWrapper" style={{"margin-bottom":'50px'}}>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 blogWrapper" style={{"marginBottom":'50px'}}>
                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ocTitle txt2c offeredTitle text-center">
                                     <h3>Unimandai Blogs</h3>
                                 </div>                                
@@ -110,7 +110,7 @@ componentDidMount(){
                                     blogs && blogs.length > 0 ?
                                     blogs.map((blogs, index)=>{
                                             return(
-                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 Allblog ">
+                                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 Allblog " key={index}>
                                                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 courceblockDiv NOpadding">
                                                     <a href={"/blog-view/"+blogs.blogURL}>
                                                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 courceDiv NOpadding "> 

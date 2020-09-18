@@ -153,7 +153,7 @@ export default class MyOrders extends Component {
           .catch((error) => {
           })
         }else{
-          var formValues = {
+          formValues = {
             "customerID": localStorage.getItem('user_ID'),
             "customerName": this.state.reviewuserData.profile.fullName,
             "orderID": this.state.orderID,
@@ -466,7 +466,7 @@ export default class MyOrders extends Component {
                               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding">
                                 <div className="actionbtn col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                                   { data.deliveryStatus[data.deliveryStatus.length - 1].status !== 'Cancelled' ? 
-                                    <a className="btn filterallalphab" target="_blank" href={"/view-order/" + data._id} title="View Order">
+                                    <a className="btn filterallalphab" target="_blank" rel="noopener noreferrer" href={"/view-order/" + data._id} title="View Order">
                                     <span> Invoice</span></a> : <div className="pull-right"><span className="cancelledtext"> Cancelled</span></div>
                                   }
                                   

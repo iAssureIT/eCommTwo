@@ -78,9 +78,8 @@ export default class OurCources extends React.Component {
 		var data = this.state.OurCources;
 		var data1=this.state.OurCourcesmaster;
 		return (
-			<div>
 				<div className="col-lg-12 col-md-12 hidden-xs hidden-sm ocWrap WCUWrap " style={{marginbottom:"100px"}}>
-					<div className="mtop65">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NoPadding">
 					 <div className="ocTitle txt2c offeredTitle text-center"><h3>Why Choose Us</h3></div>
 					  <div className="col-lg-12 col-md-12 ">
 						<div className="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 text-center whyusText">
@@ -103,10 +102,10 @@ export default class OurCources extends React.Component {
 		                		data && data.length > 0 ?
 				      				data.map((data, index)=>{
 	                					return(
-						          			<div className="col-lg-12 Allblog whyUsSubDiv">
+						          			<div className="col-lg-12 Allblog whyUsSubDiv" key={index}>
 						          			 <div className="col-lg-12">
                                                <div className="col-lg-2">
-                                                <img src={data.blogsubimg}/>
+                                                <img src={data.blogsubimg} alt="BlogImage" />
                                                </div>
                                                <div className= "col-lg-10">
                                                 <p className="subtext_choose">{data.blogTitle}</p>
@@ -123,7 +122,7 @@ export default class OurCources extends React.Component {
 		                		}
 		                	</div>
 							<div className="col-lg-4 col-md-4 col-sm-4 whychooseUsImg">
-								<img src={images_choose} className="WhyChooseUsImg"/>
+								<img src={images_choose} className="WhyChooseUsImg" alt="WhyChooseUsImage" />
 							</div>
                             <div className="col-lg-offset-1 col-lg-3 col-md-3 col-md-offset-1  courceblockDiv1 movemasterdiv">
                            {/*  <div className=" col-md-2"></div>*/}
@@ -131,13 +130,13 @@ export default class OurCources extends React.Component {
 		                		data1 && data1.length > 0 ?
 				      				data1.map((data1, index)=>{
 	                					return(
-						          		<div className="col-lg-12 col-md-12 col-sm-12 Allblog whyUsSubDiv">
+						          		<div className="col-lg-12 col-md-12 col-sm-12 Allblog whyUsSubDiv" key={index}>
 						          			 <div className="col-lg-12 col-md-12 col-sm-12">
 												<div className= "col-lg-10 col-md-10 col-sm-10">
 													<p className="subtext_choose">{data1.blogTitle}</p>
 												</div>
 												<div className="col-lg-2 col-md-2 col-sm-2">
-													<img src={data1.blogsubimg}/>
+													<img src={data1.blogsubimg} alt="BlogImage" />
 												</div>
                                               </div>
                                               <div className=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -154,8 +153,6 @@ export default class OurCources extends React.Component {
 						
 					</div>					
 				</div>
-
-			</div>
 		);
 	}
 }

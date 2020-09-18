@@ -137,7 +137,7 @@ class Payment extends Component {
                         this.state.orderData.products.map((data, index) => {
                           return (
                             <tr key={'cartData' + index}>
-                              <td><img alt="Product Image" className="img orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
+                              <td><img alt="Product_Image" className="img orderImg" src={data.productImage[0] ? data.productImage[0] : notavailable} /></td>
                               <td>
                                 <a href={"/productdetails/" + data.product_ID}><h5 className="productName">{data.productName}</h5></a>
 

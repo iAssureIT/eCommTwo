@@ -2,7 +2,7 @@
     position: relative;
     z-index: 999;
     margin-top: -150px;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     /* background: #fff !important; */
 }
 .homeRow{
@@ -34,7 +34,6 @@
 .zoomImg:hover{
     transform: scale(1.1);
 }
-
 .imageBlock{
     /* height: 200px; */
     margin-top: 80px;

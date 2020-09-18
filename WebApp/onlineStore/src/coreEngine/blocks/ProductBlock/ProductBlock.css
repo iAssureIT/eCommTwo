@@ -1,0 +1,43 @@
+
+.showRating {
+    line-height: normal;
+    display: inline-block;
+    color: #fff;
+    padding: 2px 4px 2px 4px;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 10px;
+    vertical-align: middle;
+    background-color: #388e3c;
+    cursor: pointer;
+}
+.displayRating{
+    font-size: 12px;
+}
+.displayRating .fa-star{
+    font-size: 8px;
+}
+.ratingBlock{
+    height: 100px;
+    /* background-color: #ff0 !important; */
+    border:solid 1px #aaa;
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,.2);
+    /* position: absolute; */
+}
+.bracket{
+    font-weight: 100 !important;
+}
+.assurenceIcon img{
+    /* height: 20px; */
+    /* margin-top: 5px; */
+}
+.productBlock {
+    border: 1px solid #f1f2f2;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* height: 340px; */
+}
+.customePadding{
+    padding-left:6px !important;
+    padding-right: 6px !important;
+}

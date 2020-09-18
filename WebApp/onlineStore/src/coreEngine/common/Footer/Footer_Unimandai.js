@@ -8,8 +8,8 @@ import axios from 'axios';
 import '../../../sites/currentSite/common/Footer.css';
 import logoUnimandai   from "../../../sites/currentSite/images/Logo.png";
 
-import paypal_footer from "../../../sites/currentSite/images/paypal-footer.png";
-import footerAnimationImg from '../../../sites/currentSite/images/bg-footer.jpg';
+// import paypal_footer from "../../../sites/currentSite/images/paypal-footer.png";
+// import footerAnimationImg from '../../../sites/currentSite/images/bg-footer.jpg';
 
 export default class Footer extends Component {
 
@@ -68,7 +68,7 @@ export default class Footer extends Component {
                 {Array.isArray(this.state.categoryData) && this.state.categoryData.map((data,index)=>{
                     return(
                         index <=3 ?
-                        <div className="">
+                        <div className="" key={index}>
                             <div className=" col-lg-3 col-md-3 col-sm-3 col-xs-6 sectionName">
                                 <a className="sectionurl" href={"/section/"+data.sectionUrl+'/'+data._id} ><span>{data.section}</span></a>
                             
@@ -121,10 +121,10 @@ export default class Footer extends Component {
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 FooterTitle">Connect</div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="socialMediaIcons"><a href="https://www.facebook.com/Unimandai-105550984521880" target="_blank"><i className="fa fa-facebook" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href="https://www.instagram.com/unimandai/" target="_blank"><i className="fa fa-instagram" aria-hidden="true"></i></a></div>
-                    <div className="socialMediaIcons"><a href=" https://www.youtube.com/channel/UCOXIsYFFEHlzRnMI89Enoag" target="_blank"><i className="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
-                    <div className="socialMediaIcons"><a href="https://twitter.com/Unimandai1" target="_blank"><i className="fa fa-twitter" aria-hidden="true"></i></a></div>                   
+                    <div className="socialMediaIcons"><a href="https://www.facebook.com/Unimandai-105550984521880" target="_blank" rel="noopener noreferrer"><i className="fa fa-facebook" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.instagram.com/unimandai/" target="_blank" rel="noopener noreferrer"><i className="fa fa-instagram" aria-hidden="true"></i></a></div>
+                    <div className="socialMediaIcons"><a href="https://www.youtube.com/channel/UCOXIsYFFEHlzRnMI89Enoag" target="_blank" rel="noopener noreferrer"><i className="fa fa-youtube-play" aria-hidden="true"></i></a></div>  
+                    <div className="socialMediaIcons"><a href="https://twitter.com/Unimandai1" target="_blank" rel="noopener noreferrer"><i className="fa fa-twitter" aria-hidden="true"></i></a></div>                   
                 </div>
 
             </div>            
@@ -138,7 +138,7 @@ export default class Footer extends Component {
                     <p>Copyright @2020 <i className="fa fa-copyright"></i> <span className="uniColor">Uni</span><span className="mandaiColor">mandai</span> All Rights Reserved.</p>
                 </div>
                 <div className=" col-md-6 col-lg-6 col-sm-12 col-xs-12 footernabbar">
-                    <span>Design & Developed by <a href="http://iassureit.com/" target="_blank"> iAssure International Technologies Pvt. Ltd. </a> Version 1.0</span>
+                    <span>Design & Developed by <a href="http://iassureit.com/" target="_blank" rel="noopener noreferrer"> iAssure International Technologies Pvt. Ltd. </a> Version 1.0</span>
                 </div>
             </div>
             

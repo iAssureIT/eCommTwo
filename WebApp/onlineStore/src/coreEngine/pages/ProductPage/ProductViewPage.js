@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import ProductCollageView from '../../blocks/ProductCollage/ProductCollageView.js';
 import ProductBlock from '../../blocks/ProductBlock/ProductBlock.js';
-import SearchProductPage from '../../../sites/currentSite/pages/SearchProductPage.css';
 import $ from 'jquery';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
@@ -11,6 +9,12 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/js/collapse.js';
 import Loader from "../../common/loader/Loader.js";
 import { size } from 'underscore';
+
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import Login          from '../../systemSecurity/Login.js';
+// import SignUp         from '../../systemSecurity/SignUp.js';
+// import ForgotPassword from '../../systemSecurity/ForgotPassword.js';
 
 class ProductViewPage extends Component {
 	constructor(props) {
@@ -39,10 +43,11 @@ class ProductViewPage extends Component {
 			loading: true,
             toggleIcon: "fa fa-plus-circle",
             productSetting : {
-                displayProducts : 4,
+				displayProducts : 4,
+				displayBrand    : true,
                 displayWishtlistIcon : true,
                 displayRating : true,
-                displayAssuranceIcon : false,
+                displayAssuranceIcon : true,
                 displayFeature : "size",
             }
 			//selector:{sectionID: this.props.match.params.sectionID, categoryID:'',subcategoryID:'',brands:[], size:'',color:'',price: { min: 10, max: 129999 } }
@@ -766,7 +771,7 @@ class ProductViewPage extends Component {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb25" id="containerDiv" style={{"minHeight":"200px"}}>
 				<div className="row">                    
-					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 caraousalWrapper">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 caraousalWrapper">						
 						<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<ul className="links">
 								<li><a href="/">Home /</a></li>
@@ -774,8 +779,7 @@ class ProductViewPage extends Component {
 									<li><a href={"/section/" + this.state.categoryDetails[0].section.replace(/\s+/g, '-').toLowerCase() + '/' + this.state.categoryDetails[0].section_ID}>
 										{this.state.categoryDetails[0].section}</a> /</li>
 									: ""
-								}
-								
+								}								
 							</ul>
 						</div>
 							
@@ -838,7 +842,7 @@ class ProductViewPage extends Component {
 											
 						</div>{/*} end accordian div*/}								
 						</div>
-						 : <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12">No category available</div>
+						 : <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12"></div>
 						}
 
 						{
@@ -848,7 +852,8 @@ class ProductViewPage extends Component {
 								</div>
 								:
 								this.state.products.length > 0 ?
-									<div className="col-lg-9 col-md-9 col-sm-12 col-xs-12 ProductViewWrapper" id="productDiv">
+									<div
+									 className="col-lg-9 col-md-9 col-sm-12 col-xs-12 ProductViewWrapper" id="productDiv">
 										<br />
 										<div className="tab-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div id="products" className="tab-pane fade in active">
@@ -912,16 +917,17 @@ class ProductViewPage extends Component {
 											</div>
 											<div id="categories" className="tab-pane fade">
 												Categories
-					    </div>
+					    					</div>
 										</div>
 									</div>
 									: 
 									<div className="alert alert-warning textAlignCenter col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12 mt25">
 										<i className="fa fa-exclamation-triangle"></i>&nbsp;   There is no items found.
 									</div>
-									// <div className="text-center"><img src="../../../sites/currentSite/images/noproducts.jpeg" alt="" /></div>
+									
 						}
 					</div>
+					
 
 				</div>
 			</div>
@@ -929,3 +935,12 @@ class ProductViewPage extends Component {
 	}
 }
 export default ProductViewPage;
+// const mapStateToProps = (state) => {  
+// 	return {
+// 	  recentCartData: state.recentCartData
+// 	}
+//   }
+//   const mapDispachToProps = (dispatch) => {
+// 	return bindActionCreators({ fetchCartData: getCartData }, dispatch)
+//   }
+//   export default connect(mapStateToProps, mapDispachToProps)(ProductViewPage);

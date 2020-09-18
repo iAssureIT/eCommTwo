@@ -1,6 +1,8 @@
 import React, { Component }         from 'react';
 // import { connect }                from 'react-redux';
 import $                            from 'jquery';
+
+import ProductCarousel              from "../../blocks/ProductCarousel/ProductCarousel.js";
 import EcommerceProductCarousel     from "../../blocks/ProductCarouselEcommerce/EcommerceProductCarousel.js";
 import Ecommercenewproductcaro      from "../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js";
 import EcommerceDiscountedProducts  from "../../blocks/ProductCarouselEcommerce/EcommerceDiscountedProducts.js";
@@ -35,6 +37,14 @@ class HomePage extends Component {
         DeliveryStatus          : "",
         vegetableProducts       : [],
         fruitProducts           : [],
+        productSettings : {
+          displayProducts : 4,
+          displayBrand    : true,
+                  displayWishtlistIcon : true,
+                  displayRating : true,
+                  displayAssuranceIcon : true,
+                  displayFeature : "size",
+              }
       };
       // this.featuredProductData();
       // this.exclusiveProductsData();
@@ -263,12 +273,14 @@ class HomePage extends Component {
             : 
             (this.state.exclusiveProducts.length > 0 ? 
               <EcommerceProductCarousel 
+              // <ProductCarousel 
                   title={'FRUITS'} 
                   newProducts={this.state.fruitProducts}
                   type={'exclusive'} 
                   categories={this.state.categories} 
                   getWishData={this.getWishData.bind(this)} 
                   wishList={this.state.wishList}
+                  productSettings ={this.state.productSettings}
                   changeProductCateWise={this.changeProductCateWise.bind(this)} />
               :
               null

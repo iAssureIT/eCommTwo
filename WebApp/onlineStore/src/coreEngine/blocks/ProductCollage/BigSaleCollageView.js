@@ -10,7 +10,7 @@ import $ from 'jquery';
 import Message from '../Message/Message.js';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../actions/index';
-import { size } from 'underscore';
+// import { size } from 'underscore';
 import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import Login          from '../../systemSecurity/Login.js';
 import SignUp         from '../../systemSecurity/SignUp.js';
@@ -37,7 +37,7 @@ class BigSaleCollageView extends Component {
       products: this.props.products,
       masterLimitProducts: this.props.products
     });
-    console.log("Products array :",this.state.products);
+    // console.log("Products array :",this.state.products);
 
   }
   componentWillReceiveProps(nextProps) {
@@ -45,7 +45,7 @@ class BigSaleCollageView extends Component {
     if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
     for(var i=0;i<nextProps.products.length;i++){      
         var availableSizes = [];  
-        var availablePack = [];       
+        // var availablePack = [];       
         if(nextProps.products[i].size){ 
           // availableSizes.push(
           //   {
@@ -397,8 +397,8 @@ class BigSaleCollageView extends Component {
           "totalWeight"  : totalWeight,      
         }
       }else{
-        var quantity    = selectedSize/size;
-        var totalWeight = size*quantity +" "+unit;
+        quantity    = selectedSize/size;
+        totalWeight = size*quantity +" "+unit;
         formValues = {
           "user_ID"      : userid,
           "product_ID"   : event.target.id,

@@ -29,11 +29,11 @@ class AskPincode extends Component {
             "pinValid"            :"",
         }        
       }  
-     componentDidMount(){
-        var pincode = localStorage.getItem('pincode');
+    //  componentDidMount(){
+    //     var pincode = localStorage.getItem('pincode');
         
-     }
-     componentWillMount(){
+    //  }
+     UNSAFE_componentWillMount(){
         //  console.log("In will mount");
         var pincode = localStorage.getItem('pincode');  
         var pincodeStatus = localStorage.getItem('status');

@@ -1,0 +1,37 @@
+.carouselNewWrapper .owl-next span{
+    /* border: solid 1px #ccc !important; */
+    padding: 0px 5px;
+
+    /* box-shadow: 44px 2px 10px -1px rgba(0,0,0,.3); */
+    cursor: pointer;
+}
+.newCustomnNavButton .owl-nav button.owl-next {
+    display: block;
+    background: #ff0 !important;
+    border-radius: 0px !important;
+    margin-top: -250px;
+    margin-left: 1216px;
+    width: 30px;
+    height: 80px;
+    color: #000;
+    text-align: center;
+    border: solid 1px #ccc !important;
+    font-size: 48px!important;
+    padding: 0 !important;
+    font: inherit;
+}
+.newCustomnNavButton .owl-nav button.owl-prev {
+    display: block;
+    background: #ff0 !important;
+    border-radius: 0px !important;
+    margin-top: -200px !important;
+    margin-left: -19px;
+    width: 30px;
+    height: 80px;
+    color: #000;
+    text-align: center;
+    border: none !important;
+    font-size: 55px!important;
+    padding: 0 !important;
+    font: inherit;
+}

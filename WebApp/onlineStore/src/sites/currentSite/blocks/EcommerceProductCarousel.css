@@ -151,7 +151,7 @@ background-color: transparent !important;
     background: transparent !important;
     border-radius: 0px !important;
     margin-top: -50px;
-    margin-left: 1190px;
+    margin-left: 1220px;
     width: 25px;
     height: 32px;
     color: #000;
@@ -427,12 +427,7 @@ background-color: transparent !important;
     font-size: 13px;
     font-weight: 700;
     white-space: nowrap;
-}
-
-
-.customnNavButtoncaro1{
-
-}
+}0
 @media screen and (max-width: 480px) {
    .card{
     border: 1px solid #f1f2f2;

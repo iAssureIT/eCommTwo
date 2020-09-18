@@ -1,5 +1,5 @@
-import React, { Component, Suspense } from 'react';
-import {Route, withRouter}            from 'react-router-dom';
+import React, { Suspense } from 'react';
+import {withRouter}            from 'react-router-dom';
 import $                              from 'jquery';
 import axios                          from 'axios';
 import swal                           from 'sweetalert';
@@ -77,10 +77,8 @@ componentDidMount(){
    	}
 
 	render() {
-		var data= this.state.pageData;	
+		// var data= this.state.pageData;	
 		return (
-
-			
 			<div className="pageHgt">
 			{/*<PageHead pageHeadData={this.state.pageHead}/>*/}
 				
@@ -93,7 +91,7 @@ componentDidMount(){
 							const NewPageComponent = React.lazy(() => import('../blockTemplate/'+component+'/'+component+'.js'));
 							var block_id=result.block_id._id;
 							return(
-								<Suspense fallback={<div className="text-center  NewLoader"><img src="/images/Spin-Preloader.gif"/></div>} key={index}>
+								<Suspense fallback={<div className="text-center  NewLoader"><img src="/images/Spin-Preloader.gif" alt="loaderImg"/></div>} key={index}>
 						    		<NewPageComponent block_id={block_id}/>
 						    	</Suspense>
 					    	)
