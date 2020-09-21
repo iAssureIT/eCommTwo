@@ -2692,35 +2692,3 @@ exports.update_order_payment = (req, res, next) => {
       });
     });
 };
-exports.SMSSending = (req, res, next) => {
-    var obj =    {
-      "flow_id":"5f64b37eb7c3b0398e37560f",
-      "recipients" : [
-                      {
-                        "mobiles":"918087679825",
-                        "Username":"Omkar",
-                        "orderid" : "1234",
-                        "amount" : "250",
-                        "shippingtime" : "4-5"
-                      }
-                  ]
-  }
-  var msg91 = require("msg91")("341935AU9UKcUQr5f63279cP1", "UniMan", "4",obj );
-  var mobileNo = "918830718026";
-   
-  msg91.send(mobileNo, "Welcome To UniMandai", function(err, response){
-      console.log(err);
-      console.log("response=====>",response);
-  });
-}; 
-// axios.post("https://api.msg91.com/api/v5/flow/", {
-  //     headers: {
-  //         'Content-Type': 'application/json',
-  //         'authkey'     : "341935AU9UKcUQr5f63279cP1",
-  //     }},obj)
-  // .then(result => {
-  //     console.log('SMS Gateway Response===> ', result);  
-  // })
-  // .catch(err => {
-  //     console.log('Errr', err);
-  // })

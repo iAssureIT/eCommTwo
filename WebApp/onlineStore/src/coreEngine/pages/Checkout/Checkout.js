@@ -873,6 +873,7 @@ class Checkout extends Component {
                                             CUSTOMER_EMAIL_ID: this.state.email,
                                             
                                         }
+                                        
                                         console.log('paymentdetails in result==>>>', paymentdetails)
                                         axios.post('/api/orders/pgcall/post', paymentdetails)
                                             .then((payurl) => {
@@ -891,38 +892,6 @@ class Checkout extends Component {
                                     }
                                     axios.get('/api/orders/get/one/' + result.data.order_ID)
                                     .then((res) => {
-                                        // ================== SMS Send ===============
-                                        // const obj = {
-                                        //         "flow_id":"5f64b37eb7c3b0398e37560f",
-                                        //         "recipients" : [
-                                        //                             {
-                                        //                             "mobiles":"91"+res.data.deliveryAddress.mobileNumber,
-                                        //                             "Username":res.data.userFullName,
-                                        //                             "orderid" :result.data.order_ID,
-                                        //                             "amount" : this.state.amountofgrandtotal,
-                                        //                             "shippingtime" : this.state.shippingtiming
-                                        //                             }
-                                        //                         ]
-                                        // };
-                                        // console.log('obj:===> ',obj);
-                                        // const config = {
-                                        //     headers: {
-                                        //         "Content-Type"                  : 'application/json'
-                                        //     }
-                                        // } 
-                                        // axios.post("https://api.msg91.com/api/v5/flow/", {
-                                        //     headers: {
-                                        //         'Content-Type': 'application/json',
-                                        //         'authkey'     : this.state.Auth_Key,
-                                        //     }},obj)
-                                        // .then(result => {
-                                        //     console.log('getpaymentgateway Response===> ', result);
-                                            
-                                        // })
-                                        // .catch(err => {
-                                        //     console.log('Errr', err);
-                                        // })
-                                        
                                         // =================== Notification OTP ==================
                                         if (res) {
                                             window.fbq('track', 'Purchase', {value: res.data.total, currency: 'Rs'});
