@@ -7,10 +7,13 @@ const projectSettingsSchema = mongoose.Schema({
     secret      : String,
     bucket      : String,
     region      : String,
-    authID 		: String,
+    
+    SENDER_ID 	: String,
     authToken 	: String,
     sourceMobile: String,
+
     googleapikey: String,
+
     user            : String,
     password        : String,
     port            : Number,

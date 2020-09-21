@@ -6,7 +6,9 @@ const PersonMaster          = require('../personMaster/ModelPersonMaster.js');
 const EntityMaster          = require('../entityMaster/ModelEntityMaster.js');
 const nodeMailer            = require('nodemailer');
 const GlobalMaster        = require('../projectSettings/ModelProjectSettings.js');
-const plivo             = require('plivo');
+// const plivo             = require('plivo');
+const MSG91 = require('msg91');
+const axios             = require('axios');
 
 
 
@@ -208,13 +210,16 @@ exports.filterTemplate = (req,res,next)=>{
 
 
 exports.send_notifications = (req, res, next) => {
+    console.log('req.body.event====<>>>>>',req.body.event);
+    // console.log('status:'active'====<>>>>>',req.body.event);
+
     Masternotifications.find({event: req.body.event,status:'active'})
     .sort({createdAt:1})
     .exec()
     .then(data=>{
         main();
         async function main(){
-             console.log('========================================================')
+            console.log('========================================================')
             var returnData = data
             console.log('returnData=>',returnData)
             if(returnData && returnData.length > 0){
@@ -224,10 +229,9 @@ exports.send_notifications = (req, res, next) => {
                     var company = req.body.company_id;
                     var templateName = returnData[i].event;
                     var mode = returnData[i].templateType;
-                    console.log('========================================================')
+                    // console.log('========================================================')
 
                     console.log(role,templateName,mode)
-
                     if(role == 'admin'){
                         console.log('admin==>',mode,templateName,company)
                         var userData = await getAdminUserData();
@@ -436,36 +440,29 @@ function getOtherAdminData(role,company_id){
 
 function sendSMS(MobileNumber,text){
     console.log('=====INSIDE SMS======',MobileNumber,text)
-    // return new Promise(function (resolve, reject) {
-
         GlobalMaster.findOne({type:'SMS'})
         .exec() 
         .then(data=>{
-            console.log('data.authID,data.authToken,data.sourceMobile: ',data.authID,data.authToken,data.sourceMobile)
-            const client = new plivo.Client(data.authID,data.authToken);   // Vowels LLP
-            const sourceMobile = data.sourceMobile;
-            client.messages.create(
-            src = sourceMobile,
-            dst = MobileNumber,
-            text = text
-            ).then((result) => {
-                console.log('result: ',result)
-                return(result)
-            })
-            .catch(error => {
-                console.log('sms error inside: ',error)
-                return(error);
+            console.log('data.authID,data.authToken,data.sourceMobile: ',data.authToken,data.sourceMobile)
+            var msg91 = require("msg91")(data.authToken, "UniMan", "4" );
+            var mobileNo = "91"+MobileNumber;
+            // console.log("mobileNo IN SMS=====>",mobileNo);
+            // console.log("mobileNo IN text.toString()=====>",text);
+            msg91.send(mobileNo, text.toString(), function(err, response){
+                console.log(err);
+                console.log("response=====>",response);
             });
         })
         .catch(err =>{
             console.log('sms error: ',err)
         });
-        
+      
         
     // })
 }
 
 function sendInAppNotification(toUserId,email,event,notificationDetails){
+    console.log('=====INSIDE InApp======',notificationDetails,event)
     return new Promise(function (resolve, reject) {
         const InAppNotification = new Notifications({
             _id             : new mongoose.Types.ObjectId(),
@@ -543,7 +540,7 @@ function sendEmail(toEmail,subject,content,attachment){
 
 
 function getTemplateDetailsEmail(company,templateName,role,variables) {
-    console.log(company,templateName, variables)
+    console.log("getTemplateDetailsEmail===>",company,templateName, variables)
     
     return new Promise(function (resolve, reject) {
         Masternotifications

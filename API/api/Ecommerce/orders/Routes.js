@@ -7,6 +7,8 @@ router.post('/post', orderController.insert_orders);
 
 router.post('/pgcall/post', orderController.paymentgatewaycall);
 
+router.post('/smssending/post', orderController.SMSSending);
+
 router.patch('/', orderController.update_order);
 
 router.patch('/paymentorder/:order_ID', orderController.update_order_payment);

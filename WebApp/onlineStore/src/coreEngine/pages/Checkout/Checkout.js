@@ -22,6 +22,7 @@ import notavailable from '../../../sites/currentSite/images/notavailable.jpg';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from 'moment';
 import swal from 'sweetalert';
+var md5 = require('md5');
 
 class Checkout extends Component {
     constructor(props) {
@@ -66,6 +67,7 @@ class Checkout extends Component {
         this.getCartData();
         this.gettimes(this.state.startRange, this.state.limitRange);
         this.getUserAddress();
+        this.getSMSgateway();
         this.validation();
         this.getdiscounteddata(this.state.startRange, this.state.limitRange);
         axios.get('/api/users/get/' + localStorage.getItem("user_ID"))
@@ -93,7 +95,7 @@ class Checkout extends Component {
             })
             .catch(err => {
                 console.log('Errr', err);
-            })
+            })          
     }
     getdiscounteddata(startRange, limitRange) {
         axios.get('/api/discount/get/list-with-limits/' + startRange + '/' + limitRange)
@@ -261,6 +263,20 @@ class Checkout extends Component {
                 }
             }
         });
+    }
+    getSMSgateway() {
+        var type = 'SMS';
+        axios.get('/api/projectsettings/get/'+type)
+                .then((response) => {
+                    this.setState({ 
+                      SMSDetails        : response.data,
+                      smsid : response.data._id,
+                      SENDER_ID : response.data.SENDER_ID,
+                      Auth_Key : response.data.authToken,
+                      sourceMobile : response.data.sourceMobile,
+                    });
+                })
+                .catch((error) => {});
     }
     getCartData() {
         $('.fullpageloader').show();
@@ -844,8 +860,8 @@ class Checkout extends Component {
                                                 paymethods : false,
                                             })
                                         }, 3000);
-
-                                        this.props.history.push('/payment/' + result.data.order_ID);
+                                        
+                                        // this.props.history.push('/payment/' + result.data.order_ID);
                                     } else {
                                         this.setState({paymethods : true})
                                         var paymentdetails = {
@@ -855,7 +871,7 @@ class Checkout extends Component {
                                             AMOUNT: this.state.amountofgrandtotal*100,
                                             CUSTOMER_MOBILE_NO: this.state.mobile,
                                             CUSTOMER_EMAIL_ID: this.state.email,
-                                            PRODUCT_CODE: "testing",
+                                            
                                         }
                                         console.log('paymentdetails in result==>>>', paymentdetails)
                                         axios.post('/api/orders/pgcall/post', paymentdetails)
@@ -871,40 +887,68 @@ class Checkout extends Component {
                                                 console.log(error);
                                                 this.setState({paymethods : false})
                                             })
+                                        
                                     }
                                     axios.get('/api/orders/get/one/' + result.data.order_ID)
-                                        .then((res) => {
-                                            // =================== Notification OTP ==================
-                                            if (res) {
-                                                window.fbq('track', 'Purchase', {value: res.data.total, currency: 'Rs'});
-                                                var sendData = {
-                                                    "event": "3",
-                                                    "toUser_id": res.data.user_ID,
-                                                    "toUserRole": "user",
-                                                    "variables": {
-                                                        "Username": res.data.userFullName,
-                                                        "amount": this.props.recentCartData.length > 0 ?
-                                                                    this.state.discountdata !== undefined ?
-                                                                        this.props.recentCartData.length > 0 && this.state.discountin === "Percent" ?
-                                                                            parseInt(this.props.recentCartData[0].total) - this.props.recentCartData[0].total * this.state.discountvalue / 100
-                                                                            : parseInt(this.props.recentCartData[0].total) - this.state.discountvalue
-                                                                        : parseInt(this.props.recentCartData[0].total)
-                                                                    : "0.00",
-                                                        "orderid": res.data.orderID,
-                                                        "shippingtime": res.data.shippingtime,
-                                                    }
+                                    .then((res) => {
+                                        // ================== SMS Send ===============
+                                        // const obj = {
+                                        //         "flow_id":"5f64b37eb7c3b0398e37560f",
+                                        //         "recipients" : [
+                                        //                             {
+                                        //                             "mobiles":"91"+res.data.deliveryAddress.mobileNumber,
+                                        //                             "Username":res.data.userFullName,
+                                        //                             "orderid" :result.data.order_ID,
+                                        //                             "amount" : this.state.amountofgrandtotal,
+                                        //                             "shippingtime" : this.state.shippingtiming
+                                        //                             }
+                                        //                         ]
+                                        // };
+                                        // console.log('obj:===> ',obj);
+                                        // const config = {
+                                        //     headers: {
+                                        //         "Content-Type"                  : 'application/json'
+                                        //     }
+                                        // } 
+                                        // axios.post("https://api.msg91.com/api/v5/flow/", {
+                                        //     headers: {
+                                        //         'Content-Type': 'application/json',
+                                        //         'authkey'     : this.state.Auth_Key,
+                                        //     }},obj)
+                                        // .then(result => {
+                                        //     console.log('getpaymentgateway Response===> ', result);
+                                            
+                                        // })
+                                        // .catch(err => {
+                                        //     console.log('Errr', err);
+                                        // })
+                                        
+                                        // =================== Notification OTP ==================
+                                        if (res) {
+                                            window.fbq('track', 'Purchase', {value: res.data.total, currency: 'Rs'});
+                                            var sendData = {
+                                                "event": "3",
+                                                "toUser_id": res.data.user_ID,
+                                                "toUserRole": "user",
+                                                "variables": {
+                                                    "Username": res.data.userFullName,
+                                                    "amount": this.state.amountofgrandtotal,
+                                                    "orderid": res.data.orderID,
+                                                    "shippingtime": res.data.shippingtime,
                                                 }
-                                                axios.post('/api/masternotifications/post/sendNotification', sendData)
-                                                    .then((res) => {
-                                                        if (res) {
-                                                            // console.log('sendDataToUser in result==>>>', res.data)
-                                                        }
-
-                                                    })
-                                                    .catch((error) => { console.log('notification error: ', error) })
-                                                // =================== Notification ==================
                                             }
-                                        })
+                                            axios.post('/api/masternotifications/post/sendNotification', sendData)
+                                                .then((res) => {
+                                                    if (res) {
+                                                        this.props.history.push('/payment/' + result.data.order_ID);
+                                                        console.log('sendDataToUser in result==>>>', res.data)
+                                                    }
+
+                                                })
+                                                .catch((error) => { console.log('notification error: ', error) })
+                                            // =================== Notification ==================
+                                        }
+                                    })
                                 })
 
                                 .catch((error) => {

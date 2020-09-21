@@ -9,7 +9,7 @@ class CompanySMSGateway extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authID    : "", 
+      SENDER_ID    : "", 
       authToken : "", 
       sourceMobile : "", 
       smsid   : "",  
@@ -27,9 +27,9 @@ class CompanySMSGateway extends Component {
 
     $("#CompanySMSGatewayForm").validate({
     rules: {
-      authID: {
-        required: true,
-      },
+      // authID: {
+      //   required: true,
+      // },
       authToken: {
         required: true,
       },
@@ -46,7 +46,7 @@ class CompanySMSGateway extends Component {
       .then((response) => {
           this.setState({ 
             smsid : response.data._id,
-            authID : response.data.authID,
+            SENDER_ID : response.data.SENDER_ID,
             authToken : response.data.authToken,
             sourceMobile : response.data.sourceMobile,
           });
@@ -80,7 +80,7 @@ class CompanySMSGateway extends Component {
                 this.setState({ 
                   SMSDetails        : response.data,
                   smsid : response.data._id,
-                  authID : response.data.authID,
+                  SENDER_ID : response.data.SENDER_ID,
                   authToken : response.data.authToken,
                   sourceMobile : response.data.sourceMobile,
                 });
@@ -90,13 +90,14 @@ class CompanySMSGateway extends Component {
   submit(event){
       event.preventDefault();
         var formvalue ={
-          authID    : this.state.authID, 
+          SENDER_ID    : this.state.SENDER_ID, 
           authToken : this.state.authToken, 
           sourceMobile : this.state.sourceMobile, 
           type      : 'SMS',
           createdBy : localStorage.getItem("user_ID")
         }
         if($("#CompanySMSGatewayForm").valid()){
+          console.log("formvalue==>",formvalue);
           axios.post('/api/projectsettings/post',formvalue)
           .then((response)=> {
             this.getData();
@@ -105,7 +106,7 @@ class CompanySMSGateway extends Component {
                 });
             
             // this.setState({
-            //   authID    : "", 
+            //   SENDER_ID    : "", 
             //   authToken : "", 
             //   sourceMobile : "", 
             // })
@@ -124,7 +125,7 @@ class CompanySMSGateway extends Component {
   update(event){
     event.preventDefault();
       var formvalues ={
-        authID    : this.state.authID, 
+        // authID    : this.state.authID, 
         authToken : this.state.authToken, 
         sourceMobile : this.state.sourceMobile, 
         type      : 'SMS',
@@ -139,7 +140,7 @@ class CompanySMSGateway extends Component {
               });
           // this.setState({
           //   smsid:"",
-          //     authID    : "", 
+          //     SENDER_ID    : "", 
           //     authToken : "", 
           //     sourceMobile : "", 
           // })
@@ -159,7 +160,7 @@ class CompanySMSGateway extends Component {
       .then((response) => {
           this.setState({ 
             smsid : response.data._id,
-            authID : response.data.authID,
+            SENDER_ID : response.data.SENDER_ID,
             authToken : response.data.authToken,
             sourceMobile : response.data.sourceMobile,
           });
@@ -180,12 +181,12 @@ class CompanySMSGateway extends Component {
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <form id="CompanySMSGatewayForm">
               <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box ">
-                <label className="labelform">Auth ID <span className="requiredsign">*</span></label>
+                <label className="labelform">SENDER ID <span className="requiredsign"></span></label>
                 <input type="text" style={{ textTransform: 'capitalize' }}
                   className="form-control UMname has-content"
-                  id="authID" ref="authID" name="authID" placeholder="Auth ID" 
-                  value={this.state.authID} onChange={this.handleChange} /> 
-              </div>
+                  id="SENDER_ID" ref="SENDER_ID" name="SENDER_ID" placeholder="SENDER ID" 
+                  value={this.state.SENDER_ID} onChange={this.handleChange} /> 
+              </div> 
               
               <div className="form-margin col-lg-6 col-md-6 col-xs-12 col-sm-12  valid_box ">
                 <label className="labelform">Auth Token <span className="requiredsign">*</span></label>

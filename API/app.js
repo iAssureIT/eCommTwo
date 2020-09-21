@@ -40,7 +40,7 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 		}
 		next();
 	});
-
+	
 	// Routes which should handle requests
 	//========== Core Admin ===================
 
@@ -115,6 +115,8 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 
 	 const BannerImages         = require("./api/Ecommerce/BannerImages/Routes.js");
 
+	 const TransactionProcess         = require("./api/Ecommerce/paymentapi/Routes.js");
+
 	app.use("/api/users",systemRoutes);
 	app.use("/api/auth",systemRoutes);
 	app.use("/api/users",usersRoutes);	
@@ -161,6 +163,10 @@ const blogRoutes 						= require('./api/cms/blogs/routes.js');
 	app.use("/api/franchiseDelivery", FranchiseDeliveryRoutes);
 
 	app.use("/api/warehousemaster",WareHouseRoutes);
+
+
+
+	app.use("/transaction-process",TransactionProcess);
 
 
 	//=========== admin Shopping List ==============

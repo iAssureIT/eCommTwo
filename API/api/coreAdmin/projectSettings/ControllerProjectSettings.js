@@ -10,8 +10,8 @@ exports.create_projectSettings = (req, res, next) => {
             listRequiredFields  = "Keys, secret, bucket and region";
             break;
         case 'SMS'      :
-            conditionQuery      = req.body.authID && req.body.authToken && req.body.sourceMobile;
-            listRequiredFields  = "authID and authToken and sourceMobile";
+            conditionQuery      = req.body.SENDER_ID && req.body.authToken && req.body.sourceMobile;
+            listRequiredFields  = "SENDER_ID and authToken and sourceMobile";
             break; 
         case 'EMAIL'      :
             conditionQuery      = req.body.user && req.body.password && req.body.port && req.body.emailHost && req.body.projectName;
@@ -51,7 +51,7 @@ exports.create_projectSettings = (req, res, next) => {
                     bucket          : req.body.bucket,
                     region          : req.body.region,
 
-                    authID          : req.body.authID,
+                    SENDER_ID       : req.body.SENDER_ID,
                     authToken       : req.body.authToken,
                     sourceMobile    : req.body.sourceMobile,
 
@@ -140,7 +140,7 @@ exports.patch_projectsettings = (req, res, next)=>{
             listRequiredFields  = "Keys, secret, bucket and region";
             break;
         case 'SMS'      :
-            conditionQuery      = req.body.authID && req.body.authToken && req.body.sourceMobile;
+            conditionQuery      =  req.body.authToken && req.body.sourceMobile;
             listRequiredFields  = "authID and authToken";
             break; 
         case 'EMAIL'      :

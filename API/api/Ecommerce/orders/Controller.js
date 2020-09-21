@@ -15,6 +15,8 @@ const moment = require('moment-timezone');
 const FranchiseGoods = require('../distributionManagement/Model');
 var ObjectId = require('mongodb').ObjectID;
 const axios             = require('axios');
+// const sha256 = require('sha-256-js');
+// import sha256 from 'crypto-js/sha256';
 
 exports.insert_orders = (req, res, next) => {
   // console.log("Inside order post",req.body); 
@@ -2028,88 +2030,90 @@ function addOrderToFranchiseGoods(productId, obj, franchise_id) {
       .limit(1)
       .then(fgdata => {
         //console.log("fgdata",fgdata);
-        if (fgdata[0].unit.toLowerCase() == obj.Unit.toLowerCase()) {
-          var remainingBalance = fgdata[0].balance - obj.orderQty;
-        } else {
-          //if units are different
-          if ((fgdata[0].unit.toLowerCase() == 'kg' || fgdata[0].unit.toLowerCase() == 'kilogram') && (obj.Unit.toLowerCase() == "gm" || obj.Unit.toLowerCase() == "gram")) {
-            //convert raw material gram to kg formula kg=gm/1000
-            var convertToKg = obj.orderQty / 1000;
-            obj.orderQty = convertToKg;
-            obj.Unit = fgdata[0].unit
-            var remainingBalance = fgdata[0].balance - convertToKg;
-          }
-          if ((fgdata[0].unit.toLowerCase() == 'gm' || fgdata[0].unit.toLowerCase() == 'gram') && (obj.Unit.toLowerCase() == "kg" || obj.Unit.toLowerCase() == "kilogram")) {
-            //convert raw material kg to gram formula g=kg*1000
-            var convertToGram = obj.orderQty * 1000;
-            obj.orderQty = convertToGram;
-            obj.Unit = fgdata[0].unit
-            var remainingBalance = fgdata[0].balance - convertToGram;
-          }
-          if (fgdata[0].unit.toLowerCase() == "kg" && obj.Unit.toLowerCase() == "kilogram") {
+        if(fgdata.length > 0){
+          if (fgdata[0].unit.toLowerCase() == obj.Unit.toLowerCase()) {
             var remainingBalance = fgdata[0].balance - obj.orderQty;
+          } else {
+            //if units are different
+            if ((fgdata[0].unit.toLowerCase() == 'kg' || fgdata[0].unit.toLowerCase() == 'kilogram') && (obj.Unit.toLowerCase() == "gm" || obj.Unit.toLowerCase() == "gram")) {
+              //convert raw material gram to kg formula kg=gm/1000
+              var convertToKg = obj.orderQty / 1000;
+              obj.orderQty = convertToKg;
+              obj.Unit = fgdata[0].unit
+              var remainingBalance = fgdata[0].balance - convertToKg;
+            }
+            if ((fgdata[0].unit.toLowerCase() == 'gm' || fgdata[0].unit.toLowerCase() == 'gram') && (obj.Unit.toLowerCase() == "kg" || obj.Unit.toLowerCase() == "kilogram")) {
+              //convert raw material kg to gram formula g=kg*1000
+              var convertToGram = obj.orderQty * 1000;
+              obj.orderQty = convertToGram;
+              obj.Unit = fgdata[0].unit
+              var remainingBalance = fgdata[0].balance - convertToGram;
+            }
+            if (fgdata[0].unit.toLowerCase() == "kg" && obj.Unit.toLowerCase() == "kilogram") {
+              var remainingBalance = fgdata[0].balance - obj.orderQty;
+            }
+
+            if (fgdata[0].Unit.toLowerCase() == "gm" && obj.Unit.toLowerCase() == "gram") {
+              var remainingBalance = fgdata[0].balance - obj.orderQty;
+            }
+
+            if (fgdata[0].unit.toLowerCase() !== "kg" || obj.Unit.toLowerCase() !== "gram") {
+              var remainingBalance = fgdata[0].balance - obj.orderQty;
+            }
           }
+        
 
-          if (fgdata[0].Unit.toLowerCase() == "gm" && obj.Unit.toLowerCase() == "gram") {
-            var remainingBalance = fgdata[0].balance - obj.orderQty;
-          }
+          // compare and update raw material stock
+          if (fgdata[0].balance >= obj.orderQty) {
+            // var remainingBalance = fgdata[0].balance - obj.Quantity;
+            obj.finishedGoods = obj;
+            obj.balance = remainingBalance;
 
-          if (fgdata[0].unit.toLowerCase() !== "kg" || obj.Unit.toLowerCase() !== "gram") {
-            var remainingBalance = fgdata[0].balance - obj.orderQty;
-          }
-        }
-
-        // compare and update raw material stock
-        if (fgdata[0].balance >= obj.orderQty) {
-          // var remainingBalance = fgdata[0].balance - obj.Quantity;
-          obj.finishedGoods = obj;
-          obj.balance = remainingBalance;
-
-          orders = { "orderNum": obj.orderNum, "orderDate": obj.orderDate, "ProductId": productId, "orderQty": obj.orderQty, "Unit": obj.Unit };
-          FranchiseGoods.update(
-            { _id: fgdata[0]._id },
-            {
-              $set: { 'balance': remainingBalance },
-              $push: { 'orders': orders }
-            })
-            .then(data => {
-              if (data.nModified == 1) {
-                resolve(data);
-              } else {
-                resolve(data);
-              }
-            })
-            .catch(err => { reject(err); });
-        } else {
-          var remainFcQty = obj.orderQty - fgdata[0].balance;
-          var remainingBalance = 0;
-          orders = { "orderNum": obj.orderNum, "orderDate": obj.orderDate, "ProductId": productId, "orderQty": fgdata[0].balance, "Unit": obj.Unit };
-          FranchiseGoods.updateOne(
-            { _id: fgdata[0]._id },
-            {
-              $set: { 'balance': remainingBalance },
-              $push: { 'orders': orders }
-            })
-            .then(data => {
-              PoUpObj = { "orderNum": obj.orderNum, "orderDate": obj.orderDate, "ProductId": productId, "orderQty": remainFcQty, "Unit": obj.Unit };
-              if (data.nModified == 1) {
-                if (remainFcQty != 0) {
-                  var updateOtherPoObj = updateOtherFranchiseGoods(itemCode, PoUpObj);
-                  if (updateOtherPoObj) {
-
-                  } else {
-                    console.log("err");
-                  }
+            orders = { "orderNum": obj.orderNum, "orderDate": obj.orderDate, "ProductId": productId, "orderQty": obj.orderQty, "Unit": obj.Unit };
+            FranchiseGoods.update(
+              { _id: fgdata[0]._id },
+              {
+                $set: { 'balance': remainingBalance },
+                $push: { 'orders': orders }
+              })
+              .then(data => {
+                if (data.nModified == 1) {
+                  resolve(data);
+                } else {
+                  resolve(data);
                 }
-                resolve(data);
-              } else {
-                resolve(data);
-              }
-            })
-            .catch(err => { reject(err); });
-          resolve(0);
-        }
+              })
+              .catch(err => { reject(err); });
+          } else {
+            var remainFcQty = obj.orderQty - fgdata[0].balance;
+            var remainingBalance = 0;
+            orders = { "orderNum": obj.orderNum, "orderDate": obj.orderDate, "ProductId": productId, "orderQty": fgdata[0].balance, "Unit": obj.Unit };
+            FranchiseGoods.updateOne(
+              { _id: fgdata[0]._id },
+              {
+                $set: { 'balance': remainingBalance },
+                $push: { 'orders': orders }
+              })
+              .then(data => {
+                PoUpObj = { "orderNum": obj.orderNum, "orderDate": obj.orderDate, "ProductId": productId, "orderQty": remainFcQty, "Unit": obj.Unit };
+                if (data.nModified == 1) {
+                  if (remainFcQty != 0) {
+                    var updateOtherPoObj = updateOtherFranchiseGoods(itemCode, PoUpObj);
+                    if (updateOtherPoObj) {
 
+                    } else {
+                      console.log("err");
+                    }
+                  }
+                  resolve(data);
+                } else {
+                  resolve(data);
+                }
+              })
+              .catch(err => { reject(err); });
+            resolve(0);
+          }
+        }
 
       })
       .catch(err => {
@@ -2572,34 +2576,86 @@ exports.franchise_digital_order_counts = (req, res, next) => {
 
 // =============== Payment gateway ==========
 exports.paymentgatewaycall = (req, res, next) => {
-  // console.log('IN Credit Card ===>',req.body.AMOUNT);
-      const URL         = "http://localhost:3000/transaction-process";
-      const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
-      const paymentdetails = 'MERCHANT_ID='+req.body.MERCHANT_ID+'&MERCHANT_ACCESS_CODE='+req.body.MERCHANT_ACCESS_CODE+'&REFERENCE_NO='+req.body.REFERENCE_NO+'&AMOUNT='+req.body.AMOUNT+'&CUSTOMER_MOBILE_NO='+req.body.CUSTOMER_MOBILE_NO+'&CUSTOMER_EMAIL_ID='+req.body.CUSTOMER_EMAIL_ID+'&PRODUCT_CODE=testing'+'&merchant_return_URL='+URL;
+      // console.log('IN Credit Card ===>',req.body.AMOUNT);
+      // const redirecturl = 'https://uat.pinepg.in/api/PaymentURL/CreatePaymentURL';
+      // const paymentdetails = 'MERCHANT_ID='+req.body.MERCHANT_ID+'&MERCHANT_ACCESS_CODE='+req.body.MERCHANT_ACCESS_CODE+'&REFERENCE_NO='+req.body.REFERENCE_NO+'&AMOUNT='+req.body.AMOUNT+'&CUSTOMER_MOBILE_NO='+req.body.CUSTOMER_MOBILE_NO+'&CUSTOMER_EMAIL_ID='+req.body.CUSTOMER_EMAIL_ID+'&PRODUCT_CODE=testing';
       // const paymentdetails = 'MERCHANT_ID=9445&MERCHANT_ACCESS_CODE=MERCHANT_ACCESS_CODE:dc53e787-3e81-427d-9e94-19220eec39ef&REFERENCE_NO='+Math.round(new Date().getTime() / 1000)+'&AMOUNT=2000&CUSTOMER_MOBILE_NO=8087679825&CUSTOMER_EMAIL_ID=&PRODUCT_CODE=testing';
-      const config = {
-          headers: {
-              'Access-Control-Allow-Origin' : '*',
-              'Accept'                      : 'application/json',
-              "Content-Type"                : "application/x-www-form-urlencoded",
-          }
-      } 
-      console.log('paymentdetails ===> ', paymentdetails);
-      axios.post(redirecturl,paymentdetails,config)
-          .then(result => {
-              console.log('getpaymentgateway Response===> ', result.data);
-              res.status(200).json({
-                "message": "Payment gateway Successfully Got URL.",
-                "result": result.data
-              });
-              // window.location.replace(result.data.PAYMENT_URL);
-          })
-          .catch(err => {
-              console.log('Errr', err);
-              res.status(500).json({
-                "message": "Payment gateway URL Not Got.",
-              });
-          })
+      
+      // const redirecturl = 'https://uat.pinepg.in/PinePGRedirect';
+      // const URL         = "http://localhost:3000/transaction-process";
+      // const paymentdetails = 'ppc_MerchantID='+req.body.MERCHANT_ID+'&ppc_MerchantAccessCode='+req.body.MERCHANT_ACCESS_CODE+'&ppc_Amount='+req.body.AMOUNT+'&ppc_UniqueMerchantTxnID='+req.body.REFERENCE_NO+'&ppc_NavigationMode=2&ppc_TransactionType=1&ppc_PayModeOnLandingPage=0&ppc_CurrencyCode=356&ppc_CustomerMobile='+req.body.CUSTOMER_MOBILE_NO+'&ppc_CustomerEmail='+req.body.CUSTOMER_EMAIL_ID+'&ppc_DIA_SECRET_TYPE=SHA256&ppc_DIA_SECRET=SHA256&ppc_MerchantReturnURL='+URL+'&ppc_DIA_SECRET_TYPE=';
+      // const config = {
+      //     headers: {
+      //         'Access-Control-Allow-Origin' : '*',
+      //         'Accept'                      : 'application/json',
+      //         "Content-Type"                : "application/x-www-form-urlencoded",
+      //     }
+      // } 
+      // console.log('paymentdetails ===> ', paymentdetails);
+      // axios.post(redirecturl,paymentdetails,config)
+      //     .then(result => {
+      //         console.log('getpaymentgateway Response===> ', result.data);
+      //         res.status(200).json({
+      //           "message": "Payment gateway Successfully Got URL.",
+      //           "result": result.data
+      //         });
+      //         // window.location.replace(result.data.PAYMENT_URL);
+      //     })
+      //     .catch(err => {
+      //         console.log('Errr', err);
+      //         res.status(500).json({
+      //           "message": "Payment gateway URL Not Got.",
+      //         });
+      //     })
+
+      
+      console.log("sha256 HASH ==>",req.body);
+
+        const redirecturl = 'https://uat.pinepg.in/PinePGRedirect';
+        const URL         = "http://localhost:3000/transaction-process";
+        var hashgeneration={
+            'ppc_MerchantID': req.body.MERCHANT_ID,
+            'ppc_MerchantAccessCode':req.body.MERCHANT_ACCESS_CODE,
+            "ppc_Amount":req.body.AMOUNT,
+            'ppc_UniqueMerchantTxnID':req.body.REFERENCE_NO,
+            'ppc_NavigationMode':2,
+            'ppc_TransactionType':1,
+            'ppc_PayModeOnLandingPage':0,
+            'ppc_CurrencyCode':356,
+            'ppc_CustomerMobile':req.body.CUSTOMER_MOBILE_NO,
+            'ppc_CustomerEmail':req.body.CUSTOMER_EMAIL_ID,
+            'ppc_MerchantReturnURL':URL,
+            'ppc_DIA_SECRET_TYPE':"SHA256",
+        }
+        // sha256(hashgeneration)
+        
+        var SHA256 = require("crypto-js/sha256");
+        console.log("sha256 HASH ==>",SHA256(hashgeneration));
+        var secrethashkey = SHA256(hashgeneration);
+        const pinepgrequest = 'ppc_MerchantID='+req.body.MERCHANT_ID+'&ppc_MerchantAccessCode='+req.body.MERCHANT_ACCESS_CODE+'&ppc_Amount='+req.body.AMOUNT+'&ppc_UniqueMerchantTxnID='+req.body.REFERENCE_NO+'&ppc_NavigationMode=2&ppc_TransactionType=1&ppc_PayModeOnLandingPage=0&ppc_CurrencyCode=356&ppc_CustomerMobile='+req.body.CUSTOMER_MOBILE_NO+'&ppc_CustomerEmail='+req.body.CUSTOMER_EMAIL_ID+'&ppc_DIA_SECRET_TYPE=SHA256&ppc_DIA_SECRET='+secrethashkey+'&ppc_MerchantReturnURL='+URL;
+        const config = {
+            headers: {
+                'Access-Control-Allow-Origin' : '*',
+                'Accept'                      : 'application/json',
+                "Content-Type"                : "application/x-www-form-urlencoded",
+            }
+        } 
+        console.log('paymentdetails ===> ', pinepgrequest);
+        axios.post(redirecturl,pinepgrequest,config)
+            .then(result => {
+                console.log('getpaymentgateway Response===> ', result.data);
+                // res.status(200).json({
+                //   "message": "Payment gateway Successfully Got URL.",
+                //   "result": result.data
+                // });
+                // window.location.replace(result.data.PAYMENT_URL);
+            })
+            .catch(err => {
+                console.log('Errr', err);
+                // res.status(500).json({
+                //   "message": "Payment gateway URL Not Got.",
+                // });
+            })
 };
 
 exports.update_order_payment = (req, res, next) => {
@@ -2636,3 +2692,35 @@ exports.update_order_payment = (req, res, next) => {
       });
     });
 };
+exports.SMSSending = (req, res, next) => {
+    var obj =    {
+      "flow_id":"5f64b37eb7c3b0398e37560f",
+      "recipients" : [
+                      {
+                        "mobiles":"918087679825",
+                        "Username":"Omkar",
+                        "orderid" : "1234",
+                        "amount" : "250",
+                        "shippingtime" : "4-5"
+                      }
+                  ]
+  }
+  var msg91 = require("msg91")("341935AU9UKcUQr5f63279cP1", "UniMan", "4",obj );
+  var mobileNo = "918830718026";
+   
+  msg91.send(mobileNo, "Welcome To UniMandai", function(err, response){
+      console.log(err);
+      console.log("response=====>",response);
+  });
+}; 
+// axios.post("https://api.msg91.com/api/v5/flow/", {
+  //     headers: {
+  //         'Content-Type': 'application/json',
+  //         'authkey'     : "341935AU9UKcUQr5f63279cP1",
+  //     }},obj)
+  // .then(result => {
+  //     console.log('SMS Gateway Response===> ', result);  
+  // })
+  // .catch(err => {
+  //     console.log('Errr', err);
+  // })
