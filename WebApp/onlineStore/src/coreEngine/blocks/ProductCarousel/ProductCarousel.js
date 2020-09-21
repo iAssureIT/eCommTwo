@@ -46,6 +46,7 @@ class ProductCarousel extends Component {
       },
       productType        : props.type,
       newProducts        : [],
+      products           : [],
       modalIDNew         : [],
       wishList           : [],
       sizeCollage        : false,
@@ -66,11 +67,67 @@ class ProductCarousel extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps){
-      // console.log("nextProps:===",nextProps);
+      console.log("nextProps:===",nextProps);
+      if(nextProps.blockSettings.blockTitle ==="Wishlist"){
+        axios.get(nextProps.blockSettings.api)
+          .then((response) => {         
+            response.data.map((a, i) => {
+              axios.get('/api/products/get/one/' + a.product_ID)
+                .then((res) => {
+                  var products = this.state.products;
+                  products.push({
+                    "_id"              : res.data._id,
+                    "productName"      : res.data.productName,
+                    "productUrl"       : res.data.productUrl,
+                    "originalPrice"    : res.data.originalPrice,
+                    "availableQuantity": res.data.availableQuantity,
+                    "size"             : res.data.size,
+                    "shortDescription" : res.data.shortDescription,
+                    "unit"             : res.data.unit, 
+                    "bestSeller"       : res.data.bestSeller,
+                    "brand"            : res.data.brand,
+                    "category"         : res.data.category,
+                    "currency"         : res.data.currency,
+                    "discountPercent": res.data.discountPercent,
+                    "discountedPrice": res.data.discountedPrice,
+                    "productCode": res.data.productCode,
+                    "productImage": res.data.productImage,
+                    "product_ID": res.data._id,
+                    "wishlist_ID": a._id
+                  });  
+                  if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
+                    for(var i=0;i<products.length;i++){      
+                        var availableSizes = [];         
+                        if(products[i].size){              
+                          availableSizes.push(products[i].size*1);
+                          availableSizes.push(products[i].size*2);
+                          availableSizes.push(products[i].size*4); 
+                          products[i].availableSizes = availableSizes;           
+                        }
+                    }
+                  }                 
+                  this.setState({
+                    newProducts     : products,        
+                    type            : nextProps.type,
+                    productSettings : nextProps.productSettings,
+                    blockSettings   : nextProps.blockSettings,
+                    Productsloading : false,
+                  });
+                  
+                })
+                .catch((error) => {
+                  console.log('error', error);
+                })
+            })
+          })
+          .catch((error) => {
+            console.log('error', error);
+          })
+      }else{
       axios.get(nextProps.blockSettings.api)      
       .then((response)=>{
         if(response.data){
-        // console.log('Products Data ==== ' , response.data)
+        console.log('Products Data ==== ' , response.data)
         if(localStorage.getItem('websiteModel')=== "FranchiseModel"){
           for(var i=0;i<response.data.length;i++){      
               var availableSizes = [];         
@@ -95,7 +152,7 @@ class ProductCarousel extends Component {
           console.log('error', error);
       })
     }
-    
+    }//end else
   }
   addCart(formValues, quantityAdded, availableQuantity) {
     if(localStorage.getItem('webSiteModel')==='FranchiseModel'){
@@ -299,7 +356,7 @@ class ProductCarousel extends Component {
               messageData: {},
             })
           }, 3000);
-          this.props.getWishData();
+          this.getWishData();
         })
         .catch((error) => {
           console.log('error', error);
@@ -330,7 +387,19 @@ class ProductCarousel extends Component {
       }
     }
   }
-
+  getWishData(){
+    var user_ID = localStorage.getItem('user_ID');
+    axios.get('/api/wishlist/get/userwishlist/'+user_ID)
+    .then((response)=>{
+      this.setState({
+        wishList : response.data
+      },()=>{
+      })
+    })
+    .catch((error)=>{
+      // console.log('error', error);
+    })
+  }
   showRatingBlock(event){
     event.preventDefault();
   }
@@ -377,7 +446,7 @@ class ProductCarousel extends Component {
                       {
                         Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 ?
                           Array.isArray(this.state.newProducts) && this.state.newProducts.map((data, index) => {  
-                              var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
+                              var x = this.state.wishList && this.state.wishList.length > 0 ? this.state.wishList.filter((abc) => abc.product_ID === data._id) : [];
                               var wishClass = '';
                               var tooltipMsg = '';
                               if (x && x.length > 0) {
@@ -512,7 +581,7 @@ class ProductCarousel extends Component {
                         {
                         Array.isArray(this.state.newProducts) && this.state.newProducts.length > 0 ?
                           Array.isArray(this.state.newProducts) && this.state.newProducts.map((data, index) => {  
-                              var x = this.props.wishList && this.props.wishList.length > 0 ? this.props.wishList.filter((abc) => abc.product_ID === data._id) : [];
+                              var x = this.state.wishList && this.state.wishList.length > 0 ? this.state.wishList.filter((abc) => abc.product_ID === data._id) : [];
                               var wishClass = '';
                               var tooltipMsg = '';
                               if (x && x.length > 0) {

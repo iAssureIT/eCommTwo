@@ -5,6 +5,7 @@ import Loader       from "../../common/loader/Loader.js";
 
 import SmallBanner          from '../../blocks/SmallBanner/SmallBanner.js';
 import CartProducts         from '../../blocks/CartProducts/CartProducts.js';
+import ProductCarousel      from '../../blocks/ProductCarousel/ProductCarousel.js';
 import topBannerImg         from '../../../sites/currentSite/images/cartBanner.png';
 import Ecommercenewproductcaro from '../../blocks/ProductCarouselEcommerce/Ecommercenewproductcaro.js';
 import "../../../sites/currentSite/pages/Cart.css";
@@ -19,6 +20,7 @@ import "../../../sites/currentSite/pages/Cart.css";
 class Cart extends Component{
     constructor(props) {
         super(props);
+        var user_ID = localStorage.getItem('user_ID');    
         this.state={
             bannerData : {
                 title : "MY SHOPPING CART",
@@ -27,6 +29,27 @@ class Cart extends Component{
             },
             wishlistProductsloading: true,
             products : [],
+            wishlistBlock          : {
+              blockTitle            : "Wishlist",
+              api                   : "/api/wishlist/get/userwishlist/" +localStorage.getItem('user_ID'),    
+              totalNumOfProducts 	  : 12,
+              showCarousel 		      : true,
+              numOfProductsPerLGRow : 6,
+              numOfProductsPerMDRow : 6,
+              numOfProductsPerSMRow : 3,
+              numOfProductsPerXsRow : 2,			
+            },
+            wishlistProductsSettings: { 
+              displayBrand 		      : true,
+              displayWishlistIcon   : true,
+              displayRating 		    : false,
+              displayAssuranceIcon  : false,
+              displayFeature 		    : '',
+              displaySubCategory    : false,
+              displayCategory   	  : false,
+              displaySection   	    : false,
+              displayDiscount 	    : false,          
+            },
         }
     } 
     componentDidMount(){
@@ -78,7 +101,6 @@ class Cart extends Component{
           .catch((error) => {
             console.log('error', error);
           })
-    
       }
 
     render(){
@@ -87,27 +109,26 @@ class Cart extends Component{
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="row">
                     <SmallBanner bannerData={this.state.bannerData}/>
-                    <CartProducts />
-                    {/* <WishlistBlock /> */}
-                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 homeRow">
-                        {
+                    <CartProducts />                    
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 homeRow cartPagecarousel">
+                        {/* {
                         this.state.wishlistProductsloading ?  
-                        null
-                        // <Loader type="carouselloader" productLoaderNo = {4}/>      
+                        null                           
                         :
                         Array.isArray(this.state.wishlistedProducts) && this.state.wishlistedProducts.length > 0 ?                        
                             <Ecommercenewproductcaro  
                                 title={'Wishlist'} 
                                 newProducts={this.state.wishlistedProducts} 
                                 type={'wishlist'} 
-                                getWishData={this.getWishlistData.bind(this)}   
-                                // wishList={this.state.wishList} 
-                                // categories={this.state.categories} 
-                                // changeProductCateWise={this.changeProductCateWise.bind(this)}/>
+                                getWishData={this.getWishlistData.bind(this)}                            
                                 ></Ecommercenewproductcaro>
                             : null
                         
-                        }
+                        } */}
+                      <ProductCarousel
+                        productSettings = {this.state.wishlistProductsSettings}
+                        blockSettings   = {this.state.wishlistBlock} 
+                      />
                     </div>
                     {/* <GiftOption /> */}
                     {/* <div className="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">

@@ -98,17 +98,6 @@ class UnimandaiHomePage extends Component {
           numOfProductsPerMDRow : 4,
           numOfProductsPerSMRow : 3,
           numOfProductsPerXLRow : 2,			
-        },        
-        exclusiveProductsSettings: { 
-          displayBrand 		      : true,
-          displayWishlistIcon   : true,
-          displayRating 		    : false,
-          displayAssuranceIcon  : false,
-          displayFeature 		    : '',
-          displaySubCategory    : false,
-          displayCategory   	  : false,
-          displaySection   	    : false,
-          displayDiscount 	    : false,          
         },
         exclusiveBlock          : {
           blockTitle            : "Exclusive Product",
@@ -166,7 +155,10 @@ class UnimandaiHomePage extends Component {
       };
     } 
 
-    UNSAFE_componentWillMount(){
+    // UNSAFE_componentWillMount(){
+    //   // this.getCategories();
+    // }
+    componentDidMount(){
       this.getCategories();
     }
 
@@ -196,24 +188,7 @@ class UnimandaiHomePage extends Component {
     //   })
     // }
 
-    // getWishData(){
-    //   var user_ID = localStorage.getItem('user_ID');
-    //   axios.get('/api/wishlist/get/userwishlist/'+user_ID)
-    //   .then((response)=>{
-    //     this.getVegetablesData();
-    //     this.featuredProductData();
-    //     this.exclusiveProductsData();
-    //     this.discountedproductsData();
-    //     // this.bestSellerData();
-    //     this.setState({
-    //       wishList : response.data
-    //     },()=>{
-    //     })
-    //   })
-    //   .catch((error)=>{
-    //     // console.log('error', error);
-    //   })
-    // }
+  
 
     render() {     
         return (
