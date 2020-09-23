@@ -33,6 +33,7 @@
     "request-promise": "^4.2.4",
     "sha-256-js": "^1.0.3",
     "sha256": "^0.2.0",
+    "simple-js-sha2-256": "^1.0.7",
     "sitemap": "^5.0.0",
     "sms-msg91": "^1.0.3",
     "underscore": "^1.9.1"

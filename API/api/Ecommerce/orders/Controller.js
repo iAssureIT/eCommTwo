@@ -2609,29 +2609,42 @@ exports.paymentgatewaycall = (req, res, next) => {
       //     })
 
       
-      console.log("sha256 HASH ==>",req.body);
 
         const redirecturl = 'https://uat.pinepg.in/PinePGRedirect';
         const URL         = "http://localhost:3000/transaction-process";
         var hashgeneration={
-            'ppc_MerchantID': req.body.MERCHANT_ID,
-            'ppc_MerchantAccessCode':req.body.MERCHANT_ACCESS_CODE,
-            "ppc_Amount":req.body.AMOUNT,
-            'ppc_UniqueMerchantTxnID':req.body.REFERENCE_NO,
+            // 'ppc_MerchantID': req.body.MERCHANT_ID,
+            // 'ppc_MerchantAccessCode':req.body.MERCHANT_ACCESS_CODE,
+            // "ppc_Amount":req.body.AMOUNT,
+            // 'ppc_UniqueMerchantTxnID':req.body.REFERENCE_NO,
+            // 'ppc_NavigationMode':2,
+            // 'ppc_TransactionType':1,
+            // 'ppc_PayModeOnLandingPage':0,
+            // 'ppc_CurrencyCode':356,
+            // 'ppc_CustomerMobile':req.body.CUSTOMER_MOBILE_NO,
+            // 'ppc_CustomerEmail':req.body.CUSTOMER_EMAIL_ID,
+            // 'ppc_MerchantReturnURL':URL,
+            // 'ppc_DIA_SECRET_TYPE':"SHA256",
+            'ppc_MerchantID': "9445",
+            'ppc_MerchantAccessCode':'dc53e787-3e81-427d-9e94-19220eec39ef',
+            "ppc_Amount":"256",
+            'ppc_UniqueMerchantTxnID':"23456789854",
             'ppc_NavigationMode':2,
             'ppc_TransactionType':1,
             'ppc_PayModeOnLandingPage':0,
             'ppc_CurrencyCode':356,
-            'ppc_CustomerMobile':req.body.CUSTOMER_MOBILE_NO,
-            'ppc_CustomerEmail':req.body.CUSTOMER_EMAIL_ID,
+            'ppc_CustomerMobile':"8087679825",
+            'ppc_CustomerEmail':"omkar.ronghe@iassureit.com",
             'ppc_MerchantReturnURL':URL,
-            'ppc_DIA_SECRET_TYPE':"SHA256",
         }
         // sha256(hashgeneration)
-        
-        var SHA256 = require("crypto-js/sha256");
-        console.log("sha256 HASH ==>",SHA256(hashgeneration));
-        var secrethashkey = SHA256(hashgeneration);
+        sha256(hashgeneration);
+        // var SHA256 = require("crypto-js/sha256");
+        // console.log("sha256 HASH ==>",SHA256(hashgeneration));
+        // var secrethashkey = SHA256(hashgeneration);
+        // const sha2_256 = require('simple-js-sha2-256')
+        var secrethashkey =  sha256(hashgeneration);
+        console.log("sha256 HASH ==>",secrethashkey);
         const pinepgrequest = 'ppc_MerchantID='+req.body.MERCHANT_ID+'&ppc_MerchantAccessCode='+req.body.MERCHANT_ACCESS_CODE+'&ppc_Amount='+req.body.AMOUNT+'&ppc_UniqueMerchantTxnID='+req.body.REFERENCE_NO+'&ppc_NavigationMode=2&ppc_TransactionType=1&ppc_PayModeOnLandingPage=0&ppc_CurrencyCode=356&ppc_CustomerMobile='+req.body.CUSTOMER_MOBILE_NO+'&ppc_CustomerEmail='+req.body.CUSTOMER_EMAIL_ID+'&ppc_DIA_SECRET_TYPE=SHA256&ppc_DIA_SECRET='+secrethashkey+'&ppc_MerchantReturnURL='+URL;
         const config = {
             headers: {
@@ -2644,17 +2657,10 @@ exports.paymentgatewaycall = (req, res, next) => {
         axios.post(redirecturl,pinepgrequest,config)
             .then(result => {
                 console.log('getpaymentgateway Response===> ', result.data);
-                // res.status(200).json({
-                //   "message": "Payment gateway Successfully Got URL.",
-                //   "result": result.data
-                // });
-                // window.location.replace(result.data.PAYMENT_URL);
+                
             })
             .catch(err => {
                 console.log('Errr', err);
-                // res.status(500).json({
-                //   "message": "Payment gateway URL Not Got.",
-                // });
             })
 };
 

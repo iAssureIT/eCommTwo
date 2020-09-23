@@ -52,7 +52,7 @@ class HomePageBanner2 extends Component{
                                 }
                                 // console.log("sectionDetails===",sectionDetails);
                                                             
-                            }else if(sectionDetailsArray[i].section === "Other Items"){
+                            }else if(sectionDetailsArray[i].section === "Other Items" || sectionDetailsArray[i].section === "Grocery"){
                                 sectionDetails[3] = {
                                     "section"    : sectionDetailsArray[i].section,
                                     "sectionId"  : sectionDetailsArray[i]._id,
