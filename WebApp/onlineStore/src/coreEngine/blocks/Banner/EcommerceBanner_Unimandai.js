@@ -8,12 +8,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/carousel.js';	
 import $                  from 'jquery';
 import axios                  from 'axios';
-
+import Loader from "../../common/loader/Loader.js";
 import AddressBanner2  from "../../../sites/currentSite/images/AddressBanner2.png";
 import AddressBanner1  from "../../../sites/currentSite/images/AddressBanner1.png";
 import Background_2    from "../../../sites/currentSite/images/Fruits1.png";
 import Background_22   from "../../../sites/currentSite/images/VeggiesBanner1.png";
-import OrganicItem     from "../../../sites/currentSite/images/organicItem5.jpg";
+import OrganicItem     from "../../../sites/currentSite/images/Delivery banner2.png";
 
 export default class EcommerceBanner extends Component {
 	constructor(props){
@@ -25,7 +25,7 @@ export default class EcommerceBanner extends Component {
             },
             600:{
                 items:1
-			},
+						},
             1000:{
                 items:1 
             }
@@ -52,6 +52,7 @@ export default class EcommerceBanner extends Component {
   render() {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">
+				<Loader type="fullpageloader" />
 				<div className="row">
 					<div className="">
 
@@ -66,7 +67,7 @@ export default class EcommerceBanner extends Component {
 										dots={true}
 										dotData={true}>
 									 	
-											{/* {
+											{
 												Array.isArray(this.state.bannerList) && this.state.bannerList.map((data, index)=>{                                                
 													return(
 														<div className="item">
@@ -74,9 +75,9 @@ export default class EcommerceBanner extends Component {
 														</div>
 													)
 												})
-											} */}
+											} 
 									
-									    <div className="item">
+									    {/* <div className="item">
 									    	<img className="img img-responsive" src={Background_2} alt="banner" />									    	
 									    </div>
 									    <div className="item">
@@ -88,9 +89,9 @@ export default class EcommerceBanner extends Component {
 											<div className="item">
 													<img className="img img-responsive" src={AddressBanner2} alt="banner" />									    	
 											</div> 
-										{/* <div className="item">
+										<div className="item">
 									    	<img className="img img-responsive" src={OrganicItem} alt="banner" />									    	
-									    </div>*/}
+									    </div> */}
 										
 									</OwlCarousel>
 							</div> 

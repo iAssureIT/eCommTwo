@@ -83,7 +83,7 @@ class AskPincode extends Component {
      }
  
     closeModal(event){
-        event.preventDefault();
+        // event.preventDefault();
         $("#pageOpacity").hide();
         $('#pincodeModal').hide();
         localStorage.setItem('pincodeFlag',"false");
@@ -113,10 +113,11 @@ class AskPincode extends Component {
                         $('.NotAllowDeliveryMsg').hide();  
                         $('.marginTop').hide();  
                         $('.addPincode').css("margin-top","40px");                     
+                        this.closeModal();
                         localStorage.setItem("status","Allow");
                         this.props.updatePincode(userPincode,"Allow"); 
                         // console.log("pincode===",localStorage.getItem('pincode'));
-                                          
+                                 
                     }else{                        
                         this.props.updatePincode(userPincode,"NotAllow"); 
                         $('.NotAllowDeliveryMsg').text("Sorry... We can not deliver in your area of Pincode " +userPincode +" . Check again after few days!")

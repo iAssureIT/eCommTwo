@@ -9,7 +9,8 @@ import axios from 'axios';
 import HomePageBanner2_1 from "../../../../sites/currentSite/images/vegetable blocks.png";
 import HomePageBanner2_2 from "../../../../sites/currentSite/images/Fruits_blocks.png";
 import HomePageBanner2_3 from "../../../../sites/currentSite/images/Frozen_items.png";
-import HomePageBanner2_4 from "../../../../sites/currentSite/images/unimandaiOtherItemBlocks.png";
+// import HomePageBanner2_4 from "../../../../sites/currentSite/images/unimandaiOtherItemBlocks.png";
+import HomePageBanner2_4 from "../../../../sites/currentSite/images/Grocery_Block.png";
 
 class HomePageBanner2 extends Component{
     constructor(props){
