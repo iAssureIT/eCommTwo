@@ -4,6 +4,7 @@ const sectionsSchema = mongoose.Schema({
 	_id			          	: mongoose.Schema.Types.ObjectId,
     section               	: String,
     sectionUrl           	: String,
+    sectionImage           	: String,
     sectionRank              : Number,
     createdBy               : String,
     createdAt               : Date

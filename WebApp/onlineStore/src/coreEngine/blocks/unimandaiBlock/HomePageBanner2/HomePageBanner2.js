@@ -23,6 +23,17 @@ class HomePageBanner2 extends Component{
 
     }
     componentDidMount(){
+        // axios.get('/api/sections/get/list-with-limits/' + this.state.startRange + '/' + this.state.limitRange)
+        //         .then((response)=>{                              
+        //                 this.setState({
+        //                         sectionDetails  : response.data,                                                                             
+        //                     },()=>{
+        //                         // console.log(" after setstate sectionDetails =========",this.state.sectionDetails); 
+        //                     });    
+        //                 })
+        //         .catch((error)=>{
+        //             console.log('error', error);
+        //         })
         axios.get("/api/sections/get/get_megamenu_list")
                   .then((response)=>{                      
                     if(response.data){

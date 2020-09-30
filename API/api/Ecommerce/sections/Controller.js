@@ -14,6 +14,7 @@ exports.insert_section = (req,res,next)=>{
                         section                   : req.body.section,
                         sectionUrl                : sectionUrl,
                         sectionRank               : req.body.sectionRank,
+                        sectionImage               : req.body.sectionImage,
                         createdBy 				  : req.body.createdBy, 	
                         createdAt                 : new Date()
                     });
@@ -73,7 +74,8 @@ exports.update_section = (req,res,next)=>{
                 $set:{
                 section                   : req.body.section,
                 sectionRank               : req.body.sectionRank,
-                sectionUrl                : sectionUrl
+                sectionImage              : req.body.sectionImage,
+                sectionUrl                : sectionUrl,
                 }
             }
         )

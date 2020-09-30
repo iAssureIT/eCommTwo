@@ -146,11 +146,10 @@ export class printBill extends React.Component {
     }
     
     printTable(){
-        const w=window.open();
-        w.document.write($('.viewBillDiv').html());
-        w.print();
-		w.close();
-		
+      const w=window.open();
+      w.document.write($('.viewBillDiv').html());
+      w.print();
+			w.close();
 	//    const input = $('.viewBillDiv')[0];
 	//    $(input).css('background','white');
     //    html2canvas(input)

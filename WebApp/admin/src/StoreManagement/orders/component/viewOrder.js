@@ -67,7 +67,7 @@ class viewOrder extends Component{
     getdiscounteddata(startRange, limitRange) {
       axios.get('/api/discount/get/list-with-limits/' + startRange + '/' + limitRange)
           .then((response) => {
-              //console.log('tableData = ', response.data[0]);
+              console.log('tableData = ', response.data[0]);
               this.setState({
                   discountdata: response.data[0],
                   discounttype: response.data[0].discounttype,
@@ -76,18 +76,19 @@ class viewOrder extends Component{
                   startdate: moment(response.data[0].startdate).format("YYYY-MM-DD"),
                   enddate: moment(response.data[0].enddate).format("YYYY-MM-DD"),
               },()=>{
-                  var amountofgrandtotal = 
-                                              this.state.orderData ?
-                                                   this.state.discountin === "Percent" ?
-                                                      parseInt(this.state.orderData.total) - (this.state.orderData.total * this.state.discountvalue)/ 100
-                                                      : parseInt(this.state.orderData.total) - this.state.discountvalue
-                                                  : parseInt(this.state.orderData.total)
+                  // var amountofgrandtotal = 
+                                           
+                                              // this.state.orderData ?
+                                              //      this.state.discountin === "Percent" ?
+                                              //         parseInt(this.state.orderData.total) - (this.state.orderData.total * this.state.discountvalue)/ 100
+                                              //         : parseInt(this.state.orderData.total) - this.state.discountvalue
+                                              //     : parseInt(this.state.orderData.total)
                                             
                   // var amt =(100/1)*amountofgrandtotal;
                   // var rsamt = amt/100;
                   // console.log('amountofgrandtotal = ', amt);
                  // console.log('amountofgrandtotal = ');
-                  this.setState({amountofgrandtotal : amountofgrandtotal})
+                  // this.setState({amountofgrandtotal : amountofgrandtotal})
                })
           })
           .catch((error) => {
@@ -105,7 +106,7 @@ class viewOrder extends Component{
       return true;
     }
     render(){
-    //  console.log("orderData",this.state.orderData);
+    //  console.log("orderData===>>>",this.state.orderData);
         return(         
         <div className="container-fluid">
           <section className="content">
@@ -151,7 +152,7 @@ class viewOrder extends Component{
                   <div className="box-content"> 
                     <div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Subtotal:</span>  </div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}> {this.state.orderData.cartTotal}</i></span> </div> 
+                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.orderData.cartTotal).toFixed(2)}</i></span> </div> 
                     </div>
                     <div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Shipping:  </span></div>
@@ -195,7 +196,19 @@ class viewOrder extends Component{
                     <div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Grand Total: </span></div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
-                        <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.amountofgrandtotal).toFixed(2) }</i></span>
+                        <span><i className={"fa fa-"+this.state.orderData.currency}>
+                         { parseInt(this.state.orderData.total).toFixed(2) }
+                        {console.log("this.state.orderData==>",this.state.discountdata)}
+                        {/* {
+                           this.state.orderData.total > 0 ?
+                              this.state.discountdata !== undefined ?
+                                this.state.orderData.length > 0 && this.state.discountin === "Percent" ?
+                                    parseInt(this.state.orderData.total) - (this.state.orderData.total * this.state.discountvalue)/ 100
+                                    : parseInt(this.state.orderData.total) - this.state.discountvalue
+                                : parseInt(this.state.orderData.total)
+                            : "0.00"
+                        } */}
+                         </i></span>
                       </div>
                     </div>
                   </div>

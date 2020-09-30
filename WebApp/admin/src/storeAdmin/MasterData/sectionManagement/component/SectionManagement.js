@@ -21,6 +21,7 @@ class SectionManagement extends Component {
         section: "Section",
         section: "Section Title",
         sectionRank: "Section Rank",
+        // sectionImage: "Section Images",
         actions: 'Action',
       },
       "tableObjects": {
@@ -116,7 +117,7 @@ class SectionManagement extends Component {
   getData(startRange, limitRange) {
     axios.get('/api/sections/get/list-with-limits/' + startRange + '/' + limitRange)
       .then((response) => {
-        console.log('tableData = ', response.data);
+        console.log('SEction tableData ==> ', response.data);
         this.setState({
           tableData: response.data
         })
@@ -186,6 +187,7 @@ class SectionManagement extends Component {
         "sectionID"   : this.state.editId,
         "section"     : this.state.section,
         "sectionRank" : this.state.sectionRank,
+        "sectionImage": this.state.sectionImage,
       }
       // console.log('form', formValues);
       axios.patch('/api/sections/patch', formValues)
@@ -199,6 +201,7 @@ class SectionManagement extends Component {
             "sectionUrl": '',
             "editId" : '',
             "sectionRank": '',
+            "sectionImage": '',
           });
           
           window.location.href ='/project-master-data';
@@ -216,7 +219,8 @@ class SectionManagement extends Component {
           this.setState({
             "section"     : response.data.section,
             "sectionRank" : response.data.sectionRank,
-            "sectionUrl"  : response.data.sectionUrl
+            "sectionUrl"  : response.data.sectionUrl,
+            "sectionImage"  : response.data.sectionImage
           });
         }
       })
@@ -224,7 +228,103 @@ class SectionManagement extends Component {
         console.log('error', error);
       });
   }
+  uploadImage(event){
+    event.preventDefault();
+    var sectionImage = "";
+    if (event.currentTarget.files && event.currentTarget.files[0]) {
+        // for(var i=0; i<event.currentTarget.files.length; i++){
+            var file = event.currentTarget.files[0];
+            if (file) {
+                var fileName  = file.name; 
+                var ext = fileName.split('.').pop();  
+                if(ext==="jpg" || ext==="png" || ext==="jpeg" || ext==="JPG" || ext==="PNG" || ext==="JPEG"){
+                    if (file) {
+                        var objTitle = { fileInfo :file }
+                        sectionImage = objTitle ;
+                        
+                    }else{          
+                        swal("Images not uploaded");  
+                    }//file
+                }else{ 
+                    swal("Allowed images formats are (jpg,png,jpeg)");   
+                }//file types
+            }//file
+        // }//for 
 
+        if(event.currentTarget.files){
+            this.setState({
+              sectionImage : sectionImage
+            });  
+            main().then(formValues=>{
+                this.setState({
+                  sectionImage : formValues.sectionImage
+                })
+            });
+            async function main(){
+                var config = await getConfig();
+                // console.log("line 429 config = ",config);
+                var s3url = await s3upload(sectionImage.fileInfo, config, this);
+
+                const formValues = {
+                  "sectionImage"    : s3url,
+                  "status"           : "New"
+                };
+  
+                return Promise.resolve(formValues);
+            }
+            function s3upload(image,configuration){
+    
+                return new Promise(function(resolve,reject){
+                    S3FileUpload
+                        .uploadFile(image,configuration)
+                        .then((Data)=>{
+                            resolve(Data.location);
+                        })
+                        .catch((error)=>{
+                            console.log(error);
+                        })
+                })
+            }   
+            function getConfig(){
+                return new Promise(function(resolve,reject){
+                    axios
+                        // .get('/api/projectSettings/get/one/s3')
+                        .get('/api/projectSettings/get/S3')
+                        .then((response)=>{
+                          // console.log("s3 response :",response.data);
+                            const config = {
+                                bucketName      : response.data.bucket,
+                                dirName         : process.env.ENVIRONMENT,
+                                region          : response.data.region,
+                                accessKeyId     : response.data.key,
+                                secretAccessKey : response.data.secret,
+                            }
+                            resolve(config);                           
+                        })
+                        .catch(function(error){
+                            console.log(error);
+                        })
+    
+                })
+            }        
+        }
+    }
+  }
+  deleteImage(event){
+      // console.log('delete');
+      
+      var id = event.target.id;
+      var productImageArray = this.state.productImageArray;
+      // console.log('productImage', productImageArray, id);
+
+      productImageArray.splice(productImageArray.findIndex(v => v === id), 1);
+      this.setState({
+          sectionImage : "",
+          productImageArray: productImageArray
+      },()=>{
+          // console.log('subcatgArr', this.state.subcatgArr);
+      });
+  }
   createsectionUrl(event) {
     const target = event.target;
     const name = target.name;
@@ -259,7 +359,6 @@ class SectionManagement extends Component {
                     <div className="box-header with-border col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-right">
                       <h4 className="NOpadding-right">Section Master </h4>
                     </div>
-                  
                       <div className="col-lg-12 col-md-12 marginTopp NOpadding">
                       <form id="sectionManagement" className="">
                           <div className="col-lg-5 fieldWrapper">
@@ -279,6 +378,36 @@ class SectionManagement extends Component {
                                   <label>Section Rank <i className="redFont">*</i></label>                                                                    
                                   <input value={this.state.sectionRank} onChange={this.handleChange.bind(this)} id="sectionRank" name="sectionRank" type="number" className="form-control sectionRank" placeholder="Section Rank" ref="sectionRank" min="1"  required/>
                             </div>
+                          </div>
+                          <div className="col-lg-10 fieldWrapper">
+                          <div className="col-lg-10">
+                            <label>Section Image</label>                                                                              
+                                      {
+                                        this.state.sectionImage ?
+                                        null
+                                        :
+                                        
+                                        <div className="divideCatgRows categoryImgWrapper">
+                                            <label>Category Image</label>                                                                    
+                                            <input type="file" onChange={this.uploadImage.bind(this)} title="Click to Edit Photo" className="" accept=".jpg,.jpeg,.png" />
+                                        </div>
+                                      }
+                                      {
+                                        this.state.sectionImage ? 
+                                        <div className="row">
+                                          <div className="col-lg-4 productImgCol">
+                                            <div className="prodImage">
+                                              <div className="prodImageInner">
+                                                  <span className="prodImageCross" title="Delete" data-imageUrl={this.state.sectionImage} onClick={this.deleteImage.bind(this)} >x</span>
+                                              </div>
+                                              <img title="view Image" alt="Please wait..." src={this.state.sectionImage ? this.state.sectionImage : "/images/notavailable.jpg"} className="img-responsive" />
+                                            </div>    
+                                          </div>
+                                        </div>
+                                        :
+                                        null
+                                      }
+                              </div>
                           </div>
                         
                           <div className="col-lg-12">

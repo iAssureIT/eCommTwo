@@ -37,7 +37,7 @@ export default class EcommerceBanner extends Component {
 		this.getBannerImages();
 	  }
 	  
-	  getBannerImages(){
+	getBannerImages(){
 		axios.get('/api/bannerimgs/get')
 		.then((res)=>{
 		  console.log('Banner Images ===>', res.data);
@@ -48,7 +48,7 @@ export default class EcommerceBanner extends Component {
 		.catch((error)=>{
 		  console.log('error', error);
 		})
-	  }  
+	}  
   render() {
 		return (
 			<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColorWhite  marginTop180">

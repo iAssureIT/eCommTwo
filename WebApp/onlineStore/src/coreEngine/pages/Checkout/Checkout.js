@@ -366,7 +366,6 @@ class Checkout extends Component {
             }
         });
     }
-
     checkPincode(pincode) {
         if (localStorage.getItem('websiteModel') === "FranchiseModel") {
             axios.get("/api/allowablepincode/checkpincode/" + pincode)
@@ -384,7 +383,6 @@ class Checkout extends Component {
                 });
         }
     }
-
     gettimes(startRange, limitRange) {
         axios.get('/api/time/get/list-with-limits/' + startRange + '/' + limitRange)
             .then((response) => {
@@ -462,7 +460,6 @@ class Checkout extends Component {
                 console.log('error', error);
             })
     }
-
     grandtotalFunction(cartItemsMoveMain) {
         // console.log('cart', cartItemsMoveMain);
         var taxes = [];
@@ -655,7 +652,6 @@ class Checkout extends Component {
 
         return taxCalc;
     }
-
     discountCode(event) {
         event.preventDefault();
         this.setState({
@@ -928,7 +924,6 @@ class Checkout extends Component {
             }
         }
     }
-
     saveModalAddress(event) {
         event.preventDefault();
         this.modalvalidation();
@@ -978,7 +973,6 @@ class Checkout extends Component {
                 });
         }
     }
-
     Closepagealert(event) {
         event.preventDefault();
         $(".toast-error").html('');
@@ -1084,7 +1078,6 @@ class Checkout extends Component {
     opDones() {
         this.getUserAddress();
     }
-
     handleCheckbox(event) {
         event.preventDefault();
         //   console.log("terms value ....",$('.acceptTerms:checkbox:checked').length);
