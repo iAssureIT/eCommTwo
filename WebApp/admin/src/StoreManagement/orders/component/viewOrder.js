@@ -106,7 +106,7 @@ class viewOrder extends Component{
       return true;
     }
     render(){
-    //  console.log("orderData===>>>",this.state.orderData);
+     console.log("orderData===>>>",this.state.orderData);
         return(         
         <div className="container-fluid">
           <section className="content">
@@ -179,7 +179,7 @@ class viewOrder extends Component{
                     <div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
-                        <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.orderData.total).toFixed(2) }</i></span>
+                        <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(parseInt(this.state.orderData.total) + (this.state.orderData.total * this.state.discountvalue)/ 100).toFixed(2) }</i></span>
                       </div>
                     </div>
                     <div>
@@ -243,7 +243,7 @@ class viewOrder extends Component{
                                 </div>
                                 <div>
                                   <div className="col-lg-8 col-md-8 col-sm-8 col-xs-6 NOpadding"><span>Discounted Price:</span></div>
-                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{discountedPrice}</div>
+                                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{(discountedPrice).toFixed(2)}</div>
                                 </div>
                                 <div>
                                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Quantity:</span></div>
@@ -251,7 +251,7 @@ class viewOrder extends Component{
                                 </div>
                                 <div>
                                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total:</span></div>
-                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{data.quantity * discountedPrice}</div>
+                                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><i className={"fa fa-"+this.state.orderData.currency}></i>{(data.quantity * discountedPrice).toFixed(2)}</div>
                                 </div>
                                 </div>
                               </div>
