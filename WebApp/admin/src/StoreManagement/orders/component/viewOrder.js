@@ -150,10 +150,16 @@ class viewOrder extends Component{
                     <span>Order Summary</span>
                   </strong>
                   <div className="box-content"> 
-                    <div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Subtotal:</span>  </div>
-                      <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.orderData.cartTotal).toFixed(2)}</i></span> </div> 
-                    </div>
+                  {
+                    this.state.orderData.cartTotal ?
+                      <div>
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Subtotal:</span>  </div>
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right"><span><i className={"fa fa-"+this.state.orderData.currency}>{parseInt(this.state.orderData.cartTotal).toFixed(2)}</i></span> </div> 
+                      </div>
+                  :
+                    null
+                  }
+                   
                     <div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Shipping:  </span></div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
@@ -179,7 +185,7 @@ class viewOrder extends Component{
                     <div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding"><span>Total: </span></div>
                       <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 NOpadding text-right">
-                        <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(parseInt(this.state.orderData.total) + (this.state.orderData.total * this.state.discountvalue)/ 100).toFixed(2) }</i></span>
+                        <span><i className={"fa fa-"+this.state.orderData.currency}>{parseInt(parseInt(this.state.orderData.total) + (this.state.orderData.total * this.state.discountvalue)/ 100).toFixed(2) }</i></span>
                       </div>
                     </div>
                     <div>
@@ -188,7 +194,7 @@ class viewOrder extends Component{
                         {this.state.discountin == 'percent' ? 
                             <span>{ parseInt(this.state.orderData.discount).toFixed(2) }%</span>
                         :
-                           <span><i className={"fa fa-"+this.state.orderData.currency}> { parseInt(this.state.orderData.discount).toFixed(2) }</i></span>
+                           <span><i className={"fa fa-"+this.state.orderData.currency}>{parseInt(this.state.orderData.discount).toFixed(2) }</i></span>
                           
                         }
                       </div>

@@ -713,4 +713,25 @@ button.button_search {
       text-align: left;
     }
   }
-  
+
+  .ourstores{
+    color: black;
+    font-family: "Montserrat";
+    text-align: center;   
+  }
+  .storeline{
+      border-bottom: 1px solid #999;
+  }
+  .storesModalContent{
+    /* min-height: 500px; */
+    overflow: auto;
+    /* padding-bottom: 20px; */
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    margin-top: 0px;
+    padding: 0px!important;
+}
+.storesModalContent .close{
+    font-size: 55px !important;
+    font-weight: 500 !important;
+}
