@@ -113,7 +113,7 @@ class ProductCollage extends Component {
 		// console.log("getSectionDetails sectionID",sectionID);
 		axios.get("/api/category/get/" + sectionID)
 			.then((response) => {
-				console.log('/api/category/get/sectionId response.data==>', response.data);
+				// console.log('/api/category/get/sectionId response.data==>', response.data);
 				this.setState({
 					categoryDetails: response.data
 				})
@@ -126,7 +126,7 @@ class ProductCollage extends Component {
 	getCategoryDetails(categoryID) {
 		axios.get("/api/category/get/one/" + categoryID)
 			.then((response) => {
-				console.log(" getCategoryDetails Response:",response.data);
+				// console.log(" getCategoryDetails Response:",response.data);
 				this.setState({
 					categoryDetails: response.data
 				})
@@ -166,7 +166,7 @@ class ProductCollage extends Component {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				console.log(" Section Products list==:",products);
+				// console.log(" Section Products list==:",products);
 				this.setState({
 					loading: false,
 					products: products,
