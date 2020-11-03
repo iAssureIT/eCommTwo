@@ -1919,7 +1919,9 @@ exports.filter_products = (req,res,next)=>{
     }else{
         finalselector.$and = [{ "$or" : [selector] }] 
     }
-    //console.log(finalselector,'finalselector')
+    finalselector.push({"status": "Publish"});
+    console.log(finalselector,'finalselector')
+    // Products.find({section_ID : req.params.sectionID, "status": "Publish"})
     Products.find(finalselector).limit(Number(req.body.limit))
     .exec()
     .then(data=>{

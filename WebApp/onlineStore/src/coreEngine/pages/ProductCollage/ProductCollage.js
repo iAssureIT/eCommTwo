@@ -166,7 +166,7 @@ class ProductCollage extends Component {
 				var products = response.data.filter((array_el, index) => {
 					return index < limit;
 				});
-				console.log(" Section Products:",products);
+				console.log(" Section Products list==:",products);
 				this.setState({
 					loading: false,
 					products: products,
