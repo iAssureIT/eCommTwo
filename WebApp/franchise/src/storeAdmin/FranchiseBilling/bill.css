@@ -504,6 +504,12 @@ rect{
   min-width: 100% !important;
 }
 
+.billButtons{
+  display: grid !important;
+}
+
+
+
 @media (min-width: 768px) and (max-width: 1024px) {
   /* For tablets: */
   .sectionDiv{
@@ -581,7 +587,7 @@ rect{
   }
   
   .billButtons{
-    display: grid;
+    display: grid !important;
   }
 
   /* .col-sm-1 {width: 8.33%;}

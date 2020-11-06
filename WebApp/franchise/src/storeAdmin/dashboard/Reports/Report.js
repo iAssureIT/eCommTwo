@@ -148,7 +148,7 @@ class Report extends Component{
                       let deliveryStatus = data.deliveryStatus[currentStatus].status;
                       let statusClass = '';
                       statusClass = deliveryStatus === "New Order"    ? "label label-warning"   : 
-                      statusClass = deliveryStatus === "Verified"    ? "label label-info"   : 
+                      statusClass = deliveryStatus === " Verified"    ? "label label-info"   : 
                       statusClass = deliveryStatus === "Inspection"  ? "label label-default" :
                       statusClass = deliveryStatus === "Dispatch Approved"  ? "label label-success" :
                       statusClass = deliveryStatus === "Dispatch"    ? "label label-success" :

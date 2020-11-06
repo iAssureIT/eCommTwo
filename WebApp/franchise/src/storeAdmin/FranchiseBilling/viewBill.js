@@ -12,8 +12,9 @@ import { countBy } from 'underscore';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCartData } from '../../redux/actions/index';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+//import html2canvas from 'html2canvas';
+//import jsPDF from 'jspdf';
+//import { display } from 'html2canvas/dist/types/css/property-descriptors/display';
 
 export class printBill extends React.Component {
 	constructor(props) {
@@ -504,7 +505,7 @@ export class printBill extends React.Component {
 							{this.state.showReturnProductDiv === false ? 
 							<div className="col-lg-4 col-lg-offset-2 col-md-6 col-sm-6 col-xs-12 viewBillDiv">
 								<div className="row paddingTop10 paddingBottom">
-									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12" >
 									   <img className="logoImg" src="../../images/logoUnimandai.png"/>
 									</div>
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -691,7 +692,7 @@ export class printBill extends React.Component {
 																<span className="fa fa-undo" data-toggle="modal" title="Partial Return" onClick={this.editOrder.bind(this,data._id,false)} data-target={"#editorder"+ data._id} id={data._id}></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 																{/* <span className="fa fa-undo" title="Return Product"  data-toggle="modal"  onClick={this.editOrder.bind(this,data._id,false)}  data-target={"#editorder"+ data._id} id={data._id} aria-hidden="true"></span> */}
-																<div className="modal fade" id={"editorder"+ data._id} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+																<div className="modal fade" id={"editorder"+ data._id} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="false">
 																<div className="modal-dialog modal-dialog-centered" role="document">
 																	<div className="modal-content">
 																	<div className="modal-header">
