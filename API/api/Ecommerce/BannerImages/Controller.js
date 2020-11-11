@@ -1,16 +1,16 @@
 const mongoose	= require("mongoose");
 
-const Gallery = require('./Model');
+const BannerImage = require('./Model');
 
 exports.insert_image = (req,res,next)=>{
 	
-                const gallery = new Gallery({
+                const BannerImage = new BannerImage({
                     _id                       : new mongoose.Types.ObjectId(),                    
                     bannerimages              : req.body.bannerimages,                    
                     createdAt                 : new Date()
                 });
-                console.log("gallery:",gallery);
-                gallery.save()
+                console.log("BannerImage:",BannerImage);
+                BannerImage.save()
                 .then(data=>{
                     res.status(200).json({
                         "message": "Image Submitted Successfully."
@@ -25,7 +25,7 @@ exports.insert_image = (req,res,next)=>{
 };
 
 exports.fetch_bannerimgs = (req,res,next)=>{
-    Gallery.find({})
+    BannerImage.find({})
     .exec()
     .then(data=>{
         res.status(200).json(data);
@@ -38,10 +38,11 @@ exports.fetch_bannerimgs = (req,res,next)=>{
     });
 };
 exports.delete_image = (req,res,next)=>{
-    Gallery.deleteOne({_id:req.params.imageId})
+    BannerImage.deleteOne({_id:req.params.imageId})
     .exec()
     .then(data=>{
-        res.status(200).json({
+        console.log("data===",data);
+        res.status(200).json({ 
             "message": "image Deleted Successfully."
         });
     })

@@ -60,7 +60,7 @@ class BannerImages extends Component{
               swal({
                 text  : response.data.message,
               });
-              window.location.reload();
+              this.getBannerImages();
               this.setState({
                 "bannerimages"                 : "",                
               });
@@ -76,12 +76,13 @@ class BannerImages extends Component{
       event.preventDefault();
       var imageId = event.target.id;
       console.log("imageId:",imageId);
-      axios.patch('/api/gallery/remove/'+imageId)
+      axios.patch('/api/bannerimgs/remove/'+imageId)
       .then((response)=>{
+        this.getBannerImages();
         swal({
           text  : response.data.message,
         });
-        window.location.reload();        
+
        
       })
       .catch((error)=>{

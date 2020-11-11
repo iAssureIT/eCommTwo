@@ -99,7 +99,7 @@ class Gallery extends Component{
               swal({
                 text  : response.data.message,
               });
-              window.location.reload();
+              this.getGalleryData();
               this.setState({
                 "galleryImage"                 : "",                
               });
@@ -117,10 +117,11 @@ class Gallery extends Component{
       console.log("imageId:",imageId);
       axios.patch('/api/gallery/remove/'+imageId)
       .then((response)=>{
+        this.getGalleryData();
         swal({
           text  : response.data.message,
         });
-        window.location.reload();        
+        this.getGalleryData();      
        
       })
       .catch((error)=>{
