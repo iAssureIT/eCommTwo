@@ -534,6 +534,7 @@ exports.one_franchisePO = (req,res,next)=>{
                     // console.log('data in AllUnits ==>',AllUnits);
                         for(let obj of data.orderItems) {
                           currentStock = await getFgCurrentStock(obj.itemCode);
+                        
                           obj.currentStock = currentStock[0].totalStock;
                           obj.currentStockUnit = currentStock[0].StockUnit;
                         }
@@ -603,16 +604,23 @@ function getFgCurrentStock(itemcode){
     return new Promise(function(resolve,reject){ 
       FinishedGoods.find({"ItemCode" : itemcode,balance: { $gt: 0 }})
      .then(data=>{
+         //console.log("data",data)
             var balanceArray = [];
             var balanceUnitArray = [];
             var balanceUnit;
             var finalArray = [];
             var finalStock = [];
+            var qtyArray = [];
             data.filter(function(item,index){
-                balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+                //for balance
+                // balanceArray.push({"balance" :item.balance,"balanceUnit":item.balanceUnit});
+                //for qty
+                balanceArray.push({"balance" :item.fgTotalQty,"balanceUnit":item.balanceUnit});
+
             });
 
             balanceArray.filter(function(item,index){
+                qtyArray.push(item.balance);
                 if(item.balanceUnit === "Kg"){
                     balanceUnitArray.push(item.balance);
                     balanceUnit = "Kg"
@@ -628,16 +636,27 @@ function getFgCurrentStock(itemcode){
                     }                    
                 }
             });
+            //for balance 
+            // let stock = balanceUnitArray.reduce(function(prev, current) {
+            //        finalArray.push({"totalStock":current})
+            //     return finalArray;
+            // }, 0);
 
-            let stock = balanceUnitArray.reduce(function(prev, current) {
-                   finalArray.push({"totalStock":current})
-                return finalArray;
+            // var total = 0;
+            // finalArray.forEach(item => {
+            //     total += item.totalStock;
+            // });
+
+            let stock = qtyArray.reduce(function(prev, current) {
+                finalArray.push({"totalStock":current})
+             return finalArray;
             }, 0);
 
             var total = 0;
             finalArray.forEach(item => {
                 total += item.totalStock;
             });
+            
            resolve([{"totalStock":total,"StockUnit":balanceUnit}]);   
        
     })

@@ -425,22 +425,24 @@ export default class FranchiseDistribution extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
-													// console.log("render map",result); // style={{fontWeight:'bold'}}
+													//console.log("render map",result); // style={{fontWeight:'bold'}}
 													return( 
 																<tr key={index}>
 																	<td>{result.productName} <br/><small>{result.productCode} - {result.itemCode}</small></td>
-													                <td>{result.currentStock} {result.currentStockUnit}</td>
+													                {/* //for balance <td>{result.currentStock} {result.currentStockUnit}</td> */}
+																	<td>{result.currentStock} <small style={{float:'right'}}>{result.fgUnitQty} {result.currentStockUnit}</small></td>
+																	
 													                <td>{result.orderQty} {result.unit}</td>
 													                <td>{result.alreadySupplied} {result.alreadySuppliedUnit}</td>
 																	<td>
 																	<input type="number"  name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0" style={{"display":"inline"}}/>
-																	<select id="unitOfMeasurement"  name={"unitOfMeasurement"+"-"+index} value={result.supplyUnit} onChange={this.handleChange.bind(this)}  className="input-group form-control" disabled style={{"border": "1px solid #a9a9a969","width": "88px","fontSize":"small","display":"inline"}}> 
+																	<select id="unitOfMeasurement"  name={"unitOfMeasurement"+"-"+index} value={result.supplyUnit} onChange={this.handleChange.bind(this)}  className="input-group form-control" disabled style={{"border": "1px solid #a9a9a969","width": "90px","fontSize":"small","display":"inline"}}> 
 																		<option selected={true} disabled={true}>Unit</option>
 																		{
 																			this.state.unitOfMeasurementArray && this.state.unitOfMeasurementArray.length > 0 ?
 																				this.state.unitOfMeasurementArray.map((data, i)=>{
 																					return(
-																						<option key={i} value={data}>{data}</option>
+																						<option key={i} value={data}>{result.fgUnitQty} {data}</option>
 																					);
 																				})
 																			:
