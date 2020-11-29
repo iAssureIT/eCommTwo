@@ -425,14 +425,14 @@ export default class FranchiseDistribution extends React.Component {
 									    	Array.isArray(this.state.DistributionData) && this.state.DistributionData.length > 0
 									    	? 
 									    		this.state.DistributionData.map((result, index)=>{
-													//console.log("render map",result); // style={{fontWeight:'bold'}}
+													// console.log("render map",result); // style={{fontWeight:'bold'}}
 													return( 
 																<tr key={index}>
 																	<td>{result.productName} <br/><small>{result.productCode} - {result.itemCode}</small></td>
 													                {/* //for balance <td>{result.currentStock} {result.currentStockUnit}</td> */}
-																	<td>{result.currentStock} <small style={{float:'right'}}>{result.fgUnitQty} {result.currentStockUnit}</small></td>
+																	<td>{result.currentStock} <small style={{float:'right'}}>{result.fgUnitQty} {result.unit}</small></td>
 																	
-													                <td>{result.orderQty} {result.unit}</td>
+													                <td>{result.orderQty}</td>
 													                <td>{result.alreadySupplied} {result.alreadySuppliedUnit}</td>
 																	<td>
 																	<input type="number"  name={"supply"+"-"+index} id={result.productCode+"-"+result.itemCode} className="form-control width90" value={result.supply} onChange={this.handleChange.bind(this)} min="0" style={{"display":"inline"}}/>

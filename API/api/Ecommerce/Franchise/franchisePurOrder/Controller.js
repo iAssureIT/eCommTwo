@@ -525,6 +525,7 @@ exports.one_franchisePO = (req,res,next)=>{
             main();
             async function main(){
                 if(data){
+                    console.log("one_franchisePO",data);
                     var returnData = {};
                     var DistData = [];
 
@@ -534,7 +535,6 @@ exports.one_franchisePO = (req,res,next)=>{
                     // console.log('data in AllUnits ==>',AllUnits);
                         for(let obj of data.orderItems) {
                           currentStock = await getFgCurrentStock(obj.itemCode);
-                        
                           obj.currentStock = currentStock[0].totalStock;
                           obj.currentStockUnit = currentStock[0].StockUnit;
                         }
@@ -604,7 +604,7 @@ function getFgCurrentStock(itemcode){
     return new Promise(function(resolve,reject){ 
       FinishedGoods.find({"ItemCode" : itemcode,balance: { $gt: 0 }})
      .then(data=>{
-         //console.log("data",data)
+         console.log("data",data)
             var balanceArray = [];
             var balanceUnitArray = [];
             var balanceUnit;
