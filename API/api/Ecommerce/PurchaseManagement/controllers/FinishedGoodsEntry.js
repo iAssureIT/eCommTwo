@@ -974,6 +974,52 @@ function get_current_stock_of_franchise(itemcode){
    })
 }
 
+function get_qty_unit_of_franchise(itemcode){
+    return new Promise(function(resolve,reject){ 
+    franchisegoods.find({itemCode : itemcode,balance: { $gt: 0 }})
+    .then(data=>{
+           var balanceArray = [];
+           var balanceUnitArray = [];
+           var balanceUnit;
+           var finalArray = [];
+           data.filter(function(item,index){
+               balanceArray.push({"balance" :item.balance,"unit":item.unit});
+           });
+
+           balanceArray.filter(function(item,index){
+               if(item.unit === "Kg"){
+                   balanceUnitArray.push(item.balance);
+                   balanceUnit = "Kg"
+               }else{
+                   if(item.unit == "Gm"){
+                       var converToKG = item.balance/1000;
+                       balanceUnitArray.push(converToKG);
+                       //converted to kg so balanceunit is kg only
+                       balanceUnit = "Kg";
+                   }else{
+                       balanceUnitArray.push(item.balance);
+                       balanceUnit = item.unit;
+                   }                    
+               }
+           });
+
+           let totalBalance = balanceUnitArray.reduce(function(prev, current) {
+               finalArray.push({"totalStock":current,"StockUnit":balanceUnit})
+               return finalArray;
+           }, 0);
+           var sum = 0;
+           finalArray.forEach(function(obj){
+             sum += obj.totalStock;
+           });
+           resolve({"totalStock":sum,"StockUnit":balanceUnit});
+      
+   })
+   .catch(err =>{
+       reject(err);
+   }); 
+  })
+}
+
 function getFranchise(id){
      return new Promise(function(resolve,reject){ 
             Entitymaster.findOne({_id : id})
@@ -1005,9 +1051,10 @@ exports.get_product_current_stock_report = (req, res, next)=>{
         selector = {"itemCode" : req.body.itemcode,"franchise_id" : req.body.franchiseId}
     }
    
-        franchisegoods.find(selector)
+    franchisegoods.find(selector)
         .exec()
         .then(data=>{
+            // console.log("franchisegoods data",data);
             main();
              async function main(){
                         var i = 0;
@@ -1016,6 +1063,8 @@ exports.get_product_current_stock_report = (req, res, next)=>{
                         var franchiseName = '';
                         for(i = 0 ; i < data.length ; i++){
                         var currentStock =  await get_current_stock_of_franchise(data[i].itemCode); 
+                        console.log("currentStock data",currentStock);
+
                         var Franchise =  await getFranchise(data[i].franchise_id); 
 
                         if(Franchise){     

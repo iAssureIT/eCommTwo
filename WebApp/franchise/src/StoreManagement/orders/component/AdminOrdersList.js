@@ -74,7 +74,7 @@ class AdminOrdersList extends Component{
                 
             return null;
           });	
-
+          console.log("nextProps.status",nextProps.status)
             this.setState({
                 "data": nextProps.data,
                 "allProductsArray" : nextProps.allProductsArray,
@@ -82,6 +82,7 @@ class AdminOrdersList extends Component{
                 "currentViewStatus" : nextProps.status,
                 "showStatusFilter" : nextProps.showStatusFilter
              },()=>{
+               this.getOrdersBetweenDates()
              });
         }
     }
@@ -243,7 +244,9 @@ class AdminOrdersList extends Component{
       var userData = JSON.parse(userDetails);
       axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
       .then((resdata)=>{
-        orderFilterData.franchiseID = resdata.data._id;;
+        orderFilterData.franchiseID = resdata.data._id;
+        console.log(" admin order list orderFilterData",orderFilterData);
+
         axios.post("/api/orders/get/get_orders",orderFilterData)
             .then((response)=>{
               var UsersArray = [];

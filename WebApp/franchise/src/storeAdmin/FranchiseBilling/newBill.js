@@ -47,7 +47,8 @@ export class Bill extends React.Component {
 				customerDetail        : {},
 				unitRate              : 0,
 				updateCustomer        : false,
-				orderFrom             : 'In-store'
+				orderFrom             : 'In-store',
+				disprice              : 0
 		  };
 		//   this.escFunction = this.escFunction.bind(this);
 		
@@ -140,26 +141,34 @@ export class Bill extends React.Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
+		let disprice = 0;
 		let discount = 0;
 		let total    = 0;
 		let subtotal = 0;
 		let gstTax = 0;
+		let rate = 0;
 		let amountPayable = 0;
 		 if(nextProps.recentCartData.length > 0){
 			nextProps.recentCartData[0].cartItems.map((data,index) =>{
 				let discountedPrice = 0
 				if(data.discountPercent > 0){
+					disprice = disprice + (data.rate * data.productDetail.discountPercent) / 100;
 					discount = discount + data.discountedPrice;
 					discountedPrice = data.discountedPrice;
-					
+					rate = rate + data.rate;
 				}else{
+					disprice = disprice + 0;
 					discount = discount + 0;
 					discountedPrice = 0
+					rate = rate + data.rate;
+
 				}
-				subtotal = subtotal + ( data.rate - discountedPrice );				
+				//  subtotal = subtotal + ( data.rate - discountedPrice );
+
 			}
 		   )
-		   
+		   subtotal =  rate - disprice;
+
 			total = nextProps.recentCartData[0].cartItems.reduce((prev,next) => prev + (next.rate),0);
 			let CGSTAmt = nextProps.recentCartData[0].cartItems.reduce((prev,next) => prev + next.CGSTAmt,0);
 			let SGSTAmt = nextProps.recentCartData[0].cartItems.reduce((prev,next) => prev + next.SGSTAmt,0);
@@ -174,6 +183,7 @@ export class Bill extends React.Component {
 			cartQuantity : nextProps.recentCartData.cartQuantity,
 			total : total,
 			discount : discount,
+			disprice : disprice,
 			subtotal : subtotal,
 			gstTax : gstTax,
 			amountPayable : amountPayable
@@ -832,6 +842,7 @@ export class Bill extends React.Component {
 		reportFilterData.itemcode = this.state.itemCode;
 		axios.post('/api/finishedGoodsEntry/post/getProductCurrentStockReport/',reportFilterData)
 		.then((response)=>{
+			// console.log("response",response);
 			if(response.data.length > 0){
 				if(this.props.recentCartData.length > 0){
 						   if(response.data[0].totalStock < this.state.quantity){
@@ -1100,8 +1111,10 @@ export class Bill extends React.Component {
 											{       
 												this.props.recentCartData.length > 0 &&  this.props.recentCartData[0].cartItems.length > 0?                                      
 												Array.isArray(this.props.recentCartData) && this.props.recentCartData[0].cartItems.map((data,index)=>{
-													data.discountedPrice = data.discountPercent > 0 ? data.discountedPrice : 0;
-													
+													// console.log("discounted Price",(data.rate * data.productDetail.discountPercent)/100 );
+													//data.discountedPrice = data.discountPercent > 0 ? data.discountedPrice : 0;
+													data.discountedPrice = data.discountPercent > 0 ? (data.rate * data.productDetail.discountPercent)/100 : 0;
+
 													return(
 														<tr key={index}>
 															<td><span className="fa fa-times trashIcon" id={data._id} onClick={this.Removefromcart.bind(this)}><a href="/" style={{color:"#337ab7"}} > </a></span></td>
@@ -1177,6 +1190,8 @@ export class Bill extends React.Component {
 																		<div className="row">
 																			<br/>
 																			<h3>Subtotal : <i className="fa fa-rupee"></i> {parseFloat((this.state.rate) - (this.state.discountedPrice)).toFixed(2)}</h3>
+																			{/* <h3>Subtotal : <i className="fa fa-rupee"></i> {parseFloat((this.state.rate) - (this.state.disprice)).toFixed(2)}</h3> */}
+
 																		</div>
 																	</div>
 																	<div className="modal-footer">
@@ -1204,10 +1219,14 @@ export class Bill extends React.Component {
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
-												   <td className="" colSpan="4">Discount: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.discount).toFixed(2)}</span></td>
+												   {/* {console.log('disprice',this.state.disprice)} */}
+												   {/* <td className="" colSpan="4">Discount: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.discount).toFixed(2)}</span></td> */}
+												   <td className="" colSpan="4">Discount: <span className="pull-right"> - <i className="fa fa-inr"></i> {parseFloat(this.state.disprice).toFixed(2)}</span></td>
+
 												</tr>
 												<tr>
 												   <td colSpan="4"></td>
+												   {/* <td className="" colSpan="4">Subtotal: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.subtotal).toFixed(2)}</span></td> */}
 												   <td className="" colSpan="4">Subtotal: <span className="pull-right"><i className="fa fa-inr"></i> {parseFloat(this.state.subtotal).toFixed(2)}</span></td>
 												</tr>
 												<tr>

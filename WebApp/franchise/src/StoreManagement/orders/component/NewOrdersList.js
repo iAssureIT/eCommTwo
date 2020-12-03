@@ -19,21 +19,23 @@ export default class NewOrdersList extends Component{
       "allProductsArray" : []
     }
     this.getOrders = this.getOrders.bind(this);
+
   }
    
   componentDidMount(){
     this.getOrders();
-  }  
-  
+  } 
+    
   getOrders(){
+    console.log("getOrders");
     var orderFilterData= {};
     orderFilterData.status = "New Order";
-    var userDetails = (localStorage.getItem('userDetails'));
+    var userDetails = localStorage.getItem('userDetails');
     var userData = JSON.parse(userDetails);
     axios.get("/api/entitymaster/get/companyName/"+userData.companyID)
     .then((resdata)=>{
-      orderFilterData.franchiseID = resdata.data._id;;
-       axios.post('/api/orders/get/get_orders/',orderFilterData)
+      orderFilterData.franchiseID = resdata.data._id;
+       axios.post('/api/orders/get/get_orders',orderFilterData)
           .then((response)=>{
             var UsersArray = [];
               for (let i = 0; i < response.data.length; i++) {
@@ -64,6 +66,8 @@ export default class NewOrdersList extends Component{
 
               this.setState({
                 data: UsersArray
+              },()=>{
+                console.log("after state")
               });
 
               this.setState({

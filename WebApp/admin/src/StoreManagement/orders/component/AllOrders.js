@@ -9,9 +9,7 @@ import $ from "jquery";
 import moment from 'moment';
 import AdminOrdersList from './AdminOrdersList.js';
 
-
 export default class AllOrders extends Component{
-  
   constructor(props) {
    super(props);
     this.state = {
@@ -102,7 +100,7 @@ export default class AllOrders extends Component{
   render(){
     return(
       <div>
-      <AdminOrdersList tableTitle={'All Orders'} data={this.state.data} allProductsArray={this.state.allProductsArray} getOrdersFun={this.getOrders}/>
+          <AdminOrdersList tableTitle={'All Orders'} data={this.state.data} allProductsArray={this.state.allProductsArray} getOrdersFun={this.getOrders}/>
       </div>
       );
     
