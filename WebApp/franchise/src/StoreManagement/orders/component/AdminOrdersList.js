@@ -170,7 +170,6 @@ class AdminOrdersList extends Component{
           });          
     }
 
-    
     openModal(event){
       event.preventDefault();
       $('#dispatchModal').show();

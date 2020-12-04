@@ -93,15 +93,18 @@ export default class YearlyReport extends Component{
             .then((response)=>{
             //console.log("companyID response.data==>",response.data);
 
-            var tableData = response.data.map((a, i)=>{
+            var tableData = response.data.map((data, index)=>{
+                var createdAt = moment(data.cratedAt).format("DD/MM/YYYY hh:mm a");
                 return {
-                    "orderID"                    : a.orderID,
-                    "cratedAt"                   : a.createdAt,
-                    "userFullName"               : a.userFullName,
-                    "totalAmount"                : '<i className="fa fa-inr"></i>'+ a.total,
-                    "deliveryStatus"             : a.status +' '+ a.deliveryStatus[0].status,
-        
+                    orderID        : data.orderID,
+                    cratedAt       : createdAt,
+                    userFullName   : data.userFullName,
+                    totalAmount    : '<i className="fa fa-inr"></i> '+data.total,
+                    deliveryStatus : data.deliveryStatus[data.deliveryStatus.length-1].status
                 }
+            });
+            this.setState({
+                tableData:tableData
             })
 
             })

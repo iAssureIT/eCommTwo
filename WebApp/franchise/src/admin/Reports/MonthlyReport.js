@@ -99,15 +99,20 @@ export default class MonthlyReport extends Component{
         .then((resdata)=>{
             axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
             .then((response)=>{
-                var tableData = response.data.map((a, i)=>{
+                console.log("monthly response",response.data);
+                var tableData = response.data.map((data, index)=>{
+                    var createdAt = moment(data.cratedAt).format("DD/MM/YYYY hh:mm a");
                     return {
-                        "orderID"                    : a.orderID,
-                        "cratedAt"                   : a.createdAt,
-                        "userFullName"               : a.userFullName,
-                        "totalAmount"                : '<i className="fa fa-inr"></i>'+ a.total,
-                        "deliveryStatus"             : a.status +' '+ a.deliveryStatus[0].status,
-            
+                        orderID        : data.orderID,
+                        cratedAt       : createdAt,
+                        userFullName   : data.userFullName,
+                        totalAmount    : '<i className="fa fa-inr"></i> '+data.total,
+                        deliveryStatus : data.deliveryStatus[data.deliveryStatus.length-1].status
                     }
+                });
+
+                this.setState({
+                    tableData:tableData
                 })
     
             })

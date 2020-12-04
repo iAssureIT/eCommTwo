@@ -12,11 +12,11 @@ export default class WeeklyReport extends Component{
             apply               : false,
           },
           "tableHeading"        : {
-            orderID                    : "Order ID",
-            cratedAt                   : "Order Date",
-            userFullName               : "Customer Name",
-            totalAmount                : "Amount",
-            deliveryStatus             : "Delivery Status",
+            orderID             : "Order ID",
+            cratedAt            : "Order Date",
+            userFullName        : "Customer Name",
+            totalAmount         : "Amount",
+            deliveryStatus      : "Delivery Status",
 
           },
           "tableData"           : [],
@@ -85,11 +85,21 @@ export default class WeeklyReport extends Component{
         .then((resdata)=>{
             axios.post("/api/orders/get/report/"+resdata.data._id+'/'+startRange+'/'+limitRange, formvalues)
             .then((response)=>{
-            this.setState({ 
-                tableData : response.data
-            },()=>{ 
-              //  console.log("tableData",this.state.tableData);
-            })
+                var tableData = response.data.map((data, index)=>{
+                    var createdAt = moment(data.cratedAt).format("DD/MM/YYYY hh:mm a");
+                    return {
+                        orderID        : data.orderID,
+                        cratedAt       : createdAt,
+                        userFullName   : data.userFullName,
+                        totalAmount    : '<i className="fa fa-inr"></i> '+data.total,
+                        deliveryStatus : data.deliveryStatus[data.deliveryStatus.length-1].status
+                    }
+                });
+
+               this.setState({ 
+                tableData : tableData
+               },()=>{ })
+
             })
             .catch((error)=>{
                 console.log('error', error);
@@ -171,6 +181,8 @@ export default class WeeklyReport extends Component{
         });
     }
     render(){
+        console.log("weekly tableData",this.state.tableData);
+
         if(!this.props.loading){
             return( 
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">

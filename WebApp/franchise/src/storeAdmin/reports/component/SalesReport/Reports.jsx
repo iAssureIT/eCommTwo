@@ -10,12 +10,11 @@ import {Tracker} from 'meteor/tracker';
 import { browserHistory } from 'react-router';
 
 // import { UserSubscriptions } from '/imports/website/contactUs/api/SubscriptionMaster.js';
-
-import ReportsDailyList from '/imports/StoreManagement/reports/component/SalesReport/DailyReports.jsx';
-import ReportsWeeklyList from '/imports/StoreManagement/reports/component/SalesReport/WeeklyReports.jsx';
-import ReportsMonthlyList from '/imports/StoreManagement/reports/component/SalesReport/MonthlyReports.jsx';
-import ReportsYearlyList from '/imports/StoreManagement/reports/component/SalesReport/YearlyReports.jsx';
-import ReportsCustomisedList from '/imports/StoreManagement/reports/component/SalesReport/CostomizedReports.jsx';
+import ReportsDailyList from './component/SalesReport/DailyReports.jsx';
+import ReportsWeeklyList from './component/SalesReport/WeeklyReports.jsx';
+import ReportsMonthlyList from './component/SalesReport/MonthlyReports.jsx';
+import ReportsYearlyList from './component/SalesReport/YearlyReports.jsx';
+import ReportsCustomisedList from './component/SalesReport/CostomizedReports.jsx';
 
 export default class ReportsList extends TrackerReact(Component){
 	constructor(props){
