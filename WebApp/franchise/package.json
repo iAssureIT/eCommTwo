@@ -68,7 +68,7 @@
     "sweetalert2": "^9.10.12",
     "underscore": "^1.9.1",
     "validator": "^11.1.0",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
