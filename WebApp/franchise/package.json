@@ -67,7 +67,7 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^9.10.12",
     "underscore": "^1.9.1",
-    "validator": "^11.1.0",
+    "validator": "^13.7.0",
     "xlsx": "^0.15.1"
   },
   "scripts": {
